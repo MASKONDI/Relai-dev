@@ -22,8 +22,8 @@ mongoose
   .then(() => console.log("Database Connected"))
   .catch(err => console.log(err));
 
-app.get("/", (req, res) => res.send("Hello World"));
-
+app.use(express.static(__dirname + '/client'));
+app.get("/index.html", (req, res) => res.send(""));
 
 const port = process.env.PORT || 5000;
 
