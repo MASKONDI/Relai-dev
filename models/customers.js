@@ -4,21 +4,19 @@ const Schema = mongoose.Schema;
 // Create Schema
 const CustomerSchema = new Schema({
 
-  //should be auto-incremented
+  //should be auto-incremented or we can use _id as a customer_id
   cus_customer_id: {
-    type: Number,
-    required: true,
+    type: Schema.Types.ObjectId,
+    ref: "customers"
   },
-
   cus_fullname: {
     type: String,
     required: true,
   },
   cus_unique_code: {
     type: String,
-
   },
-  cus_emailid: {
+  cus_email_id: {
     type: String,
     required: true,
   },
@@ -48,7 +46,6 @@ const CustomerSchema = new Schema({
   },
   cus_otp_expie_time: {
     type: String,
-
   },
   cus_email_verification_status: {
     type: String,
@@ -67,7 +64,8 @@ const CustomerSchema = new Schema({
     default: 'active',
   },
   cus_created_at: {
-    type: Date.now(),
+    type: Date,
+    default: Date.now
   },
   cus_updated_at: {
     type: Date,
@@ -88,6 +86,7 @@ const CustomerSchema = new Schema({
     default: 'pending',
   }
 });
+
 
 module.exports = Customers = mongoose.model('customers', CustomerSchema);
 

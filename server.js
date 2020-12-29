@@ -4,6 +4,10 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
 
+// import routes
+const customerRoutes = require("./routes/api/customers");
+
+
 const app = express();
 
 // Body parser middleware
@@ -15,6 +19,8 @@ app.use(passport.initialize());
 
 // DB Config
 const db = require("./config/keys").mongoURI;
+// routes middleware
+app.use("/api", customerRoutes);
 
 // Connect to MongoDB
 mongoose
