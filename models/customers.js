@@ -15,6 +15,7 @@ const CustomerSchema = new Schema({
   },
   cus_unique_code: {
     type: String,
+    required: true,
   },
   cus_email_id: {
     type: String,

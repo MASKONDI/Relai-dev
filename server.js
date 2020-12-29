@@ -6,6 +6,7 @@ const path = require('path');
 
 // import routes
 const customerRoutes = require("./routes/api/customers");
+const serviceProviderRoutes = require("./routes/api/service_provider");
 
 
 const app = express();
@@ -21,6 +22,7 @@ app.use(passport.initialize());
 const db = require("./config/keys").mongoURI;
 // routes middleware
 app.use("/api", customerRoutes);
+app.use("/api", serviceProviderRoutes);
 
 // Connect to MongoDB
 mongoose

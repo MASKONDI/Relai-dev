@@ -4,13 +4,12 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../config/keys');
 const passport = require('passport');
+const { v4: uuidv4 } = require('uuid');
 
 const CustomerSchema = require("../models/customers");
 
-
 // Load Input Validation
 const validateCustomerRegisterInput = require('../Validation/cust_signup');
-const customers = require('../models/customers');
 
 exports.cust_register = (req, res) => {
   console.log("rq.body", req.body);
@@ -26,7 +25,7 @@ exports.cust_register = (req, res) => {
       return res.status(400).json(errors);
     } else {
       const newCustomer = new CustomerSchema({
-
+        cus_unique_code: "cus-" + uuidv4(),
         cus_fullname: req.body.cus_fullname,
         cus_email_id: req.body.cus_email_id,
         cus_phone_number: req.body.cus_phone_number,

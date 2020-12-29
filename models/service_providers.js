@@ -3,9 +3,10 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const ServiceProviderSchema = new Schema({
+
+  //should be objectID genrated by MongoDB
   sps_id: {
     type: Number,
-    required: true,
   },
   sps_unique_code: {
     type: String,
@@ -13,7 +14,6 @@ const ServiceProviderSchema = new Schema({
   },
   sps_user_role_id: {
     type: Number,
-    required: true,
   },
   sps_user_type: {
     type: String,
@@ -36,7 +36,7 @@ const ServiceProviderSchema = new Schema({
     type: String,
   },
   sps_country_id: {
-    type: Number,
+    type: String,
     required: true,
   },
   sps_city: {
@@ -62,7 +62,7 @@ const ServiceProviderSchema = new Schema({
     default: Date.now,
   },
   sps_updated_at: {
-    type: date,
+    type: Date,
 
   },
   sps_deleted_at: {
