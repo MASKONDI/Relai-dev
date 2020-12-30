@@ -20,10 +20,11 @@ const PlanSchema = require("../models/plan");
 
 
 
-
-
 // Load Input Validation
 const validateServiceProviderRegisterInput = require('../Validation/service_provider_signup');
+const validateServiceProviderSigninInput = require('../Validation/service_provider_signin');
+
+
 const validateServiceProviderOtherDetailsInput = require("../models/service_providers_other_details");
 
 
@@ -277,3 +278,49 @@ exports.pricing_plan = (req, res) => {
     .then(plan => res.json(plan))
     .catch(err => console.log(err));
 };
+
+
+
+exports.service_provider_signin = (req, res) => {
+  const sps_email_id = req.body.sps_email_id;
+  const sps_password = req.body.sps_password;
+
+  const { errors, isValid } = validateServiceProviderSigninInput(req.body);
+
+  // Check Validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  // Find Customer by 
+  ServiceProviderSchema.findOne({ sps_email_id }).then(service_provider => {
+    // Check for Customer
+    if (!service_provider) {
+      errors.sps_email_id = 'Service Provider not found';
+      return res.status(404).json(errors);
+    }
+    // Check Password
+    bcrypt.compare(sps_password, service_provider.sps_password).then(isMatch => {
+      if (isMatch) {
+        // service_provider Matched
+        const payload = { id: service_provider.id, cus_fullname: service_provider.cus_fullname, sps_email_id: service_provider.sps_email_id }; // Create JWT Payload
+
+        // Sign Token
+        jwt.sign(
+          payload,
+          keys.secretOrKey,
+          { expiresIn: 3600 },
+          (err, token) => {
+            res.json({
+              success: true,
+              token: 'Bearer ' + token
+            });
+          }
+        );
+      } else {
+        errors.sps_password = 'Password incorrect';
+        return res.status(400).json(errors);
+      }
+    });
+  });
+}

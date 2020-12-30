@@ -10,6 +10,8 @@ const CustomerSchema = require("../models/customers");
 
 // Load Input Validation
 const validateCustomerRegisterInput = require('../Validation/cust_signup');
+const validateCustomerSigninInput = require('../Validation/cust_signin');
+
 
 exports.cust_register = (req, res) => {
   console.log("rq.body", req.body);
@@ -50,3 +52,48 @@ exports.cust_register = (req, res) => {
 };
 
 
+
+
+exports.cust_signin = (req, res) => {
+  const cus_email_id = req.body.cus_email_id;
+  const cus_password = req.body.cus_password;
+
+  const { errors, isValid } = validateCustomerSigninInput(req.body);
+
+  // Check Validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  // Find Customer by 
+  CustomerSchema.findOne({ cus_email_id }).then(customers => {
+    // Check for Customer
+    if (!customers) {
+      errors.cus_email_id = 'Customers not found';
+      return res.status(404).json(errors);
+    }
+    // Check Password
+    bcrypt.compare(cus_password, customers.cus_password).then(isMatch => {
+      if (isMatch) {
+        // Customer Matched
+        const payload = { id: customers.id, cus_fullname: customers.cus_fullname, cus_email_id: customers.cus_email_id }; // Create JWT Payload
+
+        // Sign Token
+        jwt.sign(
+          payload,
+          keys.secretOrKey,
+          { expiresIn: 3600 },
+          (err, token) => {
+            res.json({
+              success: true,
+              token: 'Bearer ' + token
+            });
+          }
+        );
+      } else {
+        errors.cus_password = 'Password incorrect';
+        return res.status(400).json(errors);
+      }
+    });
+  });
+}
