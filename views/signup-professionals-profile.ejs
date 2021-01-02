@@ -143,7 +143,7 @@
                   </div>
                 </div>
               </div>
-              <form action="#" class="form form-section">
+              <form action="/api/service_provider_personal_details" class="form form-section" method="POST">
 
 
 
@@ -151,13 +151,13 @@
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix">
                       <input type="text" class="form-control text-field-size " id="" placeholder="Surname"
-                        name="surname">
+                        name="spods_surname">
                     </div>
                   </div>
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix">
                       <input type="text" class="form-control text-field-size " id="" placeholder="Forenames"
-                        name="forenames">
+                        name="spods_fornames">
                     </div>
                   </div>
                 </div>
@@ -166,7 +166,7 @@
                 <div class="row">
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix">
-                      <select class="form-control " id="selectBox2">
+                      <select class="form-control " id="selectBox2" name="spods_preferred_title">
                         <option value="0">Preferred Title</option>
                         <option value=""></option>
                       </select>
@@ -175,7 +175,7 @@
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix">
                       <input type="text" class="form-control text-field-size " id=""
-                        placeholder="Former Surnames(if different from above)" name="formername">
+                        placeholder="Former Surnames(if different from above)" name="spods_fornames">
                     </div>
                   </div>
                 </div>
@@ -184,13 +184,13 @@
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix">
                       <input type="date" class="form-control text-field-size " id="" placeholder="Date of Birth"
-                        name="dob">
+                        name="spods_dob">
                     </div>
                   </div>
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix">
                       <input type="text" class="form-control text-field-size " id="" placeholder="Nationality"
-                        name="nationality">
+                        name="spods_nationality">
                     </div>
                   </div>
                 </div>
@@ -200,13 +200,13 @@
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix">
                       <input type="text" class="form-control text-field-size " id="" placeholder="Address"
-                        name="address">
+                        name="spods_address">
                     </div>
                   </div>
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix">
                       <input type="text" class="form-control text-field-size " id="" placeholder="Post code"
-                        name="postCode">
+                        name="spods_postcode">
                     </div>
                   </div>
                 </div>
@@ -216,12 +216,12 @@
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix">
                       <input type="text" class="form-control text-field-size " id="" placeholder="Home Telephone Number"
-                        name="startDate">
+                        name="spods_home_telephone_number">
                     </div>
                   </div>
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix">
-                      <select class="form-control" id="selectBox2">
+                      <select class="form-control" id="selectBox2" name="spods_postcode_covered">
                         <option value="0">Post codes covered</option>
                         <option value=""></option>
                       </select>
@@ -239,7 +239,8 @@
                   </div>
                   <div class="col-sm-12 col-lg-4">
                     <div class="input-box-size-fix">
-                      <input type="text" class="form-control text-field-size " id="" placeholder="" name="startDate">
+                      <input type="text" class="form-control text-field-size " id="" placeholder=""
+                        name="start_working_time">
                     </div>
                   </div>
                 </div>
@@ -259,8 +260,10 @@
 
                   <div class="col-6 col-sm-6 col-lg-6">
                     <div class="prev-btn float-right">
-                      <a href="signup-professionals-profile-2.html" class="btn btn-next" style="width: 164px;">
-                        NEXT</a>
+                      <!-- <a href="signup-professionals-profile-2.html" class="btn btn-next" style="width: 164px;">
+                        NEXT</a> -->
+                      <button type="submit" name="submit" class="btn btn-next" style="width: 164px;">
+                        NEXT</button>
                     </div>
               </form>
             </div>

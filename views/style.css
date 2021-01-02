@@ -952,7 +952,7 @@ img.mr-10 {
     padding: 30px 0px 0px 30px;
 }
 .hirenow-inner {
-    padding: 0px 30px 30px 30px;
+    padding: 20px 30px 30px 0px;
 }
 .property-inner{
     padding: 30px 30px 10px 30px;
@@ -964,7 +964,7 @@ img.mr-10 {
     font-weight: bold;
 }
 .well {
-    /*height: 305px;*/
+   height: 275px;
     padding: 40px 40px;
     border-radius: 40px;
     background: rgba(0,83,119,12%);
@@ -2244,9 +2244,7 @@ ul.docs-list.last-doc li{
 
 
     .user-fix{
-        margin-left: 50px;
         margin-top: 20px;
-        height: 140px;
     }
     .user-profile-fix{
         width: 92px;
@@ -2285,7 +2283,7 @@ ul.docs-list.last-doc li{
         margin-left: 35px;
         padding-left: 20px;
     }
-    .icon-fix2{
+    .icon-fix2, .btn-hire-now-small{
         padding-top: 25px;
         margin-left: 35px;
         padding-left: 20px;
@@ -3068,10 +3066,14 @@ color: #005377;
         font-size: 18px;
         font-weight: 900;
     }
-    .input-box-size-fix {
-        margin-left: 8px;
-        margin-bottom: 15px;
-    }
+    .contact-us {
+    padding: 30px 0px;
+    width: 70%;
+    margin: 0 auto;
+}
+    .input-box-size-fix-cntc {
+    margin-left: 15px;
+}
     .input-box-size-fix2 {
         margin-left: 15px;
         margin-bottom: 15px;
@@ -3176,9 +3178,10 @@ color: #005377;
         margin-top:10px;
         margin-bottom:20px;
         font-size: 16px;
-        margin-right:-14px;
     }
-
+.contact-us input {
+    height: 40px;
+}
     .date-field-size {
         margin: 5px 0px 9px 0px;
         padding-top: 10px;
@@ -3447,6 +3450,19 @@ section.features {
     border: none;
     border-radius: 0;
     box-shadow: none;
+    padding-left: 35px;
+}
+.contact-us .form-group{
+    position: relative;
+}
+section.main-contact-sec {
+    padding: 70px 0px;
+}
+.contact-us i {
+    margin-left: 10px;
+    position: absolute;
+    top: 10px;
+    z-index: 999999;
 }
 .outer-banner-team .main-content.team h3 {
     font-size: 40px;
@@ -3980,13 +3996,9 @@ label.todos.check-todos {
 .contact-detail-sec{
    background-color: #f7f7f7;
    width:100%;
-   height: 200px; 
 }
-.contact-detail{
-    padding: 27px;
-    padding-top: 66px;
-    height: 200px;
-    padding-left: 50px;
+.contact-detail {
+    padding: 50px 0px 30px 0px;
 }
 .custom-file-input{
     display: inline-block;
@@ -4147,6 +4159,22 @@ a.add-professionals {
     position: fixed;
     background: #fff;
     z-index: 999;
+    width: 100%;
+}
+.icon-fix, .icon-fix2{
+    padding-top: 0;
+    margin-left: 0;
+}
+.btn-hire-now-small {
+    margin-left: 0;
+}
+.professional-inner {
+    padding: 0px 0px 30px 0px;
+}
+.mb-20 {
+    margin-bottom: 1rem;
+}
+.contact-us{
     width: 100%;
 }
 .kyc-box-portfolio {
@@ -4509,6 +4537,9 @@ label.check-permission img {
     z-index: 999;
     width: 100%;
 }
+.contact-us {
+    width: 95%;
+}
 .signup-professional7-add-btn{
     margin-left:0;
 }
@@ -4747,7 +4778,7 @@ ul.docs-list li:nth-child(3n) {
     float: none;
 }
 /*dashboard end*/
-div#demo img {
+.apartment-slider div#demo img {
     width: 100%;
 }
 .apartment-details {

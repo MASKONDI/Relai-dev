@@ -26,30 +26,28 @@
           <div class="signup">
             <div class="clearfix header-login">
               <div class="logo-signup float-left">
-                <a class="navbar-brand" href="index.html"><img src="images/logo-2.png"
-                    class="d-inline-block align-top"></a>
+                <a class="navbar-brand" href="/index"><img src="images/logo-2.png" class="d-inline-block align-top"></a>
               </div>
               <div class="float-right">
-                <a href="signin.html" class="signin text-right">
+                <a href="/signin" class="signin text-right">
                   <button type="submit" class="btn btn-sign">SIGN IN</button>
                 </a>
               </div>
             </div>
             <p>START FOR FREE</p>
             <h1>Let’s get you started</h1>
-            <form class="form" action="#">
+            <form class="form" method="POST" action="/api/cust_register">
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group  ">
                     <input type="text" class="form-control form-control-size " id="fullName" placeholder="FullName"
-                      name="fullName">
+                      name=" cus_fullname">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group  ">
                     <input type="text" class="form-control form-control-size" id="phoneNumber"
-                      placeholder="Phone Number" name="phonenumber">
-
+                      placeholder="Phone Number" name="cus_phone_number">
                   </div>
                 </div>
               </div>
@@ -57,13 +55,13 @@
                 <div class="col-md-6">
                   <div class="form-group  ">
                     <input type="email" class="form-control form-control-size" id="email" placeholder="Email ID"
-                      name="email">
+                      name="cus_email_id">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group  ">
                     <input type="text" class="form-control form-control-size" id="address" placeholder="Address"
-                      name="address">
+                      name="cus_address">
                   </div>
 
                 </div>
@@ -71,21 +69,22 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group  ">
-                    <input type="text" class="form-control form-control-size" id="city" placeholder="City" name="city">
+                    <input type="text" class="form-control form-control-size" id="city" placeholder="City"
+                      name="cus_city">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group ">
-                    <input type="password" class="form-control form-control-size" id="password" placeholder="Password"
-                      name="password">
+                    <input type="text" class="form-control form-control-size" id="country" placeholder="Country"
+                      name="cus_country_id">
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6">
-                  <div class="form-group  ">
-                    <input type="text" class="form-control form-control-size" id="country" placeholder="Country"
-                      name="country">
+                  <div class="form-group  "><input type="password" class="form-control form-control-size" id="password"
+                      placeholder="Password" name="cus_password">
+
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -102,8 +101,8 @@
 
               <p class="text-center">By signing up, you agree to the <a href="termsAndConditions.html">terms and
                   conditions</a> of Relai.</p>
-              <a href="otp.html" class="btn btn-next">SIGN UP</a>
-
+              <!-- <a href="otp.html" class="btn btn-next">SIGN UP</a> -->
+              <button type="submit" name="submit" class="btn btn-next">SIGN UP</button>
               <p class="text-center" style="margin-top :10px">Already have an account? <a href="signin.html"> Sign in
                 </a> </p>
             </form>

@@ -29,6 +29,9 @@ const ServiceProviderOtherDetailsSchema = new Schema({
     type: String,
 
   },
+  spods_address: {
+    type: String,
+  },
   spods_dob: {
     type: Date,
 

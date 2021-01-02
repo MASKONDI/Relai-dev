@@ -5,6 +5,7 @@ const { service_provider_register, service_provider_signin, service_provider_per
 
 
 router.post("/service_provider_register", service_provider_register);
+
 router.post("/service_provider_personal_details", service_provider_personal_details);
 router.post("/service_provider_other_details", service_provider_other_details);
 router.post("/service_provider_indemnity_details", service_provider_Indemnity_details);

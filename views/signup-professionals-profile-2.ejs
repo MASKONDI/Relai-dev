@@ -20,7 +20,7 @@
 <body>
   <div class="wrapper dashboard">
     <nav class="navbar navbar-expand-lg d-block d-xs-none d-lg-none">
-      <a class="navbar-brand" href="index.html"><img src="images/logo-2.png"></a>
+      <a class="navbar-brand" href="/index"><img src="images/logo-2.png"></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
         <i class="fa fa-bars" aria-hidden="true"></i>
       </button>
@@ -41,32 +41,32 @@
       <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="signup-professionals-profile.html"><img class="act-img"
-                src="images/1-active.png"><img src="images/1.png">PERSONAL DETAILS </a>
+            <a class="nav-link" href="/signup-professionals-profile"><img class="act-img" src="images/1-active.png"><img
+                src="images/1.png">PERSONAL DETAILS </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="signup-professionals-profile-2.html"><img class="act-img"
+            <a class="nav-link" href="/signup-professionals-profile-2"><img class="act-img"
                 src="images/2-active.png"><img src="images/2.png"> OTHER DETAILS</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="signup-professionals-profile-3.html"><img class="act-img"
+            <a class="nav-link" href="/signup-professionals-profile-3"><img class="act-img"
                 src="images/3-active.png"><img src="images/3.png"> EDUCATION</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="signup-professionals-profile-4.html"><img class="act-img"
+            <a class="nav-link" href="/signup-professionals-profile-4"><img class="act-img"
                 src="images/4-active.png"><img src="images/4.png"> EMPLOYMENT HISTORY</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="signup-professionals-profile-5.html"><img class="act-img"
+            <a class="nav-link" href="/signup-professionals-profile-5"><img class="act-img"
                 src="images/5-active.png"><img src="images/5.png"> REFERENCES</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="signup-professionals-profile-6.html"><img class="act-img"
+            <a class="nav-link" href="/signup-professionals-profile-6"><img class="act-img"
                 src="images/6-active.png"><img src="images/6.png"> PROFESSIONAL INDEMNITY
               INSURANCE</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="signup-professionals-profile-7.html"><img class="act-img"
+            <a class="nav-link" href="/signup-professionals-profile-7"><img class="act-img"
                 src="images/7-active.png"><img src="images/7.png"> LANGUAGE</a>
           </li>
         </ul>
@@ -81,13 +81,13 @@
           <div class="col-sm-3 sidenav2 hidden-xs-down">
             <div class=" text-center">
               <div class="">
-                <a href="index.html"><img src="images/logo-2.png"></a>
+                <a href="/index"><img src="images/logo-2.png"></a>
               </div>
 
             </div>
             <ul class="dashboard-nav">
               <li class="completed">
-                <a href="signup-professionals-profile.html">
+                <a href="/signup-professionals-profile">
                   <img class="complete-img" src="images/checked.png">
                   <img class="act-img" src="images/1-active.png">
                   <img src="images/1.png">
@@ -95,29 +95,29 @@
                 </a>
               </li>
               <li class="active">
-                <a href="signup-professionals-profile-2.html"><img class="act-img" src="images/2-active.png"><img
+                <a href="/signup-professionals-profile-2"><img class="act-img" src="images/2-active.png"><img
                     src="images/2.png"> OTHER DETAILS</a>
               </li>
               <li>
-                <a href="signup-professionals-profile-3.html"><img class="act-img" src="images/3-active.png"><img
+                <a href="/signup-professionals-profile-3"><img class="act-img" src="images/3-active.png"><img
                     src="images/3.png"> EDUCATION</a>
               </li>
               <li>
-                <a href="signup-professionals-profile-4.html"><img class="act-img" src="images/4-active.png"><img
+                <a href="/signup-professionals-profile-4"><img class="act-img" src="images/4-active.png"><img
                     src="images/4.png"> EMPLOYMENT HISTORY</a>
               </li>
 
               <li>
-                <a href="signup-professionals-profile-5.html"><img class="act-img" src="images/5-active.png"><img
+                <a href="/signup-professionals-profile-5"><img class="act-img" src="images/5-active.png"><img
                     src="images/5.png"> REFERENCES</a>
               </li>
               <li>
-                <a href="signup-professionals-profile-6.html"><img class="act-img" src="images/6-active.png"><img
+                <a href="/signup-professionals-profile-6"><img class="act-img" src="images/6-active.png"><img
                     src="images/6.png"> PROFESSIONAL INDEMNITY
                   INSURANCE</a>
               </li>
               <li>
-                <a href="signup-professionals-profile-7.html"><img class="act-img" src="images/7-active.png"><img
+                <a href="/signup-professionals-profile-7"><img class="act-img" src="images/7-active.png"><img
                     src="images/7.png"> LANGUAGE</a>
               </li>
             </ul>
@@ -145,17 +145,17 @@
                   </div>
                 </div>
               </div>
-              <form action="#" class="form form-section">
+              <form action="/api/service_provider_other_details" method="post" class="form form-section">
                 <div class="row">
                   <div class="col-sm-12 col-lg-6">
                     <p>Do you need a work permit to be employed in the UK?</p>
                   </div>
                   <div class="col-sm-12 col-lg-2">
                     <label class="radio-inline">
-                      <input type="radio" name="optradio"> &nbsp;Yes&nbsp;&nbsp;
+                      <input type="radio" name="spods_option_work_permit_for_uk"> &nbsp;Yes&nbsp;&nbsp;
                     </label>
                     <label class="radio-inline">
-                      <input type="radio" name="optradio">&nbsp;No&nbsp;&nbsp;
+                      <input type="radio" name="spods_option_work_permit_for_uk">&nbsp;No&nbsp;&nbsp;
                     </label>
                   </div>
                   <div class="col-sm-12 col-lg-4">
@@ -166,10 +166,10 @@
                   </div>
                   <div class="col-sm-12 col-lg-2">
                     <label class="radio-inline">
-                      <input type="radio" name="optradio"> &nbsp;Yes&nbsp;&nbsp;
+                      <input type="radio" name="spods_option_criminal_convictions"> &nbsp;Yes&nbsp;&nbsp;
                     </label>
                     <label class="radio-inline">
-                      <input type="radio" name="optradio"> &nbsp;No&nbsp;&nbsp;
+                      <input type="radio" name="spods_option_criminal_convictions"> &nbsp;No&nbsp;&nbsp;
                     </label>
                   </div>
                   <div class="col-sm-12 col-lg-4">
@@ -184,10 +184,10 @@
                   </div>
                   <div class="col-sm-12 col-lg-2">
                     <label class="radio-inline">
-                      <input type="radio" name="optradio"> &nbsp;Yes&nbsp;&nbsp;
+                      <input type="radio" name="spods_option_uk_driving_licence"> &nbsp;Yes&nbsp;&nbsp;
                     </label>
                     <label class="radio-inline">
-                      <input type="radio" name="optradio"> &nbsp;No&nbsp;&nbsp;
+                      <input type="radio" name="spods_option_uk_driving_licence"> &nbsp;No&nbsp;&nbsp;
                     </label>
                   </div>
                   <div class="col-sm-12 col-lg-4">
@@ -195,24 +195,25 @@
                   </div>
                 </div>
                 <div class="row">
-                <div class="col-sm-12 col-lg-12">
-                  <div class="input-box-size">
-                    <input type="text" class="form-control text-field-size " id="" name="" placeholder="Please give details of any point/convictions
+                  <div class="col-sm-12 col-lg-12">
+                    <div class="input-box-size">
+                      <input type="text" class="form-control text-field-size " id=""
+                        name="spods_option_uk_driving_licence" placeholder="Please give details of any point/convictions
                   ">
+                    </div>
                   </div>
                 </div>
-              </div>
                 <div class="row">
                   <div class="col-sm-5 col-lg-6">
                     <div class="input-box-size-fix3">
                       <input type="text" class="form-control text-field-size " id="" placeholder="Professional Body"
-                        name="professionalbody">
+                        name="spods_professional_body">
                     </div>
                   </div>
                   <div class="col-sm-5 col-lg-5">
                     <div class="input-box-size-fix3">
                       <input type="date" class="form-control date-field-size " id="" placeholder="End date"
-                        name="endDate">
+                        name="spods_date_registered">
                     </div>
                   </div>
                   <div class="col-sm-2 col-lg-1">
@@ -226,7 +227,7 @@
                   <div class="col-sm-5 col-lg-6">
                     <div class="input-box-size-fix3">
                       <input type="text" class="form-control text-field-size " id=""
-                        placeholder="Professional Body Membership No." name="startDate">
+                        placeholder="Professional Body Membership No." name="spods_membership_number">
                     </div>
                   </div>
                   <div class="col-sm-5 col-lg-5">

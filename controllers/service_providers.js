@@ -18,8 +18,6 @@ const ServiceProviderReferenceSchema = require("../models/service_provider_refer
 const ServiceProviderRolesSchema = require("../models/service_provider_roles");
 const PlanSchema = require("../models/plan");
 
-
-
 // Load Input Validation
 const validateServiceProviderRegisterInput = require('../Validation/service_provider_signup');
 const validateServiceProviderSigninInput = require('../Validation/service_provider_signin');
@@ -29,14 +27,14 @@ const validateServiceProviderOtherDetailsInput = require("../models/service_prov
 
 
 
-
-
 exports.service_provider_register = (req, res) => {
   console.log("req.body is : ", req.body);
   const { errors, isValid } = validateServiceProviderRegisterInput(req.body);
   // Check Validation
   if (!isValid) {
-    return res.status(400).json(errors);
+    req.flash('err_msg', 'Something went wrong.');
+    res.redirect('/api/service_provider_register')
+
   }
 
   ServiceProviderSchema.findOne({ sps_email_id: req.body.sps_email_id }).then(serviceProviders => {
@@ -79,6 +77,7 @@ exports.service_provider_personal_details = (req, res) => {
     spods_fornames: req.body.spods_fornames,
     spods_preferred_title: req.body.spods_preferred_title,
     spods_former_surnames: req.body.spods_former_surnames,
+    spods_address: req.body.spods_address,
     spods_dob: req.body.spods_dob,
     spods_nationality: req.body.spods_nationality,
     spods_postcode: req.body.spods_postcode,
