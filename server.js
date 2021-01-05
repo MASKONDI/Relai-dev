@@ -12,6 +12,8 @@ var session = require('express-session');
 // import routes
 const customerRoutes = require("./routes/api/customers");
 const serviceProviderRoutes = require("./routes/api/service_provider");
+const renderRouters = require("./routes/renderRoutes");
+
 
 const app = express();
 
@@ -62,48 +64,7 @@ app.get('*', function (req, res, next) {
 app.use("/api", customerRoutes);
 app.use("/api", serviceProviderRoutes);
 
-//for rendering ejs files 
-app.get('/intro', (req, res) => {
-  res.render('intro');
-});
-app.get('/signup-service-provider', (req, res) => {
-  res.render('signup-service-provider');
-});
-app.get('/signup-professionals-profile', (req, res) => {
-  res.render('signup-professionals-profile');
-});
-app.get('/signup-professionals-profile-2', (req, res) => {
-  res.render('signup-professionals-profile-2');
-});
-app.get('/signup-professionals-profile-3', (req, res) => {
-  res.render('signup-professionals-profile-3');
-});
-app.get('/signup-professionals-profile-4', (req, res) => {
-  res.render('signup-professionals-profile-4');
-});
-app.get('/signup-professionals-profile-5', (req, res) => {
-  res.render('signup-professionals-profile-5');
-});
-app.get('/signup-professionals-profile-6', (req, res) => {
-  res.render('signup-professionals-profile-6');
-});
-app.get('/signup-professionals-profile-7', (req, res) => {
-  res.render('signup-professionals-profile-7');
-});
-app.get('/portfolio', (req, res) => {
-  res.render('portfolio');
-});
-app.get('/signup', (req, res) => {
-  res.render('signup');
-});
-app.get('/signin', (req, res) => {
-  res.render('signin');
-});
-app.get('/dashboard', (req, res) => {
-  res.render('dashboard');
-});
-
-app.get('/index', (req, res) => res.render('index'));
+app.use("/", renderRouters);
 
 app.get('/', (req, res) => res.render('index'));
 

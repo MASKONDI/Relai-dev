@@ -35,7 +35,7 @@ module.exports = function validateCustomerRegisterInput(req) {
     errors.cus_phone_number = "PhoneNumber must be  Number";
   }
 
-  if (!Validator.isLength(req.cus_phone_number, { min: 10, max: 10 })) {
+  if (!Validator.isLength(req.cus_phone_number, { min: 10, max: 12 })) {
     errors.cus_phone_number = "PhoneNumber must be 10 Numeric characters";
   }
 

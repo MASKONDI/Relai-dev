@@ -124,7 +124,7 @@
                   </div>
                 </div>
               </div>
-              <form action="/api/service_provider_personal_details" class="form form-section" method="post">
+              <form action="/api/service_provider_personal_details" class="form form-section" method="post" id="form1">
 
 
 
@@ -132,12 +132,14 @@
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix">
                       <input type="text" class="form-control text-field-size " id="" placeholder="Surname"
-                        name="spods_surname">
+                        name="spods_surname" required data-rule-required="true" data-msg-required="Surname is required">
                     </div>
                   </div>
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix">
-                      <input type="text" class="form-control text-field-size " id="" placeholder="Forenames" name="">
+                      <input type="text" class="form-control text-field-size " id="" placeholder="Forenames"
+                        name="spods_fornames" required data-rule-required="true"
+                        data-msg-required="Forenames is required">
                     </div>
                   </div>
                 </div>
@@ -146,7 +148,8 @@
                 <div class="row">
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix">
-                      <select class="form-control " id="selectBox2" name="spods_preferred_title">
+                      <select class="form-control " id="selectBox2" name="spods_preferred_title"
+                        data-rule-required="true" data-msg-required="Preferred Title is required">
                         <option value="0">Preferred Title</option>
                         <option value="mr">Mr</option>
                         <option value="miss">Miss</option>
@@ -157,7 +160,7 @@
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix">
                       <input type="text" class="form-control text-field-size " id=""
-                        placeholder="Former Surnames(if different from above)" name="">
+                        placeholder="Former Surnames(if different from above)" name="spods_former_surnames">
                     </div>
                   </div>
                 </div>
@@ -166,7 +169,7 @@
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix">
                       <input type="date" class="form-control text-field-size " id="" placeholder="Date of Birth"
-                        name="spods_dob">
+                        name="spods_dob" data-rule-required="true" data-msg-required="Date of birth is required">
                     </div>
                   </div>
                   <div class="col-sm-12 col-lg-6">
@@ -264,6 +267,45 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+    integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+    crossorigin="anonymous"></script>
+
+
+  <script type="text/javascript">
+    $('#form1').validate({
+      onfocusout: function (element) {
+        this.element(element);
+      },
+      errorClass: 'error_validate',
+      errorElement: 'span',
+      highlight: function (element, errorClass) {
+        $(element).removeClass(errorClass);
+      },
+      submitHandler: function (form) {
+        $('#submit').attr('disabled', true);
+        form.submit();
+      }
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var flash_msg = $('.flash_msg').html();
+      if (flash_msg != "" && flash_msg != undefined) {
+        setTimeout(function () { $('.flash_msg').html(''); }, 4000);
+      }
+    });
+
+    $(document).ready(function () {
+      var succ_flash_msg = $('.succ_flash_msg').html();
+      if (succ_flash_msg != "" && succ_flash_msg != undefined) {
+        setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
+      }
+    });  
+  </script>
+
+
   </body>
 
   </html>

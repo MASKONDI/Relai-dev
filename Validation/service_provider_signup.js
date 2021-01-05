@@ -36,7 +36,7 @@ module.exports = function validateServiceProviderRegisterInput(req) {
     errors.sps_phone_number = "PhoneNumber must be  Number";
   }
 
-  if (!Validator.isLength(req.sps_phone_number, { min: 10, max: 10 })) {
+  if (!Validator.isLength(req.sps_phone_number, { min: 10, max: 12 })) {
     errors.sps_phone_number = "PhoneNumber must be 10 Numeric characters";
   }
 

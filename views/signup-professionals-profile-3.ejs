@@ -12,34 +12,38 @@
 
         <!-- Modal body -->
         <div class="modal-body">
+          <form class="form" action="/api/service_provider_education" method="post" id="form3">
 
-          <input type="text" class="form-control form-control-fix2" id="subject"
-            placeholder="School(ex: Oxford University)" name="spes_university_school_name">
+            <input type="text" class="form-control form-control-fix2" id="schoolName"
+              placeholder="School(ex: Oxford University)" name="spes_university_school_name" data-rule-required="true"
+              data-msg-required="University/School name is required!">
 
-          <input type="text" class="form-control form-control-fix2" id="subject" placeholder="Qualification obtained"
-            name="spes_qualification_obtained">
+            <input type="text" class="form-control form-control-fix2" id="QualificationObtained"
+              placeholder="Qualification obtained" name="spes_qualification_obtained" data-rule-required="true"
+              data-msg-required="Qualification name is required!">
 
-          <div class="row">
-            <div class="col-sm-12 col-lg-6">
-              <input type="date" class="form-control  form-control-fix2" id="subject" placeholder="from Date"
-                name="spes_from_date">
+            <div class="row">
+              <div class="col-sm-12 col-lg-6">
+                <input type="date" class="form-control  form-control-fix2" id="FromDate" placeholder="from Date"
+                  name="spes_from_date" data-rule-required="true" data-msg-required="From Date is required!">
+              </div>
+              <div class="col-sm-12 col-lg-6">
+                <input type="date" class="form-control  form-control-fix2" id="toDate" placeholder="toDate"
+                  name="spes_to_date" data-rule-required="true" data-msg-required="To Date is required!">
+              </div>
             </div>
-            <div class="col-sm-12 col-lg-6">
-              <input type="date" class="form-control  form-control-fix2" id="subject" placeholder="toDate"
-                name="spes_to_date">
-            </div>
-          </div>
-          <div class="model-btn-fix">
-          </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-cancel" data-dismiss="modal">Save</button>
-
+          <button name="submit" type="submit" class="btn btn-cancel">Save</button>
         </div>
+
+        </form>
       </div>
     </div>
   </div>
+
 
 
 
@@ -248,6 +252,54 @@
       });
     });
   </script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+    integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+    crossorigin="anonymous"></script>
+
+
+  <script type="text/javascript">
+    $('#form3').validate({
+      onfocusout: function (element) {
+        this.element(element);
+      },
+      errorClass: 'error_validate',
+      errorElement: 'span',
+      highlight: function (element, errorClass) {
+        $(element).removeClass(errorClass);
+      },
+      submitHandler: function (form) {
+        $('#submit').attr('disabled', true);
+        form.submit();
+      }
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var flash_msg = $('.flash_msg').html();
+      if (flash_msg != "" && flash_msg != undefined) {
+        setTimeout(function () { $('.flash_msg').html(''); }, 4000);
+      }
+    });
+
+    $(document).ready(function () {
+      var succ_flash_msg = $('.succ_flash_msg').html();
+      if (succ_flash_msg != "" && succ_flash_msg != undefined) {
+        setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
+      }
+    });  
+  </script>
+
+
+
+
+
+
+
+
+
+
   </body>
 
   </html>

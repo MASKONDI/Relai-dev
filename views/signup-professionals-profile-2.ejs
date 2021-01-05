@@ -126,14 +126,15 @@
                   </div>
                 </div>
               </div>
-              <form action="/api/service_provider_other_details" method="post" class="form form-section">
+              <form action="/api/service_provider_other_details" method="post" class="form form-section" id="form2">
                 <div class="row">
                   <div class="col-sm-12 col-lg-6">
                     <p>Do you need a work permit to be employed in the UK?</p>
                   </div>
                   <div class="col-sm-12 col-lg-2">
                     <label class="radio-inline">
-                      <input type="radio" name="spods_option_work_permit_for_uk" value="yes"> &nbsp;Yes&nbsp;&nbsp;
+                      <input type="radio" name="spods_option_work_permit_for_uk" value="yes" required>
+                      &nbsp;Yes&nbsp;&nbsp;
                     </label>
                     <label class="radio-inline">
                       <input type="radio" name="spods_option_work_permit_for_uk" value="no">&nbsp;No&nbsp;&nbsp;
@@ -147,7 +148,8 @@
                   </div>
                   <div class="col-sm-12 col-lg-2">
                     <label class="radio-inline">
-                      <input type="radio" name="spods_option_criminal_convictions" value="yes"> &nbsp;Yes&nbsp;&nbsp;
+                      <input type="radio" name="spods_option_criminal_convictions" value="yes" required>
+                      &nbsp;Yes&nbsp;&nbsp;
                     </label>
                     <label class="radio-inline">
                       <input type="radio" name="spods_option_criminal_convictions" value="no"> &nbsp;No&nbsp;&nbsp;
@@ -165,7 +167,8 @@
                   </div>
                   <div class="col-sm-12 col-lg-2">
                     <label class="radio-inline">
-                      <input type="radio" name="spods_option_uk_driving_licence" value="yes"> &nbsp;Yes&nbsp;&nbsp;
+                      <input type="radio" name="spods_option_uk_driving_licence" value="yes" required>
+                      &nbsp;Yes&nbsp;&nbsp;
                     </label>
                     <label class="radio-inline">
                       <input type="radio" name="spods_option_uk_driving_licence" value="no"> &nbsp;No&nbsp;&nbsp;
@@ -265,6 +268,49 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+    integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+    crossorigin="anonymous"></script>
+
+
+  <script type="text/javascript">
+    $('#form2').validate({
+      onfocusout: function (element) {
+        this.element(element);
+      },
+      errorClass: 'error_validate',
+      errorElement: 'span',
+      highlight: function (element, errorClass) {
+        $(element).removeClass(errorClass);
+      },
+      submitHandler: function (form) {
+        $('#submit').attr('disabled', true);
+        form.submit();
+      }
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var flash_msg = $('.flash_msg').html();
+      if (flash_msg != "" && flash_msg != undefined) {
+        setTimeout(function () { $('.flash_msg').html(''); }, 4000);
+      }
+    });
+
+    $(document).ready(function () {
+      var succ_flash_msg = $('.succ_flash_msg').html();
+      if (succ_flash_msg != "" && succ_flash_msg != undefined) {
+        setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
+      }
+    });  
+  </script> -->
+
+
+
+
+
+
   </body>
 
   </html>
