@@ -30,11 +30,12 @@ const validateServiceProviderOtherDetailsInput = require("../models/service_prov
 exports.service_provider_register = (req, res) => {
   console.log("req.body is : ", req.body);
   const { errors, isValid } = validateServiceProviderRegisterInput(req.body);
+
   // Check Validation
   if (!isValid) {
-    req.flash('err_msg', 'Something went wrong.');
-    res.redirect('/api/service_provider_register')
-
+    // req.flash('err_msg', 'Something went wrong.');
+    // res.redirect('/api/service_provider_register')
+    return res.status(400).json(errors);
   }
 
   ServiceProviderSchema.findOne({ sps_email_id: req.body.sps_email_id }).then(serviceProviders => {

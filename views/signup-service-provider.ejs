@@ -1,24 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include('head')-%>
 
-<head>
-  <title>Relai</title>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <!-- Style CSS -->
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <!-- fonts CSS -->
-  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <!-- Animate CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
-</head>
-
-<body>
   <section style="overflow: hidden;">
     <div class="container-fluid p-0">
       <div class="row">
@@ -36,18 +17,20 @@
             </div>
             <p>START FOR FREE</p>
             <h1>Let’s get you started</h1>
-            <form class="form" method="POST" action="/api/service_provider_register">
+            <form id="registerform" class="form" method="post" action="/api/service_provider_register">
               <div class="row">
                 <div class="col-md-6">
-                  <div class="form-group  ">
+                  <div class="form-group">
                     <input type="text" class="form-control form-control-size " id="fullName" placeholder="FullName"
-                      name="sps_fullname">
+                      name="sps_fullname" required data-rule-required="true" data-rule-minlength="2"
+                      data-msg-required="Fullname is required">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group  ">
                     <input type="text" class="form-control form-control-size" id="phoneNumber"
-                      placeholder="Phone Number" name="sps_phone_number">
+                      placeholder="Phone Number" name="sps_phone_number" required data-rule-required="true"
+                      data-rule-minlength="10" data-msg-required="PhoneNumber is required">
 
                   </div>
                 </div>
@@ -56,13 +39,14 @@
                 <div class="col-md-6">
                   <div class="form-group  ">
                     <input type="email" class="form-control form-control-size" id="email" placeholder="Email ID"
-                      name="sps_email_id">
+                      name="sps_email_id" required data-rule-required="true" data-rule-email="true"
+                      data-msg-required="Email Id is required." data-msg-email="Please Enter Valid Email-ID.">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group  ">
                     <input type="text" class="form-control form-control-size" id="address" placeholder="Address"
-                      name="sps_address">
+                      name="sps_address" required data-rule-required="true" data-msg-required="Address is required">
                   </div>
 
                 </div>
@@ -71,13 +55,13 @@
                 <div class="col-md-6">
                   <div class="form-group  ">
                     <input type="text" class="form-control form-control-size" id="city" placeholder="City"
-                      name="sps_city">
+                      name="sps_city" required data-rule-required="true" data-msg-required="City is required">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group ">
                     <input type="text" class="form-control form-control-size" id="country" placeholder="Country"
-                      name="sps_country">
+                      name="sps_country_id" required data-rule-required="true" data-msg-required="Country is required">
 
                   </div>
                 </div>
@@ -86,13 +70,15 @@
                 <div class="col-md-6">
                   <div class="form-group  ">
                     <input type="password" class="form-control form-control-size" id="password" placeholder="Password"
-                      name="sps_password">
+                      name="sps_password" required data-rule-required="true" data-rule-minlength="6"
+                      data-msg-required="Password is required">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group ">
                     <input type="password" class="form-control form-control-size" id="password"
-                      placeholder="Confirm password" name="confirmPassword">
+                      placeholder="Confirm password" name="confirmPassword" required data-rule-required="true"
+                      data-rule-minlength="6" data-msg-required="Confirm Password is required">
                   </div>
                 </div>
               </div>
@@ -164,6 +150,9 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+    integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+    crossorigin="anonymous"></script>
   <script>
     $(document).ready(function () {
       $(".sidenav ul li").click(function () {
@@ -178,6 +167,38 @@
       });
     });
   </script>
-</body>
+  <script type="text/javascript">
+    $('#registerform').validate({
+      onfocusout: function (element) {
+        this.element(element);
+      },
+      errorClass: 'error_validate',
+      errorElement: 'span',
+      highlight: function (element, errorClass) {
+        $(element).removeClass(errorClass);
+      },
+      submitHandler: function (form) {
+        $('#submit').attr('disabled', true);
+        form.submit();
+      }
+    });
+  </script>
+  <!-- <script type="text/javascript">
+    $(document).ready(function () {
+      var flash_msg = $('.flash_msg').html();
+      if (flash_msg != "" && flash_msg != undefined) {
+        setTimeout(function () { $('.flash_msg').html(''); }, 4000);
+      }
+    });
 
-</html>
+    $(document).ready(function () {
+      var succ_flash_msg = $('.succ_flash_msg').html();
+      if (succ_flash_msg != "" && succ_flash_msg != undefined) {
+        setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
+      }
+    });  
+  </script> -->
+
+  </body>
+
+  </html>

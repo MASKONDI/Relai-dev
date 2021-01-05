@@ -3,6 +3,11 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
+const ejs = require('ejs');
+
+var flash = require('express-flash')
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
 
 // import routes
 const customerRoutes = require("./routes/api/customers");
@@ -24,27 +29,31 @@ mongoose
 
 
 
-
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-
+// routes middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); // parse form data client
-app.use(express.static(path.join(__dirname, 'public'))); // configure express to use public folder
 
-
-var flash = require('express-flash')
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
-
-app.use(cookieParser('keyboard cat'))
+app.use(flash());
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
   //cookie: { maxAge: 60000 }
 }));
-app.use(flash())
+
+
+
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
+app.use(express.static(path.join(__dirname, 'public'))); // configure express to use public folder
+
+
+
+app.use(cookieParser('keyboard cat'))
+
+
 app.get('*', function (req, res, next) {
   res.locals.cart = req.session.cart;
   res.locals.user = req.user || null;
@@ -52,10 +61,8 @@ app.get('*', function (req, res, next) {
 });
 
 
-// routes middleware
 app.use("/api", customerRoutes);
 app.use("/api", serviceProviderRoutes);
-
 
 //for rendering ejs files 
 app.get('/intro', (req, res) => {
@@ -64,6 +71,40 @@ app.get('/intro', (req, res) => {
 app.get('/signup-service-provider', (req, res) => {
   res.render('signup-service-provider');
 });
+app.get('/signup-professionals-profile', (req, res) => {
+  res.render('signup-professionals-profile');
+});
+app.get('/signup-professionals-profile-2', (req, res) => {
+  res.render('signup-professionals-profile-2');
+});
+app.get('/signup-professionals-profile-3', (req, res) => {
+  res.render('signup-professionals-profile-3');
+});
+app.get('/signup-professionals-profile-4', (req, res) => {
+  res.render('signup-professionals-profile-4');
+});
+app.get('/signup-professionals-profile-5', (req, res) => {
+  res.render('signup-professionals-profile-5');
+});
+app.get('/signup-professionals-profile-6', (req, res) => {
+  res.render('signup-professionals-profile-6');
+});
+app.get('/signup-professionals-profile-7', (req, res) => {
+  res.render('signup-professionals-profile-7');
+});
+app.get('/portfolio', (req, res) => {
+  res.render('portfolio');
+});
+app.get('/signup', (req, res) => {
+  res.render('signup');
+});
+app.get('/signin', (req, res) => {
+  res.render('signin');
+});
+app.get('/dashboard', (req, res) => {
+  res.render('dashboard');
+});
+
 app.get('/index', (req, res) => res.render('index'));
 
 

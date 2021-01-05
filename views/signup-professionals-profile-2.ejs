@@ -1,23 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <title>Relai</title>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <!-- Style CSS -->
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <!-- fonts CSS -->
-  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <!-- Animate CSS -->
-</head>
-
-<body>
+<%- include('head')-%>
   <div class="wrapper dashboard">
     <nav class="navbar navbar-expand-lg d-block d-xs-none d-lg-none">
       <a class="navbar-brand" href="/index"><img src="images/logo-2.png"></a>
@@ -152,10 +133,10 @@
                   </div>
                   <div class="col-sm-12 col-lg-2">
                     <label class="radio-inline">
-                      <input type="radio" name="spods_option_work_permit_for_uk"> &nbsp;Yes&nbsp;&nbsp;
+                      <input type="radio" name="spods_option_work_permit_for_uk" value="yes"> &nbsp;Yes&nbsp;&nbsp;
                     </label>
                     <label class="radio-inline">
-                      <input type="radio" name="spods_option_work_permit_for_uk">&nbsp;No&nbsp;&nbsp;
+                      <input type="radio" name="spods_option_work_permit_for_uk" value="no">&nbsp;No&nbsp;&nbsp;
                     </label>
                   </div>
                   <div class="col-sm-12 col-lg-4">
@@ -166,10 +147,10 @@
                   </div>
                   <div class="col-sm-12 col-lg-2">
                     <label class="radio-inline">
-                      <input type="radio" name="spods_option_criminal_convictions"> &nbsp;Yes&nbsp;&nbsp;
+                      <input type="radio" name="spods_option_criminal_convictions" value="yes"> &nbsp;Yes&nbsp;&nbsp;
                     </label>
                     <label class="radio-inline">
-                      <input type="radio" name="spods_option_criminal_convictions"> &nbsp;No&nbsp;&nbsp;
+                      <input type="radio" name="spods_option_criminal_convictions" value="no"> &nbsp;No&nbsp;&nbsp;
                     </label>
                   </div>
                   <div class="col-sm-12 col-lg-4">
@@ -184,10 +165,10 @@
                   </div>
                   <div class="col-sm-12 col-lg-2">
                     <label class="radio-inline">
-                      <input type="radio" name="spods_option_uk_driving_licence"> &nbsp;Yes&nbsp;&nbsp;
+                      <input type="radio" name="spods_option_uk_driving_licence" value="yes"> &nbsp;Yes&nbsp;&nbsp;
                     </label>
                     <label class="radio-inline">
-                      <input type="radio" name="spods_option_uk_driving_licence"> &nbsp;No&nbsp;&nbsp;
+                      <input type="radio" name="spods_option_uk_driving_licence" value="no"> &nbsp;No&nbsp;&nbsp;
                     </label>
                   </div>
                   <div class="col-sm-12 col-lg-4">
@@ -197,8 +178,8 @@
                 <div class="row">
                   <div class="col-sm-12 col-lg-12">
                     <div class="input-box-size">
-                      <input type="text" class="form-control text-field-size " id=""
-                        name="spods_option_uk_driving_licence" placeholder="Please give details of any point/convictions
+                      <input type="text" class="form-control text-field-size " id="" name="spods_details_of_convictions"
+                        placeholder="Please give details of any point/convictions
                   ">
                     </div>
                   </div>
@@ -233,7 +214,7 @@
                   <div class="col-sm-5 col-lg-5">
                     <div class="input-box-size-fix3">
                       <input type="date" class="form-control date-field-size " id="" placeholder="endDate"
-                        name="endDate">
+                        name="spods_membership_no_date_registered">
                     </div>
                   </div>
                   <div class="col-sm-2 col-lg-1">
@@ -246,7 +227,7 @@
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix3">
                       <input type="text" class="form-control text-field-size" id=""
-                        placeholder="Other relevant Qualifications" name="">
+                        placeholder="Other relevant Qualifications" name="spods_other_relevant_qualification">
                     </div>
                   </div>
 
@@ -255,15 +236,17 @@
                 <div class="row">
                   <div class="col-6 col-sm-6 col-lg-6">
                     <div class="prev-btn float-left">
-                      <a href="signup-professionals-profile.html" class="btn previous-btn" style="width: 164px; ">
+                      <a href="/signup-professionals-profile" class="btn previous-btn" style="width: 164px; ">
                         PREVIOUS</a>
                     </div>
                   </div>
 
                   <div class="col-6 col-sm-6 col-lg-6">
                     <div class="prev-btn float-right">
-                      <a href="signup-professionals-profile-3.html" class="btn btn-next" style="width: 164px; ">
-                        NEXT</a>
+                      <!-- <a href="signup-professionals-profile-3" class="btn btn-next" style="width: 164px; ">
+                        NEXT</a> -->
+                      <button type="submit" name="submit" class="btn btn-next" style="width: 164px; ">
+                        NEXT</button>
                     </div>
               </form>
             </div>
@@ -282,6 +265,6 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
-</body>
+  </body>
 
-</html>
+  </html>

@@ -3,6 +3,7 @@ const isEmpty = require('./is-empty');
 
 module.exports = function validateServiceProviderRegisterInput(req) {
   let errors = {};
+  console.log("req.body is:", req);
 
   req.sps_fullname = !isEmpty(req.sps_fullname) ? req.sps_fullname : '';
   req.sps_email_id = !isEmpty(req.sps_email_id) ? req.sps_email_id : '';
