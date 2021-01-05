@@ -22,7 +22,7 @@ router.post("/cust_register", (req, res) => {
   const { errors, isValid } = validateCustomerRegisterInput(req.body);
   // Check Validation
   if (!isValid) {
-    //req.flash
+    req.flash('message', 'please enter a valid email-id');
     console.log("server validation error is:", errors);
     return res.redirect('/signup');
   }

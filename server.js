@@ -49,8 +49,6 @@ app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, 'public'))); // configure express to use public folder
 
-
-
 app.use(cookieParser('keyboard cat'))
 
 
@@ -107,6 +105,7 @@ app.get('/dashboard', (req, res) => {
 
 app.get('/index', (req, res) => res.render('index'));
 
+app.get('/', (req, res) => res.render('index'));
 
 
 
