@@ -67,8 +67,6 @@ router.post("/cust_register", (req, res) => {
 });
 
 
-
-
 router.post("/cust_signin", (req, res) => {
   const cus_email_id = req.body.cus_email_id;
   const cus_password = req.body.cus_password;
