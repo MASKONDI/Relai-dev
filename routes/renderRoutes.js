@@ -105,13 +105,19 @@ app.get('/signup-professionals-profile-2', (req, res) => {
   res.render('signup-professionals-profile-2', { err_msg, success_msg });
 });
 app.get('/signup-professionals-profile-3', (req, res) => {
-  res.render('signup-professionals-profile-3');
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signup-professionals-profile-3', { err_msg, success_msg });
 });
 app.get('/signup-professionals-profile-4', (req, res) => {
-  res.render('signup-professionals-profile-4');
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signup-professionals-profile-4', { err_msg, success_msg });
 });
 app.get('/signup-professionals-profile-5', (req, res) => {
-  res.render('signup-professionals-profile-5');
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signup-professionals-profile-5', { err_msg, success_msg });
 });
 app.get('/signup-professionals-profile-6', (req, res) => {
   err_msg = req.flash('err_msg');
@@ -124,8 +130,6 @@ app.get('/signup-professionals-profile-7', (req, res) => {
 app.get('/portfolio', (req, res) => {
   res.render('portfolio');
 });
-
-
 
 
 

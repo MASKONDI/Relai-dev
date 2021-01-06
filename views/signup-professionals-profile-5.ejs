@@ -134,109 +134,118 @@
               </div>
               <form action="/api/service_provider_reference" method="post" class="form form-section">
 
+                <% if(typeof err_msg!='undefined' ){ %>
+                  <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
+                    <%= err_msg %>
+                  </span>
+                  <% }%>
+                    <% if(typeof success_msg!='undefined' ){ %>
+                      <span class="succ_flash_msg" style="color: green;">
+                        <%= success_msg %>
+                      </span>
+                      <% }%>
+
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix3">
+                              <input type="text" class="form-control text-field-size " id="" placeholder="Full name"
+                                name="rs_reference_fullname">
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix3">
+                              <input type="text" class="form-control text-field-size " id="" placeholder="Job Title"
+                                name="rs_reference_job_title">
+                            </div>
+                          </div>
+                        </div>
 
 
-                <div class="row">
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix3">
-                      <input type="text" class="form-control text-field-size " id="" placeholder="Full name"
-                        name="rs_reference_fullname">
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix3">
-                      <input type="text" class="form-control text-field-size " id="" placeholder="Job Title"
-                        name="rs_reference_job_title">
-                    </div>
-                  </div>
-                </div>
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix3">
+                              <input type="text" class="form-control text-field-size " id="" placeholder="Organisation"
+                                name="rs_reference_organisation">
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix3">
+                              <input type="text" class="form-control text-field-size " id="" placeholder="Post Code"
+                                name="rs_reference_postal_code">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-12">
+                            <div class="input-box-size">
+                              <input type="text" class="form-control text-field" id="" placeholder="Address"
+                                name="rs_reference_address">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix3">
+                              <input type="text" class="form-control text-field-size " id="" placeholder="Telephone No."
+                                name="rs_reference_telephonenumber">
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix3">
+                              <input type="email" class="form-control text-field-size " id="" placeholder="Email ID"
+                                name="rs_reference_emailid">
+                            </div>
+                          </div>
+                        </div>
 
 
-                <div class="row">
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix3">
-                      <input type="text" class="form-control text-field-size " id="" placeholder="Organisation"
-                        name="rs_reference_organisation">
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix3">
-                      <input type="text" class="form-control text-field-size " id="" placeholder="Post Code"
-                        name="rs_reference_postal_code">
-                    </div>
-                  </div>
-                </div>
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-4">
+                            <div class="profile-notes">
+                              <p>May we obtain this reference now?
+                              </p>
+                            </div>
+                          </div>
 
-                <div class="row">
-                  <div class="col-sm-12 col-lg-12">
-                    <div class="input-box-size">
-                      <input type="text" class="form-control text-field" id="" placeholder="Address"
-                        name="rs_reference_address">
-                    </div>
-                  </div>
-                </div>
+                          <div class="col-sm-12 col-lg-2">
+                            <div class="profile-radio">
+                              <label class="radio-inline">
+                                <input type="radio" name="rs_option_obtain_reference" value="yes"> &nbsp;Yes&nbsp;&nbsp;
+                              </label>
+                              <label class="radio-inline">
+                                <input type="radio" name="rs_option_obtain_reference" value="no"> &nbsp;No&nbsp;&nbsp;
+                              </label>
+                            </div>
+                          </div>
 
-                <div class="row">
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix3">
-                      <input type="text" class="form-control text-field-size " id="" placeholder="Telephone No."
-                        name="rs_reference_telephonenumber">
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix3">
-                      <input type="email" class="form-control text-field-size " id="" placeholder="Email ID"
-                        name="rs_reference_emailid">
-                    </div>
-                  </div>
-                </div>
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix3">
+                              <input type="text" class="form-control text-field-size " id=""
+                                placeholder="Relationship(One must be work related)" name="rs_reference_relationship">
+                            </div>
+                          </div>
+                        </div>
 
 
-                <div class="row">
-                  <div class="col-sm-12 col-lg-4">
-                    <div class="profile-notes">
-                      <p>May we obtain this reference now?
-                      </p>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-12 col-lg-2">
-                    <div class="profile-radio">
-                      <label class="radio-inline">
-                        <input type="radio" name="rs_option_obtain_reference" value="yes"> &nbsp;Yes&nbsp;&nbsp;
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" name="rs_option_obtain_reference" value="no"> &nbsp;No&nbsp;&nbsp;
-                      </label>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix3">
-                      <input type="text" class="form-control text-field-size " id=""
-                        placeholder="Relationship(One must be work related)" name="rs_reference_relationship">
-                    </div>
-                  </div>
-                </div>
+                        <div class="row">
+                          <div class="col-6 col-sm-6 col-lg-6">
+                            <div class="prev-btn float-left">
+                              <a href="/signup-professionals-profile-4" class="btn previous-btn" style="width: 164px; ">
+                                PREVIOUS</a>
+                            </div>
+                          </div>
 
 
-                <div class="row">
-                  <div class="col-6 col-sm-6 col-lg-6">
-                    <div class="prev-btn float-left">
-                      <a href="/signup-professionals-profile-4" class="btn previous-btn" style="width: 164px; ">
-                        PREVIOUS</a>
-                    </div>
-                  </div>
-
-
-                  <div class="col-6 col-sm-6 col-lg-6">
-                    <div class="prev-btn float-right">
-                      <!-- <a href="/signup-professionals-profile-6" class="btn btn-next" style="width: 164px;">
+                          <div class="col-6 col-sm-6 col-lg-6">
+                            <div class="prev-btn float-right">
+                              <!-- <a href="/signup-professionals-profile-6" class="btn btn-next" style="width: 164px;">
                         NEXT</a> -->
 
-                      <button type="submit" class="btn btn-next" style="width: 164px;">
-                        NEXT</button>
-                    </div>
+                              <button type="submit" class="btn btn-next" style="width: 164px;">
+                                NEXT</button>
+                            </div>
               </form>
             </div>
           </div>

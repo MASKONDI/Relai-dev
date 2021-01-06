@@ -127,66 +127,75 @@
                 </div>
               </div>
               <form action="/api/service_provider_language" method="post" class="form form-section">
+                <% if(typeof err_msg!='undefined' ){ %>
+                  <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
+                    <%= err_msg %>
+                  </span>
+                  <% }%>
+                    <% if(typeof success_msg!='undefined' ){ %>
+                      <span class="succ_flash_msg" style="color: green;">
+                        <%= success_msg %>
+                      </span>
+                      <% }%>
+
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-5">
+                            <div class="input-box-size-fix3">
+                              <select class="form-control " class="text-field-size" id="selectBox" name="spls_language">
+                                <option value="0">Select Language</option>
+                                <option value="english">English</option>
+                                <option value="german">German</option>
+                                <option value="french">French</option>
+                                <option value="spanish">Spanish</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-lg-5">
+                            <div class="input-box-size-fix3">
+
+                              <select class="form-control " class="text-field-size" id="selectBox"
+                                name="spls_language_proficiency_level">
+                                <option value="0">Select Language Proficiency Level</option>
+                                <option value="level1">Level 1 - Elementary Proficiency</option>
+                                <option value="level2">Level 2 - Limited Working Proficiency
+                                </option>
+                                <option value="level3">Level 3 - Professional Working Proficiency
+                                </option>
+                                <option value="level4">Level 4 - Full Professional Proficiency
+                                </option>
+                                <option value="level5">Level 5 - Native / Bilingual Proficiency
+                                </option>
+                              </select>
+
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-lg-1">
+                            <div class="add-btn">
+                              <a href="#" class="btn signup-professional7-add-btn"><i class="fa fa-plus"></i></a>
+                            </div>
+                          </div>
+                        </div>
 
 
-                <div class="row">
-                  <div class="col-sm-12 col-lg-5">
-                    <div class="input-box-size-fix3">
-                      <select class="form-control " class="text-field-size" id="selectBox" name="spls_language">
-                        <option value="0">Select Language</option>
-                        <option value="english">English</option>
-                        <option value="german">German</option>
-                        <option value="french">French</option>
-                        <option value="spanish">Spanish</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-lg-5">
-                    <div class="input-box-size-fix3">
-
-                      <select class="form-control " class="text-field-size" id="selectBox"
-                        name="spls_language_proficiency_level">
-                        <option value="0">Select Language Proficiency Level</option>
-                        <option value="level1">Level 1 - Elementary Proficiency</option>
-                        <option value="level2">Level 2 - Limited Working Proficiency
-                        </option>
-                        <option value="level3">Level 3 - Professional Working Proficiency
-                        </option>
-                        <option value="level4">Level 4 - Full Professional Proficiency
-                        </option>
-                        <option value="level5">Level 5 - Native / Bilingual Proficiency
-                        </option>
-                      </select>
-
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-lg-1">
-                    <div class="add-btn">
-                      <a href="#" class="btn signup-professional7-add-btn"><i class="fa fa-plus"></i></a>
-                    </div>
-                  </div>
-                </div>
+                        <div class="row">
+                          <div class="col-6 col-sm-6 col-lg-6">
+                            <div class="prev-btn-fix2 float-left">
+                              <a href="/signup-professionals-profile-6" class="btn previous-btn" style="width: 164px; ">
+                                PREVIOUS</a>
+                            </div>
+                          </div>
 
 
-                <div class="row">
-                  <div class="col-6 col-sm-6 col-lg-6">
-                    <div class="prev-btn-fix2 float-left">
-                      <a href="/signup-professionals-profile-6" class="btn previous-btn" style="width: 164px; ">
-                        PREVIOUS</a>
-                    </div>
-                  </div>
-
-
-                  <div class="col-6 col-sm-6 col-lg-6">
-                    <div class="prev-btn-fix2 float-right">
-                      <!-- <a href="portfolio" class="btn btn-next" style="width: 164px;">
+                          <div class="col-6 col-sm-6 col-lg-6">
+                            <div class="prev-btn-fix2 float-right">
+                              <!-- <a href="portfolio" class="btn btn-next" style="width: 164px;">
                         NEXT</a> -->
-                      <button type="submit" name="submit" class="btn btn-next" style="width: 164px;">
-                        NEXT</button>
-                    </div>
-                  </div>
+                              <button type="submit" name="submit" class="btn btn-next" style="width: 164px;">
+                                NEXT</button>
+                            </div>
+                          </div>
 
-                </div>
+                        </div>
               </form>
             </div>
           </div>

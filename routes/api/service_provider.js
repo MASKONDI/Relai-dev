@@ -89,7 +89,7 @@ router.post("/service_provider_register", (req, res) => {
             .then(serviceProviders => res.redirect("/signup-professionals-profile"))
             .catch(err => {
               console.log(err)
-              req.flash('err_msg', 'You have entered wrong email or password try again.');
+              req.flash('err_msg', 'You have entered wrong email or password please try again.');
               res.redirect('/signup-service-provider');
             });
         });
@@ -123,7 +123,7 @@ router.post("/service_provider_personal_details", (req, res) => {
     .then(serviceProviders => res.redirect("/signup-professionals-profile-2"))
     .catch(err => {
       console.log(err)
-      // req.flash('err_msg', 'You have entered wrong email or password try again.');
+      req.flash('err_msg', 'Something went wrong please try after some time!');
       res.redirect('/signup-professionals-profile');
     });
 });
@@ -182,7 +182,7 @@ router.post("/service_provider_education", (req, res) => {
     .then(serviceProviders => res.redirect("/signup-professionals-profile-4"))
     .catch(err => {
       console.log(err)
-      // req.flash('err_msg', 'You have entered wrong email or password try again.');
+      req.flash('err_msg', 'Something went wrong please try after some time');
       res.redirect('/signup-professionals-profile-3');
     });
 });
@@ -209,7 +209,7 @@ router.post("/service_provider_employment_history", (req, res) => {
     .then(serviceProviders => res.redirect("/signup-professionals-profile-5"))
     .catch(err => {
       console.log(err)
-      // req.flash('err_msg', 'You have entered wrong email or password try again.');
+      req.flash('err_msg', 'Something went wrong please try after some time');
       res.redirect('/signup-professionals-profile-4');
     });
 });
@@ -222,7 +222,7 @@ router.post("/service_provider_reference", (req, res) => {
   console.log("req.body is : ", req.body);
 
   const serviceProviderReference = new ServiceProviderReferenceSchema({
-    //rs_service_provider_id /*Need to store same sp_id while registering */
+    //rs_service_provider_id //TODO:*Need to store same sp_id while registering */
     rs_reference_type: req.body.rs_reference_type,
     rs_reference_job_title: req.body.rs_reference_job_title,
     rs_reference_organisation: req.body.rs_reference_organisation,

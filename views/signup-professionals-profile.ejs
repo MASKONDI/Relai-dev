@@ -126,131 +126,144 @@
               </div>
               <form action="/api/service_provider_personal_details" class="form form-section" method="post" id="form1">
 
+                <% if(typeof err_msg!='undefined' ){ %>
+                  <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
+                    <%= err_msg %>
+                  </span>
+                  <% }%>
+                    <% if(typeof success_msg!='undefined' ){ %>
+                      <span class="succ_flash_msg" style="color: green;">
+                        <%= success_msg %>
+                      </span>
+                      <% }%>
+
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix">
+                              <input type="text" class="form-control text-field-size " id="" placeholder="Surname"
+                                name="spods_surname" required data-rule-required="true"
+                                data-msg-required="Surname is required">
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix">
+                              <input type="text" class="form-control text-field-size " id="" placeholder="Forenames"
+                                name="spods_fornames" required data-rule-required="true"
+                                data-msg-required="Forenames is required">
+                            </div>
+                          </div>
+                        </div>
 
 
-                <div class="row">
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix">
-                      <input type="text" class="form-control text-field-size " id="" placeholder="Surname"
-                        name="spods_surname" required data-rule-required="true" data-msg-required="Surname is required">
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix">
-                      <input type="text" class="form-control text-field-size " id="" placeholder="Forenames"
-                        name="spods_fornames" required data-rule-required="true"
-                        data-msg-required="Forenames is required">
-                    </div>
-                  </div>
-                </div>
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix">
+                              <select class="form-control required" id="selectBox2" name="spods_preferred_title"
+                                data-rule-required="true" data-msg-required="Preferred Title is required">
+                                <option value="">Preferred Title</option>
+                                <option value="mr">Mr</option>
+                                <option value="miss">Miss</option>
+                                <option value="mrs">Mrs</option>
+                              </select>
+                            </div>
+
+                          </div>
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix">
+                              <input type="text" class="form-control text-field-size " id=""
+                                placeholder="Former Surnames(if different from above)" name="spods_former_surnames">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix">
+                              <input type="date" class="form-control text-field-size " id="" placeholder="Date of Birth"
+                                name="spods_dob" data-rule-required="true"
+                                data-msg-required="Date of birth is required">
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix">
+                              <input type="text" class="form-control text-field-size " id="" placeholder="Nationality"
+                                name="spods_nationality">
+                            </div>
+                          </div>
+                        </div>
 
 
-                <div class="row">
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix">
-                      <select class="form-control required" id="selectBox2" name="spods_preferred_title"
-                        data-rule-required="true" data-msg-required="Preferred Title is required">
-                        <option value="">Preferred Title</option>
-                        <option value="mr">Mr</option>
-                        <option value="miss">Miss</option>
-                        <option value="mrs">Mrs</option>
-                      </select>
-                    </div>
-
-                  </div>
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix">
-                      <input type="text" class="form-control text-field-size " id=""
-                        placeholder="Former Surnames(if different from above)" name="spods_former_surnames">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix">
-                      <input type="date" class="form-control text-field-size " id="" placeholder="Date of Birth"
-                        name="spods_dob" data-rule-required="true" data-msg-required="Date of birth is required">
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix">
-                      <input type="text" class="form-control text-field-size " id="" placeholder="Nationality"
-                        name="spods_nationality">
-                    </div>
-                  </div>
-                </div>
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix">
+                              <input type="text" class="form-control text-field-size " id="" placeholder="Address"
+                                name="spods_address">
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix">
+                              <input type="text" class="form-control text-field-size " id="" placeholder="Post code"
+                                name="spods_postcode">
+                            </div>
+                          </div>
+                        </div>
 
 
-                <div class="row">
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix">
-                      <input type="text" class="form-control text-field-size " id="" placeholder="Address"
-                        name="spods_address">
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix">
-                      <input type="text" class="form-control text-field-size " id="" placeholder="Post code"
-                        name="spods_postcode">
-                    </div>
-                  </div>
-                </div>
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix">
+                              <input type="text" class="form-control text-field-size " id=""
+                                placeholder="Home Telephone Number" name="spods_home_telephone_number">
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix">
+                              <select class="form-control" id="selectBox2" name="spods_postcode_covered">
+                                <option value="0">Post codes covered</option>
+                                <option value=""></option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
 
 
-                <div class="row">
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix">
-                      <input type="text" class="form-control text-field-size " id="" placeholder="Home Telephone Number"
-                        name="spods_home_telephone_number">
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix">
-                      <select class="form-control" id="selectBox2" name="spods_postcode_covered">
-                        <option value="0">Post codes covered</option>
-                        <option value=""></option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-
-                <div class="row">
-                  <div class="col-sm-12 col-lg-8">
-                    <div class="profile-notes">
-                      <p>if the application is successful, when are you able to start working for Precedent Surveyors
-                        Ltd?</p>
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-lg-4">
-                    <div class="input-box-size-fix">
-                      <input type="text" class="form-control text-field-size " id="" placeholder=""
-                        name="start_working_time">
-                    </div>
-                  </div>
-                </div>
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-8">
+                            <div class="profile-notes">
+                              <p>if the application is successful, when are you able to start working for Precedent
+                                Surveyors
+                                Ltd?</p>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-lg-4">
+                            <div class="input-box-size-fix">
+                              <input type="text" class="form-control text-field-size " id="" placeholder=""
+                                name="start_working_time">
+                            </div>
+                          </div>
+                        </div>
 
 
 
 
 
-                <div class="row">
-                  <div class="col-6 col-sm-6 col-lg-6">
-                    <div class="prev-btn float-left">
-                      <a href="#" class="btn previous-btn" style="width: 164px; ">
-                        PREVIOUS</a>
-                    </div>
-                  </div>
+                        <div class="row">
+                          <div class="col-6 col-sm-6 col-lg-6">
+                            <div class="prev-btn float-left">
+                              <a href="#" class="btn previous-btn" style="width: 164px; ">
+                                PREVIOUS</a>
+                            </div>
+                          </div>
 
 
-                  <div class="col-6 col-sm-6 col-lg-6">
-                    <div class="prev-btn float-right">
-                      <!-- <a href="/signup-professionals-profile-2" class="btn btn-next" style="width: 164px;">
+                          <div class="col-6 col-sm-6 col-lg-6">
+                            <div class="prev-btn float-right">
+                              <!-- <a href="/signup-professionals-profile-2" class="btn btn-next" style="width: 164px;">
                         NEXT</a> -->
-                      <button id="clickme" type="submit" name="submit" class="btn btn-next" style="width: 164px;">
-                        NEXT</button>
-                    </div>
+                              <button id="clickme" type="submit" name="submit" class="btn btn-next"
+                                style="width: 164px;">
+                                NEXT</button>
+                            </div>
               </form>
             </div>
           </div>
