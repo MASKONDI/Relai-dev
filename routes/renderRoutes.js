@@ -6,7 +6,7 @@ const path = require('path');
 const ejs = require('ejs');
 const app = express();
 
-
+//***Index or home page related routes */
 app.get('/buy-sell', (req, res) => {
   res.render('buy-sell');
 });
@@ -43,44 +43,25 @@ app.get('/termandconditions', (req, res) => {
 app.get('/team', (req, res) => {
   res.render('team');
 });
-
-
 app.get('/intro', (req, res) => {
   res.render('intro');
 });
-app.get('/signup-service-provider', (req, res) => {
-  res.render('signup-service-provider');
-});
-app.get('/signup-professionals-profile', (req, res) => {
-  res.render('signup-professionals-profile');
-});
-app.get('/signup-professionals-profile-2', (req, res) => {
-  res.render('signup-professionals-profile-2');
-});
-app.get('/signup-professionals-profile-3', (req, res) => {
-  res.render('signup-professionals-profile-3');
-});
-app.get('/signup-professionals-profile-4', (req, res) => {
-  res.render('signup-professionals-profile-4');
-});
-app.get('/signup-professionals-profile-5', (req, res) => {
-  res.render('signup-professionals-profile-5');
-});
-app.get('/signup-professionals-profile-6', (req, res) => {
-  res.render('signup-professionals-profile-6');
-});
-app.get('/signup-professionals-profile-7', (req, res) => {
-  res.render('signup-professionals-profile-7');
-});
-app.get('/portfolio', (req, res) => {
-  res.render('portfolio');
-});
-app.get('/signup', (req, res) => {
-  res.render('signup');
-});
+
+
+
+//** customer Signup ***********8 */
+app.get("/signup", (req, res) => {
+
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signup', { err_msg, success_msg });
+})
 app.get('/signin', (req, res) => {
-  res.render('signin');
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signin', { err_msg, success_msg });
 });
+
 app.get('/dashboard', (req, res) => {
   res.render('dashboard');
 });
@@ -99,6 +80,52 @@ app.get('/mydreamhome-details-to-dos', (req, res) => {
 app.get('/add-property', (req, res) => {
   res.render('add-property');
 });
+
+//*******Service Provider and signup and profiles routes */
+app.get('/signup-service-provider', (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signup-service-provider', { err_msg, success_msg });
+});
+
+app.get('/signin-professional', (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signin-professional', { err_msg, success_msg });
+});
+
+
+
+app.get('/signup-professionals-profile', (req, res) => {
+  res.render('signup-professionals-profile');
+});
+app.get('/signup-professionals-profile-2', (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signup-professionals-profile-2', { err_msg, success_msg });
+});
+app.get('/signup-professionals-profile-3', (req, res) => {
+  res.render('signup-professionals-profile-3');
+});
+app.get('/signup-professionals-profile-4', (req, res) => {
+  res.render('signup-professionals-profile-4');
+});
+app.get('/signup-professionals-profile-5', (req, res) => {
+  res.render('signup-professionals-profile-5');
+});
+app.get('/signup-professionals-profile-6', (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signup-professionals-profile-6', { err_msg, success_msg });
+});
+app.get('/signup-professionals-profile-7', (req, res) => {
+  res.render('signup-professionals-profile-7');
+});
+app.get('/portfolio', (req, res) => {
+  res.render('portfolio');
+});
+
+
 
 
 

@@ -148,14 +148,15 @@
                 <div class="row">
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix">
-                      <select class="form-control " id="selectBox2" name="spods_preferred_title"
+                      <select class="form-control required" id="selectBox2" name="spods_preferred_title"
                         data-rule-required="true" data-msg-required="Preferred Title is required">
-                        <option value="0">Preferred Title</option>
+                        <option value="">Preferred Title</option>
                         <option value="mr">Mr</option>
                         <option value="miss">Miss</option>
                         <option value="mrs">Mrs</option>
                       </select>
                     </div>
+
                   </div>
                   <div class="col-sm-12 col-lg-6">
                     <div class="input-box-size-fix">
@@ -247,7 +248,7 @@
                     <div class="prev-btn float-right">
                       <!-- <a href="/signup-professionals-profile-2" class="btn btn-next" style="width: 164px;">
                         NEXT</a> -->
-                      <button type="submit" name="submit" class="btn btn-next" style="width: 164px;">
+                      <button id="clickme" type="submit" name="submit" class="btn btn-next" style="width: 164px;">
                         NEXT</button>
                     </div>
               </form>
@@ -304,8 +305,20 @@
       }
     });  
   </script>
+  <script>
+    $("#clickme").click(function () {
+
+      if ($("#selectBox2 option:selected").val() == '0') {
+
+        // alert("Please select one option at least");
+
+        $("#err_msg").html("Select At least one option");
+
+      }
 
 
+    });
+  </script>
   </body>
 
   </html>

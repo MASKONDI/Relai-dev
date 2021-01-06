@@ -10,6 +10,7 @@ const ServiceProviderPortfolioSchema = require("../../models/service_provider_po
 const ServiceProviderReferenceSchema = require("../../models/service_provider_reference");
 const ServiceProviderRolesSchema = require("../../models/service_provider_roles");
 const PlanSchema = require("../../models/plan");
+const isEmpty = require('../../Validation/is-empty');
 
 
 const jwt = require('jsonwebtoken');
@@ -56,8 +57,8 @@ router.post("/service_provider_register", (req, res) => {
 
   //Check Validation
   if (!isValid) {
-    // req.flash('errors', 'Something went wrong.');
     console.log("errors is ", errors);
+    req.flash('err_msg', errors.confirmPassword);
     return res.redirect('/signup-service-provider')
   }
 
@@ -65,6 +66,7 @@ router.post("/service_provider_register", (req, res) => {
     if (serviceProviders) {
       errors.sps_email_id = 'Email already exists';
       console.log("error is :", errors);
+      req.flash('err_msg', errors.sps_email_id);
       return res.redirect('/signup-service-provider');
     } else {
       const newServiceProvider = new ServiceProviderSchema({
@@ -87,7 +89,7 @@ router.post("/service_provider_register", (req, res) => {
             .then(serviceProviders => res.redirect("/signup-professionals-profile"))
             .catch(err => {
               console.log(err)
-              // req.flash('err_msg', 'You have entered wrong email or password try again.');
+              req.flash('err_msg', 'You have entered wrong email or password try again.');
               res.redirect('/signup-service-provider');
             });
         });
@@ -133,25 +135,31 @@ POST : service_provider_other_details post api is responsible for submitting sig
 
 router.post("/service_provider_other_details", (req, res) => {
   console.log("req.body is : ", req.body);
-  const serviceProviderOtherDetails = new ServiceProviderOtherDetailsSchema({
-    spods_option_work_permit_for_uk: req.body.spods_option_work_permit_for_uk,
-    spods_option_criminal_convictions: req.body.spods_option_criminal_convictions,
-    spods_option_uk_driving_licence: req.body.spods_option_uk_driving_licence,
-    spods_details_of_convictions: req.body.spods_details_of_convictions,
-    spods_professional_body: req.body.spods_professional_body,
-    spods_date_registered: req.body.spods_date_registered,
-    spods_membership_number: req.body.spods_membership_number,
-    spods_membership_no_date_registered: req.body.spods_membership_no_date_registered,
-    spods_other_relevant_qualification: req.body.spods_other_relevant_qualification
-  });
-  serviceProviderOtherDetails
-    .save()
-    .then(serviceProviders => res.redirect("/signup-professionals-profile-3"))
-    .catch(err => {
-      console.log(err)
-      // req.flash('err_msg', 'You have entered wrong email or password try again.');
-      res.redirect('/signup-professionals-profile-2');
+  if (req.body.spods_option_criminal_convictions == 'yes' && req.body.spods_details_of_convictions == "") {
+    req.flash('err_msg', 'if you have any criminal convictions Please enter details.');
+    return res.redirect('/signup-professionals-profile-2')
+  }
+  else {
+    const serviceProviderOtherDetails = new ServiceProviderOtherDetailsSchema({
+      spods_option_work_permit_for_uk: req.body.spods_option_work_permit_for_uk,
+      spods_option_criminal_convictions: req.body.spods_option_criminal_convictions,
+      spods_option_uk_driving_licence: req.body.spods_option_uk_driving_licence,
+      spods_details_of_convictions: req.body.spods_details_of_convictions,
+      spods_professional_body: req.body.spods_professional_body,
+      spods_date_registered: req.body.spods_date_registered,
+      spods_membership_number: req.body.spods_membership_number,
+      spods_membership_no_date_registered: req.body.spods_membership_no_date_registered,
+      spods_other_relevant_qualification: req.body.spods_other_relevant_qualification
     });
+    serviceProviderOtherDetails
+      .save()
+      .then(serviceProviders => res.redirect("/signup-professionals-profile-3"))
+      .catch(err => {
+        console.log(err)
+        req.flash('err_msg', 'Something went wrong please try after some time');
+        res.redirect('/signup-professionals-profile-2');
+      });
+  }
 });
 
 
@@ -245,24 +253,29 @@ POST : service_provider_indemnity_details post api is responsible for submitting
 
 router.post("/service_provider_indemnity_details", (req, res) => {
   console.log("req.body is : ", req.body);
-  const serviceProviderIndemnityDetails = new ServiceProviderOtherDetailsSchema({
-    spods_option_pl_claims: req.body.spods_option_pl_claims,
-    spods_pl_claim_details: req.body.spods_pl_claim_details,
-    spods_option_pl_cover: req.body.spods_option_pl_cover,
-    spods_name_insurer: req.body.spods_name_insurer,
-    spods_broker_details: req.body.spods_broker_details,
-    spods_level_of_cover: req.body.spods_level_of_cover,
-    spods_renewal_date: req.body.spods_renewal_date,
+  if (req.body.spods_option_pl_claims == "yes" && req.body.spods_pl_claim_details == '') {
+    req.flash("err_msg", "Please Enter PI claim details!");
+    res.redirect('/signup-professionals-profile-6');
+  } else {
+    const serviceProviderIndemnityDetails = new ServiceProviderOtherDetailsSchema({
+      spods_option_pl_claims: req.body.spods_option_pl_claims,
+      spods_pl_claim_details: req.body.spods_pl_claim_details,
+      spods_option_pl_cover: req.body.spods_option_pl_cover,
+      spods_name_insurer: req.body.spods_name_insurer,
+      spods_broker_details: req.body.spods_broker_details,
+      spods_level_of_cover: req.body.spods_level_of_cover,
+      spods_renewal_date: req.body.spods_renewal_date,
 
-  });
-  serviceProviderIndemnityDetails
-    .save()
-    .then(serviceProviders => res.redirect("/signup-professionals-profile-7"))
-    .catch(err => {
-      console.log(err)
-      // req.flash('err_msg', 'You have entered wrong email or password try again.');
-      res.redirect('/signup-professionals-profile-6');
     });
+    serviceProviderIndemnityDetails
+      .save()
+      .then(serviceProviders => res.redirect("/signup-professionals-profile-7"))
+      .catch(err => {
+        console.log(err)
+        req.flash('err_msg', 'Something went wrong please try after some time');
+        res.redirect('/signup-professionals-profile-6');
+      });
+  }
 });
 
 
@@ -289,6 +302,8 @@ router.post("/service_provider_language", (req, res) => {
 
 router.post("/service_provider_signin",
   (req, res) => {
+    var err_msg = null;
+    var success_msg = null;
     const sps_email_id = req.body.sps_email_id;
     const sps_password = req.body.sps_password;
 
@@ -296,8 +311,7 @@ router.post("/service_provider_signin",
 
     // Check Validation
     if (!isValid) {
-      //return res.status(400).json(errors);
-      //req.flash
+      req.flash('err_msg', "please enter valid emailid and password")
       return res.redirect('/signin-professional');
     }
 
@@ -307,6 +321,7 @@ router.post("/service_provider_signin",
       if (!service_provider) {
         errors.sps_email_id = 'Service Provider not found';
         console.log("Service Provider not found");
+        req.flash('err_msg', errors.sps_email_id);
         return res.redirect('/signin-professional');
       }
       // Check Password
@@ -331,7 +346,7 @@ router.post("/service_provider_signin",
         } else {
           errors.sps_password = 'Password incorrect';
           console.log("Password incorrect");
-          //req.flash
+          req.flash("err_msg", errors.sps_password);
           return res.redirect('/signin-professional');
         }
       });

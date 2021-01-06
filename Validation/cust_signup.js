@@ -53,7 +53,7 @@ module.exports = function validateCustomerRegisterInput(req) {
     errors.confirmPassword = 'Confirm Password field is required';
   }
   if (!Validator.equals(req.cus_password, req.confirmPassword)) {
-    errors.confirmPassword = 'Passwords must match';
+    errors.confirmPassword = 'Passwords must match!';
   }
 
   //Address validation

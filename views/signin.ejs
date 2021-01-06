@@ -17,29 +17,41 @@
             <p>SIGN IN</p>
             <h1>Welcome back!</h1>
             <form id="loginform" class="form" method="post" action="/api/cust_signin">
-              <div class="form-group ">
-                <input type="email" class="form-control signin-form-control" id="email" placeholder="Email ID"
-                  name="cus_email_id" data-rule-required="true" data-rule-email="true"
-                  data-msg-required="Please Enter Email Id!" data-msg-email="Please Enter Valid Email-ID!">
-                <input type="password" class="form-control signin-form-control" id="password" placeholder="Password"
-                  name="cus_password" data-rule-required="true" data-rule-maxlength="30"
-                  data-msg-required="Please Enter Password!">
-              </div>
-              <div class="forgot-pass">
-                <p><a href="/forget-password" style="color: #005377;">
-                    Forgot Password? </a> </p>
-              </div>
-              <br />
-              <div class="signin-submit">
-                <!-- <a href="/otp" class="btn signin-submit-btn">SUBMIT</a> -->
-                <button type="submit" name="submit" class="btn signin-submit-btn">SUBMIT</button>
-              </div>
-              <br />
-              <div class="signin-footer">
-                <p class="text-center" style="color: #3f3e3e;">Don’t have an account? <a href="/intro"
-                    style="color: #005377;">
-                    Sign up</a> </p>
-              </div>
+
+              <% if(typeof err_msg!='undefined' ){ %>
+                <span class="error_validate flash_msg" style="color: red;">
+                  <%= err_msg %>
+                </span>
+                <% }%>
+                  <% if(typeof success_msg!='undefined' ){ %>
+                    <span class="succ_flash_msg" style="color: green;">
+                      <%= success_msg %>
+                    </span>
+                    <% }%>
+
+                      <div class="form-group ">
+                        <input type="email" class="form-control signin-form-control" id="email" placeholder="Email ID"
+                          name="cus_email_id" data-rule-required="true" data-rule-email="true"
+                          data-msg-required="Please Enter Email Id!" data-msg-email="Please Enter Valid Email-ID!">
+                        <input type="password" class="form-control signin-form-control" id="password"
+                          placeholder="Password" name="cus_password" data-rule-required="true" data-rule-maxlength="30"
+                          data-msg-required="Please Enter Password!">
+                      </div>
+                      <div class="forgot-pass">
+                        <p><a href="/forget-password" style="color: #005377;">
+                            Forgot Password? </a> </p>
+                      </div>
+                      <br />
+                      <div class="signin-submit">
+                        <!-- <a href="/otp" class="btn signin-submit-btn">SUBMIT</a> -->
+                        <button type="submit" name="submit" class="btn signin-submit-btn">SUBMIT</button>
+                      </div>
+                      <br />
+                      <div class="signin-footer">
+                        <p class="text-center" style="color: #3f3e3e;">Don’t have an account? <a href="/intro"
+                            style="color: #005377;">
+                            Sign up</a> </p>
+                      </div>
             </form>
           </div>
         </div>

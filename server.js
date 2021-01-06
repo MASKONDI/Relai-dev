@@ -5,9 +5,12 @@ const passport = require('passport');
 const path = require('path');
 const ejs = require('ejs');
 
-var flash = require('express-flash')
+//var flash = require('express-flash')
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var flash = require('req-flash');
+
+
 
 // import routes
 const customerRoutes = require("./routes/api/customers");
@@ -35,15 +38,25 @@ mongoose
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); // parse form data client
 
-app.use(flash());
 app.use(session({
-  secret: 'keyboard cat',
+  secret: 'djhxcvxfgshajfgjhgsjhfgsakjeauytsdfy',
   resave: false,
   saveUninitialized: true,
-  //cookie: { maxAge: 60000 }
+  cookie: { maxAge: 60000 }
 }));
 
+app.use(flash());
+// app.use(session({
+//   secret: 'keyboard cat',
+//   resave: false,
+//   saveUninitialized: true,
+//   //cookie: { maxAge: 60000 }
+// }));
 
+app.use(function (req, res, next) {
+  res.locals.messages = req.flash();
+  next();
+});
 
 
 app.set('views', __dirname + '/views');

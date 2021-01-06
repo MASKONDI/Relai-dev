@@ -19,20 +19,24 @@ const validateCustomerSigninInput = require('../../Validation/cust_signin');
 
 router.post("/cust_register", (req, res) => {
   console.log("rq.body", req.body);
+  var err_msg = null;
+  var success_msg = null;
   const { errors, isValid } = validateCustomerRegisterInput(req.body);
   // Check Validation
   if (!isValid) {
-    req.flash('message', 'please enter a valid email-id');
+
     console.log("server validation error is:", errors);
+    req.flash('err_msg', errors.confirmPassword);
+
     return res.redirect('/signup');
   }
 
   CustomerSchema.findOne({ cus_email_id: req.body.cus_email_id }).then(customers => {
     if (customers) {
       errors.cus_email_id = 'Email already exists';
-      console.log('Email already exists :', errors);
-      //req.flash
-      return res.redirect('/signup');
+      console.log('errors is : ', errors);
+      req.flash('err_msg', errors.cus_email_id);
+      res.redirect('/signup');
     } else {
       const newCustomer = new CustomerSchema({
         cus_unique_code: "cus-" + uuidv4(),
@@ -57,7 +61,7 @@ router.post("/cust_register", (req, res) => {
             })
             .catch(err => {
               console.log(err)
-              // req.flash('err_msg', 'You have entered wrong email or password try again.');
+              req.flash('err_msg', 'Something went wron please try again later.');
               res.redirect('/signup');
             });
         });
@@ -67,16 +71,23 @@ router.post("/cust_register", (req, res) => {
 });
 
 
+
+
+
+
+
+
 router.post("/cust_signin", (req, res) => {
+  var err_msg = null;
+  var success_msg = null;
   const cus_email_id = req.body.cus_email_id;
   const cus_password = req.body.cus_password;
-
   const { errors, isValid } = validateCustomerSigninInput(req.body);
 
   // Check Validation
   if (!isValid) {
-    //req.flash
     console.log("error is ", errors);
+    req.flash('err_msg', "please enter valid emailid and password")
     return res.redirect('/signin');
   }
 
@@ -85,8 +96,7 @@ router.post("/cust_signin", (req, res) => {
     // Check for Customer
     if (!customers) {
       errors.cus_email_id = 'Customers not found';
-      //req.flash
-      console.log("Customers not found", errors);
+      req.flash('err_msg', errors.cus_email_id);
       return res.redirect('/signin');
     }
     // Check Password
@@ -112,7 +122,7 @@ router.post("/cust_signin", (req, res) => {
       } else {
         errors.cus_password = 'Password incorrect';
         console.log("Password incorrect", errors);
-        //req.flash
+        req.flash("err_msg", errors.cus_password);
         return res.redirect('/signin');
       }
     });

@@ -162,88 +162,93 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-sm-12 col-lg-12">
-                    <div class="input-box-size">
-                      <input type="text" class="form-control text-field" id="" placeholder=""
-                        name="spods_pl_claim_details">
+                <% if(typeof err_msg!='undefined' ){ %>
+                  <span class="error_validate flash_msg" style="color: red; padding-bottom: 10px;">
+                    <%= err_msg %>
+                  </span>
+                  <% }%>
+                    <div class="row">
+                      <div class="col-sm-12 col-lg-12">
+                        <div class="input-box-size">
+                          <input type="text" class="form-control text-field" id="" placeholder=""
+                            name="spods_pl_claim_details">
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                <div class="row">
-                  <div class="col-sm-12 col-lg-4">
-                    <div class="profile-notes">
-                      <p>Do you hold your own PI cover?
-                      </p>
+                    <div class="row">
+                      <div class="col-sm-12 col-lg-4">
+                        <div class="profile-notes">
+                          <p>Do you hold your own PI cover?
+                          </p>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-12 col-lg-2">
+                        <div class="profile-radio">
+                          <label class="radio-inline">
+                            <input type="radio" name="spods_option_pl_cover" value="yes" required> &nbsp;Yes&nbsp;&nbsp;
+                          </label>
+                          <label class="radio-inline">
+                            <input type="radio" name="spods_option_pl_cover" value="no"> &nbsp;No&nbsp;&nbsp;
+                          </label>
+                        </div>
+                      </div>
+
                     </div>
-                  </div>
 
-                  <div class="col-sm-12 col-lg-2">
-                    <div class="profile-radio">
-                      <label class="radio-inline">
-                        <input type="radio" name="spods_option_pl_cover" value="yes" required> &nbsp;Yes&nbsp;&nbsp;
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" name="spods_option_pl_cover" value="no"> &nbsp;No&nbsp;&nbsp;
-                      </label>
+
+                    <div class="row">
+                      <div class="col-sm-12 col-lg-6">
+                        <div class="input-box-size-fix3">
+                          <input type="text" class="form-control text-field-size " id="" placeholder="Name of Insurer"
+                            name="spods_name_insurer">
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-lg-6">
+                        <div class="input-box-size-fix3">
+                          <input type="text" class="form-control text-field-size " id=""
+                            placeholder="Broker Details(if applicable)" name="spods_broker_details">
+                        </div>
+                      </div>
                     </div>
-                  </div>
-
-                </div>
 
 
-                <div class="row">
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix3">
-                      <input type="text" class="form-control text-field-size " id="" placeholder="Name of Insurer"
-                        name="spods_name_insurer">
+                    <div class="row">
+                      <div class="col-sm-12 col-lg-6">
+                        <div class="input-box-size-fix3">
+                          <input type="text" class="form-control text-field-size " id="" placeholder="Level of cover"
+                            name="spods_level_of_cover">
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-lg-6">
+                        <div class="input-box-size-fix3">
+                          <input type="date" class="form-control text-field-size " id="" placeholder="Renewal Date"
+                            name="spods_renewal_date">
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix3">
-                      <input type="text" class="form-control text-field-size " id=""
-                        placeholder="Broker Details(if applicable)" name="spods_broker_details">
-                    </div>
-                  </div>
-                </div>
 
 
-                <div class="row">
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix3">
-                      <input type="text" class="form-control text-field-size " id="" placeholder="Level of cover"
-                        name="spods_level_of_cover">
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-lg-6">
-                    <div class="input-box-size-fix3">
-                      <input type="date" class="form-control text-field-size " id="" placeholder="Renewal Date"
-                        name="spods_renewal_date">
-                    </div>
-                  </div>
-                </div>
+                    <div class="row btn-sec">
+                      <div class="col-6 col-sm-6 col-lg-6">
+                        <div class="prev-btn-fix float-left">
+                          <a href="/signup-professionals-profile-5" class="btn previous-btn" style="width: 164px; ">
+                            PREVIOUS</a>
+                        </div>
+                      </div>
 
 
-                <div class="row btn-sec">
-                  <div class="col-6 col-sm-6 col-lg-6">
-                    <div class="prev-btn-fix float-left">
-                      <a href="/signup-professionals-profile-5" class="btn previous-btn" style="width: 164px; ">
-                        PREVIOUS</a>
-                    </div>
-                  </div>
-
-
-                  <div class="col-6 col-sm-6 col-lg-6">
-                    <div class="prev-btn-fix float-right">
-                      <!-- <a href="/signup-professionals-profile-7" class="btn btn-next" style="width: 164px;">
+                      <div class="col-6 col-sm-6 col-lg-6">
+                        <div class="prev-btn-fix float-right">
+                          <!-- <a href="/signup-professionals-profile-7" class="btn btn-next" style="width: 164px;">
                         NEXT</a> -->
-                      <button type="submit" name="submit" class="btn btn-next" style="width: 164px;">
-                        NEXT</button>
-                    </div>
-                  </div>
+                          <button type="submit" name="submit" class="btn btn-next" style="width: 164px;">
+                            NEXT</button>
+                        </div>
+                      </div>
 
-                </div>
+                    </div>
               </form>
             </div>
           </div>

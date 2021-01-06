@@ -18,81 +18,96 @@
             <p>START FOR FREE</p>
             <h1>Let’s get you started</h1>
             <form id="registerform" class="form" method="post" action="/api/service_provider_register">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <input type="text" class="form-control form-control-size " id="fullName" placeholder="FullName"
-                      name="sps_fullname" required data-rule-required="true" data-rule-minlength="2"
-                      data-msg-required="Fullname is required!">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group  ">
-                    <input type="text" class="form-control form-control-size" id="phoneNumber"
-                      placeholder="Phone Number" name="sps_phone_number" required data-rule-required="true"
-                      data-rule-minlength="10" data-msg-required="PhoneNumber is required!">
 
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group  ">
-                    <input type="email" class="form-control form-control-size" id="email" placeholder="Email ID"
-                      name="sps_email_id" required data-rule-required="true" data-rule-email="true"
-                      data-msg-required="Email Id is required." data-msg-email="Please Enter Valid Email-ID.">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group  ">
-                    <input type="text" class="form-control form-control-size" id="address" placeholder="Address"
-                      name="sps_address" required data-rule-required="true" data-msg-required="Address is required!">
-                  </div>
+              <% if(typeof err_msg!='undefined' ){ %>
+                <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
+                  <%= err_msg %>
+                </span>
+                <% }%>
+                  <% if(typeof success_msg!='undefined' ){ %>
+                    <span class="succ_flash_msg" style="color: green;">
+                      <%= success_msg %>
+                    </span>
+                    <% }%>
 
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group  ">
-                    <input type="text" class="form-control form-control-size" id="city" placeholder="City"
-                      name="sps_city" required data-rule-required="true" data-msg-required="City name is required!">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group ">
-                    <input type="text" class="form-control form-control-size" id="country" placeholder="Country"
-                      name="sps_country_id" required data-rule-required="true"
-                      data-msg-required="Country name is required!">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <input type="text" class="form-control form-control-size " id="fullName"
+                              placeholder="FullName" name="sps_fullname" required data-rule-required="true"
+                              data-rule-minlength="2" data-msg-required="Fullname is required!">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group  ">
+                            <input type="text" class="form-control form-control-size" id="phoneNumber"
+                              placeholder="Phone Number" name="sps_phone_number" required data-rule-required="true"
+                              data-rule-minlength="10" data-msg-required="PhoneNumber is required!">
 
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group  ">
-                    <input type="password" class="form-control form-control-size" id="password" placeholder="Password"
-                      name="sps_password" required data-rule-required="true" data-rule-minlength="6"
-                      data-msg-required="Password is required!">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group ">
-                    <input type="password" class="form-control form-control-size" id="password"
-                      placeholder="Confirm password" name="confirmPassword" required data-rule-required="true"
-                      data-rule-minlength="6" data-msg-required="Confirm Password is required!">
-                  </div>
-                </div>
-              </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group  ">
+                            <input type="email" class="form-control form-control-size" id="email" placeholder="Email ID"
+                              name="sps_email_id" required data-rule-required="true" data-rule-email="true"
+                              data-msg-required="Email Id is required." data-msg-email="Please Enter Valid Email-ID.">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group  ">
+                            <input type="text" class="form-control form-control-size" id="address" placeholder="Address"
+                              name="sps_address" required data-rule-required="true"
+                              data-msg-required="Address is required!">
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group  ">
+                            <input type="text" class="form-control form-control-size" id="city" placeholder="City"
+                              name="sps_city" required data-rule-required="true"
+                              data-msg-required="City name is required!">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group ">
+                            <input type="text" class="form-control form-control-size" id="country" placeholder="Country"
+                              name="sps_country_id" required data-rule-required="true"
+                              data-msg-required="Country name is required!">
+
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group  ">
+                            <input type="password" class="form-control form-control-size" id="password"
+                              placeholder="Password" name="sps_password" required data-rule-required="true"
+                              data-rule-minlength="6" data-msg-required="Password is required!">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group ">
+                            <input type="password" class="form-control form-control-size" id="password"
+                              placeholder="Confirm password" name="confirmPassword" required data-rule-required="true"
+                              data-rule-minlength="6" data-msg-required="Confirm Password is required!">
+                          </div>
+                        </div>
+                      </div>
 
 
-              <p class="text-center">By signing up, you agree to the <a href="termsAndConditions.html">terms and
-                  conditions</a> of Relai.</p>
-              <!-- <a href="signup-professionals-profile.html" class="btn btn-next">Next</a> -->
+                      <p class="text-center">By signing up, you agree to the <a href="termsAndConditions.html">terms and
+                          conditions</a> of Relai.</p>
+                      <!-- <a href="signup-professionals-profile.html" class="btn btn-next">Next</a> -->
 
-              <button type="submit" name="submit" class="btn btn-next">Next</button>
+                      <button type="submit" name="submit" class="btn btn-next">Next</button>
 
-              <p class="text-center" style="margin-top :10px">Already have an account? <a href="signin.html"> Sign in
-                </a> </p>
+                      <p class="text-center" style="margin-top :10px">Already have an account? <a href="signin.html">
+                          Sign in
+                        </a> </p>
             </form>
           </div>
 
