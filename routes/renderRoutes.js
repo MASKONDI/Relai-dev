@@ -97,7 +97,9 @@ app.get('/signin-professional', (req, res) => {
 
 
 app.get('/signup-professionals-profile', (req, res) => {
-  res.render('signup-professionals-profile');
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signup-professionals-profile', { err_msg, success_msg });
 });
 app.get('/signup-professionals-profile-2', (req, res) => {
   err_msg = req.flash('err_msg');

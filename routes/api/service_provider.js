@@ -52,6 +52,8 @@ POST : service_provider_register post api is responsible for submitting signup-s
 ------------------------------------------------------------------------------------------------- */
 
 router.post("/service_provider_register", (req, res) => {
+  var err_msg = null;
+  var success_msg = null;
   console.log("req.body is : ", req.body);
   const { errors, isValid } = validateServiceProviderRegisterInput(req.body);
 
@@ -104,6 +106,8 @@ POST : service_provider_personal_details post api is responsible for submitting 
 ------------------------------------------------------------------------------------------------- */
 
 router.post("/service_provider_personal_details", (req, res) => {
+  var err_msg = null;
+  var success_msg = null;
   console.log("req.body is : ", req.body);
   const serviceProviderPersonalDetails = new ServiceProviderOtherDetailsSchema({
     spods_surname: req.body.spods_surname,
@@ -134,6 +138,8 @@ POST : service_provider_other_details post api is responsible for submitting sig
 ------------------------------------------------------------------------------------------------- */
 
 router.post("/service_provider_other_details", (req, res) => {
+  var err_msg = null;
+  var success_msg = null;
   console.log("req.body is : ", req.body);
   if (req.body.spods_option_criminal_convictions == 'yes' && req.body.spods_details_of_convictions == "") {
     req.flash('err_msg', 'if you have any criminal convictions Please enter details.');
@@ -168,6 +174,8 @@ POST : service_provider_education post api is responsible for submitting signup-
 ------------------------------------------------------------------------------------------------- */
 
 router.post("/service_provider_education", (req, res) => {
+  var err_msg = null;
+  var success_msg = null;
   console.log("req.body is : ", req.body);
   const serviceProviderEducation = new ServiceProviderEducationSchema({
     //rs_service_provider_id /*Need to store same sp_id while registering */
@@ -194,6 +202,8 @@ POST : service_provider_employment_history post api is responsible for submittin
 
 
 router.post("/service_provider_employment_history", (req, res) => {
+  var err_msg = null;
+  var success_msg = null;
   console.log("req.body is : ", req.body);
   const serviceProviderEmploymentHistory = new ServiceProviderEmploymentHistorySchema({
     //rs_service_provider_id /*Need to store same sp_id while registering */
@@ -219,6 +229,8 @@ POST : service_provider_reference post api is responsible for submitting signup-
 ------------------------------------------------------------------------------------------------- */
 
 router.post("/service_provider_reference", (req, res) => {
+  var err_msg = null;
+  var success_msg = null;
   console.log("req.body is : ", req.body);
 
   const serviceProviderReference = new ServiceProviderReferenceSchema({
@@ -252,6 +264,8 @@ POST : service_provider_indemnity_details post api is responsible for submitting
 
 
 router.post("/service_provider_indemnity_details", (req, res) => {
+  var err_msg = null;
+  var success_msg = null;
   console.log("req.body is : ", req.body);
   if (req.body.spods_option_pl_claims == "yes" && req.body.spods_pl_claim_details == '') {
     req.flash("err_msg", "Please Enter PI claim details!");
@@ -284,6 +298,8 @@ POST : service_provider_language post api is responsible for submitting signup-p
 ------------------------------------------------------------------------------------------------- */
 
 router.post("/service_provider_language", (req, res) => {
+  var err_msg = null;
+  var success_msg = null;
   console.log("req.body is : ", req.body);
   const serviceProviderLanguage = new ServiceProviderLanguageSchema({
     //spls_service_provider_id /*Need to store same sp_id while registering */
@@ -295,7 +311,7 @@ router.post("/service_provider_language", (req, res) => {
     .then(serviceProviders => res.redirect("/portfolio"))
     .catch(err => {
       console.log(err)
-      // req.flash('err_msg', 'You have entered wrong email or password try again.');
+      req.flash('err_msg', 'Something went wrong please try again later.');
       res.redirect('/signup-professionals-profile-7');
     });
 });
