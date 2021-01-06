@@ -38,7 +38,7 @@ router.post("/service_provider_roles", service_provider_Roles);
 router.post("/service_provider_plan", service_provider_plan);
 router.post("/service_provider_portfolio", service_provider_portfolio);
 //router.post("/service_provider_reference", service_provider_reference);
-router.post("/service_provider_signin", service_provider_signin);
+//router.post("/service_provider_signin", service_provider_signin);
 router.post("/pricing_plan", pricing_plan);
 
 
@@ -252,7 +252,7 @@ router.post("/service_provider_reference", (req, res) => {
     .then(serviceProviders => res.redirect("/signup-professionals-profile-6"))
     .catch(err => {
       console.log(err)
-      // req.flash('err_msg', 'You have entered wrong email or password try again.');
+      req.flash('err_msg', 'Something went wrong please try after some time.');
       res.redirect('/signup-professionals-profile-5');
     });
 });

@@ -6,6 +6,7 @@ const path = require('path');
 const ejs = require('ejs');
 const app = express();
 
+
 //***Index or home page related routes */
 app.get('/buy-sell', (req, res) => {
   res.render('buy-sell');
@@ -95,7 +96,11 @@ app.get('/signin-professional', (req, res) => {
 });
 
 
-
+app.get('/dashboard-professional', (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('dashboard-professional', { err_msg, success_msg });
+});
 app.get('/signup-professionals-profile', (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
