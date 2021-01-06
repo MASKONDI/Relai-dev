@@ -179,45 +179,54 @@
                 </div>
               </div>
               <form action="#" class="form form-section">
+                <% if(typeof err_msg!='undefined' ){ %>
+                  <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
+                    <%= err_msg %>
+                  </span>
+                  <% }%>
+                    <% if(typeof success_msg!='undefined' ){ %>
+                      <span class="succ_flash_msg" style="color: green;">
+                        <%= success_msg %>
+                      </span>
+                      <% }%>
+                        <div class="eductaion-sec">
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-9">
+                              <div class="">
+                                <p>National Institute of Design</p>
+                                <h6>Interior Design</h6>
+                                <h6>2014-2017</h6>
+                                <div class="edu-btn float-left">
+                                  <a href="#" class="btn add-edu-btn" data-toggle="modal" data-target="#myModal"><i
+                                      class="fa fa-plus"></i>&nbsp;&nbsp;
+                                    AddEducation</a>
+                                </div>
 
-                <div class="eductaion-sec">
-                  <div class="row">
-                    <div class="col-sm-12 col-lg-9">
-                      <div class="">
-                        <p>National Institute of Design</p>
-                        <h6>Interior Design</h6>
-                        <h6>2014-2017</h6>
-                        <div class="edu-btn float-left">
-                          <a href="#" class="btn add-edu-btn" data-toggle="modal" data-target="#myModal"><i
-                              class="fa fa-plus"></i>&nbsp;&nbsp;
-                            AddEducation</a>
+                              </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-3">
+                              <div class="">
+                                <img style="width:19%" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;<img
+                                  style="width:19%" src="images/delete-icon.png" alt="">
+                              </div>
+                            </div>
+                          </div>
                         </div>
 
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-lg-3">
-                      <div class="">
-                        <img style="width:19%" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;<img
-                          style="width:19%" src="images/delete-icon.png" alt="">
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
+                        <div class="row">
+                          <div class="col-6 col-sm-6 col-lg-6">
+                            <div class="prev-btn float-left">
+                              <a href="/signup-professionals-profile-2" class="btn previous-btn" style="width: 164px;">
+                                PREVIOUS</a>
+                            </div>
+                          </div>
 
-                <div class="row">
-                  <div class="col-6 col-sm-6 col-lg-6">
-                    <div class="prev-btn float-left">
-                      <a href="/signup-professionals-profile-2" class="btn previous-btn" style="width: 164px;">
-                        PREVIOUS</a>
-                    </div>
-                  </div>
-
-                  <div class="col-6 col-sm-6 col-lg-6">
-                    <div class="prev-btn float-right">
-                      <a href="/signup-professionals-profile-4" class="btn btn-next" style="width: 164px;">
-                        NEXT</a>
-                    </div>
+                          <div class="col-6 col-sm-6 col-lg-6">
+                            <div class="prev-btn float-right">
+                              <a href="/signup-professionals-profile-4" class="btn btn-next" style="width: 164px;">
+                                NEXT</a>
+                            </div>
               </form>
             </div>
           </div>

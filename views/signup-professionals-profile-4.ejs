@@ -182,36 +182,45 @@
                 </div>
               </div>
               <form action="#" class="form form-section">
+                <% if(typeof err_msg!='undefined' ){ %>
+                  <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
+                    <%= err_msg %>
+                  </span>
+                  <% }%>
+                    <% if(typeof success_msg!='undefined' ){ %>
+                      <span class="succ_flash_msg" style="color: green;">
+                        <%= success_msg %>
+                      </span>
+                      <% }%>
+                        <div class="eductaion-sec">
 
-                <div class="eductaion-sec">
+                          <div class="employment-sec">
+                            <p>Add your past work experience</p>
+                            <h5>Build your credibility by showcasing the projects or jobs you h</h5>
 
-                  <div class="employment-sec">
-                    <p>Add your past work experience</p>
-                    <h5>Build your credibility by showcasing the projects or jobs you h</h5>
+                            <div class="emp-btn float-left">
+                              <a href="#" class="btn add-edu-btn" data-toggle="modal" data-target="#myModal"><i
+                                  class="fa fa-plus">&nbsp;&nbsp;&nbsp;</i>
+                                Add Employment</a>
+                            </div>
 
-                    <div class="emp-btn float-left">
-                      <a href="#" class="btn add-edu-btn" data-toggle="modal" data-target="#myModal"><i
-                          class="fa fa-plus">&nbsp;&nbsp;&nbsp;</i>
-                        Add Employment</a>
-                    </div>
-
-                  </div>
-                </div>
+                          </div>
+                        </div>
 
 
-                <div class="row">
-                  <div class="col-6 col-sm-6 col-lg-6">
-                    <div class="prev-btn float-left">
-                      <a href="/signup-professionals-profile-3" class="btn previous-btn" style="width: 164px;">
-                        PREVIOUS</a>
-                    </div>
-                  </div>
+                        <div class="row">
+                          <div class="col-6 col-sm-6 col-lg-6">
+                            <div class="prev-btn float-left">
+                              <a href="/signup-professionals-profile-3" class="btn previous-btn" style="width: 164px;">
+                                PREVIOUS</a>
+                            </div>
+                          </div>
 
-                  <div class="col-6 col-sm-6 col-lg-6">
-                    <div class="prev-btn float-right">
-                      <a href="/signup-professionals-profile-5" class="btn btn-next" style="width: 164px;">
-                        NEXT</a>
-                    </div>
+                          <div class="col-6 col-sm-6 col-lg-6">
+                            <div class="prev-btn float-right">
+                              <a href="/signup-professionals-profile-5" class="btn btn-next" style="width: 164px;">
+                                NEXT</a>
+                            </div>
               </form>
             </div>
           </div>
