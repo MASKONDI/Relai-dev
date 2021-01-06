@@ -127,10 +127,14 @@ app.get('/signup-professionals-profile-6', (req, res) => {
   res.render('signup-professionals-profile-6', { err_msg, success_msg });
 });
 app.get('/signup-professionals-profile-7', (req, res) => {
-  res.render('signup-professionals-profile-7');
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signup-professionals-profile-7', { err_msg, success_msg });
 });
 app.get('/portfolio', (req, res) => {
-  res.render('portfolio');
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('portfolio', { err_msg, success_msg });
 });
 
 
