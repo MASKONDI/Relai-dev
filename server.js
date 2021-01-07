@@ -16,6 +16,8 @@ var flash = require('req-flash');
 const customerRoutes = require("./routes/api/customers");
 const serviceProviderRoutes = require("./routes/api/service_provider");
 const renderRouters = require("./routes/renderRoutes");
+const uploadsDocs = require("./routes/uploadsDocs");
+
 
 
 const app = express();
@@ -66,7 +68,6 @@ app.use(express.static(path.join(__dirname, 'public'))); // configure express to
 
 app.use(cookieParser('keyboard cat'))
 
-
 app.get('*', function (req, res, next) {
   res.locals.cart = req.session.cart;
   res.locals.user = req.user || null;
@@ -76,8 +77,9 @@ app.get('*', function (req, res, next) {
 
 app.use("/api", customerRoutes);
 app.use("/api", serviceProviderRoutes);
-
 app.use("/", renderRouters);
+app.use("/", uploadsDocs);
+
 
 app.get('/', (req, res) => res.render('index'));
 

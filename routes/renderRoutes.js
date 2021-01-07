@@ -6,6 +6,10 @@ const path = require('path');
 const ejs = require('ejs');
 const app = express();
 
+var fs = require('fs');
+
+var multer = require('multer');
+const ServiceProviderPortfolioSchema = require("../models/service_provider_portfolio");
 
 //***Index or home page related routes */
 app.get('/buy-sell', (req, res) => {
@@ -82,6 +86,10 @@ app.get('/add-property', (req, res) => {
   res.render('add-property');
 });
 
+app.get('/pricingplan', (req, res) => {
+  res.render('pricingplan');
+})
+
 //*******Service Provider and signup and profiles routes */
 app.get('/signup-service-provider', (req, res) => {
   err_msg = req.flash('err_msg');
@@ -143,8 +151,11 @@ app.get('/portfolio', (req, res) => {
 });
 
 
-
 app.get('/index', (req, res) => res.render('index'));
-
+app.get('/kyc-professional', (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('kyc-professional', { err_msg, success_msg });
+});
 
 module.exports = app;

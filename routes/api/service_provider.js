@@ -18,6 +18,7 @@ const keys = require('../../config/keys');
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 
+
 // Load Input Validation
 const validateServiceProviderRegisterInput = require('../../Validation/service_provider_signup');
 const validateServiceProviderSigninInput = require('../../Validation/service_provider_signin');
@@ -42,10 +43,14 @@ router.post("/service_provider_portfolio", service_provider_portfolio);
 router.post("/pricing_plan", pricing_plan);
 
 
-router.get('/service_provider_register', function (req, res) {
-  res.render("/service_provider_register");
 
-});
+
+
+
+
+
+
+
 
 /* -------------------------------------------------------------------------------------------------
 POST : service_provider_register post api is responsible for submitting signup-service-provider form data 

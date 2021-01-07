@@ -20,6 +20,10 @@ const ServiceProviderPortfolioSchema = new Schema({
     type: String,
     enum: ['image', 'video']
   },
+  spps_file: {
+    data: Buffer,
+    contentType: String
+  },
   spps_created_at: {
     type: Date,
     default: Date.now,

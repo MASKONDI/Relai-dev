@@ -11,105 +11,129 @@
         </div>
         <p>KYC</p>
         <h1>Upload documents</h1>
-        <div class="row">
+        <% if(typeof err_msg!='undefined' ){ %>
+          <span class="error_validate flash_msg" style="color: red;">
+            <%= err_msg %>
+          </span>
+          <% }%>
+            <% if(typeof success_msg!='undefined' ){ %>
+              <span class="succ_flash_msg" style="color: green;">
+                <%= success_msg %>
+              </span>
+              <% }%>
+                <div class="row">
+                  <form action="/upload-kyc-docs" method="post" enctype="multipart/form-data">
+                    <div class="kyc-box-professional">
+                      <div class="pending-icon-professional">
+                        <img src="images/pending.png" alt="">&nbsp;<span class="pending">Pending </span>
+                      </div>
+                      <div class=kyc-section-professional>
+                        <img src="images/id.png">
+                      </div>
+                      <div class="driving-liences-professional">
+                        <p>National Insurance Number</p>
+                      </div>
+                      <div class="upload-professional">
+                        <!-- <a href="#">Upload</a> -->
+                        <button class="btn btn-upload">Upload</button>
 
-          <div class="kyc-box-professional">
-            <div class="pending-icon-professional">
-              <img src="images/pending.png" alt="">&nbsp;<span class="pending">Pending </span>
-            </div>
-            <div class=kyc-section-professional>
-              <img src="images/id.png">
-            </div>
-            <div class="driving-liences-professional">
-              <p>National Insurance Number</p>
-            </div>
-            <div class="upload-professional">
-              <a href="#">Upload</a>
-            </div>
-            <span>
-              <div class="custom-file-input">
-                <input type="file">
-                <input type="button">
-              </div>
-            </span>
-          </div>
+                      </div>
+                      <span>
+                        <div class="custom-file-input">
+                          <input type="file" name="kyc-docs" id="kyc-docs" value="" required>
+                          <input type="button">
+                        </div>
+                      </span>
+                    </div>
+                  </form>
+                  <form action="/upload-kyc-docs" method="post" enctype="multipart/form-data">
+
+                    <div class="kyc-box-professional">
+                      <div class="pending-icon-professional">
+                        <img src="images/pending.png" alt="">&nbsp;<span class="pending">Pending </span>
+                      </div>
+                      <div class=kyc-section-professional>
+                        <img style="height: 54px; width: 50px;" src="images/bill.png">
+                      </div>
+                      <div class="driving-liences-professional">
+                        <p>Copy of Passport</p>
+                      </div>
+                      <div class="upload-professional">
+                        <!-- <a href="#">Upload</a> -->
+                        <button class="btn btn-upload">Upload</button>
+
+                      </div>
+                      <span>
+                        <div class="custom-file-input">
+                          <input type="file" name="kyc-docs" id="kyc-docs" value="" required>
+                          <input type="button">
+                        </div>
+                      </span>
+                    </div>
+                  </form>
+                  <form action="/upload-kyc-docs" method="post" enctype="multipart/form-data">
+
+                    <div class="kyc-box-professional">
+                      <div class="pending-icon-professional">
+                        <img src="images/pending.png" alt="">&nbsp;<span class="pending">Pending </span>
+                      </div>
+                      <div class=kyc-section-professional>
+                        <img src="images/certificate.png">
+                      </div>
+                      <div class="driving-liences-professional">
+                        <p>Copy of Driving licence</p>
+                      </div>
+                      <div class="upload-professional">
+                        <!-- <a href="#">Upload</a> -->
+                        <button class="btn btn-upload">Upload</button>
+
+                      </div>
+                      <span>
+                        <div class="custom-file-input">
+                          <input type="file" name="kyc-docs" id="kyc-docs" value="" required>
+                          <input type="button">
+                        </div>
+                      </span>
+                    </div>
+                  </form>
+
+                  <form action="/upload-kyc-docs" method="post" enctype="multipart/form-data">
 
 
+                    <div class="kyc-box-professional" style="margin-right: 0px;">
+                      <div class="pending-icon-professional">
+                        <img src="images/pending.png" alt="">&nbsp;<span class="pending">Pending </span>
+                      </div>
+                      <div class=kyc-section-professional>
+                        <img src="images/certificate.png">
+                      </div>
+                      <div class="driving-liences-professional">
+                        <p>Qualification Certificate<span><img src="images/drop-down.png"></span></p>
+                      </div>
+                      <div class="upload-professional">
+                        <!-- <a href="#">Upload</a>
+                 -->
+                        <button class="btn btn-upload">Upload</button>
 
-          <div class="kyc-box-professional">
-            <div class="pending-icon-professional">
-              <img src="images/pending.png" alt="">&nbsp;<span class="pending">Pending </span>
-            </div>
-            <div class=kyc-section-professional>
-              <img style="height: 54px; width: 50px;" src="images/bill.png">
-            </div>
-            <div class="driving-liences-professional">
-              <p>Copy of Passport</p>
-            </div>
-            <div class="upload-professional">
-              <a href="#">Upload</a>
-            </div>
-            <span>
-              <div class="custom-file-input">
-                <input type="file">
-                <input type="button">
-              </div>
-            </span>
-          </div>
+                      </div>
+                      <span>
+                        <div class="custom-file-input">
+                          <input type="file" name="kyc-docs" id="kyc-docs" value="" required>
+                          <input type="button">
+                        </div>
+                      </span>
+                    </div>
+                  </form>
+                  <button class="portfolio-btn" name="addDom1">
+                    <div class="add-docs">
+                      <a href="#"><img style="width:65%" src="images/circle.png"></a>
+                    </div>
+                  </button>
+                </div>
 
-          <div class="kyc-box-professional">
-            <div class="pending-icon-professional">
-              <img src="images/pending.png" alt="">&nbsp;<span class="pending">Pending </span>
-            </div>
-            <div class=kyc-section-professional>
-              <img src="images/certificate.png">
-            </div>
-            <div class="driving-liences-professional">
-              <p>Copy of Driving licence</p>
-            </div>
-            <div class="upload-professional">
-              <a href="#">Upload</a>
-            </div>
-            <span>
-              <div class="custom-file-input">
-                <input type="file">
-                <input type="button">
-              </div>
-            </span>
-          </div>
-
-
-          <div class="kyc-box-professional" style="margin-right: 0px;">
-            <div class="pending-icon-professional">
-              <img src="images/pending.png" alt="">&nbsp;<span class="pending">Pending </span>
-            </div>
-            <div class=kyc-section-professional>
-              <img src="images/certificate.png">
-            </div>
-            <div class="driving-liences-professional">
-              <p>Qualification Certificate<span><img src="images/drop-down.png"></span></p>
-            </div>
-            <div class="upload-professional">
-              <a href="#">Upload</a>
-            </div>
-            <span>
-              <div class="custom-file-input">
-                <input type="file">
-                <input type="button">
-              </div>
-            </span>
-          </div>
-          <button class="portfolio-btn" name="addDom1">
-            <div class="add-docs">
-              <a href="#"><img style="width:65%" src="images/circle.png"></a>
-            </div>
-          </button>
-        </div>
-
-        <div class="kyc-submit">
-          <a href="/pricingplan" class="btn kyc-submit-btn">SUBMIT</a>
-        </div>
-
+                <div class="kyc-submit">
+                  <a href="/pricingplan" class="btn kyc-submit-btn">NEXT</a>
+                </div>
       </div>
     </div>
   </div>
@@ -153,6 +177,44 @@
 
     });
   </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+    integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+    crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    $('#loginform').validate({
+      onfocusout: function (element) {
+        this.element(element);
+      },
+      errorClass: 'error_validate',
+      errorElement: 'span',
+      errorColor: 'red',
+      highlight: function (element, errorClass) {
+        $(element).removeClass(errorClass);
+      },
+      submitHandler: function (form) {
+        $('#submit').attr('disabled', true);
+        form.submit();
+      }
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var flash_msg = $('.flash_msg').html();
+      if (flash_msg != "" && flash_msg != undefined) {
+        setTimeout(function () { $('.flash_msg').html(''); }, 4000);
+      }
+    });
+
+    $(document).ready(function () {
+      var succ_flash_msg = $('.succ_flash_msg').html();
+      if (succ_flash_msg != "" && succ_flash_msg != undefined) {
+        setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
+      }
+    });  
+  </script>
+
+
   </body>
 
   </html>
