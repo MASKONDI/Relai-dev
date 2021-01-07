@@ -90,6 +90,12 @@ app.get('/pricingplan', (req, res) => {
   res.render('pricingplan');
 })
 
+app.get('/forget-password', (req, res) => {
+  res.render('forget-password');
+})
+
+
+
 //*******Service Provider and signup and profiles routes */
 app.get('/signup-service-provider', (req, res) => {
   err_msg = req.flash('err_msg');
