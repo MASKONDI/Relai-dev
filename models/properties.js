@@ -23,16 +23,19 @@ const PropertiesSchema = new Schema({
     type: String,
   },
   ps_property_country_id: {
-    type: Schema.Types.ObjectId,
-    ref: "country"
+    // type: Schema.Types.ObjectId,
+    // ref: "country"
+    type: String,
   },
   ps_property_state_id: {
-    type: Schema.Types.ObjectId,
-    ref: "state"
+    // type: Schema.Types.ObjectId,
+    // ref: "state"
+    type: String,
   },
   ps_property_city_id: {
-    type: Schema.Types.ObjectId,
-    ref: "city"
+    // type: Schema.Types.ObjectId,
+    // ref: "city"
+    type: String,
   },
   ps_property_zipcode: {
     type: String,

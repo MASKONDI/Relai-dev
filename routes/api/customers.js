@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const CustomerSchema = require("../../models/customers");
+const PropertiesSchema = require("../../models/properties");
 
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
@@ -24,10 +25,8 @@ router.post("/cust_register", (req, res) => {
   const { errors, isValid } = validateCustomerRegisterInput(req.body);
   // Check Validation
   if (!isValid) {
-
     console.log("server validation error is:", errors);
     req.flash('err_msg', errors.confirmPassword);
-
     return res.redirect('/signup');
   }
 
@@ -73,10 +72,6 @@ router.post("/cust_register", (req, res) => {
 
 
 
-
-
-
-
 router.post("/cust_signin", (req, res) => {
   var err_msg = null;
   var success_msg = null;
@@ -117,7 +112,7 @@ router.post("/cust_signin", (req, res) => {
             });
           }
         );
-
+        req.flash("customers", customers);
         res.redirect('/dashboard')
       } else {
         errors.cus_password = 'Password incorrect';
@@ -128,6 +123,46 @@ router.post("/cust_signin", (req, res) => {
     });
   });
 });
+
+router.post("/add-property", (req, res) => {
+  var err_msg = null;
+  var success_msg = null;
+  console.log("req.body is : ", req.body);
+  const newProperty = new PropertiesSchema({
+    //should be auto-generated mongodb objectId()
+    // ps_property_id: req.body,
+    ps_unique_code: "properties-" + uuidv4(),
+    //ps_user_id: req.body,  */need to store customer_id
+    ps_property_name: req.body.ps_property_name,
+    ps_property_address: req.body.ps_property_address,
+    ps_property_country_id: req.body.ps_property_country_id,
+    ps_property_state_id: req.body.ps_property_state_id,
+    ps_property_city_id: req.body.ps_property_city_id,
+    ps_property_zipcode: req.body.ps_property_zipcode,
+    ps_property_user_as: req.body.ps_property_user_as,
+    ps_other_party_user_as: req.body.ps_other_party_user_as,
+    ps_other_party_emailid: req.body.ps_other_party_emailid,
+    ps_other_party_invited: req.body.ps_other_party_invited,
+    ps_property_area: req.body.ps_property_area,
+    ps_property_bedroom: req.body.ps_property_bedroom,
+    ps_property_bathroom: req.body.ps_property_bathroom,
+    ps_additional_note: req.body.ps_additional_note,
+    ps_property_type: req.body.ps_property_type,
+    ps_chain_property_id: req.body.ps_chain_property_id,
+
+  });
+  newProperty
+    .save()
+    .then(property => res.redirect("/mydreamhome"))
+    .catch(err => {
+      console.log(err)
+      req.flash('err_msg', 'Something went wrong please try after some time!');
+      res.redirect('/add-property');
+
+    });
+});
+
+
 
 
 module.exports = router;

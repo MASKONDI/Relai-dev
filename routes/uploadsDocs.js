@@ -12,6 +12,10 @@ const ServiceProviderPortfolioSchema = require("../models/service_provider_portf
 
 const CustomerKycSchema = require("../models/customer_kyc");
 
+const PropertiesPictureSchema = require("../models/properties_picture");
+
+const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
+
 
 //** Upload Document Start */
 
@@ -101,6 +105,64 @@ app.post('/upload-kyc-docs', upload.single('kyc-docs'), (req, res, next) => {
       console.log("file Submitted Successfully");
       req.flash('success_msg', "file Uploaded Successfully");
       res.redirect('/kyc-professional');
+    }
+  });
+});
+
+// Uploading the image
+app.post('/upload-properties-pic', upload.single('properties-pic'), (req, res, next) => {
+  var err_msg = null;
+  var success_msg = null;
+  console.log("req is :", req.file);
+
+  var obj = {
+    pps_property_image_name: req.file.filename,
+    pps_property_image: {
+      data: fs.readFileSync(path.join(__dirname + '../../public/upload/' + req.file.filename)),
+      contentType: 'image/png'
+    }
+  }
+
+  PropertiesPictureSchema.create(obj, (err, item) => {
+    if (err) {
+      console.log(err);
+      req.flash('err_msg', "Something went worng please try after some time");
+      res.redirect('/add-property');
+    }
+    else {
+      item.save();
+      console.log("file Submitted Successfully");
+      req.flash('success_msg', "file Uploaded Successfully");
+      res.redirect('/add-property');
+    }
+  });
+});
+
+// Uploading the image
+app.post('/upload-properties-plan-pic', upload.single('properties-plan-pic'), (req, res, next) => {
+  var err_msg = null;
+  var success_msg = null;
+  console.log("req is :", req.file);
+
+  var obj = {
+    ppps_plan_image_name: req.file.filename,
+    ppps_plan_image: {
+      data: fs.readFileSync(path.join(__dirname + '../../public/upload/' + req.file.filename)),
+      contentType: 'image/png'
+    }
+  }
+
+  PropertiesPlanPictureSchema.create(obj, (err, item) => {
+    if (err) {
+      console.log(err);
+      req.flash('err_msg', "Something went worng please try after some time");
+      res.redirect('/add-property');
+    }
+    else {
+      item.save();
+      console.log("file Submitted Successfully");
+      req.flash('success_msg', "file Uploaded Successfully");
+      res.redirect('/add-property');
     }
   });
 });

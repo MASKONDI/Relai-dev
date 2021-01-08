@@ -5,7 +5,6 @@ const passport = require('passport');
 const path = require('path');
 const ejs = require('ejs');
 const app = express();
-
 var fs = require('fs');
 
 var multer = require('multer');
@@ -68,7 +67,10 @@ app.get('/signin', (req, res) => {
 });
 
 app.get('/dashboard', (req, res) => {
-  res.render('dashboard');
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  customers = req.flash('customers');
+  res.render('dashboard', { err_msg, success_msg, customers });
 });
 app.get('/track-your-progress', (req, res) => {
   res.render('track-your-progress');
@@ -76,6 +78,7 @@ app.get('/track-your-progress', (req, res) => {
 app.get('/professionals', (req, res) => {
   res.render('professionals');
 });
+
 app.get('/mydreamhome-details', (req, res) => {
   res.render('mydreamhome-details');
 });
@@ -85,6 +88,13 @@ app.get('/mydreamhome-details-to-dos', (req, res) => {
 app.get('/add-property', (req, res) => {
   res.render('add-property');
 });
+app.get('/mydreamhome-details-message', (req, res) => {
+  res.render('mydreamhome-details-message');
+})
+
+app.get('/professionals-detail-message', (req, res) => {
+  res.render('professionals-detail-message');
+})
 
 app.get('/pricingplan', (req, res) => {
   res.render('pricingplan');
@@ -93,7 +103,12 @@ app.get('/pricingplan', (req, res) => {
 app.get('/forget-password', (req, res) => {
   res.render('forget-password');
 })
-
+app.get('/mydreamhome-details-phase-a', (req, res) => {
+  res.render('mydreamhome-details-phase-a');
+})
+app.get('/mydreamhome', (req, res) => {
+  res.render('mydreamhome');
+})
 
 
 //*******Service Provider and signup and profiles routes */
@@ -163,5 +178,12 @@ app.get('/kyc-professional', (req, res) => {
   success_msg = req.flash('success_msg');
   res.render('kyc-professional', { err_msg, success_msg });
 });
+
+app.get('/kyc-professional', (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('kyc-professional', { err_msg, success_msg });
+});
+
 
 module.exports = app;
