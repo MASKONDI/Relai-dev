@@ -2,21 +2,26 @@ const express = require("express");
 const router = express.Router();
 const CustomerSchema = require("../../models/customers");
 const PropertiesSchema = require("../../models/properties");
-
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
+const auth = require("../../config/auth");
 
+const passport = require("passport");
+require("../../config/passport")(passport);
 
 const { cust_register, cust_signin } = require("../../controllers/customers");
+const ServiceProviderSchema = require("../../models/service_providers");
 // Load Input Validation
 const validateCustomerRegisterInput = require('../../Validation/cust_signup');
 const validateCustomerSigninInput = require('../../Validation/cust_signin');
 
+
 //router.post("/cust_register", cust_register);
 //router.post("/cust_signin", cust_signin);
 
+var isCustomer = auth.isCustomer;
 
 router.post("/cust_register", (req, res) => {
   console.log("rq.body", req.body);
@@ -75,6 +80,7 @@ router.post("/cust_register", (req, res) => {
 router.post("/cust_signin", (req, res) => {
   var err_msg = null;
   var success_msg = null;
+
   const cus_email_id = req.body.cus_email_id;
   const cus_password = req.body.cus_password;
   const { errors, isValid } = validateCustomerSigninInput(req.body);
@@ -97,6 +103,14 @@ router.post("/cust_signin", (req, res) => {
     // Check Password
     bcrypt.compare(cus_password, customers.cus_password).then(isMatch => {
       if (isMatch) {
+        //enableing session variable
+        req.session.success = true;
+        // req.session._id = doc.user_id;
+        req.session.user_id = customers._id;
+        req.session.name = customers.cus_fullname;
+        req.session.email = customers.cus_email_id;
+        req.session.is_user_logged_in = true;
+
         // Customer Matched
         const payload = { id: customers.id, cus_fullname: customers.cus_fullname, cus_email_id: customers.cus_email_id }; // Create JWT Payload
 
@@ -124,15 +138,25 @@ router.post("/cust_signin", (req, res) => {
   });
 });
 
+
+/* -------------------------------------------------------------------------------------------------
+    POST : Customer can add his property.
+    ------------------------------------------------------------------------------------------------
+    */
+
+//router.post("/add-property", passport.authenticate("jwt", { session: false }), (req, res) => {
 router.post("/add-property", (req, res) => {
   var err_msg = null;
   var success_msg = null;
+  var test = req.session.is_user_logged_in;
   console.log("req.body is : ", req.body);
+  console.log("Test is: ", req.session.is_user_logged_in);
+  console.log("customer id is:", req.session.user_id);
   const newProperty = new PropertiesSchema({
     //should be auto-generated mongodb objectId()
     // ps_property_id: req.body,
     ps_unique_code: "properties-" + uuidv4(),
-    //ps_user_id: req.body,  */need to store customer_id
+    ps_user_id: req.session.user_id, //storing customer_ID
     ps_property_name: req.body.ps_property_name,
     ps_property_address: req.body.ps_property_address,
     ps_property_country_id: req.body.ps_property_country_id,
@@ -149,11 +173,10 @@ router.post("/add-property", (req, res) => {
     ps_additional_note: req.body.ps_additional_note,
     ps_property_type: req.body.ps_property_type,
     ps_chain_property_id: req.body.ps_chain_property_id,
-
   });
   newProperty
     .save()
-    .then(property => res.redirect("/mydreamhome"))
+    .then(property => res.json(property)) //res.redirect("/mydreamhome"))
     .catch(err => {
       console.log(err)
       req.flash('err_msg', 'Something went wrong please try after some time!');
@@ -162,6 +185,66 @@ router.post("/add-property", (req, res) => {
     });
 });
 
+
+/* -------------------------------------------------------------------------------------------------
+GET : fetch or search the service providers data based on name, surname, qualifications,
+location, reviews, ratings and quotations.
+------------------------------------------------------------------------------------------------- */
+
+router.get("/fetch-service-provider", (req, res) => {
+  console.log("fetching service provider data for following req: ", req.body);
+
+  // Find Customer by 
+  if (req.body != null) {
+    if (req.body.sps_fullname != null) {
+      ServiceProviderSchema.find({ sps_fullname: req.body.sps_fullname, }).then(service_provider => {
+        // Check for Customer
+        if (!service_provider) {
+          console.log("Service Provider not found");
+          // req.flash('err_msg', 'Service Provider not found');
+          // return res.redirect('/professionals');
+          return res.status(400).json("Service Provider not found")
+        }
+        else {
+          //req.flash('success_msg', errors.sps_email_id);
+          return res.json(service_provider);
+        }
+
+      })
+    }
+  }
+
+})
+
+
+
+router.get('/logout', function (req, res) {
+
+  console.log("logout");
+  var test = req.session.is_user_logged_in;
+
+
+  if (test == true) {
+    req.session.destroy(function (err) {
+      if (err) {
+        return err;
+      } else {
+        return res.redirect('/signin');
+      }
+    });
+  }
+});
+
+//@route Get api/customers/current
+//@desc Return current user
+//@access private
+router.get(
+  "/current",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.json(req.user);
+  }
+);
 
 
 

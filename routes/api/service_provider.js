@@ -59,6 +59,7 @@ POST : service_provider_register post api is responsible for submitting signup-s
 router.post("/service_provider_register", (req, res) => {
   var err_msg = null;
   var success_msg = null;
+  var service_provider = null;
   console.log("req.body is : ", req.body);
   const { errors, isValid } = validateServiceProviderRegisterInput(req.body);
 
@@ -93,7 +94,10 @@ router.post("/service_provider_register", (req, res) => {
           newServiceProvider.sps_password = hash;
           newServiceProvider
             .save()
-            .then(serviceProviders => res.redirect("/signup-professionals-profile"))
+            .then(serviceProviders => {
+              req.flash('service_provider', serviceProviders);
+              res.redirect("/signup-professionals-profile")
+            })
             .catch(err => {
               console.log(err)
               req.flash('err_msg', 'You have entered wrong email or password please try again.');
@@ -114,6 +118,7 @@ router.post("/service_provider_personal_details", (req, res) => {
   var err_msg = null;
   var success_msg = null;
   console.log("req.body is : ", req.body);
+  console.log("req.body is : ", service_provider);
   const serviceProviderPersonalDetails = new ServiceProviderOtherDetailsSchema({
     spods_surname: req.body.spods_surname,
     spods_fornames: req.body.spods_fornames,

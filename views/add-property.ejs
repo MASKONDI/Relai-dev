@@ -9,10 +9,10 @@
             </div>
             <div class="user-name">
               <h2>
-                <%= customers.cus_fullname %>
+                <%= session.name %>
               </h2>
               <a href="#">
-                <%= customers.cus_email_id %>
+                <%= session.email %>
               </a>
             </div>
           </div>
@@ -142,7 +142,8 @@
                             <div class="col-sm-12 col-lg-4"><input type="text"
                                 class="form-control property-form-control-size-fix " id="area"
                                 placeholder="Area(sq. ft.)" name="ps_property_area" data-rule-required="true"
-                                data-msg-required="Area is required!"></div>
+                                data-msg-required="Area is required!">
+                            </div>
                             <div class="col-sm-12 col-lg-4"><input type="text"
                                 class="form-control property-form-control-size-fix " id="bedroom" placeholder="Bedroom"
                                 name=" ps_property_bedroom" data-rule-required="true"
@@ -170,8 +171,11 @@
 
                         <div class="row">
                           <div class="col-sm-12 col-lg-12">
-                            <form action="/upload-properties-pic" method="post" enctype="multipart/form-data">
+                            <form></form>
+                            <form action="/upload-properties-pic" class="form" method="post"
+                              enctype="multipart/form-data">
                               <div class="property-box">
+
                                 <div class=property-inner-section>
                                   <img src="images/upload-icon.png">
                                 </div>
@@ -190,7 +194,8 @@
                                 </span>
                               </div>
                             </form>
-                            <form action="/upload-properties-pic" method="post" enctype="multipart/form-data">
+                            <form action="/upload-properties-pic" class="form" method="post"
+                              enctype="multipart/form-data">
                               <div class="property-box">
 
                                 <div class=property-inner-section>
@@ -211,7 +216,8 @@
                                 </span>
                               </div>
                             </form>
-                            <form action="/upload-properties-pic" method="post" enctype="multipart/form-data">
+                            <form action="/upload-properties-pic" class="form" method="post"
+                              enctype="multipart/form-data">
                               <div class="property-box">
 
                                 <div class=property-inner-section>
@@ -244,7 +250,8 @@
 
                         <div class="row">
                           <div class="col-sm-12 col-lg-12">
-                            <form action="/upload-properties-plan-pic" method="post" enctype="multipart/form-data">
+                            <form action="/upload-properties-plan-pic" class="form" method="post"
+                              enctype="multipart/form-data">
                               <div class="property-box">
 
                                 <div class=property-inner-section>
@@ -265,7 +272,8 @@
                                 </span>
                               </div>
                             </form>
-                            <form action="/upload-properties-plan-pic" method="post" enctype="multipart/form-data">
+                            <form action="/upload-properties-plan-pic" class="form" method="post"
+                              enctype="multipart/form-data">
 
                               <div class="property-box">
                                 <div class=property-inner-section>
@@ -287,7 +295,8 @@
                                 </span>
                               </div>
                             </form>
-                            <form action="/upload-properties-plan-pic" method="post" enctype="multipart/form-data">
+                            <form action="/upload-properties-plan-pic" class="form" method="post"
+                              enctype="multipart/form-data">
                               <div class="property-box">
 
                                 <div class=property-inner-section>
@@ -318,14 +327,15 @@
                                 Property</button>
                             </div>
                           </div>
+                        </div>
+                      </div>
             </form>
           </div>
         </div>
       </div>
     </div>
   </div>
-  </div>
-  </div>
+
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js"

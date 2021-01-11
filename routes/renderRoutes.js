@@ -6,9 +6,11 @@ const path = require('path');
 const ejs = require('ejs');
 const app = express();
 var fs = require('fs');
-
+var auth = require('../config/auth');
 var multer = require('multer');
 const ServiceProviderPortfolioSchema = require("../models/service_provider_portfolio");
+
+var isCustomer = auth.isCustomer;
 
 //***Index or home page related routes */
 app.get('/buy-sell', (req, res) => {
@@ -58,44 +60,124 @@ app.get("/signup", (req, res) => {
 
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('signup', { err_msg, success_msg });
+  res.render('signup', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 })
+
+
+
 app.get('/signin', (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('signin', { err_msg, success_msg });
+  var test = req.session.is_user_logged_in;
+  console.log("test is :", req.session.is_user_logged_in);
+  if (test == true) {
+    res.redirect('/dashboard');
+  } else {
+    res.render('signin', {
+      err_msg, success_msg, layout: false,
+      session: req.session
+    });
+  }
 });
 
-app.get('/dashboard', (req, res) => {
+
+
+
+app.get('/dashboard', isCustomer, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   customers = req.flash('customers');
-  res.render('dashboard', { err_msg, success_msg, customers });
+  res.render('dashboard', {
+    err_msg, success_msg, customers, layout: false,
+    session: req.session
+  });
 });
-app.get('/track-your-progress', (req, res) => {
-  res.render('track-your-progress');
+app.get('/track-your-progress', isCustomer, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('track-your-progress', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 });
-app.get('/professionals', (req, res) => {
-  res.render('professionals');
+app.get('/professionals', isCustomer, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('professionals', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+app.get('/professionals-detail', isCustomer, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('professionals-detail', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 });
 
-app.get('/mydreamhome-details', (req, res) => {
-  res.render('mydreamhome-details');
+app.get('/mydreamhome-details', isCustomer, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('mydreamhome-details', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 });
-app.get('/mydreamhome-details-to-dos', (req, res) => {
-  res.render('mydreamhome-details-to-dos');
+app.get('/mydreamhome-details-docs', isCustomer, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('mydreamhome-details-docs', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 });
-app.get('/add-property', (req, res) => {
-  res.render('add-property');
+app.get('/mydreamhome-details-to-dos', isCustomer, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('mydreamhome-details-to-dos', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 });
-app.get('/mydreamhome-details-message', (req, res) => {
-  res.render('mydreamhome-details-message');
+app.get('/add-property', isCustomer, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('add-property', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+app.get('/mydreamhome-details-message', isCustomer, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('mydreamhome-details-message', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 })
 
 app.get('/professionals-detail-message', (req, res) => {
-  res.render('professionals-detail-message');
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('professionals-detail-message', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 })
 
+app.get('/professionals-hirenow', isCustomer, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('professionals-hirenow', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+})
 app.get('/pricingplan', (req, res) => {
   res.render('pricingplan');
 })
@@ -104,10 +186,20 @@ app.get('/forget-password', (req, res) => {
   res.render('forget-password');
 })
 app.get('/mydreamhome-details-phase-a', (req, res) => {
-  res.render('mydreamhome-details-phase-a');
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('mydreamhome-details-phase-a', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 })
 app.get('/mydreamhome', (req, res) => {
-  res.render('mydreamhome');
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('mydreamhome', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 })
 
 
@@ -115,7 +207,8 @@ app.get('/mydreamhome', (req, res) => {
 app.get('/signup-service-provider', (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('signup-service-provider', { err_msg, success_msg });
+  service_provider = req.flash('service_provider');
+  res.render('signup-service-provider', { err_msg, success_msg, service_provider });
 });
 
 app.get('/signin-professional', (req, res) => {

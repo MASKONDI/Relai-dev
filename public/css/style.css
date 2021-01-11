@@ -2032,9 +2032,9 @@ ul.docs-list.last-doc li{
     ul.icon-list li {
         display: inline-block;
         margin-right: 8px;
-        height: 137px;
+        height: 155px;
         float: left;
-        width: 95px;
+        width: 88px;
         padding: 15px 10px;
         text-align: center;
         border-radius: 10px;
@@ -2455,7 +2455,7 @@ ul.docs-list.last-doc li{
     }
     #selectBox {
         height: 55px;
-        margin-bottom: 20px;
+        margin-top: 20px;
         border-radius: 10px;
     }
    #selectBox option {

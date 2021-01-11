@@ -1,8 +1,6 @@
 var mongoose = require('mongoose');
-var nodemailer = require('nodemailer');
 const session = require('express-session');
-var { Registration } = require('../model/user_model');
-var { TenderFor, CountryData, StateData, CityData } = require('../model/tender_model');
+var { Customers } = require('../models/customers');
 
 
 var isAdmin = function (req, res, next) {
@@ -16,8 +14,9 @@ var isAdmin = function (req, res, next) {
   next();
 
 }
+//userId 
 
-var isUser = function (req, res, next) {
+var isCustomer = function (req, res, next) {
   var check_user = req.session.is_user_logged_in;
   var check_user_id = req.session.re_us_id;
   if (check_user != undefined && check_user != "" && check_user == true && check_user_id != "") {
@@ -25,7 +24,7 @@ var isUser = function (req, res, next) {
     next();
   } else {
     req.flash('danger', 'Please log in first.');
-    res.redirect('/login');
+    res.redirect('/signin');
   }
 }
 
@@ -69,19 +68,9 @@ var isContractor = function (req, res, next) {
 }
 
 
-
-// exports.transporter = nodemailer.createTransport({
-//   service: 'gmail',
-//   auth: {
-//     user: 'questtestmail@gmail.com',
-//     pass: 'test123R',
-
-//   }
-// });
-
 module.exports = {
 
-  isUser: isUser,
+  isCustomer: isCustomer,
   isAdmin: isAdmin,
   isDeveloper: isDeveloper,
   isContractor: isContractor,

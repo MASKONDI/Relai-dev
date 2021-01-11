@@ -23,8 +23,7 @@ const uploadsDocs = require("./routes/uploadsDocs");
 const app = express();
 
 
-// Passport middleware
-app.use(passport.initialize());
+
 
 // DB Config
 const db = require("./config/keys").mongoURI;
@@ -39,21 +38,26 @@ mongoose
 // routes middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); // parse form data client
+//Passport middleware
+app.use(passport.initialize());
+
+//passport Config
+const myPassportService = require("./config/passport")(passport);
 
 app.use(session({
   secret: 'djhxcvxfgshajfgjhgsjhfgsakjeauytsdfy',
   resave: false,
   saveUninitialized: true,
-  cookie: { maxAge: 60000 }
+  //cookie: { maxAge: 60000 }
 }));
 
 app.use(flash());
-// app.use(session({
-//   secret: 'keyboard cat',
-//   resave: false,
-//   saveUninitialized: true,
-//   //cookie: { maxAge: 60000 }
-// }));
+
+app.use(function (req, res, next) {
+  res.locals.name = req.session.name;
+  res.locals.email = req.session.email;
+  next();
+});
 
 app.use(function (req, res, next) {
   res.locals.messages = req.flash();

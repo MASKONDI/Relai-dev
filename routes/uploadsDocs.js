@@ -72,7 +72,7 @@ app.post('/upload', upload.single('portfolio-docs'), (req, res, next) => {
     else {
       item.save();
       console.log("file Submitted Successfully");
-      req.flash('success_msg', "file Uploaded Successfully");
+      req.flash('success_msg', "Portfolio-docs Uploaded Successfully");
       res.redirect('/portfolio');
     }
   });
@@ -103,7 +103,7 @@ app.post('/upload-kyc-docs', upload.single('kyc-docs'), (req, res, next) => {
     else {
       item.save();
       console.log("file Submitted Successfully");
-      req.flash('success_msg', "file Uploaded Successfully");
+      req.flash('success_msg', "KYC-docs Uploaded Successfully");
       res.redirect('/kyc-professional');
     }
   });
@@ -132,7 +132,7 @@ app.post('/upload-properties-pic', upload.single('properties-pic'), (req, res, n
     else {
       item.save();
       console.log("file Submitted Successfully");
-      req.flash('success_msg', "file Uploaded Successfully");
+      req.flash('success_msg', "Properties picture Uploaded Successfully");
       res.redirect('/add-property');
     }
   });
@@ -161,7 +161,7 @@ app.post('/upload-properties-plan-pic', upload.single('properties-plan-pic'), (r
     else {
       item.save();
       console.log("file Submitted Successfully");
-      req.flash('success_msg', "file Uploaded Successfully");
+      req.flash('success_msg', "Properties plan Picture Uploaded Successfully");
       res.redirect('/add-property');
     }
   });
