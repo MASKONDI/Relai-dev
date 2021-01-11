@@ -89,9 +89,8 @@ app.get('/signin', (req, res) => {
 app.get('/dashboard', isCustomer, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  customers = req.flash('customers');
   res.render('dashboard', {
-    err_msg, success_msg, customers, layout: false,
+    err_msg, success_msg, layout: false,
     session: req.session
   });
 });

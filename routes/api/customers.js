@@ -126,7 +126,6 @@ router.post("/cust_signin", (req, res) => {
             });
           }
         );
-        req.flash("customers", customers);
         res.redirect('/dashboard')
       } else {
         errors.cus_password = 'Password incorrect';
@@ -176,7 +175,7 @@ router.post("/add-property", (req, res) => {
   });
   newProperty
     .save()
-    .then(property => res.json(property)) //res.redirect("/mydreamhome"))
+    .then(property => res.redirect("/mydreamhome"))
     .catch(err => {
       console.log(err)
       req.flash('err_msg', 'Something went wrong please try after some time!');
