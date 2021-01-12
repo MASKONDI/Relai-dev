@@ -276,8 +276,8 @@ router.post('/forget-password', function (req, res) {
                   text: 'Dear Customer,' + '\n\n' + 'New Password from Relai.\n\n' +
                     'Password: ' + new_pass + '\n\n' +
 
-                    // 'We suggest you to please change your password after successfully logging in on the portal using the above password :\n' + 'Here is the change password link: http://' + req.headers.host + '/Change-password' + '\n\n' +
-                    // 'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+                    'We suggest you to please change your password after successfully logging in on the portal using the above password :\n' + 'Here is the change password link: http://' + req.headers.host + '/Change-password' + '\n\n' +
+                    'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
 
                 };
                 smtpTransport.sendMail(mailOptions, function (err) {
