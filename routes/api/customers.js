@@ -281,7 +281,7 @@ router.post('/forget-password', function (req, res) {
 
                 };
                 smtpTransport.sendMail(mailOptions, function (err) {
-                  if (err) { console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong.'); res.redirect('/forget-password') } else {
+                  if (err) { console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong.please connect support team'); res.redirect('/forget-password') } else {
                     req.flash('success_msg', 'Password has been sent successfully to your registered email, please check your mail...');
                     res.redirect('/forget-password')
                   }
