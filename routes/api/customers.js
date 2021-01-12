@@ -262,6 +262,9 @@ router.post('/forget-password', function (req, res) {
                   // tls: {
                   //     rejectUnauthorized: false
                   // }
+                  host: 'smtp.gmail.com',
+                  port: 465,
+                  secure: true,
                   service: 'Gmail',
                   auth: {
                     user: 'golearning4@gmail.com',
