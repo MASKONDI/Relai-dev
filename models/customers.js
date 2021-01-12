@@ -50,13 +50,13 @@ const CustomerSchema = new Schema({
   },
   cus_email_verification_status: {
     type: String,
-    enum: ['DEFAULT', 'TRUE'],
-    default: 'TRUE'
+    enum: ['yes', 'no'],
+    default: 'no'
   },
   cus_kyc_status: {
     type: String,
-    enum: ['DEFAULT', 'TRUE'],
-    default: 'TRUE'
+    enum: ['yes', 'no'],
+    default: 'no'
   },
   cus_status: {
 

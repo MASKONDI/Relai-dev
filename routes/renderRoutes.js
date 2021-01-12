@@ -72,15 +72,11 @@ app.get('/signin', (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   var test = req.session.is_user_logged_in;
-  console.log("test is :", req.session.is_user_logged_in);
-  if (test == true) {
-    res.redirect('/dashboard');
-  } else {
-    res.render('signin', {
-      err_msg, success_msg, layout: false,
-      session: req.session
-    });
-  }
+  res.render('signin', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+
 });
 
 
@@ -181,9 +177,47 @@ app.get('/pricingplan', (req, res) => {
   res.render('pricingplan');
 })
 
-app.get('/forget-password', (req, res) => {
-  res.render('forget-password');
-})
+// app.get('/forget-password', (req, res) => {
+//   res.render('forget-password');
+// })
+/***************** get forgot pass **************/
+
+app.get('/forget-password', function (req, res) {
+  var test = req.session.is_user_logged_in;
+  if (test == true) {
+    res.redirect('/dashboard');
+  } else {
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('forget-password', {
+      err_msg,
+      success_msg,
+      layout: false,
+      session: req.session,
+    });
+  }
+});
+
+
+
+
+//***************** get resend link **************//
+app.get('/Resend-link', function (req, res) {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  var test = req.session.is_user_logged_in;
+  // else 
+  // {
+  res.render('Resend-link', {
+    err_msg,
+    success_msg,
+    layout: false,
+    session: req.session,
+  });
+  // }
+});
+
+
 app.get('/mydreamhome-details-phase-a', (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');

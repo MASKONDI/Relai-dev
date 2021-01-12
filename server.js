@@ -32,9 +32,6 @@ mongoose
   .connect(db)
   .then(() => console.log("Database Connected"))
   .catch(err => console.log(err));
-
-
-
 // routes middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); // parse form data client

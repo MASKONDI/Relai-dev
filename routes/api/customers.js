@@ -7,9 +7,15 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const auth = require("../../config/auth");
-
 const passport = require("passport");
 require("../../config/passport")(passport);
+
+var nodemailer = require('nodemailer');
+const http = require('http');
+var crypto = require('crypto');
+var dateFormat = require('dateformat');
+var dateTime = require('node-datetime');
+
 
 const { cust_register, cust_signin } = require("../../controllers/customers");
 const ServiceProviderSchema = require("../../models/service_providers");
@@ -43,7 +49,7 @@ router.post("/cust_register", (req, res) => {
       res.redirect('/signup');
     } else {
       const newCustomer = new CustomerSchema({
-        cus_unique_code: "cus-" + uuidv4(),
+        cus_unique_code: "cust-" + uuidv4(),
         cus_fullname: req.body.cus_fullname,
         cus_email_id: req.body.cus_email_id,
         cus_phone_number: req.body.cus_phone_number,
@@ -149,8 +155,6 @@ router.post("/add-property", (req, res) => {
   var success_msg = null;
   var test = req.session.is_user_logged_in;
   console.log("req.body is : ", req.body);
-  console.log("Test is: ", req.session.is_user_logged_in);
-  console.log("customer id is:", req.session.user_id);
   const newProperty = new PropertiesSchema({
     //should be auto-generated mongodb objectId()
     // ps_property_id: req.body,
@@ -212,17 +216,95 @@ router.get("/fetch-service-provider", (req, res) => {
       })
     }
   }
-
 })
+
+
+// ***************** post forget pass **************//
+
+router.post('/forget-password', function (req, res) {
+  console.log("req.body is :", req.body);
+  CustomerSchema.find({
+    'cus_email_id': req.body.cus_email_id,
+    //'cus_email_verification_status': 'yes'
+  }, function (err, result) {
+    if (err) {
+      console.log('err', err);
+      req.flash('err_msg', 'Please enter registered Email address.');
+      res.redirect('/forget-password');
+    } else {
+
+      if (result != '' && result != null) {
+        new_pass = Math.random().toString(36).slice(-6);
+        var hashPassword = "";
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(new_pass, salt, (err, hash) => {
+            if (err) throw err;
+            hashPassword = hash;
+
+            CustomerSchema.updateOne({
+              'cus_email_id': req.body.cus_email_id
+            }, {
+              $set: {
+                cus_password: hashPassword
+              }
+            }, {
+              upsert: true
+            }, function (err) {
+              if (err) {
+                console.log("err is :", err);
+                req.flash('err_msg', 'Something went wrong.');
+                res.redirect('/forget-password')
+              } else {
+
+                var smtpTransport = nodemailer.createTransport({
+                  // port: 25,
+                  // host: 'localhost',
+                  // tls: {
+                  //     rejectUnauthorized: false
+                  // }
+                  service: 'Gmail',
+                  auth: {
+                    user: 'golearning4@gmail.com',
+                    pass: 'Maskondi#1997',
+                  }
+                });
+                const mailOptions = {
+                  to: req.body.cus_email_id,
+                  from: 'golearning4@gmail.com',
+                  subject: 'Relai Forget Password',
+
+                  text: 'Dear Customer,' + '\n\n' + 'New Password from Relai.\n\n' +
+                    'Password: ' + new_pass + '\n\n' +
+
+                    // 'We suggest you to please change your password after successfully logging in on the portal using the above password :\n' + 'Here is the change password link: http://' + req.headers.host + '/Change-password' + '\n\n' +
+                    // 'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+
+                };
+                smtpTransport.sendMail(mailOptions, function (err) {
+                  if (err) { console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong.'); res.redirect('/forget-password') } else {
+                    req.flash('success_msg', 'Password has been sent successfully to your registered email, please check your mail...');
+                    res.redirect('/forget-password')
+                  }
+                });
+              }
+            });
+          });
+        });
+      } else {
+        req.flash('err_msg', 'Please enter registered Email address.');
+        res.redirect('/forget-password');
+      }
+
+    }
+  });
+});
+
 
 
 
 router.get('/logout', function (req, res) {
-
   console.log("logout");
   var test = req.session.is_user_logged_in;
-
-
   if (test == true) {
     req.session.destroy(function (err) {
       if (err) {
