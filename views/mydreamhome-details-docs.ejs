@@ -11,34 +11,12 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <label class="check-permission"><img src="images/recent-user-1.png">Alex Jackson, <span>Architect</span>
-            <input type="checkbox" checked="checked">
-            <span class="checkmark"></span>
-          </label>
-          <label class="check-permission"><img src="images/recent-user-1.png">Michael Williams, <span>Financial
-              Advisor</span>
+          <% data.forEach(function(row){ %>
+          <label class="check-permission"><img src="images/recent-user-1.png"><%= row.sps_fullname%>, <span>Architect</span>
             <input type="checkbox">
             <span class="checkmark"></span>
           </label>
-          <label class="check-permission"><img src="images/recent-user-1.png">Rachel Green, <span>Interior
-              Designer</span>
-            <input type="checkbox">
-            <span class="checkmark"></span>
-          </label>
-          <label class="check-permission"><img src="images/recent-user-1.png">Alex Jackson, <span>Architect</span>
-            <input type="checkbox">
-            <span class="checkmark"></span>
-          </label>
-          <label class="check-permission"><img src="images/recent-user-1.png">Michael Williams, <span>Financial
-              Advisor</span>
-            <input type="checkbox">
-            <span class="checkmark"></span>
-          </label>
-          <label class="check-permission"><img src="images/recent-user-1.png">Rachel Green, <span>Interior
-              Designer</span>
-            <input type="checkbox">
-            <span class="checkmark"></span>
-          </label>
+          <% });%>
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">

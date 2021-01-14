@@ -9,7 +9,7 @@ var fs = require('fs');
 var auth = require('../config/auth');
 var multer = require('multer');
 const ServiceProviderPortfolioSchema = require("../models/service_provider_portfolio");
-
+const ServiceProviderSchema = require("../models/service_providers");
 var isCustomer = auth.isCustomer;
 
 //***Index or home page related routes */
@@ -79,9 +79,6 @@ app.get('/signin', (req, res) => {
 
 });
 
-
-
-
 app.get('/dashboard', isCustomer, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -98,14 +95,41 @@ app.get('/track-your-progress', isCustomer, (req, res) => {
     session: req.session
   });
 });
+
 app.get('/professionals', isCustomer, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('professionals', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
+  ServiceProviderSchema.find({sps_status:'active'}).then(service_provider => {
+    // Check for Customer
+  
+    
+    if (!service_provider) {
+      console.log("Service Provider not found");
+      // req.flash('err_msg', 'Service Provider not found');
+      // return res.redirect('/professionals');
+
+      return res.status(400).json("Service Provider not found")
+    }
+    else {
+
+      res.render('professionals', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        data:service_provider
+      });
+    }
+
+  })
 });
+
+// app.get('/professionals', isCustomer, (req, res) => {
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   res.render('professionals', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session
+//   });
+// });
 app.get('/professionals-detail', isCustomer, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -126,10 +150,20 @@ app.get('/mydreamhome-details', isCustomer, (req, res) => {
 app.get('/mydreamhome-details-docs', isCustomer, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('mydreamhome-details-docs', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
+  ServiceProviderSchema.find({sps_status:'active'}).then(service_provider => {
+    if (!service_provider) {
+      console.log("Service Provider not found");
+      return res.status(400).json("Service Provider not found")
+    }
+    else {
+      res.render('mydreamhome-details-docs', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        data:service_provider
+      });
+    }
+
+  })
 });
 app.get('/mydreamhome-details-to-dos', isCustomer, (req, res) => {
   err_msg = req.flash('err_msg');

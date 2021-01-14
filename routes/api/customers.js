@@ -196,7 +196,7 @@ location, reviews, ratings and quotations.
 
 router.get("/fetch-service-provider", (req, res) => {
   console.log("fetching service provider data for following req: ", req.body);
-
+ 
   // Find Customer by 
   if (req.body != null) {
     if (req.body.sps_fullname != null) {
@@ -210,7 +210,7 @@ router.get("/fetch-service-provider", (req, res) => {
         }
         else {
           //req.flash('success_msg', errors.sps_email_id);
-          return res.json(service_provider);
+          return res.status(200).json(service_provider);
         }
 
       })
@@ -329,7 +329,7 @@ router.get(
     res.json(req.user);
   }
 );
-
+//Change-permission====================
 
 
 module.exports = router;
