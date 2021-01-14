@@ -15,7 +15,7 @@ const CustomerKycSchema = require("../models/customer_kyc");
 const PropertiesPictureSchema = require("../models/properties_picture");
 
 const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
-
+const CustomerUploadDocsSchema = require("../models/customer_upload_document");
 
 //** Upload Document Start */
 
@@ -166,6 +166,43 @@ app.post('/upload-properties-plan-pic', upload.single('properties-plan-pic'), (r
     }
   });
 });
+
+// Uploading the image
+app.post('/upload-new-document', upload.single('new_Docs'), (req, res, next) => {
+  var err_msg = null;
+  var success_msg = null;
+  console.log("req is :", req.file);
+  //add conditions for type of file and set the type of file
+  console.log(".........files.......", req.file.filename)
+  var ext = path.extname(req.file.filename);
+  let ext_type = (ext == ".mp4") ? "video" : "image";
+  console.log("file extension is", { ext_type, ext })
+  var obj = {
+    cuds_document_name: req.file.filename,
+    cuds_customer_id: req.session.user_id,
+    cuds_document_type: ext_type,
+    cuds_document_file: {
+      data: fs.readFileSync(path.join(__dirname + '../../public/upload/' + req.file.filename)),
+      contentType: ext
+    }
+  }
+
+  CustomerUploadDocsSchema.create(obj, (err, item) => {
+    if (err) {
+      console.log(err);
+      req.flash('err_msg', "Something went worng please try after some time");
+      res.redirect('/mydreamhome-details-docs');
+    }
+    else {
+      item.save();
+      console.log("file Submitted Successfully");
+      req.flash('success_msg', "Properties plan Picture Uploaded Successfully");
+      res.redirect('/mydreamhome-details-docs');
+    }
+  });
+});
+
+
 
 
 module.exports = app;

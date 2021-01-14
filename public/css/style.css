@@ -992,6 +992,15 @@ a.btn.btn-add-property, a.btn.btn-get-help, button.btn.btn-cancel{
     border-radius: 10px;
     background-color: #005377;
 }
+.btn-add-property{
+    color: #fff;
+    width: 164px;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    background-color: #005377;
+    margin-left: 10px;
+}
 .btn-add-propertyfix{
     color: #005377;
     width: 120px;
@@ -5004,4 +5013,12 @@ button.btn.btn-signup {
     max-width: 1200px;
 }
 }
-    
+/* .clearfix .float-right .custom-file-input {
+    height: 46px;
+    width: 18%;
+    position: absolute;
+     left: 0; 
+    right: 0;
+    top: 0;
+    cursor: pointer;
+} */
