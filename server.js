@@ -4,14 +4,10 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
 const ejs = require('ejs');
-
 //var flash = require('express-flash')
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var flash = require('req-flash');
-
-
-
 // import routes
 const customerRoutes = require("./routes/api/customers");
 const serviceProviderRoutes = require("./routes/api/service_provider");
