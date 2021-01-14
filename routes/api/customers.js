@@ -259,9 +259,9 @@ router.post('/forget-password', function (req, res) {
                 var smtpTransport = nodemailer.createTransport({
                   // port: 25,
                   // host: 'localhost',
-                  // tls: {
-                  //     rejectUnauthorized: false
-                  // }
+                  tls: {
+                    rejectUnauthorized: false
+                  },
                   host: 'smtp.gmail.com',
                   port: 465,
                   secure: true,

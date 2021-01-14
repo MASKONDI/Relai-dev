@@ -40,7 +40,7 @@ var isDeveloper = function (req, res, next) {
   }
 }
 
-var isAva = function (req, res, next) {
+var isServiceProvider = function (req, res, next) {
   var check_user_type = req.session.user_type;
 
   if (check_user_type == '5d306e947d7a22e731d4a143') {
@@ -74,7 +74,7 @@ module.exports = {
   isAdmin: isAdmin,
   isDeveloper: isDeveloper,
   isContractor: isContractor,
-  isAva: isAva
+  isServiceProvider: isServiceProvider
 
 }
 
