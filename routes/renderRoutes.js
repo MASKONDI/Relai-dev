@@ -10,6 +10,8 @@ var auth = require('../config/auth');
 var multer = require('multer');
 const ServiceProviderPortfolioSchema = require("../models/service_provider_portfolio");
 const ServiceProviderSchema = require("../models/service_providers");
+const CustomerUploadDocsSchema = require("../models/customer_upload_document");
+
 var isCustomer = auth.isCustomer;
 
 //***Index or home page related routes */
@@ -147,9 +149,14 @@ app.get('/mydreamhome-details', isCustomer, (req, res) => {
     session: req.session
   });
 });
-app.get('/mydreamhome-details-docs', isCustomer, (req, res) => {
+
+app.get('/mydreamhome-details-docs', isCustomer, async(req, res) => {
+
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
+   const allDocument = await CustomerUploadDocsSchema.find();
+   
+
   ServiceProviderSchema.find({sps_status:'active'}).then(service_provider => {
     if (!service_provider) {
       console.log("Service Provider not found");
@@ -159,12 +166,32 @@ app.get('/mydreamhome-details-docs', isCustomer, (req, res) => {
       res.render('mydreamhome-details-docs', {
         err_msg, success_msg, layout: false,
         session: req.session,
-        data:service_provider
+        data:service_provider,
+        allDocument:allDocument
       });
     }
 
   })
 });
+// app.get('/mydreamhome-details-docs', isCustomer, (req, res) => {
+  
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   ServiceProviderSchema.find({sps_status:'active'}).then(service_provider => {
+//     if (!service_provider) {
+//       console.log("Service Provider not found");
+//       return res.status(400).json("Service Provider not found")
+//     }
+//     else {
+//       res.render('mydreamhome-details-docs', {
+//         err_msg, success_msg, layout: false,
+//         session: req.session,
+//         data:service_provider
+//       });
+//     }
+
+//   })
+// });
 app.get('/mydreamhome-details-to-dos', isCustomer, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');

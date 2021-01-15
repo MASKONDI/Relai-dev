@@ -64,7 +64,7 @@ app.use(function (req, res, next) {
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
-app.use(express.static(path.join(__dirname, 'public'))); // configure express to use public folder
+app.use(express.static(path.join(__dirname, './public/'))); // configure express to use public folder
 
 app.use(cookieParser('keyboard cat'))
 
