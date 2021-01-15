@@ -398,7 +398,14 @@
       }
     });  
   </script>
+  <script>
+     $(document).ready(function () {
+      $("form :input").change(function() {
+  $(this).closest('form').data('changed', true);
+});
 
+    });  
+  </Script>
   </body>
 
   </html>

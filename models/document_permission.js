@@ -13,7 +13,7 @@ const DocumentPermissionSchema = new Schema({
   },
   dps_service_provider_id: {
     type: Schema.Types.ObjectId,
-    ref="customers"
+    ref="serviceProviders"
   },
   dps_document_id: {
     type: Schema.Types.ObjectId,
