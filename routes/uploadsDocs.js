@@ -176,11 +176,20 @@ app.post('/upload-new-document', upload.single('new_Docs'), (req, res, next) => 
   console.log(".........files.......", req.file.filename)
   var ext = path.extname(req.file.filename);
   let ext_type = (ext == ".mp4") ? "video" : "image";
+  let size = req.file.size / 1024;
+  let docs_size = "";
+  if (size > 1024) {
+    size = size / 1024;
+    docs_size = size.toFixed(1) + " MB";
+  } else {
+    docs_size = size.toFixed(1) + " KB"
+  }
   console.log("file extension is", { ext_type, ext })
   var obj = {
     cuds_document_name: req.file.filename,
     cuds_customer_id: req.session.user_id,
     cuds_document_type: ext_type,
+    cuds_document_size: docs_size,
     cuds_document_file: {
       data: fs.readFileSync(path.join(__dirname + '../../public/upload/' + req.file.filename)),
       contentType: ext
@@ -196,7 +205,7 @@ app.post('/upload-new-document', upload.single('new_Docs'), (req, res, next) => 
     else {
       item.save();
       console.log("file Submitted Successfully");
-      req.flash('success_msg', "Properties plan Picture Uploaded Successfully");
+      //req.flash('success_msg', "Properties plan Picture Uploaded Successfully");
       res.redirect('/mydreamhome-details-docs');
     }
   });

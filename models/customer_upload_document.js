@@ -18,6 +18,10 @@ const CustomerUploadDocsSchema = new Schema({
     data: Buffer,
     contantType: String
   },
+  cuds_document_size: {
+    type: String,
+  },
+
   cuds_document_type: {
     type: String,
     enum: ['image', 'video']
