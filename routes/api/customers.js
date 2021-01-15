@@ -196,7 +196,7 @@ location, reviews, ratings and quotations.
 
 router.get("/fetch-service-provider", (req, res) => {
   console.log("fetching service provider data for following req: ", req.body);
- 
+
   // Find Customer by 
   if (req.body != null) {
     if (req.body.sps_fullname != null) {
