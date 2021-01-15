@@ -22,7 +22,7 @@ const ServiceProviderSchema = require("../../models/service_providers");
 // Load Input Validation
 const validateCustomerRegisterInput = require('../../Validation/cust_signup');
 const validateCustomerSigninInput = require('../../Validation/cust_signin');
-
+const DocumentPermissionSchema = require('../../models/document_permission')
 
 //router.post("/cust_register", cust_register);
 //router.post("/cust_signin", cust_signin);
@@ -331,5 +331,23 @@ router.get(
 );
 //Change-permission====================
 
+router.post('/change-permision',(req,res)=>{
+  var idArray = req.body.checked_elem.split(",");
+  
+  // DocumentPermissionSchema 
+  for(var service_provider_id of idArray){
+    var Obj = {
+      dps_customer_id:req.body.cust_id,
+      dps_service_provider_id:service_provider_id,
+    }
+    var docPermissionSave =new DocumentPermissionSchema(Obj)
+    docPermissionSave.save().then((data)=>{
+      console.log(data)
+    }).catch(err => {
+      console.log(err)
+      req.flash('err_msg', 'Something went wrong please try after some time!');
 
+    });
+  }
+})
 module.exports = router;
