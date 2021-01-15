@@ -24,7 +24,7 @@ var Storage = multer.diskStorage({
     callback(null, "./public/upload");
   },
   filename: function (req, file, callback) {
-    callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
+    callback(null, file.originalname);
   }
 });
 var maxSize = 1000000 * 1000;
