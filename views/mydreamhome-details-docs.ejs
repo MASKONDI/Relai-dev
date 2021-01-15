@@ -130,7 +130,7 @@
                     <td><img class="pdf-file" src="/upload/<%= row.cuds_document_name%>">
                       <p><span><%= row.cuds_document_name%></span> 256.0 KB</p>
                     </td>
-                    <td><span class="professionals-view"><%= row.cuds_created_at%>| Downloaded by<ul>
+                    <td><span class="professionals-view"><%=moment.unix( row.cuds_created_at/1000).format("D MMM YYYY") %>| Downloaded by<ul>
                           <li class="dropdown"><a href="#" class="dropdown-toggle" type="button" id="dropdownMenuButton"
                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">2 professionals</a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

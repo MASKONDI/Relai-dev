@@ -5,6 +5,7 @@ const passport = require('passport');
 const path = require('path');
 const ejs = require('ejs');
 const app = express();
+const moment = require('moment');
 var fs = require('fs');
 var auth = require('../config/auth');
 var multer = require('multer');
@@ -167,7 +168,8 @@ app.get('/mydreamhome-details-docs', isCustomer, async(req, res) => {
         err_msg, success_msg, layout: false,
         session: req.session,
         data:service_provider,
-        allDocument:allDocument
+        allDocument:allDocument,
+        moment:moment
       });
     }
 
