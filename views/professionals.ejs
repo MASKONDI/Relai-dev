@@ -136,43 +136,49 @@
             </div>
           </div>
           <div class="dashboard-inner">
-            
+
             <div class="row">
               <% data.forEach(function(row){ %>
-                
-              <div class="col-lg-3">
-                <div class="card card-fix2">
-                  <div class="row">
-                    <div class="float-left card-header-fix">
-                      <a href="/professionals-detail"> <img class="card-img-top" src="images/recent-user-2.png"
-                          alt="Card image cap"> </a>
-                    </div>
-                    <div class="float-right card-content-fix">
-                      <h5><%= row.sps_fullname%></h5>
-                      <p>Architect</p>
-                    </div>
-                  </div>
-                  <hr class="divider" />
-                  <div class="row">
-                    <div class="float-left card-icon-fix">
-                      <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span>5
-                        years</span>
-                    </div>
-                    <div class="float-right card-icon-fix2">
-                      <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>4.0
-                        Rating</span>
 
+                <div class="col-lg-3">
+                  <div class="card card-fix2">
+                    <div class="row">
+                      <div class="float-left card-header-fix">
+                        <a href="/professionals-detail"> <img class="card-img-top" src="images/recent-user-2.png"
+                            alt="Card image cap"> </a>
+                      </div>
+                      <div class="float-right card-content-fix">
+                        <h5>
+                          <%= row.sps_fullname%>
+                        </h5>
+                        <p>
+                          <%= row.sps_role_name%>
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div class="card-body">
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed dLorem ipsum
-                      dolor sit</p>
+                    <hr class="divider" />
+                    <div class="row">
+                      <div class="float-left card-icon-fix">
+                        <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span>
+                          <%= row.sps_experience%>
+                            years
+                        </span>
+                      </div>
+                      <div class="float-right card-icon-fix2">
+                        <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>4.0
+                          Rating</span>
+
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed dLorem ipsum
+                        dolor sit</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <% }); %>
+                <% }); %>
             </div>
-            
+
           </div>
         </div>
       </div>

@@ -36,7 +36,6 @@ var upload = multer({
 });
 
 
-
 // Retriving the image
 // app.get('/upload', (req, res) => {
 //   ServiceProviderPortfolioSchema.find({}, (err, items) => {
@@ -53,10 +52,13 @@ var upload = multer({
 app.post('/upload', upload.single('portfolio-docs'), (req, res, next) => {
   var err_msg = null;
   var success_msg = null;
-  console.log("req is :", req.file);
+  //need to add conditions if session is expired
 
+  console.log("req is :", req.file);
+  console.log("req.session.user_id is :", req.session.user_id);
   var obj = {
     spps_filename: req.file.filename,
+    spps_service_provider_id: req.session.user_id,
     //spps_type: req.file.fieldname,
     spps_file: {
       data: fs.readFileSync(path.join(__dirname + '../../public/upload/' + req.file.filename)),
@@ -86,7 +88,7 @@ app.post('/upload-kyc-docs', upload.single('kyc-docs'), (req, res, next) => {
   var err_msg = null;
   var success_msg = null;
   console.log("req is :", req.file);
-
+  console.log("req.session.id is", req.session.user_id);
   var obj = {
     cks_document_name: req.file.filename,
     cks_document_file: {
@@ -114,7 +116,6 @@ app.post('/upload-properties-pic', upload.single('properties-pic'), (req, res, n
   var err_msg = null;
   var success_msg = null;
   console.log("req is :", req.file);
-
   var obj = {
     pps_property_image_name: req.file.filename,
     pps_property_image: {

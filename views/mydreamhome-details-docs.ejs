@@ -14,17 +14,19 @@
           <input type="hidden" name="cust_id" class="cust_id" value="<%=session.user_id%>">
           <% data.forEach(function(row){ %>
             <label class="check-permission"><img src="images/recent-user-1.png">
-              <%= row.sps_fullname%>, <span>Architect</span>
+              <%= row.sps_fullname%>, <span>
+                  <%= row.sps_role_name%>
+                </span>
                 <input type="checkbox" name="selected[]" class="chekbox" value="<%= row._id%>">
                 <span class="checkmark"></span>
-                
+
             </label>
             <% });%>
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-cancel" id ="change-permision-save-btn" data-dismiss="modal">Save</button>
+          <button type="button" class="btn btn-cancel" id="change-permision-save-btn" data-dismiss="modal">Save</button>
         </div>
 
       </div>
@@ -130,43 +132,8 @@
                 <tbody>
                   <% allDocument.forEach(function(row){ %>
                     <%if(row.cuds_document_type=='image'){%>
-                    <tr>
-                      <td><img class="pdf-file" src="/upload/<%= row.cuds_document_name%>">
-                        <p><span>
-                            <%= row.cuds_document_name%>
-                          </span>
-                          <%= row.cuds_document_size%>
-                        </p>
-                      </td>
-                      <td><span class="professionals-view">
-                          <%=moment.unix( row.cuds_created_at/1000).format("D MMM YYYY") %>| Downloaded by<ul>
-                              <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
-                                  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                  aria-expanded="false">2 professionals</a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                  <a class="dropdown-item" href="#"><img src="images/recent-user-3.png"> Alex
-                                    Jackson</a>
-                                  <a class="dropdown-item" href="#"><img src="images/recent-user-3.png"> Alex
-                                    Jackson</a>
-                                </div>
-                              </li>
-                            </ul>
-                        </span></td>
-                      <td>
-                        <div class="recent-img">
-                          <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
-                            class="mr-10" src="images/recent-user-3.png">
-                          <a href="#" data-toggle="modal" data-target="#myModal" value="<%=row._id%>" class="getDocId">Change permission</a>
-                        </div>
-                      </td>
-                    </tr>
-                    <%}else{%>
                       <tr>
-                        <td>
-                          <video width="200" height="100" controls>
-                            <source src="/upload/<%= row.cuds_document_name%>" type="video/mp4">
-                            
-                          </video>
+                        <td><img class="pdf-file" src="/upload/<%= row.cuds_document_name%>">
                           <p><span>
                               <%= row.cuds_document_name%>
                             </span>
@@ -191,12 +158,49 @@
                           <div class="recent-img">
                             <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
                               class="mr-10" src="images/recent-user-3.png">
-                            <a href="#" data-toggle="modal" data-target="#myModal" value="<%=row._id%>" class="getDocId" >Change permission</a>
+                            <a href="#" data-toggle="modal" data-target="#myModal" value="<%=row._id%>"
+                              class="getDocId">Change permission</a>
                           </div>
                         </td>
                       </tr>
-                      <%}%>
-                    <% });%>
+                      <%}else{%>
+                        <tr>
+                          <td>
+                            <video width="200" height="100" controls>
+                              <source src="/upload/<%= row.cuds_document_name%>" type="video/mp4">
+
+                            </video>
+                            <p><span>
+                                <%= row.cuds_document_name%>
+                              </span>
+                              <%= row.cuds_document_size%>
+                            </p>
+                          </td>
+                          <td><span class="professionals-view">
+                              <%=moment.unix( row.cuds_created_at/1000).format("D MMM YYYY") %>| Downloaded by<ul>
+                                  <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
+                                      id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                      aria-expanded="false">2 professionals</a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                      <a class="dropdown-item" href="#"><img src="images/recent-user-3.png"> Alex
+                                        Jackson</a>
+                                      <a class="dropdown-item" href="#"><img src="images/recent-user-3.png"> Alex
+                                        Jackson</a>
+                                    </div>
+                                  </li>
+                                </ul>
+                            </span></td>
+                          <td>
+                            <div class="recent-img">
+                              <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
+                                class="mr-10" src="images/recent-user-3.png">
+                              <a href="#" data-toggle="modal" data-target="#myModal" value="<%=row._id%>"
+                                class="getDocId">Change permission</a>
+                            </div>
+                          </td>
+                        </tr>
+                        <%}%>
+                          <% });%>
                 </tbody>
               </table>
             </div>
@@ -240,36 +244,36 @@
     });
   </script>
   <script>
-    var id_element= [];
-    $(".getDocId").click(function(e){
+    var id_element = [];
+    $(".getDocId").click(function (e) {
 
       id_element = $(this).attr('value');
-          
-    
-      
-    }) 
-     $("#change-permision-save-btn").click(function (e) {
-        //e.preventDefault();
-        
-        var user_id = $('.cust_id').val();
-        console.log(user_id)
-        var checked_elem = [];
-         $('.chekbox:checkbox:checked').each(function (i) {
-            checked_elem[i] = $(this).val();
-            
-        });
-        //console.log(checked_elem)
-        $.ajax({
-          type: "POST",
-          data: 'cust_id=' + user_id + '&checked_elem=' + checked_elem +'&id_element='+id_element,
-          url: "/api/change-permision",
-          cache: false,
-          success: function(html){
-            //$("#results").append(html);
-          }
-        });
-        location.reload(true); 
+
+
+
+    })
+    $("#change-permision-save-btn").click(function (e) {
+      //e.preventDefault();
+
+      var user_id = $('.cust_id').val();
+      console.log(user_id)
+      var checked_elem = [];
+      $('.chekbox:checkbox:checked').each(function (i) {
+        checked_elem[i] = $(this).val();
+
       });
+      //console.log(checked_elem)
+      $.ajax({
+        type: "POST",
+        data: 'cust_id=' + user_id + '&checked_elem=' + checked_elem + '&id_element=' + id_element,
+        url: "/api/change-permision",
+        cache: false,
+        success: function (html) {
+          //$("#results").append(html);
+        }
+      });
+      location.reload(true);
+    });
   </script>
   </body>
 
