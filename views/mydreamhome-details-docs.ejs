@@ -156,7 +156,7 @@
                         <div class="recent-img">
                           <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
                             class="mr-10" src="images/recent-user-3.png">
-                          <a href="#" data-toggle="modal" data-target="#myModal">Change permission</a>
+                          <a href="#" data-toggle="modal" data-target="#myModal" value="<%=row._id%>" class="getDocId">Change permission</a>
                         </div>
                       </td>
                     </tr>
@@ -191,7 +191,7 @@
                           <div class="recent-img">
                             <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
                               class="mr-10" src="images/recent-user-3.png">
-                            <a href="#" data-toggle="modal" data-target="#myModal">Change permission</a>
+                            <a href="#" data-toggle="modal" data-target="#myModal" value="<%=row._id%>" class="getDocId" >Change permission</a>
                           </div>
                         </td>
                       </tr>
@@ -240,8 +240,17 @@
     });
   </script>
   <script>
+    var id_element= [];
+    $(".getDocId").click(function(e){
+
+      id_element = $(this).attr('value');
+          
+    
+      
+    }) 
      $("#change-permision-save-btn").click(function (e) {
         //e.preventDefault();
+        
         var user_id = $('.cust_id').val();
         console.log(user_id)
         var checked_elem = [];
@@ -252,7 +261,7 @@
         //console.log(checked_elem)
         $.ajax({
           type: "POST",
-          data: 'cust_id=' + user_id + '&checked_elem=' + checked_elem,
+          data: 'cust_id=' + user_id + '&checked_elem=' + checked_elem +'&id_element='+id_element,
           url: "/api/change-permision",
           cache: false,
           success: function(html){

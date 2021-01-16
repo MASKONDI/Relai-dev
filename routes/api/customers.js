@@ -332,6 +332,8 @@ router.get(
 //Change-permission====================
 
 router.post('/change-permision',(req,res)=>{
+  console.log(req.body.id_element)
+  
   var idArray = req.body.checked_elem.split(",");
   
   // DocumentPermissionSchema 
@@ -339,6 +341,7 @@ router.post('/change-permision',(req,res)=>{
     var Obj = {
       dps_customer_id:req.body.cust_id,
       dps_service_provider_id:service_provider_id,
+      dps_document_id :req.body.id_element
     }
     var docPermissionSave =new DocumentPermissionSchema(Obj)
     docPermissionSave.save().then((data)=>{
