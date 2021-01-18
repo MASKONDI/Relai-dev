@@ -12,7 +12,9 @@ var multer = require('multer');
 const ServiceProviderPortfolioSchema = require("../models/service_provider_portfolio");
 const ServiceProviderSchema = require("../models/service_providers");
 const CustomerUploadDocsSchema = require("../models/customer_upload_document");
-
+const PropertiesPictureSchema = require("../models/properties_picture");
+//const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
+const PropertiesSchema = require("../models/properties");
 var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
 
@@ -314,15 +316,40 @@ app.get('/mydreamhome-details-phase-a', isCustomer, (req, res) => {
     session: req.session
   });
 })
+// app.get('/mydreamhome', isCustomer, (req, res) => {
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   res.render('mydreamhome', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session
+//   });
+// })
+//*************************property data display on mydeream home page
 app.get('/mydreamhome', isCustomer, (req, res) => {
-  err_msg = req.flash('err_msg');
+  PropertiesSchema.find({ps_user_id: req.session.user_id}).then(async(data)=>{
+   if(data){
+    data.forEach(element => {
+    PropertiesPictureSchema.find({pps_property_id:element._id}).then((data)=>{
+      console.log('data',data)
+    });
+     
+    });
+    
+    
+    err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('mydreamhome', {
     err_msg, success_msg, layout: false,
-    session: req.session
+    session: req.session,
+    propertyData:data,
+   // propPitcherData:propPitcherData
   });
+}
+   }).catch((err)=>{
+     console.log(err)
+   })
+  
 })
-
 
 //*******Service Provider and signup and profiles routes */
 app.get('/signup-service-provider', (req, res) => {
