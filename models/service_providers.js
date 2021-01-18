@@ -47,6 +47,12 @@ const ServiceProviderSchema = new Schema({
     type: String,
     required: true,
   },
+  sps_role_name: {
+    type: String
+  },
+  sps_experience: {
+    type: String
+  },
   sps_kyc_status: {
     type: String,
     enum: ['DEFAULT', 'TRUE'],

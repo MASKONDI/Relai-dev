@@ -38,11 +38,16 @@
               <img src="images/user-3.png" alt="" title="">
             </div>
             <div class="user-name">
-              <h6>John Doe,<span><i>
-                    Architect</i>
-                </span></h6>
+              <h6>
+                <%= session.name%>,<span><i>
+                      <%= session.role %>
+                    </i>
+                  </span>
+              </h6>
 
-              <a href="#"><i>johndoe12@gmail.com</i></a>
+              <a href="#"><i>
+                  <%= session.email%>
+                </i></a>
             </div>
           </div>
           <ul class="dashboard-nav">

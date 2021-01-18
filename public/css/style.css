@@ -2184,6 +2184,7 @@ ul.docs-list.last-doc li{
         margin-top:15px;
         margin-left: 10px;
         padding-left: 10px;
+        width: 132px;
         }
 
         .card-content-fix p {
@@ -5022,3 +5023,12 @@ button.btn.btn-signup {
     top: 0;
     cursor: pointer;
 } */
+#selectBox3 {
+    width: 100%;
+    height: 48px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    border-radius: 5px;
+    margin-top: 0px;
+    padding-right: 20px;
+}

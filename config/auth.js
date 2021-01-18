@@ -18,8 +18,8 @@ var isAdmin = function (req, res, next) {
 
 var isCustomer = function (req, res, next) {
   var check_user = req.session.is_user_logged_in;
-  var check_user_id = req.session.re_us_id;
-  if (check_user != undefined && check_user != "" && check_user == true && check_user_id != "") {
+  //var check_user_id = req.session.user_id;
+  if (check_user != undefined && check_user != "" && check_user == true) {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     next();
   } else {
@@ -27,6 +27,21 @@ var isCustomer = function (req, res, next) {
     res.redirect('/signin');
   }
 }
+
+var isServiceProvider = function (req, res, next) {
+  var check_user = req.session.is_user_logged_in;
+  // var check_user_id = req.session.re_us_id;
+  if (check_user != undefined && check_user != "" && check_user == true) {
+    res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    next();
+  } else {
+    req.flash('danger', 'Please log in first.');
+    res.redirect('/signin-professional');
+  }
+}
+
+
+
 
 var isDeveloper = function (req, res, next) {
   var check_user_type = req.session.user_type;
@@ -40,17 +55,7 @@ var isDeveloper = function (req, res, next) {
   }
 }
 
-var isServiceProvider = function (req, res, next) {
-  var check_user_type = req.session.user_type;
 
-  if (check_user_type == '5d306e947d7a22e731d4a143') {
-    res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-    next();
-  } else {
-    req.flash('danger', 'Please log in first.');
-    res.redirect('/not-available');
-  }
-}
 
 
 

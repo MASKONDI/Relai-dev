@@ -454,7 +454,7 @@ router.post('/forget-password', function (req, res) {
 
 
 
-router.get('/logout', function (req, res) {
+router.get('/cust_logout', function (req, res) {
   console.log("logout");
   var test = req.session.is_user_logged_in;
   if (test == true) {
@@ -480,20 +480,20 @@ router.get(
 );
 //Change-permission====================
 
-router.post('/change-permision',(req,res)=>{
+router.post('/change-permision', (req, res) => {
   console.log(req.body.id_element)
-  
+
   var idArray = req.body.checked_elem.split(",");
-  
+
   // DocumentPermissionSchema 
-  for(var service_provider_id of idArray){
+  for (var service_provider_id of idArray) {
     var Obj = {
-      dps_customer_id:req.body.cust_id,
-      dps_service_provider_id:service_provider_id,
-      dps_document_id :req.body.id_element
+      dps_customer_id: req.body.cust_id,
+      dps_service_provider_id: service_provider_id,
+      dps_document_id: req.body.id_element
     }
-    var docPermissionSave =new DocumentPermissionSchema(Obj)
-    docPermissionSave.save().then((data)=>{
+    var docPermissionSave = new DocumentPermissionSchema(Obj)
+    docPermissionSave.save().then((data) => {
       console.log(data)
     }).catch(err => {
       console.log(err)

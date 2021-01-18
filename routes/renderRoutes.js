@@ -14,6 +14,7 @@ const ServiceProviderSchema = require("../models/service_providers");
 const CustomerUploadDocsSchema = require("../models/customer_upload_document");
 
 var isCustomer = auth.isCustomer;
+var isServiceProvider = auth.isServiceProvider;
 
 //***Index or home page related routes */
 app.get('/buy-sell', (req, res) => {
@@ -102,10 +103,10 @@ app.get('/track-your-progress', isCustomer, (req, res) => {
 app.get('/professionals', isCustomer, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  ServiceProviderSchema.find({sps_status:'active'}).then(service_provider => {
+  ServiceProviderSchema.find({ sps_status: 'active' }).then(service_provider => {
     // Check for Customer
-  
-    
+
+
     if (!service_provider) {
       console.log("Service Provider not found");
       // req.flash('err_msg', 'Service Provider not found');
@@ -118,7 +119,7 @@ app.get('/professionals', isCustomer, (req, res) => {
       res.render('professionals', {
         err_msg, success_msg, layout: false,
         session: req.session,
-        data:service_provider
+        data: service_provider
       });
     }
 
@@ -151,14 +152,14 @@ app.get('/mydreamhome-details', isCustomer, (req, res) => {
   });
 });
 
-app.get('/mydreamhome-details-docs', isCustomer, async(req, res) => {
+app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
 
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-   const allDocument = await CustomerUploadDocsSchema.find();
-   
+  const allDocument = await CustomerUploadDocsSchema.find();
 
-  ServiceProviderSchema.find({sps_status:'active'}).then(service_provider => {
+
+  ServiceProviderSchema.find({ sps_status: 'active' }).then(service_provider => {
     if (!service_provider) {
       console.log("Service Provider not found");
       return res.status(400).json("Service Provider not found")
@@ -167,16 +168,16 @@ app.get('/mydreamhome-details-docs', isCustomer, async(req, res) => {
       res.render('mydreamhome-details-docs', {
         err_msg, success_msg, layout: false,
         session: req.session,
-        data:service_provider,
-        allDocument:allDocument,
-        moment:moment
+        data: service_provider,
+        allDocument: allDocument,
+        moment: moment
       });
     }
 
   })
 });
 // app.get('/mydreamhome-details-docs', isCustomer, (req, res) => {
-  
+
 //   err_msg = req.flash('err_msg');
 //   success_msg = req.flash('success_msg');
 //   ServiceProviderSchema.find({sps_status:'active'}).then(service_provider => {
@@ -270,6 +271,21 @@ app.get('/forget-password', function (req, res) {
   }
 });
 
+app.get('/forget-password-professional', function (req, res) {
+  var test = req.session.is_user_logged_in;
+  if (test == true) {
+    res.redirect('/dashboard');
+  } else {
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('forget-password-professional', {
+      err_msg,
+      success_msg,
+      layout: false,
+      session: req.session,
+    });
+  }
+});
 
 
 
@@ -290,7 +306,7 @@ app.get('/Resend-link', function (req, res) {
 });
 
 
-app.get('/mydreamhome-details-phase-a', (req, res) => {
+app.get('/mydreamhome-details-phase-a', isCustomer, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('mydreamhome-details-phase-a', {
@@ -298,7 +314,7 @@ app.get('/mydreamhome-details-phase-a', (req, res) => {
     session: req.session
   });
 })
-app.get('/mydreamhome', (req, res) => {
+app.get('/mydreamhome', isCustomer, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('mydreamhome', {
@@ -313,75 +329,107 @@ app.get('/signup-service-provider', (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   service_provider = req.flash('service_provider');
-  res.render('signup-service-provider', { err_msg, success_msg, service_provider });
+  res.render('signup-service-provider', {
+    err_msg, success_msg, service_provider, layout: false,
+    session: req.session
+  });
 });
 
 app.get('/signin-professional', (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('signin-professional', { err_msg, success_msg });
+  res.render('signin-professional', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 });
 
 
-app.get('/dashboard-professional', (req, res) => {
+app.get('/dashboard-professional', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('dashboard-professional', { err_msg, success_msg });
+  res.render('dashboard-professional', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 });
-app.get('/signup-professionals-profile', (req, res) => {
+app.get('/signup-professionals-profile', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile', { err_msg, success_msg });
+
+  res.render('signup-professionals-profile', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 });
-app.get('/signup-professionals-profile-2', (req, res) => {
+app.get('/signup-professionals-profile-2', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile-2', { err_msg, success_msg });
+  res.render('signup-professionals-profile-2', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 });
-app.get('/signup-professionals-profile-3', (req, res) => {
+app.get('/signup-professionals-profile-3', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile-3', { err_msg, success_msg });
+  res.render('signup-professionals-profile-3', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 });
-app.get('/signup-professionals-profile-4', (req, res) => {
+app.get('/signup-professionals-profile-4', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile-4', { err_msg, success_msg });
+  res.render('signup-professionals-profile-4', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 });
-app.get('/signup-professionals-profile-5', (req, res) => {
+app.get('/signup-professionals-profile-5', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile-5', { err_msg, success_msg });
+  res.render('signup-professionals-profile-5', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 });
-app.get('/signup-professionals-profile-6', (req, res) => {
+app.get('/signup-professionals-profile-6', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile-6', { err_msg, success_msg });
+  res.render('signup-professionals-profile-6', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 });
-app.get('/signup-professionals-profile-7', (req, res) => {
+app.get('/signup-professionals-profile-7', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile-7', { err_msg, success_msg });
+  res.render('signup-professionals-profile-7', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 });
-app.get('/portfolio', (req, res) => {
+app.get('/portfolio', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('portfolio', { err_msg, success_msg });
+  res.render('portfolio', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 });
 
 
 app.get('/index', (req, res) => res.render('index'));
-app.get('/kyc-professional', (req, res) => {
+app.get('/kyc-professional', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('kyc-professional', { err_msg, success_msg });
+  res.render('kyc-professional', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 });
 
-app.get('/kyc-professional', (req, res) => {
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('kyc-professional', { err_msg, success_msg });
-});
 
 
 module.exports = app;

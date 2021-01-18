@@ -18,6 +18,11 @@ const keys = require('../../config/keys');
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 
+var nodemailer = require('nodemailer');
+const http = require('http');
+var crypto = require('crypto');
+var dateFormat = require('dateformat');
+var dateTime = require('node-datetime');
 
 // Load Input Validation
 const validateServiceProviderRegisterInput = require('../../Validation/service_provider_signup');
@@ -81,6 +86,8 @@ router.post("/service_provider_register", (req, res) => {
         sps_country_id: req.body.sps_country_id,
         sps_city: req.body.sps_city,
         sps_password: req.body.sps_password,
+        sps_role_name: req.body.sps_role_name,
+        sps_experience: req.body.sps_experience
       });
 
       bcrypt.genSalt(10, (err, salt) => {
@@ -90,7 +97,15 @@ router.post("/service_provider_register", (req, res) => {
           newServiceProvider
             .save()
             .then(serviceProviders => {
-              req.flash('service_provider', serviceProviders);
+              console.log("service_provider is", serviceProviders);
+              req.session.success = true,
+                // req.session._id = doc.user_id;
+                req.session.user_id = serviceProviders._id,
+                req.session.name = serviceProviders.sps_fullname,
+                req.session.email = serviceProviders.sps_email_id,
+                req.session.role = serviceProviders.sps_role_name,
+                req.session.is_user_logged_in = true,
+                req.flash('service_provider', serviceProviders);
               res.redirect("/signup-professionals-profile")
             })
             .catch(err => {
@@ -112,9 +127,13 @@ POST : service_provider_personal_details post api is responsible for submitting 
 router.post("/service_provider_personal_details", (req, res) => {
   var err_msg = null;
   var success_msg = null;
+  //TODO:need to add condition is session is expired
+
   console.log("req.body is : ", req.body);
-  console.log("req.body is : ", service_provider);
+  console.log("user_id is:", req.session.user_id);
+
   const serviceProviderPersonalDetails = new ServiceProviderOtherDetailsSchema({
+    spods_service_provider_id: req.session.user_id, //storing service_provider_id
     spods_surname: req.body.spods_surname,
     spods_fornames: req.body.spods_fornames,
     spods_preferred_title: req.body.spods_preferred_title,
@@ -129,7 +148,10 @@ router.post("/service_provider_personal_details", (req, res) => {
   });
   serviceProviderPersonalDetails
     .save()
-    .then(serviceProviders => res.redirect("/signup-professionals-profile-2"))
+    .then(serviceProviders => {
+      console.log("server res is : ", serviceProviders);
+      res.redirect("/signup-professionals-profile-2")
+    })
     .catch(err => {
       console.log(err)
       req.flash('err_msg', 'Something went wrong please try after some time!');
@@ -145,7 +167,9 @@ POST : service_provider_other_details post api is responsible for submitting sig
 router.post("/service_provider_other_details", (req, res) => {
   var err_msg = null;
   var success_msg = null;
+  //TODO:need to add condition is session is expired
   console.log("req.body is : ", req.body);
+  console.log("req.session.user_id is ", req.session.user_id);
   if (req.body.spods_option_criminal_convictions == 'yes' && req.body.spods_details_of_convictions == "") {
     req.flash('err_msg', 'if you have any criminal convictions Please enter details.');
     return res.redirect('/signup-professionals-profile-2')
@@ -164,7 +188,10 @@ router.post("/service_provider_other_details", (req, res) => {
     });
     serviceProviderOtherDetails
       .save()
-      .then(serviceProviders => res.redirect("/signup-professionals-profile-3"))
+      .then(serviceProviders => {
+        console.log("server response is ;", serviceProviders);
+        res.redirect("/signup-professionals-profile-3")
+      })
       .catch(err => {
         console.log(err)
         req.flash('err_msg', 'Something went wrong please try after some time');
@@ -181,9 +208,13 @@ POST : service_provider_education post api is responsible for submitting signup-
 router.post("/service_provider_education", (req, res) => {
   var err_msg = null;
   var success_msg = null;
+  //TODO:need to add condition is session is expired
+
   console.log("req.body is : ", req.body);
+  console.log("req.session.user_id is ", req.session.user_id);
   const serviceProviderEducation = new ServiceProviderEducationSchema({
     //rs_service_provider_id /*Need to store same sp_id while registering */
+    spes_service_provider_id: req.session.user_id,
     spes_university_school_name: req.body.spes_university_school_name,
     spes_qualification_obtained: req.body.spes_qualification_obtained,
     spes_from_date: req.body.spes_from_date,
@@ -192,7 +223,10 @@ router.post("/service_provider_education", (req, res) => {
   });
   serviceProviderEducation
     .save()
-    .then(serviceProviders => res.redirect("/signup-professionals-profile-4"))
+    .then(serviceProviders => {
+      console.log("server response is: ", serviceProviders);
+      res.redirect("/signup-professionals-profile-4")
+    })
     .catch(err => {
       console.log(err)
       req.flash('err_msg', 'Something went wrong please try after some time');
@@ -209,9 +243,13 @@ POST : service_provider_employment_history post api is responsible for submittin
 router.post("/service_provider_employment_history", (req, res) => {
   var err_msg = null;
   var success_msg = null;
+  //TODO:need to add condition is session is expired
+
   console.log("req.body is : ", req.body);
+  console.log("req.session.user_id is ", req.session.user_id);
   const serviceProviderEmploymentHistory = new ServiceProviderEmploymentHistorySchema({
     //rs_service_provider_id /*Need to store same sp_id while registering */
+    spehs_service_provider_id: req.session.user_id,
     spehs_name_of_employer: req.body.spehs_name_of_employer,
     spehs_job_title: req.body.spehs_job_title,
     spehs_job_description: req.body.spehs_job_description,
@@ -221,7 +259,10 @@ router.post("/service_provider_employment_history", (req, res) => {
   });
   serviceProviderEmploymentHistory
     .save()
-    .then(serviceProviders => res.redirect("/signup-professionals-profile-5"))
+    .then(serviceProviders => {
+      console.log("server response is", serviceProviders);
+      res.redirect("/signup-professionals-profile-5")
+    })
     .catch(err => {
       console.log(err)
       req.flash('err_msg', 'Something went wrong please try after some time');
@@ -236,10 +277,13 @@ POST : service_provider_reference post api is responsible for submitting signup-
 router.post("/service_provider_reference", (req, res) => {
   var err_msg = null;
   var success_msg = null;
-  console.log("req.body is : ", req.body);
+  //TODO:need to add condition is session is expired
 
+  console.log("req.body is : ", req.body);
+  console.log("req.session.user_id is ", req.session.user_id);
   const serviceProviderReference = new ServiceProviderReferenceSchema({
     //rs_service_provider_id //TODO:*Need to store same sp_id while registering */
+    rs_service_provider_id: req.session.user_id,
     rs_reference_type: req.body.rs_reference_type,
     rs_reference_job_title: req.body.rs_reference_job_title,
     rs_reference_organisation: req.body.rs_reference_organisation,
@@ -254,7 +298,9 @@ router.post("/service_provider_reference", (req, res) => {
 
   serviceProviderReference
     .save()
-    .then(serviceProviders => res.redirect("/signup-professionals-profile-6"))
+    .then(serviceProviders => {
+      console.log("server response is:", serviceProviders); res.redirect("/signup-professionals-profile-6")
+    })
     .catch(err => {
       console.log(err)
       req.flash('err_msg', 'Something went wrong please try after some time.');
@@ -271,7 +317,10 @@ POST : service_provider_indemnity_details post api is responsible for submitting
 router.post("/service_provider_indemnity_details", (req, res) => {
   var err_msg = null;
   var success_msg = null;
+  //TODO:need to add condition is session is expired
+
   console.log("req.body is : ", req.body);
+  console.log("req.session.user_id is ", req.session.user_id);
   if (req.body.spods_option_pl_claims == "yes" && req.body.spods_pl_claim_details == '') {
     req.flash("err_msg", "Please Enter PI claim details!");
     res.redirect('/signup-professionals-profile-6');
@@ -288,7 +337,10 @@ router.post("/service_provider_indemnity_details", (req, res) => {
     });
     serviceProviderIndemnityDetails
       .save()
-      .then(serviceProviders => res.redirect("/signup-professionals-profile-7"))
+      .then(serviceProviders => {
+        console.log("server response is:", serviceProviders);
+        res.redirect("/signup-professionals-profile-7")
+      })
       .catch(err => {
         console.log(err)
         req.flash('err_msg', 'Something went wrong please try after some time');
@@ -305,15 +357,22 @@ POST : service_provider_language post api is responsible for submitting signup-p
 router.post("/service_provider_language", (req, res) => {
   var err_msg = null;
   var success_msg = null;
+  //TODO:need to add condition is session is expired
+
   console.log("req.body is : ", req.body);
+  console.log("req.session.user_id is ", req.session.user_id);
   const serviceProviderLanguage = new ServiceProviderLanguageSchema({
     //spls_service_provider_id /*Need to store same sp_id while registering */
+    spls_service_provider_id: req.session.user_id,
     spls_language: req.body.spls_language,
     spls_language_proficiency_level: req.body.spls_language_proficiency_level
   });
   serviceProviderLanguage
     .save()
-    .then(serviceProviders => res.redirect("/portfolio"))
+    .then(serviceProviders => {
+      console.log("server response is :", serviceProviders);
+      res.redirect("/portfolio")
+    })
     .catch(err => {
       console.log(err)
       req.flash('err_msg', 'Something went wrong please try again later.');
@@ -325,6 +384,8 @@ router.post("/service_provider_signin",
   (req, res) => {
     var err_msg = null;
     var success_msg = null;
+    //TODO:need to add condition is session is expired
+
     const sps_email_id = req.body.sps_email_id;
     const sps_password = req.body.sps_password;
 
@@ -348,8 +409,17 @@ router.post("/service_provider_signin",
       // Check Password
       bcrypt.compare(sps_password, service_provider.sps_password).then(isMatch => {
         if (isMatch) {
+          //enableing session variable
+          // req.session._id = doc.user_id;
+          req.session.success = true
+          req.session.user_id = service_provider._id;
+          req.session.name = service_provider.sps_fullname;
+          req.session.email = service_provider.sps_email_id;
+          req.session.role = service_provider.sps_role_name;
+          req.session.is_user_logged_in = true;
+
           // service_provider Matched
-          const payload = { id: service_provider.id, cus_fullname: service_provider.cus_fullname, sps_email_id: service_provider.sps_email_id }; // Create JWT Payload
+          const payload = { id: service_provider.id, sps_fullname: service_provider.sps_fullname, sps_email_id: service_provider.sps_email_id }; // Create JWT Payload
 
           // Sign Token
           jwt.sign(
@@ -375,6 +445,103 @@ router.post("/service_provider_signin",
   });
 
 
+//service_provider logout button  
+router.get('/sp_logout', function (req, res) {
+  console.log("logout");
+  var test = req.session.is_user_logged_in;
+  if (test == true) {
+    req.session.destroy(function (err) {
+      if (err) {
+        return err;
+      } else {
+        return res.redirect('/signin-professional');
+      }
+    });
+  }
+});
+
+
+router.post('/forget-password-professional', function (req, res) {
+  console.log("req.body is :", req.body);
+  ServiceProviderSchema.find({
+    'sps_email_id': req.body.sps_email_id,
+    //'cus_email_verification_status': 'yes'
+  }, function (err, result) {
+    if (err) {
+      console.log('err', err);
+      req.flash('err_msg', 'Please enter registered Email address.');
+      res.redirect('/forget-password-professional');
+    } else {
+
+      if (result != '' && result != null) {
+        //generating 6 digit password hash
+        new_pass = Math.random().toString(36).slice(-6);
+        var hashPassword = "";
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(new_pass, salt, (err, hash) => {
+            if (err) throw err;
+            hashPassword = hash;
+
+            ServiceProviderSchema.updateOne({
+              'sps_email_id': req.body.sps_email_id
+            }, {
+              $set: {
+                sps_password: hashPassword
+              }
+            }, {
+              upsert: true
+            }, function (err) {
+              if (err) {
+                console.log("err is :", err);
+                req.flash('err_msg', 'Something went wrong.');
+                res.redirect('/forget-password-professional')
+              } else {
+
+                var smtpTransport = nodemailer.createTransport({
+                  // port: 25,
+                  // host: 'localhost',
+                  tls: {
+                    rejectUnauthorized: false
+                  },
+                  host: 'smtp.gmail.com',
+                  port: 465,
+                  secure: true,
+                  service: 'Gmail',
+                  auth: {
+                    user: 'golearning4@gmail.com',
+                    pass: 'Maskondi#1997',
+                  }
+                });
+                const mailOptions = {
+                  to: req.body.sps_email_id,
+                  from: 'golearning4@gmail.com',
+                  subject: 'Relai Forget Password',
+
+                  text: 'Dear Customer,' + '\n\n' + 'New Password from Relai.\n\n' +
+                    'Password: ' + new_pass + '\n\n' +
+
+                    'We suggest you to please change your password after successfully logging in on the portal using the above password :\n' + 'Here is the change password link: http://' + req.headers.host + '/Change-password' + '\n\n' +
+                    'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+
+                };
+                smtpTransport.sendMail(mailOptions, function (err) {
+                  if (err) { console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong.please connect support team'); res.redirect('/forget-password-professional') } else {
+                    req.flash('success_msg', 'Password has been sent successfully to your registered email, please check your mail...');
+                    res.redirect('/forget-password-professional')
+                  }
+                });
+              }
+            });
+          });
+        });
+      } else {
+        req.flash('err_msg', 'Please enter registered Email address.');
+        res.redirect('/forget-password-professional');
+      }
+
+    }
+  });
+});
 
 
 
