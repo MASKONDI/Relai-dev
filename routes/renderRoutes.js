@@ -202,6 +202,14 @@ app.get('/mydreamhome-details-to-dos', isCustomer, (req, res) => {
     session: req.session
   });
 });
+// app.get('/add-property', isCustomer, (req, res) => {
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   res.render('add-property', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session
+//   });
+// });
 app.get('/add-property', isCustomer, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -210,6 +218,7 @@ app.get('/add-property', isCustomer, (req, res) => {
     session: req.session
   });
 });
+
 app.get('/mydreamhome-details-message', isCustomer, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');

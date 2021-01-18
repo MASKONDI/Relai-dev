@@ -56,7 +56,7 @@
           </div>
 
           <div class="dashboard-inner">
-            <form class="form" method="post" action="/api/add-property" id="propertyform">
+            <form method="post" action="/api/add-property" id="propertyform" enctype="multipart/form-data">
 
               <% if(typeof err_msg!='undefined' ){ %>
                 <span class="error_validate flash_msg" style="color: red;">
@@ -81,32 +81,32 @@
                           <div class="row">
                             <div class="col-sm-12 col-lg-4"><input type="text"
                                 class="form-control property-form-control-size-fix " id="propertyname"
-                                placeholder="Hilton Avenue Flat" name=" ps_property_name" data-rule-required="true"
-                                data-msg-required="Property Name is required!"></div>
+                                placeholder="Hilton Avenue Flat" name="ps_property_name" data-rule-required="true"
+                                data-msg-required="Property Name is required!" value=""></div>
                             <div class="col-sm-12 col-lg-4"><input type="text"
                                 class="form-control property-form-control-size-fix " id="address"
                                 placeholder="Enter address" name="ps_property_address" data-rule-required="true"
-                                data-msg-required="Property address is required!"></div>
+                                data-msg-required="Property address is required!" value=""></div>
                             <div class="col-sm-12 col-lg-4"><input type="text"
                                 class="form-control property-form-control-size-fix " id="city" placeholder="City"
-                                name=" ps_property_city_id" data-rule-required="true"
-                                data-msg-required="City is required!">
+                                name="ps_property_city_id" data-rule-required="true"
+                                data-msg-required="City is required!" value="">
                             </div>
                           </div>
                           <div class="row">
                             <div class="col-sm-12 col-lg-4"><input type="text"
                                 class="form-control property-form-control-size-fix " id="state" placeholder="State"
                                 name="ps_property_state_id" data-rule-required="true"
-                                data-msg-required="State is required!">
+                                data-msg-required="State is required!" value="">
                             </div>
                             <div class="col-sm-12 col-lg-4"><input type="text"
                                 class="form-control property-form-control-size-fix " id="country" placeholder="Country"
                                 name="ps_property_country_id" data-rule-required="true"
-                                data-msg-required="Country  is required!"></div>
+                                data-msg-required="Country  is required!" value=""></div>
                             <div class="col-sm-12 col-lg-4"><input type="text"
                                 class="form-control property-form-control-size-fix " id="zipcode" placeholder="Zip code"
                                 name="ps_property_zipcode" data-rule-required="true"
-                                data-msg-required="Zipcode is required!">
+                                data-msg-required="Zipcode is required!" value="">
                             </div>
                           </div>
                         </div>
@@ -121,12 +121,12 @@
                             <div class="col-sm-12 col-lg-4"><input type="text"
                                 class="form-control property-form-control-size-fix " id="buyer"
                                 placeholder="buyer/seller/renovator" name="ps_other_party_user_as"
-                                data-rule-required="true" data-msg-required="buyer/seller/renovator is required!"></div>
+                                data-rule-required="true" data-msg-required="buyer/seller/renovator is required!" value=""></div>
                             <div class="col-sm-12 col-lg-4"><input type="email"
                                 class="form-control property-form-control-size-fix " id="emailaddress"
                                 placeholder="Enter email address" name="ps_other_party_emailid"
                                 data-rule-required="true" data-rule-email="true"
-                                data-msg-required="Email Id is required!" data-msg-email="Please enter valid Email-Id!">
+                                data-msg-required="Email Id is required!" data-msg-email="Please enter valid Email-Id!" value="">
                             </div>
                           </div>
                         </div>
@@ -142,22 +142,22 @@
                             <div class="col-sm-12 col-lg-4"><input type="text"
                                 class="form-control property-form-control-size-fix " id="area"
                                 placeholder="Area(sq. ft.)" name="ps_property_area" data-rule-required="true"
-                                data-msg-required="Area is required!">
+                                data-msg-required="Area is required!" value="">
                             </div>
                             <div class="col-sm-12 col-lg-4"><input type="text"
                                 class="form-control property-form-control-size-fix " id="bedroom" placeholder="Bedroom"
-                                name=" ps_property_bedroom" data-rule-required="true"
-                                data-msg-required="Bedroom field is required!"></div>
+                                name="ps_property_bedroom" data-rule-required="true"
+                                data-msg-required="Bedroom field is required!" value=""></div>
                             <div class="col-sm-12 col-lg-4"><input type="text"
                                 class="form-control property-form-control-size-fix " id="bedroom2"
                                 placeholder="Bathroom" name="ps_property_bathroom" data-rule-required="true"
-                                data-msg-required="Bathroom  field is required!"></div>
+                                data-msg-required="Bathroom  field is required!" value=""></div>
                           </div>
                           <div class="row">
                             <div class="col-sm-12 col-lg-12">
                               <textarea type="text" style=" width:95%"
                                 class="form-control property-form-control-size-fix " id="address"
-                                name="ps_additional_note">Additional notes(if any)</textarea>
+                                name="ps_additional_note" value="">Additional notes(if any)</textarea>
                             </div>
                           </div>
                         </div>
@@ -171,9 +171,8 @@
 
                         <div class="row">
                           <div class="col-sm-12 col-lg-12">
-                            <form></form>
-                            <form action="/upload-properties-pic" class="form" method="post"
-                              enctype="multipart/form-data">
+                            <!-- <form></form> -->
+                            <!-- <form action="/upload-properties-pic" class="form" method="post"enctype="multipart/form-data"> -->
                               <div class="property-box">
 
                                 <div class=property-inner-section>
@@ -188,14 +187,13 @@
                                 </div>
                                 <span>
                                   <div class="custom-file-input">
-                                    <input type="file" name="properties-pic" id="properties-pic" value="" required>
+                                    <input type="file" name="propertiespic" class="propertiespic" id="propertiespic1" value="" required>
                                     <input type="button">
                                   </div>
                                 </span>
                               </div>
-                            </form>
-                            <form action="/upload-properties-pic" class="form" method="post"
-                              enctype="multipart/form-data">
+                            <!-- </form> -->
+                            <!-- <form action="/upload-properties-pic" class="form" method="post"enctype="multipart/form-data"> -->
                               <div class="property-box">
 
                                 <div class=property-inner-section>
@@ -210,14 +208,13 @@
                                 </div>
                                 <span>
                                   <div class="custom-file-input">
-                                    <input type="file" name="properties-pic" id="properties-pic" value="" required>
+                                    <input type="file" name="propertiespic" class="propertiespic2" id="propertiespic2" value="" required>
                                     <input type="button">
                                   </div>
                                 </span>
                               </div>
-                            </form>
-                            <form action="/upload-properties-pic" class="form" method="post"
-                              enctype="multipart/form-data">
+                            <!-- </form> -->
+                            <!-- <form action="/upload-properties-pic" class="form" method="post"enctype="multipart/form-data"> -->
                               <div class="property-box">
 
                                 <div class=property-inner-section>
@@ -232,12 +229,12 @@
                                 </div>
                                 <span>
                                   <div class="custom-file-input">
-                                    <input type="file" name="properties-pic" id="properties-pic" required>
+                                    <input type="file" name="propertiespic" value="" class="propertiespic3" id="propertiespic3" required>
                                     <input type="button">
                                   </div>
                                 </span>
                               </div>
-                            </form>
+                            <!-- </form> -->
                           </div>
                         </div>
 
@@ -250,8 +247,7 @@
 
                         <div class="row">
                           <div class="col-sm-12 col-lg-12">
-                            <form action="/upload-properties-plan-pic" class="form" method="post"
-                              enctype="multipart/form-data">
+                            <!-- <form action="/upload-properties-plan-pic" class="form" method="post"enctype="multipart/form-data"> -->
                               <div class="property-box">
 
                                 <div class=property-inner-section>
@@ -265,15 +261,14 @@
                                 </div>
                                 <span>
                                   <div class="custom-file-input">
-                                    <input type="file" name="properties-plan-pic" id="properties-plan-pic" value=""
+                                    <input type="file" name="propertiesplanpic" id="propertiesplanpic1" value=""
                                       required>
                                     <input type="button">
                                   </div>
                                 </span>
                               </div>
-                            </form>
-                            <form action="/upload-properties-plan-pic" class="form" method="post"
-                              enctype="multipart/form-data">
+                            <!-- </form> -->
+                            <!-- <form action="/upload-properties-plan-pic" class="form" method="post" enctype="multipart/form-data"> -->
 
                               <div class="property-box">
                                 <div class=property-inner-section>
@@ -288,15 +283,15 @@
                                 </div>
                                 <span>
                                   <div class="custom-file-input">
-                                    <input type="file" name="properties-plan-pic" id="properties-plan-pic" value=""
+                                    <input type="file" name="propertiesplanpic" id="propertiesplanpic2" value=""
                                       required>
                                     <input type="button">
                                   </div>
                                 </span>
                               </div>
-                            </form>
-                            <form action="/upload-properties-plan-pic" class="form" method="post"
-                              enctype="multipart/form-data">
+                            <!-- </form> -->
+                            <!--<form action="/upload-properties-plan-pic" class="form" method="post"
+                              enctype="multipart/form-data">-->
                               <div class="property-box">
 
                                 <div class=property-inner-section>
@@ -311,19 +306,19 @@
                                 </div>
                                 <span>
                                   <div class="custom-file-input">
-                                    <input type="file" name="properties-plan-pic" id="properties-plan-pic" value=""
+                                    <input type="file" name="propertiesplanpic" id="propertiesplanpic3" value=""
                                       required>
                                     <input type="button">
                                   </div>
                                 </span>
                               </div>
-                            </form>
+                            <!-- </form> -->
                           </div>
                         </div>
                         <div class="row">
                           <div class="col-sm-12 col-lg-12">
                             <div class="property-btn">
-                              <button type="submit" class="btn submit-btn">Add
+                              <button type="submit" class="btn submit-btn AddPropertyBtn">Add
                                 Property</button>
                             </div>
                           </div>
@@ -398,14 +393,9 @@
       }
     });  
   </script>
-  <!-- <script>
-     $(document).ready(function () {
-      $("form :input").change(function() {
-  $(this).closest('form').data('changed', true);
-});
-
-    });  
-  </Script> -->
+   <script>
+     
+  </Script> 
   </body>
 
   </html>
