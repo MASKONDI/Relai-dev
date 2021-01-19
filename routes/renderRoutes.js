@@ -276,7 +276,7 @@ app.get('/forget-password', function (req, res) {
 app.get('/forget-password-professional', function (req, res) {
   var test = req.session.is_user_logged_in;
   if (test == true) {
-    res.redirect('/dashboard');
+    res.redirect('/dashboard-professional');
   } else {
     err_msg = req.flash('err_msg');
     success_msg = req.flash('success_msg');
@@ -326,29 +326,29 @@ app.get('/mydreamhome-details-phase-a', isCustomer, (req, res) => {
 // })
 //*************************property data display on mydeream home page
 app.get('/mydreamhome', isCustomer, (req, res) => {
-  PropertiesSchema.find({ps_user_id: req.session.user_id}).then(async(data)=>{
-   if(data){
-    data.forEach(element => {
-    PropertiesPictureSchema.find({pps_property_id:element._id}).then((data)=>{
-      console.log('data',data)
-    });
-     
-    });
-    
-    
-    err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('mydreamhome', {
-    err_msg, success_msg, layout: false,
-    session: req.session,
-    propertyData:data,
-   // propPitcherData:propPitcherData
-  });
-}
-   }).catch((err)=>{
-     console.log(err)
-   })
-  
+  PropertiesSchema.find({ ps_user_id: req.session.user_id }).then(async (data) => {
+    if (data) {
+      data.forEach(element => {
+        PropertiesPictureSchema.find({ pps_property_id: element._id }).then((data) => {
+          console.log('data', data)
+        });
+
+      });
+
+
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.render('mydreamhome', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        propertyData: data,
+        // propPitcherData:propPitcherData
+      });
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+
 })
 
 //*******Service Provider and signup and profiles routes */
