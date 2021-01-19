@@ -31,7 +31,7 @@
                   src="images/professionals.png"> Professionals</a>
             </li>
             <li class="active">
-              <a href="/mydreamhome-details-docs"><img class="act-img" src="images/dreamhome-active.png"><img
+              <a href="/mydreamhome"><img class="act-img" src="images/dreamhome-active.png"><img
                   src="images/dreamhome.png"> My dream home</a>
             </li>
             <li>
@@ -58,22 +58,25 @@
                 </div>
               </div>
               <div class="row">
+                
                 <div class="col-sm-12 col-lg-12">
+                  <% propertyData.forEach(function(row){ %>
                   <div class="home-section">
+                    
                     <div class="my-dream-home-box">
                       <div class="dream-home-img">
                         <img src="images/nacary.png">
-                        <a href="/mydreamhome-details" class="btn btn-new">New</a>
+                        <a href="/mydreamhome-details?id=<%=row._id%>" class="btn btn-new mydreamHomeDetail" value="<%=row._id%>"><%=row.ps_property_type%></a>
                       </div>
                       <div class="dream-home-description">
-                        <h3><a href="/mydreamhome-details"> Nacary Apartment</a></h3>
-                        <div class="location-part"><a href="#"><img src="images/location.png"> Sudirman, Central
-                            Jakarta</a></div>
+                        <h3><a href="/mydreamhome-details"><%= row.ps_property_name%></a></h3>
+                        <div class="location-part"><a href="#"><img src="images/location.png"> <%=row.ps_property_address%>,<%=row.ps_property_country_id%></a></div>
                         <div class="location-part"><a href="/mydreamhome-details"><img src="images/sq.ft.png">
-                            2,400 sq. ft.</a></div>
+                            <%=row.ps_property_area%> sq.ft.</a></div>
                       </div>
                     </div>
-                    <div class="my-dream-home-box">
+                   
+                    <!-- <div class="my-dream-home-box">
                       <div class="dream-home-img">
                         <img src="images/nacary.png">
                         <a href="/mydreamhome-details-chainproperty" class="btn btn-new">chain property</a>
@@ -84,8 +87,8 @@
                             Jakarta</a></div>
                         <div class="location-part"><a href="#"><img src="images/sq.ft.png"> 2,400 sq. ft.</a></div>
                       </div>
-                    </div>
-                    <div class="my-dream-home-box">
+                    </div> -->
+                    <!-- <div class="my-dream-home-box">
                       <div class="dream-home-img">
                         <img src="images/nacary.png">
                         <a href="/mydreamhome-details" class="btn btn-new">New</a>
@@ -96,8 +99,8 @@
                             Jakarta</a></div>
                         <div class="location-part"><a href="#"><img src="images/sq.ft.png"> 2,400 sq. ft.</a></div>
                       </div>
-                    </div>
-                    <div class="my-dream-home-box">
+                    </div> -->
+                    <!-- <div class="my-dream-home-box">
                       <div class="dream-home-img">
                         <img src="images/nacary.png">
                         <a href="/mydreamhome-details" class="btn btn-new">New</a>
@@ -108,8 +111,8 @@
                             Jakarta</a></div>
                         <div class="location-part"><a href="#"><img src="images/sq.ft.png"> 2,400 sq. ft.</a></div>
                       </div>
-                    </div>
-                    <div class="my-dream-home-box">
+                    </div> -->
+                    <!-- <div class="my-dream-home-box">
                       <div class="dream-home-img">
                         <img src="images/nacary.png">
                         <a href="/mydreamhome-details" class="btn btn-new">New</a>
@@ -122,8 +125,8 @@
                         <div class="location-part"><a href="/mydreamhome-details"><img src="images/sq.ft.png">
                             2,400 sq. ft.</a></div>
                       </div>
-                    </div>
-                    <div class="my-dream-home-box">
+                    </div> -->
+                    <!-- <div class="my-dream-home-box">
                       <div class="dream-home-img">
                         <img src="images/nacary.png">
                         <a href="/mydreamhome-details" class="btn btn-new">New</a>
@@ -134,9 +137,11 @@
                             Jakarta</a></div>
                         <div class="location-part"><a href="#"><img src="images/sq.ft.png"> 2,400 sq. ft.</a></div>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
+                  <% });%>
                 </div>
+                
               </div>
             </div>
           </div>
@@ -170,6 +175,24 @@
       });
     });
   </script>
+  <script>
+    
+    // $(document).ready(function () {
+    //   $(".mydreamHomeDetail").click(function (e) {
+    //     var id = $(this).attr('value')
+    //     $.ajax({
+    //     type: "POST",
+    //     data: 'property_id=' +id ,
+    //     url: "/getProperty-detail",
+    //     cache: false,
+    //     success: function (html) {
+    //       //$("#results").append(html);
+    //     }
+    //   });
+    //   location.reload(true);
+    //   });
+    // });
+    </script>
   </body>
 
   </html>

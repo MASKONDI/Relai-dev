@@ -15,15 +15,17 @@ const http = require('http');
 var crypto = require('crypto');
 var dateFormat = require('dateformat');
 var dateTime = require('node-datetime');
-
-
+const path = require('path');
+var fs = require('fs');
+const multer = require('multer');
 const { cust_register, cust_signin } = require("../../controllers/customers");
 const ServiceProviderSchema = require("../../models/service_providers");
 // Load Input Validation
 const validateCustomerRegisterInput = require('../../Validation/cust_signup');
 const validateCustomerSigninInput = require('../../Validation/cust_signin');
 const DocumentPermissionSchema = require('../../models/document_permission')
-
+const PropertiesPictureSchema = require("../../models/properties_picture");
+const PropertiesPlanPictureSchema = require("../../models/properties_plan_picture");
 //router.post("/cust_register", cust_register);
 //router.post("/cust_signin", cust_signin);
 
@@ -150,45 +152,188 @@ router.post("/cust_signin", (req, res) => {
     */
 
 //router.post("/add-property", passport.authenticate("jwt", { session: false }), (req, res) => {
-router.post("/add-property", (req, res) => {
-  var err_msg = null;
-  var success_msg = null;
-  var test = req.session.is_user_logged_in;
-  console.log("req.body is : ", req.body);
-  const newProperty = new PropertiesSchema({
-    //should be auto-generated mongodb objectId()
-    // ps_property_id: req.body,
-    ps_unique_code: "properties-" + uuidv4(),
-    ps_user_id: req.session.user_id, //storing customer_ID
-    ps_property_name: req.body.ps_property_name,
-    ps_property_address: req.body.ps_property_address,
-    ps_property_country_id: req.body.ps_property_country_id,
-    ps_property_state_id: req.body.ps_property_state_id,
-    ps_property_city_id: req.body.ps_property_city_id,
-    ps_property_zipcode: req.body.ps_property_zipcode,
-    ps_property_user_as: req.body.ps_property_user_as,
-    ps_other_party_user_as: req.body.ps_other_party_user_as,
-    ps_other_party_emailid: req.body.ps_other_party_emailid,
-    ps_other_party_invited: req.body.ps_other_party_invited,
-    ps_property_area: req.body.ps_property_area,
-    ps_property_bedroom: req.body.ps_property_bedroom,
-    ps_property_bathroom: req.body.ps_property_bathroom,
-    ps_additional_note: req.body.ps_additional_note,
-    ps_property_type: req.body.ps_property_type,
-    ps_chain_property_id: req.body.ps_chain_property_id,
-  });
-  newProperty
-    .save()
-    .then(property => res.redirect("/mydreamhome"))
-    .catch(err => {
-      console.log(err)
-      req.flash('err_msg', 'Something went wrong please try after some time!');
-      res.redirect('/add-property');
+// router.post("/add-property", (req, res) => {
+//   var err_msg = null;
+//   var success_msg = null;
+//   var test = req.session.is_user_logged_in;
+//   console.log("req.body is : ", req.body);
+//   const newProperty = new PropertiesSchema({
+//     //should be auto-generated mongodb objectId()
+//     // ps_property_id: req.body,
+//     ps_unique_code: "properties-" + uuidv4(),
+//     ps_user_id: req.session.user_id, //storing customer_ID
+//     ps_property_name: req.body.ps_property_name,
+//     ps_property_address: req.body.ps_property_address,
+//     ps_property_country_id: req.body.ps_property_country_id,
+//     ps_property_state_id: req.body.ps_property_state_id,
+//     ps_property_city_id: req.body.ps_property_city_id,
+//     ps_property_zipcode: req.body.ps_property_zipcode,
+//     ps_property_user_as: req.body.ps_property_user_as,
+//     ps_other_party_user_as: req.body.ps_other_party_user_as,
+//     ps_other_party_emailid: req.body.ps_other_party_emailid,
+//     ps_other_party_invited: req.body.ps_other_party_invited,
+//     ps_property_area: req.body.ps_property_area,
+//     ps_property_bedroom: req.body.ps_property_bedroom,
+//     ps_property_bathroom: req.body.ps_property_bathroom,
+//     ps_additional_note: req.body.ps_additional_note,
+//     ps_property_type: req.body.ps_property_type,
+//     ps_chain_property_id: req.body.ps_chain_property_id,
+//   });
+//   newProperty
+//     .save()
+//     .then(property => res.redirect("/mydreamhome"))
+//     .catch(err => {
+//       console.log(err)
+//       req.flash('err_msg', 'Something went wrong please try after some time!');
+//       res.redirect('/add-property');
 
+//     });
+// });
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    if (file.fieldname === "propertiespic") {
+      cb(null, 'public/propimg')
+    }
+    else if (file.fieldname === "propertiesplanpic") {
+      cb(null, 'public/propplanimg');
+    }
+
+  },
+  filename: function (req, file, cb) {
+    var datetimestamp = Date.now();
+    cb(null, file.originalname)
+  }
+})
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 10
+  },
+  fileFilter: (req, file, cb) => {
+    checkFileType(file, cb);
+  }
+}).fields(
+  [
+    {
+      name: 'propertiespic', maxCount: 3
+    },
+    {
+      name: 'propertiesplanpic', maxCount: 3
+    }
+  ]
+);
+function checkFileType(file, cb) {
+
+  if (file.fieldname === "propertiespic" || file.fieldname === "propertiesplanpic") {
+    if (
+      file.mimetype === 'image/png' ||
+      file.mimetype === 'image/jpg' ||
+      file.mimetype === 'image/jpeg' ||
+      fiel.mimetype === 'image/gif'
+    ) { // check file type to be png, jpeg, or jpg
+      cb(null, true);
+    } else {
+      cb(null, false); // else fails
+    }
+  }
+}
+
+
+router.post("/add-property", async (req, res) => {
+  upload(req, res, () => {
+    const newProperty = new PropertiesSchema({
+      //should be auto-generated mongodb objectId()
+      // ps_property_id: req.body,
+      ps_unique_code: "properties-" + uuidv4(),
+      ps_user_id: req.session.user_id, //storing customer_ID
+      ps_property_name: req.body.ps_property_name,
+      ps_property_address: req.body.ps_property_address,
+      ps_property_country_id: req.body.ps_property_country_id,
+      ps_property_state_id: req.body.ps_property_state_id,
+      ps_property_city_id: req.body.ps_property_city_id,
+      ps_property_zipcode: req.body.ps_property_zipcode,
+      ps_property_user_as: req.body.ps_property_user_as,
+      ps_other_party_user_as: req.body.ps_other_party_user_as,
+      ps_other_party_emailid: req.body.ps_other_party_emailid,
+      ps_other_party_invited: req.body.ps_other_party_invited,
+      ps_property_area: req.body.ps_property_area,
+      ps_property_bedroom: req.body.ps_property_bedroom,
+      ps_property_bathroom: req.body.ps_property_bathroom,
+      ps_additional_note: req.body.ps_additional_note,
+      ps_property_type: req.body.ps_property_type,
+      ps_chain_property_id: req.body.ps_chain_property_id,
     });
+    newProperty
+      .save()
+      .then(async (property) => {
+        console.log('result', property)
+        if (property) {
+          await req.files.propertiespic.forEach(element => {
+            var obj = {
+              pps_property_id: property._id,
+              pps_property_image_name: element.filename,
+              pps_property_image: {
+                data: fs.readFileSync(path.join(__dirname + '../../../public/propimg/' + element.filename)),
+                contentType: 'image/png'
+              }
+            }
+
+            PropertiesPictureSchema.create(obj, (err, item) => {
+              if (err) {
+                console.log(err);
+                req.flash('err_msg', "Something went worng please try after some time");
+                // res.redirect('/add-property');
+              }
+              else {
+                item.save();
+                console.log("file Submitted Successfully");
+                req.flash('success_msg', "Properties picture Uploaded Successfully");
+                //res.redirect('/add-property');
+              }
+            });
+          });
+          await req.files.propertiesplanpic.forEach(e => {
+            var obj = {
+              ppps_property_id: property._id,
+              ppps_plan_image_name: e.filename,
+              ppps_plan_image: {
+                data: fs.readFileSync(path.join(__dirname + '../../../public/propplanimg/' + e.filename)),
+                contentType: 'image/png'
+              }
+            }
+
+            PropertiesPlanPictureSchema.create(obj, (err, item) => {
+              if (err) {
+                console.log(err);
+                req.flash('err_msg', "Something went worng please try after some time");
+                //res.redirect('/add-property');
+              }
+              else {
+                item.save();
+                console.log("file Submitted Successfully");
+                req.flash('success_msg', "Properties picture Uploaded Successfully");
+                // res.redirect('/add-property');
+
+              }
+            });
+
+          });
+          res.redirect("/mydreamhome")
+        }
+
+      })
+      .catch(err => {
+        console.log(err)
+        req.flash('err_msg', 'Something went wrong please try after some time!');
+        res.redirect('/add-property');
+
+      });
+
+  })
+
 });
-
-
 /* -------------------------------------------------------------------------------------------------
 GET : fetch or search the service providers data based on name, surname, qualifications,
 location, reviews, ratings and quotations.

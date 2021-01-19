@@ -31,7 +31,7 @@
                   src="images/professionals.png"> Professionals</a>
             </li>
             <li class="active">
-              <a href="/mydreamhome-details-docs"><img class="act-img" src="images/dreamhome-active.png"><img
+              <a href="/mydreamhome"><img class="act-img" src="images/dreamhome-active.png"><img
                   src="images/dreamhome.png"> My dream home</a>
             </li>
             <li>
@@ -82,9 +82,8 @@
                         <div class="apartment-details">
                           <div class="clearfix">
                             <div class="float-left">
-                              <h3 class="apartment-name"><a href="#"> Nacary Apartment</a></h3>
-                              <div class="location-part"><a href="#"><img src="images/location.png"> Sudirman, Central
-                                  Jakarta</a></div>
+                              <h3 class="apartment-name"><a href="#"> <%=propertyDetailData[0].ps_property_name%></a></h3>
+                              <div class="location-part"><a href="#"><img src="images/location.png"> <%=propertyDetailData[0].ps_property_address%>,<%=propertyDetailData[0].ps_property_country_id%></a></div>
                             </div>
                             <div class="img-fix3 float-right">
                               <a href="/mydreamhome-details-message"><img src="images/chat.png"></a>
@@ -110,7 +109,7 @@
                               </div>
                               <div class="col-6 col-sm-6 col-lg-3">
                                 <div class="start-date">
-                                  <p>Area<br><b>2,400 sq.ft.</b></p>
+                                  <p>Area<br><b><%=propertyDetailData[0].ps_property_area%> sq.ft.</b></p>
                                 </div>
                               </div>
                               <div class="col-6 col-sm-6 col-lg-3">
