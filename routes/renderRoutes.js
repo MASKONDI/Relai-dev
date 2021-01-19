@@ -249,14 +249,14 @@ app.get('/professionals-detail-message', (req, res) => {
 })
 
 app.get('/professionals-hirenow', isCustomer, async(req, res) => {
-  console.log('spp_id', req.query.spp_id)
+  //console.log('spp_id', req.query.spp_id)
   
   if(req.query.spp_id){
    // if(req.session.user_id)
    var property= await PropertiesSchema.find({ ps_user_id: req.session.user_id });
-   console.log('property====',property)
+   //console.log('property====',property)
   var serviceProvider= await ServiceProviderSchema.findOne({_id:req.query.spp_id });
-      console.log('service_provider=+++',serviceProvider)
+      //console.log('service_provider=+++',serviceProvider)
       if (serviceProvider) {
         
         err_msg = req.flash('err_msg');
@@ -269,9 +269,8 @@ app.get('/professionals-hirenow', isCustomer, async(req, res) => {
           
         });
       }
-    
-
   }else{
+
     console.log('service provider id not found')
   }
 
@@ -304,7 +303,7 @@ app.get('/forget-password', function (req, res) {
 app.get('/forget-password-professional', function (req, res) {
   var test = req.session.is_user_logged_in;
   if (test == true) {
-    res.redirect('/dashboard');
+    res.redirect('/dashboard-professional');
   } else {
     err_msg = req.flash('err_msg');
     success_msg = req.flash('success_msg');
@@ -356,21 +355,16 @@ app.get('/mydreamhome-details-phase-a', isCustomer, (req, res) => {
 app.get('/mydreamhome', isCustomer, (req, res) => {
   PropertiesSchema.find({ ps_user_id: req.session.user_id }).then(async (data) => {
     if (data) {
-      // data.forEach(element => {
-      // PropertiesPictureSchema.find({pps_property_id:element._id}).populate('PropertiesSchema').then((data)=>{
-      //   console.log('data=====',data)
-      // });
-
-      // });
-
-
+      data.forEach(async(element)=>{
+        var allPropertyImage= await PropertiesPictureSchema.find({pps_property_id:element._id});
+        console.log('allPropertyImage++++++',allPropertyImage)
+      })
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('mydreamhome', {
         err_msg, success_msg, layout: false,
         session: req.session,
         propertyData: data,
-        // propPitcherData:propPitcherData
       });
     }
   }).catch((err) => {
@@ -378,6 +372,7 @@ app.get('/mydreamhome', isCustomer, (req, res) => {
   })
 
 })
+
 app.get('/mydreamhome-details', isCustomer, (req, res) => {
 
   PropertiesSchema.find({ _id: req.query.id }).then(async (data) => {

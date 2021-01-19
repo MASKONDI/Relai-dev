@@ -26,6 +26,9 @@ const validateCustomerSigninInput = require('../../Validation/cust_signin');
 const DocumentPermissionSchema = require('../../models/document_permission')
 const PropertiesPictureSchema = require("../../models/properties_picture");
 const PropertiesPlanPictureSchema = require("../../models/properties_plan_picture");
+const PropertyProfessionalSchema = require("../../models/property_professional_Schema");
+
+const PropertiesPhaseSchema = require("../../models/property_phase_schema");
 //router.post("/cust_register", cust_register);
 //router.post("/cust_signin", cust_signin);
 
@@ -364,6 +367,7 @@ router.get("/fetch-service-provider", (req, res) => {
 })
 
 
+
 // ***************** post forget pass **************//
 
 router.post('/forget-password', function (req, res) {
@@ -498,4 +502,60 @@ router.post('/change-permision', (req, res) => {
     });
   }
 })
+
+//****************professional-hire-now */
+
+router.post("/hire-now", (req, res) => {
+  console.log("req is", req.body);
+
+  const hirenow = new PropertyProfessionalSchema({
+    //pps_property_id:  need to store properties Id
+    //pps_service_provider_id // store_service_provider_id
+    pps_pofessional_budget: req.body.pps_pofessional_budget,
+    pps_exptected_delivery_date: req.body.pps_exptected_delivery_date,
+    pps_status: req.body.pps_status,
+  });
+  hirenow
+    .save()
+    .then(hireprofessional => {
+      console.log("server response is :", hireprofessional);
+      res.json(hireprofessional);
+      // res.redirect("/")
+    })
+    .catch(err => {
+      console.log(err)
+      req.flash('err_msg', 'Something went wrong please try again later.');
+      // res.redirect('/');
+    });
+
+});
+
+router.post("/add-Task", (req, res) => {
+  console.log("req is", req.body);
+
+  const newTask = new PropertiesPhaseSchema({
+    //pps_property_id:  need to store properties Id
+    pps_phase_name: req.body.pps_phase_name,
+    pps_phase_start_date: req.body.pps_phase_start_date,
+    pps_phase_end_date: req.body.pps_phase_end_date,
+  });
+  newTask
+    .save()
+    .then(addedTask => {
+      console.log("server response is :", addedTask);
+      res.json(addedTask);
+      // res.redirect("/professionals-hirenow")
+    })
+    .catch(err => {
+      console.log(err)
+      req.flash('err_msg', 'Something went wrong please try again later.');
+      res.redirect('/professionals-hirenow');
+    });
+
+});
+
+
+
+
+
 module.exports = router;
