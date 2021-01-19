@@ -1,5 +1,3 @@
-
-
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -31,3 +29,4 @@ const PropertyProfessionalSchema = new Schema({
   },
 });
 module.exports = property_professional = mongoose.model('property_professional', PropertyProfessionalSchema);
+
