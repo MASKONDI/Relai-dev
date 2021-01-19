@@ -249,14 +249,14 @@ app.get('/professionals-detail-message', (req, res) => {
 })
 
 app.get('/professionals-hirenow', isCustomer, async(req, res) => {
-  console.log('spp_id', req.query.spp_id)
+  //console.log('spp_id', req.query.spp_id)
   
   if(req.query.spp_id){
    // if(req.session.user_id)
    var property= await PropertiesSchema.find({ ps_user_id: req.session.user_id });
-   console.log('property====',property)
+   //console.log('property====',property)
   var serviceProvider= await ServiceProviderSchema.findOne({_id:req.query.spp_id });
-      console.log('service_provider=+++',serviceProvider)
+      //console.log('service_provider=+++',serviceProvider)
       if (serviceProvider) {
         
         err_msg = req.flash('err_msg');
@@ -356,14 +356,14 @@ app.get('/mydreamhome-details-phase-a', isCustomer, (req, res) => {
 app.get('/mydreamhome', isCustomer, (req, res) => {
   PropertiesSchema.find({ ps_user_id: req.session.user_id }).then(async (data) => {
     if (data) {
-      // data.forEach(element => {
-      // PropertiesPictureSchema.find({pps_property_id:element._id}).populate('PropertiesSchema').then((data)=>{
-      //   console.log('data=====',data)
-      // });
+      var imageArray;
+      data.forEach(async(element)=>{
+        var allPropertyImage= await PropertiesPictureSchema.find({pps_property_id:element._id});
+        imageArray = allPropertyImage
+        
+      })
 
-      // });
-
-
+      console.log('allPropertyImage++++++',imageArray)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('mydreamhome', {
