@@ -39,4 +39,4 @@ const ServiceProviderEducationSchema = new Schema({
     type: Date,
   },
 });
-module.exports = ServiceProviderEducation = mongoose.model('serviceProviderEducation', ServiceProviderEducationSchema);
+module.exports = ServiceProviderEducation = mongoose.model('sp_education', ServiceProviderEducationSchema);

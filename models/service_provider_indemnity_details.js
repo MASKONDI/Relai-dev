@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // Create Schema
-const ServiceProviderOtherDetailsSchema = new Schema({
+const ServiceProviderIndemnityDetailsSchema = new Schema({
 
   //should be mongoDb generated objectID
   spods_service_detail_id: {
@@ -13,43 +13,6 @@ const ServiceProviderOtherDetailsSchema = new Schema({
     ref: "serviceProviders"
   },
 
-  spods_option_work_permit_for_uk: {
-    type: String,
-    enum: ['yes', 'no'],
-
-  },
-  spods_option_criminal_convictions: {
-    type: String,
-    enum: ['yes', 'no'],
-
-  },
-  spods_option_uk_driving_licence: {
-    type: String,
-    enum: ['yes', 'no'],
-
-  },
-  spods_details_of_convictions: {
-    type: String,
-
-  },
-  spods_professional_body: {
-    type: String,
-
-  },
-  spods_date_registered: {
-    type: Date,
-
-  },
-  spods_membership_number: {
-    type: String,
-
-  },
-  spods_membership_no_date_registered: {
-    type: Date,
-  },
-  spods_other_relevant_qualification: {
-    type: String,
-  },
   spods_option_pl_claims: {
     type: String,
     enum: ['yes', 'no'],
@@ -92,4 +55,4 @@ const ServiceProviderOtherDetailsSchema = new Schema({
   },
 
 });
-module.exports = ServiceProviderOtherDetails = mongoose.model('sp_other_details', ServiceProviderOtherDetailsSchema);
+module.exports = indemnity_details = mongoose.model('sp_indemnity_details', ServiceProviderIndemnityDetailsSchema);

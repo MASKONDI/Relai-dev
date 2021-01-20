@@ -52,6 +52,9 @@ exports.service_provider_register = (req, res) => {
         sps_country_id: req.body.sps_country_id,
         sps_city: req.body.sps_city,
         sps_password: req.body.sps_password,
+        sps_role_name: req.body.sps_role_name,
+        sps_experience: req.body.sps_experience
+
       });
 
       bcrypt.genSalt(10, (err, salt) => {
@@ -74,6 +77,7 @@ exports.service_provider_register = (req, res) => {
 exports.service_provider_personal_details = (req, res) => {
   console.log("req.body is : ", req.body);
   const serviceProviderPersonalDetails = new ServiceProviderOtherDetailsSchema({
+    spods_service_provider_id: req.body.spods_service_provider_id,
     spods_surname: req.body.spods_surname,
     spods_fornames: req.body.spods_fornames,
     spods_preferred_title: req.body.spods_preferred_title,
@@ -91,10 +95,6 @@ exports.service_provider_personal_details = (req, res) => {
     .then(serviceProviders => res.json(serviceProviders))
     .catch(err => console.log(err));
 };
-
-
-
-
 
 exports.service_provider_other_details = (req, res) => {
   console.log("req.body is : ", req.body);
@@ -135,9 +135,6 @@ exports.service_provider_Indemnity_details = (req, res) => {
 };
 
 
-
-
-
 exports.service_provider_reference = (req, res) => {
   console.log("req.body is : ", req.body);
 
@@ -168,6 +165,7 @@ exports.service_provider_education = (req, res) => {
   console.log("req.body is : ", req.body);
   const serviceProviderEducation = new ServiceProviderEducationSchema({
     //rs_service_provider_id /*Need to store same sp_id while registering */
+    spes_service_provider_id: req.body.spods_service_provider_id,
     spes_university_school_name: req.body.spes_university_school_name,
     spes_qualification_obtained: req.body.spes_qualification_obtained,
     spes_from_date: req.body.spes_from_date,

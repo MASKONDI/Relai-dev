@@ -60,4 +60,4 @@ const ServiceProviderReferenceSchema = new Schema({
   },
 
 });
-module.exports = ServiceProviderReference = mongoose.model('serviceProviderReference', ServiceProviderReferenceSchema);
+module.exports = ServiceProviderReference = mongoose.model('sp_reference', ServiceProviderReferenceSchema);

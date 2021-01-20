@@ -32,4 +32,4 @@ const ServiceProviderLanguageSchema = new Schema({
     type: Date,
   }
 });
-module.exports = ServiceProviderLanguages = mongoose.model('serviceProviderLanguages', ServiceProviderLanguageSchema);
+module.exports = ServiceProviderLanguages = mongoose.model('sp_language', ServiceProviderLanguageSchema);
