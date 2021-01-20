@@ -257,30 +257,29 @@ app.get('/professionals-detail-message', (req, res) => {
 });
 
 
-app.get('/professionals-hirenow', isCustomer, async (req, res) => {
-  console.log('spp_id', req.query.spp_id)
+app.get('/professionals-hirenow', isCustomer, async(req, res) => {
+  //console.log('spp_id', req.query.spp_id)
+  
+  if(req.query.spp_id){
+   // if(req.session.user_id)
+   var property= await PropertiesSchema.find({ ps_user_id: req.session.user_id });
+   //console.log('property====',property)
+  var serviceProvider= await ServiceProviderSchema.findOne({_id:req.query.spp_id });
+      //console.log('service_provider=+++',serviceProvider)
+      if (serviceProvider) {
+        
+        err_msg = req.flash('err_msg');
+        success_msg = req.flash('success_msg');
+        res.render('professionals-hirenow', {
+          err_msg, success_msg, layout: false,
+          session: req.session,
+          serviceProvider:serviceProvider,
+          property:property
+          
+        });
+      }
+  }else{
 
-  if (req.query.spp_id) {
-    // if(req.session.user_id)
-    var property = await PropertiesSchema.find({ ps_user_id: req.session.user_id });
-    console.log('property====', property)
-    var serviceProvider = await ServiceProviderSchema.findOne({ _id: req.query.spp_id });
-    console.log('service_provider=+++', serviceProvider)
-    if (serviceProvider) {
-
-      err_msg = req.flash('err_msg');
-      success_msg = req.flash('success_msg');
-      res.render('professionals-hirenow', {
-        err_msg, success_msg, layout: false,
-        session: req.session,
-        serviceProvider: serviceProvider,
-        property: property
-
-      });
-    }
-
-
-  } else {
     console.log('service provider id not found')
   }
 
@@ -362,56 +361,63 @@ app.get('/mydreamhome-details-phase-a', isCustomer, (req, res) => {
 //   });
 // })
 //*************************property data display on mydeream home page
-app.get('/mydreamhome', isCustomer, (req, res) => {
+app.get('/mydreamhome', isCustomer, async (req, res) => {
   PropertiesSchema.find({ ps_user_id: req.session.user_id }).then(async (data) => {
     if (data) {
-
-      // data.forEach(element => {
-      //   PropertiesPictureSchema.find({ pps_property_id: element._id }).then((data) => {
-      //     console.log('data', data)
-      //   });
-
-      // });
-
-      // data.forEach(element => {
-      // PropertiesPictureSchema.find({pps_property_id:element._id}).populate('PropertiesSchema').then((data)=>{
-      //   console.log('data=====',data)
-      // });
-
-      // });
-
+      let arr = [];
+          for (let img of data) {
+            await PropertiesPictureSchema.find({pps_property_id:img._id}).then(async (result)=>{
+               //let temp = await result
+               for(let image of result){
+                 let temp = await image
+                 arr.push(temp)
+               }
+             
+            })
+            
+          }
+      console.log('++++++++',arr)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('mydreamhome', {
         err_msg, success_msg, layout: false,
         session: req.session,
         propertyData: data,
-        // propPitcherData:propPitcherData
+        propertyImage:arr
+        
       });
     }
   }).catch((err) => {
     console.log(err)
   })
+
 })
 
 app.get('/mydreamhome-details', isCustomer, (req, res) => {
 
   PropertiesSchema.find({ _id: req.query.id }).then(async (data) => {
     if (data) {
-      // data.forEach(element => {
-      // PropertiesPictureSchema.find({pps_property_id:element._id}).populate('PropertiesSchema').then((data)=>{
-      //   console.log('data=====',data)
-      // });
-
-      // });
-
+      
+      let arr = [];
+      for (let img of data) {
+        await PropertiesPictureSchema.find({pps_property_id:img._id}).then(async (result)=>{
+           //let temp = await result
+           for(let image of result){
+             let temp = await image
+             arr.push(temp)
+           }
+         
+        })
+        
+      }
+  
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('mydreamhome-details', {
         err_msg, success_msg, layout: false,
         session: req.session,
         propertyDetailData: data,
-        // propPitcherData:propPitcherData
+        propertyImage:arr
       });
     }
   }).catch((err) => {
