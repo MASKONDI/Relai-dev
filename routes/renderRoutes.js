@@ -293,13 +293,24 @@ app.get('/mydreamhome-details-message', isCustomer, (req, res) => {
 })
 
 app.get('/professionals-detail-message', (req, res) => {
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('professionals-detail-message', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-})
+  console.log('helooooo',req.query);
+  //return
+  ServiceProviderSchema.find({ _id: req.query.spp_id }).then(service_provider_detail => {
+    if (service_provider_detail) {
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.render('professionals-detail-message', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        service_provider_detail: service_provider_detail[0]
+      });
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+
+});
+
 
 app.get('/professionals-hirenow', isCustomer, async(req, res) => {
   //console.log('spp_id', req.query.spp_id)
@@ -411,12 +422,12 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
       let arr = [];
           for (let img of data) {
             await PropertiesPictureSchema.find({pps_property_id:img._id}).then(async (result)=>{
-               //let temp = await result
-               for(let image of result){
-                 let temp = await image
+
+               let temp = await result
+              //for(let image of result){
+               //  let temp = await image
                  arr.push(temp)
-               }
-             
+              // }
             })
             
           }
@@ -525,7 +536,7 @@ app.get('/signup-professionals-profile-3', isServiceProvider, (req, res) => {
     err_msg, success_msg, layout: false,
     session: req.session
   });
-});
+});  
 app.get('/signup-professionals-profile-4', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
