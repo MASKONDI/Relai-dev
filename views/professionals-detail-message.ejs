@@ -18,23 +18,23 @@
           </div>
           <ul class="dashboard-nav">
             <li>
-              <a href="dashboard.html"><img class="act-img" src="images/dashboard-active.png"><img
+              <a href="/dashboard"><img class="act-img" src="images/dashboard-active.png"><img
                   src="images/dashboard.png"> Dashboard</a>
             </li>
             <li>
-              <a href="track-your-progress.html"><img class="act-img" src="images/track-active.png"><img
+              <a href="/track-your-progress"><img class="act-img" src="images/track-active.png"><img
                   src="images/track.png"> Track your progress</a>
             </li>
             <li class="active">
-              <a href="professionals.html"><img class="act-img" src="images/professionals-active.png"><img
+              <a href="/professionals"><img class="act-img" src="images/professionals-active.png"><img
                   src="images/professionals.png"> Professionals</a>
             </li>
             <li>
-              <a href="mydreamhome-details-docs.html"><img class="act-img" src="images/dreamhome-active.png"><img
+              <a href="/mydreamhome-details-docs"><img class="act-img" src="images/dreamhome-active.png"><img
                   src="images/dreamhome.png"> My dream home</a>
             </li>
             <li>
-              <a href="mydreamhome-details-to-dos.html"><img class="act-img" src="images/to-do-list-active.png"><img
+              <a href="/mydreamhome-details-to-dos"><img class="act-img" src="images/to-do-list-active.png"><img
                   src="images/to-do-list.png"> To do list</a>
             </li>
           </ul>
@@ -44,7 +44,7 @@
           <div class="row">
             <div class="breadcumb left-arrow">
               <ul>
-                <li><a href="professionals.html"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+                <li><a href="/professionals"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>
                     Back to all professionals</a></li>
               </ul>
             </div>
@@ -56,14 +56,20 @@
                   <img src="images/user-4.png" alt="" title="">
                 </div>
                 <div class="user-name-fix float-left">
-                  <h2>Alex Jackson</h2>
-                  <p>Architect</p>
+                  <h2>
+                    <%=service_provider_detail.sps_fullname%>
+                  </h2>
+                  <p>
+                    <%=service_provider_detail.sps_role_name%>
+                  </p>
                 </div>
               </div>
               <div class="col-sm-12 col-lg-6">
                 <div class="float-left icon-fix">
-                  <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span>5
-                    years</span>
+                  <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span>
+                    <%=service_provider_detail.sps_experience%>
+                      years
+                  </span>
                 </div>
                 <div class="float-left icon-fix2">
                   <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>4.0
@@ -78,11 +84,14 @@
               <div class="professional-files-section2">
                 <div class="row">
                   <div class="float-left image-fix">
-                    <img class="" src="images/phone.png" alt="Card image cap">&nbsp;<span>+56295856321
+                    <img class="" src="images/phone.png" alt="Card image cap">&nbsp;<span>+
+                      <%=service_provider_detail.sps_phone_number%>
                     </span>
                   </div>
                   <div class="float-left image-fix">
-                    <img class="" src="images/mail.png" alt="Card image cap">&nbsp;<span>alexjackson@gmail.com</span>
+                    <img class="" src="images/mail.png" alt="Card image cap">&nbsp;<span>
+                      <%=service_provider_detail.sps_email_id%>
+                    </span>
                   </div>
                 </div>
 
