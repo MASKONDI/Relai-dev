@@ -35,25 +35,20 @@ const { resolve } = require("path");
 //router.post("/cust_signin", cust_signin);
 
 var isCustomer = auth.isCustomer;
-router.post('/filterPropertyAdress',(req,res)=>{
-  console.log('filterPropertyAdress==',req.body.propertyId)
-  
-  if(req.body.propertyId){
-    PropertiesSchema.findOne({_id:req.body.propertyId}).then(async (data) => {
+
+router.post('/filterPropertyAdress', (req, res) => {
+  if (req.body.propertyId) {
+    PropertiesSchema.findOne({ _id: req.body.propertyId }).then(async (data) => {
       if (data) {
-        console.log(data)
+        //console.log(data)
         res.json({ data: data });
-     
       }
-  
-  
-       
-  }).catch((err) => {
-    console.log(err)
-  })
-}else{
-  console.log('property id not found')
-}
+    }).catch((err) => {
+      console.log(err)
+    })
+  } else {
+    console.log('property id not found')
+  }
 })
 
 
@@ -530,20 +525,19 @@ router.post('/change-permision', (req, res) => {
 
 router.post("/hire-now", (req, res) => {
   console.log("req is", req.body);
-
   const hirenow = new PropertyProfessionalSchema({
-    //pps_property_id:  need to store properties Id
-    //pps_service_provider_id // store_service_provider_id
+    pps_property_id: req.body.propertyId,
+    pps_service_provider_id : req.body.serviceProviderId,
     pps_pofessional_budget: req.body.pps_pofessional_budget,
     pps_exptected_delivery_date: req.body.pps_exptected_delivery_date,
-    pps_status: req.body.pps_status,
+    //pps_status: req.body.pps_status,//TODO:we need to save later
   });
   hirenow
     .save()
     .then(hireprofessional => {
       console.log("server response is :", hireprofessional);
-      res.json(hireprofessional);
-      // res.redirect("/")
+      //res.json(hireprofessional);
+       res.redirect("/professionals")
     })
     .catch(err => {
       console.log(err)

@@ -108,8 +108,8 @@
               <div class="col-sm-12 col-lg-12">
                 <div class="hirenow-inner">
                   <div class="docs-files-section">
-                    <form class="form" action="#">
-
+                    <form class="form" action="/api/hire-now" method="POST">
+                      <input type="hidden" name="serviceProviderId" value="<%=serviceProvider._id%>">
                       <div class="row">
                         <div class="col-sm-12 col-lg-12">
                           <div class="docs-files">
@@ -131,7 +131,7 @@
                                 <div class="professional-text-fix">
                                   <label>Select Property</label>
                                   <select class="form-control form-control-lg form-control-size-fix propertySelectBox"
-                                    style="max-width: 100%; margin-bottom:10px;">
+                                    style="max-width: 100%; margin-bottom:10px;" name="propertyId">
                                     <option>---select property--</option>
                                     <% property.forEach(function(row){ %>
                                     <option value="<%=row._id%>">

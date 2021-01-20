@@ -240,7 +240,9 @@ app.get('/mydreamhome-details-message', isCustomer, (req, res) => {
 })
 
 app.get('/professionals-detail-message', (req, res) => {
-  ServiceProviderSchema.find({ _id: req.query.id }).then(service_provider_detail => {
+  console.log('helooooo',req.query);
+  //return
+  ServiceProviderSchema.find({ _id: req.query.spp_id }).then(service_provider_detail => {
     if (service_provider_detail) {
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
@@ -481,7 +483,7 @@ app.get('/signup-professionals-profile-3', isServiceProvider, (req, res) => {
     err_msg, success_msg, layout: false,
     session: req.session
   });
-});
+});  
 app.get('/signup-professionals-profile-4', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
