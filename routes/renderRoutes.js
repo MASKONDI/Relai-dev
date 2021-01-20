@@ -11,6 +11,8 @@ var auth = require('../config/auth');
 var multer = require('multer');
 const ServiceProviderPortfolioSchema = require("../models/service_provider_portfolio");
 const ServiceProviderSchema = require("../models/service_providers");
+const ServiceProviderOtherDetailSchema = require("../models/service_providers_other_details");
+const ServiceProviderEducationSchema = require("../models/service_provider_education");
 const CustomerUploadDocsSchema = require("../models/customer_upload_document");
 const PropertiesPictureSchema = require("../models/properties_picture");
 //const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
@@ -107,8 +109,6 @@ app.get('/professionals', isCustomer, (req, res) => {
   success_msg = req.flash('success_msg');
   ServiceProviderSchema.find({ sps_status: 'active' }).then(service_provider => {
     // Check for Customer
-
-
     if (!service_provider) {
       console.log("Service Provider not found");
       // req.flash('err_msg', 'Service Provider not found');
@@ -117,14 +117,12 @@ app.get('/professionals', isCustomer, (req, res) => {
       return res.status(400).json("Service Provider not found")
     }
     else {
-
       res.render('professionals', {
         err_msg, success_msg, layout: false,
         session: req.session,
         data: service_provider
       });
     }
-
   })
 });
 
@@ -161,6 +159,61 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
 //     session: req.session
 //   });
 // });
+
+// Professional Filter Role
+app.get('/professionals-filter', isCustomer, (req, res) => {
+  console.log('role data:',req.query.role);
+  ServiceProviderSchema.find({ sps_role_name: req.query.role }).then(service_provider_detail => {
+    if (service_provider_detail) {
+      console.log('service_provider_detail:',service_provider_detail)
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: service_provider_detail
+      })
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+});
+
+// Professional Filter name surname qualification
+app.get('/professionals-searchbar', (req, res) => {
+let professionalIDs = [];
+ServiceProviderSchema.find({ sps_fullname: new RegExp(req.query.searchKeyword, 'i')  }).then(service_provider_detail1 => {
+  ServiceProviderOtherDetailSchema.find({ spods_surname: new RegExp(req.query.searchKeyword, 'i')}).then(service_provider_detail2 => {
+    ServiceProviderEducationSchema.find({ spes_qualification_obtained: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail3 => {
+      if (service_provider_detail1 || service_provider_detail2 || service_provider_detail3) {
+        err_msg = req.flash('err_msg');
+        success_msg = req.flash('success_msg');
+        var service_provider_detail = service_provider_detail1.concat(service_provider_detail2, service_provider_detail3);
+      service_provider_detail.forEach( async function(providerData) {
+          if(("spes_service_provider_id" in providerData) == true ){
+             await professionalIDs.push(providerData.spes_service_provider_id.toString());
+          }else if(('spods_service_provider_id' in providerData) == true){
+             await professionalIDs.push(providerData.spods_service_provider_id.toString());
+          }else{
+             await professionalIDs.push(providerData._id.toString());
+          } 
+      });
+      let unique = [...new Set(professionalIDs)];
+      ServiceProviderSchema.find({ _id: { $in: unique } }).then(service_provider_detail => {
+        res.send({
+          err_msg, success_msg, layout: false,
+          session: req.session,
+          filterData: service_provider_detail
+        })
+      });
+      }
+  });
+  });
+  }).catch((err) => {
+    console.log(err)
+  })
+});
+
 
 app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
 
@@ -352,19 +405,30 @@ app.get('/mydreamhome-details-phase-a', isCustomer, (req, res) => {
 //   });
 // })
 //*************************property data display on mydeream home page
-app.get('/mydreamhome', isCustomer, (req, res) => {
+app.get('/mydreamhome', isCustomer, async (req, res) => {
   PropertiesSchema.find({ ps_user_id: req.session.user_id }).then(async (data) => {
     if (data) {
-      data.forEach(async(element)=>{
-        var allPropertyImage= await PropertiesPictureSchema.find({pps_property_id:element._id});
-        console.log('allPropertyImage++++++',allPropertyImage)
-      })
+      let arr = [];
+          for (let img of data) {
+            await PropertiesPictureSchema.find({pps_property_id:img._id}).then(async (result)=>{
+               //let temp = await result
+               for(let image of result){
+                 let temp = await image
+                 arr.push(temp)
+               }
+             
+            })
+            
+          }
+      console.log('++++++++',arr)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('mydreamhome', {
         err_msg, success_msg, layout: false,
         session: req.session,
         propertyData: data,
+        propertyImage:arr
+        
       });
     }
   }).catch((err) => {
@@ -377,20 +441,27 @@ app.get('/mydreamhome-details', isCustomer, (req, res) => {
 
   PropertiesSchema.find({ _id: req.query.id }).then(async (data) => {
     if (data) {
-      // data.forEach(element => {
-      // PropertiesPictureSchema.find({pps_property_id:element._id}).populate('PropertiesSchema').then((data)=>{
-      //   console.log('data=====',data)
-      // });
-
-      // });
-
+      
+      let arr = [];
+      for (let img of data) {
+        await PropertiesPictureSchema.find({pps_property_id:img._id}).then(async (result)=>{
+           //let temp = await result
+           for(let image of result){
+             let temp = await image
+             arr.push(temp)
+           }
+         
+        })
+        
+      }
+  
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('mydreamhome-details', {
         err_msg, success_msg, layout: false,
         session: req.session,
         propertyDetailData: data,
-        // propPitcherData:propPitcherData
+        propertyImage:arr
       });
     }
   }).catch((err) => {
