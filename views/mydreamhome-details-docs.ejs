@@ -133,7 +133,14 @@
                   <% allDocument.forEach(function(row){ %>
                     <%if(row.cuds_document_type=='image'){%>
                       <tr>
-                        <td><img class="pdf-file" src="/upload/<%= row.cuds_document_name%>">
+                        <td>
+                          <img class="pdf-file" src="/upload/<%= row.cuds_document_name%>">
+                          <!-- <div class="image-fix overflow-hidden">
+                            <a href="upload/<%= row.cuds_document_name%>" data-lightbox="example-set"
+                              data-title=" <%= row.cuds_document_name%>">
+                              <img src="/upload/<%= row.cuds_document_name%>" alt="" class="example-image " />
+                            </a>
+                          </div> -->
                           <p><span>
                               <%= row.cuds_document_name%>
                             </span>
@@ -221,6 +228,28 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+  <!-- Font Awesome https://fontawesome.com/  https://use.fontawesome.com/releases/v5.14.0/js/all.js -->
+  <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+  <!-- Lightbox Image Gallery https://cdnjs.com/libraries/lightbox2  https://lokeshdhakar.com/projects/lightbox2/ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/js/lightbox.min.js"></script>
+  <!-- Owl Carousel https://cdnjs.com/libraries/OwlCarousel2
+		http://owlcarousel2.github.io/OwlCarousel2/ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <!-- jQuery CounterUp https://www.jsdelivr.com/package/npm/jquery.counterup
+		https://github.com/bfintal/Counter-Up2 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery.counterup@2.1.0/jquery.counterup.min.js"></script>
+  <!-- Bootstrap Form Validator https://cdnjs.com/libraries/1000hz-bootstrap-validator -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+
+  <script>$(document).ready(function () {
+      lightbox.option({
+        resizeDuration: 600,
+        wrapAround: true,
+        imageFadeDuration: 500,
+      });
+    });</script>
+
   <script>
     $(document).ready(function () {
       $(".sidenav ul li").click(function () {
