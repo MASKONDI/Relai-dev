@@ -59,11 +59,19 @@
                         <div id="demo" class="carousel slide" data-ride="carousel">
                           <!-- The slideshow -->
                           <div class="carousel-inner">
-                            <%propertyImage.forEach(function(rows){%>
+                            <%
+                            var c = 0;
+                            propertyImage.forEach(function(rows){%>
+                              <%if(c==0){%>
                             <div class="carousel-item active">
                               <img src="propimg/<%=rows.pps_property_image_name%>" alt="">
                             </div>
-                            <%});%>
+                              <%}else{%>
+                                <div class="carousel-item ">
+                                  <img src="propimg/<%=rows.pps_property_image_name%>" alt="">
+                                </div>
+                                <%}%>
+                            <% c++;});%>
                           </div>
                           <!-- Left and right controls -->
                           <a class="carousel-control-prev" href="#demo" data-slide="prev">

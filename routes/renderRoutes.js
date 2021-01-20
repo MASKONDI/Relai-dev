@@ -401,7 +401,7 @@ app.get('/mydreamhome-details', isCustomer, (req, res) => {
         })
         
       }
-  console.log('++++++++',arr)
+  
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('mydreamhome-details', {
