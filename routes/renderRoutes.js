@@ -358,11 +358,11 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
       let arr = [];
           for (let img of data) {
             await PropertiesPictureSchema.find({pps_property_id:img._id}).then(async (result)=>{
-               //let temp = await result
-               for(let image of result){
-                 let temp = await image
+               let temp = await result
+              //for(let image of result){
+               //  let temp = await image
                  arr.push(temp)
-               }
+              // }
              
             })
             

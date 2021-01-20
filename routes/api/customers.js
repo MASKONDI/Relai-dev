@@ -35,37 +35,25 @@ const { resolve } = require("path");
 //router.post("/cust_signin", cust_signin);
 
 var isCustomer = auth.isCustomer;
-router.get('/test',(req,res)=>{
-  //var array =[];
- // new Promise((resolve, reject) => {
-
+router.post('/filterPropertyAdress',(req,res)=>{
+  console.log('filterPropertyAdress==',req.body.propertyId)
   
-  PropertiesSchema.find({ ps_user_id:'5ffeaf14cbd60d14a072935e'}).then(async (data) => {
-    if (data) {
-      var c =0
-      //var array=[]
-      // data.forEach((element)=>{
-      //  PropertiesPictureSchema.find({pps_property_id:element._id}).then((result)=>{
-      //     array.push(result)
-      //     console.log(result)
-      //   });
-       // array.push(allPropertyImage)
-        //console.log('allPropertyImage++++++',allPropertyImage)
-        let arr = [];
-          for (let img of data) {
-            await PropertiesPictureSchema.find({pps_property_id:img._id}).then(async (result)=>{
-               let temp = await result
-             arr.push(temp)
-            })
-            
-          }
-      console.log('++++++++',arr)
-      
-    }
+  if(req.body.propertyId){
+    PropertiesSchema.findOne({_id:req.body.propertyId}).then(async (data) => {
+      if (data) {
+        console.log(data)
+        res.json({ data: data });
+     
+      }
+  
+  
        
   }).catch((err) => {
     console.log(err)
   })
+}else{
+  console.log('property id not found')
+}
 })
 
 
