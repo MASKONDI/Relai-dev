@@ -84,7 +84,7 @@
 
                             </div>
                           </div>
-                          <a href="#" class="btn professional-search-btn">Search</a>
+                          <a href="javascript:void(0)" id="professional-search-btn" class="btn professional-search-btn">Search</a>
                           <div class="dropdown">
                             <button class="btn professional-search-btn dropdown-toggle" type="button"
                               id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -99,33 +99,33 @@
                       </div>
                     </div>
                     <div class="col-sm-12 col-lg-12">
-                      <ul class="icon-list">
-                        <li><a href="#"><img src="images/accountant.png" alt="" title=""><br><span>Accountants
+                      <ul id="professional-role" class="icon-list">
+                        <li><a data-role="Accountant" href="javascript:void(0)"><img src="images/accountant.png" alt="" title=""><br><span>Accountants
                             </span></a>
                         </li>
-                        <li><a href="#"><img src="images/architect.png" alt="" title=""><br><span>Architects</span></a>
+                        <li><a data-role="Architect" href="javascript:void(0)"><img src="images/architect.png" alt="" title=""><br><span>Architects</span></a>
                         </li>
-                        <li><a href="#"><img src="images/developers.png" alt="" title=""><br><span>Developers
+                        <li><a data-role="Developer" href="javascript:void(0)"><img src="images/developers.png" alt="" title=""><br><span>Developers
                             </span></a></li>
-                        <li><a href="#"><img src="images/engineer.png" alt="" title=""><br><span>Engineers </span></a>
+                        <li><a data-role="Engineer" href="javascript:void(0)"><img src="images/engineer.png" alt="" title=""><br><span>Engineers </span></a>
                         </li>
-                        <li><a href="#"><img src="images/financial-advisors.png" alt="" title=""><br><span>Financial
+                        <li><a data-role="Financial Advisor" href="javascript:void(0)"><img src="images/financial-advisors.png" alt="" title=""><br><span>Financial
                               Advisors
                             </span></a></li>
-                        <li><a href="#"><img src="images/interior-designers.png" alt="" title=""><br><span>Interior
+                        <li><a data-role="Interior Designer" href="javascript:void(0)"><img src="images/interior-designers.png" alt="" title=""><br><span>Interior
                               Designers
                             </span></a>
                         </li>
-                        <li><a href="#"><img src="images/lawyers.png" alt="" title=""><br><span>Lawyers/
+                        <li><a data-role="Lawyer/Conveyancer" href="javascript:void(0)"><img src="images/lawyers.png" alt="" title=""><br><span>Lawyers/
                               Conveyancers</span></a>
                         </li>
-                        <li><a href="#"><img src="images/mortgage-broker.png" alt="" title=""><br><span>Mortgage
+                        <li><a data-role="Mortgage Broker"  href="javascript:void(0)"><img src="images/mortgage-broker.png" alt="" title=""><br><span>Mortgage
                               Brokers</span></a>
                         </li>
-                        <li><a href="#"><img src="images/surveyors.png" alt="" title=""><br><span>Surveyors
+                        <li><a data-role="Surveyor" href="javascript:void(0)"><img src="images/surveyors.png" alt="" title=""><br><span>Surveyors
                             </span></a>
                         </li>
-                        <li style="margin-right:0px"><a href="#"><img src="images/valuers.png" alt=""
+                        <li style="margin-right:0px"><a  data-role="Valuer" href="javascript:void(0)"><img src="images/valuers.png" alt=""
                               title=""><br><span>Valuers</span></a>
                         </li>
                       </ul>
@@ -137,9 +137,9 @@
           </div>
           <div class="dashboard-inner">
 
-            <div class="row">
+            <div id="filter_data" class="row">
+             
               <% data.forEach(function(row){ %>
-
                 <div class="col-lg-3">
                   <div class="card card-fix2">
                     <div class="row">
@@ -176,7 +176,7 @@
                     </div>
                   </div>
                 </div>
-                <% }); %>
+                <% });  %>
             </div>
 
           </div>
@@ -196,6 +196,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
     $(document).ready(function () {
       $(".sidenav ul li").click(function () {
@@ -209,7 +210,59 @@
         $(this).addClass("active");
       });
     });
+
+$("#professional-role li a").click(function (e) {
+    var role = $(this).data('role');
+    $.ajax({
+      type: "GET",
+      data: {
+          role:role
+      },
+      url: "/professionals-filter",
+      cache: false,
+      success: function (html) {
+
+        console.log('result:',html.filterData)
+       var htmlData ='' ;
+       //$('#filter_data').html(t);
+        $.each( html.filterData, function( i, data ){
+              console.log('val:',data)
+              htmlData += '<div class="col-lg-3"><div class="card card-fix2"><div class="row"><div class="float-left card-header-fix"> <a href="/professionals-detail?id='+data._id+'"> <img class="card-img-top" src="images/recent-user-2.png" alt="Card image cap"> </a></div><div class="float-right card-content-fix"><h5> '+data.sps_fullname+'</h5><p> '+data.sps_role_name+'</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span> '+data.sps_experience+' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>4.0 Rating</span></div></div><div class="card-body"><p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed dLorem ipsum dolor sit</p></div></div></div>';
+
+        });
+      $('#filter_data').html(htmlData);
+      }
+    });
+  });
+
+  $("#professional-search-btn").click(function (e) {
+    var searchVal = $('.professional-search').val();
+    $.ajax({
+      type: "GET",
+      data: {
+          searchKeyword:searchVal
+      },
+      url: "/professionals-searchbar",
+      cache: false,
+      success: function (html) {
+
+        console.log('result:',html.filterData)
+       var htmlData ='' ;
+       //$('#filter_data').html(t);
+        $.each( html.filterData, function( i, data ){
+              console.log('val:',data)
+              htmlData += '<div class="col-lg-3"><div class="card card-fix2"><div class="row"><div class="float-left card-header-fix"> <a href="/professionals-detail?id='+data._id+'"> <img class="card-img-top" src="images/recent-user-2.png" alt="Card image cap"> </a></div><div class="float-right card-content-fix"><h5> '+data.sps_fullname+'</h5><p> '+data.sps_role_name+'</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span> '+data.sps_experience+' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>4.0 Rating</span></div></div><div class="card-body"><p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed dLorem ipsum dolor sit</p></div></div></div>';
+
+        });
+      $('#filter_data').html(htmlData);
+      }
+    });
+  });
+
+  
   </script>
+
+
   </body>
 
   </html>

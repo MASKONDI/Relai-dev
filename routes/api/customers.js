@@ -40,13 +40,55 @@ const ComplaintsSchema = require("../../models/Complaints");
 
 
 var isCustomer = auth.isCustomer;
-router.post('/filterPropertyAdress', (req, res) => {
-  console.log('filterPropertyAdress==', req.body.propertyId)
+// <<<<<<< HEAD
+// router.post('/filterPropertyAdress', (req, res) => {
+//   console.log('filterPropertyAdress==', req.body.propertyId)
 
+//   if (req.body.propertyId) {
+//     PropertiesSchema.findOne({ _id: req.body.propertyId }).then(async (data) => {
+//       if (data) {
+//         console.log(data)
+// =======
+router.get('/test', (req, res) => {
+  //var array =[];
+  // new Promise((resolve, reject) => {
+
+
+  PropertiesSchema.find({ ps_user_id: '5ffeaf14cbd60d14a072935e' }).then(async (data) => {
+    if (data) {
+      var c = 0
+      //var array=[]
+      // data.forEach((element)=>{
+      //  PropertiesPictureSchema.find({pps_property_id:element._id}).then((result)=>{
+      //     array.push(result)
+      //     console.log(result)
+      //   });
+      // array.push(allPropertyImage)
+      //console.log('allPropertyImage++++++',allPropertyImage)
+      let arr = [];
+      for (let img of data) {
+        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
+          let temp = await result
+          arr.push(temp)
+        })
+
+      }
+      console.log('++++++++', arr)
+
+    }
+
+  }).catch((err) => {
+    console.log(err)
+  })
+})
+
+
+router.post('/filterPropertyAdress', (req, res) => {
   if (req.body.propertyId) {
     PropertiesSchema.findOne({ _id: req.body.propertyId }).then(async (data) => {
       if (data) {
-        console.log(data)
+        //console.log(data)
+
         res.json({ data: data });
       }
     }).catch((err) => {
@@ -531,20 +573,19 @@ router.post('/change-permision', (req, res) => {
 
 router.post("/hire-now", (req, res) => {
   console.log("req is", req.body);
-
   const hirenow = new PropertyProfessionalSchema({
-    //pps_property_id:  need to store properties Id
-    //pps_service_provider_id // store_service_provider_id
+    pps_property_id: req.body.propertyId,
+    pps_service_provider_id: req.body.serviceProviderId,
     pps_pofessional_budget: req.body.pps_pofessional_budget,
     pps_exptected_delivery_date: req.body.pps_exptected_delivery_date,
-    pps_status: req.body.pps_status,
+    //pps_status: req.body.pps_status,//TODO:we need to save later
   });
   hirenow
     .save()
     .then(hireprofessional => {
       console.log("server response is :", hireprofessional);
-      res.json(hireprofessional);
-      // res.redirect("/")
+      //res.json(hireprofessional);
+      res.redirect("/professionals")
     })
     .catch(err => {
       console.log(err)
