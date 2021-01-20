@@ -35,6 +35,39 @@ const { resolve } = require("path");
 //router.post("/cust_signin", cust_signin);
 
 var isCustomer = auth.isCustomer;
+router.get('/test',(req,res)=>{
+  //var array =[];
+ // new Promise((resolve, reject) => {
+
+  
+  PropertiesSchema.find({ ps_user_id:'5ffeaf14cbd60d14a072935e'}).then(async (data) => {
+    if (data) {
+      var c =0
+      //var array=[]
+      // data.forEach((element)=>{
+      //  PropertiesPictureSchema.find({pps_property_id:element._id}).then((result)=>{
+      //     array.push(result)
+      //     console.log(result)
+      //   });
+       // array.push(allPropertyImage)
+        //console.log('allPropertyImage++++++',allPropertyImage)
+        let arr = [];
+          for (let img of data) {
+            await PropertiesPictureSchema.find({pps_property_id:img._id}).then(async (result)=>{
+               let temp = await result
+             arr.push(temp)
+            })
+            
+          }
+      console.log('++++++++',arr)
+      
+    }
+       
+  }).catch((err) => {
+    console.log(err)
+  })
+})
+
 
 router.post('/filterPropertyAdress', (req, res) => {
   if (req.body.propertyId) {
