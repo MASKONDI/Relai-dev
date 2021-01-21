@@ -574,6 +574,7 @@ router.post('/change-permision', (req, res) => {
 router.post("/hire-now", (req, res) => {
   console.log("req is", req.body);
   const hirenow = new PropertyProfessionalSchema({
+    pps_user_id:req.body.user_id,
     pps_property_id: req.body.propertyId,
     pps_service_provider_id: req.body.serviceProviderId,
     pps_pofessional_budget: req.body.pps_pofessional_budget,
@@ -623,22 +624,24 @@ router.post("/add-Task", (req, res) => {
 
 router.post('/raise-a-complaint', (req, res) => {
   console.log("request coming from server is :", req.body);
+  
   const newComplaint = new ComplaintsSchema({
     //should be mongodb generated id
     //coms_id :
-    //coms_complaint_for: req.body.sevice_provider_id // need to store service_provider_ID
+    coms_complaint_for: req.body.sevice_provider_id,
     coms_complaint_code: "C" + uuidv4(),//need to generate in  like C123 auto increment feature
-    //coms_property_id: req.body.property_id
-    coms_user_id: req.session.id,
+    coms_property_id: req.body.property_id,
+    coms_user_id:req.body.cust_user_id,
     //coms_complaint_by: 'customer' //need to check if complaints filed via customer portal or service_provider portal
     coms_complaint_subject: req.body.coms_complaint_subject,
     coms_complaint_note: req.body.coms_complaint_note,
-    coms_complaint_file: req.body.coms_complaint_file,
+    //coms_complaint_file: req.body.coms_complaint_file,
   });
   newComplaint.save().then(complaints => {
     console.log("Getting respose from db is :", complaints);
     req.flash('success_msg', 'complaints raise succesfully');
     //res.redirect("/")
+    res.json({complaints:complaints,'message':'complaint sent successfully'})
   }).catch(err => {
     console.log(err)
     req.flash('err_msg', 'Something went wrong please try again later.');

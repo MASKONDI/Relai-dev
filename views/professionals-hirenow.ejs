@@ -109,6 +109,7 @@
                 <div class="hirenow-inner">
                   <div class="docs-files-section">
                     <form class="form" action="/api/hire-now" method="POST">
+                      <input type="hidden" name="user_id" value="<%=session.user_id%>">
                       <input type="hidden" name="serviceProviderId" value="<%=serviceProvider._id%>">
                       <div class="row">
                         <div class="col-sm-12 col-lg-12">
