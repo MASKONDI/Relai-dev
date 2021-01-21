@@ -52,4 +52,3 @@ const ComplaintsSchema = new Schema({
   },
 });
 module.exports = complaints = mongoose.model('complaints', ComplaintsSchema);
-
