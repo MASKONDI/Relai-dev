@@ -152,14 +152,16 @@
                         </div>
                       </div>
                       <div class="text-message-box clearfix">
+                        <form method="POST" id="chat_form">
                         <div class="text-box">
-                          <textarea class="form-control" style="min-width: 80%; margin-bottom: 10px; " rows="3"
-                            id="comment">Write your reply here</textarea>
-
-                          <button type="submit" class="btn btn-next"
+                          <input type="text" value="<%=service_provider_detail.id%>" name="professional_id" id="professional_id">
+                          <input type="text" value="<%= session.user_id %>" name="customer_id" id="customer_id">
+                          <textarea name="chat_input" class="form-control" style="min-width: 80%; margin-bottom: 10px; " rows="3" id="comment"></textarea>
+                          <button id="chat_submit" type="button" class="btn btn-next"
                             style="width: 164px; float:right; border-radius: 5px;">
                             Send</button>
                         </div>
+                      </form>  
                       </div>
                     </div>
                   </div>
@@ -186,7 +188,9 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
+
     $(document).ready(function () {
       $(".sidenav ul li").click(function () {
         $(".sidenav ul li").removeClass("active");
@@ -199,6 +203,50 @@
         $(this).addClass("active");
       });
     });
+
+
+//     $(document).ready(function () {
+//   var professional_id =getUrlParameter('spp_id');
+//   var customer_id = getUrlParameter('cus_id');
+//   alert('customer_id',customer_id)
+//          $.ajax({
+//             type: "GET",
+//             data: '',
+//             url: "/get-message",
+//             cache: false,
+//             success: function (data) {
+//               console.log(data)
+//             }
+//        }); 
+// });
+
+$('#chat_submit').click(function(e){
+  var comment = $("#comment").val();
+  var professional_id = $("#professional_id").val();
+  var customer_id = $("#customer_id").val();
+  alert(comment)
+  alert(customer_id)
+      alert(professional_id)
+      //if(comment){
+          $.ajax({
+            type: "POST",
+            data: {
+              message:comment,
+              sms_receiver_id:professional_id,
+              sms_sender_id:customer_id,
+              sms_sender_type:'customer',
+              sms_receiver_type:'service_provider',
+              sms_msg_Date: new Date(),
+              sms_read_status:'unread'
+            },
+            url: "/api/message",
+            cache: false,
+            success: function (data) {
+              console.log(data)
+            }
+       });  
+    //}  
+});
   </script>
   </body>
 

@@ -1,3 +1,4 @@
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -56,3 +57,4 @@ const ServiceProviderIndemnityDetailsSchema = new Schema({
 
 });
 module.exports = indemnity_details = mongoose.model('sp_indemnity_details', ServiceProviderIndemnityDetailsSchema);
+
