@@ -11,13 +11,12 @@ var auth = require('../config/auth');
 var multer = require('multer');
 const ServiceProviderPortfolioSchema = require("../models/service_provider_portfolio");
 const ServiceProviderSchema = require("../models/service_providers");
-const ServiceProviderOtherDetailSchema = require("../models/service_providers_other_details");
+const ServiceProviderPersonalDetailsSchema = require("../models/service_provider_personal_details");
 const ServiceProviderEducationSchema = require("../models/service_provider_education");
 const CustomerUploadDocsSchema = require("../models/customer_upload_document");
 const PropertiesPictureSchema = require("../models/properties_picture");
 //const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
 const PropertiesSchema = require("../models/properties");
-//const ServiceProviderPersonalDetailsSchema = require("../models/service_provider_personal_details");
 
 var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
@@ -183,6 +182,7 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
 
 // Professional Filter name surname qualification
 app.get('/professionals-searchbar', (req, res) => {
+
   let professionalIDs = [];
   ServiceProviderSchema.find({ sps_fullname: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail1 => {
     ServiceProviderPersonalDetailsSchema.find({ spods_surname: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail2 => {
@@ -209,6 +209,7 @@ app.get('/professionals-searchbar', (req, res) => {
             })
           });
         }
+
       });
     });
   }).catch((err) => {

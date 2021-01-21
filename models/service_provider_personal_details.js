@@ -71,3 +71,4 @@ const ServiceProviderPersonalDetailsSchema = new Schema({
 
 });
 module.exports = personal_details = mongoose.model('sp_personal_details', ServiceProviderPersonalDetailsSchema);
+
