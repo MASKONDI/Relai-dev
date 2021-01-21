@@ -25,6 +25,8 @@ const validateServiceProviderSigninInput = require('../Validation/service_provid
 
 const validateServiceProviderOtherDetailsInput = require("../models/service_providers_other_details");
 
+const ServiceProviderPersonalDetailsSchema = require("../models/service_provider_personal_details");
+const ServiceProviderIndemnityDetailsSchema = require("../models/service_provider_indemnity_details");
 
 
 exports.service_provider_register = (req, res) => {
@@ -76,7 +78,7 @@ exports.service_provider_register = (req, res) => {
 
 exports.service_provider_personal_details = (req, res) => {
   console.log("req.body is : ", req.body);
-  const serviceProviderPersonalDetails = new ServiceProviderOtherDetailsSchema({
+  const serviceProviderPersonalDetails = new ServiceProviderPersonalDetailsSchema({
     spods_service_provider_id: req.body.spods_service_provider_id,
     spods_surname: req.body.spods_surname,
     spods_fornames: req.body.spods_fornames,
@@ -99,6 +101,7 @@ exports.service_provider_personal_details = (req, res) => {
 exports.service_provider_other_details = (req, res) => {
   console.log("req.body is : ", req.body);
   const serviceProviderOtherDetails = new ServiceProviderOtherDetailsSchema({
+    spods_service_provider_id: req.body.spods_service_provider_id,
     spods_option_work_permit_for_uk: req.body.spods_option_work_permit_for_uk,
     spods_option_criminal_convictions: req.body.spods_option_criminal_convictions,
     spods_option_uk_driving_licence: req.body.spods_option_uk_driving_licence,
@@ -118,7 +121,7 @@ exports.service_provider_other_details = (req, res) => {
 
 exports.service_provider_Indemnity_details = (req, res) => {
   console.log("req.body is : ", req.body);
-  const serviceProviderIndemnityDetails = new ServiceProviderOtherDetailsSchema({
+  const serviceProviderIndemnityDetails = new ServiceProviderPersonalDetailsSchema({
     spods_option_pl_claims: req.body.spods_option_pl_claims,
     spods_pl_claim_details: req.body.spods_pl_claim_details,
     spods_option_pl_cover: req.body.spods_option_pl_cover,

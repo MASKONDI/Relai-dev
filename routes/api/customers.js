@@ -27,7 +27,6 @@ const DocumentPermissionSchema = require('../../models/document_permission')
 const PropertiesPictureSchema = require("../../models/properties_picture");
 const PropertiesPlanPictureSchema = require("../../models/properties_plan_picture");
 const PropertyProfessionalSchema = require("../../models/property_professional_Schema");
-
 const PropertiesPhaseSchema = require("../../models/property_phase_schema");
 const { Promise } = require("mongoose");
 const { resolve } = require("path");
@@ -36,6 +35,7 @@ const { resolve } = require("path");
 
 
 const ComplaintsSchema = require("../../models/Complaints");
+const MessageSchema = require("../../models/message");
 
 
 
@@ -220,45 +220,6 @@ router.post("/cust_signin", (req, res) => {
     ------------------------------------------------------------------------------------------------
     */
 
-//router.post("/add-property", passport.authenticate("jwt", { session: false }), (req, res) => {
-// router.post("/add-property", (req, res) => {
-//   var err_msg = null;
-//   var success_msg = null;
-//   var test = req.session.is_user_logged_in;
-//   console.log("req.body is : ", req.body);
-//   const newProperty = new PropertiesSchema({
-//     //should be auto-generated mongodb objectId()
-//     // ps_property_id: req.body,
-//     ps_unique_code: "properties-" + uuidv4(),
-//     ps_user_id: req.session.user_id, //storing customer_ID
-//     ps_property_name: req.body.ps_property_name,
-//     ps_property_address: req.body.ps_property_address,
-//     ps_property_country_id: req.body.ps_property_country_id,
-//     ps_property_state_id: req.body.ps_property_state_id,
-//     ps_property_city_id: req.body.ps_property_city_id,
-//     ps_property_zipcode: req.body.ps_property_zipcode,
-//     ps_property_user_as: req.body.ps_property_user_as,
-//     ps_other_party_user_as: req.body.ps_other_party_user_as,
-//     ps_other_party_emailid: req.body.ps_other_party_emailid,
-//     ps_other_party_invited: req.body.ps_other_party_invited,
-//     ps_property_area: req.body.ps_property_area,
-//     ps_property_bedroom: req.body.ps_property_bedroom,
-//     ps_property_bathroom: req.body.ps_property_bathroom,
-//     ps_additional_note: req.body.ps_additional_note,
-//     ps_property_type: req.body.ps_property_type,
-//     ps_chain_property_id: req.body.ps_chain_property_id,
-//   });
-//   newProperty
-//     .save()
-//     .then(property => res.redirect("/mydreamhome"))
-//     .catch(err => {
-//       console.log(err)
-//       req.flash('err_msg', 'Something went wrong please try after some time!');
-//       res.redirect('/add-property');
-
-//     });
-// });
-
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if (file.fieldname === "propertiespic") {
@@ -433,9 +394,9 @@ router.get("/fetch-service-provider", (req, res) => {
 })
 
 
-
-// ***************** post forget pass **************//
-
+/* -------------------------------------------------------------------------------------------------
+POST : Forget password for customer portal. it will send 6 digit random password to customer gmail account..
+------------------------------------------------------------------------------------------------- */
 router.post('/forget-password', function (req, res) {
   console.log("req.body is :", req.body);
   CustomerSchema.find({
@@ -518,7 +479,9 @@ router.post('/forget-password', function (req, res) {
 });
 
 
-
+/* -------------------------------------------------------------------------------------------------
+GET : Customer logout API
+------------------------------------------------------------------------------------------------- */
 
 router.get('/cust_logout', function (req, res) {
   console.log("logout");
@@ -544,8 +507,9 @@ router.get(
     res.json(req.user);
   }
 );
-//Change-permission====================
-
+/* -------------------------------------------------------------------------------------------------
+POST : Change Permission api for giving Docs read/write permission to existing serviceProvider.
+------------------------------------------------------------------------------------------------- */
 router.post('/change-permision', (req, res) => {
   console.log(req.body.id_element)
 
@@ -569,8 +533,9 @@ router.post('/change-permision', (req, res) => {
   }
 })
 
-//****************professional-hire-now */
-
+/* -------------------------------------------------------------------------------------------------
+POST : Hire now api is used for hiring professional(service_provider) for particular property.
+------------------------------------------------------------------------------------------------- */
 router.post("/hire-now", (req, res) => {
   console.log("req is", req.body);
   const hirenow = new PropertyProfessionalSchema({
@@ -595,6 +560,9 @@ router.post("/hire-now", (req, res) => {
 
 });
 
+/* -------------------------------------------------------------------------------------------------
+POST : Add Task api is used for adding task(or Phase) details and sharing these details to hired professional.
+------------------------------------------------------------------------------------------------- */
 router.post("/add-Task", (req, res) => {
   console.log("req is", req.body);
 
@@ -619,7 +587,9 @@ router.post("/add-Task", (req, res) => {
 
 });
 
-//Complaints api 
+/* -------------------------------------------------------------------------------------------------
+POST : Raise a complaints api is used for raising a complaints to particular service provider along with note and status.
+------------------------------------------------------------------------------------------------- */
 
 router.post('/raise-a-complaint', (req, res) => {
   console.log("request coming from server is :", req.body);
@@ -645,6 +615,35 @@ router.post('/raise-a-complaint', (req, res) => {
     res.redirect('/professionals-hirenow');
   });
 });
+
+/* -------------------------------------------------------------------------------------------------
+POST : message api is used for sending message to service_provider or vice-versa.
+------------------------------------------------------------------------------------------------- */
+router.post('/message', (req, res) => {
+  console.log("Getting data from client is :", req.body);
+
+  const newMessage = new MessageSchema({
+
+    sms_property_id: req.body.sms_property_id,// storing property_id if its not null
+    //sms_sender_id: req.body. //check if msg comes from customer portal than store customer_Id
+    //sms_receiver_id: req.body. //recevier_id
+    sms_sender_type: req.body.sms_sender_type,
+    sms_receiver_type: req.body.sms_receiver_type,
+    sms_message: req.body.message,
+    sms_msg_Date: req.body.sms_msg_Date,
+    sms_read_status: req.body.sms_read_status, //default is unread
+  })
+  newMessage.save().then(message => {
+    console.log("getting response form server is :", message);
+    res.flash('success_msg', 'message forward successfully');
+    //res.redirect('/'); //set based on current login if its customer portal then redirect customer_message portal and 
+  }).catch(err => {
+    console.log(err)
+    req.flash('err_msg', 'Something went wrong please try again later.');
+    res.redirect('/professionals-hirenow');
+  });
+});
+
 
 
 
