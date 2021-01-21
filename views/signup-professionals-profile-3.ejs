@@ -13,7 +13,7 @@
         <!-- Modal body -->
         <div class="modal-body">
           <form class="form" action="/api/service_provider_education" method="post" id="form3">
-
+            <input type="hidden" name="serviceProviderUserId" value="<%=session.user_id%>">
             <input type="text" class="form-control form-control-fix2" id="schoolName"
               placeholder="School(ex: Oxford University)" name="spes_university_school_name" data-rule-required="true"
               data-msg-required="University/School name is required!">
@@ -190,12 +190,14 @@
                       </span>
                       <% }%>
                         <div class="eductaion-sec">
+                          <%education.forEach(function(row){%>
                           <div class="row">
                             <div class="col-sm-12 col-lg-9">
                               <div class="">
-                                <p>National Institute of Design</p>
-                                <h6>Interior Design</h6>
-                                <h6>2014-2017</h6>
+                                <p><%=row.spes_university_school_name%></p>
+                                <h6><%=row.spes_qualification_obtained%></h6>
+                                <h6><%=moment(row.spes_from_date).format("YYYY")%>-<%=moment(row.spes_to_date).format("YYYY")%></h6>
+                                <%});%>
                                 <div class="edu-btn float-left">
                                   <a href="#" class="btn add-edu-btn" data-toggle="modal" data-target="#myModal"><i
                                       class="fa fa-plus"></i>&nbsp;&nbsp;
@@ -211,6 +213,8 @@
                               </div>
                             </div>
                           </div>
+                          
+
                         </div>
 
 

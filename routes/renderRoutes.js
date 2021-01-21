@@ -17,6 +17,7 @@ const CustomerUploadDocsSchema = require("../models/customer_upload_document");
 const PropertiesPictureSchema = require("../models/properties_picture");
 //const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
 const PropertiesSchema = require("../models/properties");
+
 var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
 
@@ -219,10 +220,10 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
 
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  const allDocument = await CustomerUploadDocsSchema.find();
+  const allDocument = await CustomerUploadDocsSchema.find({cuds_customer_id:req.session.user_id});
 
 
-  ServiceProviderSchema.find({ sps_status: 'active' }).then(service_provider => {
+  ServiceProviderSchema.find({ sps_status: 'active', }).then(service_provider => {
     if (!service_provider) {
       console.log("Service Provider not found");
       return res.status(400).json("Service Provider not found")
@@ -530,12 +531,19 @@ app.get('/signup-professionals-profile-2', isServiceProvider, (req, res) => {
   });
 });
 app.get('/signup-professionals-profile-3', isServiceProvider, (req, res) => {
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile-3', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
+  ServiceProviderEducationSchema.find({spes_service_provider_id:req.session.user_id}).then((AllEducation)=>{
+    console.log('AllEducation',AllEducation)
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('signup-professionals-profile-3', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      education:AllEducation,
+      moment: moment
+
+    });
+  })
+  
 });  
 app.get('/signup-professionals-profile-4', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
