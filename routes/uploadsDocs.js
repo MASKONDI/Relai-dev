@@ -145,6 +145,7 @@ app.post('/upload-properties-pic', upload.single('properties-pic'), (req, res, n
 app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, next) => {
   var err_msg = null;
   var success_msg = null;
+  var obj = {};
   console.log("req is :", req.file);
   //add conditions for type of file and set the type of file
   console.log(".........files.......", req.file.filename)
@@ -193,7 +194,7 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
         base64ToImage(base64Str, path, optionalObj);
 
         console.log("file extension is", { ext_type, ext })
-        var obj = {
+        obj = {
           cuds_document_name: req.file.filename,
           cuds_customer_id: req.session.user_id,
           cuds_document_type: ext_type,
@@ -213,7 +214,6 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
           else {
             item.save();
             console.log("file Submitted Successfully");
-            //req.flash('success_msg', "Properties plan Picture Uploaded Successfully");
             res.redirect('/mydreamhome-details-docs');
           }
         });
@@ -221,6 +221,33 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
       })
 
     });
+  }else{
+
+    obj = {
+      cuds_document_name: req.file.filename,
+      cuds_customer_id: req.session.user_id,
+      cuds_document_type: ext_type,
+      cuds_document_size: docs_size,
+      cuds_document_file: {
+        data: fs.readFileSync(path.join(__dirname + '../../public/upload/' + req.file.filename)),
+        contentType: ext
+      }
+    }
+
+    CustomerUploadDocsSchema.create(obj, (err, item) => {
+      if (err) {
+        console.log(err); console.log(err);
+        req.flash('err_msg', "Something went worng please try after some time");
+        res.redirect('/mydreamhome-details-docs');
+      }
+      else {
+        item.save();
+        console.log("file Submitted Successfully");
+        res.redirect('/mydreamhome-details-docs');
+      }
+    });
+
+
   }
 });
 

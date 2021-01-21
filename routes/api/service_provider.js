@@ -230,7 +230,7 @@ router.post("/service_provider_education", (req, res) => {
     .save()
     .then(serviceProviders => {
       console.log("server response is: ", serviceProviders);
-      res.redirect("/signup-professionals-profile-3")
+      res.redirect("/signup-professionals-profile-4")
     })
     .catch(err => {
       console.log(err)
@@ -243,7 +243,6 @@ router.post("/service_provider_education", (req, res) => {
 /* -------------------------------------------------------------------------------------------------
 POST : service_provider_employment_history post api is responsible for submitting signup-professionals-profile-4 from data 
 ------------------------------------------------------------------------------------------------- */
-
 
 router.post("/service_provider_employment_history", (req, res) => {
   var err_msg = null;
