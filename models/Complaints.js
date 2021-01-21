@@ -33,7 +33,11 @@ const ComplaintsSchema = new Schema({
     type: String,
   },
   coms_complaint_file: {
-    type: String,
+    data: Buffer,
+    contantType: String
+  },
+  coms_complaint_filename: {
+    type: String
   },
   coms_complaint_status: {
     type: String,
