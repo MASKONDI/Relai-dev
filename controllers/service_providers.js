@@ -121,7 +121,7 @@ exports.service_provider_other_details = (req, res) => {
 
 exports.service_provider_Indemnity_details = (req, res) => {
   console.log("req.body is : ", req.body);
-  const serviceProviderIndemnityDetails = new ServiceProviderPersonalDetailsSchema({
+  const serviceProviderIndemnityDetails = new ServiceProviderIndemnityDetailsSchema({
     spods_option_pl_claims: req.body.spods_option_pl_claims,
     spods_pl_claim_details: req.body.spods_pl_claim_details,
     spods_option_pl_cover: req.body.spods_option_pl_cover,
