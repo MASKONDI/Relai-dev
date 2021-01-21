@@ -230,7 +230,7 @@ router.post("/service_provider_education", (req, res) => {
     .save()
     .then(serviceProviders => {
       console.log("server response is: ", serviceProviders);
-      res.redirect("/signup-professionals-profile-4")
+      res.redirect("/signup-professionals-profile-3")
     })
     .catch(err => {
       console.log(err)
