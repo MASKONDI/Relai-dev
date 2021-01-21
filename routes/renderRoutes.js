@@ -18,6 +18,8 @@ const PropertiesPictureSchema = require("../models/properties_picture");
 //const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
 const PropertiesSchema = require("../models/properties");
 
+const ServiceProviderPersonalDetailsSchema = require("../models/service_provider_personal_details");
+
 var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
 
@@ -163,10 +165,10 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
 
 // Professional Filter Role
 app.get('/professionals-filter', isCustomer, (req, res) => {
-  console.log('role data:',req.query.role);
+  console.log('role data:', req.query.role);
   ServiceProviderSchema.find({ sps_role_name: req.query.role }).then(service_provider_detail => {
     if (service_provider_detail) {
-      console.log('service_provider_detail:',service_provider_detail)
+      console.log('service_provider_detail:', service_provider_detail)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.send({
@@ -182,34 +184,36 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
 
 // Professional Filter name surname qualification
 app.get('/professionals-searchbar', (req, res) => {
-let professionalIDs = [];
-ServiceProviderSchema.find({ sps_fullname: new RegExp(req.query.searchKeyword, 'i')  }).then(service_provider_detail1 => {
-  ServiceProviderPersonalDetailsSchema.find({ spods_surname: new RegExp(req.query.searchKeyword, 'i')}).then(service_provider_detail2 => {
-    ServiceProviderEducationSchema.find({ spes_qualification_obtained: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail3 => {
-      if (service_provider_detail1 || service_provider_detail2 || service_provider_detail3) {
-        err_msg = req.flash('err_msg');
-        success_msg = req.flash('success_msg');
-        var service_provider_detail = service_provider_detail1.concat(service_provider_detail2, service_provider_detail3);
-      service_provider_detail.forEach( async function(providerData) {
-          if(("spes_service_provider_id" in providerData) == true ){
-             await professionalIDs.push(providerData.spes_service_provider_id.toString());
-          }else if(('spods_service_provider_id' in providerData) == true){
-             await professionalIDs.push(providerData.spods_service_provider_id.toString());
-          }else{
-             await professionalIDs.push(providerData._id.toString());
-          } 
+
+  let professionalIDs = [];
+  ServiceProviderSchema.find({ sps_fullname: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail1 => {
+    ServiceProviderPersonalDetailsSchema.find({ spods_surname: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail2 => {
+      ServiceProviderEducationSchema.find({ spes_qualification_obtained: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail3 => {
+        if (service_provider_detail1 || service_provider_detail2 || service_provider_detail3) {
+          err_msg = req.flash('err_msg');
+          success_msg = req.flash('success_msg');
+          var service_provider_detail = service_provider_detail1.concat(service_provider_detail2, service_provider_detail3);
+          service_provider_detail.forEach(async function (providerData) {
+            if (("spes_service_provider_id" in providerData) == true) {
+              await professionalIDs.push(providerData.spes_service_provider_id.toString());
+            } else if (('spods_service_provider_id' in providerData) == true) {
+              await professionalIDs.push(providerData.spods_service_provider_id.toString());
+            } else {
+              await professionalIDs.push(providerData._id.toString());
+            }
+          });
+          let unique = [...new Set(professionalIDs)];
+          ServiceProviderSchema.find({ _id: { $in: unique } }).then(service_provider_detail => {
+            res.send({
+              err_msg, success_msg, layout: false,
+              session: req.session,
+              filterData: service_provider_detail
+            })
+          });
+        }
+
       });
-      let unique = [...new Set(professionalIDs)];
-      ServiceProviderSchema.find({ _id: { $in: unique } }).then(service_provider_detail => {
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: service_provider_detail
-        })
-      });
-      }
-  });
-  });
+    });
   }).catch((err) => {
     console.log(err)
   })
@@ -220,7 +224,7 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
 
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  const allDocument = await CustomerUploadDocsSchema.find({cuds_customer_id:req.session.user_id});
+  const allDocument = await CustomerUploadDocsSchema.find({ cuds_customer_id: req.session.user_id });
 
 
   ServiceProviderSchema.find({ sps_status: 'active', }).then(service_provider => {
@@ -294,7 +298,7 @@ app.get('/mydreamhome-details-message', isCustomer, (req, res) => {
 })
 
 app.get('/professionals-detail-message', (req, res) => {
-  console.log('helooooo',req.query);
+  console.log('helooooo', req.query);
   //return
   ServiceProviderSchema.find({ _id: req.query.spp_id }).then(service_provider_detail => {
     if (service_provider_detail) {
@@ -313,28 +317,28 @@ app.get('/professionals-detail-message', (req, res) => {
 });
 
 
-app.get('/professionals-hirenow', isCustomer, async(req, res) => {
+app.get('/professionals-hirenow', isCustomer, async (req, res) => {
   //console.log('spp_id', req.query.spp_id)
-  
-  if(req.query.spp_id){
-   // if(req.session.user_id)
-   var property= await PropertiesSchema.find({ ps_user_id: req.session.user_id });
-   //console.log('property====',property)
-  var serviceProvider= await ServiceProviderSchema.findOne({_id:req.query.spp_id });
-      //console.log('service_provider=+++',serviceProvider)
-      if (serviceProvider) {
-        
-        err_msg = req.flash('err_msg');
-        success_msg = req.flash('success_msg');
-        res.render('professionals-hirenow', {
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          serviceProvider:serviceProvider,
-          property:property
-          
-        });
-      }
-  }else{
+
+  if (req.query.spp_id) {
+    // if(req.session.user_id)
+    var property = await PropertiesSchema.find({ ps_user_id: req.session.user_id });
+    //console.log('property====',property)
+    var serviceProvider = await ServiceProviderSchema.findOne({ _id: req.query.spp_id });
+    //console.log('service_provider=+++',serviceProvider)
+    if (serviceProvider) {
+
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.render('professionals-hirenow', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        serviceProvider: serviceProvider,
+        property: property
+
+      });
+    }
+  } else {
 
     console.log('service provider id not found')
   }
@@ -421,26 +425,26 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
   PropertiesSchema.find({ ps_user_id: req.session.user_id }).then(async (data) => {
     if (data) {
       let arr = [];
-          for (let img of data) {
-            await PropertiesPictureSchema.find({pps_property_id:img._id}).then(async (result)=>{
+      for (let img of data) {
+        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
 
-               let temp = await result
-              //for(let image of result){
-               //  let temp = await image
-                 arr.push(temp)
-              // }
-            })
-            
-          }
-      console.log('++++++++',arr)
+          let temp = await result
+          //for(let image of result){
+          //  let temp = await image
+          arr.push(temp)
+          // }
+        })
+
+      }
+      console.log('++++++++', arr)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('mydreamhome', {
         err_msg, success_msg, layout: false,
         session: req.session,
         propertyData: data,
-        propertyImage:arr
-        
+        propertyImage: arr
+
       });
     }
   }).catch((err) => {
@@ -453,27 +457,27 @@ app.get('/mydreamhome-details', isCustomer, (req, res) => {
 
   PropertiesSchema.find({ _id: req.query.id }).then(async (data) => {
     if (data) {
-      
+
       let arr = [];
       for (let img of data) {
-        await PropertiesPictureSchema.find({pps_property_id:img._id}).then(async (result)=>{
-           //let temp = await result
-           for(let image of result){
-             let temp = await image
-             arr.push(temp)
-           }
-         
+        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
+          //let temp = await result
+          for (let image of result) {
+            let temp = await image
+            arr.push(temp)
+          }
+
         })
-        
+
       }
-  
+
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('mydreamhome-details', {
         err_msg, success_msg, layout: false,
         session: req.session,
         propertyDetailData: data,
-        propertyImage:arr
+        propertyImage: arr
       });
     }
   }).catch((err) => {
@@ -531,20 +535,20 @@ app.get('/signup-professionals-profile-2', isServiceProvider, (req, res) => {
   });
 });
 app.get('/signup-professionals-profile-3', isServiceProvider, (req, res) => {
-  ServiceProviderEducationSchema.find({spes_service_provider_id:req.session.user_id}).then((AllEducation)=>{
-    console.log('AllEducation',AllEducation)
+  ServiceProviderEducationSchema.find({ spes_service_provider_id: req.session.user_id }).then((AllEducation) => {
+    console.log('AllEducation', AllEducation)
     err_msg = req.flash('err_msg');
     success_msg = req.flash('success_msg');
     res.render('signup-professionals-profile-3', {
       err_msg, success_msg, layout: false,
       session: req.session,
-      education:AllEducation,
+      education: AllEducation,
       moment: moment
 
     });
   })
-  
-});  
+
+});
 app.get('/signup-professionals-profile-4', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
