@@ -17,7 +17,6 @@ const CustomerUploadDocsSchema = require("../models/customer_upload_document");
 const PropertiesPictureSchema = require("../models/properties_picture");
 //const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
 const PropertiesSchema = require("../models/properties");
-
 //const ServiceProviderPersonalDetailsSchema = require("../models/service_provider_personal_details");
 
 var isCustomer = auth.isCustomer;
