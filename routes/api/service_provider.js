@@ -244,7 +244,6 @@ router.post("/service_provider_education", (req, res) => {
 POST : service_provider_employment_history post api is responsible for submitting signup-professionals-profile-4 from data 
 ------------------------------------------------------------------------------------------------- */
 
-
 router.post("/service_provider_employment_history", (req, res) => {
   var err_msg = null;
   var success_msg = null;

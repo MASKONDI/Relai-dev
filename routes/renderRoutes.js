@@ -19,7 +19,6 @@ const PropertiesPictureSchema = require("../models/properties_picture");
 const PropertiesSchema = require("../models/properties");
 const MessageSchema = require("../models/message");
 
-
 var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
 
