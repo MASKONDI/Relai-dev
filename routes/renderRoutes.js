@@ -17,6 +17,7 @@ const CustomerUploadDocsSchema = require("../models/customer_upload_document");
 const PropertiesPictureSchema = require("../models/properties_picture");
 //const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
 const PropertiesSchema = require("../models/properties");
+const MessageSchema = require("../models/message");
 
 var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
@@ -599,6 +600,17 @@ app.get('/kyc-professional', isServiceProvider, (req, res) => {
   });
 });
 
+// app.get('/get-message', (req, res) => {
+//   console.log('getapi:',req.query)
+//   MessageSchema.find( { $and: [ {sms_sender_id:req.query.cus_id}, {sms_receiver_id:req.query.spp_id} ] }).then(async (data) => {
+//     if (data) {
 
+//            console.log('data:',data)                    
+//     }
+//   }).catch((err) => {
+//     console.log(err)
+//   })
+
+// });
 
 module.exports = app;

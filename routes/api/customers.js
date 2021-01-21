@@ -620,13 +620,11 @@ router.post('/raise-a-complaint', (req, res) => {
 POST : message api is used for sending message to service_provider or vice-versa.
 ------------------------------------------------------------------------------------------------- */
 router.post('/message', (req, res) => {
-  console.log("Getting data from client is :", req.body);
-
+  console.log("Getting data from client is :", req);
   const newMessage = new MessageSchema({
-
     sms_property_id: req.body.sms_property_id,// storing property_id if its not null
-    //sms_sender_id: req.body. //check if msg comes from customer portal than store customer_Id
-    //sms_receiver_id: req.body. //recevier_id
+    sms_sender_id: req.body.sms_sender_id,//check if msg comes from customer portal than store customer_Id
+    sms_receiver_id: req.body.sms_receiver_id, //recevier_id
     sms_sender_type: req.body.sms_sender_type,
     sms_receiver_type: req.body.sms_receiver_type,
     sms_message: req.body.message,
@@ -635,12 +633,12 @@ router.post('/message', (req, res) => {
   })
   newMessage.save().then(message => {
     console.log("getting response form server is :", message);
-    res.flash('success_msg', 'message forward successfully');
+    //res.flash('success_msg', 'message forward successfully');
     //res.redirect('/'); //set based on current login if its customer portal then redirect customer_message portal and 
   }).catch(err => {
     console.log(err)
-    req.flash('err_msg', 'Something went wrong please try again later.');
-    res.redirect('/professionals-hirenow');
+    //req.flash('err_msg', 'Something went wrong please try again later.');
+    //res.redirect('/professionals-hirenow');
   });
 });
 
