@@ -11,7 +11,7 @@ var auth = require('../config/auth');
 var multer = require('multer');
 const ServiceProviderPortfolioSchema = require("../models/service_provider_portfolio");
 const ServiceProviderSchema = require("../models/service_providers");
-const ServiceProviderOtherDetailSchema = require("../models/service_providers_other_details");
+const ServiceProviderPersonalDetailsSchema = require("../models/service_provider_personal_details");
 const ServiceProviderEducationSchema = require("../models/service_provider_education");
 const CustomerUploadDocsSchema = require("../models/customer_upload_document");
 const PropertiesPictureSchema = require("../models/properties_picture");
@@ -183,7 +183,7 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
 app.get('/professionals-searchbar', (req, res) => {
 let professionalIDs = [];
 ServiceProviderSchema.find({ sps_fullname: new RegExp(req.query.searchKeyword, 'i')  }).then(service_provider_detail1 => {
-  ServiceProviderOtherDetailSchema.find({ spods_surname: new RegExp(req.query.searchKeyword, 'i')}).then(service_provider_detail2 => {
+  ServiceProviderPersonalDetailsSchema.find({ spods_surname: new RegExp(req.query.searchKeyword, 'i')}).then(service_provider_detail2 => {
     ServiceProviderEducationSchema.find({ spes_qualification_obtained: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail3 => {
       if (service_provider_detail1 || service_provider_detail2 || service_provider_detail3) {
         err_msg = req.flash('err_msg');

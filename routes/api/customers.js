@@ -34,35 +34,49 @@ const { resolve } = require("path");
 //router.post("/cust_register", cust_register);
 //router.post("/cust_signin", cust_signin);
 
-var isCustomer = auth.isCustomer;
-router.get('/test',(req,res)=>{
-  //var array =[];
- // new Promise((resolve, reject) => {
 
-  
-  PropertiesSchema.find({ ps_user_id:'5ffeaf14cbd60d14a072935e'}).then(async (data) => {
+const ComplaintsSchema = require("../../models/Complaints");
+
+
+
+var isCustomer = auth.isCustomer;
+// <<<<<<< HEAD
+// router.post('/filterPropertyAdress', (req, res) => {
+//   console.log('filterPropertyAdress==', req.body.propertyId)
+
+//   if (req.body.propertyId) {
+//     PropertiesSchema.findOne({ _id: req.body.propertyId }).then(async (data) => {
+//       if (data) {
+//         console.log(data)
+// =======
+router.get('/test', (req, res) => {
+  //var array =[];
+  // new Promise((resolve, reject) => {
+
+
+  PropertiesSchema.find({ ps_user_id: '5ffeaf14cbd60d14a072935e' }).then(async (data) => {
     if (data) {
-      var c =0
+      var c = 0
       //var array=[]
       // data.forEach((element)=>{
       //  PropertiesPictureSchema.find({pps_property_id:element._id}).then((result)=>{
       //     array.push(result)
       //     console.log(result)
       //   });
-       // array.push(allPropertyImage)
-        //console.log('allPropertyImage++++++',allPropertyImage)
-        let arr = [];
-          for (let img of data) {
-            await PropertiesPictureSchema.find({pps_property_id:img._id}).then(async (result)=>{
-               let temp = await result
-             arr.push(temp)
-            })
-            
-          }
-      console.log('++++++++',arr)
-      
+      // array.push(allPropertyImage)
+      //console.log('allPropertyImage++++++',allPropertyImage)
+      let arr = [];
+      for (let img of data) {
+        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
+          let temp = await result
+          arr.push(temp)
+        })
+
+      }
+      console.log('++++++++', arr)
+
     }
-       
+
   }).catch((err) => {
     console.log(err)
   })
@@ -74,6 +88,7 @@ router.post('/filterPropertyAdress', (req, res) => {
     PropertiesSchema.findOne({ _id: req.body.propertyId }).then(async (data) => {
       if (data) {
         //console.log(data)
+
         res.json({ data: data });
       }
     }).catch((err) => {
@@ -560,7 +575,7 @@ router.post("/hire-now", (req, res) => {
   console.log("req is", req.body);
   const hirenow = new PropertyProfessionalSchema({
     pps_property_id: req.body.propertyId,
-    pps_service_provider_id : req.body.serviceProviderId,
+    pps_service_provider_id: req.body.serviceProviderId,
     pps_pofessional_budget: req.body.pps_pofessional_budget,
     pps_exptected_delivery_date: req.body.pps_exptected_delivery_date,
     //pps_status: req.body.pps_status,//TODO:we need to save later
@@ -570,7 +585,7 @@ router.post("/hire-now", (req, res) => {
     .then(hireprofessional => {
       console.log("server response is :", hireprofessional);
       //res.json(hireprofessional);
-       res.redirect("/professionals")
+      res.redirect("/professionals")
     })
     .catch(err => {
       console.log(err)
@@ -604,7 +619,32 @@ router.post("/add-Task", (req, res) => {
 
 });
 
+//Complaints api 
 
+router.post('/raise-a-complaint', (req, res) => {
+  console.log("request coming from server is :", req.body);
+  const newComplaint = new ComplaintsSchema({
+    //should be mongodb generated id
+    //coms_id :
+    //coms_complaint_for: req.body.sevice_provider_id // need to store service_provider_ID
+    coms_complaint_code: "C" + uuidv4(),//need to generate in  like C123 auto increment feature
+    //coms_property_id: req.body.property_id
+    coms_user_id: req.session.id,
+    //coms_complaint_by: 'customer' //need to check if complaints filed via customer portal or service_provider portal
+    coms_complaint_subject: req.body.coms_complaint_subject,
+    coms_complaint_note: req.body.coms_complaint_note,
+    coms_complaint_file: req.body.coms_complaint_file,
+  });
+  newComplaint.save().then(complaints => {
+    console.log("Getting respose from db is :", complaints);
+    req.flash('success_msg', 'complaints raise succesfully');
+    //res.redirect("/")
+  }).catch(err => {
+    console.log(err)
+    req.flash('err_msg', 'Something went wrong please try again later.');
+    res.redirect('/professionals-hirenow');
+  });
+});
 
 
 

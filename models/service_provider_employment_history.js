@@ -46,4 +46,4 @@ const ServiceProviderEmploymentHistorySchema = new Schema({
     type: Date,
   },
 });
-module.exports = ServiceProviderEmploymentHistory = mongoose.model('serviceProviderEmploymentHistory', ServiceProviderEmploymentHistorySchema);
+module.exports = ServiceProviderEmploymentHistory = mongoose.model('sp_employment_history', ServiceProviderEmploymentHistorySchema);

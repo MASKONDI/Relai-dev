@@ -12,50 +12,7 @@ const ServiceProviderOtherDetailsSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "serviceProviders"
   },
-  spods_surname: {
-    type: String,
 
-  },
-  spods_fornames: {
-    type: String,
-
-  },
-  spods_preferred_title: {
-    type: String,
-    enum: ['mr', 'miss', 'mrs'],
-
-  },
-  spods_former_surnames: {
-    type: String,
-
-  },
-  spods_address: {
-    type: String,
-  },
-  spods_dob: {
-    type: Date,
-
-  },
-  spods_nationality: {
-    type: String,
-
-  },
-  spods_postcode: {
-    type: String,
-
-  },
-  spods_home_telephone_number: {
-    type: String,
-
-  },
-  spods_postcode_covered: {
-    type: String,
-
-  },
-  spods_start_working_time: {
-    type: String,
-
-  },
   spods_option_work_permit_for_uk: {
     type: String,
     enum: ['yes', 'no'],
@@ -135,4 +92,4 @@ const ServiceProviderOtherDetailsSchema = new Schema({
   },
 
 });
-module.exports = ServiceProviderOtherDetails = mongoose.model('serviceProviderOtherDetails', ServiceProviderOtherDetailsSchema);
+module.exports = ServiceProviderOtherDetails = mongoose.model('sp_other_details', ServiceProviderOtherDetailsSchema);

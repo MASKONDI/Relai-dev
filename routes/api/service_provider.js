@@ -10,6 +10,10 @@ const ServiceProviderPortfolioSchema = require("../../models/service_provider_po
 const ServiceProviderReferenceSchema = require("../../models/service_provider_reference");
 const ServiceProviderRolesSchema = require("../../models/service_provider_roles");
 const PlanSchema = require("../../models/plan");
+const ServiceProviderPersonalDetailsSchema = require("../../models/service_provider_personal_details");
+const ServiceProviderIndemnityDetailsSchema = require("../../models/service_provider_indemnity_details");
+
+
 const isEmpty = require('../../Validation/is-empty');
 
 
@@ -132,7 +136,7 @@ router.post("/service_provider_personal_details", (req, res) => {
   console.log("req.body is : ", req.body);
   console.log("user_id is:", req.session.user_id);
 
-  const serviceProviderPersonalDetails = new ServiceProviderOtherDetailsSchema({
+  const serviceProviderPersonalDetails = new ServiceProviderPersonalDetailsSchema({
     spods_service_provider_id: req.session.user_id, //storing service_provider_id
     spods_surname: req.body.spods_surname,
     spods_fornames: req.body.spods_fornames,
@@ -176,6 +180,7 @@ router.post("/service_provider_other_details", (req, res) => {
   }
   else {
     const serviceProviderOtherDetails = new ServiceProviderOtherDetailsSchema({
+      spods_service_provider_id: req.session.user_id, //storing service_provider_id
       spods_option_work_permit_for_uk: req.body.spods_option_work_permit_for_uk,
       spods_option_criminal_convictions: req.body.spods_option_criminal_convictions,
       spods_option_uk_driving_licence: req.body.spods_option_uk_driving_licence,
@@ -325,7 +330,8 @@ router.post("/service_provider_indemnity_details", (req, res) => {
     req.flash("err_msg", "Please Enter PI claim details!");
     res.redirect('/signup-professionals-profile-6');
   } else {
-    const serviceProviderIndemnityDetails = new ServiceProviderOtherDetailsSchema({
+    const serviceProviderIndemnityDetails = new ServiceProviderIndemnityDetailsSchema({
+      spods_service_provider_id: req.session.user_id,
       spods_option_pl_claims: req.body.spods_option_pl_claims,
       spods_pl_claim_details: req.body.spods_pl_claim_details,
       spods_option_pl_cover: req.body.spods_option_pl_cover,
