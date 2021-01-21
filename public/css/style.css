@@ -5147,3 +5147,9 @@ button.btn.btn-signup {
     font-weight: 600 !important;
     box-shadow: 1px 1px 1px 1px #ccc;
 }
+
+a .clip-icon{
+    color: rgba(110, 109, 109, 0.8);
+    font-family: 'Gill Sans MT';
+    margin-top: 5px;
+}
