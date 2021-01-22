@@ -76,9 +76,9 @@
                         <a href="/mydreamhome-details?id=<%=row._id%>" class="btn btn-new mydreamHomeDetail" value="<%=row._id%>"><%=row.ps_property_type%></a>
                       </div>
                       <div class="dream-home-description">
-                        <h3><a href="/mydreamhome-details"><%= row.ps_property_name%></a></h3>
+                        <h3><a href="/mydreamhome-details?id=<%=row._id%>"><%= row.ps_property_name%></a></h3>
                         <div class="location-part"><a href="#"><img src="images/location.png"> <%=row.ps_property_address%>,<%=row.ps_property_country_id%></a></div>
-                        <div class="location-part"><a href="/mydreamhome-details"><img src="images/sq.ft.png">
+                        <div class="location-part"><a href="/mydreamhome-details?id=<%=row._id%>"><img src="images/sq.ft.png">
                             <%=row.ps_property_area%> sq.ft.</a></div>
                       </div>
                     </div>

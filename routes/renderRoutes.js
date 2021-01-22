@@ -220,11 +220,13 @@ app.get('/professionals-searchbar', (req, res) => {
 
 
 app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
-
+  console.log('property id is :',req.session.property_id);
+  //req.session.property_id=req.query.id
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  const allDocument = await CustomerUploadDocsSchema.find({ cuds_customer_id: req.session.user_id });
-
+  let property = await PropertiesSchema.findOne({_id:req.session.property_id});
+  const allDocument = await CustomerUploadDocsSchema.find({$and:[{ cuds_customer_id: req.session.user_id,cuds_property_id:req.session.property_id }]});
+  //const propertyDataObj = await PropertiesSchema.find();
 
   ServiceProviderSchema.find({ sps_status: 'active', }).then(service_provider => {
     if (!service_provider) {
@@ -236,7 +238,8 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
         err_msg, success_msg, layout: false,
         session: req.session,
         data: service_provider,
-        allDocument: allDocument,
+        allDocument: allDocument,//need to show property wise document still showing all uploaded
+        property:property,
         moment: moment
       });
     }
@@ -287,12 +290,15 @@ app.get('/add-property', isCustomer, (req, res) => {
   });
 });
 
-app.get('/mydreamhome-details-message', isCustomer, (req, res) => {
+app.get('/mydreamhome-details-message', isCustomer, async(req, res) => {
+  console.log(' property id  :', req.session.property_id);
+  let property = await PropertiesSchema.findOne({_id:req.session.property_id});
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('mydreamhome-details-message', {
     err_msg, success_msg, layout: false,
-    session: req.session
+    session: req.session,
+    property:property
   });
 })
 
@@ -453,7 +459,10 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
 })
 
 app.get('/mydreamhome-details', isCustomer, async(req, res) => {
+  console.log('session property id',req.query.id);
+  req.session.property_id=req.query.id
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({pps_user_id:req.session.user_id});
+  let allDocumentUploadByCustmer =await CustomerUploadDocsSchema.find({cuds_customer_id:req.session.user_id});
   //console.log('AllhiredProfeshnoal',AllhiredProfeshnoal);
  let serviceProvArray=[];
   for(var k of AllhiredProfeshnoal){
@@ -465,7 +474,6 @@ app.get('/mydreamhome-details', isCustomer, async(req, res) => {
     });
   }
   //console.log('hiredProfeshnoalList=',serviceProvArray)
-  
   PropertiesSchema.find({ _id: req.query.id }).then(async (data) => {
     if (data) {
 
@@ -489,7 +497,8 @@ app.get('/mydreamhome-details', isCustomer, async(req, res) => {
         session: req.session,
         propertyDetailData: data,
         propertyImage:arr,
-        hiredProfeshnoalList:serviceProvArray
+        hiredProfeshnoalList:serviceProvArray,
+        allDocumentUploadByCustmer:allDocumentUploadByCustmer
       });
     }
   }).catch((err) => {

@@ -95,7 +95,7 @@
               <div class="breadcumb">
                 <ul>
                   <li><a href="/mydreamhome"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back to My
-                      Dream Home</a></li>
+                      Dream Home </a></li>
                 </ul>
               </div>
             </div>
@@ -142,7 +142,7 @@
                                 </a></div>
                             </div>
                             <div class="img-fix3 float-right">
-                              <a href="/mydreamhome-details-message"><img src="images/chat.png"></a>
+                              <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>"><img src="images/chat.png"></a>
                               <a href="#" data-toggle="modal" data-target="#myModal"><img src="images/help.png"></a>
                             </div>
                           </div>
@@ -335,22 +335,34 @@
                   <div class="do-list-sec">
 
                     <div class="do-list-header">
-                      <a href="/mydreamhome-details-docs">
+                      <!-- /mydreamhome-details-docs?id=<%=propertyDetailData[0]._id%> -->
+                      <a href="/mydreamhome-details-docs" value="<%=propertyDetailData[0]._id%>">
                         <h3 class="text-center">Docs & Files</h3>
                       </a>
                     </div>
                     <ul class="docs-list">
-                      <li><a href="/mydreamhome-details-docs"><img src="images/idproof.png" alt=""
-                            title=""><br><span>idproof.jpg</span></a>
+                      <%if(allDocumentUploadByCustmer.length>0){%>
+                      <%allDocumentUploadByCustmer.forEach(function(row,i){%>
+                        <%if(i<=2){%>
+                      <li><a href="/mydreamhome-details-docs" value="<%=propertyDetailData[0]._id%>"><img src="/upload/<%=row.cuds_document_name%>" alt=""
+                            title=""><br><span><%=row.cuds_document_name%></span></a>
                       </li>
-                      <li><a href="/mydreamhome-details-docs"><img src="images/pdf.png" alt=""
-                            title=""><br><span>contract.pdf</span></a></li>
+                      <%}%>
+                      <%});%>
+                       <%}else{%>
+                        <li><a href="/mydreamhome-details-docs" value="<%=propertyDetailData[0]._id%>"><img src="images/pdf.png" alt=""
+                          title=""><br><span>contract.pdf</span></a></li>
+                          <li><a href="/mydreamhome-details-docs" value="<%=propertyDetailData[0]._id%>"><img src="images/idproof.png" alt=""
+                            title=""><br><span>idproof.png</span></a></li>
+                            <li><a href="/mydreamhome-details-docs" value="<%=propertyDetailData[0]._id%>"><img src="images/doc.png" alt=""
+                              title=""><br><span>doc.png</span></a></li>
+                        <%}%>
                     </ul>
 
-                    <ul class="docs-list last-doc">
+                    <!-- <ul class="docs-list last-doc">
                       <li><a href="/mydreamhome-details-docs"><img src="images/pdf.png" alt=""
                             title=""><br><span>contract.pdf</span></a></li>
-                    </ul>
+                    </ul> -->
 
                   </div>
                 </div>
@@ -363,7 +375,7 @@
                     </div>
                     <div class="messages-list clearfix">
                       <div class="message-img float-left">
-                        <a href="/mydreamhome-details-message"><img src="images/recent-user-1.png" alt="" title=""></a>
+                        <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>"><img src="images/recent-user-1.png" alt="" title=""></a>
                       </div>
                       <div class="message-drop float-left">
                         <h3>Rachel Green</h3>
@@ -372,7 +384,7 @@
                     </div>
                     <div class="messages-list clearfix">
                       <div class="message-img float-left">
-                        <a href="/mydreamhome-details-message"> <img src="images/recent-user-1.png" alt="" title=""></a>
+                        <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>"> <img src="images/recent-user-1.png" alt="" title=""></a>
                       </div>
                       <div class="message-drop float-left">
                         <h3>Rachel Green</h3>
@@ -381,7 +393,7 @@
                     </div>
                     <div class="messages-list clearfix">
                       <div class="message-img float-left">
-                        <a href="/mydreamhome-details-message"> <img src="images/recent-user-1.png" alt="" title=""></a>
+                        <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>"> <img src="images/recent-user-1.png" alt="" title=""></a>
                       </div>
                       <div class="message-drop float-left">
                         <h3>Rachel Green</h3>
@@ -428,6 +440,9 @@
   <script>
     $(document).ready(function () {
       $('.complain_submit_btn').click(function(e){
+        var image = $('#image').prop('files');
+        console.log(image);
+        
         var coms_complaint_for=$('#coms_complaint_for').val();
         var coms_complaint_note= $('#coms_complaint_note').val();
         var coms_complaint_subject= $('#coms_complaint_subject').val();
@@ -457,6 +472,26 @@
         $(this).siblings('input[type="text"]').val(e.target.files[0].name);
       });
     });
+  </script>
+  <script>
+  //   $(document).ready(function () {
+  //   $("a[href$='mydreamhome-details-docs']").click(function(e){
+  //     var propertyId = $(this).attr('value');
+
+  //     $.ajax({
+  //       type: "POST",
+  //       data: 'propertyId=' + propertyId,
+  //       url: "/api/getPropertyById",
+  //       cache: false,
+  //       success: function (data) {
+  //         //$("#results").append(data);
+  //         return;
+  //         console.log(data);
+  //       }
+  //     });
+      
+  //   });
+  // });
   </script>
   </body>
 

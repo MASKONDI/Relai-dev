@@ -147,6 +147,8 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
   var success_msg = null;
   var obj = {};
   console.log("req is :", req.file);
+  console.log("in upload property id=",req.body.property_id);
+
   //add conditions for type of file and set the type of file
   console.log(".........files.......", req.file.filename)
   var ext = path.extname(req.file.filename);
@@ -195,6 +197,7 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
 
         console.log("file extension is", { ext_type, ext })
         obj = {
+          cuds_property_id:req.body.property_id,
           cuds_document_name: req.file.filename,
           cuds_customer_id: req.session.user_id,
           cuds_document_type: ext_type,
