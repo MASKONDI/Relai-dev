@@ -97,6 +97,10 @@ app.get('/dashboard', isCustomer, (req, res) => {
     session: req.session
   });
 });
+
+
+
+
 app.get('/track-your-progress', isCustomer, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -126,6 +130,29 @@ app.get('/professionals', isCustomer, (req, res) => {
       });
     }
   })
+});
+
+app.get('/myprofessionals', isCustomer, async (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id });
+  console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
+  let serviceProvArray = [];
+  for (var k of AllhiredProfeshnoal) {
+    await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
+      for (let i of allProfeshnoals) {
+        let temps = await i
+        serviceProvArray.push(temps)
+      }
+    });
+  }
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('myprofessionals', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    data: serviceProvArray
+  });
 });
 
 // app.get('/professionals', isCustomer, (req, res) => {
@@ -424,18 +451,18 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
   PropertiesSchema.find({ ps_user_id: req.session.user_id }).then(async (data) => {
     if (data) {
       let arr = [];
-          for (let img of data) {
-            await PropertiesPictureSchema.find({pps_property_id:img._id}).then(async (result)=>{
+      for (let img of data) {
+        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
 
-               let temp = await result
-              //for(let image of result){
-               //  let temp = await image
-                 arr.push(temp)
-              // }
-            })
-            
-          }
-     // console.log('++++++++',arr)
+          let temp = await result
+          //for(let image of result){
+          //  let temp = await image
+          arr.push(temp)
+          // }
+        })
+
+      }
+      // console.log('++++++++',arr)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('mydreamhome', {
@@ -452,20 +479,20 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
 
 })
 
-app.get('/mydreamhome-details', isCustomer, async(req, res) => {
-  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({pps_user_id:req.session.user_id});
+app.get('/mydreamhome-details', isCustomer, async (req, res) => {
+  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id });
   //console.log('AllhiredProfeshnoal',AllhiredProfeshnoal);
- let serviceProvArray=[];
-  for(var k of AllhiredProfeshnoal){
-    await ServiceProviderSchema.find({_id:k.pps_service_provider_id}).then(async(allProfeshnoals)=>{
-        for(let i of allProfeshnoals){
-          let temps = await i
-          serviceProvArray.push(temps)
-        }
+  let serviceProvArray = [];
+  for (var k of AllhiredProfeshnoal) {
+    await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
+      for (let i of allProfeshnoals) {
+        let temps = await i
+        serviceProvArray.push(temps)
+      }
     });
   }
   //console.log('hiredProfeshnoalList=',serviceProvArray)
-  
+
   PropertiesSchema.find({ _id: req.query.id }).then(async (data) => {
     if (data) {
 
@@ -488,8 +515,8 @@ app.get('/mydreamhome-details', isCustomer, async(req, res) => {
         err_msg, success_msg, layout: false,
         session: req.session,
         propertyDetailData: data,
-        propertyImage:arr,
-        hiredProfeshnoalList:serviceProvArray
+        propertyImage: arr,
+        hiredProfeshnoalList: serviceProvArray
       });
     }
   }).catch((err) => {
