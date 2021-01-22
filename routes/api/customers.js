@@ -539,6 +539,7 @@ POST : Hire now api is used for hiring professional(service_provider) for partic
 router.post("/hire-now", (req, res) => {
   console.log("req is", req.body);
   const hirenow = new PropertyProfessionalSchema({
+    pps_user_id:req.body.user_id,
     pps_property_id: req.body.propertyId,
     pps_service_provider_id: req.body.serviceProviderId,
     pps_pofessional_budget: req.body.pps_pofessional_budget,
@@ -593,22 +594,24 @@ POST : Raise a complaints api is used for raising a complaints to particular ser
 
 router.post('/raise-a-complaint', (req, res) => {
   console.log("request coming from server is :", req.body);
+  
   const newComplaint = new ComplaintsSchema({
     //should be mongodb generated id
     //coms_id :
-    //coms_complaint_for: req.body.sevice_provider_id // need to store service_provider_ID
+    coms_complaint_for: req.body.sevice_provider_id,
     coms_complaint_code: "C" + uuidv4(),//need to generate in  like C123 auto increment feature
-    //coms_property_id: req.body.property_id
-    coms_user_id: req.session.id,
+    coms_property_id: req.body.property_id,
+    coms_user_id:req.body.cust_user_id,
     //coms_complaint_by: 'customer' //need to check if complaints filed via customer portal or service_provider portal
     coms_complaint_subject: req.body.coms_complaint_subject,
     coms_complaint_note: req.body.coms_complaint_note,
-    coms_complaint_file: req.body.coms_complaint_file,
+    //coms_complaint_file: req.body.coms_complaint_file,
   });
   newComplaint.save().then(complaints => {
     console.log("Getting respose from db is :", complaints);
     req.flash('success_msg', 'complaints raise succesfully');
     //res.redirect("/")
+    res.json({complaints:complaints,'message':'complaint sent successfully'})
   }).catch(err => {
     console.log(err)
     req.flash('err_msg', 'Something went wrong please try again later.');
@@ -620,13 +623,11 @@ router.post('/raise-a-complaint', (req, res) => {
 POST : message api is used for sending message to service_provider or vice-versa.
 ------------------------------------------------------------------------------------------------- */
 router.post('/message', (req, res) => {
-  console.log("Getting data from client is :", req.body);
-
+  console.log("Getting data from client is :", req);
   const newMessage = new MessageSchema({
-
     sms_property_id: req.body.sms_property_id,// storing property_id if its not null
-    //sms_sender_id: req.body. //check if msg comes from customer portal than store customer_Id
-    //sms_receiver_id: req.body. //recevier_id
+    sms_sender_id: req.body.sms_sender_id,//check if msg comes from customer portal than store customer_Id
+    sms_receiver_id: req.body.sms_receiver_id, //recevier_id
     sms_sender_type: req.body.sms_sender_type,
     sms_receiver_type: req.body.sms_receiver_type,
     sms_message: req.body.message,
@@ -635,12 +636,12 @@ router.post('/message', (req, res) => {
   })
   newMessage.save().then(message => {
     console.log("getting response form server is :", message);
-    res.flash('success_msg', 'message forward successfully');
+    //res.flash('success_msg', 'message forward successfully');
     //res.redirect('/'); //set based on current login if its customer portal then redirect customer_message portal and 
   }).catch(err => {
     console.log(err)
-    req.flash('err_msg', 'Something went wrong please try again later.');
-    res.redirect('/professionals-hirenow');
+    //req.flash('err_msg', 'Something went wrong please try again later.');
+    //res.redirect('/professionals-hirenow');
   });
 });
 

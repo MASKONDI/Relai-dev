@@ -2469,10 +2469,20 @@ ul.docs-list.last-doc li{
         margin-top: 20px;
         border-radius: 10px;
     }
+    .selectBox {
+        height: 55px;
+        margin-top: 20px;
+        border-radius: 10px;
+    }
    #selectBox option {
     background: #ddd;
     border: none;
 }
+.selectBox option {
+    background: #ddd;
+    border: none;
+}
+    
     .signup-professional7-add-btn{
     color: #005377;
     width: 52px;

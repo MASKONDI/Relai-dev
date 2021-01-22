@@ -17,7 +17,8 @@ const CustomerUploadDocsSchema = require("../models/customer_upload_document");
 const PropertiesPictureSchema = require("../models/properties_picture");
 //const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
 const PropertiesSchema = require("../models/properties");
-
+const PropertyProfessionalSchema = require("../models/property_professional_Schema");
+const MessageSchema = require("../models/message");
 var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
 
@@ -423,18 +424,18 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
   PropertiesSchema.find({ ps_user_id: req.session.user_id }).then(async (data) => {
     if (data) {
       let arr = [];
-      for (let img of data) {
-        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
+          for (let img of data) {
+            await PropertiesPictureSchema.find({pps_property_id:img._id}).then(async (result)=>{
 
-          let temp = await result
-          //for(let image of result){
-          //  let temp = await image
-          arr.push(temp)
-          // }
-        })
-
-      }
-      console.log('++++++++', arr)
+               let temp = await result
+              //for(let image of result){
+               //  let temp = await image
+                 arr.push(temp)
+              // }
+            })
+            
+          }
+     // console.log('++++++++',arr)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('mydreamhome', {
@@ -451,8 +452,20 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
 
 })
 
-app.get('/mydreamhome-details', isCustomer, (req, res) => {
-
+app.get('/mydreamhome-details', isCustomer, async(req, res) => {
+  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({pps_user_id:req.session.user_id});
+  //console.log('AllhiredProfeshnoal',AllhiredProfeshnoal);
+ let serviceProvArray=[];
+  for(var k of AllhiredProfeshnoal){
+    await ServiceProviderSchema.find({_id:k.pps_service_provider_id}).then(async(allProfeshnoals)=>{
+        for(let i of allProfeshnoals){
+          let temps = await i
+          serviceProvArray.push(temps)
+        }
+    });
+  }
+  //console.log('hiredProfeshnoalList=',serviceProvArray)
+  
   PropertiesSchema.find({ _id: req.query.id }).then(async (data) => {
     if (data) {
 
@@ -475,7 +488,8 @@ app.get('/mydreamhome-details', isCustomer, (req, res) => {
         err_msg, success_msg, layout: false,
         session: req.session,
         propertyDetailData: data,
-        propertyImage: arr
+        propertyImage:arr,
+        hiredProfeshnoalList:serviceProvArray
       });
     }
   }).catch((err) => {
@@ -599,6 +613,17 @@ app.get('/kyc-professional', isServiceProvider, (req, res) => {
   });
 });
 
+// app.get('/get-message', (req, res) => {
+//   console.log('getapi:',req.query)
+//   MessageSchema.find( { $and: [ {sms_sender_id:req.query.cus_id}, {sms_receiver_id:req.query.spp_id} ] }).then(async (data) => {
+//     if (data) {
 
+//            console.log('data:',data)                    
+//     }
+//   }).catch((err) => {
+//     console.log(err)
+//   })
+
+// });
 
 module.exports = app;
