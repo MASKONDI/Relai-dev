@@ -3,7 +3,6 @@
   <!-- The Modal -->
   <div class="modal permission-modal fade " id="myModal">
     <div class="modal-dialog">
-      
       <div class="modal-content">
 
         <!-- Modal Header -->
@@ -13,16 +12,19 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <select class="form-control " id="coms_complaint_for" name="coms_complaint_for">
+          <select class="form-control selectBox " style="height:55px" id="coms_complaint_for" name="coms_complaint_for"
+            data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select professional</option>
             <%hiredProfeshnoalList.forEach(function(row){%>
-            <option value="<%=row._id%>"><%=row.sps_fullname%></option>
-            <%});%>
+              <option value="<%=row._id%>">
+                <%=row.sps_fullname%>
+              </option>
+              <%});%>
           </select>
           <input type="hidden" id="cust_user_id" value="<%= session.user_id %>">
           <input type="hidden" id="property_id" value="<%=propertyDetailData[0]._id%>">
           <input type="text" class="form-control  form-control-fix2" id="coms_complaint_subject" placeholder="Subject"
-            name="coms_complaint_subject">
+            name="coms_complaint_subject" data-rule-required="true" data-msg-required="Subject is required!">
           <textarea class="form-control  form-control-fix2" rows="3" name="coms_complaint_note"
             id="coms_complaint_note">Add Notes</textarea>
           <a href="#" class="upload-any float-right"><i class="fa fa-paperclip float-right" style="color:black"><span
@@ -34,20 +36,19 @@
             </div>
             </span>
           </a>
-
-          <div class="model-btn-fix">
-          </div>
         </div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-cancel complain_submit_btn" data-dismiss="modal">Submit</button>
+          <button type="button" class="btn btn-cancel complain_submit_btn" name="submit"
+            data-dismiss="modal">Submit</button>
         </div>
+
       </div>
-    
     </div>
+
   </div>
-
-
+  </div>
 
   <div class="dashboard-wpr">
     <div class="container-fluid">
@@ -427,29 +428,29 @@
   </script>
   <script>
     $(document).ready(function () {
-      $('.complain_submit_btn').click(function(e){
-        var coms_complaint_for=$('#coms_complaint_for').val();
-        var coms_complaint_note= $('#coms_complaint_note').val();
-        var coms_complaint_subject= $('#coms_complaint_subject').val();
-        var cust_user_id= $('#cust_user_id').val();
+      $('.complain_submit_btn').click(function (e) {
+        var coms_complaint_for = $('#coms_complaint_for').val();
+        var coms_complaint_note = $('#coms_complaint_note').val();
+        var coms_complaint_subject = $('#coms_complaint_subject').val();
+        var cust_user_id = $('#cust_user_id').val();
         var property_id = $("#property_id").val();
         $.ajax({
-        type: "POST",
-        data: 'sevice_provider_id=' + coms_complaint_for + '&coms_complaint_note=' + coms_complaint_note + '&coms_complaint_subject=' + coms_complaint_subject + '&property_id='+property_id + '&cust_user_id='+cust_user_id,
-        url: "/api/raise-a-complaint",
-        cache: false,
-        success: function (data) {
-          //$("#results").append(data);
-          location.reload(true);
-          console.log(data);
-        }
-      });
-      
-      //location.reload(true);
+          type: "POST",
+          data: 'sevice_provider_id=' + coms_complaint_for + '&coms_complaint_note=' + coms_complaint_note + '&coms_complaint_subject=' + coms_complaint_subject + '&property_id=' + property_id + '&cust_user_id=' + cust_user_id,
+          url: "/api/raise-a-complaint",
+          cache: false,
+          success: function (data) {
+            //$("#results").append(data);
+            location.reload(true);
+            console.log(data);
+          }
+        });
+
+        //location.reload(true);
       })
-    
+
     });
-    
+
   </script>
   <script>
     $(document).ready(function () {
@@ -457,6 +458,37 @@
         $(this).siblings('input[type="text"]').val(e.target.files[0].name);
       });
     });
+  </script>
+  <script type="text/javascript">
+    $('#complaintform').validate({
+      onfocusout: function (element) {
+        this.element(element);
+      },
+      errorClass: 'error_validate',
+      errorElement: 'span',
+      highlight: function (element, errorClass) {
+        $(element).removeClass(errorClass);
+      },
+      submitHandler: function (form) {
+        $('#submit').attr('disabled', true);
+        form.submit();
+      }
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var flash_msg = $('.flash_msg').html();
+      if (flash_msg != "" && flash_msg != undefined) {
+        setTimeout(function () { $('.flash_msg').html(''); }, 4000);
+      }
+    });
+
+    $(document).ready(function () {
+      var succ_flash_msg = $('.succ_flash_msg').html();
+      if (succ_flash_msg != "" && succ_flash_msg != undefined) {
+        setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
+      }
+    });  
   </script>
   </body>
 
