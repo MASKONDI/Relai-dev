@@ -13,6 +13,10 @@ const PropertyProfessionalSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "service_provider"
   },
+  pps_user_id: {
+    type: Schema.Types.ObjectId,
+    ref: "customers"
+  },
   pps_pofessional_budget: { type: String },
   pps_exptected_delivery_date: { type: Date },
   pps_status: { type: String },

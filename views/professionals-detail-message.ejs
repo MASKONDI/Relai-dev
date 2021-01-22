@@ -94,7 +94,6 @@
                     </span>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -107,55 +106,25 @@
                 <div class="row">
                   <div class="col-sm-12 col-lg-12">
                     <div class="messages-section">
+                      <div id="message_board" >
+                     <% chatData.forEach(function(row){ %>
                       <div class="messages-box clearfix">
                         <div class="message-user-img">
                           <img src="images/recent-user-1.png" alt="" title="">
                         </div>
                         <div class="message-content">
-                          <h3>You</h3>
-                          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-                            has been the industry's standard dummy text ever since the 1500s,</p>
-                          <p class="hours-ago text-right">13 hours ago</p>
+                          <h3><%= row.senderName%></h3>
+                          <p><%= row.sms_message%></p>
+                          <p class="hours-ago text-right"><%= row.msgTime%> ago</p>
                         </div>
                       </div>
-                      <div class="messages-box clearfix">
-                        <div class="message-user-img">
-                          <img src="images/recent-user-1.png" alt="" title="">
-                        </div>
-                        <div class="message-content">
-                          <h3>Alex Jackson</h3>
-                          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-                            has been the industry's standard dummy text ever since the 1500s,</p>
-                          <p class="hours-ago text-right">13 hours ago</p>
-                        </div>
-                      </div>
-                      <div class="messages-box clearfix">
-                        <div class="message-user-img">
-                          <img src="images/recent-user-1.png" alt="" title="">
-                        </div>
-                        <div class="message-content">
-                          <h3>you</h3>
-                          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-                            has been the industry's standard dummy text ever since the 1500s,</p>
-                          <p class="hours-ago text-right">13 hours ago</p>
-                        </div>
-                      </div>
-                      <div class="messages-box clearfix">
-                        <div class="message-user-img">
-                          <img src="images/recent-user-1.png" alt="" title="">
-                        </div>
-                        <div class="message-content">
-                          <h3>Alex Jackson</h3>
-                          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-                            has been the industry's standard dummy text ever since the 1500s,</p>
-                          <p class="hours-ago text-right">13 hours ago</p>
-                        </div>
-                      </div>
+                      <% });  %>
+                    </div>
                       <div class="text-message-box clearfix">
                         <form method="POST" id="chat_form">
                         <div class="text-box">
-                          <input type="text" value="<%=service_provider_detail.id%>" name="professional_id" id="professional_id">
-                          <input type="text" value="<%= session.user_id %>" name="customer_id" id="customer_id">
+                          <input type="hidden" value="<%=service_provider_detail.id%>" name="professional_id" id="professional_id">
+                          <input type="hidden" value="<%= session.user_id %>" name="customer_id" id="customer_id">
                           <textarea name="chat_input" class="form-control" style="min-width: 80%; margin-bottom: 10px; " rows="3" id="comment"></textarea>
                           <button id="chat_submit" type="button" class="btn btn-next"
                             style="width: 164px; float:right; border-radius: 5px;">
@@ -202,32 +171,48 @@
         $("right-navbar li").removeClass("active");
         $(this).addClass("active");
       });
+      //var professional_id = '600a61f24c0d3319bc1279b6';
+      //var customer_id= '600915e33d48171a881f48d0';
+      //getAllMessage(professional_id,customer_id)
+
     });
 
 
-//     $(document).ready(function () {
-//   var professional_id =getUrlParameter('spp_id');
-//   var customer_id = getUrlParameter('cus_id');
-//   alert('customer_id',customer_id)
-//          $.ajax({
-//             type: "GET",
-//             data: '',
-//             url: "/get-message",
-//             cache: false,
-//             success: function (data) {
-//               console.log(data)
-//             }
-//        }); 
-// });
+
+
+function getAllMessage(sms_receiver_id,sms_sender_id){
+    $.ajax({
+              type: "GET",
+              data: {
+                sms_receiver_id:sms_receiver_id,
+                sms_sender_id:sms_sender_id,
+              },
+              url: "/get-message",
+              cache: false,
+              success: function (datas) {
+                if(datas.chatData.length > 0){
+                  var htmlData ='' ;
+                    $.each( datas.chatData, function( i, data ){
+                          htmlData += '<div class="messages-box clearfix"><div class="message-user-img"> <img src="images/recent-user-1.png" alt="" title=""></div><div class="message-content"><h3>'+data.senderName+'</h3><p>'+data.sms_message+'</p><p class="hours-ago text-right">'+data.msgTime+' ago</p></div></div>';
+                    });
+                    $('#message_board').html(htmlData);
+              }
+            }
+    }); 
+}
+
+setInterval(function(){ 
+  var professional_id = $("#professional_id").val();
+  var customer_id = $("#customer_id").val();
+  getAllMessage(professional_id,customer_id);
+}, 1000);
+
 
 $('#chat_submit').click(function(e){
   var comment = $("#comment").val();
   var professional_id = $("#professional_id").val();
   var customer_id = $("#customer_id").val();
-  alert(comment)
-  alert(customer_id)
-      alert(professional_id)
-      //if(comment){
+      if(comment){
           $.ajax({
             type: "POST",
             data: {
@@ -242,10 +227,11 @@ $('#chat_submit').click(function(e){
             url: "/api/message",
             cache: false,
             success: function (data) {
-              console.log(data)
+              $("#comment").val('');
+              getAllMessage(professional_id,customer_id);
             }
        });  
-    //}  
+    }  
 });
   </script>
   </body>
