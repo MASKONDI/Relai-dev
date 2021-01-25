@@ -77,7 +77,7 @@
             <div class="row">
               <div class="breadcumb">
                 <ul>
-                  <li><a href="/mydreamhome"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back
+                  <li><a href="/mydreamhome-details?id=<%=session.property_id%>"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back
                       to <%=property.ps_property_name%></a></li>
                 </ul>
               </div>
@@ -109,7 +109,7 @@
                     <ul class="docs-list">
                       <% allDocument.forEach(function(row){%>
                         <%if(row.cuds_document_type=='image'){%>
-                      <li><a href="#"><img src="/upload/<%= row.cuds_document_name%>" alt="" title=""><br><span> <%= row.cuds_document_name%></span></a>
+                      <li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img src="/upload/<%= row.cuds_document_name%>" alt="" title=""><br><span> <%= row.cuds_document_name%></span></a>
                       </li>
                       <%}%>
                       <%});%>

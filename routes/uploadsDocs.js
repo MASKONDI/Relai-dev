@@ -5,7 +5,7 @@ const passport = require('passport');
 const path = require('path');
 const ejs = require('ejs');
 const app = express();
-
+const { v4: uuidv4 } = require('uuid');
 var Jimp = require('jimp');
 var fs = require('fs');
 var base64ToImage = require('base64-to-image');
@@ -18,12 +18,18 @@ const PropertiesPictureSchema = require("../models/properties_picture");
 
 const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
 const CustomerUploadDocsSchema = require("../models/customer_upload_document");
-
+const ComplaintsSchema = require("../models/Complaints");
 //** Upload Document Start */
 
 var Storage = multer.diskStorage({
   destination: function (req, file, callback) {
-    callback(null, "./public/upload");
+    console.log('file==',file)
+    if(file.fieldname==='complaint_file'){
+      callback(null, "./public/complaintFile");
+    }else{
+      callback(null, "./public/upload");
+    }
+    
   },
   filename: function (req, file, callback) {
     callback(null, file.originalname);
@@ -253,7 +259,44 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
 
   }
 });
+app.post('/raise-a-complaint',upload.single('complaint_file'), (req, res,next) => {
+   console.log('complaint data:',req.body)
+   console.log('complaint data:',req.file)
+   var obj = {
+    //should be mongodb generated id
+    //coms_id :
+    coms_complaint_for: req.body.coms_complaint_for,//service provider id
+    coms_complaint_code: "C" + uuidv4(),//need to generate in  like C123 auto increment feature
+    coms_property_id: req.body.property_id,
+    coms_user_id:req.body.cust_user_id,
+    //coms_complaint_by: 'customer' //need to check if complaints filed via customer portal or service_provider portal
+    coms_complaint_subject: req.body.coms_complaint_subject,
+    coms_complaint_note: req.body.coms_complaint_note,
+    //coms_complaint_file: req.body.coms_complaint_file,
+    coms_complaint_filename:req.file.filename,
+    coms_complaint_file: {
+      data: fs.readFileSync(path.join(__dirname + '../../public/complaintFile/' + req.file.filename)),
+      contentType: 'image/png'
+    }
+  }
+  ComplaintsSchema.create(obj, (err, item) => {
+    if (err) {
+      console.log(err);
+      req.flash('err_msg', "Something went worng please try aftersome time");
+      res.redirect('/');
+    }
+    else {
+      item.save();
+      req.session.property_id=req.body.property_id;
+      console.log("complaint Submitted Successfully");
+      req.flash('success_msg', "complaint submitted Successfully");
+      //res.redirect('/mydreamhome');
+      res.json({'message':'success'})
+    }
+  });
 
+   
+})
 
 
 module.exports = app;

@@ -9,6 +9,7 @@ const moment = require('moment');
 var fs = require('fs');
 var auth = require('../config/auth');
 var multer = require('multer');
+ServiceProviderOtherDetailsSchema=require("../models/service_providers_other_details");
 const ServiceProviderPortfolioSchema = require("../models/service_provider_portfolio");
 const ServiceProviderSchema = require("../models/service_providers");
 const ServiceProviderPersonalDetailsSchema = require("../models/service_provider_personal_details");
@@ -164,14 +165,18 @@ app.get('/myprofessionals', isCustomer, async (req, res) => {
 //   });
 // });
 app.get('/professionals-detail', isCustomer, (req, res) => {
-  ServiceProviderSchema.find({ _id: req.query.id }).then(service_provider_detail => {
+  ServiceProviderSchema.findOne({ _id: req.query.id }).then(async service_provider_detail => {
     if (service_provider_detail) {
-      err_msg = req.flash('err_msg');
+      //spods_service_provider_id
+    let serviceProOtherDetail=  await ServiceProviderOtherDetailsSchema.findOne({spods_service_provider_id:service_provider_detail._id});
+       console.log('serviceProOtherDetail:',serviceProOtherDetail) 
+    err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('professionals-detail', {
         err_msg, success_msg, layout: false,
         session: req.session,
-        service_provider_detail: service_provider_detail[0]
+        service_provider_detail: service_provider_detail,
+        serviceProOtherDetail:serviceProOtherDetail,
       });
     }
   }).catch((err) => {
@@ -484,7 +489,58 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
   })
 
 })
+app.post('/getPropertyDetail',isCustomer,async(req,res)=>{
+console.log('getProperty-detail:',req.body)
+console.log('session property id',req.body.property_id);
+req.session.property_id=req.body.property_id
+let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({pps_user_id:req.session.user_id});
+let allDocumentUploadByCustmer =await CustomerUploadDocsSchema.find({cuds_customer_id:req.session.user_id});
+//console.log('AllhiredProfeshnoal',AllhiredProfeshnoal);
+let serviceProvArray = [];
+for (var k of AllhiredProfeshnoal) {
+  await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
+    for (let i of allProfeshnoals) {
+      let temps = await i
+      serviceProvArray.push(temps)
+    }
+  });
+}
+//console.log('hiredProfeshnoalList=',serviceProvArray)
+PropertiesSchema.find({ _id: req.body.property_id }).then(async (data) => {
+  if (data) {
 
+    let arr = [];
+    for (let img of data) {
+      await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
+        //let temp = await result
+        for (let image of result) {
+          let temp = await image
+          arr.push(temp)
+        }
+
+      })
+
+    }
+   
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('mydreamhome-details', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      propertyDetailData: data,
+      propertyImage:arr,
+      hiredProfeshnoalList:serviceProvArray,
+      allDocumentUploadByCustmer:allDocumentUploadByCustmer
+
+    });
+    
+    //console.log(serviceProvArray)
+  }
+}).catch((err) => {
+  console.log(err)
+})
+
+})
 app.get('/mydreamhome-details', isCustomer, async(req, res) => {
   console.log('session property id',req.query.id);
   req.session.property_id=req.query.id

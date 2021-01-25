@@ -95,13 +95,11 @@
                     <hr />
                     <div class="about-section">
                       <h6> <b>About me</b></h6>
-                      <p>I perform all phases of architectural work including planning, I perform all phases of
-                        architectural work including planning, I perform all phases of architectural work including
-                        planning, I perform all phases of architectural work including planning, I perform all phases of
-                        architectural work including planning, I perform all phases of architectural work including
-                        planning, I perform all phases of architectural work including planning, I perform all phases of
-                        architectural work including planning, I perform all phases of architectural work including
-                      </p>
+                      <%if(serviceProOtherDetail==''||serviceProOtherDetail==undefined){%>
+                        <p> </p>
+                        <%}else{%>
+                      <p> <%=serviceProOtherDetail.spods_professional_body%></p>
+                      <%}%>
                     </div>
                   </div>
                 </div>

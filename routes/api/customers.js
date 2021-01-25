@@ -593,8 +593,9 @@ POST : Raise a complaints api is used for raising a complaints to particular ser
 ------------------------------------------------------------------------------------------------- */
 
 router.post('/raise-a-complaint', (req, res) => {
-  console.log("request coming from server is :", req.body);
-  
+  console.log("request coming from server is :", req.body.image);
+ 
+  return;
   const newComplaint = new ComplaintsSchema({
     //should be mongodb generated id
     //coms_id :
