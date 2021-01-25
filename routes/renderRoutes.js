@@ -9,7 +9,6 @@ const moment = require('moment');
 var fs = require('fs');
 var auth = require('../config/auth');
 var multer = require('multer');
-ServiceProviderOtherDetailsSchema=require("../models/service_providers_other_details");
 const ServiceProviderPortfolioSchema = require("../models/service_provider_portfolio");
 const ServiceProviderSchema = require("../models/service_providers");
 const ServiceProviderPersonalDetailsSchema = require("../models/service_provider_personal_details");
