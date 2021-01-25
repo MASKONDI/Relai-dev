@@ -1,11 +1,11 @@
+
 <%- include('dashboard_header')-%>
 
   <!-- The Modal -->
   <div class="modal permission-modal fade " id="myModal">
     <div class="modal-dialog">
-      
       <div class="modal-content">
-
+        <form name="complaintform" id="complent_form" method="post" action="" enctype="multipart/form-data">
         <!-- Modal Header -->
         <div class="modal-header text-center">
           <h2 class="modal-title w-100">Raise a Complaint</h2>
@@ -13,7 +13,6 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-
           <select class="form-control selectBox " style="height:55px" id="coms_complaint_for" name="coms_complaint_for"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select professional</option>
@@ -22,21 +21,18 @@
                 <%=row.sps_fullname%>
               </option>
               <%});%>
-
           </select>
-          <input type="hidden" id="cust_user_id" value="<%= session.user_id %>">
-          <input type="hidden" id="property_id" value="<%=propertyDetailData[0]._id%>">
+          <input type="hidden" name="cust_user_id" id="cust_user_id" value="<%= session.user_id %>">
+          <input type="hidden" name="property_id" id="property_id" value="<%=propertyDetailData[0]._id%>">
           <input type="text" class="form-control  form-control-fix2" id="coms_complaint_subject" placeholder="Subject"
-
             name="coms_complaint_subject" data-rule-required="true" data-msg-required="Subject is required!">
-
           <textarea class="form-control  form-control-fix2" rows="3" name="coms_complaint_note"
-            id="coms_complaint_note">Add Notes</textarea>
+            id="coms_complaint_note" placeholder="Add Notes"></textarea>
           <a href="#" class="upload-any float-right"><i class="fa fa-paperclip float-right" style="color:black"><span
                 class="clip-icon">Attach
                 files</span></i>
             <div class="custom-file-input">
-              <input type="file" id="image" name="new_Docs" value="" required>
+              <input type="file" id="image" name="complaint_file" value="" required>
               <input type="button">
             </div>
             </span>
@@ -45,14 +41,12 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-
-          <button type="button" class="btn btn-cancel complain_submit_btn" name="submit"
-            data-dismiss="modal">Submit</button>
-
+          <button type="submit" class="btn btn-cancel complain_submit_btn" name="submit"
+            data-dismiss="">Submit</button>
         </div>
 
+      </form>
       </div>
-    
     </div>
 
   </div>
@@ -349,11 +343,11 @@
                         <h3 class="text-center">Docs & Files</h3>
                       </a>
                     </div>
-                    <ul class="docs-list">
+                    <ul class="docs-list" >
                       <%if(allDocumentUploadByCustmer.length>0){%>
                       <%allDocumentUploadByCustmer.forEach(function(row,i){%>
                         <%if(i<=2){%>
-                      <li><a href="/mydreamhome-details-docs" value="<%=propertyDetailData[0]._id%>"><img src="/upload/<%=row.cuds_document_name%>" alt=""
+                      <li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="/mydreamhome-details-docs" value="<%=propertyDetailData[0]._id%>"><img src="/upload/<%=row.cuds_document_name%>" alt=""
                             title=""><br><span><%=row.cuds_document_name%></span></a>
                       </li>
                       <%}%>
@@ -378,18 +372,20 @@
                 <div class="col-sm-6 col-lg-4">
                   <div class="do-list-sec">
                     <div class="do-list-header">
-                      <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>">
+                      <a href="/mydreamhome-details-message">
                         <h3 class="text-center">Messages</h3>
                       </a>
                     </div>
                     <%hiredProfeshnoalList.forEach(function(row){%>
                     <div class="messages-list clearfix">
                       <div class="message-img float-left">
+
                         <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>&pid=<%=row._id%>"><img src="images/recent-user-1.png" alt="" title=""></a>
                       </div>
                       <div class="message-drop float-left">
                         <h3><%=row.sps_fullname%></h3>
                         <p><%=row.sms_message%></p>
+
                       </div>
                     </div>
                     <%});%>
@@ -431,36 +427,33 @@
     });
   </script>
   <script>
-    $(document).ready(function () {
-      $('.complain_submit_btn').click(function(e){
-
-        var image = $('#image').prop('files');
-        console.log(image);
-        
-
-        var coms_complaint_for=$('#coms_complaint_for').val();
-        var coms_complaint_note= $('#coms_complaint_note').val();
-        var coms_complaint_subject= $('#coms_complaint_subject').val();
-        var cust_user_id= $('#cust_user_id').val();
-        var property_id = $("#property_id").val();
+     $(document).ready(function () {
+      
+       $('form#complent_form').submit(function(e){
+         e.preventDefault();
+         
+      var formData = new FormData($('#complent_form')[0]);
+       
         $.ajax({
-
           type: "POST",
-          data: 'sevice_provider_id=' + coms_complaint_for + '&coms_complaint_note=' + coms_complaint_note + '&coms_complaint_subject=' + coms_complaint_subject + '&property_id=' + property_id + '&cust_user_id=' + cust_user_id,
-          url: "/api/raise-a-complaint",
+          data:formData,
+          url: "/raise-a-complaint",
           cache: false,
+          contentType: false,
+          processData: false,
           success: function (data) {
-            //$("#results").append(data);
-            location.reload(true);
+            
             console.log(data);
+            
+            location.reload(true);
+            
           }
         });
 
-        //location.reload(true);
-      })
+    //location.reload(true);
+       })
 
-    });
-
+     });
 
   </script>
   <script>
@@ -522,5 +515,6 @@
     });  
   </script>
   </body>
+
 
   </html>

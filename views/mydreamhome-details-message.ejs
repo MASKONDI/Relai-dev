@@ -1,3 +1,4 @@
+
 <%- include('dashboard_header')-%>
 
   <div class="dashboard-wpr">
@@ -45,10 +46,8 @@
             <div class="row">
               <div class="breadcumb">
                 <ul>
-                  <li><a href="/mydreamhome-details" onclick="location.href=this.href+'?id='+scrt_var;return false;"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back
-
+                  <li><a href="/mydreamhome-details?id=<%=session.property_id%>" ><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back
                       to <%=property.ps_property_name%></a></li>
-
                 </ul>
               </div>
             </div>
@@ -185,7 +184,7 @@ $('#chat_submit').click(function(e){
 
 
   </script>
-  <script language="javascript" type="text/javascript">
+  <!-- <script language="javascript" type="text/javascript">
     function getParameterByName(name, url) {
           if (!url) url = window.location.href;
           name = name.replace(/[\[\]]/g, "\\$&");
@@ -196,9 +195,10 @@ $('#chat_submit').click(function(e){
           return decodeURIComponent(results[2].replace(/\+/g, " "));
         }
         var val = getParameterByName('id');
-        //alert(val)
+        //alert(val) onclick="location.href=this.href+'?id='+scrt_var;return false;"
       var scrt_var = val; 
-      </script>
+      </script> -->
   </body>
+
 
   </html>
