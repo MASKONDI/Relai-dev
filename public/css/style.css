@@ -2253,7 +2253,6 @@ ul.docs-list.last-doc li{
         background-color: #ffffff;
     } */
 
-
     .user-fix{
         margin-top: 20px;
     }
@@ -2379,7 +2378,10 @@ ul.docs-list.last-doc li{
         font-weight: bold;
     }
     .professional-inner{
-        padding: 0px 30px 30px 30px;
+        padding: 0px 30px 30px 0px;
+    }
+    .professioal-inner2{
+        padding: 20px 30px 30px 0px;
     }
     .professional-files-section{
         margin-bottom: 20px;

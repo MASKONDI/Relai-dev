@@ -385,11 +385,15 @@ router.post("/service_provider_language", (req, res) => {
     });
 });
 
+/* -------------------------------------------------------------------------------------------------
+POST : service_provider_sign post api is used for login service_provider account 
+------------------------------------------------------------------------------------------------- */
+
 router.post("/service_provider_signin",
   (req, res) => {
     var err_msg = null;
     var success_msg = null;
-    //TODO:need to add condition is session is expired
+    //TODO:need to add condition if session is expired
 
     const sps_email_id = req.body.sps_email_id;
     const sps_password = req.body.sps_password;
@@ -450,7 +454,9 @@ router.post("/service_provider_signin",
   });
 
 
-//service_provider logout button  
+/* -------------------------------------------------------------------------------------------------
+GET : Logout API  
+------------------------------------------------------------------------------------------------- */
 router.get('/sp_logout', function (req, res) {
   console.log("logout");
   var test = req.session.is_user_logged_in;
@@ -465,7 +471,9 @@ router.get('/sp_logout', function (req, res) {
   }
 });
 
-
+/* -------------------------------------------------------------------------------------------------
+POST : forget-password-professional  api is used for sending Password on user gmail 
+------------------------------------------------------------------------------------------------- */
 router.post('/forget-password-professional', function (req, res) {
   console.log("req.body is :", req.body);
   ServiceProviderSchema.find({

@@ -48,23 +48,31 @@
                     <img src="images/user-4.png" alt="" title="">
                   </div>
                   <div class="user-name-fix float-left">
-                    <h2><%=service_provider_detail.sps_fullname%></h2>
-                    <p><%=service_provider_detail.sps_role_name%></p>
+                    <h2>
+                      <%=service_provider_detail.sps_fullname%>
+                    </h2>
+                    <p>
+                      <%=service_provider_detail.sps_role_name%>
+                    </p>
                   </div>
 
                   <div class="float-left icon-fix">
-                    <img class=" card-image-fix" src="images/experience.png" alt="">&nbsp;<span><%=service_provider_detail.sps_experience%>
-                      years</span>
+                    <img class=" card-image-fix" src="images/experience.png" alt="">&nbsp;<span>
+                      <%=service_provider_detail.sps_experience%>
+                        years
+                    </span>
                   </div>
                   <div class="float-left icon-fix2">
                     <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span>4.0
                       Rating</span>
                   </div>
                   <div class="float-left btn-hire-now-small">
-                    <a href="/professionals-hirenow?spp_id=<%=service_provider_detail._id%>" class="btn btn-add-property">Hire Now</a>
+                    <a href="/professionals-hirenow?spp_id=<%=service_provider_detail._id%>"
+                      class="btn btn-add-property">Hire Now</a>
                   </div>
                   <div class="float-left btn-hire">
-                    <a href="/professionals-detail-message?spp_id=<%=service_provider_detail._id%>&cus_id=<%=session.user_id%>" class="btn btn-message">Drop a message</a>
+                    <a href="/professionals-detail-message?spp_id=<%=service_provider_detail._id%>&cus_id=<%=session.user_id%>"
+                      class="btn btn-message">Drop a message</a>
                   </div>
                 </div>
               </div>
@@ -80,16 +88,18 @@
 
             <div class="row">
               <div class="col-sm-12 col-lg-12">
-                <div class="professional-inner">
+                <div class="professioal-inner2">
                   <div class="professional-files-section1">
                     <div class="row">
                       <div class="float-left image-fix">
-                        <img class="" src="images/phone.png" alt="Card image cap">&nbsp;<span>+<%=service_provider_detail.sps_phone_number%>
+                        <img class="" src="images/phone.png" alt="Card image cap">&nbsp;<span>+
+                          <%=service_provider_detail.sps_phone_number%>
                         </span>
                       </div>
                       <div class="float-left image-fix">
-                        <img class="" src="images/mail.png"
-                          alt="Card image cap">&nbsp;<span><%=service_provider_detail.sps_email_id%></span>
+                        <img class="" src="images/mail.png" alt="Card image cap">&nbsp;<span>
+                          <%=service_provider_detail.sps_email_id%>
+                        </span>
                       </div>
                     </div>
                     <hr />
