@@ -639,6 +639,9 @@ router.post('/message', (req, res) => {
   })
   newMessage.save().then(message => {
     console.log("getting response form server is :", message);
+    res.send({
+      msgData: message
+    })
     //res.flash('success_msg', 'message forward successfully');
     //res.redirect('/'); //set based on current login if its customer portal then redirect customer_message portal and 
   }).catch(err => {
@@ -688,6 +691,5 @@ function invite_function(req) {
 
 
 }
-
 
 module.exports = router;

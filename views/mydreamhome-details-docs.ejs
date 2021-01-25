@@ -78,8 +78,7 @@
               <div class="breadcumb">
                 <ul>
                   <li><a href="/mydreamhome"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back
-                      to Nacary
-                      Apartment</a></li>
+                      to <%=property.ps_property_name%></a></li>
                 </ul>
               </div>
             </div>
@@ -93,28 +92,33 @@
                       </div>
                       <form action="/upload-new-document" method="post" id="newDocumentform"
                         enctype="multipart/form-data">
-
+                                   
                         <div class="float-right">
                           <!-- <a href="#" class="btn btn-add-property">Add New Document</a>-->
                           <a href="#" class="upload-any"><img src="images/upload.png"> <span>
                               <div class="custom-file-input">
+                                <input type="hidden" name="property_id" value='<%=property._id%>' id ="hiddenPropertyId">
                                 <input type="file" id="image" name="new_Docs" value="" required>
                                 <input type="button">
                               </div>
                             </span></a>
-                          <button class="btn btn-add-property">Add New Document</button>
+                          <button class="btn btn-add-property" >Add New Document</button>
                         </div>
                       </form>
                     </div>
                     <ul class="docs-list">
-                      <li><a href="#"><img src="images/idproof.png" alt="" title=""><br><span>idproof.jpg</span></a>
+                      <% allDocument.forEach(function(row){%>
+                        <%if(row.cuds_document_type=='image'){%>
+                      <li><a href="#"><img src="/upload/<%= row.cuds_document_name%>" alt="" title=""><br><span> <%= row.cuds_document_name%></span></a>
                       </li>
-                      <li><a href="#"><img src="images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a></li>
+                      <%}%>
+                      <%});%>
+                      <!-- <li><a href="#"><img src="images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a></li>
                       <li><a href="#"><img src="images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a></li>
                       <li><a href="#"><img src="images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a></li>
                       <li><a href="#"><img src="images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a></li>
                       <li><a href="#"><img src="images/idproof.png" alt="" title=""><br><span>idproof.jpg</span></a>
-                      </li>
+                      </li> -->
                     </ul>
                   </div>
                 </div>
@@ -230,7 +234,7 @@
     crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
   <!-- Font Awesome https://fontawesome.com/  https://use.fontawesome.com/releases/v5.14.0/js/all.js -->
-  <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+  <!-- <script src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script> -->
   <!-- Lightbox Image Gallery https://cdnjs.com/libraries/lightbox2  https://lokeshdhakar.com/projects/lightbox2/ -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/js/lightbox.min.js"></script>
   <!-- Owl Carousel https://cdnjs.com/libraries/OwlCarousel2
@@ -304,6 +308,8 @@
       location.reload(true);
     });
   </script>
+  
+      
   </body>
 
   </html>
