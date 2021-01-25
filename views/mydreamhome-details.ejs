@@ -376,33 +376,19 @@
                         <h3 class="text-center">Messages</h3>
                       </a>
                     </div>
+                    <%hiredProfeshnoalList.forEach(function(row){%>
                     <div class="messages-list clearfix">
                       <div class="message-img float-left">
-                        <a href="/mydreamhome-details-message"><img src="images/recent-user-1.png" alt="" title=""></a>
+
+                        <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>&pid=<%=row._id%>"><img src="images/recent-user-1.png" alt="" title=""></a>
                       </div>
                       <div class="message-drop float-left">
-                        <h3>Rachel Green</h3>
-                        <p>Hi, Here are the documents.</p>
+                        <h3><%=row.sps_fullname%></h3>
+                        <p><%=row.sms_message%></p>
+
                       </div>
                     </div>
-                    <div class="messages-list clearfix">
-                      <div class="message-img float-left">
-                        <a href="/mydreamhome-details-message"> <img src="images/recent-user-1.png" alt="" title=""></a>
-                      </div>
-                      <div class="message-drop float-left">
-                        <h3>Rachel Green</h3>
-                        <p>Hi, Here are the documents.</p>
-                      </div>
-                    </div>
-                    <div class="messages-list clearfix">
-                      <div class="message-img float-left">
-                        <a href="/mydreamhome-details-message"> <img src="images/recent-user-1.png" alt="" title=""></a>
-                      </div>
-                      <div class="message-drop float-left">
-                        <h3>Rachel Green</h3>
-                        <p>Hi, Here are the documents.</p>
-                      </div>
-                    </div>
+                    <%});%>
                   </div>
                 </div>
               </div>

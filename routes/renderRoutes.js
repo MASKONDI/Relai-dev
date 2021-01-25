@@ -68,40 +68,6 @@ app.get('/intro', (req, res) => {
 });
 
 
-
-
-function timeDiffCalc(dateFuture, dateNow) {
-  let diffInMilliSeconds = Math.abs(dateFuture - dateNow) / 1000;
-
-  // calculate days
-  const days = Math.floor(diffInMilliSeconds / 86400);
-  diffInMilliSeconds -= days * 86400;
-  console.log('calculated days', days);
-
-  // calculate hours
-  const hours = Math.floor(diffInMilliSeconds / 3600) % 24;
-  diffInMilliSeconds -= hours * 3600;
-  console.log('calculated hours', hours);
-
-  // calculate minutes
-  const minutes = Math.floor(diffInMilliSeconds / 60) % 60;
-  diffInMilliSeconds -= minutes * 60;
-  console.log('minutes', minutes);
-
-  let difference = '';
-  if (days > 0) {
-    difference += (days === 1) ? `${days} day, ` : `${days} days, `;
-  }
-
-  difference += (hours === 0 || hours === 1) ? `${hours} hour, ` : `${hours} hours, `;
-
-  difference += (minutes === 0 || hours === 1) ? `${minutes} minutes` : `${minutes} minutes`;
-
-  return difference;
-}
-
-
-
 //** customer Signup ***********8 */
 app.get("/signup", (req, res) => {
 
@@ -247,7 +213,7 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
 //   });
 // });
 
-// Professional Filter Role
+// All Professional Filter Role
 app.get('/professionals-filter', isCustomer, (req, res) => {
   console.log('role data:', req.query.role);
   ServiceProviderSchema.find({ sps_role_name: req.query.role }).then(service_provider_detail => {
@@ -266,9 +232,8 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
   })
 });
 
-// Professional Filter name surname qualification
+// All Professional Filter name surname qualification
 app.get('/professionals-searchbar', (req, res) => {
-
   let professionalIDs = [];
   ServiceProviderSchema.find({ sps_fullname: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail1 => {
     ServiceProviderPersonalDetailsSchema.find({ spods_surname: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail2 => {
@@ -295,13 +260,78 @@ app.get('/professionals-searchbar', (req, res) => {
             })
           });
         }
-
       });
     });
   }).catch((err) => {
     console.log(err)
   })
 });
+
+
+// My professional filter role
+app.get('/my-professionals-filter', isCustomer, async (req, res) => {
+  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id });
+  let serviceProvArray = [];
+  for (var k of AllhiredProfeshnoal) {
+    await ServiceProviderSchema.find({$and:[{ _id: k.pps_service_provider_id, sps_role_name: req.query.role }]}).then(async (allProfeshnoals) => {
+      for (let i of allProfeshnoals) {
+        let temps = await i
+        serviceProvArray.push(temps)
+      }
+    });
+  }
+  res.send({
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    data: serviceProvArray
+  });
+
+});
+
+
+// My Professional Filter name surname qualification
+// app.get('/my-professionals-searchbar', async (req, res) => {
+//   let professionalIDs = [];
+
+//   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id });
+//   let serviceProvArray = [];
+//   for (var k of AllhiredProfeshnoal) {
+//     await ServiceProviderSchema.find({$and:[{ _id: k.pps_service_provider_id, sps_fullname: new RegExp(req.query.searchKeyword, 'i')}]}).then(async (service_provider_detail1) => {
+//       ServiceProviderPersonalDetailsSchema.find({ $and:[{ spods_service_provider_id: k.pps_service_provider_id, sps_fullname: new RegExp(req.query.searchKeyword, 'i')}] }).then(service_provider_detail2 => { 
+//           ServiceProviderEducationSchema.find({ $and:[{ spods_service_provider_id: k.pps_service_provider_id, spes_qualification_obtained: new RegExp(req.query.searchKeyword, 'i')}] }).then(service_provider_detail3 => {
+//             if (service_provider_detail1 || service_provider_detail2 || service_provider_detail3) { 
+//               var service_provider_detail = service_provider_detail1.concat(service_provider_detail2, service_provider_detail3);
+//               service_provider_detail.forEach(async function (providerData) {
+//                 if (("spes_service_provider_id" in providerData) == true) {
+//                   await professionalIDs.push(providerData.spes_service_provider_id.toString());
+//                 } else if (('spods_service_provider_id' in providerData) == true) {
+//                   await professionalIDs.push(providerData.spods_service_provider_id.toString());
+//                 } else {
+//                   await professionalIDs.push(providerData._id.toString());
+//                 }
+//               });
+//               let unique = [...new Set(professionalIDs)];
+
+//               ServiceProviderSchema.find({ _id: { $in: unique } }).then(service_provider_detail => {
+//                 res.send({
+//                   err_msg, success_msg, layout: false,
+//                   session: req.session,
+//                   data: service_provider_detail
+//                 })
+//               });
+
+
+//             }
+//           })
+//       })
+//     });
+//   }
+// });
+
+
+
+
+
 
 
 app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
@@ -375,15 +405,102 @@ app.get('/add-property', isCustomer, (req, res) => {
   });
 });
 
-app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
+app.get('/mydreamhome-details-message', isCustomer, async(req, res) => {
+  var newData=[];
   console.log(' property id  :', req.session.property_id);
-  let property = await PropertiesSchema.findOne({ _id: req.session.property_id });
+  console.log('helooooo', req.query.pid);
+  req.session.professional_id = req.query.pid;
+  let property = await PropertiesSchema.findOne({_id:req.session.property_id});
+
+  // let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({pps_user_id:req.session.user_id});
+  // let serviceProvArray = [];
+  // for (var k of AllhiredProfeshnoal) {
+  //   await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
+  //     await  MessageSchema.find({
+  //           $or: [
+  //               { $and: [ {sms_sender_id:req.session.user_id}, {sms_receiver_id:k.pps_service_provider_id} ] },
+  //               { $and: [ {sms_sender_id:k.pps_service_provider_id}, {sms_receiver_id:req.session.user_id} ] }
+  //           ]
+  //       }).then(async (msgdata) => {
+  //             console.log('msgdata=',msgdata[0])
+  //             for (let i of allProfeshnoals) {
+  //               if(msgdata.length > 0){
+  //                 var object_as_string = JSON.stringify(i);  
+  //                 const t =  JSON.parse(object_as_string);
+  //                 console.log('lastIndex:',msgdata.slice(-1)[0]);
+  //                 let msgData = msgdata.slice(-1)[0];
+  //                 t.sms_message = msgData.sms_message;
+  //                 //let temps = await i
+  //                 serviceProvArray.push(t)
+  //               }else{
+  //                 var object_as_string = JSON.stringify(i);  
+  //                 const t =  JSON.parse(object_as_string);
+  //                 t.sms_message ='...';
+  //                 //let temps = await i
+  //                 serviceProvArray.push(t)
+  //               }
+  //             }
+  //       })
+  //   });
+  // }
+
+            await  MessageSchema.find({
+                $or: [
+                    { $and: [ {sms_sender_id:property.ps_user_id}, {sms_receiver_id:req.query.pid}, {sms_property_id:req.session.property_id} ] },
+                    { $and: [ {sms_sender_id:req.query.pid}, {sms_receiver_id:property.ps_user_id}, {sms_property_id:req.session.property_id} ] }
+                ]
+            }).then(async (data) => {
+                if (data) {
+                  for (let providerData of data) {
+                    var today = new Date();
+                    var date = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
+                    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                    var dateTime = date+' '+time;
+                    
+                    var today1 = new Date(providerData.sms_msg_Date);
+                    var date1 = today1.getFullYear()+'/'+(today1.getMonth()+1)+'/'+today1.getDate();
+                    var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
+                    var dateTime1 = date1+' '+time1;
+                    
+                    var msg_time = timeDiffCalc(new Date(dateTime), new Date(dateTime1));
+        
+                    var object_as_string = JSON.stringify(providerData);  
+                    const t =    JSON.parse(object_as_string);
+                     t.msgTime = msg_time;
+                    await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then( async professional => { 
+                      if(professional){
+                        console.log('professional:',professional.sps_fullname);
+                        t.senderName = await professional.sps_fullname;
+                        //console.log('providerData xxxx New:',t);
+                      }else{
+                        t.senderName = await 'You';
+                      }
+                      
+                    });
+                  const s = await t;
+                    //console.log('providerData New:',s);
+                     newData.push(s);
+                  }
+
+                }
+            }).catch((err) => {
+              console.log(err)
+            })
+
+
+
+  console.log('property:',property)
+
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('mydreamhome-details-message', {
     err_msg, success_msg, layout: false,
     session: req.session,
-    property: property
+
+    property:property,
+    professional_id:req.query.pid,
+    chatData:newData
+    //hiredProfeshnoalList:serviceProvArray
   });
 })
 
@@ -392,83 +509,61 @@ app.get('/professionals-detail-message', (req, res) => {
   //return
   var newData = [];
   ServiceProviderSchema.find({ _id: req.query.spp_id }).then(service_provider_detail => {
-    if (service_provider_detail) {
-      MessageSchema.find({
-        $or: [
-          { $and: [{ sms_sender_id: req.query.cus_id }, { sms_receiver_id: req.query.spp_id }] },
-          { $and: [{ sms_sender_id: req.query.spp_id }, { sms_receiver_id: req.query.cus_id }] }
-        ]
-      }).then(async (data) => {
-        if (data) {
 
+        if (service_provider_detail) {
+            MessageSchema.find({
+                $or: [
+                    { $and: [ {sms_sender_id:req.query.cus_id}, {sms_receiver_id:req.query.spp_id} ] },
+                    { $and: [ {sms_sender_id:req.query.spp_id}, {sms_receiver_id:req.query.cus_id} ] }
+                ]
+            }).then(async (data) => {
+                if (data) {
+                  for (let providerData of data) {
+                    var today = new Date();
+                    var date = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
+                    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                    var dateTime = date+' '+time;
+                    
+                    var today1 = new Date(providerData.sms_msg_Date);
+                    var date1 = today1.getFullYear()+'/'+(today1.getMonth()+1)+'/'+today1.getDate();
+                    var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
+                    var dateTime1 = date1+' '+time1;
+                    
+                    var msg_time = timeDiffCalc(new Date(dateTime), new Date(dateTime1));
+        
+                    var object_as_string = JSON.stringify(providerData);  
+                    const t =    JSON.parse(object_as_string);
+                     t.msgTime = msg_time;
+                    await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then( async professional => { 
+                      if(professional){
+                        console.log('professional:',professional.sps_fullname);
+                        t.senderName = await professional.sps_fullname;
+                        //console.log('providerData xxxx New:',t);
+                      }else{
+                        t.senderName = await 'You';
+                      }
+                      
+                    });
+                  const s = await t;
+                    //console.log('providerData New:',s);
+                     newData.push(s);
+        
+                  }
 
-          // data.forEach(async function (providerData) {
-          //   var today = new Date();
-          //   var date = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
-          //   var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-          //   var dateTime = date+' '+time;
-
-          //   var today1 = new Date(providerData.sms_msg_Date);
-          //   var date1 = today1.getFullYear()+'/'+(today1.getMonth()+1)+'/'+today1.getDate();
-          //   var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
-          //   var dateTime1 = date1+' '+time1;
-
-          //   var msg_time = timeDiffCalc(new Date(dateTime), new Date(dateTime1));
-          //   var object_as_string = JSON.stringify(providerData);  
-          //              const t =    JSON.parse(object_as_string);
-          //              t.msgTime = msg_time;
-          //             //console.log('providerData New:',t);
-          //          newData.push(t);
-          //  });
-
-
-
-          for (let providerData of data) {
-            var today = new Date();
-            var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
-            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-            var dateTime = date + ' ' + time;
-
-            var today1 = new Date(providerData.sms_msg_Date);
-            var date1 = today1.getFullYear() + '/' + (today1.getMonth() + 1) + '/' + today1.getDate();
-            var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
-            var dateTime1 = date1 + ' ' + time1;
-
-            var msg_time = timeDiffCalc(new Date(dateTime), new Date(dateTime1));
-
-            var object_as_string = JSON.stringify(providerData);
-            const t = JSON.parse(object_as_string);
-            t.msgTime = msg_time;
-            await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
-              if (professional) {
-                console.log('professional:', professional.sps_fullname);
-                t.senderName = await professional.sps_fullname;
-                //console.log('providerData xxxx New:',t);
-              } else {
-                t.senderName = await 'You';
-              }
-
-            });
-            const s = await t;
-            //console.log('providerData New:',s);
-            newData.push(s);
-
-          }
-
-          console.log('newData', newData);
-          err_msg = req.flash('err_msg');
-          success_msg = req.flash('success_msg');
-          res.render('professionals-detail-message', {
-            err_msg, success_msg, layout: false,
-            session: req.session,
-            service_provider_detail: service_provider_detail[0],
-            chatData: newData
-          });
+                      console.log('newData',newData);
+                      err_msg = req.flash('err_msg');
+                      success_msg = req.flash('success_msg');
+                      res.render('professionals-detail-message', {
+                        err_msg, success_msg, layout: false,
+                        session: req.session,
+                        service_provider_detail: service_provider_detail[0],
+                        chatData:newData
+                      });
+                }
+            }).catch((err) => {
+              console.log(err)
+            })
         }
-      }).catch((err) => {
-        console.log(err)
-      })
-    }
   }).catch((err) => {
     console.log(err)
   })
@@ -675,13 +770,34 @@ app.get('/mydreamhome-details', isCustomer, async(req, res) => {
   let serviceProvArray = [];
   for (var k of AllhiredProfeshnoal) {
     await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
-      for (let i of allProfeshnoals) {
-        let temps = await i
-        serviceProvArray.push(temps)
-      }
+          console.log('allProfeshnoals:',allProfeshnoals)
+      await  MessageSchema.find({
+            $or: [
+                { $and: [ {sms_sender_id:req.session.user_id}, {sms_receiver_id:k.pps_service_provider_id} ] },
+                { $and: [ {sms_sender_id:k.pps_service_provider_id}, {sms_receiver_id:req.session.user_id} ] }
+            ]
+        }).then(async (msgdata) => {
+              console.log('msgdata=',msgdata)
+              for (let i of allProfeshnoals) {
+                if(msgdata.length > 0){
+                  var object_as_string = JSON.stringify(i);  
+                  const t =  JSON.parse(object_as_string);
+                  console.log('lastIndex:',msgdata.slice(-1)[0]);
+                  let msgData = msgdata.slice(-1)[0];
+                  t.sms_message = msgData.sms_message;
+                  //let temps = await i
+                  serviceProvArray.push(t)
+                }else{
+                  var object_as_string = JSON.stringify(i);  
+                  const t =  JSON.parse(object_as_string);
+                  t.sms_message ='...';
+                  //let temps = await i
+                  serviceProvArray.push(t)
+                }
+              }
+        })
     });
   }
-  //console.log('hiredProfeshnoalList=',serviceProvArray)
 
   PropertiesSchema.find({ _id: req.query.id }).then(async (data) => {
     if (data) {
@@ -718,6 +834,7 @@ app.get('/mydreamhome-details', isCustomer, async(req, res) => {
   })
 
 })
+
 
 
 
@@ -836,85 +953,137 @@ app.get('/kyc-professional', isServiceProvider, (req, res) => {
 
 
 app.get('/get-message', async (req, res) => {
-  //console.log('helooooo hghgh', req.query);
-  //return
-  var newData = [];
-  MessageSchema.find({
-    $or: [
-      { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }] },
-      { $and: [{ sms_sender_id: req.query.sms_receiver_id }, { sms_receiver_id: req.query.sms_sender_id }] }
-    ]
-  }).then(async (data) => {
-    if (data) {
-      // data.forEach(async function (providerData) {
-      //   var today = new Date();
-      //   var date = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
-      //   var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-      //   var dateTime = date+' '+time;
 
-      //   var today1 = new Date(providerData.sms_msg_Date);
-      //   var date1 = today1.getFullYear()+'/'+(today1.getMonth()+1)+'/'+today1.getDate();
-      //   var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
-      //   var dateTime1 = date1+' '+time1;
-
-      //   var msg_time = timeDiffCalc(new Date(dateTime), new Date(dateTime1));
-      //   var object_as_string = JSON.stringify(providerData);  
-      //              const t =    JSON.parse(object_as_string);
-      //              t.msgTime = msg_time;
-      //             //console.log('providerData New:',t);
-      //          newData.push(t);
-      //  });
-
-
-
-      for (let providerData of data) {
-        var today = new Date();
-        var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var dateTime = date + ' ' + time;
-
-        var today1 = new Date(providerData.sms_msg_Date);
-        var date1 = today1.getFullYear() + '/' + (today1.getMonth() + 1) + '/' + today1.getDate();
-        var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
-        var dateTime1 = date1 + ' ' + time1;
-
-        var msg_time = timeDiffCalc(new Date(dateTime), new Date(dateTime1));
-
-        var object_as_string = JSON.stringify(providerData);
-        const t = JSON.parse(object_as_string);
-        t.msgTime = msg_time;
-        await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
-          if (professional) {
-            //console.log('professional:',professional.sps_fullname);
-            t.senderName = await professional.sps_fullname;
-            //console.log('providerData xxxx New:',t);
-          } else {
-            t.senderName = await 'You';
-          }
-
-        });
-        const s = await t;
-        //console.log('providerData New:',s);
-        newData.push(s);
-
-      }
+  var newData=[];
+            MessageSchema.find({
+                $or: [
+                    { $and: [ {sms_sender_id:req.query.sms_sender_id}, {sms_receiver_id:req.query.sms_receiver_id} ] },
+                    { $and: [ {sms_sender_id:req.query.sms_receiver_id}, {sms_receiver_id:req.query.sms_sender_id} ] }
+                ]
+            }).then(async (data) => {
+                if (data) {
+                  // data.forEach(async function (providerData) {
+                  //   var today = new Date();
+                  //   var date = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
+                  //   var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                  //   var dateTime = date+' '+time;
+                    
+                  //   var today1 = new Date(providerData.sms_msg_Date);
+                  //   var date1 = today1.getFullYear()+'/'+(today1.getMonth()+1)+'/'+today1.getDate();
+                  //   var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
+                  //   var dateTime1 = date1+' '+time1;
+                    
+                  //   var msg_time = timeDiffCalc(new Date(dateTime), new Date(dateTime1));
+                  //   var object_as_string = JSON.stringify(providerData);  
+                  //              const t =    JSON.parse(object_as_string);
+                  //              t.msgTime = msg_time;
+                  //             //console.log('providerData New:',t);
+                  //          newData.push(t);
+                  //  });
 
 
 
-      // console.log('Get newData',newData);
-      err_msg = req.flash('err_msg');
-      success_msg = req.flash('success_msg');
-      res.send({
-        err_msg, success_msg, layout: false,
-        session: req.session,
-        chatData: newData
-      });
-    }
-  }).catch((err) => {
-    console.log(err)
-  })
+                  for (let providerData of data) {
+                    var today = new Date();
+                    var date = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
+                    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                    var dateTime = date+' '+time;
+                    
+                    var today1 = new Date(providerData.sms_msg_Date);
+                    var date1 = today1.getFullYear()+'/'+(today1.getMonth()+1)+'/'+today1.getDate();
+                    var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
+                    var dateTime1 = date1+' '+time1;
+                    
+                    var msg_time = timeDiffCalc(new Date(dateTime), new Date(dateTime1));
+        
+                    var object_as_string = JSON.stringify(providerData);  
+                    const t =    JSON.parse(object_as_string);
+                     t.msgTime = msg_time;
+                    await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then( async professional => { 
+                      if(professional){
+                        //console.log('professional:',professional.sps_fullname);
+                        t.senderName = await professional.sps_fullname;
+                        //console.log('providerData xxxx New:',t);
+                      }else{
+                        t.senderName = await 'You';
+                      }
+                      
+                    });
+                  const s = await t;
+                    //console.log('providerData New:',s);
+                     newData.push(s);
+        
+                  }
+                     // console.log('Get newData',newData);
+                      err_msg = req.flash('err_msg');
+                      success_msg = req.flash('success_msg');
+                      res.send({
+                        err_msg, success_msg, layout: false,
+                        session: req.session,
+                        chatData:newData
+                      });
+                }
+            }).catch((err) => {
+              console.log(err)
+            })
 
 
+});
+
+
+
+app.get('/get-message-property', async (req, res) => {
+  var newData=[];
+            MessageSchema.find({
+                $or: [
+                    { $and: [ {sms_sender_id:req.query.sms_sender_id}, {sms_receiver_id:req.query.sms_receiver_id}, {sms_property_id:req.query.sms_property_id} ] },
+                    { $and: [ {sms_sender_id:req.query.sms_receiver_id}, {sms_receiver_id:req.query.sms_sender_id}, {sms_property_id:req.query.sms_property_id} ] }
+                ]
+            }).then(async (data) => {
+                if (data) {
+                  for (let providerData of data) {
+                    var today = new Date();
+                    var date = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
+                    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                    var dateTime = date+' '+time;
+                    
+                    var today1 = new Date(providerData.sms_msg_Date);
+                    var date1 = today1.getFullYear()+'/'+(today1.getMonth()+1)+'/'+today1.getDate();
+                    var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
+                    var dateTime1 = date1+' '+time1;
+                    
+                    var msg_time = timeDiffCalc(new Date(dateTime), new Date(dateTime1));
+        
+                    var object_as_string = JSON.stringify(providerData);  
+                    const t =    JSON.parse(object_as_string);
+                     t.msgTime = msg_time;
+                    await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then( async professional => { 
+                      if(professional){
+                        //console.log('professional:',professional.sps_fullname);
+                        t.senderName = await professional.sps_fullname;
+                        //console.log('providerData xxxx New:',t);
+                      }else{
+                        t.senderName = await 'You';
+                      }
+                      
+                    });
+                  const s = await t;
+                    //console.log('providerData New:',s);
+                     newData.push(s);
+        
+                  }
+                     // console.log('Get newData',newData);
+                      err_msg = req.flash('err_msg');
+                      success_msg = req.flash('success_msg');
+                      res.send({
+                        err_msg, success_msg, layout: false,
+                        session: req.session,
+                        chatData:newData
+                      });
+                }
+            }).catch((err) => {
+              console.log(err)
+            })
 });
 
 
@@ -1004,13 +1173,15 @@ function timeDiffCalc(dateFuture, dateNow) {
 
   let difference = '';
   if (days > 0) {
-    difference = (days === 1) ? `${days} day ` : `${days} days, `;
-  } else if (hours > 0) {
-    difference = (hours === 0 || hours === 1) ? `${hours} hour ` : `${hours} hours `;
-  } else if (minutes > 0) {
-    difference = (minutes === 0 || hours === 1) ? `${minutes} minutes` : `${minutes} minutes`;
-  } else {
-    difference = 'just now';
+
+    difference = (days === 1) ? `${days} day ` : `${days} days ago `;
+  }else if(hours > 0){
+    difference = (hours === 0 || hours === 1) ? `${hours} hour ` : `${hours} hours ago`;
+  }else if(minutes > 0){
+    difference = (minutes === 0 || hours === 1) ? `${minutes} minutes` : `${minutes} minutes ago`; 
+  }else{
+    difference = 'just now'; 
+
   }
 
   return difference;

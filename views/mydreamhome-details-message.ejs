@@ -58,38 +58,32 @@
                     <h2>Messages</h2>
                   </div>
                   <div class="messages-section">
-                    <div class="messages-box clearfix">
-                      <div class="message-user-img">
-                        <img src="images/recent-user-1.png" alt="" title="">
+                    <div id="message_board" >
+                      <% chatData.forEach(function(row){ %>
+                        <div class="messages-box clearfix">
+                          <div class="message-user-img">
+                            <img src="images/recent-user-1.png" alt="" title="">
+                          </div>
+                          <div class="message-content">
+                            <h3><%= row.senderName%></h3>
+                            <p><%= row.sms_message%></p>
+                            <p class="hours-ago text-right"><%= row.msgTime%></p>
+                          </div>
+                        </div>
+                        <% });  %>
+                   </div>
+                    <div class="text-message-box clearfix">
+                      <form method="POST" id="chat_form">
+                      <div class="text-box">
+                        <input type="hidden" name="professional_id" data-val="<%=professional_id%>" value="<%=professional_id%>" id="professional_id">
+                        <input type="hidden" name="property_id" value="<%=property._id%>" id="property_id">
+                        <input type="hidden" name="customer_id" value="<%=property.ps_user_id%>" id="customer_id">
+                        <textarea name="chat_input" class="form-control" style="min-width: 80%; margin-bottom: 10px; " rows="3" id="comment"></textarea>
+                        <button id="chat_submit" type="button" class="btn btn-next"
+                          style="width: 164px; float:right; border-radius: 5px;">
+                          Send</button>
                       </div>
-                      <div class="message-content">
-                        <h3>Rachel Green</h3>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-                          been the industry's standard dummy text ever since the 1500s,</p>
-                        <p class="hours-ago text-right">13 hours ago</p>
-                      </div>
-                    </div>
-                    <div class="messages-box clearfix">
-                      <div class="message-user-img">
-                        <img src="images/recent-user-1.png" alt="" title="">
-                      </div>
-                      <div class="message-content">
-                        <h3>Rachel Green</h3>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-                          been the industry's standard dummy text ever since the 1500s,</p>
-                        <p class="hours-ago text-right">13 hours ago</p>
-                      </div>
-                    </div>
-                    <div class="messages-box clearfix">
-                      <div class="message-user-img">
-                        <img src="images/recent-user-1.png" alt="" title="">
-                      </div>
-                      <div class="message-content">
-                        <h3>Rachel Green</h3>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-                          been the industry's standard dummy text ever since the 1500s,</p>
-                        <p class="hours-ago text-right">13 hours ago</p>
-                      </div>
+                    </form>  
                     </div>
                   </div>
                 </div>
@@ -112,6 +106,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
     $(document).ready(function () {
       $(".sidenav ul li").click(function () {
@@ -125,6 +120,69 @@
         $(this).addClass("active");
       });
     });
+
+function getAllMessage(sms_receiver_id,sms_sender_id,sms_property_id){
+    $.ajax({
+              type: "GET",
+              data: {
+                sms_receiver_id:sms_receiver_id,
+                sms_sender_id:sms_sender_id,
+                sms_property_id:sms_property_id
+              },
+              url: "/get-message-property",
+              cache: false,
+              success: function (datas) {
+                if(datas.chatData.length > 0){
+                  var htmlData ='' ;
+                    $.each( datas.chatData, function( i, data ){
+                          htmlData += '<div class="messages-box clearfix"><div class="message-user-img"> <img src="images/recent-user-1.png" alt="" title=""></div><div class="message-content"><h3>'+data.senderName+'</h3><p>'+data.sms_message+'</p><p class="hours-ago text-right">'+data.msgTime+' ago</p></div></div>';
+                    });
+                    $('#message_board').html(htmlData);
+              }
+            }
+    }); 
+}
+
+setInterval(function(){ 
+  var professional_id = $("#chat_form #professional_id").val();
+  var customer_id = $("#customer_id").val();
+  var property_id = $("#property_id").val();
+  getAllMessage(professional_id,customer_id,property_id);
+}, 1000);
+    
+$('#chat_submit').click(function(e){
+  var comment = $("#comment").val();
+  var professional_id = $("#chat_form #professional_id").val();
+  var customer_id = $("#customer_id").val();
+  var property_id = $("#property_id").val();
+  console.log('professional_id:',professional_id);
+  console.log('customer_id:',customer_id);
+  console.log('property_id:',property_id);
+  console.log('comment:',comment);
+      if(comment){
+          $.ajax({
+            type: "POST",
+            data: {
+              message:comment,
+              sms_receiver_id:professional_id,
+              sms_property_id:property_id,
+              sms_sender_id:customer_id,
+              sms_sender_type:'customer',
+              sms_receiver_type:'service_provider',
+              sms_msg_Date: new Date(),
+              sms_read_status:'unread'
+            },
+            url: "/api/message",
+            cache: false,
+            success: function (data) {
+              $("#comment").val('');
+              getAllMessage(professional_id,customer_id,property_id);
+            }
+       });  
+    }  
+});
+
+
   </script>
   <!-- <script language="javascript" type="text/javascript">
     function getParameterByName(name, url) {
