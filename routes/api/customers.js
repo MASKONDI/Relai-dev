@@ -285,7 +285,7 @@ router.post("/add-property", async (req, res) => {
       ps_property_city_id: req.body.ps_property_city_id,
       ps_property_zipcode: req.body.ps_property_zipcode,
       ps_property_user_as: req.body.ps_property_user_as,
-      ps_other_party_user_as: req.body.ps_other_party_user_as,
+      ps_other_party_fullname: req.body.ps_other_party_fullname,
       ps_other_party_emailid: req.body.ps_other_party_emailid,
       ps_other_party_invited: req.body.ps_other_party_invited,
       ps_property_area: req.body.ps_property_area,
@@ -350,6 +350,9 @@ router.post("/add-property", async (req, res) => {
             });
 
           });
+          //Sending Invitation link to serviceProvider
+          console.log("Invitation send to service provider", req.body);
+          await invite_function(req);
           res.redirect("/mydreamhome")
         }
 
@@ -539,7 +542,7 @@ POST : Hire now api is used for hiring professional(service_provider) for partic
 router.post("/hire-now", (req, res) => {
   console.log("req is", req.body);
   const hirenow = new PropertyProfessionalSchema({
-    pps_user_id:req.body.user_id,
+    pps_user_id: req.body.user_id,
     pps_property_id: req.body.propertyId,
     pps_service_provider_id: req.body.serviceProviderId,
     pps_pofessional_budget: req.body.pps_pofessional_budget,
@@ -594,14 +597,14 @@ POST : Raise a complaints api is used for raising a complaints to particular ser
 
 router.post('/raise-a-complaint', (req, res) => {
   console.log("request coming from server is :", req.body);
-  
+
   const newComplaint = new ComplaintsSchema({
     //should be mongodb generated id
     //coms_id :
     coms_complaint_for: req.body.sevice_provider_id,
     coms_complaint_code: "C" + uuidv4(),//need to generate in  like C123 auto increment feature
     coms_property_id: req.body.property_id,
-    coms_user_id:req.body.cust_user_id,
+    coms_user_id: req.body.cust_user_id,
     //coms_complaint_by: 'customer' //need to check if complaints filed via customer portal or service_provider portal
     coms_complaint_subject: req.body.coms_complaint_subject,
     coms_complaint_note: req.body.coms_complaint_note,
@@ -611,7 +614,7 @@ router.post('/raise-a-complaint', (req, res) => {
     console.log("Getting respose from db is :", complaints);
     req.flash('success_msg', 'complaints raise succesfully');
     //res.redirect("/")
-    res.json({complaints:complaints,'message':'complaint sent successfully'})
+    res.json({ complaints: complaints, 'message': 'complaint sent successfully' })
   }).catch(err => {
     console.log(err)
     req.flash('err_msg', 'Something went wrong please try again later.');
@@ -648,5 +651,45 @@ router.post('/message', (req, res) => {
   });
 });
 
+/* -------------------------------------------------------------------------------------------------
+Function : invite function is used for sending invite to service_provider via gmail. this function will call while adding new Property in customer Portal
+------------------------------------------------------------------------------------------------- */
+
+function invite_function(req) {
+  console.log("Request getting from server :", req.body);
+  var smtpTransport = nodemailer.createTransport({
+    // port: 25,
+    // host: 'localhost',
+    tls: {
+      rejectUnauthorized: false
+    },
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    service: 'Gmail',
+    auth: {
+      user: 'golearning4@gmail.com',
+      pass: 'Maskondi#1997',
+    }
+  });
+  const mailOptions = {
+    to: req.body.ps_other_party_emailid,
+    from: 'golearning4@gmail.com',
+    subject: 'Invitaion letter from Relai',
+
+    text: 'Dear \n' + req.body.ps_other_party_fullname + '\n\n' + 'you are invited in Relai plateform.\n\n' +
+
+      'We suggest you to please visit our Relai plateform and create your account as a service_provider \n' + 'Here is the registration link: http://' + req.headers.host + '/intro' + '\n\n' +
+      'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+  };
+  smtpTransport.sendMail(mailOptions, function (err) {
+    if (err) { console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team'); res.redirect('/add-property') } else {
+      //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
+      // res.redirect('/add-property')
+    }
+  });
+
+
+}
 
 module.exports = router;
