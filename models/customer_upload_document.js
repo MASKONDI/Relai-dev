@@ -11,6 +11,10 @@ const CustomerUploadDocsSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "customers"
   },
+  cuds_property_id:{
+    type: Schema.Types.ObjectId,
+    ref: "properties"
+  },
   cuds_document_name: {
     type: String,
   },

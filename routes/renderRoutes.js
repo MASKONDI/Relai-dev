@@ -20,7 +20,10 @@ const PropertiesSchema = require("../models/properties");
 const PropertyProfessionalSchema = require("../models/property_professional_Schema");
 const MessageSchema = require("../models/message");
 
+
 const CustomerSchema = require("../models/customers");
+
+
 
 var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
@@ -133,6 +136,10 @@ app.get('/dashboard', isCustomer, (req, res) => {
     session: req.session
   });
 });
+
+
+
+
 app.get('/track-your-progress', isCustomer, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -162,6 +169,29 @@ app.get('/professionals', isCustomer, (req, res) => {
       });
     }
   })
+});
+
+app.get('/myprofessionals', isCustomer, async (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id });
+  console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
+  let serviceProvArray = [];
+  for (var k of AllhiredProfeshnoal) {
+    await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
+      for (let i of allProfeshnoals) {
+        let temps = await i
+        serviceProvArray.push(temps)
+      }
+    });
+  }
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('myprofessionals', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    data: serviceProvArray
+  });
 });
 
 // app.get('/professionals', isCustomer, (req, res) => {
@@ -256,11 +286,13 @@ app.get('/professionals-searchbar', (req, res) => {
 
 
 app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
-
+  console.log('property id is :',req.session.property_id);
+  //req.session.property_id=req.query.id
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  const allDocument = await CustomerUploadDocsSchema.find({ cuds_customer_id: req.session.user_id });
-
+  let property = await PropertiesSchema.findOne({_id:req.session.property_id});
+  const allDocument = await CustomerUploadDocsSchema.find({$and:[{ cuds_customer_id: req.session.user_id,cuds_property_id:req.session.property_id }]});
+  //const propertyDataObj = await PropertiesSchema.find();
 
   ServiceProviderSchema.find({ sps_status: 'active', }).then(service_provider => {
     if (!service_provider) {
@@ -272,7 +304,8 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
         err_msg, success_msg, layout: false,
         session: req.session,
         data: service_provider,
-        allDocument: allDocument,
+        allDocument: allDocument,//need to show property wise document still showing all uploaded
+        property:property,
         moment: moment
       });
     }
@@ -323,12 +356,15 @@ app.get('/add-property', isCustomer, (req, res) => {
   });
 });
 
-app.get('/mydreamhome-details-message', isCustomer, (req, res) => {
+app.get('/mydreamhome-details-message', isCustomer, async(req, res) => {
+  console.log(' property id  :', req.session.property_id);
+  let property = await PropertiesSchema.findOne({_id:req.session.property_id});
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('mydreamhome-details-message', {
     err_msg, success_msg, layout: false,
-    session: req.session
+    session: req.session,
+    property:property
   });
 })
 
@@ -529,18 +565,20 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
   PropertiesSchema.find({ ps_user_id: req.session.user_id }).then(async (data) => {
     if (data) {
       let arr = [];
-          for (let img of data) {
-            await PropertiesPictureSchema.find({pps_property_id:img._id}).then(async (result)=>{
 
-               let temp = await result
-              //for(let image of result){
-               //  let temp = await image
-                 arr.push(temp)
-              // }
-            })
-            
-          }
-     // console.log('++++++++',arr)
+      for (let img of data) {
+        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
+
+          let temp = await result
+          //for(let image of result){
+          //  let temp = await image
+          arr.push(temp)
+          // }
+        })
+
+      }
+      // console.log('++++++++',arr)
+
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('mydreamhome', {
@@ -558,19 +596,22 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
 })
 
 app.get('/mydreamhome-details', isCustomer, async(req, res) => {
+  console.log('session property id',req.query.id);
+  req.session.property_id=req.query.id
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({pps_user_id:req.session.user_id});
+  let allDocumentUploadByCustmer =await CustomerUploadDocsSchema.find({cuds_customer_id:req.session.user_id});
   //console.log('AllhiredProfeshnoal',AllhiredProfeshnoal);
- let serviceProvArray=[];
-  for(var k of AllhiredProfeshnoal){
-    await ServiceProviderSchema.find({_id:k.pps_service_provider_id}).then(async(allProfeshnoals)=>{
-        for(let i of allProfeshnoals){
-          let temps = await i
-          serviceProvArray.push(temps)
-        }
+  let serviceProvArray = [];
+  for (var k of AllhiredProfeshnoal) {
+    await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
+      for (let i of allProfeshnoals) {
+        let temps = await i
+        serviceProvArray.push(temps)
+      }
     });
   }
   //console.log('hiredProfeshnoalList=',serviceProvArray)
-  
+
   PropertiesSchema.find({ _id: req.query.id }).then(async (data) => {
     if (data) {
 
@@ -594,7 +635,11 @@ app.get('/mydreamhome-details', isCustomer, async(req, res) => {
         session: req.session,
         propertyDetailData: data,
         propertyImage:arr,
-        hiredProfeshnoalList:serviceProvArray
+
+        hiredProfeshnoalList:serviceProvArray,
+        allDocumentUploadByCustmer:allDocumentUploadByCustmer
+
+
       });
     }
   }).catch((err) => {
