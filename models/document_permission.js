@@ -61,6 +61,11 @@ dps_deleted_at: { type: Date },
 dps_deleted: {
 type: String,
 enum: ['0', '1']
-}
+},
+dps_is_active_user_flag: {
+    type: String,
+    enum: ['buyer', 'seller','renovator'],
+    default: 'buyer'
+  },
 })
 module.exports = docspermission = mongoose.model('docspermission', DocumentPermissionSchema);

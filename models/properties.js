@@ -95,5 +95,10 @@ const PropertiesSchema = new Schema({
     enum: ['0', '1'],
     default: '0'
   },
+  ps_is_active_user_flag: {
+    type: String,
+    enum: ['buyer', 'seller','renovator'],
+    default: 'buyer'
+  },
 });
 module.exports = properties = mongoose.model('properties', PropertiesSchema);

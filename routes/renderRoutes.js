@@ -765,7 +765,7 @@ app.get('/mydreamhome-details', isCustomer, async(req, res) => {
   console.log('session property id',req.query.id);
   req.session.property_id=req.query.id
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({pps_user_id:req.session.user_id});
-  let allDocumentUploadByCustmer =await CustomerUploadDocsSchema.find({cuds_customer_id:req.session.user_id});
+  let allDocumentUploadByCustmer =await CustomerUploadDocsSchema.find({$and:[{cuds_customer_id:req.session.user_id,cuds_property_id:req.query.id}]});
   //console.log('AllhiredProfeshnoal',AllhiredProfeshnoal);
   let serviceProvArray = [];
   for (var k of AllhiredProfeshnoal) {
