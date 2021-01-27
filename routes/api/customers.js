@@ -704,8 +704,8 @@ router.get('/buyer', function (req, res) {
   var test = req.session.is_user_logged_in;
   var active_user = req.session.active_user_login;
   if (test == true && active_user != 'buyer') {
-    console.log("current user login", req.session.active_user_login);
     req.session.active_user_login = "buyer"
+    console.log("current user login", req.session.active_user_login);
   }
 });
 
@@ -715,8 +715,8 @@ router.get('/seller', function (req, res) {
   var test = req.session.is_user_logged_in;
   var active_user = req.session.active_user_login;
   if (test == true && active_user != 'seller') {
-    console.log("current user login");
     req.session.active_user_login = "seller"
+    console.log("current user login", req.session.active_user_login);
   }
 });
 
@@ -726,8 +726,8 @@ router.get('/renovator', function (req, res) {
   var test = req.session.is_user_logged_in;
   var active_user = req.session.active_user_login;
   if (test == true && active_user != 'renovator') {
-    console.log("current user login", req.session.active_user_login);
     req.session.active_user_login = "renovator"
+    console.log("current user login", req.session.active_user_login);
   }
 });
 
