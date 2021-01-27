@@ -54,5 +54,10 @@ const ComplaintsSchema = new Schema({
   coms_deleted_at: {
     type: Date,
   },
+  coms_is_active_user_flag: {
+    type: String,
+    enum: ['buyer', 'seller','renovator'],
+    default: 'buyer'
+  },
 });
 module.exports = complaints = mongoose.model('complaints', ComplaintsSchema);

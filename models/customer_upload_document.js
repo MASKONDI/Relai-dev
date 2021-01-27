@@ -44,7 +44,12 @@ const CustomerUploadDocsSchema = new Schema({
   },
   cuds_deleted_at: {
     type: Date
-  }
+  },
+  cuds_is_active_user_flag: {
+    type: String,
+    enum: ['buyer', 'seller','renovator'],
+    default: 'buyer'
+  },
 
 });
 

@@ -46,6 +46,11 @@ const CustomerKycSchema = new Schema({
   cks_deleted_at: {
     type: Date,
   },
+  cks_is_active_user_flag: {
+    type: String,
+    enum: ['buyer', 'seller','renovator'],
+    default: 'buyer'
+  },
 
 });
 
