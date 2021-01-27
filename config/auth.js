@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 const session = require('express-session');
-var { Customers } = require('../models/customers');
+var { Customers, update } = require('../models/customers');
 
 
 var isAdmin = function (req, res, next) {
@@ -18,7 +18,7 @@ var isAdmin = function (req, res, next) {
 
 var isCustomer = function (req, res, next) {
   var check_user = req.session.is_user_logged_in;
-  //var check_user_id = req.session.user_id;
+  // var check_active_customer_login = req.session.active_customer_login;
   if (check_user != undefined && check_user != "" && check_user == true) {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     next();
@@ -27,6 +27,7 @@ var isCustomer = function (req, res, next) {
     res.redirect('/signin');
   }
 }
+
 
 var isServiceProvider = function (req, res, next) {
   var check_user = req.session.is_user_logged_in;

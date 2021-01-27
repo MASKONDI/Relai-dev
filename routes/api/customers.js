@@ -187,6 +187,7 @@ router.post("/cust_signin", (req, res) => {
         req.session.name = customers.cus_fullname;
         req.session.email = customers.cus_email_id;
         req.session.is_user_logged_in = true;
+        req.session.active_user_login = "buyer"
 
         // Customer Matched
         const payload = { id: customers.id, cus_fullname: customers.cus_fullname, cus_email_id: customers.cus_email_id }; // Create JWT Payload
@@ -284,7 +285,8 @@ router.post("/add-property", async (req, res) => {
       ps_property_state_id: req.body.ps_property_state_id,
       ps_property_city_id: req.body.ps_property_city_id,
       ps_property_zipcode: req.body.ps_property_zipcode,
-      ps_property_user_as: req.body.ps_property_user_as,
+      //ps_property_user_as: req.body.ps_property_user_as,
+      ps_property_user_as: req.session.active_user_login, //updaing active customer portal buyer/seller/renovator
       ps_other_party_fullname: req.body.ps_other_party_fullname,
       ps_other_party_emailid: req.body.ps_other_party_emailid,
       ps_other_party_invited: req.body.ps_other_party_invited,
@@ -598,7 +600,7 @@ POST : Raise a complaints api is used for raising a complaints to particular ser
 router.post('/raise-a-complaint', (req, res) => {
 
   console.log("request coming from server is :", req.body.image);
- 
+
   return;
 
   const newComplaint = new ComplaintsSchema({
@@ -694,5 +696,42 @@ function invite_function(req) {
 
 
 }
+
+/***/
+
+router.get('/buyer', function (req, res) {
+  console.log("buyer");
+  var test = req.session.is_user_logged_in;
+  var active_user = req.session.active_user_login;
+  if (test == true && active_user != 'buyer') {
+    console.log("current user login", req.session.active_user_login);
+    req.session.active_user_login = "buyer"
+  }
+});
+
+
+router.get('/seller', function (req, res) {
+  console.log("seller");
+  var test = req.session.is_user_logged_in;
+  var active_user = req.session.active_user_login;
+  if (test == true && active_user != 'seller') {
+    console.log("current user login");
+    req.session.active_user_login = "seller"
+  }
+});
+
+
+router.get('/renovator', function (req, res) {
+  console.log("renovator");
+  var test = req.session.is_user_logged_in;
+  var active_user = req.session.active_user_login;
+  if (test == true && active_user != 'renovator') {
+    console.log("current user login", req.session.active_user_login);
+    req.session.active_user_login = "renovator"
+  }
+});
+
+
+
 
 module.exports = router;
