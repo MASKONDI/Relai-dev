@@ -50,7 +50,7 @@
                       <div class="heading-top float-left">
                         <h2 class="">My Dream Home</h2>
                         <%=session.active_user_login%>
-                        
+
                       </div>
                       <div class="float-right">
                         <a href="/add-property" class="btn btn-add-property">Add Property</a>
@@ -60,34 +60,42 @@
                 </div>
               </div>
               <div class="row">
-                
-                <div class="col-sm-12 col-lg-12">
-                  <% var i=0;
-                  propertyData.forEach(function(row){ %>
-                  <div class="home-section">
-                    
-                    <div class="my-dream-home-box">
-                      <div class="dream-home-img">
 
-                        <%if(propertyImage.length>0){%>
-                          
-                        <img src="propimg/<%=propertyImage[i][0].pps_property_image_name%>">
-                        <%}else{%>
-                          <img src="images/nacary.png">
-                          <%}%>
-                        <a href="/mydreamhome-details?id=<%=row._id%>" class="btn btn-new mydreamHomeDetail" value="<%=row._id%>"><%=row.ps_property_type%></a>
-                      </div>
-                      <div class="dream-home-description">
-                        <h3><a href="/mydreamhome-details?id=<%=row._id%>"><%= row.ps_property_name%></a></h3>
-                        <div class="location-part"><a href="#"><img src="images/location.png"> <%=row.ps_property_address%>,<%=row.ps_property_country_id%></a></div>
-                        <div class="location-part"><a href="/mydreamhome-details?id=<%=row._id%>"><img src="images/sq.ft.png">
-                            <%=row.ps_property_area%> sq.ft.</a></div>
+                <div class="col-sm-12 col-lg-12">
+                  <% var i=0; propertyData.forEach(function(row){ %>
+                    <div class="home-section">
+
+                      <div class="my-dream-home-box">
+                        <div class="dream-home-img">
+
+                          <%if(propertyImage.length>0){%>
+
+                            <img src="propimg/<%=propertyImage[i][0].pps_property_image_name%>">
+                            <%}else{%>
+                              <img src="images/nacary.png">
+                              <%}%>
+                                <a href="/mydreamhome-details?id=<%=row._id%>" class="btn btn-new mydreamHomeDetail"
+                                  value="<%=row._id%>">
+                                  <%=row.ps_property_type%>
+                                </a>
+                        </div>
+                        <div class="dream-home-description">
+                          <h3><a href="/mydreamhome-details?id=<%=row._id%>">
+                              <%= row.ps_property_name%>
+                            </a></h3>
+                          <div class="location-part"><a href="#"><img src="images/location.png">
+                              <%=row.ps_property_address%>,<%=row.ps_property_country_id%>
+                            </a></div>
+                          <div class="location-part"><a href="/mydreamhome-details?id=<%=row._id%>"><img
+                                src="images/sq.ft.png">
+                              <%=row.ps_property_area%> sq.ft.
+                            </a></div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <% i++;});%>
+                    <% i++;});%>
                 </div>
-                
+
               </div>
             </div>
           </div>
@@ -123,7 +131,7 @@
     });
   </script>
   <script>
-    
+
     // $(document).ready(function () {
     //   $(".mydreamHomeDetail").click(function (e) {
     //     var id = $(this).attr('value')
@@ -139,41 +147,41 @@
     //   location.reload(true);
     //   });
     // });
-    </script>
-    <script>
-       $(document).ready(function () {
-       $(".buyertab").click(function (e) {
-         $.ajax({
-        type: "GET",
-        url: "/api/buyer",
-        cache: false,
-        success: function (html) {
-        }
+  </script>
+  <script>
+    $(document).ready(function () {
+      $(".buyertab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/buyer",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
       });
-      //location.reload(true);
-       });
-       $(".sellertab").click(function (e) {
-         $.ajax({
-        type: "GET",
-        url: "/api/seller",
-        cache: false,
-        success: function (html) {
-        }
+      $(".sellertab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/seller",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
       });
-      //location.reload(true);
-       });
-       $(".renovatortab").click(function (e) {
-         $.ajax({
-        type: "GET",
-        url: "/api/renovator",
-        cache: false,
-        success: function (html) {
-        }
+      $(".renovatortab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/renovator",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
       });
-      //location.reload(true);
-       });
-     });
-    </script>
+    });
+  </script>
   </body>
 
   </html>

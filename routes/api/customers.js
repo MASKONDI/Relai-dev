@@ -188,7 +188,7 @@ router.post("/cust_signin", (req, res) => {
         req.session.email = customers.cus_email_id;
         req.session.is_user_logged_in = true;
         req.session.active_user_login = "buyer"
-
+        //req.session.isChanged = true
         // Customer Matched
         const payload = { id: customers.id, cus_fullname: customers.cus_fullname, cus_email_id: customers.cus_email_id }; // Create JWT Payload
 
@@ -296,6 +296,7 @@ router.post("/add-property", async (req, res) => {
       ps_additional_note: req.body.ps_additional_note,
       ps_property_type: req.body.ps_property_type,
       ps_chain_property_id: req.body.ps_chain_property_id,
+      ps_is_active_user_flag: req.session.active_user_login
     });
     newProperty
       .save()
@@ -306,6 +307,7 @@ router.post("/add-property", async (req, res) => {
             var obj = {
               pps_property_id: property._id,
               pps_property_image_name: element.filename,
+              pps_is_active_user_flag: req.session.active_user_login,
               pps_property_image: {
                 data: fs.readFileSync(path.join(__dirname + '../../../public/propimg/' + element.filename)),
                 contentType: 'image/png'
@@ -330,6 +332,7 @@ router.post("/add-property", async (req, res) => {
             var obj = {
               ppps_property_id: property._id,
               ppps_plan_image_name: e.filename,
+              ppps_is_active_user_flag: req.session.active_user_login,
               ppps_plan_image: {
                 data: fs.readFileSync(path.join(__dirname + '../../../public/propplanimg/' + e.filename)),
                 contentType: 'image/png'
@@ -697,7 +700,7 @@ function invite_function(req) {
 
 }
 
-/***/
+/** Buyer/Seller/Renovator */
 
 router.get('/buyer', function (req, res) {
   console.log("buyer");
@@ -707,6 +710,7 @@ router.get('/buyer', function (req, res) {
     req.session.active_user_login = "buyer"
     console.log("current user login", req.session.active_user_login);
   }
+  console.log("req session is updated", req.session);
 });
 
 
@@ -718,6 +722,7 @@ router.get('/seller', function (req, res) {
     req.session.active_user_login = "seller"
     console.log("current user login", req.session.active_user_login);
   }
+  console.log("req session is updated", req.session);
 });
 
 
@@ -729,6 +734,7 @@ router.get('/renovator', function (req, res) {
     req.session.active_user_login = "renovator"
     console.log("current user login", req.session.active_user_login);
   }
+  console.log("req session is updated", req.session);
 });
 
 

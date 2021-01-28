@@ -25,7 +25,7 @@ const app = express();
 const db = require("./config/keys").mongoURI;
 // Connect to MongoDB
 mongoose
-  .connect(db,{
+  .connect(db, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -42,9 +42,14 @@ const myPassportService = require("./config/passport")(passport);
 
 app.use(session({
   secret: 'djhxcvxfgshajfgjhgsjhfgsakjeauytsdfy',
-  resave: false,
-  saveUninitialized: true,
-  //cookie: { maxAge: 60000 }
+  resave: true,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 86400000,
+    //path: "/",
+    //domain: 'example.com'
+    secure: false
+  },
 }));
 
 app.use(flash());
@@ -75,7 +80,7 @@ app.get('*', function (req, res, next) {
 });
 
 
-app.use("/api", customerRoutes);
+app.use("/api", customerRoutes); //create three seprate api like buyerCustomerRouts,SellerCustomerRouts,renovator customerRoutes
 app.use("/api", serviceProviderRoutes);
 app.use("/", renderRouters);
 app.use("/", uploadsDocs);
