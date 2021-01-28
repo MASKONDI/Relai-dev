@@ -86,14 +86,20 @@
                         <img src="images/user-4.png" alt="" title="">
                       </div>
                       <div class="user-name-fix float-left">
-                        <h2><%=serviceProvider.sps_fullname%></h2>
-                        <p><%=serviceProvider.sps_role_name%></p>
+                        <h2>
+                          <%=serviceProvider.sps_fullname%>
+                        </h2>
+                        <p>
+                          <%=serviceProvider.sps_role_name%>
+                        </p>
                       </div>
                     </div>
 
                     <div class="float-left icon-fix">
-                      <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span><%=serviceProvider.sps_experience%>
-                        years</span>
+                      <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span>
+                        <%=serviceProvider.sps_experience%>
+                          years
+                      </span>
                     </div>
                     <div class="float-left icon-fix2">
                       <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>4.0
@@ -135,10 +141,10 @@
                                     style="max-width: 100%; margin-bottom:10px;" name="propertyId">
                                     <option>---select property--</option>
                                     <% property.forEach(function(row){ %>
-                                    <option value="<%=row._id%>">
-                                      <%=row.ps_property_name%>
-                                    </option>
-                                    <% }); %>
+                                      <option value="<%=row._id%>">
+                                        <%=row.ps_property_name%>
+                                      </option>
+                                      <% }); %>
                                   </select>
                                 </div>
 
@@ -146,7 +152,7 @@
                               <div class="professional-input-box">
                                 <div class="professional-text-fix">
                                   <label>Address</label>
-                                  
+
                                   <input type="text" class="form-control form-control-size-fix " id="address"
                                     placeholder="1143 Buena Visa Avenue" name="address" value="">
                                 </div>
@@ -197,7 +203,9 @@
                             <label class="">STEP 2</label>
                             <h6 class="">Tell us your approximate budget</h6>
                             <br />
-                              <input class="range_slider" id="ex8" data-slider-id='ex1Slider'  type="text" data-slider-min="100" data-slider-max="10000" data-slider-step="10" data-slider-value="4000"/>
+                            <input class="range_slider" id="ex8" data-slider-id='ex1Slider' type="text"
+                              data-slider-min="100" data-slider-max="10000" data-slider-step="10"
+                              data-slider-value="4000" />
                             <br />
 
                           </div>
@@ -323,8 +331,12 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.css" integrity="sha512-SZgE3m1he0aEF3tIxxnz/3mXu/u/wlMNxQSnE0Cni9j/O8Gs+TjM9tm1NX34nRQ7GiLwUEzwuE3Wv2FLz2667w==" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.js" integrity="sha512-tCkLWlSXiiMsUaDl5+8bqwpGXXh0zZsgzX6pB9IQCZH+8iwXRYfcCpdxl/owoM6U4ap7QZDW4kw7djQUiQ4G2A==" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.css"
+    integrity="sha512-SZgE3m1he0aEF3tIxxnz/3mXu/u/wlMNxQSnE0Cni9j/O8Gs+TjM9tm1NX34nRQ7GiLwUEzwuE3Wv2FLz2667w=="
+    crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.js"
+    integrity="sha512-tCkLWlSXiiMsUaDl5+8bqwpGXXh0zZsgzX6pB9IQCZH+8iwXRYfcCpdxl/owoM6U4ap7QZDW4kw7djQUiQ4G2A=="
+    crossorigin="anonymous"></script>
   <script>
     $(document).ready(function () {
       $(".sidenav ul li").click(function () {
@@ -338,15 +350,15 @@
         $(this).addClass("active");
       });
     });
-    
-// With JQuery
-$("#ex8").slider({
-  tooltip: 'always',
-  tooltip_position:'bottom',
-  formatter: function(value) {
-		return 'USD: ' + value;
-	},
-});
+
+    // With JQuery
+    $("#ex8").slider({
+      tooltip: 'always',
+      tooltip_position: 'bottom',
+      formatter: function (value) {
+        return 'USD: ' + value;
+      },
+    });
 
 // // Without JQuery
 // var slider = new Slider("#ex8", {
@@ -357,30 +369,64 @@ $("#ex8").slider({
   </script>
   <script>
     $(document).ready(function () {
-      $('.propertySelectBox').change(function(e){
-      // e.preventDefault();
-      var propertyId = $('.propertySelectBox :selected').val();
-      if(propertyId){
-        $.ajax({
-        type: "POST",
-        data: 'propertyId=' + propertyId,
-        url: "/api/filterPropertyAdress",
-        cache: false,
-        success: function (data) {
-          console.log(data)
-          $('#address').val(data.data.ps_property_address)
-          $('#city').val(data.data.ps_property_address)
-          $('#state').val(data.data.ps_property_state_id)
-          $('#country').val(data.data.ps_property_country_id)
-          $('#zipcode').val(data.data.ps_property_zipcode)
-          
-          //$("#results").append(html);
+      $('.propertySelectBox').change(function (e) {
+        // e.preventDefault();
+        var propertyId = $('.propertySelectBox :selected').val();
+        if (propertyId) {
+          $.ajax({
+            type: "POST",
+            data: 'propertyId=' + propertyId,
+            url: "/api/filterPropertyAdress",
+            cache: false,
+            success: function (data) {
+              console.log(data)
+              $('#address').val(data.data.ps_property_address)
+              $('#city').val(data.data.ps_property_address)
+              $('#state').val(data.data.ps_property_state_id)
+              $('#country').val(data.data.ps_property_country_id)
+              $('#zipcode').val(data.data.ps_property_zipcode)
+
+              //$("#results").append(html);
+            }
+          });
+        } else {
+          alert('something wrong')
         }
       });
-      }else{
-        alert('something wrong')
-      }        
-});
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      $(".buyertab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/buyer",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
+      $(".sellertab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/seller",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
+      $(".renovatortab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/renovator",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
     });
   </script>
   </body>

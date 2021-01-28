@@ -77,7 +77,8 @@
             <div class="row">
               <div class="breadcumb">
                 <ul>
-                  <li><a href="/mydreamhome-details?id=<%=session.property_id%>"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back
+                  <li><a href="/mydreamhome-details?id=<%=session.property_id%>"><i class="fa fa-long-arrow-left"
+                        aria-hidden="true"></i> Back
                       to <%=property.ps_property_name%></a></li>
                 </ul>
               </div>
@@ -92,28 +93,31 @@
                       </div>
                       <form action="/upload-new-document" method="post" id="newDocumentform"
                         enctype="multipart/form-data">
-                                   
+
                         <div class="float-right">
                           <!-- <a href="#" class="btn btn-add-property">Add New Document</a>-->
                           <a href="#" class="upload-any"><img src="images/upload.png"> <span>
                               <div class="custom-file-input">
-                                <input type="hidden" name="property_id" value='<%=property._id%>' id ="hiddenPropertyId">
+                                <input type="hidden" name="property_id" value='<%=property._id%>' id="hiddenPropertyId">
                                 <input type="file" id="image" name="new_Docs" value="" required>
                                 <input type="button">
                               </div>
                             </span></a>
-                          <button class="btn btn-add-property" >Add New Document</button>
+                          <button class="btn btn-add-property">Add New Document</button>
                         </div>
                       </form>
                     </div>
                     <ul class="docs-list">
                       <% allDocument.forEach(function(row){%>
                         <%if(row.cuds_document_type=='image'){%>
-                      <li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img src="/upload/<%= row.cuds_document_name%>" alt="" title=""><br><span> <%= row.cuds_document_name%></span></a>
-                      </li>
-                      <%}%>
-                      <%});%>
-                      <!-- <li><a href="#"><img src="images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a></li>
+                          <li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img
+                                src="/upload/<%= row.cuds_document_name%>" alt="" title=""><br><span>
+                                <%= row.cuds_document_name%>
+                              </span></a>
+                          </li>
+                          <%}%>
+                            <%});%>
+                              <!-- <li><a href="#"><img src="images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a></li>
                       <li><a href="#"><img src="images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a></li>
                       <li><a href="#"><img src="images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a></li>
                       <li><a href="#"><img src="images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a></li>
@@ -223,9 +227,10 @@
   </div>
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
@@ -308,8 +313,43 @@
       location.reload(true);
     });
   </script>
-  
-      
+
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $(".buyertab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/buyer",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
+      $(".sellertab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/seller",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
+      $(".renovatortab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/renovator",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
+    });
+  </script>
+
   </body>
 
   </html>
