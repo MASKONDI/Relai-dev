@@ -120,12 +120,20 @@
                           <div class="row">
                             <div class="col-sm-12 col-lg-4"><input type="text"
                                 class="form-control property-form-control-size-fix " id="buyer" placeholder="Full Name"
-                                name="ps_other_party_fullname" value=""  data-rule-required="true" data-msg-required="Full Name is required!"></div>
+                                name="ps_other_party_fullname" value="" data-rule-required="true"
+                                data-msg-required="Full Name is required!"></div>
 
                             <div class="col-sm-12 col-lg-4"><input type="email"
                                 class="form-control property-form-control-size-fix " id="emailaddress"
-                                placeholder="Enter email address" name="ps_other_party_emailid" value=""  data-rule-required="true" data-msg-required="Email is required!">
+                                placeholder="Enter email address" name="ps_other_party_emailid" value=""
+                                data-rule-required="true" data-msg-required="Email is required!">
                             </div>
+                            <!-- <div class="col-sm-12 col-lg-4"><input type="text"
+                                class="form-control property-form-control-size-fix " id="emailaddress"
+                                placeholder="buyer/seller/renovator" name="ps_other_party_user_as" value=""
+                                data-rule-required="true" data-msg-required="buyer/seller/renovator is required!">
+                            </div> -->
+
                           </div>
                         </div>
 
@@ -394,6 +402,40 @@
   <script>
 
   </Script>
+  <script>
+    $(document).ready(function () {
+      $(".buyertab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/buyer",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
+      $(".sellertab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/seller",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
+      $(".renovatortab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/renovator",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
+    });
+  </script>
   </body>
 
   </html>
