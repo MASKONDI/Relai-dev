@@ -33,8 +33,8 @@ const PropertyProfessionalSchema = new Schema({
   },
   pps_is_active_user_flag: {
     type: String,
-    enum: ['buyer', 'seller','renovator'],
-    default: 'buyer'
+    enum: ['buyer', 'seller', 'renovator'],
+
   },
 });
 module.exports = property_professional = mongoose.model('property_professional', PropertyProfessionalSchema);

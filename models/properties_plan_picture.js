@@ -38,8 +38,7 @@ const PropertiesPlanPictureSchema = new Schema({
   },
   ppps_is_active_user_flag: {
     type: String,
-    enum: ['buyer', 'seller','renovator'],
-    default: 'buyer'
+    enum: ['buyer', 'seller', 'renovator'],
   },
 
 });

@@ -18,9 +18,11 @@ var isAdmin = function (req, res, next) {
 
 var isCustomer = function (req, res, next) {
   var check_user = req.session.is_user_logged_in;
-  // var check_active_customer_login = req.session.active_customer_login;
+  //var check_active_customer_login = req.session.active_user_login;
+  //console.log("check_active_customer_login is :", check_active_customer_login);
   if (check_user != undefined && check_user != "" && check_user == true) {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+
     next();
   } else {
     req.flash('danger', 'Please log in first.');

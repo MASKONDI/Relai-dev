@@ -189,7 +189,7 @@ router.post("/cust_signin", (req, res) => {
         req.session.email = customers.cus_email_id;
         req.session.is_user_logged_in = true;
         req.session.active_user_login = "buyer"
-
+        //req.session.isChanged = true
         // Customer Matched
         const payload = { id: customers.id, cus_fullname: customers.cus_fullname, cus_email_id: customers.cus_email_id }; // Create JWT Payload
 
@@ -297,6 +297,7 @@ router.post("/add-property", async (req, res) => {
       ps_additional_note: req.body.ps_additional_note,
       ps_property_type: req.body.ps_property_type,
       ps_chain_property_id: req.body.ps_chain_property_id,
+      ps_is_active_user_flag: req.session.active_user_login
     });
     newProperty
       .save()
@@ -307,6 +308,7 @@ router.post("/add-property", async (req, res) => {
             var obj = {
               pps_property_id: property._id,
               pps_property_image_name: element.filename,
+              pps_is_active_user_flag: req.session.active_user_login,
               pps_property_image: {
                 data: fs.readFileSync(path.join(__dirname + '../../../public/propimg/' + element.filename)),
                 contentType: 'image/png'
@@ -331,6 +333,7 @@ router.post("/add-property", async (req, res) => {
             var obj = {
               ppps_property_id: property._id,
               ppps_plan_image_name: e.filename,
+              ppps_is_active_user_flag: req.session.active_user_login,
               ppps_plan_image: {
                 data: fs.readFileSync(path.join(__dirname + '../../../public/propplanimg/' + e.filename)),
                 contentType: 'image/png'
@@ -526,7 +529,8 @@ router.post('/change-permision', (req, res) => {
     var Obj = {
       dps_customer_id: req.body.cust_id,
       dps_service_provider_id: service_provider_id,
-      dps_document_id: req.body.id_element
+      dps_document_id: req.body.id_element,
+      dps_is_active_user_flag: req.session.active_user_login //active portal like: buyer/seller/renovator
     }
     var docPermissionSave = new DocumentPermissionSchema(Obj)
     docPermissionSave.save().then((data) => {
@@ -559,6 +563,7 @@ router.post("/hire-now", async(req, res) => {
     pps_service_provider_id: req.body.serviceProviderId,
     pps_pofessional_budget: req.body.pps_pofessional_budget,
     pps_exptected_delivery_date: req.body.pps_exptected_delivery_date,
+    pps_is_active_user_flag: req.session.active_user_login
     //pps_status: req.body.pps_status,//TODO:we need to save later
   });
   hirenow
@@ -612,6 +617,7 @@ router.post("/add-Task", (req, res) => {
     pps_phase_name: req.body.pps_phase_name,
     pps_phase_start_date: req.body.pps_phase_start_date,
     pps_phase_end_date: req.body.pps_phase_end_date,
+    pps_is_active_user_flag: req.session.active_user_login
   });
   newTask
     .save()
@@ -648,6 +654,7 @@ router.post('/raise-a-complaint', (req, res) => {
     //coms_complaint_by: 'customer' //need to check if complaints filed via customer portal or service_provider portal
     coms_complaint_subject: req.body.coms_complaint_subject,
     coms_complaint_note: req.body.coms_complaint_note,
+    coms_is_active_user_flag: req.session.active_user_login
     //coms_complaint_file: req.body.coms_complaint_file,
   });
   newComplaint.save().then(complaints => {
@@ -676,6 +683,7 @@ router.post('/message', (req, res) => {
     sms_message: req.body.message,
     sms_msg_Date: req.body.sms_msg_Date,
     sms_read_status: req.body.sms_read_status, //default is unread
+    sms_is_active_user_flag: req.session.active_user_login
   })
   newMessage.save().then(message => {
     console.log("getting response form server is :", message);
@@ -731,42 +739,6 @@ function invite_function(req) {
 
 
 }
-
-/***/
-
-router.get('/buyer', function (req, res) {
-  console.log("buyer");
-  var test = req.session.is_user_logged_in;
-  var active_user = req.session.active_user_login;
-  if (test == true && active_user != 'buyer') {
-    req.session.active_user_login = "buyer"
-    console.log("current user login", req.session.active_user_login);
-  }
-});
-
-
-router.get('/seller', function (req, res) {
-  console.log("seller");
-  var test = req.session.is_user_logged_in;
-  var active_user = req.session.active_user_login;
-  if (test == true && active_user != 'seller') {
-    req.session.active_user_login = "seller"
-    console.log("current user login", req.session.active_user_login);
-  }
-});
-
-
-router.get('/renovator', function (req, res) {
-  console.log("renovator");
-  var test = req.session.is_user_logged_in;
-  var active_user = req.session.active_user_login;
-  if (test == true && active_user != 'renovator') {
-    req.session.active_user_login = "renovator"
-    console.log("current user login", req.session.active_user_login);
-  }
-});
-
-
 
 
 module.exports = router;

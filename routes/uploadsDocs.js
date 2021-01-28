@@ -23,13 +23,13 @@ const ComplaintsSchema = require("../models/Complaints");
 
 var Storage = multer.diskStorage({
   destination: function (req, file, callback) {
-    console.log('file==',file)
-    if(file.fieldname==='complaint_file'){
+    console.log('file==', file)
+    if (file.fieldname === 'complaint_file') {
       callback(null, "./public/complaintFile");
-    }else{
+    } else {
       callback(null, "./public/upload");
     }
-    
+
   },
   filename: function (req, file, callback) {
     callback(null, file.originalname);
@@ -153,7 +153,7 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
   var success_msg = null;
   var obj = {};
   console.log("req is :", req.file);
-  console.log("in upload property id=",req.body.property_id);
+  console.log("in upload property id=", req.body.property_id);
 
   //add conditions for type of file and set the type of file
   console.log(".........files.......", req.file.filename)
@@ -203,9 +203,10 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
 
         console.log("file extension is", { ext_type, ext })
         obj = {
-          cuds_property_id:req.body.property_id,
+          cuds_property_id: req.body.property_id,
           cuds_document_name: req.file.filename,
           cuds_customer_id: req.session.user_id,
+          cuds_is_active_user_flag: req.session.active_user_login,
           cuds_document_type: ext_type,
           cuds_document_size: docs_size,
           cuds_document_file: {
@@ -230,11 +231,12 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
       })
 
     });
-  }else{
+  } else {
 
     obj = {
       cuds_document_name: req.file.filename,
       cuds_customer_id: req.session.user_id,
+      cuds_is_active_user_flag: req.session.active_user_login,
       cuds_document_type: ext_type,
       cuds_document_size: docs_size,
       cuds_document_file: {
@@ -259,21 +261,22 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
 
   }
 });
-app.post('/raise-a-complaint',upload.single('complaint_file'), (req, res,next) => {
-   console.log('complaint data:',req.body)
-   console.log('complaint data:',req.file)
-   var obj = {
+app.post('/raise-a-complaint', upload.single('complaint_file'), (req, res, next) => {
+  console.log('complaint data:', req.body)
+  console.log('complaint data:', req.file)
+  var obj = {
     //should be mongodb generated id
     //coms_id :
     coms_complaint_for: req.body.coms_complaint_for,//service provider id
     coms_complaint_code: "C" + uuidv4(),//need to generate in  like C123 auto increment feature
     coms_property_id: req.body.property_id,
-    coms_user_id:req.body.cust_user_id,
+    coms_user_id: req.body.cust_user_id,
     //coms_complaint_by: 'customer' //need to check if complaints filed via customer portal or service_provider portal
     coms_complaint_subject: req.body.coms_complaint_subject,
     coms_complaint_note: req.body.coms_complaint_note,
     //coms_complaint_file: req.body.coms_complaint_file,
-    coms_complaint_filename:req.file.filename,
+    coms_complaint_filename: req.file.filename,
+    coms_is_active_user_flag: req.session.active_user_login,
     coms_complaint_file: {
       data: fs.readFileSync(path.join(__dirname + '../../public/complaintFile/' + req.file.filename)),
       contentType: 'image/png'
@@ -287,15 +290,15 @@ app.post('/raise-a-complaint',upload.single('complaint_file'), (req, res,next) =
     }
     else {
       item.save();
-      req.session.property_id=req.body.property_id;
+      req.session.property_id = req.body.property_id;
       console.log("complaint Submitted Successfully");
       req.flash('success_msg', "complaint submitted Successfully");
       //res.redirect('/mydreamhome');
-      res.json({'message':'success'})
+      res.json({ 'message': 'success' })
     }
   });
 
-   
+
 })
 
 
