@@ -93,6 +93,7 @@ app.get('/signin', (req, res) => {
 });
 
 app.get('/dashboard', isCustomer, (req, res) => {
+  console.log("current user session is :", req.session);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('dashboard', {
@@ -105,6 +106,7 @@ app.get('/dashboard', isCustomer, (req, res) => {
 
 
 app.get('/track-your-progress', isCustomer, (req, res) => {
+  console.log("current user session is :", req.session);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('track-your-progress', {
@@ -114,6 +116,7 @@ app.get('/track-your-progress', isCustomer, (req, res) => {
 });
 
 app.get('/professionals', isCustomer, async (req, res) => {
+  console.log("current user session is :", req.session);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   await ServiceProviderSchema.find({ sps_status: 'active' }).then(async service_provider => {
@@ -149,9 +152,10 @@ app.get('/professionals', isCustomer, async (req, res) => {
 });
 
 app.get('/myprofessionals', isCustomer, async (req, res) => {
+  console.log("current user session is :", req.session);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id });
+  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
   console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
   let serviceProvArray = [];
   for (var k of AllhiredProfeshnoal) {
@@ -270,7 +274,7 @@ app.get('/professionals-searchbar', (req, res) => {
 
 // My professional filter role
 app.get('/my-professionals-filter', isCustomer, async (req, res) => {
-  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id });
+  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
   let serviceProvArray = [];
   for (var k of AllhiredProfeshnoal) {
     await ServiceProviderSchema.find({ $and: [{ _id: k.pps_service_provider_id, sps_role_name: req.query.role }] }).then(async (allProfeshnoals) => {
@@ -339,8 +343,8 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
   //req.session.property_id=req.query.id
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  let property = await PropertiesSchema.findOne({ _id: req.session.property_id });
-  const allDocument = await CustomerUploadDocsSchema.find({ $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.session.property_id }] });
+  let property = await PropertiesSchema.findOne({ _id: req.session.property_id, ps_is_active_user_flag: req.session.active_user_login });
+  const allDocument = await CustomerUploadDocsSchema.find({ $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.session.property_id, cuds_is_active_user_flag: req.session.active_user_login }] });
   //const propertyDataObj = await PropertiesSchema.find();
 
   ServiceProviderSchema.find({ sps_status: 'active', }).then(service_provider => {
@@ -410,7 +414,7 @@ app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
   console.log(' property id  :', req.session.property_id);
   console.log('helooooo', req.query.pid);
   req.session.professional_id = req.query.pid;
-  let property = await PropertiesSchema.findOne({ _id: req.session.property_id });
+  let property = await PropertiesSchema.findOne({ _id: req.session.property_id, ps_is_active_user_flag: req.session.active_user_login });
 
   // let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({pps_user_id:req.session.user_id});
   // let serviceProvArray = [];
@@ -446,7 +450,7 @@ app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
 
   await MessageSchema.find({
     $or: [
-      { $and: [{ sms_sender_id: property.ps_user_id }, { sms_receiver_id: req.query.pid }, { sms_property_id: req.session.property_id }] },
+      { $and: [{ sms_sender_id: property.ps_user_id }, { sms_receiver_id: req.query.pid }, { sms_property_id: req.session.property_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
       { $and: [{ sms_sender_id: req.query.pid }, { sms_receiver_id: property.ps_user_id }, { sms_property_id: req.session.property_id }] }
     ]
   }).then(async (data) => {
@@ -513,7 +517,7 @@ app.get('/professionals-detail-message', (req, res) => {
     if (service_provider_detail) {
       MessageSchema.find({
         $or: [
-          { $and: [{ sms_sender_id: req.query.cus_id }, { sms_receiver_id: req.query.spp_id }] },
+          { $and: [{ sms_sender_id: req.query.cus_id }, { sms_receiver_id: req.query.spp_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
           { $and: [{ sms_sender_id: req.query.spp_id }, { sms_receiver_id: req.query.cus_id }] }
         ]
       }).then(async (data) => {
@@ -576,7 +580,7 @@ app.get('/professionals-hirenow', isCustomer, async (req, res) => {
 
   if (req.query.spp_id) {
     // if(req.session.user_id)
-    var property = await PropertiesSchema.find({ ps_user_id: req.session.user_id });
+    var property = await PropertiesSchema.find({ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login });
     //console.log('property====',property)
     var serviceProvider = await ServiceProviderSchema.findOne({ _id: req.query.spp_id });
     //console.log('service_provider=+++',serviceProvider)
@@ -715,8 +719,8 @@ app.post('/getPropertyDetail', isCustomer, async (req, res) => {
   console.log('getProperty-detail:', req.body)
   console.log('session property id', req.body.property_id);
   req.session.property_id = req.body.property_id
-  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id });
-  let allDocumentUploadByCustmer = await CustomerUploadDocsSchema.find({ cuds_customer_id: req.session.user_id });
+  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
+  let allDocumentUploadByCustmer = await CustomerUploadDocsSchema.find({ cuds_customer_id: req.session.user_id, cuds_is_active_user_flag: req.session.active_user_login });
   //console.log('AllhiredProfeshnoal',AllhiredProfeshnoal);
   let serviceProvArray = [];
   for (var k of AllhiredProfeshnoal) {
@@ -728,12 +732,12 @@ app.post('/getPropertyDetail', isCustomer, async (req, res) => {
     });
   }
   //console.log('hiredProfeshnoalList=',serviceProvArray)
-  PropertiesSchema.find({ _id: req.body.property_id }).then(async (data) => {
+  PropertiesSchema.find({ _id: req.body.property_id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
     if (data) {
 
       let arr = [];
       for (let img of data) {
-        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
+        await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
           //let temp = await result
           for (let image of result) {
             let temp = await image
@@ -768,8 +772,8 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
   console.log("current session is", req.session);
   console.log('session property id', req.query.id);
   req.session.property_id = req.query.id
-  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id });
-  let allDocumentUploadByCustmer = await CustomerUploadDocsSchema.find({ $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.query.id }] });
+  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
+  let allDocumentUploadByCustmer = await CustomerUploadDocsSchema.find({ $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.query.id, cuds_is_active_user_flag: req.session.active_user_login }] });
   //console.log('AllhiredProfeshnoal',AllhiredProfeshnoal);
   let serviceProvArray = [];
   for (var k of AllhiredProfeshnoal) {
@@ -777,7 +781,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
       console.log('allProfeshnoals:', allProfeshnoals)
       await MessageSchema.find({
         $or: [
-          { $and: [{ sms_sender_id: req.session.user_id }, { sms_receiver_id: k.pps_service_provider_id }] },
+          { $and: [{ sms_sender_id: req.session.user_id }, { sms_receiver_id: k.pps_service_provider_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
           { $and: [{ sms_sender_id: k.pps_service_provider_id }, { sms_receiver_id: req.session.user_id }] }
         ]
       }).then(async (msgdata) => {
@@ -803,12 +807,12 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
     });
   }
 
-  PropertiesSchema.find({ _id: req.query.id }).then(async (data) => {
+  PropertiesSchema.find({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
     if (data) {
 
       let arr = [];
       for (let img of data) {
-        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
+        await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
           //let temp = await result
           for (let image of result) {
             let temp = await image
@@ -961,7 +965,7 @@ app.get('/get-message', async (req, res) => {
   var newData = [];
   MessageSchema.find({
     $or: [
-      { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }] },
+      { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
       { $and: [{ sms_sender_id: req.query.sms_receiver_id }, { sms_receiver_id: req.query.sms_sender_id }] }
     ]
   }).then(async (data) => {
@@ -1040,7 +1044,7 @@ app.get('/get-message-property', async (req, res) => {
   var newData = [];
   MessageSchema.find({
     $or: [
-      { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }, { sms_property_id: req.query.sms_property_id }] },
+      { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }, { sms_property_id: req.query.sms_property_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
       { $and: [{ sms_sender_id: req.query.sms_receiver_id }, { sms_receiver_id: req.query.sms_sender_id }, { sms_property_id: req.query.sms_property_id }] }
     ]
   }).then(async (data) => {
@@ -1098,7 +1102,7 @@ app.get('/get-message-postman', async (req, res) => {
   const newArr2 = '';
   MessageSchema.find({
     $or: [
-      { $and: [{ sms_sender_id: req.query.cus_id }, { sms_receiver_id: req.query.spp_id }] },
+      { $and: [{ sms_sender_id: req.query.cus_id }, { sms_receiver_id: req.query.spp_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
       { $and: [{ sms_sender_id: req.query.spp_id }, { sms_receiver_id: req.query.cus_id }] }
     ]
   }).then(async (data) => {

@@ -528,7 +528,8 @@ router.post('/change-permision', (req, res) => {
     var Obj = {
       dps_customer_id: req.body.cust_id,
       dps_service_provider_id: service_provider_id,
-      dps_document_id: req.body.id_element
+      dps_document_id: req.body.id_element,
+      dps_is_active_user_flag: req.session.active_user_login //active portal like: buyer/seller/renovator
     }
     var docPermissionSave = new DocumentPermissionSchema(Obj)
     docPermissionSave.save().then((data) => {
@@ -552,6 +553,7 @@ router.post("/hire-now", (req, res) => {
     pps_service_provider_id: req.body.serviceProviderId,
     pps_pofessional_budget: req.body.pps_pofessional_budget,
     pps_exptected_delivery_date: req.body.pps_exptected_delivery_date,
+    pps_is_active_user_flag: req.session.active_user_login
     //pps_status: req.body.pps_status,//TODO:we need to save later
   });
   hirenow
@@ -580,6 +582,7 @@ router.post("/add-Task", (req, res) => {
     pps_phase_name: req.body.pps_phase_name,
     pps_phase_start_date: req.body.pps_phase_start_date,
     pps_phase_end_date: req.body.pps_phase_end_date,
+    pps_is_active_user_flag: req.session.active_user_login
   });
   newTask
     .save()
@@ -616,6 +619,7 @@ router.post('/raise-a-complaint', (req, res) => {
     //coms_complaint_by: 'customer' //need to check if complaints filed via customer portal or service_provider portal
     coms_complaint_subject: req.body.coms_complaint_subject,
     coms_complaint_note: req.body.coms_complaint_note,
+    coms_is_active_user_flag: req.session.active_user_login
     //coms_complaint_file: req.body.coms_complaint_file,
   });
   newComplaint.save().then(complaints => {
@@ -644,6 +648,7 @@ router.post('/message', (req, res) => {
     sms_message: req.body.message,
     sms_msg_Date: req.body.sms_msg_Date,
     sms_read_status: req.body.sms_read_status, //default is unread
+    sms_is_active_user_flag: req.session.active_user_login
   })
   newMessage.save().then(message => {
     console.log("getting response form server is :", message);
@@ -699,45 +704,6 @@ function invite_function(req) {
 
 
 }
-
-/** Buyer/Seller/Renovator */
-
-router.get('/buyer', function (req, res) {
-  console.log("buyer");
-  var test = req.session.is_user_logged_in;
-  var active_user = req.session.active_user_login;
-  if (test == true && active_user != 'buyer') {
-    req.session.active_user_login = "buyer"
-    console.log("current user login", req.session.active_user_login);
-  }
-  console.log("req session is updated", req.session);
-});
-
-
-router.get('/seller', function (req, res) {
-  console.log("seller");
-  var test = req.session.is_user_logged_in;
-  var active_user = req.session.active_user_login;
-  if (test == true && active_user != 'seller') {
-    req.session.active_user_login = "seller"
-    console.log("current user login", req.session.active_user_login);
-  }
-  console.log("req session is updated", req.session);
-});
-
-
-router.get('/renovator', function (req, res) {
-  console.log("renovator");
-  var test = req.session.is_user_logged_in;
-  var active_user = req.session.active_user_login;
-  if (test == true && active_user != 'renovator') {
-    req.session.active_user_login = "renovator"
-    console.log("current user login", req.session.active_user_login);
-  }
-  console.log("req session is updated", req.session);
-});
-
-
 
 
 module.exports = router;
