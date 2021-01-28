@@ -268,10 +268,18 @@
       });
     });
     $(document).ready(function () {
-      $(".right-navbar li").click(function () {
-        $("right-navbar li").removeClass("active");
-        $(this).addClass("active");
+      // $(".right-navbar li").click(function () {
+      //   $("right-navbar li").removeClass("active");
+      //   $(this).addClass("active");
+      // });
+      $('.right-navbar li').click(function () {
+      $('.right-navbar li').each(function () {
+        $(this).removeClass('active');
       });
+
+      $(this).addClass('active');
+
+    })
     });
   </script>
   </body>

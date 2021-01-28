@@ -301,7 +301,7 @@
         $(this).addClass("active");
       });
     });
-
+    
     $("#professional-role li a").click(function (e) {
       var role = $(this).data('role');
       alert(role)
@@ -357,6 +357,14 @@
     //     }
     //   });
     // });
+    $('.right-navbar li').click(function () {
+      $('.right-navbar li').each(function () {
+        $(this).removeClass('active');
+      });
+
+      $(this).addClass('active');
+
+    })
 
   </script>
   </body>

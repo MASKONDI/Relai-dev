@@ -8,17 +8,21 @@
         <div class="modal-header text-center">
           <h2 class="modal-title w-100">Add Task to Phase 1</h2>
         </div>
-
+        <form name="addTaskForm" action="api/addTask" method="post">
         <!-- Modal body -->
         <div class="modal-body">
           <label class="label-fix">Describe this to-do</label>
           <input type="text" class="form-control form-control-fix2" id="subject" placeholder="Instruction"
-            name="todo-task">
-
-          <select class="form-control " id="selectBox">
+            name="todotask">
+            <input type="text" class="form-control form-control-fix2" id="professional" placeholder="<%=serviceProvider.sps_fullname%>"
+            name="professionalName" value="<%=serviceProvider.sps_fullname%>">
+            <input type="hidden" name="professionalId" value="<%=serviceProvider._id%>">
+            <input type="hidden" name="currentUserId" value="<%=session.user_id%>">
+            <input type="hidden" name="ppts_property_id" value="">
+          <!-- <select class="form-control " id="selectBox">
             <option value="0">Select professional</option>
             <option value="">2</option>
-          </select>
+          </select> -->
 
           <input type="date" class="form-control  form-control-fix2" id="subject" placeholder="Due on" name="duedate">
           <textarea class="form-control  form-control-fix2" rows="2" id="comment">Add Notes(If any)</textarea>
@@ -28,9 +32,10 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-cancel" data-dismiss="modal">Add Task</button>
+          <button type="submit" class="btn btn-cancel" data-dismiss="">Add Task</button>
 
         </div>
+        </form>
       </div>
     </div>
   </div>
@@ -65,7 +70,7 @@
                   src="images/professionals.png"> Professionals</a>
             </li>
             <li>
-              <a href="/mydreamhome-details-docs"><img class="act-img" src="images/dreamhome-active.png"><img
+              <a href="/mydreamhome"><img class="act-img" src="images/dreamhome-active.png"><img
                   src="images/dreamhome.png"> My dream home</a>
             </li>
             <li>
@@ -108,7 +113,7 @@
               <div class="col-sm-12 col-lg-12">
                 <div class="hirenow-inner">
                   <div class="docs-files-section">
-                    <form class="form" action="/api/hire-now" method="POST">
+                    <form class="form" id="hirenowform" action="/api/hire-now" method="POST">
                       <input type="hidden" name="user_id" value="<%=session.user_id%>">
                       <input type="hidden" name="serviceProviderId" value="<%=serviceProvider._id%>">
                       <div class="row">
@@ -197,7 +202,7 @@
                             <label class="">STEP 2</label>
                             <h6 class="">Tell us your approximate budget</h6>
                             <br />
-                              <input class="range_slider" id="ex8" data-slider-id='ex1Slider'  type="text" data-slider-min="100" data-slider-max="10000" data-slider-step="10" data-slider-value="4000"/>
+                              <input class="range_slider" id="ex8" data-slider-id='ex1Slider'  type="text" name="pps_pofessional_budget" data-slider-min="100" data-slider-max="10000" data-slider-step="10" data-slider-value="4000"/>
                             <br />
 
                           </div>
@@ -243,14 +248,14 @@
                                 <div class="professional-text-fix">
                                   <label>Start Date</label>
                                   <input type="date" class="form-control form-control-size-fix " id="startDate1"
-                                    placeholder="FullName" name="startDate">
+                                    placeholder="Full Name" name="startDate">
                                 </div>
                               </div>
                               <div class="professional-input-box">
                                 <div class="professional-text-fix">
                                   <label>End Date</label>
                                   <input type="date" class="form-control form-control-size-fix " id="endDate1"
-                                    placeholder="FullName" name="endDate">
+                                    placeholder="Full Name" name="endDate">
                                 </div>
                               </div>
                               <div class="">
@@ -275,14 +280,14 @@
                                 <div class="professional-text-fix">
                                   <label>Start Date</label>
                                   <input type="date" class="form-control form-control-size-fix " id="startDate2"
-                                    placeholder="FullName" name="endDate">
+                                    placeholder="FullName" name="startDate2">
                                 </div>
                               </div>
                               <div class="professional-input-box">
                                 <div class="professional-text-fix">
                                   <label>End Date</label>
                                   <input type="date" class="form-control form-control-size-fix " id="endDate2"
-                                    placeholder="End Date" name="endDate">
+                                    placeholder="End Date" name="endDate2">
                                 </div>
                               </div>
                               <div class="">
@@ -299,6 +304,7 @@
                       </div> <button type="submit" class="btn btn-next" style="width: 164px; border-radius: 5px;">Hire
                         Now</button>
                     </form>
+                    <!-- <div id="msg"></div> -->
                   </div>
                 </div>
               </div>
@@ -381,6 +387,23 @@ $("#ex8").slider({
         alert('something wrong')
       }        
 });
+// $('#hirenowform').on('submit',function(){
+  
+//   var formdata = $(".form").serialize();
+//   $.ajax({
+//         type: "POST",
+//         data: formdata,
+//         url: "/api/hire-now",
+//         cache: false,
+//         success: function (data) {
+//           console.log(data)
+//           $('#msg').delay(5000).fadeOut('success')
+          
+//           //$("#results").append(html);
+//         }
+//       });
+      
+// })
     });
   </script>
   </body>

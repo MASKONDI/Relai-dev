@@ -129,16 +129,16 @@ app.get('/professionals', isCustomer, async (req, res) => {
       for (var sp_id of service_provider) {
         await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
           if (otherDetails) {
-            console.log("other Details of customers", otherDetails);
+            //console.log("other Details of customers", otherDetails);
             const spProvider = JSON.stringify(sp_id);
             const parseSpProvider = JSON.parse(spProvider);
             parseSpProvider.professionalBody = otherDetails.spods_professional_body
             serviceProvArray.push(parseSpProvider);
-            console.log("service_provider Array list in loop:", serviceProvArray);
+            //console.log("service_provider Array list in loop:", serviceProvArray);
           }
         });
       }
-      console.log("service_provider Array list is:", serviceProvArray);
+      //console.log("service_provider Array list is:", serviceProvArray);
       res.render('professionals', {
         err_msg, success_msg, layout: false,
         session: req.session,
@@ -181,6 +181,7 @@ app.get('/myprofessionals', isCustomer, async (req, res) => {
 // });
 
 app.get('/professionals-detail', isCustomer, (req, res) => {
+  req.session.currentSarviceProviderId=req.query.id
   ServiceProviderSchema.findOne({ _id: req.query.id }).then(async service_provider_detail => {
     if (service_provider_detail) {
       //spods_service_provider_id
@@ -573,12 +574,12 @@ app.get('/professionals-detail-message', (req, res) => {
 
 app.get('/professionals-hirenow', isCustomer, async (req, res) => {
   //console.log('spp_id', req.query.spp_id)
-
-  if (req.query.spp_id) {
+   var SarviceProviderId = req.session.currentSarviceProviderId
+  if (SarviceProviderId) {
     // if(req.session.user_id)
     var property = await PropertiesSchema.find({ ps_user_id: req.session.user_id });
     //console.log('property====',property)
-    var serviceProvider = await ServiceProviderSchema.findOne({ _id: req.query.spp_id });
+    var serviceProvider = await ServiceProviderSchema.findOne({ _id: SarviceProviderId });
     //console.log('service_provider=+++',serviceProvider)
     if (serviceProvider) {
 
@@ -676,6 +677,14 @@ app.get('/mydreamhome-details-phase-a', isCustomer, (req, res) => {
 // })
 //*************************property data display on mydeream home page
 app.get('/mydreamhome', isCustomer, async (req, res) => {
+  
+  var test = req.session.is_user_logged_in;
+  var active_user = req.session.active_user_login;
+  if (test == true && active_user != 'seller') {
+    req.session.active_user_login = "seller"
+    console.log("current user login+++", req.session.active_user_login);
+  }
+  console.log('user session:===++',req.session)
   PropertiesSchema.find({ ps_user_id: req.session.user_id }).then(async (data) => {
     if (data) {
       let arr = [];

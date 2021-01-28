@@ -9,6 +9,9 @@ const PropertiesPhaseSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "properties"
   },
+  pps_professional_id:{
+    type:String
+  },
   pps_phase_name: {
     type: String
   },
