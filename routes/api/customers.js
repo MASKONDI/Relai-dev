@@ -196,8 +196,9 @@ router.post("/cust_signin", (req, res) => {
         //req.session.profilePicture= customer.profile_picture
         if (customers.cus_profile_image_name) {
           req.session.imagename = customers.cus_profile_image_name
+        } else {
+          req.session.imagename = '';
         }
-
         //req.session.isChanged = true
         // Customer Matched
         const payload = { id: customers.id, cus_fullname: customers.cus_fullname, cus_email_id: customers.cus_email_id }; // Create JWT Payload
