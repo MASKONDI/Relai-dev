@@ -496,7 +496,7 @@
   <script>
      $(document).ready(function () {
      $("a[name='addMorePhase']").click(function () {
-        var domElement = $('');
+        var domElement = $('<div class="row"><div class="professional-text-fix"><label>Phase1</label><input type="text" class="form-control form-control-size-fix " id="instruction"placeholder="Instruction" name="instruction" required></div></div></div>');
         $(this).after(domElement);
       });
     });
