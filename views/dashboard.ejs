@@ -1,4 +1,99 @@
 <%- include('dashboard_header')-%>
+  <!-- The Modal -->
+  <div class="modal permission-modal fade " id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header text-center">
+          <h2 class="modal-title w-100">Edit Profile</h2>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form class="form" action="/api/update-user-profile" method="put" id="form3">
+            <input type="hidden" name="customer_id" value="<%=session.user_id%>">
+            <div class=" row">
+              <div class="col-sm-12 col-lg-6">
+                <input type="text" class="form-control form-control-fix2" id="fullName" placeholder="Full Name"
+                  name="cus_fullName" value="<%= session.name%>">
+              </div>
+              <div class="col-sm-12 col-lg-6">
+                <input type=" text" class="form-control form-control-fix2" id="phone Number" placeholder="Phone Number"
+                  name="cus_phoneNumber" value="<%= session.phoneNumber%>">
+              </div>
+            </div>
+            <div class=" row">
+              <div class="col-sm-12 col-lg-6">
+                <input type="text" class="form-control  form-control-fix2" id="address" placeholder="Email Id"
+                  name="cus_email" value="<%= session.email%>">
+              </div>
+              <div class="col-sm-12 col-lg-6">
+                <input type="text" class="form-control  form-control-fix2" id="address" placeholder="Address"
+                  name="cus_address" value="<%= session.address%>">
+              </div>
+            </div>
+
+            <div class=" row">
+              <div class="col-sm-12 col-lg-6">
+                <input type="text" class="form-control  form-control-fix2" id="address" placeholder="City"
+                  name="cus_city" value="<%= session.city%>">
+              </div>
+              <div class="col-sm-12 col-lg-6">
+                <input type="text" class="form-control  form-control-fix2" id="address" placeholder="Country"
+                  name="cus_country" value="<%= session.country%>">
+              </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+          <button name="submit" type="submit" class="btn btn-cancel">Update</button>
+        </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="modal permission-modal fade " id="photoModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header text-center">
+          <h2 class="modal-title w-100">Update profile picture</h2>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form class="form" action="/api/update-user-profile-picture" method="put" id="form3">
+            <div class="upload-image">
+
+              <a href="#" class="upload-profile-pic">
+                <img src="images/img_avatar.png" alt="" class="profile-photo"> <span>
+                  <div class="custom-file-input">
+                    <input type="file" id="image" name="profile_picture" value="">
+                    <input type="button">
+                  </div>
+                </span>
+              </a>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+          <button name="submit" type="submit" class="btn btn-cancel">Upload</button>
+        </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+
   <div class="dashboard-wpr">
     <div class="container-fluid">
       <div class="row content">
@@ -12,7 +107,16 @@
                 <%= session.name %>
               </h2>
               <a href="#">
-                <%= session.email %>
+                <%= session.email %><span>
+                    <div class="profile-dropdown">
+                      <i class="fa fa-pencil editbtn"></i>
+                      <div class="dropdown-content">
+                        <a href="#" data-toggle="modal" data-target="#photoModal">Upload Photo</a>
+                        <a href="#" data-toggle="modal" data-target="#myModal">EditProfile</a>
+                        <a href="/api/cust_logout">Logout</a>
+                      </div>
+                    </div>
+                  </span>
               </a>
             </div>
 
@@ -316,7 +420,13 @@
     })
   
   </script>
-
+  <script>
+    $(document).ready(function () {
+      $('.custom-file-input input[type="file"]').change(function (e) {
+        $(this).siblings('input[type="text"]').val(e.target.files[0].name);
+      });
+    });
+  </script>
   </body>
 
   </html>

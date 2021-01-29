@@ -1234,7 +1234,17 @@ app.get('/renovator', isCustomer, function (req, res) {
     req.session.isChanged();
     console.log("current user login and session", req.session);
   }
+});
 
+
+app.get('/add-task', isCustomer, function (req, res) {
+  console.log("current user session is :", req.session);
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('add-task', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
 });
 
 module.exports = app;
