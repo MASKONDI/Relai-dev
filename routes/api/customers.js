@@ -188,7 +188,14 @@ router.post("/cust_signin", (req, res) => {
         req.session.name = customers.cus_fullname;
         req.session.email = customers.cus_email_id;
         req.session.is_user_logged_in = true;
-        req.session.active_user_login = "buyer"
+        req.session.active_user_login = "buyer";
+        req.session.address = customers.cus_address;
+        req.session.city = customers.cus_city;
+        req.session.phoneNumber = customers.cus_phone_number;
+        req.session.country = customers.cus_country_id;
+        //req.session.profilePicture= customer.profile_picture
+
+
         //req.session.isChanged = true
         // Customer Matched
         const payload = { id: customers.id, cus_fullname: customers.cus_fullname, cus_email_id: customers.cus_email_id }; // Create JWT Payload
@@ -739,6 +746,21 @@ function invite_function(req) {
 
 
 }
+
+router.post('/edit-profile', (req, res) => {
+  console.log("updating user profile", req);
+  CustomerSchema.findByIdAndUpdate(req.session.user_id, { cus_fullname: req.body.cus_fullname, cus_address: req.body.cus_address, cus_city: req.body.cus_city, cus_email_id: req.body.cus_email_id, cus_phone_number: req.body.cus_phone_number },
+    function (err, docs) {
+      if (err) {
+        console.log(err)
+      }
+      else {
+        console.log("Updated User : ", docs);
+      }
+    });
+
+});
+
 
 
 module.exports = router;
