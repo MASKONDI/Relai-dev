@@ -11,22 +11,22 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <form class="form" action="/api/update-user-profile" method="put" id="form3">
+          <form class="form" action="/api/update-customer-profile" method="post" id="form3">
             <input type="hidden" name="customer_id" value="<%=session.user_id%>">
             <div class=" row">
               <div class="col-sm-12 col-lg-6">
                 <input type="text" class="form-control form-control-fix2" id="fullName" placeholder="Full Name"
-                  name="cus_fullName" value="<%= session.name%>">
+                  name="cus_fullname" value="<%= session.name%>">
               </div>
               <div class="col-sm-12 col-lg-6">
                 <input type=" text" class="form-control form-control-fix2" id="phone Number" placeholder="Phone Number"
-                  name="cus_phoneNumber" value="<%= session.phoneNumber%>">
+                  name="cus_phone_number" value="<%= session.phoneNumber%>">
               </div>
             </div>
             <div class=" row">
               <div class="col-sm-12 col-lg-6">
                 <input type="text" class="form-control  form-control-fix2" id="address" placeholder="Email Id"
-                  name="cus_email" value="<%= session.email%>">
+                  name="cus_email_id" value="<%= session.email%>">
               </div>
               <div class="col-sm-12 col-lg-6">
                 <input type="text" class="form-control  form-control-fix2" id="address" placeholder="Address"
@@ -41,7 +41,7 @@
               </div>
               <div class="col-sm-12 col-lg-6">
                 <input type="text" class="form-control  form-control-fix2" id="address" placeholder="Country"
-                  name="cus_country" value="<%= session.country%>">
+                  name="cus_country_id" value="<%= session.country%>">
               </div>
             </div>
 
@@ -69,17 +69,30 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <form class="form" action="/api/update-user-profile-picture" method="put" id="form3">
+          <form class="form" action="/upload-profile-pic" method="post" id="form3" enctype="multipart/form-data">
             <div class="upload-image">
 
-              <a href="#" class="upload-profile-pic">
-                <img src="images/img_avatar.png" alt="" class="profile-photo"> <span>
-                  <div class="custom-file-input">
-                    <input type="file" id="image" name="profile_picture" value="">
-                    <input type="button">
-                  </div>
-                </span>
-              </a>
+
+              <% if( session.imagename=='' ){ %>
+
+                <a href="#" class="upload-profile-pic">
+                  <img src="images/img_avatar.png" alt="" class="profile-photo"> <span>
+                    <div class="custom-file-input">
+                      <input type="file" id="image" name="profile-pic" value="" required>
+                      <input type="button">
+                    </div>
+                  </span>
+                </a>
+                <% } else {%>
+                  <a href="#" class="upload-profile-pic">
+                    <img src="/upload/<%= session.imagename%>" alt="" class="profile-photo"> <span>
+                      <div class="custom-file-input">
+                        <input type="file" id="image" name="profile-pic" value="" required>
+                        <input type="button">
+                      </div>
+                    </span>
+                  </a>
+                  <% }%>
             </div>
 
         </div>
@@ -100,7 +113,11 @@
         <div class="col-sm-2 sidenav hidden-xs-down">
           <div class="user-login text-center">
             <div class="user-profile">
-              <img src="images/profile.png" alt="" title="">
+              <% if(session.imagename=='' ){%>
+                <img src="images/profile.png" alt="" title="">
+                <%} else{%>
+                  <img src="/upload/<%= session.imagename%>" alt="" title="" class="profile-image" value="">
+                  <%} %>
             </div>
             <div class="user-name">
               <h2>
@@ -414,11 +431,8 @@
         });
         location.reload(true);
       });
-
-     
-
     })
-  
+
   </script>
   <script>
     $(document).ready(function () {
