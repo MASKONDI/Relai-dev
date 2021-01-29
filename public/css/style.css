@@ -5233,3 +5233,9 @@ a .clip-icon{
     padding:100px;
     text-align: center;
 }
+.profile-image{
+    vertical-align: middle;
+    width: 83px;
+    height: 83px;
+    border-radius: 50%;
+}

@@ -185,7 +185,7 @@ app.get('/myprofessionals', isCustomer, async (req, res) => {
 // });
 
 app.get('/professionals-detail', isCustomer, (req, res) => {
-  req.session.currentSarviceProviderId=req.query.id
+  req.session.currentSarviceProviderId = req.query.id
   ServiceProviderSchema.findOne({ _id: req.query.id }).then(async service_provider_detail => {
     if (service_provider_detail) {
       //spods_service_provider_id
@@ -578,7 +578,7 @@ app.get('/professionals-detail-message', (req, res) => {
 
 app.get('/professionals-hirenow', isCustomer, async (req, res) => {
   //console.log('spp_id', req.query.spp_id)
-   var SarviceProviderId = req.session.currentSarviceProviderId
+  var SarviceProviderId = req.session.currentSarviceProviderId
   if (SarviceProviderId) {
     // if(req.session.user_id)
     var property = await PropertiesSchema.find({ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login });
@@ -1246,5 +1246,6 @@ app.get('/add-task', isCustomer, function (req, res) {
     session: req.session
   });
 });
+
 
 module.exports = app;

@@ -19,6 +19,7 @@ const PropertiesPictureSchema = require("../models/properties_picture");
 const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
 const CustomerUploadDocsSchema = require("../models/customer_upload_document");
 const ComplaintsSchema = require("../models/Complaints");
+const CustomerSchema = require("../models/customers");
 //** Upload Document Start */
 
 var Storage = multer.diskStorage({
@@ -55,6 +56,50 @@ var upload = multer({
 //     }
 //   });
 // });
+
+app.post('/upload-profile-pic', upload.single('profile-pic'), (req, res, next) => {
+  console.log("updating user profile with incoming request :", req.body);
+
+  var user_id = req.session.user_id;
+  var obj = {
+    cus_profile_image_name: req.file.filename,
+    cus_profile_image: {
+      data: fs.readFileSync(path.join(__dirname + '../../public/upload/' + req.file.filename)),
+      contentType: 'image/png'
+    }
+  }
+  console.log("object is :", obj.cus_profile_image_name);
+  CustomerSchema.findByIdAndUpdate({ _id: user_id }, { $set: { cus_profile_image_name: obj.cus_profile_image_name, cus_profile_image: obj.cus_profile_image, cus_updated_at: Date.now() } },
+    function (err, customers) {
+      if (err) {
+        console.log("Something went wrong")
+      }
+      else {
+        console.log("file submitting successfully : ", customers);
+        //TODO: Want to update session after editprofile
+
+        // req.session._id = doc.user_id;
+        // req.session.user_id = customers._id;
+        // req.session.name = customers.cus_fullname;
+        // req.session.email = customers.cus_email_id;
+        // //req.session.is_user_logged_in = true;
+        // // req.session.active_user_login = "buyer";
+        // req.session.address = customers.cus_address;
+        // req.session.city = customers.cus_city;
+        // req.session.phoneNumber = customers.cus_phone_number;
+        // req.session.country = customers.cus_country_id;
+        //req.session.profilePicture= customer.profile_picture
+        //req.flash('success_msg', 'Profile updated successfully.');
+        //req.session.isChanged();
+        console.log("req session is :", req.session);
+        res.redirect('/signin')
+      }
+    });
+});
+
+
+
+
 
 // Uploading the image
 app.post('/upload', upload.single('portfolio-docs'), (req, res, next) => {

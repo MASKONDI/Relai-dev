@@ -90,6 +90,13 @@ const CustomerSchema = new Schema({
     type: String,
     enum: ['buyer', 'seller', 'renovator'],
   },
+  cus_profile_image_name: {
+    type: String,
+  },
+  cus_profile_image: {
+    data: Buffer,
+    contantType: String
+  }
 });
 
 

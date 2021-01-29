@@ -194,7 +194,9 @@ router.post("/cust_signin", (req, res) => {
         req.session.phoneNumber = customers.cus_phone_number;
         req.session.country = customers.cus_country_id;
         //req.session.profilePicture= customer.profile_picture
-
+        if (customers.cus_profile_image_name) {
+          req.session.imagename = customers.cus_profile_image_name
+        }
 
         //req.session.isChanged = true
         // Customer Matched
@@ -553,17 +555,17 @@ router.post('/change-permision', (req, res) => {
 /* -------------------------------------------------------------------------------------------------
 POST : Hire now api is used for hiring professional(service_provider) for particular property.
 ------------------------------------------------------------------------------------------------- */
-const addTaskHelper = require("./addTask"); 
-router.post("/hire-now", async(req, res) => {
+const addTaskHelper = require("./addTask");
+router.post("/hire-now", async (req, res) => {
   console.log("req is", req.body);
-  var user_id=req.body.user_id;
+  var user_id = req.body.user_id;
   var propertyId = req.body.propertyId;
-  var pps_professional_id=req.body.serviceProviderId;
-  var pps_phase_name= req.body.instruction;
-  var pps_phase_start_date=req.body.startDate
-  var pps_phase_end_date=req.body.endDate
-  let addPhaseResponce=await addTaskHelper.save_addPhase(propertyId,pps_professional_id,pps_phase_name,pps_phase_start_date,pps_phase_end_date);
-   console.log('addPhaseResponce',addPhaseResponce);
+  var pps_professional_id = req.body.serviceProviderId;
+  var pps_phase_name = req.body.instruction;
+  var pps_phase_start_date = req.body.startDate
+  var pps_phase_end_date = req.body.endDate
+  let addPhaseResponce = await addTaskHelper.save_addPhase(propertyId, pps_professional_id, pps_phase_name, pps_phase_start_date, pps_phase_end_date);
+  console.log('addPhaseResponce', addPhaseResponce);
   const hirenow = new PropertyProfessionalSchema({
     pps_user_id: req.body.user_id,
     pps_property_id: req.body.propertyId,
@@ -580,7 +582,7 @@ router.post("/hire-now", async(req, res) => {
       //res.json(hireprofessional);
       //await addTaskHelper.save_addTask();
       res.redirect("/professionals-hirenow")
-      
+
       //res.json({status:1,'message':'professinoal hired successfully',data:addPhaseResponce})
     })
     .catch(err => {
@@ -594,14 +596,14 @@ router.post("/hire-now", async(req, res) => {
 /* -------------------------------------------------------------------------------------------------
 POST : Add Task api is used for adding task(or Phase) details and sharing these details to hired professional.
 ------------------------------------------------------------------------------------------------- */
-router.post("/addTask",(req,res)=>{
-  console.log("AddTask:++",req.body)
+router.post("/addTask", (req, res) => {
+  console.log("AddTask:++", req.body)
   const newTask = new PropertyProfessinoalTaskSchema({
     //ppts_property_id:  need to store properties Id
-    ppts_user_id:req.body.currentUserId,
+    ppts_user_id: req.body.currentUserId,
     ppts_task_name: req.body.todotask,
     ppts_assign_to: req.body.professionalId,
-    ppts_due_date:req.body.duedate
+    ppts_due_date: req.body.duedate
   });
   newTask
     .save()
@@ -618,7 +620,7 @@ router.post("/addTask",(req,res)=>{
 })
 router.post("/add-Task", (req, res) => {
   console.log("req is", req.body);
- return;
+  return;
   const newTask = new PropertiesPhaseSchema({
     //pps_property_id:  need to store properties Id
     pps_phase_name: req.body.pps_phase_name,
@@ -743,22 +745,41 @@ function invite_function(req) {
       // res.redirect('/add-property')
     }
   });
-
-
 }
+/* -------------------------------------------------------------------------------------------------
+POST : update-customer-profile is used for updating customer profile data 
+------------------------------------------------------------------------------------------------- */
 
-router.post('/edit-profile', (req, res) => {
-  console.log("updating user profile", req);
-  CustomerSchema.findByIdAndUpdate(req.session.user_id, { cus_fullname: req.body.cus_fullname, cus_address: req.body.cus_address, cus_city: req.body.cus_city, cus_email_id: req.body.cus_email_id, cus_phone_number: req.body.cus_phone_number },
-    function (err, docs) {
+router.post('/update-customer-profile', (req, res) => {
+  console.log("updating user profile with incoming request :", req.body);
+
+  var user_id = req.session.user_id;
+  CustomerSchema.findByIdAndUpdate({ _id: user_id }, { $set: { cus_fullname: req.body.cus_fullname, cus_address: req.body.cus_address, cus_city: req.body.cus_city, cus_email_id: req.body.cus_email_id, cus_phone_number: req.body.cus_phone_number, cus_updated_at: Date.now() } },
+    function (err, customers) {
       if (err) {
-        console.log(err)
+        console.log("Something went wrong")
       }
       else {
-        console.log("Updated User : ", docs);
+        console.log("result after updating : ", customers);
+        //TODO: Want to update session after editprofile
+
+        // req.session._id = doc.user_id;
+        // req.session.user_id = customers._id;
+        // req.session.name = customers.cus_fullname;
+        // req.session.email = customers.cus_email_id;
+        // //req.session.is_user_logged_in = true;
+        // // req.session.active_user_login = "buyer";
+        // req.session.address = customers.cus_address;
+        // req.session.city = customers.cus_city;
+        // req.session.phoneNumber = customers.cus_phone_number;
+        // req.session.country = customers.cus_country_id;
+        //req.session.profilePicture= customer.profile_picture
+        //req.flash('success_msg', 'Profile updated successfully.');
+        //req.session.isChanged();
+        console.log("req session is :", req.session);
+        res.redirect('/signin')
       }
     });
-
 });
 
 
