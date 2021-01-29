@@ -278,13 +278,11 @@
                               </div>
                               <div class="">
                                 <div class="">
-                                  <!-- <a href="#" data-toggle="modal" data-target="#myModal"
-                                    class="btn btn-add-task-fix">Add
-                                    Phase</a> -->
                                     <a href="#" name="addMorePhase"class="btn btn-add-task-fix">Add Phase</a>
                                 </div>
                               </div>
                             </div>
+                            <div class="row divv"></div>
                             <!-- <div class="row">
                               <div class="professional-input-box">
                                 <div class="professional-text-fix">
@@ -319,7 +317,8 @@
                             </div> -->
                           </div>
                         </div>
-                      </div> <button type="submit" class="btn btn-next" style="width: 164px; border-radius: 5px;">Hire
+                      </div> 
+                      <button type="submit" class="btn btn-next" style="width: 164px; border-radius: 5px;">Hire
                         Now</button>
                     </form>
                     <!-- <div class="alert alert-info" id="msg"></div> -->
@@ -508,7 +507,7 @@
       var count =2;
      $("a[name='addMorePhase']").click(function () {
         var domElement = $('<div class="row"><div class="professional-input-box"><div class="professional-text-fix"><label>Phase' + count++ +'</label><input type="text" class="form-control form-control-size-fix "placeholder="Pre-exchange Submitting the contract" name="instruction"></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>Start Date</label><input type="date" class="form-control form-control-size-fix "placeholder="FullName" name="startDate"></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>End Date</label><input type="date" class="form-control form-control-size-fix "placeholder="End Date" name="endDate"></div></div></div>');
-        $(this).before(domElement);
+        $(".divv").before(domElement);
       });
     });
   </script>
