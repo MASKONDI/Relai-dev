@@ -248,6 +248,16 @@
                               <div class="professional-input-box">
                                 <div class="professional-text-fix">
                                   <label>Phase1</label>
+                                  <% if(typeof err_msg!='undefined' ){ %>
+                                    <span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">
+                                      <%= err_msg %>
+                                    </span>
+                                    <% }%>
+                                      <% if(typeof success_msg!='undefined' ){ %>
+                                        <span class="succ_flash_msg" style="color: green;">
+                                          <%= success_msg %>
+                                        </span>
+                                        <% }%>
                                   <input type="text" class="form-control form-control-size-fix " id="instruction"
                                     placeholder="Instruction" name="instruction" required>
                                 </div>
@@ -495,9 +505,10 @@
   </script>
   <script>
      $(document).ready(function () {
+      var count =2;
      $("a[name='addMorePhase']").click(function () {
-        var domElement = $('<div class="row"><div class="professional-text-fix"><label>Phase1</label><input type="text" class="form-control form-control-size-fix " id="instruction"placeholder="Instruction" name="instruction" required></div></div></div>');
-        $(this).after(domElement);
+        var domElement = $('<div class="row"><div class="professional-input-box"><div class="professional-text-fix"><label>Phase' + count++ +'</label><input type="text" class="form-control form-control-size-fix "placeholder="Pre-exchange Submitting the contract" name="instruction"></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>Start Date</label><input type="date" class="form-control form-control-size-fix "placeholder="FullName" name="startDate"></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>End Date</label><input type="date" class="form-control form-control-size-fix "placeholder="End Date" name="endDate"></div></div></div>');
+        $(this).before(domElement);
       });
     });
   </script>
