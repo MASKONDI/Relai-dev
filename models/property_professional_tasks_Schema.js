@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const PropertyProfessinoalTaskSchema = new Schema({
     ppts_id: { 
         type: Number,
-        required:true 
+        //required:true 
     },
     ppts_property_id: {
     type: Schema.Types.ObjectId,
@@ -33,6 +33,7 @@ const PropertyProfessinoalTaskSchema = new Schema({
   ppts_assign_user_type: {
     type: String,
     enum: ['customer', 'service_provider'],
+    default:'service_provider'
     
   },
   ppts_due_date: {
@@ -45,7 +46,7 @@ const PropertyProfessinoalTaskSchema = new Schema({
   ppts_task_status:{
     type: String,
     enum: ['pending','completed_by_service_provider','confirmed_by_buyer','confirmed_by_seller'],
-    default:'panding'
+    default:'pending'
   },
   ppts_created_at: {
     type: Date,
@@ -57,11 +58,11 @@ const PropertyProfessinoalTaskSchema = new Schema({
   ppts_deleted_at: {
     type: Date
   },
-//   ppts_is_active_user_flag:{
-//     type: String,
-//     enum: ['buyer', 'seller','renovator'],
-//     default: 'buyer'
-//   },
+  ppts_is_active_user_flag:{
+    type: String,
+    enum: ['buyer', 'seller','renovator'],
+    default: 'buyer'
+  },
 
 });
 module.exports = PropertyProfessinoalTask = mongoose.model('property_professional_task', PropertyProfessinoalTaskSchema);

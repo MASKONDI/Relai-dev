@@ -21,6 +21,7 @@ const multer = require('multer');
 const { cust_register, cust_signin } = require("../../controllers/customers");
 const ServiceProviderSchema = require("../../models/service_providers");
 // Load Input Validation
+const validateAddPhase = require('../../Validation/add_phase');
 const validateCustomerRegisterInput = require('../../Validation/cust_signup');
 const validateCustomerSigninInput = require('../../Validation/cust_signin');
 const DocumentPermissionSchema = require('../../models/document_permission')
@@ -556,6 +557,7 @@ router.post('/change-permision', (req, res) => {
 /* -------------------------------------------------------------------------------------------------
 POST : Hire now api is used for hiring professional(service_provider) for particular property.
 ------------------------------------------------------------------------------------------------- */
+<<<<<<< HEAD
 const addTaskHelper = require("./addTask");
 router.post("/hire-now", async (req, res) => {
   console.log("req is", req.body);
@@ -567,6 +569,37 @@ router.post("/hire-now", async (req, res) => {
   var pps_phase_end_date = req.body.endDate
   let addPhaseResponce = await addTaskHelper.save_addPhase(propertyId, pps_professional_id, pps_phase_name, pps_phase_start_date, pps_phase_end_date);
   console.log('addPhaseResponce', addPhaseResponce);
+=======
+ 
+const addTaskHelper = require("./addTask"); 
+router.post("/hire-now", async(req, res) => {
+  var err_msg = null;
+  var success_msg = null;
+  //const { errors, isValid } = validateAddPhase(req.body);
+  console.log("req is", req.body);
+  // if (!isValid) {
+  //   console.log("server validation error is:", errors);
+  //   req.flash('err_msg', errors.instruction);
+  //   return res.redirect('/professionals-hirenow');
+  // }
+
+  if(req.body.instruction.length!=0){
+    req.body.instruction.forEach(async function(instruction,i){
+      var user_id=req.body.user_id;
+      var propertyId = req.body.propertyId;
+      var pps_professional_id=req.body.serviceProviderId;
+      var pps_phase_name= instruction;
+      var pps_phase_start_date=req.body.startDate[i]
+      var pps_phase_end_date=req.body.endDate[i]
+      let addPhaseResponce=await addTaskHelper.save_addPhase(propertyId,pps_professional_id,pps_phase_name,pps_phase_start_date,pps_phase_end_date);
+       console.log('addPhaseResponce A:',addPhaseResponce) 
+  })
+  }else{
+    req.flash('err_msg', errors.instruction);
+    return res.redirect('/professionals-hirenow');
+  }
+  
+>>>>>>> b78862b91bf7f9555fb904612dafe9325f71a125
   const hirenow = new PropertyProfessionalSchema({
     pps_user_id: req.body.user_id,
     pps_property_id: req.body.propertyId,
@@ -582,8 +615,13 @@ router.post("/hire-now", async (req, res) => {
       console.log("server response is :", hireprofessional);
       //res.json(hireprofessional);
       //await addTaskHelper.save_addTask();
+<<<<<<< HEAD
       res.redirect("/professionals-hirenow")
 
+=======
+      //res.redirect("/professionals-hirenow")
+      res.redirect('/add-task');
+>>>>>>> b78862b91bf7f9555fb904612dafe9325f71a125
       //res.json({status:1,'message':'professinoal hired successfully',data:addPhaseResponce})
     })
     .catch(err => {
@@ -597,6 +635,7 @@ router.post("/hire-now", async (req, res) => {
 /* -------------------------------------------------------------------------------------------------
 POST : Add Task api is used for adding task(or Phase) details and sharing these details to hired professional.
 ------------------------------------------------------------------------------------------------- */
+<<<<<<< HEAD
 router.post("/addTask", (req, res) => {
   console.log("AddTask:++", req.body)
   const newTask = new PropertyProfessinoalTaskSchema({
@@ -605,12 +644,26 @@ router.post("/addTask", (req, res) => {
     ppts_task_name: req.body.todotask,
     ppts_assign_to: req.body.professionalId,
     ppts_due_date: req.body.duedate
+=======
+router.post("/addTask",(req,res)=>{
+  console.log("AddTask:++",req.body)
+  console.log('session user active flage',req.session.active_user_login);
+  const newTask = new PropertyProfessinoalTaskSchema({
+    ppts_property_id: req.body.ppts_property_id,
+    ppts_user_id:req.body.currentUserId,
+    ppts_task_name: req.body.todotask,
+    ppts_assign_to: req.body.professionalId,
+    ppts_due_date:req.body.duedate,
+    ppts_phase_id:req.body.phase_id,
+    ppts_is_active_user_flag:req.session.active_user_login,
+    ppts_note:req.body.notes
+>>>>>>> b78862b91bf7f9555fb904612dafe9325f71a125
   });
   newTask
     .save()
     .then(addedTask => {
-      console.log("server response is :", addedTask);
-      res.json(addedTask);
+      console.log("server response is addedTask :", addedTask);
+      res.json({status:1,message:'Task Add Successfully',data:addedTask});
       // res.redirect("/professionals-hirenow")
     })
     .catch(err => {
