@@ -572,9 +572,9 @@ router.post("/hire-now", async(req, res) => {
       console.log("server response is :", hireprofessional);
       //res.json(hireprofessional);
       //await addTaskHelper.save_addTask();
-      res.redirect("/professionals-hirenow")
+      //res.redirect("/professionals-hirenow")
       
-      //res.json({status:1,'message':'professinoal hired successfully',data:addPhaseResponce})
+      res.json({status:1,'message':'professinoal hired successfully',data:addPhaseResponce})
     })
     .catch(err => {
       console.log(err)
@@ -589,18 +589,22 @@ POST : Add Task api is used for adding task(or Phase) details and sharing these 
 ------------------------------------------------------------------------------------------------- */
 router.post("/addTask",(req,res)=>{
   console.log("AddTask:++",req.body)
+  console.log('session user active flage',req.session.active_user_login);
   const newTask = new PropertyProfessinoalTaskSchema({
-    //ppts_property_id:  need to store properties Id
+    ppts_property_id: req.body.ppts_property_id,
     ppts_user_id:req.body.currentUserId,
     ppts_task_name: req.body.todotask,
     ppts_assign_to: req.body.professionalId,
-    ppts_due_date:req.body.duedate
+    ppts_due_date:req.body.duedate,
+    ppts_phase_id:req.body.phase_id,
+    ppts_is_active_user_flag:req.session.active_user_login,
+    ppts_note:req.body.notes
   });
   newTask
     .save()
     .then(addedTask => {
-      console.log("server response is :", addedTask);
-      res.json(addedTask);
+      console.log("server response is addedTask :", addedTask);
+      res.json({status:1,message:'Task Add Successfully',data:addedTask});
       // res.redirect("/professionals-hirenow")
     })
     .catch(err => {
