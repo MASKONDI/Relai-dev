@@ -1,3 +1,4 @@
+
 <%- include('dashboard_header')-%>
   <div class="dashboard-wpr">
     <div class="container-fluid">
@@ -65,20 +66,32 @@
                       <div class="row">
                         <div class="col-sm-12 col-lg-6">
                           <div class="input-box-size-fix">
-                            <select class="form-control required" id="selectBox2" name="spods_preferred_title"
+                            <select class="form-control required professional_list" id="selectBox2" name="spods_preferred_title"
                               data-rule-required="true" data-msg-required="Preferred Title is required">
                               <option value="">Select Professionals</option>
-                              <option value="mr">K</option>
+                              <%if(hiredProfessinoal.length!=0){%>
+                                <%hiredProfessinoal.forEach(function(row){%>
+                              <option property-id="<%=row.pps_property_id%>" value="<%=row._id%>"><%=row.sps_fullname%></option>
+                              <%});%>
+                              <%}else{%>
+                                <p>Null</p>
+                                <%}%>
                             </select>
                           </div>
 
                         </div>
                         <div class="col-sm-12 col-lg-6">
                           <div class="input-box-size-fix">
-                            <select class="form-control required" id="selectBox2" name="spods_preferred_title"
+                            <select class="form-control required property_list" id="selectBox2" name="spods_preferred_title"
                               data-rule-required="true" data-msg-required="Preferred Title is required">
                               <option value="">Select Property</option>
-                              <option value="mr">Mr</option>
+                              <%if(property.length!=0){%>
+                                <%property.forEach(function(row){%>
+                              <option value="row._id"><%=row.ps_property_name%></option>
+                              <%});%>
+                              <%}else{%>
+                                <p>Null</p>
+                                <%}%>
                             </select>
                           </div>
 
@@ -89,10 +102,16 @@
                       <div class="row">
                         <div class="col-sm-12 col-lg-6">
                           <div class="input-box-size-fix">
-                            <select class="form-control required" id="selectBox2" name="spods_preferred_title"
+                            <select class="form-control required phase_list" id="selectBox2" name="spods_preferred_title"
                               data-rule-required="true" data-msg-required="Preferred Title is required">
                               <option value="">Select Phase</option>
-                              <option value="mr"></option>
+                              <%if(phaseData.length!=0){%>
+                                <%phaseData.forEach(function(row){%>
+                              <option value="row._id"><%=row.pps_phase_name%></option>
+                              <%});%>
+                              <%}else{%>
+                                <p>Null</p>
+                                <%}%>
                             </select>
                           </div>
 
@@ -250,7 +269,62 @@
         location.reload(true);
       });
     });
+
+$( ".professional_list" ).change(function() {
+  var propertyId = $('option:selected', this).attr('property-id');
+  var professionId = this.value;
+  $.ajax({
+        type: "GET",
+        data: {
+          professionId: professionId,
+          propertyId:propertyId
+        },
+        url: "/add-task-prfessional-property",
+        cache: false,
+        success: function (html) {
+          console.log('result:', html)
+          var htmlData = '';
+          htmlData += '<option value="">Select Property</option>';
+          if (html.property.length > 0) {
+            $.each(html.property, function (i, data) {
+              console.log('val:', data)
+              htmlData += '<option professional-id="'+data.pps_service_provider_id+'" value="'+data._id+'">'+data.ps_property_name+'</option>';
+            });
+          }
+          $('.property_list').html(htmlData);
+        }
+      });
+
+})
+
+
+$( ".property_list" ).change(function() {
+  var propertyId = this.value;
+  var professionId = $('option:selected', this).attr('professional-id');
+  $.ajax({
+        type: "GET",
+        data: {
+          professionId: professionId,
+          propertyId:propertyId
+        },
+        url: "/add-task-prfessional-property-phase",
+        cache: false,
+        success: function (html) {
+          console.log('result:', html)
+          var htmlData = '';
+          htmlData += '<option value="">Select Phase</option>';
+          if (html.phases.length > 0) {
+            $.each(html.phases, function (i, data) {
+              console.log('val:', data)
+              htmlData += '<option value="'+data._id+'">'+data.pps_phase_name+'</option>';
+            });
+          }
+          $('.phase_list').html(htmlData);
+        }
+      });
+
+})
+
   </script>
   </body>
 
-  </html>
