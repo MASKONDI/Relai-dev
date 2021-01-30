@@ -463,6 +463,28 @@ app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         var dateTime = date + ' ' + time;
 
+
+      //  var today1 = new Date(providerData.sms_msg_Date);
+       // var date1 = today1.getFullYear() + '/' + (today1.getMonth() + 1) + '/' + today1.getDate();
+      //  var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
+        //var dateTime1 = date1 + ' ' + time1;
+
+        //var msg_time = timeDiffCalc(new Date(dateTime), new Date(dateTime1));
+
+        //var object_as_string = JSON.stringify(providerData);
+        //const t = JSON.parse(object_as_string);
+        //t.msgTime = msg_time;
+        //await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
+         // if (professional) {
+          //  console.log('professional:', professional.sps_fullname);
+           // t.senderName = await professional.sps_fullname;
+            //console.log('providerData xxxx New:',t);
+          //} else {
+           // t.senderName = await 'You';
+          //}
+
+
+
         var today1 = new Date(providerData.sms_msg_Date);
         var date1 = today1.getFullYear() + '/' + (today1.getMonth() + 1) + '/' + today1.getDate();
         var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
@@ -1238,15 +1260,7 @@ app.get('/renovator', isCustomer, function (req, res) {
 });
 
 
-// app.get('/add-task', isCustomer, function (req, res) {
-//   console.log("current user session is :", req.session);
-//   err_msg = req.flash('err_msg');
-//   success_msg = req.flash('success_msg');
-//   res.render('add-task', {
-//     err_msg, success_msg, layout: false,
-//     session: req.session
-//   });
-// });
+
 
 
 app.get('/add-task', isCustomer, async function (req, res) {
@@ -1345,7 +1359,7 @@ app.get('/add-task-prfessional-property-phase', isCustomer, async function (req,
       phases:pahseArray
     });
     })
-});
+
 
 
 module.exports = app;
