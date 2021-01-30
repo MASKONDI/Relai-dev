@@ -1,3 +1,4 @@
+
 <%- include('dashboard_header')-%>
   <div class="dashboard-wpr">
     <div class="container-fluid">
@@ -50,7 +51,7 @@
                 </div>
               </div>
             </div>
-            <form action="/api/AddTakss" class="form form-section" method="post" id="AddTaskForm">
+            <form action="/api/service_provider_personal_details" class="form form-section" method="post" id="form1">
               <% if(typeof err_msg!='undefined' ){ %>
                 <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
                   <%= err_msg %>
@@ -65,25 +66,32 @@
                       <div class="row">
                         <div class="col-sm-12 col-lg-6">
                           <div class="input-box-size-fix">
-                            <select class="form-control required" id="selectBox2" name="professionalId"
+                            <select class="form-control required professional_list" id="selectBox2" name="spods_preferred_title"
                               data-rule-required="true" data-msg-required="Preferred Title is required">
                               <option value="">Select Professionals</option>
-                              
-                              <option value="1">aaa</option>
-                              <option value="2">bbb</option>
-                              
+                              <%if(hiredProfessinoal.length!=0){%>
+                                <%hiredProfessinoal.forEach(function(row){%>
+                              <option property-id="<%=row.pps_property_id%>" value="<%=row._id%>"><%=row.sps_fullname%></option>
+                              <%});%>
+                              <%}else{%>
+                                <p>Null</p>
+                                <%}%>
                             </select>
                           </div>
 
                         </div>
                         <div class="col-sm-12 col-lg-6">
                           <div class="input-box-size-fix">
-                            <select class="form-control required" id="selectBox2" name="ppts_property_id"
+                            <select class="form-control required property_list" id="selectBox2" name="spods_preferred_title"
                               data-rule-required="true" data-msg-required="Preferred Title is required">
                               <option value="">Select Property</option>
-                              
-                              <option value="3">a</option>
-                              <option value="4">b</option>
+                              <%if(property.length!=0){%>
+                                <%property.forEach(function(row){%>
+                              <option value="row._id"><%=row.ps_property_name%></option>
+                              <%});%>
+                              <%}else{%>
+                                <p>Null</p>
+                                <%}%>
                             </select>
                           </div>
 
@@ -94,12 +102,16 @@
                       <div class="row">
                         <div class="col-sm-12 col-lg-6">
                           <div class="input-box-size-fix">
-                            <select class="form-control required" id="selectBox2" name="phase_id"
+                            <select class="form-control required phase_list" id="selectBox2" name="spods_preferred_title"
                               data-rule-required="true" data-msg-required="Preferred Title is required">
                               <option value="">Select Phase</option>
-                              
-                              <option value="5">xx</option>
-                              <option value="6">yy</option>
+                              <%if(phaseData.length!=0){%>
+                                <%phaseData.forEach(function(row){%>
+                              <option value="row._id"><%=row.pps_phase_name%></option>
+                              <%});%>
+                              <%}else{%>
+                                <p>Null</p>
+                                <%}%>
                             </select>
                           </div>
 
@@ -107,7 +119,7 @@
                         <div class="col-sm-12 col-lg-6">
                           <div class="input-box-size-fix">
                             <input type="text" class="form-control text-field-size " id="" placeholder="phase_name"
-                              name="phase_name" value="">
+                              name="phase_name">
                           </div>
                         </div>
                       </div>
@@ -116,13 +128,13 @@
                         <div class="col-sm-12 col-lg-6">
                           <div class="input-box-size-fix">
                             <input type="date" class="form-control text-field-size " id="" placeholder="Start_date"
-                              name="startDate" value="" data-rule-required="true" data-msg-required="Start Date is required">
+                              name="startDate" data-rule-required="true" data-msg-required="Start Date is required">
                           </div>
                         </div>
                         <div class="col-sm-12 col-lg-6">
                           <div class="input-box-size-fix">
                             <input type="date" class="form-control text-field-size " id="" placeholder="End_date"
-                              name="EndDate" value="" data-rule-required="true" data-msg-required="End Date is required">
+                              name="" data-rule-required="true" data-msg-required="End Date is required">
                           </div>
                         </div>
                       </div>
@@ -133,7 +145,7 @@
                           <div class="input-box-size-fix">
                             <textarea type="text" style=" width:100%"
                               class="form-control property-form-control-size-fix " id="address"
-                              name="notes" value="" placeholder="Additional notes(if any)"></textarea>
+                              name="ps_additional_note" value="" placeholder="Additional notes(if any)"></textarea>
                           </div>
                         </div>
 
@@ -257,29 +269,62 @@
         location.reload(true);
       });
     });
-  </script>
-  <script>
-    
-    $(document).ready(function () {
-      $("#AddTaskForm").on('submit',function(e){
-        e.preventDefault();
-       var formData =  $(this).serialize();
-       if(formData){
-        $.ajax({
-          type: "POST",
-          data:formData,
-          url: "/api/addTask",
-          cache: false,
-          success: function (html) {
+
+$( ".professional_list" ).change(function() {
+  var propertyId = $('option:selected', this).attr('property-id');
+  var professionId = this.value;
+  $.ajax({
+        type: "GET",
+        data: {
+          professionId: professionId,
+          propertyId:propertyId
+        },
+        url: "/add-task-prfessional-property",
+        cache: false,
+        success: function (html) {
+          console.log('result:', html)
+          var htmlData = '';
+          htmlData += '<option value="">Select Property</option>';
+          if (html.property.length > 0) {
+            $.each(html.property, function (i, data) {
+              console.log('val:', data)
+              htmlData += '<option professional-id="'+data.pps_service_provider_id+'" value="'+data._id+'">'+data.ps_property_name+'</option>';
+            });
           }
-        });
-        location.reload(true);
-       }else{
-         alert('some thing wrong')
-       }
-      })
-    });
+          $('.property_list').html(htmlData);
+        }
+      });
+
+})
+
+
+$( ".property_list" ).change(function() {
+  var propertyId = this.value;
+  var professionId = $('option:selected', this).attr('professional-id');
+  $.ajax({
+        type: "GET",
+        data: {
+          professionId: professionId,
+          propertyId:propertyId
+        },
+        url: "/add-task-prfessional-property-phase",
+        cache: false,
+        success: function (html) {
+          console.log('result:', html)
+          var htmlData = '';
+          htmlData += '<option value="">Select Phase</option>';
+          if (html.phases.length > 0) {
+            $.each(html.phases, function (i, data) {
+              console.log('val:', data)
+              htmlData += '<option value="'+data._id+'">'+data.pps_phase_name+'</option>';
+            });
+          }
+          $('.phase_list').html(htmlData);
+        }
+      });
+
+})
+
   </script>
   </body>
 
-  </html>
