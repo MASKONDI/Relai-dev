@@ -5165,3 +5165,77 @@ a .clip-icon{
     font-family: 'Gill Sans MT';
     margin-top: 5px;
 }
+.editbtn {
+    background-color: #ffffff;
+    font-size: 16px;
+    border: none;
+  }
+  
+  .profile-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 150px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: black;
+     padding: 0px 12px 0px 0px; 
+    text-decoration: none;
+    font-family: 'Gill Sans MT';
+    display: block;
+  }.dropdown-content a:hover {background-color: #ddd;}
+
+  .profile-dropdown:hover .dropdown-content {display: block;}
+  
+  .profile-dropdown:hover .editbtn {background-color: #ffffff;}
+
+  .profile-photo {
+    vertical-align: middle;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+  }
+  .upload-image{
+    margin-left: 30%;
+    margin-right:24%;
+    
+  }
+  .upload-profile-pic .custom-file-input {
+    height: 164px;
+    width: 28%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: 31%;
+    top: 0;
+    cursor: pointer;
+}
+.addTask-submit-btn{
+    width: 45%;
+    color: #fff;
+    font-size: 16px;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 20px;
+    background: #005377;
+    /* margin: 0 auto; */
+    display: block;
+}
+.addTask-submit{
+    padding:100px;
+    text-align: center;
+}
+.profile-image{
+    vertical-align: middle;
+    width: 83px;
+    height: 83px;
+    border-radius: 50%;
+}

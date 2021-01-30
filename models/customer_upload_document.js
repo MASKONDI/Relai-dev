@@ -11,7 +11,7 @@ const CustomerUploadDocsSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "customers"
   },
-  cuds_property_id:{
+  cuds_property_id: {
     type: Schema.Types.ObjectId,
     ref: "properties"
   },
@@ -44,7 +44,11 @@ const CustomerUploadDocsSchema = new Schema({
   },
   cuds_deleted_at: {
     type: Date
-  }
+  },
+  cuds_is_active_user_flag: {
+    type: String,
+    enum: ['buyer', 'seller', 'renovator'],
+  },
 
 });
 

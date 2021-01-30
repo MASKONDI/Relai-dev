@@ -30,7 +30,7 @@
                   src="images/professionals.png"> Professionals</a>
             </li>
             <li class="active">
-              <a href="/mydreamhome-details"><img class="act-img" src="images/dreamhome-active.png"><img
+              <a href="/mydreamhome"><img class="act-img" src="images/dreamhome-active.png"><img
                   src="images/dreamhome.png"> My dream home</a>
             </li>
             <li>
@@ -119,12 +119,21 @@
                         <div class="input-field">
                           <div class="row">
                             <div class="col-sm-12 col-lg-4"><input type="text"
-                                class="form-control property-form-control-size-fix " id="buyer" placeholder="FullName"
-                                name="ps_other_party_fullname" value=""></div>
+                                class="form-control property-form-control-size-fix " id="buyer" placeholder="Full Name"
+                                name="ps_other_party_fullname" value="" data-rule-required="true"
+                                data-msg-required="Full Name is required!"></div>
+
                             <div class="col-sm-12 col-lg-4"><input type="email"
                                 class="form-control property-form-control-size-fix " id="emailaddress"
-                                placeholder="Enter email address" name="ps_other_party_emailid" value="">
+                                placeholder="Enter email address" name="ps_other_party_emailid" value=""
+                                data-rule-required="true" data-msg-required="Email is required!">
                             </div>
+                            <!-- <div class="col-sm-12 col-lg-4"><input type="text"
+                                class="form-control property-form-control-size-fix " id="emailaddress"
+                                placeholder="buyer/seller/renovator" name="ps_other_party_user_as" value=""
+                                data-rule-required="true" data-msg-required="buyer/seller/renovator is required!">
+                            </div> -->
+
                           </div>
                         </div>
 
@@ -330,9 +339,10 @@
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <!-- <script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
@@ -393,6 +403,40 @@
   <script>
 
   </Script>
+  <script>
+    $(document).ready(function () {
+      $(".buyertab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/buyer",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
+      $(".sellertab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/seller",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
+      $(".renovatortab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/renovator",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
+    });
+  </script>
   </body>
 
   </html>

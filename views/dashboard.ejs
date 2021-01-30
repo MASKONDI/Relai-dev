@@ -1,18 +1,139 @@
 <%- include('dashboard_header')-%>
+  <!-- The Modal -->
+  <div class="modal permission-modal fade " id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header text-center">
+          <h2 class="modal-title w-100">Edit Profile</h2>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form class="form" action="/api/update-customer-profile" method="post" id="form3">
+            <input type="hidden" name="customer_id" value="<%=session.user_id%>">
+            <div class=" row">
+              <div class="col-sm-12 col-lg-6">
+                <input type="text" class="form-control form-control-fix2" id="fullName" placeholder="Full Name"
+                  name="cus_fullname" value="<%= session.name%>">
+              </div>
+              <div class="col-sm-12 col-lg-6">
+                <input type=" text" class="form-control form-control-fix2" id="phone Number" placeholder="Phone Number"
+                  name="cus_phone_number" value="<%= session.phoneNumber%>">
+              </div>
+            </div>
+            <div class=" row">
+              <div class="col-sm-12 col-lg-6">
+                <input type="text" class="form-control  form-control-fix2" id="address" placeholder="Email Id"
+                  name="cus_email_id" value="<%= session.email%>">
+              </div>
+              <div class="col-sm-12 col-lg-6">
+                <input type="text" class="form-control  form-control-fix2" id="address" placeholder="Address"
+                  name="cus_address" value="<%= session.address%>">
+              </div>
+            </div>
+
+            <div class=" row">
+              <div class="col-sm-12 col-lg-6">
+                <input type="text" class="form-control  form-control-fix2" id="address" placeholder="City"
+                  name="cus_city" value="<%= session.city%>">
+              </div>
+              <div class="col-sm-12 col-lg-6">
+                <input type="text" class="form-control  form-control-fix2" id="address" placeholder="Country"
+                  name="cus_country_id" value="<%= session.country%>">
+              </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+          <button name="submit" type="submit" class="btn btn-cancel">Update</button>
+        </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="modal permission-modal fade " id="photoModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header text-center">
+          <h2 class="modal-title w-100">Update profile picture</h2>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form class="form" action="/upload-profile-pic" method="post" id="form3" enctype="multipart/form-data">
+            <div class="upload-image">
+
+
+              <% if( session.imagename=='' ){ %>
+
+                <a href="#" class="upload-profile-pic">
+                  <img src="images/img_avatar.png" alt="" class="profile-photo"> <span>
+                    <div class="custom-file-input">
+                      <input type="file" id="image" name="profile-pic" value="" required>
+                      <input type="button">
+                    </div>
+                  </span>
+                </a>
+                <% } else {%>
+                  <a href="#" class="upload-profile-pic">
+                    <img src="/upload/<%= session.imagename%>" alt="" class="profile-photo"> <span>
+                      <div class="custom-file-input">
+                        <input type="file" id="image" name="profile-pic" value="" required>
+                        <input type="button">
+                      </div>
+                    </span>
+                  </a>
+                  <% }%>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+          <button name="submit" type="submit" class="btn btn-cancel">Upload</button>
+        </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+
   <div class="dashboard-wpr">
     <div class="container-fluid">
       <div class="row content">
         <div class="col-sm-2 sidenav hidden-xs-down">
           <div class="user-login text-center">
             <div class="user-profile">
-              <img src="images/profile.png" alt="" title="">
+              <% if(session.imagename=='' ){%>
+                <img src="images/profile.png" alt="" title="">
+                <%} else{%>
+                  <img src="/upload/<%= session.imagename%>" alt="" title="" class="profile-image" value="">
+                  <%} %>
             </div>
             <div class="user-name">
               <h2>
                 <%= session.name %>
               </h2>
               <a href="#">
-                <%= session.email %>
+                <%= session.email %><span>
+                    <div class="profile-dropdown">
+                      <i class="fa fa-pencil editbtn"></i>
+                      <div class="dropdown-content">
+                        <a href="#" data-toggle="modal" data-target="#photoModal">Upload Photo</a>
+                        <a href="#" data-toggle="modal" data-target="#myModal">EditProfile</a>
+                        <a href="/api/cust_logout">Logout</a>
+                      </div>
+                    </div>
+                  </span>
               </a>
             </div>
 
@@ -51,6 +172,7 @@
                         <img src="images/property.png" alt="" title="">
                         <h2>1,500+</h2>
                         <p>Active property</p>
+
                       </div>
                     </div>
                   </div>
@@ -217,9 +339,10 @@
   </div>
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
@@ -267,10 +390,54 @@
         $(this).addClass("active");
       });
     });
+    $('.right-navbar li').click(function () {
+      $('.right-navbar li').each(function () {
+        $(this).removeClass('active');
+      });
+
+      $(this).addClass('active');
+
+    })
+  </script>
+  <script>
     $(document).ready(function () {
-      $(".right-navbar li").click(function () {
-        $("right-navbar li").removeClass("active");
-        $(this).addClass("active");
+      $(".buyertab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/buyer",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
+      $(".sellertab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/seller",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
+      $(".renovatortab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/renovator",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
+    })
+
+  </script>
+  <script>
+    $(document).ready(function () {
+      $('.custom-file-input input[type="file"]').change(function (e) {
+        $(this).siblings('input[type="text"]').val(e.target.files[0].name);
       });
     });
   </script>

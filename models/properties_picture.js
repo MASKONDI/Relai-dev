@@ -31,6 +31,11 @@ const PropertiesPictureSchema = new Schema({
   },
   pps_deleted_at: {
     type: Date
-  }
+  },
+  pps_is_active_user_flag: {
+    type: String,
+    enum: ['buyer', 'seller', 'renovator'],
+
+  },
 });
 module.exports = propertiespicture = mongoose.model('propertiespicture', PropertiesPictureSchema);

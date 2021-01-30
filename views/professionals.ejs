@@ -99,6 +99,7 @@
                         </div>
                       </div>
                     </div>
+
                     <div class="col-sm-12 col-lg-12">
                       <ul id="professional-role" class="icon-list">
                         <li><a data-role="Accountant" href="javascript:void(0)"><img src="images/accountant.png" alt=""
@@ -198,9 +199,9 @@
   </div>
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
@@ -277,6 +278,40 @@
     });
 
 
+  </script>
+  <script>
+    $(document).ready(function () {
+      $(".buyertab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/buyer",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
+      $(".sellertab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/seller",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
+      $(".renovatortab").click(function (e) {
+        $.ajax({
+          type: "GET",
+          url: "/renovator",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+      });
+    });
   </script>
 
 

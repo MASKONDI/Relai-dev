@@ -87,9 +87,25 @@
                 </div>
                 <div class="col-sm-6 col-lg-6">
                   <ul class="right-navbar">
-                    <li class="active"><a href="/dashboard">Buyer</a></li>
-                    <li><a href="#">Seller</a></li>
-                    <li><a href="/mydreamhome">Renovator</a></li>
+                    <% if(session.active_user_login=='buyer' ){ %>
+                      <li class="active"><a href="/dashboard" class="buyertab">Buyer </a></li>
+                      <li><a href="/dashboard" class="sellertab">Seller</a></li>
+                      <li><a href="/dashboard" class="renovatortab">Renovator</a></li>
+
+                      <% }else if(session.active_user_login=='seller' ){%>
+
+
+                        <li><a href="/dashboard" class="buyertab">Buyer </a></li>
+                        <li class="active"><a href="/dashboard" class="sellertab">Seller</a></li>
+                        <li><a href="/dashboard" class="renovatortab">Renovator</a></li>
+
+                        <% }else { %>
+
+                          <li><a href="/dashboard" class="buyertab">Buyer </a></li>
+                          <li><a href="/dashboard" class="sellertab">Seller</a></li>
+                          <li class="active"><a href="/dashboard" class="renovatortab">Renovator</a></li>
+
+                          <% }%>
                   </ul>
                 </div>
               </div>

@@ -85,6 +85,17 @@ const CustomerSchema = new Schema({
     type: String,
     enum: ['pending', 'completed'],
     default: 'pending',
+  },
+  cus_is_active_user_flag: {
+    type: String,
+    enum: ['buyer', 'seller', 'renovator'],
+  },
+  cus_profile_image_name: {
+    type: String,
+  },
+  cus_profile_image: {
+    data: Buffer,
+    contantType: String
   }
 });
 

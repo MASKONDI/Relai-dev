@@ -9,6 +9,9 @@ const PropertiesPhaseSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "properties"
   },
+  pps_professional_id:{
+    type:String
+  },
   pps_phase_name: {
     type: String
   },
@@ -32,7 +35,11 @@ const PropertiesPhaseSchema = new Schema({
     type: String,
     enum: ['0', '1'],
     default: '0'
-  }
+  },
+  pps_is_active_user_flag: {
+    type: String,
+    enum: ['buyer', 'seller', 'renovator'],
+  },
 
 });
 module.exports = propertiesphase = mongoose.model('propertiesphase', PropertiesPhaseSchema);

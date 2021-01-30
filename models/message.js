@@ -46,5 +46,9 @@ const MessageSchema = new Schema({
   sms_deleted_at: {
     type: Date
   },
+  sms_is_active_user_flag: {
+    type: String,
+    enum: ['buyer', 'seller', 'renovator'],
+  },
 });
 module.exports = message = mongoose.model('message', MessageSchema);
