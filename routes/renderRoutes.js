@@ -21,6 +21,8 @@ const PropertyProfessionalSchema = require("../models/property_professional_Sche
 const MessageSchema = require("../models/message");
 const CustomerSchema = require("../models/customers");
 const ServiceProviderOtherDetailsSchema = require("../models/service_providers_other_details");
+const PropertiesPhaseSchema = require("../models/property_phase_schema");
+
 
 
 var isCustomer = auth.isCustomer;
@@ -1237,14 +1239,24 @@ app.get('/renovator', isCustomer, function (req, res) {
 });
 
 
-app.get('/add-task', isCustomer, function (req, res) {
+app.get('/add-task', isCustomer, async function (req, res) {
+  return new Promise( async function (resolve, reject) {
   console.log("current user session is :", req.session);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('add-task', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
+  await PropertyProfessionalSchema.find({$and:[{pps_user_id:req.session.user_id}]}).then(async(hiredProfessinoal)=>{
+    if(hiredProfessinoal){
+      
+      //await PropertiesSchema.find({_id:k.pps_user_id})
+      res.render('add-task', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        hiredProfessinoal:hiredProfessinoal,
+        
+      });
+    }
+  })
+})
 });
 
 

@@ -50,7 +50,7 @@
                 </div>
               </div>
             </div>
-            <form action="/api/service_provider_personal_details" class="form form-section" method="post" id="form1">
+            <form action="/api/AddTakss" class="form form-section" method="post" id="AddTaskForm">
               <% if(typeof err_msg!='undefined' ){ %>
                 <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
                   <%= err_msg %>
@@ -65,20 +65,25 @@
                       <div class="row">
                         <div class="col-sm-12 col-lg-6">
                           <div class="input-box-size-fix">
-                            <select class="form-control required" id="selectBox2" name="spods_preferred_title"
+                            <select class="form-control required" id="selectBox2" name="professionalId"
                               data-rule-required="true" data-msg-required="Preferred Title is required">
                               <option value="">Select Professionals</option>
-                              <option value="mr">K</option>
+                              
+                              <option value="1">aaa</option>
+                              <option value="2">bbb</option>
+                              
                             </select>
                           </div>
 
                         </div>
                         <div class="col-sm-12 col-lg-6">
                           <div class="input-box-size-fix">
-                            <select class="form-control required" id="selectBox2" name="spods_preferred_title"
+                            <select class="form-control required" id="selectBox2" name="ppts_property_id"
                               data-rule-required="true" data-msg-required="Preferred Title is required">
                               <option value="">Select Property</option>
-                              <option value="mr">Mr</option>
+                              
+                              <option value="3">a</option>
+                              <option value="4">b</option>
                             </select>
                           </div>
 
@@ -89,10 +94,12 @@
                       <div class="row">
                         <div class="col-sm-12 col-lg-6">
                           <div class="input-box-size-fix">
-                            <select class="form-control required" id="selectBox2" name="spods_preferred_title"
+                            <select class="form-control required" id="selectBox2" name="phase_id"
                               data-rule-required="true" data-msg-required="Preferred Title is required">
                               <option value="">Select Phase</option>
-                              <option value="mr"></option>
+                              
+                              <option value="5">xx</option>
+                              <option value="6">yy</option>
                             </select>
                           </div>
 
@@ -100,7 +107,7 @@
                         <div class="col-sm-12 col-lg-6">
                           <div class="input-box-size-fix">
                             <input type="text" class="form-control text-field-size " id="" placeholder="phase_name"
-                              name="phase_name">
+                              name="phase_name" value="">
                           </div>
                         </div>
                       </div>
@@ -109,13 +116,13 @@
                         <div class="col-sm-12 col-lg-6">
                           <div class="input-box-size-fix">
                             <input type="date" class="form-control text-field-size " id="" placeholder="Start_date"
-                              name="startDate" data-rule-required="true" data-msg-required="Start Date is required">
+                              name="startDate" value="" data-rule-required="true" data-msg-required="Start Date is required">
                           </div>
                         </div>
                         <div class="col-sm-12 col-lg-6">
                           <div class="input-box-size-fix">
                             <input type="date" class="form-control text-field-size " id="" placeholder="End_date"
-                              name="" data-rule-required="true" data-msg-required="End Date is required">
+                              name="EndDate" value="" data-rule-required="true" data-msg-required="End Date is required">
                           </div>
                         </div>
                       </div>
@@ -126,7 +133,7 @@
                           <div class="input-box-size-fix">
                             <textarea type="text" style=" width:100%"
                               class="form-control property-form-control-size-fix " id="address"
-                              name="ps_additional_note" value="" placeholder="Additional notes(if any)"></textarea>
+                              name="notes" value="" placeholder="Additional notes(if any)"></textarea>
                           </div>
                         </div>
 
@@ -249,6 +256,28 @@
         });
         location.reload(true);
       });
+    });
+  </script>
+  <script>
+    
+    $(document).ready(function () {
+      $("#AddTaskForm").on('submit',function(e){
+        e.preventDefault();
+       var formData =  $(this).serialize();
+       if(formData){
+        $.ajax({
+          type: "POST",
+          data:formData,
+          url: "/api/addTask",
+          cache: false,
+          success: function (html) {
+          }
+        });
+        location.reload(true);
+       }else{
+         alert('some thing wrong')
+       }
+      })
     });
   </script>
   </body>

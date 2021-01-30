@@ -582,6 +582,7 @@ router.post("/hire-now", async (req, res) => {
       let addPhaseResponce = await addTaskHelper.save_addPhase(propertyId, pps_professional_id, pps_phase_name, pps_phase_start_date, pps_phase_end_date);
       console.log('addPhaseResponce A:', addPhaseResponce)
     })
+
   } else {
     req.flash('err_msg', errors.instruction);
     return res.redirect('/professionals-hirenow');
@@ -623,6 +624,7 @@ POST : Add Task api is used for adding task(or Phase) details and sharing these 
 router.post("/addTask", (req, res) => {
   console.log("AddTask:++", req.body)
   console.log('session user active flage', req.session.active_user_login);
+  return;
   const newTask = new PropertyProfessinoalTaskSchema({
     ppts_property_id: req.body.ppts_property_id,
     ppts_user_id: req.body.currentUserId,
