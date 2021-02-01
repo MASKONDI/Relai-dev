@@ -1,381 +1,381 @@
 <%- include('dashboard_header')-%>
-  <div class="dashboard-wpr">
-    <div class="container-fluid">
-      <div class="row content">
-        <div class="col-sm-2 sidenav hidden-xs-down">
-          <div class="user-login text-center">
-            <div class="user-profile">
-              <img src="images/profile.png" alt="" title="">
+  <%- include('edit-profile-model')-%>
+    <div class="dashboard-wpr">
+      <div class="container-fluid">
+        <div class="row content">
+          <div class="col-sm-2 sidenav hidden-xs-down">
+            <div class="user-login text-center">
+              <%- include('profile-image')-%>
+                <div class="user-name">
+                  <h2>
+                    <%= session.name %>
+                  </h2>
+                  <a href="#">
+                    <%= session.email %>
+                      <%- include('edit-profile-icon')-%>
+                  </a>
+                </div>
             </div>
-            <div class="user-name">
-              <h2>
-                <%= session.name %>
-              </h2>
-              <a href="#">
-                <%= session.email %>
-              </a>
-            </div>
+            <ul class="dashboard-nav">
+              <li>
+                <a href="/dashboard"><img class="act-img" src="images/dashboard-active.png"><img
+                    src="images/dashboard.png"> Dashboard</a>
+              </li>
+              <li>
+                <a href="/track-your-progress"><img class="act-img" src="images/track-active.png"><img
+                    src="images/track.png"> Track your progress</a>
+              </li>
+              <li>
+                <a href="/professionals"><img class="act-img" src="images/professionals-active.png"><img
+                    src="images/professionals.png"> Professionals</a>
+              </li>
+              <li class="active">
+                <a href="/mydreamhome"><img class="act-img" src="images/dreamhome-active.png"><img
+                    src="images/dreamhome.png"> My dream home</a>
+              </li>
+              <li>
+                <a href="/mydreamhome-details-to-dos"><img class="act-img" src="images/to-do-list-active.png"><img
+                    src="images/to-do-list.png"> To do list</a>
+              </li>
+            </ul>
           </div>
-          <ul class="dashboard-nav">
-            <li>
-              <a href="/dashboard"><img class="act-img" src="images/dashboard-active.png"><img
-                  src="images/dashboard.png"> Dashboard</a>
-            </li>
-            <li>
-              <a href="/track-your-progress"><img class="act-img" src="images/track-active.png"><img
-                  src="images/track.png"> Track your progress</a>
-            </li>
-            <li>
-              <a href="/professionals"><img class="act-img" src="images/professionals-active.png"><img
-                  src="images/professionals.png"> Professionals</a>
-            </li>
-            <li class="active">
-              <a href="/mydreamhome"><img class="act-img" src="images/dreamhome-active.png"><img
-                  src="images/dreamhome.png"> My dream home</a>
-            </li>
-            <li>
-              <a href="/mydreamhome-details-to-dos"><img class="act-img" src="images/to-do-list-active.png"><img
-                  src="images/to-do-list.png"> To do list</a>
-            </li>
-          </ul>
-        </div>
 
-        <div class="col-sm-12 col-lg-9">
-          <div class=" dashboard-inner">
+          <div class="col-sm-12 col-lg-9">
+            <div class=" dashboard-inner">
 
-            <div class="row">
-              <div class="col-sm-12 col-lg-9">
-                <div class="signup-head">
-                  <h3>Add Task</h3>
-                  <div id="msgg" class="alert alert-success"></div>
-                  <div id="error" class="alert alert-danger"></div>
+              <div class="row">
+                <div class="col-sm-12 col-lg-9">
+                  <div class="signup-head">
+                    <h3>Add Task</h3>
+                    <div id="msgg" class="alert alert-success"></div>
+                    <div id="error" class="alert alert-danger"></div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <form action="/api/service_provider_personal_details" class="form form-section" method="post"
-              id="AddTaskForm">
-              <% if(typeof err_msg!='undefined' ){ %>
-                <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
-                  <%= err_msg %>
-                </span>
-                <% }%>
-                  <% if(typeof success_msg!='undefined' ){ %>
-                    <span class="succ_flash_msg" style="color: green;">
-                      <%= success_msg %>
-                    </span>
-                    <% }%>
+              <form action="/api/service_provider_personal_details" class="form form-section" method="post"
+                id="AddTaskForm">
+                <% if(typeof err_msg!='undefined' ){ %>
+                  <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
+                    <%= err_msg %>
+                  </span>
+                  <% }%>
+                    <% if(typeof success_msg!='undefined' ){ %>
+                      <span class="succ_flash_msg" style="color: green;">
+                        <%= success_msg %>
+                      </span>
+                      <% }%>
 
-                      <div class="row">
-                        <div class="col-sm-12 col-lg-6">
-                          <div class="input-box-size-fix">
-                            <label for="Professionals">Professionals</label>
-                            <select class="form-control required professional_list" id="Professionals"
-                              name="Professionals" data-rule-required="true"
-                              data-msg-required="Preferred Title is required" required>
-                              <option value="">Select Professionals</option>
-                              <%if(hiredProfessinoal.length!=0){%>
-                                <%hiredProfessinoal.forEach(function(row){%>
-                                  <option property-id="<%=row.pps_property_id%>" value="<%=row._id%>">
-                                    <%=row.sps_fullname%>
-                                  </option>
-                                  <%});%>
-                                    <%}else{%>
-                                      <p>Null</p>
-                                      <%}%>
-                            </select>
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix">
+                              <!-- <label for="Professionals">Professionals</label> -->
+                              <select class="form-control selectBox2 professional_list" id="Professionals"
+                                style="height: 48px;" name="Professionals" data-rule-required="true"
+                                data-msg-required="professional is required" required>
+                                <option value="">Select Professionals</option>
+                                <%if(hiredProfessinoal.length!=0){%>
+                                  <%hiredProfessinoal.forEach(function(row){%>
+                                    <option property-id="<%=row.pps_property_id%>" value="<%=row._id%>">
+                                      <%=row.sps_fullname%>
+                                    </option>
+                                    <%});%>
+                                      <%}else{%>
+                                        <p>Null</p>
+                                        <%}%>
+                              </select>
+                            </div>
+
                           </div>
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix">
+                              <!-- <label for="Property">Property</label> -->
+                              <select class="form-control selectBox2 property_list" id="Property" name="Property"
+                                style="height: 48px;" data-rule-required="true" data-msg-required="property is required"
+                                required>
+                                <option value="">Select Property</option>
+                                <%if(property.length!=0){%>
+                                  <%property.forEach(function(row){%>
+                                    <option value="row._id">
+                                      <%=row.ps_property_name%>
+                                    </option>
+                                    <%});%>
+                                      <%}else{%>
+                                        <p>Null</p>
+                                        <%}%>
+                              </select>
+                            </div>
 
-                        </div>
-                        <div class="col-sm-12 col-lg-6">
-                          <div class="input-box-size-fix">
-                            <label for="Property">Property</label>
-                            <select class="form-control required property_list" id="Property" name="Property"
-                              data-rule-required="true" data-msg-required="Preferred Title is required" required>
-                              <option value="">Select Property</option>
-                              <%if(property.length!=0){%>
-                                <%property.forEach(function(row){%>
-                                  <option value="row._id">
-                                    <%=row.ps_property_name%>
-                                  </option>
-                                  <%});%>
-                                    <%}else{%>
-                                      <p>Null</p>
-                                      <%}%>
-                            </select>
-                          </div>
-
-                        </div>
-                      </div>
-
-
-                      <div class="row">
-                        <div class="col-sm-12 col-lg-6">
-                          <div class="input-box-size-fix">
-                            <label for="Phase">Phase</label>
-                            <select class="form-control required phase_list" id="Phase" name="Phase"
-                              data-rule-required="true" data-msg-required="Preferred Title is required" required>
-                              <option value="">Select Phase</option>
-                              <%if(phaseData.length!=0){%>
-                                <%phaseData.forEach(function(row){%>
-                                  <option value="row._id">
-                                    <%=row.pps_phase_name%>
-                                  </option>
-                                  <%});%>
-                                    <%}else{%>
-                                      <p>Null</p>
-                                      <%}%>
-                            </select>
-                          </div>
-
-                        </div>
-                        <div class="col-sm-12 col-lg-6">
-                          <div class="input-box-size-fix">
-                            <label for="task_name">Task Name</label>
-                            <input type="text" class="form-control text-field-size " id="" placeholder="Task Name"
-                              name="task_name" required>
                           </div>
                         </div>
-                      </div>
 
-                      <div class="row">
-                        <div class="col-sm-12 col-lg-6">
-                          <div class="input-box-size-fix">
-                            <label for="duedate">Due Date</label>
-                            <input type="date" class="form-control text-field-size " id="duedate" placeholder="due date"
-                              name="duedate" data-rule-required="true" data-msg-required="Due Date is required" required>
+
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix">
+                              <!-- <label for="Phase">Phase</label> -->
+                              <select class="form-control selectBox2 phase_list" id="Phase" name="Phase"
+                                style="height: 48px;" data-rule-required="true" data-msg-required="phase  is required"
+                                required>
+                                <option value="">Select Phase</option>
+                                <%if(phaseData.length!=0){%>
+                                  <%phaseData.forEach(function(row){%>
+                                    <option value="row._id">
+                                      <%=row.pps_phase_name%>
+                                    </option>
+                                    <%});%>
+                                      <%}else{%>
+                                        <p>Null</p>
+                                        <%}%>
+                              </select>
+                            </div>
+
+                          </div>
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix">
+                              <!-- <label for="duedate">Due Date</label> -->
+                              <input type="date" class="form-control text-field-size " id="duedate"
+                                placeholder="due date" name="duedate" data-rule-required="true"
+                                data-msg-required="Due Date is required" required>
+                            </div>
                           </div>
                         </div>
+
+                        <!-- <div class="row">
+                          <div class="col-sm-12 col-lg-6">
+
+                          </div> -->
                         <!-- <div class="col-sm-12 col-lg-6">
                           <div class="input-box-size-fix">
                             <input type="date" class="form-control text-field-size " id="" placeholder="End_date"
                               name="" data-rule-required="true" data-msg-required="End Date is required">
                           </div>
                         </div> -->
-                      </div>
+                        <!-- </div> -->
 
 
-                      <div class="row">
-                        <div class="col-sm-12 col-lg-12">
-                          <div class="input-box-size-fix">
-                            <label for="notes">Notes</label>
-                            <textarea type="text" style=" width:100%"
-                              class="form-control property-form-control-size-fix " id="notes" name="notes" value=""
-                              placeholder="Additional notes(if any)"></textarea>
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-12">
+                            <div class="input-box-size-fix">
+                              <!-- <label for="notes">Notes</label> -->
+                              <textarea type="text" style=" width:100%"
+                                class="form-control property-form-control-size-fix " id="notes" name="notes" value=""
+                                placeholder="Additional notes(if any)"></textarea>
+                            </div>
                           </div>
+
                         </div>
 
-                      </div>
 
-
-                      <div class="row">
-                        <div class="col-sm-12 col-lg-12">
-                          <div class="prev-btn float-right">
-                            <!-- <a href="/signup-professionals-profile-2" class="btn btn-next" style="width: 164px;">
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-12">
+                            <div class="prev-btn float-right">
+                              <!-- <a href="/signup-professionals-profile-2" class="btn btn-next" style="width: 164px;">
                         NEXT</a> -->
-                            <button id="clickme" type="submit" name="submit" class="btn btn-next" style="width: 164px;">
-                              submit</button>
-                          </div>
-            </form>
+                              <button id="clickme" type="submit" name="submit" class="btn btn-next"
+                                style="width: 164px;">
+                                submit</button>
+                            </div>
+              </form>
+            </div>
           </div>
-        </div>
 
+        </div>
       </div>
     </div>
-  </div>
-  </div>
-  </div>
+    </div>
+    </div>
 
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <!-- <script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <!-- <script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
     crossorigin="anonymous"></script> -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-  <script>
-    $(document).ready(function () {
-      $(".sidenav ul li").click(function () {
-        $(".sidenav ul li").removeClass("active");
-        $(this).addClass("active");
-      });
-    });
-    $(document).ready(function () {
-      $(".right-navbar li").click(function () {
-        $("right-navbar li").removeClass("active");
-        $(this).addClass("active");
-      });
-    });
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
-    integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
-    crossorigin="anonymous"></script>
-
-
-  <script type="text/javascript">
-    $('#propertyform').validate({
-      onfocusout: function (element) {
-        this.element(element);
-      },
-      errorClass: 'error_validate',
-      errorElement: 'span',
-      errorColor: 'red',
-      highlight: function (element, errorClass) {
-        $(element).removeClass(errorClass);
-      },
-      submitHandler: function (form) {
-        $('#submit').attr('disabled', true);
-        form.submit();
-      }
-    });
-  </script>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      var flash_msg = $('.flash_msg').html();
-      if (flash_msg != "" && flash_msg != undefined) {
-        setTimeout(function () { $('.flash_msg').html(''); }, 4000);
-      }
-    });
-
-    $(document).ready(function () {
-      var succ_flash_msg = $('.succ_flash_msg').html();
-      if (succ_flash_msg != "" && succ_flash_msg != undefined) {
-        setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
-      }
-    });  
-  </script>
-  <script>
-
-  </Script>
-  <script>
-    $(document).ready(function () {
-      $(".buyertab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/buyer",
-          cache: false,
-          success: function (html) {
-          }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"></script>
+    <script>
+      $(document).ready(function () {
+        $(".sidenav ul li").click(function () {
+          $(".sidenav ul li").removeClass("active");
+          $(this).addClass("active");
         });
-        location.reload(true);
       });
-      $(".sellertab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/seller",
-          cache: false,
-          success: function (html) {
-          }
+      $(document).ready(function () {
+        $(".right-navbar li").click(function () {
+          $("right-navbar li").removeClass("active");
+          $(this).addClass("active");
         });
-        location.reload(true);
       });
-      $(".renovatortab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/renovator",
-          cache: false,
-          success: function (html) {
-          }
-        });
-        location.reload(true);
-      });
-    });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+      integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+      crossorigin="anonymous"></script>
 
-    $(".professional_list").change(function () {
-      var propertyId = $('option:selected', this).attr('property-id');
-      var professionId = this.value;
-      $.ajax({
-        type: "GET",
-        data: {
-          professionId: professionId,
-          propertyId: propertyId
+
+    <script type="text/javascript">
+      $('#AddTaskForm').validate({
+        onfocusout: function (element) {
+          this.element(element);
         },
-        url: "/add-task-prfessional-property",
-        cache: false,
-        success: function (html) {
-          console.log('result:', html)
-          var htmlData = '';
-          htmlData += '<option value="">Select Property</option>';
-          if (html.property.length > 0) {
-            $.each(html.property, function (i, data) {
-              console.log('val:', data)
-              htmlData += '<option professional-id="' + data.pps_service_provider_id + '" value="' + data._id + '">' + data.ps_property_name + '</option>';
-            });
-          }
-          $('.property_list').html(htmlData);
+        errorClass: 'error_validate',
+        errorElement: 'span',
+        errorColor: 'red',
+        highlight: function (element, errorClass) {
+          $(element).removeClass(errorClass);
+        },
+        submitHandler: function (form) {
+          $('#submit').attr('disabled', true);
+          form.submit();
+        }
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        var flash_msg = $('.flash_msg').html();
+        if (flash_msg != "" && flash_msg != undefined) {
+          setTimeout(function () { $('.flash_msg').html(''); }, 4000);
         }
       });
 
-    })
-
-
-    $(".property_list").change(function () {
-      var propertyId = this.value;
-      var professionId = $('option:selected', this).attr('professional-id');
-      $.ajax({
-        type: "GET",
-        data: {
-          professionId: professionId,
-          propertyId: propertyId
-        },
-        url: "/add-task-prfessional-property-phase",
-        cache: false,
-        success: function (html) {
-          console.log('result:', html)
-          var htmlData = '';
-          htmlData += '<option value="">Select Phase</option>';
-          if (html.phases.length > 0) {
-            $.each(html.phases, function (i, data) {
-              console.log('val:', data)
-              htmlData += '<option value="' + data._id + '">' + data.pps_phase_name + '</option>';
-            });
-          }
-          $('.phase_list').html(htmlData);
+      $(document).ready(function () {
+        var succ_flash_msg = $('.succ_flash_msg').html();
+        if (succ_flash_msg != "" && succ_flash_msg != undefined) {
+          setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
         }
-      });
+      });  
+    </script>
+    <script>
 
-    })
-
-  </script>
-  <script>
-    $(document).ready(function () {
-      $("#msgg").hide();
-      $("#error").hide();
-      $("#AddTaskForm").on('submit', function (e) {
-        e.preventDefault();
-        var formData = $(this).serialize();
-        if (formData) {
+    </Script>
+    <script>
+      $(document).ready(function () {
+        $(".buyertab").click(function (e) {
           $.ajax({
-            type: "POST",
-            data: formData,
-            url: "/api/addTask",
+            type: "GET",
+            url: "/buyer",
             cache: false,
-            success: function (data) {
-              if(data.status==0){
-                $("#error").show();
-                $('#error').html(data.message).delay(5000).fadeOut('slow');
-                
-              }else{
-                $("#msgg").show('');
-              $('#msgg').html(data.message).delay(5000).fadeOut('slow');
-              //$('#msg').html("data insert successfully").fadeIn('slow')
-              setTimeout(function () {
-               
-                location.reload(true);
-              }, 5000);
-              }
-              
+            success: function (html) {
             }
           });
-          // location.reload(true);
-        } else {
-          alert('some thing wrong')
-        }
+          location.reload(true);
+        });
+        $(".sellertab").click(function (e) {
+          $.ajax({
+            type: "GET",
+            url: "/seller",
+            cache: false,
+            success: function (html) {
+            }
+          });
+          location.reload(true);
+        });
+        $(".renovatortab").click(function (e) {
+          $.ajax({
+            type: "GET",
+            url: "/renovator",
+            cache: false,
+            success: function (html) {
+            }
+          });
+          location.reload(true);
+        });
+      });
+
+      $(".professional_list").change(function () {
+        var propertyId = $('option:selected', this).attr('property-id');
+        var professionId = this.value;
+        $.ajax({
+          type: "GET",
+          data: {
+            professionId: professionId,
+            propertyId: propertyId
+          },
+          url: "/add-task-prfessional-property",
+          cache: false,
+          success: function (html) {
+            console.log('result:', html)
+            var htmlData = '';
+            htmlData += '<option value="">Select Property</option>';
+            if (html.property.length > 0) {
+              $.each(html.property, function (i, data) {
+                console.log('val:', data)
+                htmlData += '<option professional-id="' + data.pps_service_provider_id + '" value="' + data._id + '">' + data.ps_property_name + '</option>';
+              });
+            }
+            $('.property_list').html(htmlData);
+          }
+        });
+
       })
-    });
-  </script>
-  </body>
+
+
+      $(".property_list").change(function () {
+        var propertyId = this.value;
+        var professionId = $('option:selected', this).attr('professional-id');
+        $.ajax({
+          type: "GET",
+          data: {
+            professionId: professionId,
+            propertyId: propertyId
+          },
+          url: "/add-task-prfessional-property-phase",
+          cache: false,
+          success: function (html) {
+            console.log('result:', html)
+            var htmlData = '';
+            htmlData += '<option value="">Select Phase</option>';
+            if (html.phases.length > 0) {
+              $.each(html.phases, function (i, data) {
+                console.log('val:', data)
+                htmlData += '<option value="' + data._id + '">' + data.pps_phase_name + '</option>';
+              });
+            }
+            $('.phase_list').html(htmlData);
+          }
+        });
+
+      })
+
+    </script>
+    <script>
+      $(document).ready(function () {
+        $("#msgg").hide();
+        $("#error").hide();
+        $("#AddTaskForm").on('submit', function (e) {
+          e.preventDefault();
+          var formData = $(this).serialize();
+          if (formData) {
+            $.ajax({
+              type: "POST",
+              data: formData,
+              url: "/api/addTask",
+              cache: false,
+              success: function (data) {
+                if (data.status == 0) {
+                  $("#error").show();
+                  $('#error').html(data.message).delay(5000).fadeOut('slow');
+
+                } else {
+                  $("#msgg").show('');
+                  $('#msgg').html(data.message).delay(5000).fadeOut('slow');
+                  //$('#msg').html("data insert successfully").fadeIn('slow')
+                  setTimeout(function () {
+
+                    location.reload(true);
+                  }, 5000);
+                }
+
+              }
+            });
+            // location.reload(true);
+          } else {
+            alert('some thing wrong')
+          }
+        })
+      });
+    </script>
+    </body>

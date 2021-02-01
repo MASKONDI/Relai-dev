@@ -1371,7 +1371,6 @@ app.get('/add-task-prfessional-property', isCustomer, async function (req, res) 
 });
 
 
-
 app.get('/add-task-prfessional-property-phase', isCustomer, async function (req, res) {
   return new Promise(async function (resolve, reject) {
     console.log("req.query.professionId :", req.query.professionId);
