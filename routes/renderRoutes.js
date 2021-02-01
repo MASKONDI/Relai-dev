@@ -1138,6 +1138,7 @@ app.get('/get-message-property', async (req, res) => {
 
         var object_as_string = JSON.stringify(providerData);
         const t = JSON.parse(object_as_string);
+        console.log('t:',t);
         t.msgTime = msg_time;
         await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
           if (professional) {
@@ -1150,7 +1151,7 @@ app.get('/get-message-property', async (req, res) => {
 
         });
         const s = await t;
-        //console.log('providerData New:',s);
+        console.log('providerData New:',s);
         newData.push(s);
 
       }
