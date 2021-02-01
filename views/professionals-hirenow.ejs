@@ -121,7 +121,8 @@
                 <div class="col-sm-12 col-lg-12">
                   <div class="hirenow-inner">
                     <div class="docs-files-section">
-                      <form class="form" id="hirenowform" action="/api/hire-now" method="POST">
+
+                      <form class="form" id="hirenowform" action="#" method="POST">
                         <input type="hidden" name="user_id" value="<%=session.user_id%>">
                         <input type="hidden" name="serviceProviderId" value="<%=serviceProvider._id%>">
                         <div class="row">
@@ -141,14 +142,16 @@
                           <div class="col-sm-12 col-lg-12">
                             <div class="home-section">
                               <div class="row">
+
                                 <div class="col-sm-12 col-lg-3">
                                   <div class="professional-input-box">
                                     <div class="professional-text-fix">
                                       <label>Select Property</label>
                                       <select
                                         class="form-control form-control-lg form-control-size-fix  propertySelectBox"
-                                        name="propertyId">
-                                        <option>select property</option>
+                                        name="propertyId" data-rule-required="true"
+                                        data-msg-required="Property is required!" style="width: 94%;">
+                                        <option value="">Select property</option>
                                         <% property.forEach(function(row){ %>
                                           <option class="option" value="<%=row._id%>">
                                             <%=row.ps_property_name%>
@@ -162,9 +165,14 @@
                                   <div class="professional-input-box">
                                     <div class="professional-text-fix">
                                       <label>Address</label>
-                                    <input type="text" name="address" class="form-control form-control-size-fix address" id="address"
-                                      placeholder="1143 Buena Visa Avenue"  value="">
-                                  </div>
+
+
+                                      <input type="text" class="form-control address form-control-size-fix "
+                                        id="address" placeholder="1143 Buena Visa Avenue" name="address" value=""
+                                        data-rule-required="true" data-msg-required="Address is required!" required>
+                                    </div>
+
+
                                   </div>
                                 </div>
                                 <div class="col-sm-12 col-lg-3">
@@ -172,7 +180,8 @@
                                     <div class="professional-text-fix">
                                       <label>City</label>
                                       <input type="text" class="form-control form-control-size-fix " id="city"
-                                        placeholder="Rufus" name="city" value="">
+                                        placeholder="Rufus" name="city" value="" data-rule-required="true"
+                                        data-msg-required="City is required!" required>
                                     </div>
 
                                   </div>
@@ -184,7 +193,8 @@
                                     <div class="professional-text-fix">
                                       <label>State</label>
                                       <input type="text" class="form-control form-control-size-fix " id="state"
-                                        placeholder="Oregon" name="state" value="">
+                                        placeholder="Oregon" data-rule-required="true"
+                                        data-msg-required="State is required!" required name="state" value="">
                                     </div>
                                   </div>
                                 </div>
@@ -193,7 +203,8 @@
                                     <div class="professional-text-fix">
                                       <label>Country</label>
                                       <input type="text" class="form-control form-control-size-fix " id="country"
-                                        placeholder="United States" name="country" value="">
+                                        placeholder="United States" name="country" value="" data-rule-required="true"
+                                        data-msg-required="Country is required!" required>
                                     </div>
                                   </div>
                                 </div>
@@ -202,7 +213,8 @@
                                     <div class="professional-text-fix">
                                       <label>Zip code</label>
                                       <input type="text" class="form-control form-control-size-fix " id="zipcode"
-                                        placeholder="97050" name="zipcode" value="">
+                                        placeholder="97050" name="zipcode" value="" data-rule-required="true"
+                                        data-msg-required="Zipcode is required!" required>
                                     </div>
                                   </div>
                                 </div>
@@ -214,7 +226,9 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-6">
 
+
                             <div class="heading-top hirenow-fix float-left">
+
                               <label class="">STEP 2</label>
                               <h6 class="">Tell us your approximate budget</h6>
                               <br />
@@ -226,14 +240,20 @@
                             </div>
                           </div>
                           <div class="col-sm-6 col-lg-6">
+
                             <div class="heading-top hirenow-fix float-left">
+
                               <label class="">STEP 3</label>
                               <h6 class="">Tell us expected delivery date</h6>
                             </div>
                             <div class="col-sm-6 col-lg-6">
 
-                              <input type="date" style="margin-top:5px" class="form-control form-control-size-fix "
-                                id="deliveryDate" placeholder="1 Dec 2011" name="pps_exptected_delivery_date">
+
+                              <input type="date" style="margin-top:5px;width:90%"
+                                class="form-control form-control-size-fix " id="deliveryDate" placeholder="1 Dec 2011"
+                                name="pps_exptected_delivery_date" data-rule-required="true"
+                                data-msg-required="DeliveryDate is required!" required>
+
 
                             </div>
                           </div>
@@ -243,9 +263,12 @@
                           <div class="col-sm-12 col-lg-12">
                             <div class="docs-files">
 
+
                               <div class="heading-top hirenow-fix float-left">
                                 <label class="">STEP 4</label>
                                 <h6 class="">Add phases</h6>
+                                <div class="message"></div>
+
                               </div>
 
                             </div>
@@ -255,46 +278,68 @@
                           <div class="col-sm-12 col-lg-12">
                             <div class="home-section">
                               <div class="row">
-                                <div class="col-sm-12 col-lg-3">
-                                  <div class="professional-input-box">
-                                    <div class="professional-text-fix">
-                                      <label>Phase1</label>
-                                      <% if(typeof err_msg!='undefined' ){ %>
-                                        <span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">
-                                          <%= err_msg %>
-                                        </span>
-                                        <% }%>
-                                          <% if(typeof success_msg!='undefined' ){ %>
-                                            <span class="succ_flash_msg" style="color: green;">
-                                              <%= success_msg %>
-                                            </span>
-                                            <% }%>
-                                              <input type="text" class="form-control form-control-size-fix "
-                                                id="instruction" placeholder="Instruction" name="instruction" required>
-                                    </div>
+                                <div class="professional-input-box">
+                                  <div class="professional-text-fix">
+                                    <label>Phase1</label>
+                                    <!-- <% if(typeof err_msg!='undefined' ){ %>
+                                      <span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">
+                                        <%= err_msg %>
+                                      </span>
+                                      <% }%> -->
+                                    <!-- <% if(typeof success_msg!='undefined' ){ %>
+                                          <span class="succ_flash_msg" style="color: green;">
+                                            <%= success_msg %>
+                                          </span>
+                                          <% }%> -->
+
+                                    <select class="form-control" id="instruction" placeholder="Instruction"
+                                      name="instruction" required>
+                                      <option value="">Select Phases</option>
+                                      <%if(session.active_user_login=='renovator'){ %>
+                                        <option value="Strategic definition">Strategic definition</option>
+                                        <option value="Preparation and Briefing">Preparation and Briefing</option>
+                                        <option value="Spatial coordination">Spatial coordination</option>
+                                        <option value="Technical Design">Technical Design</option>
+                                        <option value="Manifacturing and Construction">Manifacturing and Construction
+                                        </option>
+                                        <option value="Concept Design">Concept Design</option>
+                                        <option value="Handover">Handover</option>
+                                        <option value="Use">Use</option>
+                                        <%}else{%>
+                                          <option value="Instruction">Instruction</option>
+                                          <option value="Pre-exchange Submitting the contract">Pre-exchange Submitting
+                                            the contract</option>
+                                          <option value="Prior to exchange of contracts">Prior to exchange of contracts
+                                          </option>
+                                          <option value="Exchange of contracts">Exchange of contracts</option>
+                                          <option value="Completion">Completion</option>
+                                          <option value="Post-Completion">Post-Completion</option>
+                                          <%}%>
+                                    </select>
+                                    <!-- <input type="text" class="form-control form-control-size-fix "
+                                              id="instruction" placeholder="Instruction" name="instruction" required> -->
                                   </div>
                                 </div>
-                                <div class="col-sm-12 col-lg-3">
-                                  <div class="professional-input-box">
-                                    <div class="professional-text-fix">
-                                      <label>Start Date</label>
-                                      <input type="date" class="form-control form-control-size-fix " id="startDate1"
-                                        placeholder="Full Name" name="startDate" required>
-                                    </div>
+                                <div class="professional-input-box">
+                                  <div class="professional-text-fix">
+                                    <label>Start Date</label>
+                                    <input type="date" class="form-control form-control-size-fix " id="startDate1"
+                                      placeholder="Full Name" name="startDate" required>
                                   </div>
                                 </div>
-                                <div class="col-sm-12 col-lg-3">
-                                  <div class="professional-input-box">
-                                    <div class="professional-text-fix">
-                                      <label>End Date</label>
-                                      <input type="date" class="form-control form-control-size-fix " id="endDate1"
-                                        placeholder="Full Name" name="endDate" required>
-                                    </div>
+                                <div class="professional-input-box">
+                                  <div class="professional-text-fix">
+                                    <label>End Date</label>
+                                    <input type="date" class="form-control form-control-size-fix " id="endDate1"
+                                      placeholder="Full Name" name="endDate" required>
+
                                   </div>
                                 </div>
                                 <div class="">
                                   <div class="">
-                                    <a href="#" name="addMorePhase" class="btn btn-add-task-fix">Add Phase</a>
+
+                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                      Phase</a>
                                   </div>
                                 </div>
                               </div>
@@ -369,6 +414,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.js"
       integrity="sha512-tCkLWlSXiiMsUaDl5+8bqwpGXXh0zZsgzX6pB9IQCZH+8iwXRYfcCpdxl/owoM6U4ap7QZDW4kw7djQUiQ4G2A=="
       crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+      integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+      crossorigin="anonymous"></script>
+
+
     <script>
       $(document).ready(function () {
         $(".sidenav ul li").click(function () {
@@ -399,7 +449,10 @@
 // });
 
     </script>
+
+
     <script>
+
       $(document).ready(function () {
         // $('#msg').hide();
         // $('#taskmsg').hide();
@@ -419,9 +472,11 @@
               cache: false,
               success: function (data) {
                 console.log(data)
+
                 // alert($('#address').val(data.data.ps_property_address))
                 $('.address').val(data.data.ps_property_address)
                 $('#city').val(data.data.ps_property_city_id)
+
                 $('#state').val(data.data.ps_property_state_id)
                 $('#country').val(data.data.ps_property_country_id)
                 $('#zipcode').val(data.data.ps_property_zipcode)
@@ -431,58 +486,36 @@
             alert('something wrong')
           }
         });
-        // $('#hirenowform').on('submit', function (e) {
-        //   e.preventDefault();
+        $('#hirenowform').on('submit', function (e) {
+          e.preventDefault();
+          var formdata = $(this).serialize();
+          console.log('formdata:', formdata);
+          $.ajax({
+            type: "POST",
+            data: formdata,
+            url: "/api/hire-now",
+            cache: false,
+            success: function (data) {
+              console.log(data)
+              if (data.status == false) {
+                //$('#message').show();
+                $('.message').html('<span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
+                setTimeout(function () { $('.message').html(''); }, 5000);
 
-        //   var formdata = $(".form").serialize();
-        //   $.ajax({
-        //     type: "POST",
-        //     data: formdata,
-        //     url: "/api/hire-now",
-        //     cache: false,
-        //     success: function (data) {
-        //       console.log(data)
-        //       $('#msg').show();
-        //       $('#msg').html(data.message).delay(5000).fadeOut('success');
-        //       $('#ppts_property_id').val(data.data.pps_property_id);
-        //       $('#phase_id').val(data.data._id);
-        //       $("#hirenowform input").val("");
-        //       $("#hirenowform textarea").val("");
-        //       $('.propertySelectBox').prop('selectedIndex', 0);
-        //     }
-        //   });
-        //   //return false;
-        //   //windows.location.reload(true)
+                //$('#msg').html(data.message).delay(5000).fadeOut('success');
+              } else {
+                console.log('message:', data.success_msg)
+                window.location.href = data.redirect;
+              }
 
-        // })
-        // $("#addTaskForm").on('submit', function (e) {
-        //   e.preventDefault();
-        //   if ($("#ppts_property_id").val() == '' || $("#ppts_property_id").val() == undefined) {
-        //     $("#taskmsg").show();
-        //     $('#taskmsg').html('please add pahse first').delay(5000).fadeOut('success');
-        //   } else {
-
-
-        //     var formdata = $("#addTaskForm").serialize();
-        //     $.ajax({
-        //       type: "POST",
-        //       data: formdata,
-        //       url: "/api/addTask",
-        //       cache: false,
-        //       success: function (data) {
-        //         if (data.status == 1) {
-        //           $('#taskmsg').show();
-        //           $('#taskmsg').html(data.message).delay(5000).fadeOut('success');
-        //           $('#subject').val("");
-        //           $('#duedate').val("");
-        //           $('#notes').val("");
-        //         }
-
-        //       }
-        //     });
-        //   }
-        // })
-
+              //$('#ppts_property_id').val(data.data.pps_property_id);
+              //$('#phase_id').val(data.data._id);
+              //$("#hirenowform input").val("");
+              //$("#hirenowform textarea").val("");
+              //$('.propertySelectBox').prop('selectedIndex', 0);
+            }
+          });
+        })
       });
     </script>
     <script>
@@ -524,11 +557,8 @@
       $(document).ready(function () {
         var count = 2;
         $("a[name='addMorePhase']").click(function () {
-          var domElement = $('<div class="row"><div class="professional-input-box"><div class="professional-text-fix"><label>Phase' + count++ + '</label><input type="text" class="form-control form-control-size-fix "placeholder="Pre-exchange Submitting the contract" name="instruction"></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>Start Date</label><input type="date" class="form-control form-control-size-fix "placeholder="FullName" name="startDate"></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>End Date</label><input type="date" class="form-control form-control-size-fix "placeholder="End Date" name="endDate"></div></div></div>');
+          var domElement = $('<div class="row"><div class="professional-input-box"><div class="professional-text-fix"><label>Phase' + count++ + '</label><select class="form-control" id="instruction" placeholder="Instruction" name="instruction" required><option value="">Select Phases</option> <%if(session.active_user_login=="renovator"){ %><option value="Strategic definition">Strategic definition</option><option value="Preparation and Briefing">Preparation and Briefing</option><option value="Spatial coordination">Spatial coordination</option><option value="Technical Design">Technical Design</option><option value="Manifacturing and Construction">Manifacturing and Construction</option><option value="Concept Design">Concept Design</option><option value="Handover">Handover</option><option value="Use">Use</option> <%}else{%><option value="Instruction">Instruction</option><option value="Pre-exchange Submitting the contract">Pre-exchange Submitting the contract</option><option value="Prior to exchange of contracts">Prior to exchange of contracts</option><option value="Exchange of contracts">Exchange of contracts</option><option value="Completion">Completion</option><option value="Post-Completion">Post-Completion</option> <%}%> </select></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>Start Date</label><input type="date" class="form-control form-control-size-fix "placeholder="FullName" name="startDate"></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>End Date</label><input type="date" class="form-control form-control-size-fix "placeholder="End Date" name="endDate"></div></div></div>');
           $(".divv").before(domElement);
         });
       });
     </script>
-    </body>
-
-    </html>

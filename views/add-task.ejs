@@ -75,7 +75,7 @@
                                 <option value="">Select Professionals</option>
                                 <%if(hiredProfessinoal.length!=0){%>
                                   <%hiredProfessinoal.forEach(function(row){%>
-                                    <option property-id="<%=row.pps_property_id%>" value="<%=row._id%>">
+                                    <option value="<%=row._id%>">
                                       <%=row.sps_fullname%>
                                     </option>
                                     <%});%>
@@ -286,13 +286,13 @@
       });
 
       $(".professional_list").change(function () {
-        var propertyId = $('option:selected', this).attr('property-id');
+        // var propertyId = $('option:selected', this).attr('property-id');
         var professionId = this.value;
         $.ajax({
           type: "GET",
           data: {
             professionId: professionId,
-            propertyId: propertyId
+            // propertyId: propertyId
           },
           url: "/add-task-prfessional-property",
           cache: false,

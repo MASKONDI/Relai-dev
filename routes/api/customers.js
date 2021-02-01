@@ -563,15 +563,20 @@ const addTaskHelper = require("./addTask");
 router.post("/hire-now", async (req, res) => {
   var err_msg = null;
   var success_msg = null;
+  var totalInstruction = 0;
   //const { errors, isValid } = validateAddPhase(req.body);
-  console.log("req is", req.body);
-  // if (!isValid) {
-  //   console.log("server validation error is:", errors);
-  //   req.flash('err_msg', errors.instruction);
-  //   return res.redirect('/professionals-hirenow');
-  // }
+  console.log("instruction req is", req.body.instruction.length);
+  console.log("instruction req is Type", typeof (req.body.instruction));
+  console.log("req.session.active_user_login", req.session.active_user_login);
 
-  if (req.body.instruction.length != 0) {
+  if (req.session.active_user_login == 'renovator') {
+    totalInstruction = 8;
+  } else {
+    totalInstruction = 6;
+  }
+  console.log("totalInstruction:", totalInstruction);
+
+  if (req.body.instruction.length >= totalInstruction && typeof (req.body.instruction) != 'string') {
     req.body.instruction.forEach(async function (instruction, i) {
       var user_id = req.body.user_id;
       var propertyId = req.body.propertyId;
@@ -579,43 +584,49 @@ router.post("/hire-now", async (req, res) => {
       var pps_phase_name = instruction;
       var pps_phase_start_date = req.body.startDate[i]
       var pps_phase_end_date = req.body.endDate[i]
-      var pps_is_active_user_flag=req.session.active_user_login;
-      let addPhaseResponce = await addTaskHelper.save_addPhase(propertyId, pps_professional_id, pps_phase_name, pps_phase_start_date, pps_phase_end_date,pps_is_active_user_flag);
+      var pps_is_active_user_flag = req.session.active_user_login;
+      let addPhaseResponce = await addTaskHelper.save_addPhase(propertyId, pps_professional_id, pps_phase_name, pps_phase_start_date, pps_phase_end_date, pps_is_active_user_flag);
       console.log('addPhaseResponce A:', addPhaseResponce)
     })
 
-  } else {
-    req.flash('err_msg', errors.instruction);
-    return res.redirect('/professionals-hirenow');
-  }
+    // } else {
+    //   req.flash('err_msg', errors.instruction);
+    //   return res.redirect('/professionals-hirenow');
+    // }
 
-  const hirenow = new PropertyProfessionalSchema({
-    pps_user_id: req.body.user_id,
-    pps_property_id: req.body.propertyId,
-    pps_service_provider_id: req.body.serviceProviderId,
-    pps_pofessional_budget: req.body.pps_pofessional_budget,
-    pps_exptected_delivery_date: req.body.pps_exptected_delivery_date,
-    pps_is_active_user_flag: req.session.active_user_login
-    //pps_status: req.body.pps_status,//TODO:we need to save later
-  });
-  hirenow
-    .save()
-    .then(async hireprofessional => {
-      console.log("server response is :", hireprofessional);
-      //res.json(hireprofessional);
-      //await addTaskHelper.save_addTask();
-
-      //res.redirect("/professionals-hirenow")
-      res.redirect('/add-task');
-
-      //res.json({status:1,'message':'professinoal hired successfully',data:addPhaseResponce})
-    })
-    .catch(err => {
-      console.log(err)
-      req.flash('err_msg', 'Something went wrong please try again later.');
-      // res.redirect('/');
+    const hirenow = new PropertyProfessionalSchema({
+      pps_user_id: req.body.user_id,
+      pps_property_id: req.body.propertyId,
+      pps_service_provider_id: req.body.serviceProviderId,
+      pps_pofessional_budget: req.body.pps_pofessional_budget,
+      pps_exptected_delivery_date: req.body.pps_exptected_delivery_date,
+      pps_is_active_user_flag: req.session.active_user_login
+      //pps_status: req.body.pps_status,//TODO:we need to save later
     });
+    hirenow
+      .save()
+      .then(async hireprofessional => {
+        console.log("server response is :", hireprofessional);
+        //res.redirect('/add-task');
+        return res.send({
+          'success_msg': 'Saved successfully',
+          'status': true,
+          'redirect': '/add-task'
+        });
+      })
+      .catch(err => {
+        console.log(err)
+        req.flash('err_msg', 'Something went wrong please try again later.');
+      });
 
+  } else {
+    //console.log("server validation error is:", errors);
+    //req.flash('err_msg', errors.instruction);
+    return res.send({
+      'err_msg': 'Please add all phases',
+      'status': false
+    });
+  }
 });
 
 /* -------------------------------------------------------------------------------------------------
@@ -623,58 +634,36 @@ POST : Add Task api is used for adding task(or Phase) details and sharing these 
 ------------------------------------------------------------------------------------------------- */
 
 router.post("/addTask", (req, res) => {
-  if(req.body.Phase==''||req.body.Phase==undefined){
+  if (req.body.Phase == '' || req.body.Phase == undefined) {
     res.json({ status: 0, message: 'Task Add Failed' });
-    
-  }else{
-  const newTask = new PropertyProfessinoalTaskSchema({
-    ppts_property_id: req.body.Property,
-    ppts_user_id: req.session.user_id,
-    ppts_task_name: req.body.task_name,
-    ppts_assign_to: req.body.Professionals,
-    ppts_due_date: req.body.duedate,
-    ppts_phase_id: req.body.Phase,
-    ppts_is_active_user_flag: req.session.active_user_login,
-    ppts_note: req.body.notes
-  });
-  newTask
-    .save()
-    .then(addedTask => {
-      console.log("server response is addedTask :", addedTask);
-      res.json({ status: 1, message: 'Task Add Successfully', data: addedTask });
-      // res.redirect("/professionals-hirenow")
-    })
-    .catch(err => {
-      console.log(err)
-      req.flash('err_msg', 'Something went wrong please try again later.');
-      res.redirect('/professionals-hirenow');
+
+
+  } else {
+    const newTask = new PropertyProfessinoalTaskSchema({
+      ppts_property_id: req.body.Property,
+      ppts_user_id: req.session.user_id,
+      ppts_task_name: req.body.task_name,
+      ppts_assign_to: req.body.Professionals,
+      ppts_due_date: req.body.duedate,
+      ppts_phase_id: req.body.Phase,
+      ppts_is_active_user_flag: req.session.active_user_login,
+      ppts_note: req.body.notes
     });
+    newTask
+      .save()
+      .then(addedTask => {
+        console.log("server response is addedTask :", addedTask);
+        res.json({ status: 1, message: 'Task Add Successfully', data: addedTask });
+        // res.redirect("/professionals-hirenow")
+      })
+      .catch(err => {
+        console.log(err)
+        req.flash('err_msg', 'Something went wrong please try again later.');
+        res.redirect('/professionals-hirenow');
+      });
   }
 })
-router.post("/add-Task", (req, res) => {
-  console.log("req is", req.body);
-  return;
-  const newTask = new PropertiesPhaseSchema({
-    //pps_property_id:  need to store properties Id
-    pps_phase_name: req.body.pps_phase_name,
-    pps_phase_start_date: req.body.pps_phase_start_date,
-    pps_phase_end_date: req.body.pps_phase_end_date,
-    pps_is_active_user_flag: req.session.active_user_login
-  });
-  newTask
-    .save()
-    .then(addedTask => {
-      console.log("server response is :", addedTask);
-      res.json(addedTask);
-      // res.redirect("/professionals-hirenow")
-    })
-    .catch(err => {
-      console.log(err)
-      req.flash('err_msg', 'Something went wrong please try again later.');
-      res.redirect('/professionals-hirenow');
-    });
 
-});
 
 /* -------------------------------------------------------------------------------------------------
 POST : Raise a complaints api is used for raising a complaints to particular service provider along with note and status.
@@ -787,7 +776,7 @@ router.post('/update-customer-profile', (req, res) => {
   console.log("updating user profile with incoming request :", req.body);
 
   var user_id = req.session.user_id;
-  CustomerSchema.findByIdAndUpdate({ _id: user_id }, { $set: { cus_fullname: req.body.cus_fullname, cus_address: req.body.cus_address, cus_city: req.body.cus_city, cus_email_id: req.body.cus_email_id, cus_phone_number: req.body.cus_phone_number, cus_updated_at: Date.now() } },
+  CustomerSchema.findByIdAndUpdate({ _id: user_id }, { $set: { cus_fullname: req.body.cus_fullname, cus_address: req.body.cus_address, cus_city: req.body.cus_city, cus_phone_number: req.body.cus_phone_number, cus_updated_at: Date.now() } },
     function (err, customers) {
       if (err) {
         console.log("Something went wrong")
@@ -798,19 +787,19 @@ router.post('/update-customer-profile', (req, res) => {
 
         // req.session._id = doc.user_id;
         // req.session.user_id = customers._id;
-        // req.session.name = customers.cus_fullname;
+        req.session.name = req.body.cus_fullname;
         // req.session.email = customers.cus_email_id;
         // //req.session.is_user_logged_in = true;
         // // req.session.active_user_login = "buyer";
-        // req.session.address = customers.cus_address;
-        // req.session.city = customers.cus_city;
-        // req.session.phoneNumber = customers.cus_phone_number;
+        req.session.address = req.body.cus_address;
+        req.session.city = req.body.cus_city;
+        req.session.phoneNumber = req.body.cus_phone_number;
         // req.session.country = customers.cus_country_id;
         //req.session.profilePicture= customer.profile_picture
         //req.flash('success_msg', 'Profile updated successfully.');
         //req.session.isChanged();
         console.log("req session is :", req.session);
-        res.redirect('/signin')
+        res.redirect('/dashboard')
       }
     });
 });

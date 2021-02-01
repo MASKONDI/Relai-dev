@@ -77,7 +77,7 @@ app.post('/upload-profile-pic', upload.single('profile-pic'), (req, res, next) =
       else {
         console.log("file submitting successfully : ", customers);
         //TODO: Want to update session after editprofile
-
+        req.session.imagename = obj.cus_profile_image_name
         // req.session._id = doc.user_id;
         // req.session.user_id = customers._id;
         // req.session.name = customers.cus_fullname;
@@ -92,7 +92,7 @@ app.post('/upload-profile-pic', upload.single('profile-pic'), (req, res, next) =
         //req.flash('success_msg', 'Profile updated successfully.');
         //req.session.isChanged();
         console.log("req session is :", req.session);
-        res.redirect('/signin')
+        res.redirect('/dashboard')
       }
     });
 });
