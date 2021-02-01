@@ -303,19 +303,25 @@
               <div class="do-list-docs-message">
                 <div class="row">
                   <div class="col-sm-6 col-lg-4">
-                    <div class="do-list-sec">
+                    <div class="do-list-sec" style="overflow: auto;">
                       <div class="do-list-header">
                         <a href="/mydreamhome-details-to-dos">
                           <h3 class="text-center">To-do list</h3>
                         </a>
                       </div>
+                      <%if(phaseDetailObj.length==0){%>
+                        <p>No Result</p>
+                        <%}else{%>
+                          <%phaseDetailObj.forEach(function(row,i){%>
                       <label class="check-todos">
-                        <p>Instruct solicitor <a href="/mydreamhome-details-to-dos"><img
-                              src="images/recent-user-1.png"></a><em>Michael Williams</em></p>
+                        <p><%=row.pps_phase_name%><a href="/mydreamhome-details-to-dos"><img
+                              src="images/recent-user-1.png"></a><em><%=row.professionalName%></em></p>
                         <input type="checkbox">
                         <span class="checkmark"></span>
                       </label>
-                      <label class="check-todos">
+                      <%});%>
+                      <%}%>
+                      <!-- <label class="check-todos">
                         <p>Instruct other professionals<a href="/mydreamhome-details-to-dos"><img
                               src="images/recent-user-1.png"></a><em>Michael Williams</em></p>
                         <input type="checkbox">
@@ -335,7 +341,7 @@
                         <p>Proof of fund (cash buyers)/agreement in principle (mortgage)</p>
                         <input type="checkbox">
                         <span class="checkmark"></span>
-                      </label>
+                      </label> -->
                     </div>
                   </div>
                   <div class="col-sm-6 col-lg-4">

@@ -40,6 +40,11 @@ const PropertiesPhaseSchema = new Schema({
     type: String,
     enum: ['buyer', 'seller', 'renovator'],
   },
+  pps_phase_status:{
+    type: String,
+    enum: ['pending','completed'],
+    default:'pending'
+  },
 
 });
 module.exports = propertiesphase = mongoose.model('propertiesphase', PropertiesPhaseSchema);
