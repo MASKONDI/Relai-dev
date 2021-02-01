@@ -48,6 +48,7 @@
                 <div class="signup-head">
                   <h3>Add Task</h3>
                   <div id="msgg" class="alert alert-success"></div>
+                  <div id="error" class="alert alert-danger"></div>
                 </div>
               </div>
             </div>
@@ -70,7 +71,7 @@
                             <label for="Professionals">Professionals</label>
                             <select class="form-control required professional_list" id="Professionals"
                               name="Professionals" data-rule-required="true"
-                              data-msg-required="Preferred Title is required">
+                              data-msg-required="Preferred Title is required" required>
                               <option value="">Select Professionals</option>
                               <%if(hiredProfessinoal.length!=0){%>
                                 <%hiredProfessinoal.forEach(function(row){%>
@@ -89,7 +90,7 @@
                           <div class="input-box-size-fix">
                             <label for="Property">Property</label>
                             <select class="form-control required property_list" id="Property" name="Property"
-                              data-rule-required="true" data-msg-required="Preferred Title is required">
+                              data-rule-required="true" data-msg-required="Preferred Title is required" required>
                               <option value="">Select Property</option>
                               <%if(property.length!=0){%>
                                 <%property.forEach(function(row){%>
@@ -112,7 +113,7 @@
                           <div class="input-box-size-fix">
                             <label for="Phase">Phase</label>
                             <select class="form-control required phase_list" id="Phase" name="Phase"
-                              data-rule-required="true" data-msg-required="Preferred Title is required">
+                              data-rule-required="true" data-msg-required="Preferred Title is required" required>
                               <option value="">Select Phase</option>
                               <%if(phaseData.length!=0){%>
                                 <%phaseData.forEach(function(row){%>
@@ -131,7 +132,7 @@
                           <div class="input-box-size-fix">
                             <label for="task_name">Task Name</label>
                             <input type="text" class="form-control text-field-size " id="" placeholder="Task Name"
-                              name="task_name">
+                              name="task_name" required>
                           </div>
                         </div>
                       </div>
@@ -141,7 +142,7 @@
                           <div class="input-box-size-fix">
                             <label for="duedate">Due Date</label>
                             <input type="date" class="form-control text-field-size " id="duedate" placeholder="due date"
-                              name="duedate" data-rule-required="true" data-msg-required="Due Date is required">
+                              name="duedate" data-rule-required="true" data-msg-required="Due Date is required" required>
                           </div>
                         </div>
                         <!-- <div class="col-sm-12 col-lg-6">
@@ -343,6 +344,7 @@
   <script>
     $(document).ready(function () {
       $("#msgg").hide();
+      $("#error").hide();
       $("#AddTaskForm").on('submit', function (e) {
         e.preventDefault();
         var formData = $(this).serialize();
@@ -353,13 +355,20 @@
             url: "/api/addTask",
             cache: false,
             success: function (data) {
-              $("#msgg").show('');
+              if(data.status==0){
+                $("#error").show();
+                $('#error').html(data.message).delay(5000).fadeOut('slow');
+                
+              }else{
+                $("#msgg").show('');
               $('#msgg').html(data.message).delay(5000).fadeOut('slow');
               //$('#msg').html("data insert successfully").fadeIn('slow')
               setTimeout(function () {
                
                 location.reload(true);
               }, 5000);
+              }
+              
             }
           });
           // location.reload(true);

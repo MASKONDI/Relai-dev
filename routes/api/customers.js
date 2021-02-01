@@ -622,8 +622,10 @@ POST : Add Task api is used for adding task(or Phase) details and sharing these 
 ------------------------------------------------------------------------------------------------- */
 
 router.post("/addTask", (req, res) => {
-  console.log("AddTask:++", req.body)
-  console.log('session user active flage', req.session.active_user_login);
+  if(req.body.Phase==''||req.body.Phase==undefined){
+    res.json({ status: 0, message: 'Task Add Failed' });
+    console.log('++++++++++aaaaaaaaaaaaaaaa+')
+  }else{
   const newTask = new PropertyProfessinoalTaskSchema({
     ppts_property_id: req.body.Property,
     ppts_user_id: req.session.user_id,
@@ -646,6 +648,7 @@ router.post("/addTask", (req, res) => {
       req.flash('err_msg', 'Something went wrong please try again later.');
       res.redirect('/professionals-hirenow');
     });
+  }
 })
 router.post("/add-Task", (req, res) => {
   console.log("req is", req.body);
