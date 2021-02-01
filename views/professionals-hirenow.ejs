@@ -127,13 +127,13 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-12">
                             <div class="docs-files">
-                              <div class="clearfix">
-                                <div class="heading-top float-left">
-                                  <label class="">STEP 1</label>
-                                  <h6 class="">Select the property you want to hire professional for</h6>
-                                </div>
 
+                              <div class="heading-top hirenow-fix float-left">
+                                <label class="">STEP 1</label>
+                                <h6 class="">Select the property you want to hire professional for</h6>
                               </div>
+
+
                             </div>
                           </div>
                         </div>
@@ -141,61 +141,71 @@
                           <div class="col-sm-12 col-lg-12">
                             <div class="home-section">
                               <div class="row">
-                                <div class="professional-input-box">
-                                  <div class="professional-text-fix">
-                                    <label>Select Property</label>
-                                    <select class="form-control form-control-lg form-control-size-fix propertySelectBox"
-                                      style="max-width: 100%; margin-bottom:10px;" name="propertyId">
-                                      <option>select property</option>
-                                      <% property.forEach(function(row){ %>
-                                        <option class="option" value="<%=row._id%>">
-                                          <%=row.ps_property_name%>
-                                        </option>
-                                        <% }); %>
-                                    </select>
+                                <div class="col-sm-12 col-lg-3">
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>Select Property</label>
+                                      <select
+                                        class="form-control form-control-lg form-control-size-fix  propertySelectBox"
+                                        name="propertyId">
+                                        <option>select property</option>
+                                        <% property.forEach(function(row){ %>
+                                          <option class="option" value="<%=row._id%>">
+                                            <%=row.ps_property_name%>
+                                          </option>
+                                          <% }); %>
+                                      </select>
+                                    </div>
                                   </div>
-
                                 </div>
-                                <div class="professional-input-box">
-                                  <div class="professional-text-fix">
-                                    <label>Address</label>
+                                <div class="col-sm-12 col-lg-3">
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>Address</label>
 
-                                    <input type="text" class="form-control form-control-size-fix " id="address"
-                                      placeholder="1143 Buena Visa Avenue" name="address" value="">
+                                      <input type="text" class="form-control form-control-size-fix " id="address"
+                                        placeholder="1143 Buena Visa Avenue" name="address" value="">
+                                    </div>
+
                                   </div>
-
                                 </div>
-                                <div class="professional-input-box">
-                                  <div class="professional-text-fix">
-                                    <label>City</label>
-                                    <input type="text" class="form-control form-control-size-fix " id="city"
-                                      placeholder="Rufus" name="city" value="">
-                                  </div>
+                                <div class="col-sm-12 col-lg-3">
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>City</label>
+                                      <input type="text" class="form-control form-control-size-fix " id="city"
+                                        placeholder="Rufus" name="city" value="">
+                                    </div>
 
+                                  </div>
                                 </div>
                               </div>
                               <div class="row">
-                                <div class="professional-input-box">
-                                  <div class="professional-text-fix">
-                                    <label>State</label>
-                                    <input type="text" class="form-control form-control-size-fix " id="state"
-                                      placeholder="Oregon" name="state" value="">
+                                <div class="col-sm-12 col-lg-3">
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>State</label>
+                                      <input type="text" class="form-control form-control-size-fix " id="state"
+                                        placeholder="Oregon" name="state" value="">
+                                    </div>
                                   </div>
-
                                 </div>
-                                <div class="professional-input-box">
-                                  <div class="professional-text-fix">
-                                    <label>Country</label>
-                                    <input type="text" class="form-control form-control-size-fix " id="country"
-                                      placeholder="United States" name="country" value="">
+                                <div class="col-sm-12 col-lg-3">
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>Country</label>
+                                      <input type="text" class="form-control form-control-size-fix " id="country"
+                                        placeholder="United States" name="country" value="">
+                                    </div>
                                   </div>
-
                                 </div>
-                                <div class="professional-input-box">
-                                  <div class="professional-text-fix">
-                                    <label>Zip code</label>
-                                    <input type="text" class="form-control form-control-size-fix " id="zipcode"
-                                      placeholder="97050" name="zipcode" value="">
+                                <div class="col-sm-12 col-lg-3">
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>Zip code</label>
+                                      <input type="text" class="form-control form-control-size-fix " id="zipcode"
+                                        placeholder="97050" name="zipcode" value="">
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -206,7 +216,7 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-6">
 
-                            <div class="heading-top float-left">
+                            <div class="heading-top hirenow-fix float-left">
                               <label class="">STEP 2</label>
                               <h6 class="">Tell us your approximate budget</h6>
                               <br />
@@ -218,15 +228,15 @@
                             </div>
                           </div>
                           <div class="col-sm-6 col-lg-6">
-                            <div class="heading-top float-left">
+                            <div class="heading-top hirenow-fix float-left">
                               <label class="">STEP 3</label>
                               <h6 class="">Tell us expected delivery date</h6>
                             </div>
                             <div class="col-sm-6 col-lg-6">
-                              <div class="heading-top float-left">
-                                <input type="date" style="margin-top:5px" class="form-control form-control-size-fix "
-                                  id="deliveryDate" placeholder="1 Dec 2011" name="pps_exptected_delivery_date">
-                              </div>
+
+                              <input type="date" style="margin-top:5px" class="form-control form-control-size-fix "
+                                id="deliveryDate" placeholder="1 Dec 2011" name="pps_exptected_delivery_date">
+
                             </div>
                           </div>
                         </div>
@@ -234,12 +244,12 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-12">
                             <div class="docs-files">
-                              <div class="clearfix">
-                                <div class="heading-top float-left">
-                                  <label class="">STEP 4</label>
-                                  <h6 class="">Add phases</h6>
-                                </div>
+
+                              <div class="heading-top hirenow-fix float-left">
+                                <label class="">STEP 4</label>
+                                <h6 class="">Add phases</h6>
                               </div>
+
                             </div>
                           </div>
                         </div>
@@ -247,35 +257,41 @@
                           <div class="col-sm-12 col-lg-12">
                             <div class="home-section">
                               <div class="row">
-                                <div class="professional-input-box">
-                                  <div class="professional-text-fix">
-                                    <label>Phase1</label>
-                                    <% if(typeof err_msg!='undefined' ){ %>
-                                      <span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">
-                                        <%= err_msg %>
-                                      </span>
-                                      <% }%>
-                                        <% if(typeof success_msg!='undefined' ){ %>
-                                          <span class="succ_flash_msg" style="color: green;">
-                                            <%= success_msg %>
-                                          </span>
-                                          <% }%>
-                                            <input type="text" class="form-control form-control-size-fix "
-                                              id="instruction" placeholder="Instruction" name="instruction" required>
+                                <div class="col-sm-12 col-lg-3">
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>Phase1</label>
+                                      <% if(typeof err_msg!='undefined' ){ %>
+                                        <span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">
+                                          <%= err_msg %>
+                                        </span>
+                                        <% }%>
+                                          <% if(typeof success_msg!='undefined' ){ %>
+                                            <span class="succ_flash_msg" style="color: green;">
+                                              <%= success_msg %>
+                                            </span>
+                                            <% }%>
+                                              <input type="text" class="form-control form-control-size-fix "
+                                                id="instruction" placeholder="Instruction" name="instruction" required>
+                                    </div>
                                   </div>
                                 </div>
-                                <div class="professional-input-box">
-                                  <div class="professional-text-fix">
-                                    <label>Start Date</label>
-                                    <input type="date" class="form-control form-control-size-fix " id="startDate1"
-                                      placeholder="Full Name" name="startDate" required>
+                                <div class="col-sm-12 col-lg-3">
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>Start Date</label>
+                                      <input type="date" class="form-control form-control-size-fix " id="startDate1"
+                                        placeholder="Full Name" name="startDate" required>
+                                    </div>
                                   </div>
                                 </div>
-                                <div class="professional-input-box">
-                                  <div class="professional-text-fix">
-                                    <label>End Date</label>
-                                    <input type="date" class="form-control form-control-size-fix " id="endDate1"
-                                      placeholder="Full Name" name="endDate" required>
+                                <div class="col-sm-12 col-lg-3">
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>End Date</label>
+                                      <input type="date" class="form-control form-control-size-fix " id="endDate1"
+                                        placeholder="Full Name" name="endDate" required>
+                                    </div>
                                   </div>
                                 </div>
                                 <div class="">
