@@ -52,8 +52,7 @@
                   </div>
                 </div>
               </div>
-              <form action="/api/service_provider_personal_details" class="form form-section" method="post"
-                id="AddTaskForm">
+              <form  class="form form-section" method="post" id="AddTaskForm">
                 <% if(typeof err_msg!='undefined' ){ %>
                   <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
                     <%= err_msg %>
@@ -138,6 +137,14 @@
                                 data-msg-required="Due Date is required" required>
                             </div>
                           </div>
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix">
+                              <!-- <label for="duedate">Due Date</label> -->
+                              <input type="test" class="form-control text-field-size " id="task_name"
+                                placeholder="Task Name" name="task_name" data-rule-required="true"
+                                data-msg-required="Task Name is required" required>
+                            </div>
+                          </div>
                         </div>
 
                         <!-- <div class="row">
@@ -217,21 +224,21 @@
 
 
     <script type="text/javascript">
-      $('#AddTaskForm').validate({
-        onfocusout: function (element) {
-          this.element(element);
-        },
-        errorClass: 'error_validate',
-        errorElement: 'span',
-        errorColor: 'red',
-        highlight: function (element, errorClass) {
-          $(element).removeClass(errorClass);
-        },
-        submitHandler: function (form) {
-          $('#submit').attr('disabled', true);
-          form.submit();
-        }
-      });
+      // $('#AddTaskForm').validate({
+      //   onfocusout: function (element) {
+      //     this.element(element);
+      //   },
+      //   errorClass: 'error_validate',
+      //   errorElement: 'span',
+      //   errorColor: 'red',
+      //   highlight: function (element, errorClass) {
+      //     $(element).removeClass(errorClass);
+      //   },
+      //   submitHandler: function (form) {
+      //     $('#submit').attr('disabled', true);
+      //     form.submit();
+      //   }
+      // });
     </script>
     <script type="text/javascript">
       $(document).ready(function () {
