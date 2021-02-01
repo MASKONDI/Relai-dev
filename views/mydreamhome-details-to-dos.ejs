@@ -66,7 +66,31 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    <%if(phaseDetailObj.length==0){%>
+                      <tr>
+                        <td>Result Not Found </td>
+                      </tr>
+                      <%}else{%>
+                        <%phaseDetailObj.forEach(function(row,i){%>
+                        <tr>
+                          <td> <label class="check-todos">
+                              <p><%=row.pps_phase_name%></p>
+                              <input type="checkbox">
+                              <span class="checkmark"></span>
+                            </label></td>
+                          <td>
+                            <%if(row.pps_phase_status=='pending'){%>
+                            <a class="btn btn-pending">Pending</a>
+                            <%}else{%>
+                              <a class="btn btn-complete">Complete</a>
+                              <%}%>
+                          </td>
+                          <td><span><%=moment.unix( row.pps_phase_end_date/1000).format("D MMM YYYY")%></span></td>
+                          <td><a class="take-action" href="/mydreamhome-details-phase-a">Take Action</a></td>
+                        </tr>
+                        <%});%>
+                        <%}%>
+                    <!-- <tr>
                       <td> <label class="check-todos">
                           <p>Instruct solicitor</p>
                           <input type="checkbox">
@@ -135,7 +159,7 @@
                       <td><a class="btn btn-pending">Pending</a></td>
                       <td><span>16 Nov, 2020</span></td>
                       <td><a class="take-action" href="/mydreamhome-details-phase-a">Take Action</a></td>
-                    </tr>
+                    </tr> -->
                   </tbody>
                 </table>
               </div>

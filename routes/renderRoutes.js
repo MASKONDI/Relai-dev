@@ -22,7 +22,7 @@ const MessageSchema = require("../models/message");
 const CustomerSchema = require("../models/customers");
 const ServiceProviderOtherDetailsSchema = require("../models/service_providers_other_details");
 const PropertiesPhaseSchema = require("../models/property_phase_schema");
-
+const phaseDetail = require("./api/phaseDetail");
 
 
 var isCustomer = auth.isCustomer;
@@ -387,13 +387,30 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
 
 //   })
 // });
-app.get('/mydreamhome-details-to-dos', isCustomer, (req, res) => {
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('mydreamhome-details-to-dos', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
+app.get('/mydreamhome-details-to-dos', isCustomer, async (req, res) => {
+  console.log('property id kya hai mydreamhome-details-to-dos', req.session.property_id,req.session.active_user_login);
+  if (req.session.property_id) {
+    let pps_property_id = req.session.property_id;
+    let pps_is_active_user_flag = req.session.active_user_login
+    let phaseDetailObj = await phaseDetail.GetPhaseByPropertyId(pps_property_id, pps_is_active_user_flag);
+    if (phaseDetailObj) {
+      console.log("phaseDetailObj:",phaseDetailObj)
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.render('mydreamhome-details-to-dos', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        moment:moment,
+        phaseDetailObj:phaseDetailObj
+      });
+    } else {
+      console.log('phaseDetailObj not found')
+    }
+
+  } else {
+    console.log('error in mydreamhome-details-to-dos get api')
+  }
+
 });
 // app.get('/add-property', isCustomer, (req, res) => {
 //   err_msg = req.flash('err_msg');
@@ -806,78 +823,98 @@ app.post('/getPropertyDetail', isCustomer, async (req, res) => {
 
 })
 app.get('/mydreamhome-details', isCustomer, async (req, res) => {
-  console.log("current session is", req.session);
-  console.log('session property id', req.query.id);
-  req.session.property_id = req.query.id
-  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
-  let allDocumentUploadByCustmer = await CustomerUploadDocsSchema.find({ $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.query.id, cuds_is_active_user_flag: req.session.active_user_login }] });
-  //console.log('AllhiredProfeshnoal',AllhiredProfeshnoal);
-  let serviceProvArray = [];
-  for (var k of AllhiredProfeshnoal) {
-    await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
-      console.log('allProfeshnoals:', allProfeshnoals)
-      await MessageSchema.find({
-        $or: [
-          { $and: [{ sms_sender_id: req.session.user_id }, { sms_receiver_id: k.pps_service_provider_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
-          { $and: [{ sms_sender_id: k.pps_service_provider_id }, { sms_receiver_id: req.session.user_id }] }
-        ]
-      }).then(async (msgdata) => {
-        console.log('msgdata=', msgdata)
-        for (let i of allProfeshnoals) {
-          if (msgdata.length > 0) {
-            var object_as_string = JSON.stringify(i);
-            const t = JSON.parse(object_as_string);
-            console.log('lastIndex:', msgdata.slice(-1)[0]);
-            let msgData = msgdata.slice(-1)[0];
-            t.sms_message = msgData.sms_message;
-            //let temps = await i
-            serviceProvArray.push(t)
-          } else {
-            var object_as_string = JSON.stringify(i);
-            const t = JSON.parse(object_as_string);
-            t.sms_message = '...';
-            //let temps = await i
-            serviceProvArray.push(t)
+  //console.log("current session is", req.session);
+  //console.log('session property id', req.query.id);
+  if (req.query.id) {
+    req.session.property_id = req.query.id
+    let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
+    let allDocumentUploadByCustmer = await CustomerUploadDocsSchema.find({ $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.query.id, cuds_is_active_user_flag: req.session.active_user_login }] });
+    //console.log('AllhiredProfeshnoal',AllhiredProfeshnoal);
+    let serviceProvArray = [];
+    for (var k of AllhiredProfeshnoal) {
+      await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
+        //console.log('allProfeshnoals:', allProfeshnoals)
+        await MessageSchema.find({
+          $or: [
+            { $and: [{ sms_sender_id: req.session.user_id }, { sms_receiver_id: k.pps_service_provider_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
+            { $and: [{ sms_sender_id: k.pps_service_provider_id }, { sms_receiver_id: req.session.user_id }] }
+          ]
+        }).then(async (msgdata) => {
+          //console.log('msgdata=', msgdata)
+          for (let i of allProfeshnoals) {
+            if (msgdata.length > 0) {
+              var object_as_string = JSON.stringify(i);
+              const t = JSON.parse(object_as_string);
+              // console.log('lastIndex:', msgdata.slice(-1)[0]);
+              let msgData = msgdata.slice(-1)[0];
+              t.sms_message = msgData.sms_message;
+              //let temps = await i
+              serviceProvArray.push(t)
+            } else {
+              var object_as_string = JSON.stringify(i);
+              const t = JSON.parse(object_as_string);
+              t.sms_message = '...';
+              //let temps = await i
+              serviceProvArray.push(t)
+            }
           }
-        }
-      })
-    });
-  }
-
-  PropertiesSchema.find({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
-    if (data) {
-
-      let arr = [];
-      for (let img of data) {
-        await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
-          //let temp = await result
-          for (let image of result) {
-            let temp = await image
-            arr.push(temp)
-          }
-
         })
-
-      }
-
-      err_msg = req.flash('err_msg');
-      success_msg = req.flash('success_msg');
-      res.render('mydreamhome-details', {
-        err_msg, success_msg, layout: false,
-        session: req.session,
-        propertyDetailData: data,
-        propertyImage: arr,
-
-        hiredProfeshnoalList: serviceProvArray,
-        allDocumentUploadByCustmer: allDocumentUploadByCustmer
-
-
       });
     }
-  }).catch((err) => {
-    console.log(err)
-  })
+    let todoArray = [];
+    let phaseDetailObj = await phaseDetail.GetPhaseByPropertyId(req.query.id, req.session.req.session.active_user_login);
 
+    for (var ph of phaseDetailObj) {
+      let professionalObj = await phaseDetail.GetProfessionalById(ph.pps_professional_id);
+      if (professionalObj) {
+        const PhaseObject = JSON.stringify(ph);
+        const to_do_data = JSON.parse(PhaseObject);
+        to_do_data.professionalName = professionalObj.sps_fullname
+        todoArray.push(to_do_data);
+      }
+
+
+
+
+    }
+
+    console.log("todoArray", todoArray);
+    PropertiesSchema.find({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
+      if (data) {
+
+        let arr = [];
+        for (let img of data) {
+          await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
+            //let temp = await result
+            for (let image of result) {
+              let temp = await image
+              arr.push(temp)
+            }
+
+          })
+
+        }
+
+        err_msg = req.flash('err_msg');
+        success_msg = req.flash('success_msg');
+        res.render('mydreamhome-details', {
+          err_msg, success_msg, layout: false,
+          session: req.session,
+          propertyDetailData: data,
+          propertyImage: arr,
+          hiredProfeshnoalList: serviceProvArray,
+          allDocumentUploadByCustmer: allDocumentUploadByCustmer,
+          phaseDetailObj: todoArray
+
+
+        });
+      }
+    }).catch((err) => {
+      console.log(err)
+    })
+  } else {
+    res.redirect('/mydreamhome');
+  }
 })
 
 

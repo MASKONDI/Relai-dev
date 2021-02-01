@@ -166,10 +166,12 @@
                                     <div class="professional-text-fix">
                                       <label>Address</label>
 
+
                                       <input type="text" class="form-control address form-control-size-fix "
                                         id="address" placeholder="1143 Buena Visa Avenue" name="address" value=""
                                         data-rule-required="true" data-msg-required="Address is required!" required>
                                     </div>
+
 
                                   </div>
                                 </div>
@@ -470,8 +472,11 @@
               cache: false,
               success: function (data) {
                 console.log(data)
+
+                // alert($('#address').val(data.data.ps_property_address))
                 $('.address').val(data.data.ps_property_address)
-                $('#city').val(data.data.ps_property_city)
+                $('#city').val(data.data.ps_property_city_id)
+
                 $('#state').val(data.data.ps_property_state_id)
                 $('#country').val(data.data.ps_property_country_id)
                 $('#zipcode').val(data.data.ps_property_zipcode)

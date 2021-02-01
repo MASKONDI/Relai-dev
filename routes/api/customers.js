@@ -584,7 +584,8 @@ router.post("/hire-now", async (req, res) => {
       var pps_phase_name = instruction;
       var pps_phase_start_date = req.body.startDate[i]
       var pps_phase_end_date = req.body.endDate[i]
-      let addPhaseResponce = await addTaskHelper.save_addPhase(propertyId, pps_professional_id, pps_phase_name, pps_phase_start_date, pps_phase_end_date);
+      var pps_is_active_user_flag = req.session.active_user_login;
+      let addPhaseResponce = await addTaskHelper.save_addPhase(propertyId, pps_professional_id, pps_phase_name, pps_phase_start_date, pps_phase_end_date, pps_is_active_user_flag);
       console.log('addPhaseResponce A:', addPhaseResponce)
     })
 
@@ -635,7 +636,8 @@ POST : Add Task api is used for adding task(or Phase) details and sharing these 
 router.post("/addTask", (req, res) => {
   if (req.body.Phase == '' || req.body.Phase == undefined) {
     res.json({ status: 0, message: 'Task Add Failed' });
-    console.log('++++++++++aaaaaaaaaaaaaaaa+')
+
+
   } else {
     const newTask = new PropertyProfessinoalTaskSchema({
       ppts_property_id: req.body.Property,
@@ -661,30 +663,7 @@ router.post("/addTask", (req, res) => {
       });
   }
 })
-router.post("/add-Task", (req, res) => {
-  console.log("req is", req.body);
-  return;
-  const newTask = new PropertiesPhaseSchema({
-    //pps_property_id:  need to store properties Id
-    pps_phase_name: req.body.pps_phase_name,
-    pps_phase_start_date: req.body.pps_phase_start_date,
-    pps_phase_end_date: req.body.pps_phase_end_date,
-    pps_is_active_user_flag: req.session.active_user_login
-  });
-  newTask
-    .save()
-    .then(addedTask => {
-      console.log("server response is :", addedTask);
-      res.json(addedTask);
-      // res.redirect("/professionals-hirenow")
-    })
-    .catch(err => {
-      console.log(err)
-      req.flash('err_msg', 'Something went wrong please try again later.');
-      res.redirect('/professionals-hirenow');
-    });
 
-});
 
 /* -------------------------------------------------------------------------------------------------
 POST : Raise a complaints api is used for raising a complaints to particular service provider along with note and status.
