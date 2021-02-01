@@ -75,18 +75,18 @@
             <% if( session.imagename=='' ){ %>
 
               <a href="#" class="upload-profile-pic">
-                <img src="images/img_avatar.png" alt="" class="profile-photo"> <span>
+                <img src="images/img_avatar.png" alt="" id="blah" class="profile-photo"> <span>
                   <div class="custom-file-input">
-                    <input type="file" id="image" name="profile-pic" value="" required>
+                    <input type="file" id="image" name="profile-pic" value="" required  onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
                     <input type="button">
                   </div>
                 </span>
               </a>
               <% } else {%>
                 <a href="#" class="upload-profile-pic">
-                  <img src="/upload/<%= session.imagename%>" alt="" class="profile-photo"> <span>
+                  <img src="/upload/<%= session.imagename%>" alt="" id="blah" class="profile-photo"> <span>
                     <div class="custom-file-input">
-                      <input type="file" id="image" name="profile-pic" value="" required>
+                      <input type="file" id="image" name="profile-pic" value="" required  onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
                       <input type="button">
                     </div>
                   </span>
