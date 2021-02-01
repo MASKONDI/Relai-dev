@@ -1,0 +1,106 @@
+<!-- The Modal -->
+<div class="modal permission-modal fade " id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header text-center">
+        <h2 class="modal-title w-100">Edit Profile</h2>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form class="form" action="/api/update-customer-profile" method="post" id="form3">
+          <input type="hidden" name="customer_id" value="<%=session.user_id%>">
+          <div class=" row">
+            <div class="col-sm-12 col-lg-6">
+              <input type="text" class="form-control form-control-fix2" id="fullName" placeholder="Full Name"
+                name="cus_fullname" value="<%= session.name%>">
+            </div>
+            <div class="col-sm-12 col-lg-6">
+              <input type=" text" class="form-control form-control-fix2" id="phone Number" placeholder="Phone Number"
+                name="cus_phone_number" value="<%= session.phoneNumber%>">
+            </div>
+          </div>
+          <div class=" row">
+            <div class="col-sm-12 col-lg-6">
+              <input type="text" class="form-control  form-control-fix2" id="address" placeholder="Email Id"
+                name="cus_email_id" value="<%= session.email%>">
+            </div>
+            <div class="col-sm-12 col-lg-6">
+              <input type="text" class="form-control  form-control-fix2" id="address" placeholder="Address"
+                name="cus_address" value="<%= session.address%>">
+            </div>
+          </div>
+
+          <div class=" row">
+            <div class="col-sm-12 col-lg-6">
+              <input type="text" class="form-control  form-control-fix2" id="address" placeholder="City" name="cus_city"
+                value="<%= session.city%>">
+            </div>
+            <div class="col-sm-12 col-lg-6">
+              <input type="text" class="form-control  form-control-fix2" id="address" placeholder="Country"
+                name="cus_country_id" value="<%= session.country%>">
+            </div>
+          </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+        <button name="submit" type="submit" class="btn btn-cancel">Update</button>
+      </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal permission-modal fade " id="photoModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header text-center">
+        <h2 class="modal-title w-100">Update profile picture</h2>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form class="form" action="/upload-profile-pic" method="post" id="form3" enctype="multipart/form-data">
+          <div class="upload-image">
+
+
+            <% if( session.imagename=='' ){ %>
+
+              <a href="#" class="upload-profile-pic">
+                <img src="images/img_avatar.png" alt="" class="profile-photo"> <span>
+                  <div class="custom-file-input">
+                    <input type="file" id="image" name="profile-pic" value="" required>
+                    <input type="button">
+                  </div>
+                </span>
+              </a>
+              <% } else {%>
+                <a href="#" class="upload-profile-pic">
+                  <img src="/upload/<%= session.imagename%>" alt="" class="profile-photo"> <span>
+                    <div class="custom-file-input">
+                      <input type="file" id="image" name="profile-pic" value="" required>
+                      <input type="button">
+                    </div>
+                  </span>
+                </a>
+                <% }%>
+          </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+        <button name="submit" type="submit" class="btn btn-cancel">Upload</button>
+      </div>
+
+      </form>
+    </div>
+  </div>
+</div>
