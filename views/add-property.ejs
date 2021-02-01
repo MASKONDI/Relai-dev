@@ -4,17 +4,15 @@
       <div class="row content">
         <div class="col-sm-2 sidenav hidden-xs-down">
           <div class="user-login text-center">
-            <div class="user-profile">
-              <img src="images/profile.png" alt="" title="">
-            </div>
-            <div class="user-name">
-              <h2>
-                <%= session.name %>
-              </h2>
-              <a href="#">
-                <%= session.email %>
-              </a>
-            </div>
+            <%- include('profile-image')-%>
+              <div class="user-name">
+                <h2>
+                  <%= session.name %>
+                </h2>
+                <a href="#">
+                  <%= session.email %>
+                </a>
+              </div>
           </div>
           <ul class="dashboard-nav">
             <li>
