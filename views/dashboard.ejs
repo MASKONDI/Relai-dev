@@ -1,330 +1,210 @@
 <%- include('dashboard_header')-%>
-  <!-- The Modal -->
-  <div class="modal permission-modal fade " id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-        <!-- Modal Header -->
-        <div class="modal-header text-center">
-          <h2 class="modal-title w-100">Edit Profile</h2>
-        </div>
-
-        <!-- Modal body -->
-        <div class="modal-body">
-          <form class="form" action="/api/update-customer-profile" method="post" id="form3">
-            <input type="hidden" name="customer_id" value="<%=session.user_id%>">
-            <div class=" row">
-              <div class="col-sm-12 col-lg-6">
-                <input type="text" class="form-control form-control-fix2" id="fullName" placeholder="Full Name"
-                  name="cus_fullname" value="<%= session.name%>">
-              </div>
-              <div class="col-sm-12 col-lg-6">
-                <input type=" text" class="form-control form-control-fix2" id="phone Number" placeholder="Phone Number"
-                  name="cus_phone_number" value="<%= session.phoneNumber%>">
-              </div>
-            </div>
-            <div class=" row">
-              <div class="col-sm-12 col-lg-6">
-                <input type="text" class="form-control  form-control-fix2" id="address" placeholder="Email Id"
-                  name="cus_email_id" value="<%= session.email%>">
-              </div>
-              <div class="col-sm-12 col-lg-6">
-                <input type="text" class="form-control  form-control-fix2" id="address" placeholder="Address"
-                  name="cus_address" value="<%= session.address%>">
-              </div>
-            </div>
-
-            <div class=" row">
-              <div class="col-sm-12 col-lg-6">
-                <input type="text" class="form-control  form-control-fix2" id="address" placeholder="City"
-                  name="cus_city" value="<%= session.city%>">
-              </div>
-              <div class="col-sm-12 col-lg-6">
-                <input type="text" class="form-control  form-control-fix2" id="address" placeholder="Country"
-                  name="cus_country_id" value="<%= session.country%>">
-              </div>
-            </div>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-          <button name="submit" type="submit" class="btn btn-cancel">Update</button>
-        </div>
-
-        </form>
-      </div>
-    </div>
-  </div>
-
-
-
-  <div class="modal permission-modal fade " id="photoModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-        <!-- Modal Header -->
-        <div class="modal-header text-center">
-          <h2 class="modal-title w-100">Update profile picture</h2>
-        </div>
-
-        <!-- Modal body -->
-        <div class="modal-body">
-          <form class="form" action="/upload-profile-pic" method="post" id="form3" enctype="multipart/form-data">
-            <div class="upload-image">
-
-
-              <% if( session.imagename=='' ){ %>
-
-                <a href="#" class="upload-profile-pic">
-                  <img src="images/img_avatar.png" alt="" id="blah"class="profile-photo"> <span>
-                    <div class="custom-file-input">
-                      <input type="file" id="image" name="profile-pic" value="" required onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
-                      <input type="button">
-                    </div>
-                  </span>
-                </a>
-                <% } else {%>
-                  <a href="#" class="upload-profile-pic">
-                    <img src="/upload/<%= session.imagename%>" alt="" id="blah" class="profile-photo"> <span>
-                      <div class="custom-file-input">
-                        <input type="file" id="image" name="profile-pic" value="" required onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
-                        <input type="button">
-                      </div>
-                    </span>
+  <%- include('edit-profile-model')-%>
+    <div class="dashboard-wpr">
+      <div class="container-fluid">
+        <div class="row content">
+          <div class="col-sm-2 sidenav hidden-xs-down">
+            <div class="user-login text-center">
+              <%- include('profile-image')-%>
+                <div class="user-name">
+                  <h2>
+                    <%= session.name %>
+                  </h2>
+                  <a href="#">
+                    <%= session.email %>
+                      <%- include('edit-profile-icon')-%>
                   </a>
-                  <% }%>
+                </div>
+
             </div>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-          <button name="submit" type="submit" class="btn btn-cancel">Upload</button>
-        </div>
-
-        </form>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="dashboard-wpr">
-    <div class="container-fluid">
-      <div class="row content">
-        <div class="col-sm-2 sidenav hidden-xs-down">
-          <div class="user-login text-center">
-            <div class="user-profile">
-              <% if(session.imagename=='' ){%>
-                <img src="images/profile.png" alt="" title="">
-                <%} else{%>
-                  <img src="/upload/<%= session.imagename%>" alt="" title="" class="profile-image" value="">
-                  <%} %>
-            </div>
-            <div class="user-name">
-              <h2>
-                <%= session.name %>
-              </h2>
-              <a href="#">
-                <%= session.email %><span>
-                    <div class="profile-dropdown">
-                      <i class="fa fa-pencil editbtn"></i>
-                      <div class="dropdown-content">
-                        <a href="#" data-toggle="modal" data-target="#photoModal">Upload Photo</a>
-                        <a href="#" data-toggle="modal" data-target="#myModal">EditProfile</a>
-                        <a href="/api/cust_logout">Logout</a>
-                      </div>
-                    </div>
-                  </span>
-              </a>
-            </div>
-
+            <ul class="dashboard-nav">
+              <li class="active">
+                <a href="/dashboard"><img class="act-img" src="images/dashboard-active.png"><img
+                    src="images/dashboard.png"> Dashboard</a>
+              </li>
+              <li>
+                <a href="/track-your-progress"><img class="act-img" src="images/track-active.png"><img
+                    src="images/track.png"> Track your progress</a>
+              </li>
+              <li>
+                <a href="/professionals"><img class="act-img" src="images/professionals-active.png"><img
+                    src="images/professionals.png"> Professionals</a>
+              </li>
+              <li>
+                <a href="/mydreamhome"><img class="act-img" src="images/dreamhome-active.png"><img
+                    src="images/dreamhome.png"> My dream home</a>
+              </li>
+              <li>
+                <a href="/mydreamhome-details-to-dos"><img class="act-img" src="images/to-do-list-active.png"><img
+                    src="images/to-do-list.png"> To do list</a>
+              </li>
+            </ul>
           </div>
-          <ul class="dashboard-nav">
-            <li class="active">
-              <a href="/dashboard"><img class="act-img" src="images/dashboard-active.png"><img
-                  src="images/dashboard.png"> Dashboard</a>
-            </li>
-            <li>
-              <a href="/track-your-progress"><img class="act-img" src="images/track-active.png"><img
-                  src="images/track.png"> Track your progress</a>
-            </li>
-            <li>
-              <a href="/professionals"><img class="act-img" src="images/professionals-active.png"><img
-                  src="images/professionals.png"> Professionals</a>
-            </li>
-            <li>
-              <a href="/mydreamhome"><img class="act-img" src="images/dreamhome-active.png"><img
-                  src="images/dreamhome.png"> My dream home</a>
-            </li>
-            <li>
-              <a href="/mydreamhome-details-to-dos"><img class="act-img" src="images/to-do-list-active.png"><img
-                  src="images/to-do-list.png"> To do list</a>
-            </li>
-          </ul>
-        </div>
-        <div class="col-sm-12 col-lg-10">
-          <div class="dashboard-inner">
-            <div class="row">
-              <div class="col-sm-12 col-lg-5">
-                <div class="row">
-                  <div class="col-sm-6 col-md-6 col-lg-6">
-                    <div class="well">
-                      <div class="well-inner">
-                        <img src="images/property.png" alt="" title="">
-                        <h2>1,500+</h2>
-                        <p>Active property</p>
-
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-md-6 col-lg-6">
-                    <div class="well">
-                      <div class="well-inner">
-                        <img src="images/property.png" alt="" title="">
-                        <h2>3,000+</h2>
-                        <p>Completed property</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-lg-7">
-                <div class="row">
-                  <div class="col-sm-6 col-md-6 col-lg-6">
-                    <div class="recent-box">
-
-                      <p>Recent</p>
-                      <a href="/mydreamhome-details" alt="">
-                        <h2>Nacary Apartment,<span>Sudirman, Central Jakarta</span></h2>
-                      </a>
-                      <div class="clearfix">
-                        <div class="float-left">
-                          <div class="recent-img">
-                            <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
-                              class="mr-10" src="images/recent-user-3.png">
-                          </div>
-                        </div>
-                        <div class="float-right">
-                          <div class="progress-box">
-                            <p><span>55%</span> completed</p>
-                            <div class="progress">
-                              <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-md-6 col-lg-6">
-                    <div class="recent-box">
-                      <p>Recent</p>
-                      <a href="/mydreamhome-details" alt="">
-                        <h2>Nacary Apartment,<span>Sudirman, Central Jakarta</span></h2>
-                      </a>
-                      <div class="clearfix">
-                        <div class="float-left">
-                          <div class="recent-img">
-                            <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
-                              class="mr-10" src="images/recent-user-3.png">
-                          </div>
-                        </div>
-                        <div class="float-right">
-                          <div class="progress-box">
-                            <p><span>55%</span> completed</p>
-                            <div class="progress">
-                              <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-md-6 col-lg-6">
-                    <div class="recent-box">
-                      <p>Recent</p>
-                      <a href="/mydreamhome-details" alt="">
-                        <h2>Nacary Apartment,<span>Sudirman, Central Jakarta</span></h2>
-                      </a>
-                      <div class="clearfix">
-                        <div class="float-left">
-                          <div class="recent-img">
-                            <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
-                              class="mr-10" src="images/recent-user-3.png">
-                          </div>
-                        </div>
-                        <div class="float-right">
-                          <div class="progress-box">
-                            <p><span>55%</span> completed</p>
-                            <div class="progress">
-                              <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-md-6 col-lg-6">
-                    <div class="recent-box">
-                      <p>Recent</p>
-                      <a href="/mydreamhome-details" alt="">
-                        <h2>Nacary Apartment,<span>Sudirman, Central Jakarta</span></h2>
-                      </a>
-                      <div class="clearfix">
-                        <div class="float-left">
-                          <div class="recent-img">
-                            <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
-                              class="mr-10" src="images/recent-user-3.png">
-                          </div>
-                        </div>
-                        <div class="float-right">
-                          <div class="progress-box">
-                            <p><span>55%</span> completed</p>
-                            <div class="progress">
-                              <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="property-map-section">
+          <div class="col-sm-12 col-lg-10">
+            <div class="dashboard-inner">
               <div class="row">
-                <div class="col-sm-12 col-lg-8">
-                  <div class="map-location">
-                    <div class="clearfix">
-                      <div class="float-left">
-                        <h2>Property Map</h2>
-                      </div>
-                      <div class="float-right">
-                        <a href="/add-property" class="btn btn-add-property">Add Property</a>
+                <div class="col-sm-12 col-lg-5">
+                  <div class="row">
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                      <div class="well">
+                        <div class="well-inner">
+                          <img src="images/property.png" alt="" title="">
+                          <h2>1,500+</h2>
+                          <p>Active property</p>
+
+                        </div>
                       </div>
                     </div>
-                    <div id="map" style="width: 100%; height: 340px;"></div>
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                      <div class="well">
+                        <div class="well-inner">
+                          <img src="images/property.png" alt="" title="">
+                          <h2>3,000+</h2>
+                          <p>Completed property</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="col-sm-12 col-lg-4">
-                  <div class="my-professionals">
-                    <h2>My Professionals</h2>
-                    <ul class="professionals-list">
-                      <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
-                      <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
-                      <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
-                      <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
-                      <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
-                      <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
-                      <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
-                      <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
-                      <li><a href="/professionals" class="btn btn-add-professional">+</a></li>
-                    </ul>
-                    <div class="clearfix">
-                      <div class="need-help float-left">
-                        <h2>Need Help?</h2>
-                        <p>24/7 support centre</p>
+                <div class="col-sm-12 col-lg-7">
+                  <div class="row">
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                      <div class="recent-box">
+
+                        <p>Recent</p>
+                        <a href="/mydreamhome-details" alt="">
+                          <h2>Nacary Apartment,<span>Sudirman, Central Jakarta</span></h2>
+                        </a>
+                        <div class="clearfix">
+                          <div class="float-left">
+                            <div class="recent-img">
+                              <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
+                                class="mr-10" src="images/recent-user-3.png">
+                            </div>
+                          </div>
+                          <div class="float-right">
+                            <div class="progress-box">
+                              <p><span>55%</span> completed</p>
+                              <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div class="float-right">
-                        <a href="#" class="btn btn-get-help">Get Help</a>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                      <div class="recent-box">
+                        <p>Recent</p>
+                        <a href="/mydreamhome-details" alt="">
+                          <h2>Nacary Apartment,<span>Sudirman, Central Jakarta</span></h2>
+                        </a>
+                        <div class="clearfix">
+                          <div class="float-left">
+                            <div class="recent-img">
+                              <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
+                                class="mr-10" src="images/recent-user-3.png">
+                            </div>
+                          </div>
+                          <div class="float-right">
+                            <div class="progress-box">
+                              <p><span>55%</span> completed</p>
+                              <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                      <div class="recent-box">
+                        <p>Recent</p>
+                        <a href="/mydreamhome-details" alt="">
+                          <h2>Nacary Apartment,<span>Sudirman, Central Jakarta</span></h2>
+                        </a>
+                        <div class="clearfix">
+                          <div class="float-left">
+                            <div class="recent-img">
+                              <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
+                                class="mr-10" src="images/recent-user-3.png">
+                            </div>
+                          </div>
+                          <div class="float-right">
+                            <div class="progress-box">
+                              <p><span>55%</span> completed</p>
+                              <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                      <div class="recent-box">
+                        <p>Recent</p>
+                        <a href="/mydreamhome-details" alt="">
+                          <h2>Nacary Apartment,<span>Sudirman, Central Jakarta</span></h2>
+                        </a>
+                        <div class="clearfix">
+                          <div class="float-left">
+                            <div class="recent-img">
+                              <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
+                                class="mr-10" src="images/recent-user-3.png">
+                            </div>
+                          </div>
+                          <div class="float-right">
+                            <div class="progress-box">
+                              <p><span>55%</span> completed</p>
+                              <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="property-map-section">
+                <div class="row">
+                  <div class="col-sm-12 col-lg-8">
+                    <div class="map-location">
+                      <div class="clearfix">
+                        <div class="float-left">
+                          <h2>Property Map</h2>
+                        </div>
+                        <div class="float-right">
+                          <a href="/add-property" class="btn btn-add-property">Add Property</a>
+                        </div>
+                      </div>
+                      <div id="map" style="width: 100%; height: 340px;"></div>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-lg-4">
+                    <div class="my-professionals">
+                      <h2>My Professionals</h2>
+                      <ul class="professionals-list">
+                        <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
+                        <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
+                        <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
+                        <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
+                        <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
+                        <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
+                        <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
+                        <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
+                        <li><a href="/professionals" class="btn btn-add-professional">+</a></li>
+                      </ul>
+                      <div class="clearfix">
+                        <div class="need-help float-left">
+                          <h2>Need Help?</h2>
+                          <p>24/7 support centre</p>
+                        </div>
+                        <div class="float-right">
+                          <a href="#" class="btn btn-get-help">Get Help</a>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -335,117 +215,112 @@
         </div>
       </div>
     </div>
-  </div>
-  </div>
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
     crossorigin="anonymous"></script> -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-  <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
-  <script type="text/javascript">
-    var locations = [
-      ['Bondi Beach', -33.890542, 151.274856, 4],
-      ['Coogee Beach', -33.923036, 151.259052, 5],
-      ['Cronulla Beach', -34.028249, 151.157507, 3],
-      ['Manly Beach', -33.80010128657071, 151.28747820854187, 2],
-      ['Maroubra Beach', -33.950198, 151.259302, 1]
-    ];
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"></script>
+    <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script type="text/javascript">
+      var locations = [
+        ['Bondi Beach', -33.890542, 151.274856, 4],
+        ['Coogee Beach', -33.923036, 151.259052, 5],
+        ['Cronulla Beach', -34.028249, 151.157507, 3],
+        ['Manly Beach', -33.80010128657071, 151.28747820854187, 2],
+        ['Maroubra Beach', -33.950198, 151.259302, 1]
+      ];
 
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 10,
-      center: new google.maps.LatLng(-33.92, 151.25),
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    });
-
-    var infowindow = new google.maps.InfoWindow();
-
-    var marker, i;
-
-    for (i = 0; i < locations.length; i++) {
-      marker = new google.maps.Marker({
-        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-        map: map
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 10,
+        center: new google.maps.LatLng(-33.92, 151.25),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
       });
 
-      google.maps.event.addListener(marker, 'click', (function (marker, i) {
-        return function () {
-          infowindow.setContent(locations[i][0]);
-          infowindow.open(map, marker);
-        }
-      })(marker, i));
-    }
-  </script>
-  <script>
-    $(document).ready(function () {
-      $(".sidenav ul li").click(function () {
-        $(".sidenav ul li").removeClass("active");
-        $(this).addClass("active");
-      });
-    });
-    $('.right-navbar li').click(function () {
-      $('.right-navbar li').each(function () {
-        $(this).removeClass('active');
-      });
+      var infowindow = new google.maps.InfoWindow();
 
-      $(this).addClass('active');
+      var marker, i;
 
-    })
-  </script>
-  <script>
-    $(document).ready(function () {
-      $(".buyertab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/buyer",
-          cache: false,
-          success: function (html) {
-          }
+      for (i = 0; i < locations.length; i++) {
+        marker = new google.maps.Marker({
+          position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+          map: map
         });
-        location.reload(true);
-      });
-      $(".sellertab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/seller",
-          cache: false,
-          success: function (html) {
-          }
-        });
-        location.reload(true);
-      });
-      $(".renovatortab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/renovator",
-          cache: false,
-          success: function (html) {
-          }
-        });
-        location.reload(true);
-      });
-    })
 
-  </script>
-  <script>
-    $(document).ready(function () {
-      $('.custom-file-input input[type="file"]').change(function (e) {
-        $(this).siblings('input[type="text"]').val(e.target.files[0].name);
+        google.maps.event.addListener(marker, 'click', (function (marker, i) {
+          return function () {
+            infowindow.setContent(locations[i][0]);
+            infowindow.open(map, marker);
+          }
+        })(marker, i));
+      }
+    </script>
+    <script>
+      $(document).ready(function () {
+        $(".sidenav ul li").click(function () {
+          $(".sidenav ul li").removeClass("active");
+          $(this).addClass("active");
+        });
       });
-    });
-  </script>
-  <script>
-    $(document).ready(function(){
-      
-    })
-  </script>
-  </body>
+      $('.right-navbar li').click(function () {
+        $('.right-navbar li').each(function () {
+          $(this).removeClass('active');
+        });
 
-  </html>
+        $(this).addClass('active');
+
+      })
+    </script>
+    <script>
+      $(document).ready(function () {
+        $(".buyertab").click(function (e) {
+          $.ajax({
+            type: "GET",
+            url: "/buyer",
+            cache: false,
+            success: function (html) {
+            }
+          });
+          location.reload(true);
+        });
+        $(".sellertab").click(function (e) {
+          $.ajax({
+            type: "GET",
+            url: "/seller",
+            cache: false,
+            success: function (html) {
+            }
+          });
+          location.reload(true);
+        });
+        $(".renovatortab").click(function (e) {
+          $.ajax({
+            type: "GET",
+            url: "/renovator",
+            cache: false,
+            success: function (html) {
+            }
+          });
+          location.reload(true);
+        });
+      })
+
+    </script>
+    <script>
+      $(document).ready(function () {
+        $('.custom-file-input input[type="file"]').change(function (e) {
+          $(this).siblings('input[type="text"]').val(e.target.files[0].name);
+        });
+      });
+
+    </script>
+    </body>
+
+    </html>
