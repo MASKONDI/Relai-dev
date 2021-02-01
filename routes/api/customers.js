@@ -776,7 +776,7 @@ router.post('/update-customer-profile', (req, res) => {
   console.log("updating user profile with incoming request :", req.body);
 
   var user_id = req.session.user_id;
-  CustomerSchema.findByIdAndUpdate({ _id: user_id }, { $set: { cus_fullname: req.body.cus_fullname, cus_address: req.body.cus_address, cus_city: req.body.cus_city, cus_phone_number: req.body.cus_phone_number, cus_updated_at: Date.now() } },
+  CustomerSchema.findByIdAndUpdate({ _id: user_id }, { $set: { cus_fullname: req.body.cus_fullname, cus_address: req.body.cus_address, cus_country_id: req.body.cus_country_id, cus_city: req.body.cus_city, cus_phone_number: req.body.cus_phone_number, cus_updated_at: Date.now() } },
     function (err, customers) {
       if (err) {
         console.log("Something went wrong")
@@ -794,7 +794,7 @@ router.post('/update-customer-profile', (req, res) => {
         req.session.address = req.body.cus_address;
         req.session.city = req.body.cus_city;
         req.session.phoneNumber = req.body.cus_phone_number;
-        // req.session.country = customers.cus_country_id;
+        req.session.country = req.body.cus_country_id;
         //req.session.profilePicture= customer.profile_picture
         //req.flash('success_msg', 'Profile updated successfully.');
         //req.session.isChanged();
