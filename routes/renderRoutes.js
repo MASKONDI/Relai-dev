@@ -24,6 +24,7 @@ const ServiceProviderOtherDetailsSchema = require("../models/service_providers_o
 const PropertiesPhaseSchema = require("../models/property_phase_schema");
 
 
+
 var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
 
@@ -601,23 +602,34 @@ app.get('/professionals-detail-message', (req, res) => {
 
 app.get('/professionals-hirenow', isCustomer, async (req, res) => {
   //console.log('spp_id', req.query.spp_id)
+  var PropertyList=[];
   var SarviceProviderId = req.session.currentSarviceProviderId
   if (SarviceProviderId) {
     // if(req.session.user_id)
     var property = await PropertiesSchema.find({ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login });
-    //console.log('property====',property)
+    console.log('property====',property)
     var serviceProvider = await ServiceProviderSchema.findOne({ _id: SarviceProviderId });
     //console.log('service_provider=+++',serviceProvider)
-    if (serviceProvider) {
 
+    for (let propertyData of property) {
+      var propertyExist = await PropertyProfessionalSchema.findOne({pps_user_id:propertyData.ps_user_id,pps_property_id:propertyData._id,pps_service_provider_id:SarviceProviderId});
+      console.log('propertyExist:',propertyExist);
+      if(propertyExist == null){
+        console.log('Hello coming..')
+        PropertyList.push(propertyData);
+      }
+    }
+    console.log('PropertyList Arr:',PropertyList);
+
+    
+    if (serviceProvider) {
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('professionals-hirenow', {
         err_msg, success_msg, layout: false,
         session: req.session,
         serviceProvider: serviceProvider,
-        property: property
-
+        property: PropertyList
       });
     }
   } else {
@@ -1259,10 +1271,6 @@ app.get('/renovator', isCustomer, function (req, res) {
   }
 });
 
-
-
-
-
 app.get('/add-task', isCustomer, async function (req, res) {
   return new Promise( async function (resolve, reject) {
   console.log("current user session is :", req.session);
@@ -1281,20 +1289,29 @@ app.get('/add-task', isCustomer, async function (req, res) {
         const t = JSON.parse(object_as_string);
         t.pps_property_id = await k.pps_property_id;
         let p = await t;
-  profArray.push(p)
+      profArray.push(p)
   }
+ // profArray.push(profeshnoal)
+
+
   }
-  console.log("pahseArray",profArray)
+  //console.log("profArray",profArray)
+
+  const uniqueObjects = [...new Map(profArray.map(item => [item._id, item])).values()];
+
+
+  console.log("uniqueObjects",uniqueObjects)
   res.render('add-task', {
   err_msg, success_msg, layout: false,
   session: req.session,
-  hiredProfessinoal:profArray,
+  hiredProfessinoal:uniqueObjects,
   property:propArray,
   phaseData:pahseArray
   });
   }
   })
   })
+
 });
 
 
@@ -1306,7 +1323,8 @@ app.get('/add-task-prfessional-property', isCustomer, async function (req, res) 
     console.log("req.query.propertyId :", req.query.propertyId);
     err_msg = req.flash('err_msg');
     success_msg = req.flash('success_msg');
-    await PropertyProfessionalSchema.find({$and:[{pps_user_id:req.session.user_id,pps_service_provider_id:req.query.professionId,pps_property_id:req.query.propertyId}]}).then(async(hiredProfessinoal)=>{
+    //,pps_property_id:req.query.propertyId
+    await PropertyProfessionalSchema.find({$and:[{pps_user_id:req.session.user_id,pps_service_provider_id:req.query.professionId}]}).then(async(hiredProfessinoal)=>{
     console.log('hiredProfessinoalProperty:', hiredProfessinoal)
     let profArray=[];
     let propArray=[];
@@ -1360,6 +1378,6 @@ app.get('/add-task-prfessional-property-phase', isCustomer, async function (req,
     });
     })
 
-
+  })
 
 module.exports = app;
