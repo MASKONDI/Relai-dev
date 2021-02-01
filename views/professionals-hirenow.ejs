@@ -147,8 +147,9 @@
                                       <label>Select Property</label>
                                       <select
                                         class="form-control form-control-lg form-control-size-fix  propertySelectBox"
-                                        name="propertyId">
-                                        <option>select property</option>
+                                        name="propertyId" data-rule-required="true"
+                                        data-msg-required="Property is required!" style="width: 94%;">
+                                        <option value="">Select property</option>
                                         <% property.forEach(function(row){ %>
                                           <option class="option" value="<%=row._id%>">
                                             <%=row.ps_property_name%>
@@ -164,7 +165,8 @@
                                       <label>Address</label>
 
                                       <input type="text" class="form-control form-control-size-fix " id="address"
-                                        placeholder="1143 Buena Visa Avenue" name="address" value="">
+                                        placeholder="1143 Buena Visa Avenue" name="address" value=""
+                                        data-rule-required="true" data-msg-required="Address is required!" required>
                                     </div>
 
                                   </div>
@@ -174,7 +176,8 @@
                                     <div class="professional-text-fix">
                                       <label>City</label>
                                       <input type="text" class="form-control form-control-size-fix " id="city"
-                                        placeholder="Rufus" name="city" value="">
+                                        placeholder="Rufus" name="city" value="" data-rule-required="true"
+                                        data-msg-required="City is required!" required>
                                     </div>
 
                                   </div>
@@ -186,7 +189,8 @@
                                     <div class="professional-text-fix">
                                       <label>State</label>
                                       <input type="text" class="form-control form-control-size-fix " id="state"
-                                        placeholder="Oregon" name="state" value="">
+                                        placeholder="Oregon" data-rule-required="true"
+                                        data-msg-required="State is required!" required name="state" value="">
                                     </div>
                                   </div>
                                 </div>
@@ -195,7 +199,8 @@
                                     <div class="professional-text-fix">
                                       <label>Country</label>
                                       <input type="text" class="form-control form-control-size-fix " id="country"
-                                        placeholder="United States" name="country" value="">
+                                        placeholder="United States" name="country" value="" data-rule-required="true"
+                                        data-msg-required="Country is required!" required>
                                     </div>
                                   </div>
                                 </div>
@@ -204,7 +209,8 @@
                                     <div class="professional-text-fix">
                                       <label>Zip code</label>
                                       <input type="text" class="form-control form-control-size-fix " id="zipcode"
-                                        placeholder="97050" name="zipcode" value="">
+                                        placeholder="97050" name="zipcode" value="" data-rule-required="true"
+                                        data-msg-required="Zipcode is required!" required>
                                     </div>
                                   </div>
                                 </div>
@@ -234,8 +240,10 @@
                             </div>
                             <div class="col-sm-6 col-lg-6">
 
-                              <input type="date" style="margin-top:5px" class="form-control form-control-size-fix "
-                                id="deliveryDate" placeholder="1 Dec 2011" name="pps_exptected_delivery_date">
+                              <input type="date" style="margin-top:5px;width:90%"
+                                class="form-control form-control-size-fix " id="deliveryDate" placeholder="1 Dec 2011"
+                                name="pps_exptected_delivery_date" data-rule-required="true"
+                                data-msg-required="DeliveryDate is required!" required>
 
                             </div>
                           </div>
@@ -272,7 +280,9 @@
                                             </span>
                                             <% }%>
                                               <input type="text" class="form-control form-control-size-fix "
-                                                id="instruction" placeholder="Instruction" name="instruction" required>
+                                                id="instruction" placeholder="Instruction" name="instruction"
+                                                data-rule-required="true" data-msg-required="Phase name is required!"
+                                                required>
                                     </div>
                                   </div>
                                 </div>
@@ -281,7 +291,8 @@
                                     <div class="professional-text-fix">
                                       <label>Start Date</label>
                                       <input type="date" class="form-control form-control-size-fix " id="startDate1"
-                                        placeholder="Full Name" name="startDate" required>
+                                        placeholder="Full Name" name="startDate" data-rule-required="true"
+                                        data-msg-required="StartDate is required!" required>
                                     </div>
                                   </div>
                                 </div>
@@ -290,7 +301,8 @@
                                     <div class="professional-text-fix">
                                       <label>End Date</label>
                                       <input type="date" class="form-control form-control-size-fix " id="endDate1"
-                                        placeholder="Full Name" name="endDate" required>
+                                        placeholder="Full Name" name="endDate" data-rule-required="true"
+                                        data-msg-required="EndDate is required!" requiredrequired>
                                     </div>
                                   </div>
                                 </div>
@@ -400,6 +412,28 @@
 //   tooltip_position:'bottom'
 // });
 
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+      integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+      crossorigin="anonymous"></script>
+
+
+    <script type="text/javascript">
+      $('#hirenowform').validate({
+        onfocusout: function (element) {
+          this.element(element);
+        },
+        errorClass: 'error_validate',
+        errorElement: 'span',
+        errorColor: 'red',
+        highlight: function (element, errorClass) {
+          $(element).removeClass(errorClass);
+        },
+        submitHandler: function (form) {
+          $('#submit').attr('disabled', true);
+          form.submit();
+        }
+      });
     </script>
     <script>
       $(document).ready(function () {
