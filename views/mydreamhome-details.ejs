@@ -1,7 +1,7 @@
 <%- include('dashboard_header')-%>
   <%- include('edit-profile-model')-%>
     <!-- The Modal -->
-    <div class="modal permission-modal fade " id="myModal">
+    <div class="modal permission-modal fade " id="ComplaintModal">
       <div class="modal-dialog">
         <div class="modal-content">
           <form name="complaintform" id="complent_form" method="post" action="" enctype="multipart/form-data">
@@ -150,7 +150,7 @@
                               <div class="img-fix3 float-right">
                                 <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>"><img
                                     src="images/chat.png"></a>
-                                <a href="#" data-toggle="modal" data-target="#myModal"><img src="images/help.png"></a>
+                                <a href="#" data-toggle="modal" data-target="#ComplaintModal"><img src="images/help.png"></a>
                               </div>
                             </div>
                             <div class="recent-img">
@@ -310,7 +310,7 @@
                         </a>
                       </div>
                       <%if(phaseDetailObj.length==0){%>
-                        <p>No Result</p>
+                        <h6>Phases Not Found</h6>
                         <%}else{%>
                           <%phaseDetailObj.forEach(function(row,i){%>
                             <label class="check-todos">
@@ -370,12 +370,8 @@
                               <%}%>
                                 <%});%>
                                   <%}else{%>
-                                    <li><a href="/mydreamhome-details-docs" value="<%=propertyDetailData[0]._id%>"><img
-                                          src="images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a></li>
-                                    <li><a href="/mydreamhome-details-docs" value="<%=propertyDetailData[0]._id%>"><img
-                                          src="images/idproof.png" alt="" title=""><br><span>idproof.png</span></a></li>
-                                    <li><a href="/mydreamhome-details-docs" value="<%=propertyDetailData[0]._id%>"><img
-                                          src="images/doc.png" alt="" title=""><br><span>doc.png</span></a></li>
+                                    <h6>Docs&File Not Uploaded</h6>
+                                    
                                     <%}%>
                       </ul>
 

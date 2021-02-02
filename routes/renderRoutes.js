@@ -389,24 +389,45 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
   let property = await PropertiesSchema.findOne({ _id: req.session.property_id, ps_is_active_user_flag: req.session.active_user_login });
   const allDocument = await CustomerUploadDocsSchema.find({ $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.session.property_id, cuds_is_active_user_flag: req.session.active_user_login }] });
   //const propertyDataObj = await PropertiesSchema.find();
+  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
+  console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
+  let serviceProvArray = [];
+  for (var k of AllhiredProfeshnoal) {
+    await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
+      for (let i of allProfeshnoals) {
+        let temps = await i
+        serviceProvArray.push(temps)
+      }
+    });
+  } 
+  res.render('mydreamhome-details-docs', {
+          err_msg, success_msg, layout: false,
+          session: req.session,
+          data: serviceProvArray,
+          allDocument: allDocument,//need to show property wise document still showing all uploaded
+          property: property,
+          moment: moment
+        });
+      
 
-  ServiceProviderSchema.find({ sps_status: 'active', }).then(service_provider => {
-    if (!service_provider) {
-      console.log("Service Provider not found");
-      return res.status(400).json("Service Provider not found")
-    }
-    else {
-      res.render('mydreamhome-details-docs', {
-        err_msg, success_msg, layout: false,
-        session: req.session,
-        data: service_provider,
-        allDocument: allDocument,//need to show property wise document still showing all uploaded
-        property: property,
-        moment: moment
-      });
-    }
 
-  })
+  // ServiceProviderSchema.find({ sps_status: 'active', }).then(service_provider => {
+  //   if (!service_provider) {
+  //     console.log("Service Provider not found");
+  //     return res.status(400).json("Service Provider not found")
+  //   }
+  //   else {
+  //     res.render('mydreamhome-details-docs', {
+  //       err_msg, success_msg, layout: false,
+  //       session: req.session,
+  //       data: service_provider,
+  //       allDocument: allDocument,//need to show property wise document still showing all uploaded
+  //       property: property,
+  //       moment: moment
+  //     });
+  //   }
+
+  // })
 });
 // app.get('/mydreamhome-details-docs', isCustomer, (req, res) => {
 
