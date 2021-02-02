@@ -44,8 +44,97 @@
               Track your progress
             </div>
             <div class="dashboard-inner">
+              <%if(AllProperty.length==0){%>
+                <h3>Result Not Found</h3>
+                <%}else{%>
+                  <%AllProperty.forEach(function(row,i){%>
 
+                  
               <div class="docs-files-section progress-box">
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="left-side-content-progress">
+                      <h3><%=row.ps_property_name%></h3>
+                      <p><img src="images/dreamhome.png"><%=row.ps_property_address%></p>
+                      <ul>
+                        <li><img src="images/recent-user-1.png"></li>
+                        <li><img src="images/recent-user-2.png"></li>
+                        <li><img src="images/recent-user-3.png"></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-9">
+                    <div class="progress-line">
+                      <ul>
+                        <li class="progress-1"><a href="/mydreamhome-details-phase-a"><img
+                              src="images/white-prgress=arrow.png"></a> <span>Phase A</span></li>
+                        <li class="progress-2"><img src="images/white-prgress=arrow.png"> <span>Phase B</span></li>
+                        <li class="progress-3"><img src="images/white-prgress=arrow.png"> <span>Phase C</span></li>
+                        <li class="progress-4"><img src="images/white-prgress=arrow.png"> <span>Phase D</span></li>
+                        <li class=""><img src="images/white-prgress=arrow.png"> <span>Phase E</span></li>
+                        <li class=""><img src="images/white-prgress=arrow.png"> <span>Phase F</span></li>
+                      </ul>
+                    </div>
+                    <div class="time-schedule">
+                      <ul>
+                        <li>
+                          <div>
+                            <img src="images/track-active.png">
+                            2 weeks
+                          </div>
+                        </li>
+                        <li>
+                          <div>
+                            <img src="images/track-active.png">
+                            2 weeks
+                          </div>
+                        </li>
+                        <li>
+                          <div>
+                            <img src="images/track-active.png">
+                            2 weeks
+                          </div>
+                        </li>
+                        <li>
+                          <div>
+                            <img src="images/track-active.png">
+                            2 weeks
+                          </div>
+                        </li>
+                      </ul>
+                      <ul>
+                        <li>
+                          <div>
+                            <img src="images/track-active.png">
+                            5,000 $
+                          </div>
+                        </li>
+                        <li>
+                          <div>
+                            <img src="images/track-active.png">
+                            5,000 $
+                          </div>
+                        </li>
+                        <li>
+                          <div>
+                            <img src="images/track-active.png">
+                            5,000 $
+                          </div>
+                        </li>
+                        <li>
+                          <div>
+                            <img src="images/track-active.png">
+                            5,000 $
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <%});%>
+            <%}%>
+              <!-- <div class="docs-files-section progress-box">
                 <div class="row">
                   <div class="col-md-3">
                     <div class="left-side-content-progress">
@@ -126,92 +215,9 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
-              <div class="docs-files-section progress-box">
-                <div class="row">
-                  <div class="col-md-3">
-                    <div class="left-side-content-progress">
-                      <h3>Nacary Apartment</h3>
-                      <p><img src="images/dreamhome.png"> Sudhirman, Central Jakarta</p>
-                      <ul>
-                        <li><img src="images/recent-user-1.png"></li>
-                        <li><img src="images/recent-user-2.png"></li>
-                        <li><img src="images/recent-user-3.png"></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="col-md-9">
-                    <div class="progress-line">
-                      <ul>
-                        <li class="progress-1"><a href="/mydreamhome-details-phase-a"><img
-                              src="images/white-prgress=arrow.png"></a> <span>Phase A</span></li>
-                        <li class="progress-2"><img src="images/white-prgress=arrow.png"> <span>Phase B</span></li>
-                        <li class="progress-3"><img src="images/white-prgress=arrow.png"> <span>Phase C</span></li>
-                        <li class="progress-4"><img src="images/white-prgress=arrow.png"> <span>Phase D</span></li>
-                        <li class=""><img src="images/white-prgress=arrow.png"> <span>Phase E</span></li>
-                        <li class=""><img src="images/white-prgress=arrow.png"> <span>Phase F</span></li>
-                      </ul>
-                    </div>
-                    <div class="time-schedule">
-                      <ul>
-                        <li>
-                          <div>
-                            <img src="images/track-active.png">
-                            2 weeks
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="images/track-active.png">
-                            2 weeks
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="images/track-active.png">
-                            2 weeks
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="images/track-active.png">
-                            2 weeks
-                          </div>
-                        </li>
-                      </ul>
-                      <ul>
-                        <li>
-                          <div>
-                            <img src="images/track-active.png">
-                            5,000 $
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="images/track-active.png">
-                            5,000 $
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="images/track-active.png">
-                            5,000 $
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="images/track-active.png">
-                            5,000 $
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="docs-files-section progress-box">
+              <!-- <div class="docs-files-section progress-box">
                 <div class="row">
                   <div class="col-md-3">
                     <div class="left-side-content-progress">
@@ -292,7 +298,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
             </div>
           </div>

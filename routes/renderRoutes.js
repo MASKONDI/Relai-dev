@@ -107,14 +107,19 @@ app.get('/dashboard', isCustomer, (req, res) => {
 
 
 
-app.get('/track-your-progress', isCustomer, (req, res) => {
+app.get('/track-your-progress', isCustomer, async(req, res) => {
   console.log("current user session is :", req.session);
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('track-your-progress', {
+let AllProperty =  await PropertiesSchema.find({$and:[{ps_user_id:req.session.user_id,ps_is_active_user_flag:req.session.active_user_login}]})
+  if(AllProperty){
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('track-your-progress', {
     err_msg, success_msg, layout: false,
-    session: req.session
+    session: req.session,
+    AllProperty:AllProperty
   });
+  }
+
 });
 
 app.get('/professionals', isCustomer, async (req, res) => {
