@@ -634,6 +634,8 @@ POST : Add Task api is used for adding task(or Phase) details and sharing these 
 ------------------------------------------------------------------------------------------------- */
 
 router.post("/addTask", (req, res) => {
+  console.log("addTask post:",req.body);
+  
   if (req.body.Phase == '' || req.body.Phase == undefined) {
     res.json({ status: 0, message: 'Task Add Failed' });
 

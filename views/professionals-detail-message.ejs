@@ -206,7 +206,7 @@
             if (datas.chatData.length > 0) {
               var htmlData = '';
               $.each(datas.chatData, function (i, data) {
-                htmlData += '<div class="messages-box clearfix"><div class="message-user-img"> <img src="images/recent-user-1.png" alt="" title=""></div><div class="message-content"><h3>' + data.senderName + '</h3><p>' + data.sms_message + '</p><p class="hours-ago text-right">' + data.msgTime + ' ago</p></div></div>';
+                htmlData += '<div class="messages-box clearfix"><div class="message-user-img"> <img src="images/recent-user-1.png" alt="" title=""></div><div class="message-content"><h3>' + data.senderName + '</h3><p>' + data.sms_message + '</p><p class="hours-ago text-right">' + data.msgTime + '</p></div></div>';
               });
               $('#message_board').html(htmlData);
             }
