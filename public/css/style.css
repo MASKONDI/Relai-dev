@@ -3998,7 +3998,7 @@ width: 20px;
 /*soniya new added 22-12*/
 .banner.buy-sell {
      padding-top: 0px;
-     background-image: url(images/banner-4.png);
+     background-image: url(../images/banner-4.png);
      background-repeat: no-repeat;
      background-position: bottom right;
      background-size: contain;
@@ -4006,7 +4006,7 @@ width: 20px;
 }
 .banner.community {
     padding-top: 0px;
-    background-image: url(images/banner-6.png);
+    background-image: url(../images/banner-6.png);
     background-repeat: no-repeat;
     background-position: bottom right;
     background-size: cover;
@@ -4014,7 +4014,7 @@ width: 20px;
 }
 .banner.support {
     padding-top: 0px;
-    background-image: url(images/banner-5.png);
+    background-image: url(../images/banner-5.png);
     background-repeat: no-repeat;
     background-position: bottom right;
     background-size: contain;
