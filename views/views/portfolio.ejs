@@ -1,0 +1,201 @@
+<%- include('head')-%>
+  <div class="container">
+
+    <div class="row ">
+      <div class="col-lg-8 portfolio">
+        <div class="clearfix">
+          <div class="logo-signup float-left">
+            <a class="navbar-brand" href="/index"><img src="images/logo-2.png" class="d-inline-block align-top"></a>
+          </div>
+
+        </div>
+        <p>SIGN UP</p>
+        <h1>Upload your portfolio</h1>
+
+        <% if(typeof err_msg!='undefined' ){ %>
+          <span class="error_validate flash_msg" style="color: red;">
+            <%= err_msg %>
+          </span>
+          <% }%>
+            <% if(typeof success_msg!='undefined' ){ %>
+              <span class="succ_flash_msg" style="color: green;">
+                <%= success_msg %>
+              </span>
+              <% }%>
+
+                <div class="row">
+                  <form action="/upload" method="post" enctype="multipart/form-data">
+
+                    <div class="kyc-box-portfolio">
+
+                      <div class=kyc-section-portfolio>
+                        <img src="images/upload-icon.png">
+                      </div>
+                      <div class="driving-liences-portfolio">
+                        <p>Picture/Video 1</p>
+                      </div>
+                      <div class="upload-portfolio">
+                        <!-- <a href="#">Upload</a> -->
+                        <button class="btn btn-upload">Upload</button>
+                      </div>
+                      <span>
+                        <div class="custom-file-input">
+                          <input type="file" id="image" name="portfolio-docs" value="" required>
+                          <input type="button">
+                        </div>
+                      </span>
+
+                    </div>
+                  </form>
+                  <form action="/upload" method="post" enctype="multipart/form-data">
+
+                    <div class="kyc-box-portfolio">
+
+                      <div class=kyc-section-portfolio>
+                        <img src="images/upload-icon.png">
+                      </div>
+                      <div class="driving-liences-portfolio">
+                        <p>Picture/Video 2</p>
+                      </div>
+                      <div class="upload-portfolio">
+                        <!-- <a href="#">Upload</a> -->
+                        <button class="btn btn-upload">Upload</button>
+                      </div>
+                      <span>
+                        <div class="custom-file-input">
+                          <input type="file" id="image" name="portfolio-docs" value="" required>
+                          <input type="button">
+                        </div>
+                      </span>
+
+                    </div>
+                  </form>
+
+                  <form action="/upload" method="post" enctype="multipart/form-data">
+                    <div class="kyc-box-portfolio">
+
+                      <div class=kyc-section-portfolio>
+                        <img src="images/upload-icon.png">
+                      </div>
+                      <div class="driving-liences-portfolio">
+                        <p>Picture/Video 3</p>
+                      </div>
+                      <div class="upload-portfolio">
+                        <!-- <a href="#">Upload</a> -->
+                        <button class="btn btn-upload">Upload</button>
+                      </div>
+                      <span>
+                        <div class="custom-file-input">
+                          <input type="file" id="image" name="portfolio-docs" value="" required>
+                          <input type="button">
+                        </div>
+                      </span>
+
+                    </div>
+                  </form>
+                  <button class="portfolio-btn" name="addDom">
+                    <div class=portfolio-add-button>
+                      <img src="images/add-icon.png">
+                    </div>
+                  </button>
+                </div>
+                <div class="portfolio-submit">
+                  <a href="/kyc-professional" class="btn portfolio-submit-btn">NEXT</a>
+
+                </div>
+
+      </div>
+      <div class="col-lg-4">
+        <div class="portfolio-images">
+          <a href="#"><img src="images/portfolio.png"></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function () {
+      $(".sidenav ul li").click(function () {
+        $(".sidenav ul li").removeClass("active");
+        $(this).addClass("active");
+      });
+    });
+    $(document).ready(function () {
+      $(".right-navbar li").click(function () {
+        $("right-navbar li").removeClass("active");
+        $(this).addClass("active");
+      });
+    });
+  </script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('.custom-file-input input[type="file"]').change(function (e) {
+        $(this).siblings('input[type="text"]').val(e.target.files[0].name);
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+
+      $("button[name='addDom']").click(function () {
+        var domElement = $('<div class="kyc-box-portfolio"> <div class=kyc-section-portfolio> <img src="images/upload-icon.png"> </div> <div class="driving-liences-portfolio"> <p>Picture/Video 1</p> </div> <div class="upload-portfolio"> <a href="#">Upload</a> </div> <span> <div class="custom-file-input"> <input type="file" name="image" id="image" value=""> <input type="button"> </div> </span> </div>');
+        $(this).after(domElement);
+      });
+
+    });
+  </script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+    integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+    crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    $('#loginform').validate({
+      onfocusout: function (element) {
+        this.element(element);
+      },
+      errorClass: 'error_validate',
+      errorElement: 'span',
+      errorColor: 'red',
+      highlight: function (element, errorClass) {
+        $(element).removeClass(errorClass);
+      },
+      submitHandler: function (form) {
+        $('#submit').attr('disabled', true);
+        form.submit();
+      }
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var flash_msg = $('.flash_msg').html();
+      if (flash_msg != "" && flash_msg != undefined) {
+        setTimeout(function () { $('.flash_msg').html(''); }, 4000);
+      }
+    });
+
+    $(document).ready(function () {
+      var succ_flash_msg = $('.succ_flash_msg').html();
+      if (succ_flash_msg != "" && succ_flash_msg != undefined) {
+        setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
+      }
+    });  
+  </script>
+
+
+  </body>
+
+  </html>

@@ -1,0 +1,333 @@
+<%- include('head')-%>
+  <div class="wrapper dashboard">
+    <nav class="navbar navbar-expand-lg d-block d-xs-none d-lg-none">
+      <a class="navbar-brand" href="/index"><img src="images/logo-2.png"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+      </button>
+      <div class="user-right">
+        <ul class="login-menu">
+          <li class="dropdown"><a href="#" class="dropdown-toggle" type="button" id="dropdownMenuButton"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/recent-user-1.png"
+                width="40" height="40" class="rounded-circle"> John <i class="fa fa-angle-down"
+                aria-hidden="true"></i></a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#">Setting</a>
+              <a class="dropdown-item" href="#">Account</a>
+              <a class="dropdown-item" href="#">Log Out</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="/signup-professionals-profile"><img class="act-img" src="images/1-active.png"><img
+                src="images/1.png">PERSONAL DETAILS </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/signup-professionals-profile-2"><img class="act-img"
+                src="images/2-active.png"><img src="images/2.png"> OTHER DETAILS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/signup-professionals-profile-3"><img class="act-img"
+                src="images/3-active.png"><img src="images/3.png"> EDUCATION</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/signup-professionals-profile-4"><img class="act-img"
+                src="images/4-active.png"><img src="images/4.png"> EMPLOYMENT HISTORY</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/signup-professionals-profile-5"><img class="act-img"
+                src="images/5-active.png"><img src="images/5.png"> REFERENCES</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/signup-professionals-profile-6"><img class="act-img"
+                src="images/6-active.png"><img src="images/6.png"> PROFESSIONAL INDEMNITY
+              INSURANCE</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/signup-professionals-profile-7"><img class="act-img"
+                src="images/7-active.png"><img src="images/7.png"> LANGUAGE</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+
+
+    <div class="dashboard-wpr">
+      <div class="container-fluid">
+        <div class="row content">
+          <div class="col-sm-3 sidenav2 hidden-xs-down">
+            <div class=" text-center">
+              <div class="">
+                <a href="/index"><img src="images/logo-2.png"></a>
+              </div>
+
+            </div>
+            <ul class="dashboard-nav">
+              <li class="completed">
+                <a href="/signup-professionals-profile">
+                  <img class="complete-img" src="images/checked.png">
+                  <img class="act-img" src="images/1-active.png">
+                  <img src="images/1.png">
+                  PERSONAL DETAILS
+                </a>
+              </li>
+              <li class="active">
+                <a href="/signup-professionals-profile-2"><img class="act-img" src="images/2-active.png"><img
+                    src="images/2.png"> OTHER DETAILS</a>
+              </li>
+              <li>
+                <a href="/signup-professionals-profile-3"><img class="act-img" src="images/3-active.png"><img
+                    src="images/3.png"> EDUCATION</a>
+              </li>
+              <li>
+                <a href="/signup-professionals-profile-4"><img class="act-img" src="images/4-active.png"><img
+                    src="images/4.png"> EMPLOYMENT HISTORY</a>
+              </li>
+
+              <li>
+                <a href="/signup-professionals-profile-5"><img class="act-img" src="images/5-active.png"><img
+                    src="images/5.png"> REFERENCES</a>
+              </li>
+              <li>
+                <a href="/signup-professionals-profile-6"><img class="act-img" src="images/6-active.png"><img
+                    src="images/6.png"> PROFESSIONAL INDEMNITY
+                  INSURANCE</a>
+              </li>
+              <li>
+                <a href="/signup-professionals-profile-7"><img class="act-img" src="images/7-active.png"><img
+                    src="images/7.png"> LANGUAGE</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-sm-12 col-lg-9">
+            <div class=" dashboard-inner">
+              <div class="row">
+                <div class="col-sm-12 col-lg-9">
+                  <div class="signup-header">
+                    <p>START FOR FREE</p>
+
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12 col-lg-9">
+                  <div class="signup-head">
+                    <h3>Other Details</h3>
+                  </div>
+                </div>
+                <div class="col-sm-12 col-lg-3">
+                  <div class="page-count">
+                    <p> 2 of 6</p>
+                  </div>
+                </div>
+              </div>
+              <form action="/api/service_provider_other_details" method="post" class="form form-section" id="form2">
+
+
+                <% if(typeof success_msg!='undefined' ){ %>
+                  <span class="succ_flash_msg" style="color: green;">
+                    <%= success_msg %>
+                  </span>
+                  <% }%>
+                    <div class="row">
+                      <div class="col-sm-12 col-lg-6">
+                        <p>Do you need a work permit to be employed in the UK?</p>
+                      </div>
+                      <div class="col-sm-12 col-lg-2">
+                        <label class="radio-inline">
+                          <input type="radio" name="spods_option_work_permit_for_uk" value="yes" required>
+                          &nbsp;Yes&nbsp;&nbsp;
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="spods_option_work_permit_for_uk" value="no">&nbsp;No&nbsp;&nbsp;
+                        </label>
+                      </div>
+                      <div class="col-sm-12 col-lg-4">
+
+                      </div>
+                      <div class="col-sm-12 col-lg-6">
+                        <p>Do you have any criminal convictions?</p>
+                      </div>
+                      <div class="col-sm-12 col-lg-2">
+                        <label class="radio-inline">
+                          <input type="radio" name="spods_option_criminal_convictions" id="criminal_convictions"
+                            value="yes" required>
+                          &nbsp;Yes&nbsp;&nbsp;
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" id="criminal_convictions" name="spods_option_criminal_convictions"
+                            value="no">
+                          &nbsp;No&nbsp;&nbsp;
+                        </label>
+                      </div>
+                      <div class="col-sm-12 col-lg-4">
+                        <div class="note-sec">
+                          <p>*Note: you will be asked to provide a basic CRB check if appointed</p>
+                        </div>
+
+                      </div>
+                      <div class="col-sm-12 col-lg-6">
+                        <p>Do you hold a current UK driving licence?
+                        </p>
+                      </div>
+                      <div class="col-sm-12 col-lg-2">
+                        <label class="radio-inline">
+                          <input type="radio" name="spods_option_uk_driving_licence" value="yes" required>
+                          &nbsp;Yes&nbsp;&nbsp;
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="spods_option_uk_driving_licence" value="no">
+                          &nbsp;No&nbsp;&nbsp;
+                        </label>
+                      </div>
+                      <div class="col-sm-12 col-lg-4">
+
+                      </div>
+                    </div>
+                    <% if(typeof err_msg!='undefined' ){ %>
+                      <span class="error_validate flash_msg" style="color: red; padding-bottom: 10px;">
+                        <%= err_msg %>
+                      </span>
+                      <% }%>
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-12">
+                            <div class="input-box-size">
+                              <input type="text" class="form-control text-field-size " id=""
+                                name="spods_details_of_convictions"
+                                placeholder="Please give details of any point/convictions">
+                            </div>
+
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-5 col-lg-6">
+                            <div class="input-box-size-fix3">
+                              <input type="text" class="form-control text-field-size " id=""
+                                placeholder="Professional Body" name="spods_professional_body">
+                            </div>
+                          </div>
+                          <div class="col-sm-5 col-lg-5">
+                            <div class="input-box-size-fix3">
+                              <input type="date" class="form-control date-field-size " id="" placeholder="End date"
+                                name="spods_date_registered">
+                            </div>
+                          </div>
+                          <div class="col-sm-2 col-lg-1">
+                            <div class="">
+                              <a href="#" class="btn signup-professional-plus-btn"><i class="fa fa-plus"></i></a>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-5 col-lg-6">
+                            <div class="input-box-size-fix3">
+                              <input type="text" class="form-control text-field-size " id=""
+                                placeholder="Professional Body Membership No." name="spods_membership_number">
+                            </div>
+                          </div>
+                          <div class="col-sm-5 col-lg-5">
+                            <div class="input-box-size-fix3">
+                              <input type="date" class="form-control date-field-size " id="" placeholder="endDate"
+                                name="spods_membership_no_date_registered">
+                            </div>
+                          </div>
+                          <div class="col-sm-2 col-lg-1">
+                            <div class="">
+                              <a href="#" class="btn signup-professional-plus-btn"><i class="fa fa-plus"></i></a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-6">
+                            <div class="input-box-size-fix3">
+                              <input type="text" class="form-control text-field-size" id=""
+                                placeholder="Other relevant Qualifications" name="spods_other_relevant_qualification">
+                            </div>
+                          </div>
+
+
+                        </div>
+                        <div class="row">
+                          <div class="col-6 col-sm-6 col-lg-6">
+                            <div class="prev-btn float-left">
+                              <a href="/signup-professionals-profile" class="btn previous-btn" style="width: 164px; ">
+                                PREVIOUS</a>
+                            </div>
+                          </div>
+
+                          <div class="col-6 col-sm-6 col-lg-6">
+                            <div class="prev-btn float-right">
+                              <!-- <a href="signup-professionals-profile-3" class="btn btn-next" style="width: 164px; ">
+                        NEXT</a> -->
+                              <button type="submit" name="submit" class="btn btn-next" style="width: 164px; ">
+                                NEXT</button>
+                            </div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+    integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+    crossorigin="anonymous"></script>
+
+
+  <script type="text/javascript">
+    $('#form2').validate({
+      onfocusout: function (element) {
+        this.element(element);
+      },
+      errorClass: 'error_validate',
+      errorElement: 'span',
+      highlight: function (element, errorClass) {
+        $(element).removeClass(errorClass);
+      },
+      submitHandler: function (form) {
+        $('#submit').attr('disabled', true);
+        form.submit();
+      }
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var flash_msg = $('.flash_msg').html();
+      if (flash_msg != "" && flash_msg != undefined) {
+        setTimeout(function () { $('.flash_msg').html(''); }, 4000);
+      }
+    });
+
+    $(document).ready(function () {
+      var succ_flash_msg = $('.succ_flash_msg').html();
+      if (succ_flash_msg != "" && succ_flash_msg != undefined) {
+        setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
+      }
+    });  
+  </script>
+
+
+
+
+
+
+  </body>
+
+  </html>
