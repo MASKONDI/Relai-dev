@@ -212,6 +212,32 @@
     document.documentElement.scrollTop = 0;
   }
 </script>
+  <script>
+         function myFunction() {
+           var x = document.getElementById("myDIV");
+           if (x.style.display === "none") {
+             x.style.display = "block";
+           } else {
+             x.style.display = "none";
+           }
+             var y = document.getElementById("myDIV2");
+           if (y.style.display === "block") {
+             y.style.display = "none";
+           } else {
+             y.style.display = "block";
+           }
+         }
+      </script>
+
+
+      <script type="text/javascript">
+        
+
+        $('.add-active').on('click', function(){
+    $('.add-active').removeClass('current');
+    $(this).addClass('current');
+});
+      </script>
 </body>
 
 </html>
