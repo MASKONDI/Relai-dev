@@ -204,8 +204,8 @@
                       </div>
                     </div>
                     <div class="card-body">
-                      <button type="button" class="btn btn-cancel" style="margin-top: 30px; margin-bottom: 0px;">Track
-                        Progress</button>
+                      <button type="button" class="btn btn-cancel" style="margin-top: 30px; margin-bottom: 0px;"><a style="color:#fff;" href="/track-your-progress">Track
+                        Progress</a></button>
                     </div>
                   </div>
                 </div>
@@ -307,7 +307,6 @@
 
       $("#professional-role li a").click(function (e) {
         var role = $(this).data('role');
-        alert(role)
         $.ajax({
           type: "GET",
           data: {

@@ -313,15 +313,19 @@
                         <p>No Result</p>
                         <%}else{%>
                           <%phaseDetailObj.forEach(function(row,i){%>
-                      <label class="check-todos">
-                        <p><%=row.pps_phase_name%><a href="/mydreamhome-details-to-dos"><img
-                              src="images/recent-user-1.png"></a><em><%=row.professionalName%></em></p>
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                      </label>
-                      <%});%>
-                      <%}%>
-                      <!-- <label class="check-todos">
+                            <label class="check-todos">
+                              <p>
+                                <%=row.pps_phase_name%><a href="/mydreamhome-details-to-dos"><img
+                                      src="images/recent-user-1.png"></a><em>
+                                    <%=row.professionalName%>
+                                  </em>
+                              </p>
+                              <input type="checkbox">
+                              <span class="checkmark"></span>
+                            </label>
+                            <%});%>
+                              <%}%>
+                                <!-- <label class="check-todos">
                         <p>Instruct other professionals<a href="/mydreamhome-details-to-dos"><img
                               src="images/recent-user-1.png"></a><em>Michael Williams</em></p>
                         <input type="checkbox">

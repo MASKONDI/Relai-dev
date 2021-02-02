@@ -228,15 +228,34 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
 // All Professional Filter Role
 app.get('/professionals-filter', isCustomer, (req, res) => {
   console.log('role data:', req.query.role);
-  ServiceProviderSchema.find({ sps_role_name: req.query.role }).then(service_provider_detail => {
+  ServiceProviderSchema.find({ sps_role_name: req.query.role }).then( async service_provider_detail => {
     if (service_provider_detail) {
-      console.log('service_provider_detail:', service_provider_detail)
+
+
+      let serviceProvArray = [];
+      for (var sp_id of service_provider_detail) {
+        await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+          if (otherDetails) {
+            //console.log("other Details of customers", otherDetails);
+            const spProvider = JSON.stringify(sp_id);
+            const parseSpProvider = JSON.parse(spProvider);
+            parseSpProvider.professionalBody = otherDetails.spods_professional_body
+            serviceProvArray.push(parseSpProvider);
+            //console.log("service_provider Array list in loop:", serviceProvArray);
+          }
+        });
+      }
+
+
+
+
+      console.log('service_provider_detail:', serviceProvArray)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.send({
         err_msg, success_msg, layout: false,
         session: req.session,
-        filterData: service_provider_detail
+        filterData: serviceProvArray
       })
     }
   }).catch((err) => {
@@ -264,11 +283,27 @@ app.get('/professionals-searchbar', (req, res) => {
             }
           });
           let unique = [...new Set(professionalIDs)];
-          ServiceProviderSchema.find({ _id: { $in: unique } }).then(service_provider_detail => {
+          ServiceProviderSchema.find({ _id: { $in: unique } }).then( async service_provider_detail => {
+
+            let serviceProvArray = [];
+            for (var sp_id of service_provider_detail) {
+              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                if (otherDetails) {
+                  //console.log("other Details of customers", otherDetails);
+                  const spProvider = JSON.stringify(sp_id);
+                  const parseSpProvider = JSON.parse(spProvider);
+                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                  serviceProvArray.push(parseSpProvider);
+                  //console.log("service_provider Array list in loop:", serviceProvArray);
+                }
+              });
+            }
+
+
             res.send({
               err_msg, success_msg, layout: false,
               session: req.session,
-              filterData: service_provider_detail
+              filterData: serviceProvArray
             })
           });
         }
