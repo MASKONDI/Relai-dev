@@ -1,0 +1,233 @@
+<%- include('dashboard_header')-%>
+  <%- include('edit-profile-model')-%>
+    <div class="dashboard-wpr">
+      <div class="container-fluid">
+        <div class="row content">
+          <div class="col-sm-2 sidenav hidden-xs-down">
+            <div class="user-login text-center">
+
+              <%- include('profile-image')-%>
+
+                <div class="user-name">
+                  <h2>
+                    <%= session.name %>
+                  </h2>
+                  <a href="#">
+                    <%= session.email %>
+                      <%- include('edit-profile-icon')-%>
+                  </a>
+                </div>
+            </div>
+            <ul class="dashboard-nav">
+              <li>
+                <a href="/dashboard"><img class="act-img" src="images/dashboard-active.png"><img
+                    src="images/dashboard.png"> Dashboard</a>
+              </li>
+              <li>
+                <a href="/track-your-progress"><img class="act-img" src="images/track-active.png"><img
+                    src="images/track.png"> Track your progress</a>
+              </li>
+              <li>
+                <a href="/professionals"><img class="act-img" src="images/professionals-active.png"><img
+                    src="images/professionals.png"> Professionals</a>
+              </li>
+              <li>
+                <a href="/mydreamhome"><img class="act-img" src="images/dreamhome-active.png"><img
+                    src="images/dreamhome.png"> My dream home</a>
+              </li>
+              <li class="active">
+                <a href="/mydreamhome-details-to-dos"><img class="act-img" src="images/to-do-list-active.png"><img
+                    src="images/to-do-list.png"> To do list</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-sm-12 col-lg-10">
+            <div class="row complaints-sec">
+              <div class="col-sm-12 col-lg-6">
+                <div class="complaints">
+                  <h2>To do list</h2>
+                </div>
+              </div>
+
+
+            </div>
+            <div class="todos-inner">
+
+              <div class="todo-list-table">
+
+
+                <table class="table table-responsive">
+                  <thead>
+                    <tr>
+                      <th>To-dos</th>
+                      <th>Status</th>
+                      <th>Date</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <%if(phaseDetailObj.length==0){%>
+                      <tr>
+                        <td>Result Not Found </td>
+                      </tr>
+                      <%}else{%>
+                        <%phaseDetailObj.forEach(function(row,i){%>
+                        <tr>
+                          <td> <label class="check-todos">
+                              <p><%=row.pps_phase_name%></p>
+                              <input type="checkbox">
+                              <span class="checkmark"></span>
+                            </label></td>
+                          <td>
+                            <%if(row.pps_phase_status=='pending'){%>
+                            <a class="btn btn-pending">Pending</a>
+                            <%}else{%>
+                              <a class="btn btn-complete">Complete</a>
+                              <%}%>
+                          </td>
+                          <td><span><%=moment.unix( row.pps_phase_end_date/1000).format("D MMM YYYY")%></span></td>
+                          <td><a class="take-action" href="/mydreamhome-details-phase-a">Take Action</a></td>
+                        </tr>
+                        <%});%>
+                        <%}%>
+                    <!-- <tr>
+                      <td> <label class="check-todos">
+                          <p>Instruct solicitor</p>
+                          <input type="checkbox">
+                          <span class="checkmark"></span>
+                        </label></td>
+                      <td><a class="btn btn-pending">Pending</a></td>
+                      <td><span>16 Nov, 2020</span></td>
+                      <td><a class="take-action" href="/mydreamhome-details-phase-a">Take Action</a></td>
+                    </tr>
+                    <tr>
+                      <td><label class="check-todos">
+                          <p>Instruct other professionals</p>
+                          <input type="checkbox">
+                          <span class="checkmark"></span>
+                        </label></td>
+                      <td><a class="btn btn-pending">Pending</a></td>
+                      <td><span>16 Nov, 2020</span></td>
+                      <td><a class="take-action" href="/mydreamhome-details-phase-a">Take Action</a></td>
+                    </tr>
+                    <tr>
+                      <td><label class="check-todos">
+                          <p>ID/Passport</p>
+                          <input type="checkbox" checked="checked">
+                          <span class="checkmark"></span>
+                        </label></td>
+                      <td><a class="btn btn-complete">Complete</a></td>
+                      <td><span>16 Nov, 2020</span></td>
+                      <td><a class="take-action" href="/mydreamhome-details-phase-a">Take Action</a></td>
+                    </tr>
+                    <tr>
+                      <td><label class="check-todos">
+                          <p>Proof of address</p>
+                          <input type="checkbox">
+                          <span class="checkmark"></span>
+                        </label></td>
+                      <td><a class="btn btn-pending">Pending</a></td>
+                      <td><span>16 Nov, 2020</span></td>
+                      <td><a class="take-action" href="/mydreamhome-details-phase-a">Take Action</a></td>
+                    </tr>
+                    <tr>
+                      <td><label class="check-todos">
+                          <p>Proof of fund (cash buyers)/agreement in principle (mortgage)</p>
+                          <input type="checkbox" checked="checked">
+                          <span class="checkmark"></span>
+                        </label></td>
+                      <td><a class="btn btn-complete">Complete</a></td>
+                      <td><span>16 Nov, 2020</span></td>
+                      <td><a class="take-action" href="/mydreamhome-details-phase-a">Take Action</a></td>
+                    </tr>
+                    <tr>
+                      <td><label class="check-todos">
+                          <p>Checks. Title/property/chains et al</p>
+                          <input type="checkbox">
+                          <span class="checkmark"></span>
+                        </label></td>
+                      <td><a class="btn btn-pending">Pending</a></td>
+                      <td><span>16 Nov, 2020</span></td>
+                      <td><a class="take-action" href="/mydreamhome-details-phase-a">Take Action</a></td>
+                    </tr>
+                    <tr>
+                      <td><label class="check-todos">
+                          <p>Memorandum of sales</p>
+                          <input type="checkbox">
+                          <span class="checkmark"></span>
+                        </label></td>
+                      <td><a class="btn btn-pending">Pending</a></td>
+                      <td><span>16 Nov, 2020</span></td>
+                      <td><a class="take-action" href="/mydreamhome-details-phase-a">Take Action</a></td>
+                    </tr> -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"></script>
+    <script>
+      $(document).ready(function () {
+        $(".sidenav ul li").click(function () {
+          $(".sidenav ul li").removeClass("active");
+          $(this).addClass("active");
+        });
+      });
+      $(document).ready(function () {
+        $(".right-navbar li").click(function () {
+          $("right-navbar li").removeClass("active");
+          $(this).addClass("active");
+        });
+      });
+    </script>
+    <script>
+      $(document).ready(function () {
+        $(".buyertab").click(function (e) {
+          $.ajax({
+            type: "GET",
+            url: "/buyer",
+            cache: false,
+            success: function (html) {
+            }
+          });
+          location.reload(true);
+        });
+        $(".sellertab").click(function (e) {
+          $.ajax({
+            type: "GET",
+            url: "/seller",
+            cache: false,
+            success: function (html) {
+            }
+          });
+          location.reload(true);
+        });
+        $(".renovatortab").click(function (e) {
+          $.ajax({
+            type: "GET",
+            url: "/renovator",
+            cache: false,
+            success: function (html) {
+            }
+          });
+          location.reload(true);
+        });
+      });
+    </script>
+
+    </body>
+
+    </html>

@@ -1,0 +1,196 @@
+<%- include('head')-%>
+  <section style="overflow: hidden;">
+    <div class="container-fluid p-0">
+      <div class="row">
+        <div class="col-lg-6  p-0">
+          <div class="signup">
+            <div class="clearfix header-login">
+              <div class="logo-signup float-left">
+                <a class="navbar-brand" href="/index"><img src="images/logo-2.png" class="d-inline-block align-top"></a>
+              </div>
+              <div class="float-right">
+                <a href="/intro" class="signin text-right">
+                  <button type="submit" class="btn btn-sign">SIGN UP</button>
+                </a>
+              </div>
+            </div>
+            <p>SIGN IN</p>
+            <h1>Welcome back!</h1>
+            <form id="loginform" class="form" method="post" action="/api/cust_signin">
+
+              <% if(typeof err_msg!='undefined' ){ %>
+                <span class="error_validate flash_msg" style="color: red;">
+                  <%= err_msg %>
+                </span>
+                <% }%>
+                  <% if(typeof success_msg!='undefined' ){ %>
+                    <span class="succ_flash_msg" style="color: green;">
+                      <%= success_msg %>
+                    </span>
+                    <% }%>
+
+                      <div class="form-group ">
+                        <input type="email" class="form-control signin-form-control" id="email" placeholder="Email ID"
+                          name="cus_email_id" data-rule-required="true" data-rule-email="true"
+                          data-msg-required="Please Enter Email Id!" data-msg-email="Please Enter Valid Email-ID!">
+                        <input type="password" class="form-control signin-form-control" id="password"
+                          placeholder="Password" name="cus_password" data-rule-required="true" data-rule-maxlength="30"
+                          data-msg-required="Please Enter Password!">
+                      </div>
+                      <div class="forgot-pass">
+                        <p><a href="/forget-password" style="color: #005377;">
+                            Forgot Password? </a> </p>
+                      </div>
+                      <br />
+                      <div class="signin-submit">
+                        <!-- <a href="/otp" class="btn signin-submit-btn">SUBMIT</a> -->
+                        <button type="submit" name="submit" class="btn signin-submit-btn">SUBMIT</button>
+                      </div>
+                      <br />
+                      <div class="signin-footer">
+                        <p class="text-center" style="color: #3f3e3e;">Don’t have an account? <a href="/intro"
+                            style="color: #005377;">
+                            Sign up</a> </p>
+                      </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="login-slider">
+            <div class="item">
+              <img src="images/becom1.png" alt="">
+              <div class="carousel-caption d-none d-md-block">
+                <h5 class="find-slider">Find the best service providers for your home</h5>
+              </div>
+            </div>
+            <div class="item">
+              <img src="images/becom2.png" alt="">
+              <div class="carousel-caption d-none d-md-block">
+                <h5 class="find-slider">Browse service providers by portfolio</h5>
+              </div>
+            </div>
+            <div class="item">
+              <img src="images/becom3.png" alt="">
+              <div class="carousel-caption d-none d-md-block">
+                <h5 class="find-slider">Enjoy RelAi's services for your home</h5>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script> -->
+
+
+
+  <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="../js/slick.js"></script>
+  <script type="text/javascript" src="../js/slick.min.js"></script>
+
+  <script type="text/javascript">
+    $(".login-slider").slick({
+      dots: true,
+      autoplay: true,
+      autoplaySpeed: 3000,
+      infinite: true,
+      arrows: true,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      responsive: [
+        {
+          breakpoint: 768,
+          settings: {
+            arrows: false,
+            centerMode: false,
+            centerPadding: '40px',
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            arrows: false,
+            centerMode: false,
+            centerPadding: '40px',
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        }
+      ]
+    });
+
+  </script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+    integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+    crossorigin="anonymous"></script>
+
+  <script>
+    $(document).ready(function () {
+      $(".sidenav ul li").click(function () {
+        $(".sidenav ul li").removeClass("active");
+        $(this).addClass("active");
+      });
+    });
+    $(document).ready(function () {
+      $(".right-navbar li").click(function () {
+        $("right-navbar li").removeClass("active");
+        $(this).addClass("active");
+      });
+    });
+  </script>
+
+  <script type="text/javascript">
+    $('#loginform').validate({
+      onfocusout: function (element) {
+        this.element(element);
+      },
+      errorClass: 'error_validate',
+      errorElement: 'span',
+      errorColor: 'red',
+      highlight: function (element, errorClass) {
+        $(element).removeClass(errorClass);
+      },
+      submitHandler: function (form) {
+        $('#submit').attr('disabled', true);
+        form.submit();
+      }
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var flash_msg = $('.flash_msg').html();
+      if (flash_msg != "" && flash_msg != undefined) {
+        setTimeout(function () { $('.flash_msg').html(''); }, 4000);
+      }
+    });
+
+    $(document).ready(function () {
+      var succ_flash_msg = $('.succ_flash_msg').html();
+      if (succ_flash_msg != "" && succ_flash_msg != undefined) {
+        setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
+      }
+    });  
+  </script>
+
+
+
+  </body>
+
+  </html>

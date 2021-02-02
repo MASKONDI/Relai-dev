@@ -1,0 +1,564 @@
+<%- include('dashboard_header')-%>
+  <%- include('edit-profile-model')-%>
+    <!-- The Modal -->
+    <!-- <div class="modal permission-modal fade " id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content"> -->
+
+    <!-- Modal Header -->
+    <!-- <div class="modal-header text-center">
+          <h2 class="modal-title w-100">Add Task to Phase 1</h2>
+        </div>
+        <form name="addTaskForm" id="addTaskForm" action="api/addTask" method="post"> -->
+    <!-- Modal body -->
+    <!--<div class="modal-body">
+            <label class="label-fix">Describe this to-do</label>
+            <div class="alert alert-info" id="taskmsg"></div>
+            <input type="text" class="form-control form-control-fix2" id="subject" placeholder="Instruction"
+              name="todotask" required>
+            <input type="text" class="form-control form-control-fix2" id="professional"
+              placeholder="<%=serviceProvider.sps_fullname%>" name="professionalName"
+              value="<%=serviceProvider.sps_fullname%>" readonly>
+            <input type="hidden" name="professionalId" value="<%=serviceProvider._id%>">
+            <input type="hidden" name="currentUserId" value="<%=session.user_id%>">
+            <input type="hidden" name="ppts_property_id" id="ppts_property_id" value="">
+            <input type="hidden" name="phase_id" id="phase_id" value="">
+            <input type="date" class="form-control  form-control-fix2" id="duedate" placeholder="Due on" name="duedate"
+              required>
+            <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
+              placeholder="Add Notes(If any)"></textarea>
+
+            <div class="model-btn-fix">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-cancel" id="cancel_addtask_btn" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-cancel" id="addtask_btn" data-dismiss="">Add Task</button>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>-->
+    <div class="dashboard-wpr">
+      <div class="container-fluid">
+        <div class="row content">
+          <div class="col-sm-2 sidenav hidden-xs-down">
+            <div class="user-login text-center">
+
+              <%- include('profile-image')-%>
+
+                <div class="user-name">
+                  <h2>
+                    <%= session.name %>
+                  </h2>
+                  <a href="#">
+                    <%= session.email %>
+                      <%- include('edit-profile-icon')-%>
+                  </a>
+                </div>
+            </div>
+            <ul class="dashboard-nav">
+              <li>
+                <a href="/dashboard"><img class="act-img" src="images/dashboard-active.png"><img
+                    src="images/dashboard.png"> Dashboard</a>
+              </li>
+              <li>
+                <a href="/track-your-progress"><img class="act-img" src="images/track-active.png"><img
+                    src="images/track.png"> Track your progress</a>
+              </li>
+              <li class="active">
+                <a href="/professionals"><img class="act-img" src="images/professionals-active.png"><img
+                    src="images/professionals.png"> Professionals</a>
+              </li>
+              <li>
+                <a href="/mydreamhome"><img class="act-img" src="images/dreamhome-active.png"><img
+                    src="images/dreamhome.png"> My dream home</a>
+              </li>
+              <li>
+                <a href="/mydreamhome-details-to-dos"><img class="act-img" src="images/to-do-list-active.png"><img
+                    src="images/to-do-list.png"> To do list</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-sm-12 col-lg-10">
+            <div class="dashboard-inner">
+              <div class="row">
+                <div class="col-sm-12 col-lg-12">
+                  <div class=" user-fix">
+                    <div class="row">
+                      <div class="col-sm-12 col-lg-5">
+                        <div class="user-profile-fix2 float-left">
+                          <img src="images/user-4.png" alt="" title="">
+                        </div>
+                        <div class="user-name-fix float-left">
+                          <h2>
+                            <%=serviceProvider.sps_fullname%>
+                          </h2>
+                          <p>
+                            <%=serviceProvider.sps_role_name%>
+                          </p>
+                        </div>
+                      </div>
+
+                      <div class="float-left icon-fix">
+                        <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span>
+                          <%=serviceProvider.sps_experience%>
+                            years
+                        </span>
+                      </div>
+                      <div class="float-left icon-fix2">
+                        <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>4.0
+                          Rating</span>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12 col-lg-12">
+                  <div class="hirenow-inner">
+                    <div class="docs-files-section">
+
+                      <form class="form" id="hirenowform" action="#" method="POST">
+                        <input type="hidden" name="user_id" value="<%=session.user_id%>">
+                        <input type="hidden" name="serviceProviderId" value="<%=serviceProvider._id%>">
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-12">
+                            <div class="docs-files">
+
+                              <div class="heading-top hirenow-fix float-left">
+                                <label class="">STEP 1</label>
+                                <h6 class="">Select the property you want to hire professional for</h6>
+                              </div>
+
+
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-12">
+                            <div class="home-section">
+                              <div class="row">
+
+                                <div class="col-sm-12 col-lg-3">
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>Select Property</label>
+                                      <select
+                                        class="form-control form-control-lg form-control-size-fix  propertySelectBox"
+                                        name="propertyId" data-rule-required="true"
+                                        data-msg-required="Property is required!" style="width: 94%;">
+                                        <option value="">Select property</option>
+                                        <% property.forEach(function(row){ %>
+                                          <option class="option" value="<%=row._id%>">
+                                            <%=row.ps_property_name%>
+                                          </option>
+                                          <% }); %>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-12 col-lg-3">
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>Address</label>
+
+
+                                      <input type="text" class="form-control address form-control-size-fix "
+                                        id="address" placeholder="1143 Buena Visa Avenue" name="address" value=""
+                                        data-rule-required="true" data-msg-required="Address is required!" required>
+                                    </div>
+
+
+                                  </div>
+                                </div>
+                                <div class="col-sm-12 col-lg-3">
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>City</label>
+                                      <input type="text" class="form-control form-control-size-fix " id="city"
+                                        placeholder="Rufus" name="city" value="" data-rule-required="true"
+                                        data-msg-required="City is required!" required>
+                                    </div>
+
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-sm-12 col-lg-3">
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>State</label>
+                                      <input type="text" class="form-control form-control-size-fix " id="state"
+                                        placeholder="Oregon" data-rule-required="true"
+                                        data-msg-required="State is required!" required name="state" value="">
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-12 col-lg-3">
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>Country</label>
+                                      <input type="text" class="form-control form-control-size-fix " id="country"
+                                        placeholder="United States" name="country" value="" data-rule-required="true"
+                                        data-msg-required="Country is required!" required>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-12 col-lg-3">
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>Zip code</label>
+                                      <input type="text" class="form-control form-control-size-fix " id="zipcode"
+                                        placeholder="97050" name="zipcode" value="" data-rule-required="true"
+                                        data-msg-required="Zipcode is required!" required>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-6">
+
+
+                            <div class="heading-top hirenow-fix float-left">
+
+                              <label class="">STEP 2</label>
+                              <h6 class="">Tell us your approximate budget</h6>
+                              <br />
+                              <input class="range_slider" id="ex8" data-slider-id='ex1Slider' type="text"
+                                name="pps_pofessional_budget" data-slider-min="100" data-slider-max="10000"
+                                data-slider-step="10" data-slider-value="4000" />
+                              <br />
+
+                            </div>
+                          </div>
+                          <div class="col-sm-6 col-lg-6">
+
+                            <div class="heading-top hirenow-fix float-left">
+
+                              <label class="">STEP 3</label>
+                              <h6 class="">Tell us expected delivery date</h6>
+                            </div>
+                            <div class="col-sm-6 col-lg-6">
+
+
+                              <input type="date" style="margin-top:5px;width:90%"
+                                class="form-control form-control-size-fix " id="deliveryDate" placeholder="1 Dec 2011"
+                                name="pps_exptected_delivery_date" data-rule-required="true"
+                                data-msg-required="DeliveryDate is required!" required>
+
+
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-12">
+                            <div class="docs-files">
+
+
+                              <div class="heading-top hirenow-fix float-left">
+                                <label class="">STEP 4</label>
+                                <h6 class="">Add phases</h6>
+                                <div class="message"></div>
+
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-12 col-lg-12">
+                            <div class="home-section">
+                              <div class="row">
+                                <div class="professional-input-box">
+                                  <div class="professional-text-fix">
+                                    <label>Phase1</label>
+                                    <!-- <% if(typeof err_msg!='undefined' ){ %>
+                                      <span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">
+                                        <%= err_msg %>
+                                      </span>
+                                      <% }%> -->
+                                    <!-- <% if(typeof success_msg!='undefined' ){ %>
+                                       <span class="succ_flash_msg" style="color: green;">
+                                            <%= success_msg %>
+                                          </span>
+                                          <% }%> -->
+
+                                    <select class="form-control" id="instruction" placeholder="Instruction"
+                                      name="instruction" required>
+                                      <option value="">Select Phases</option>
+                                      <%if(session.active_user_login=='renovator'){ %>
+                                        <option value="Strategic definition">Strategic definition</option>
+                                        <option value="Preparation and Briefing">Preparation and Briefing</option>
+                                        <option value="Spatial coordination">Spatial coordination</option>
+                                        <option value="Technical Design">Technical Design</option>
+                                        <option value="Manifacturing and Construction">Manifacturing and Construction
+                                        </option>
+                                        <option value="Concept Design">Concept Design</option>
+                                        <option value="Handover">Handover</option>
+                                        <option value="Use">Use</option>
+                                        <%}else{%>
+                                          <option value="Instruction">Instruction</option>
+                                          <option value="Pre-exchange Submitting the contract">Pre-exchange Submitting
+                                            the contract</option>
+                                          <option value="Prior to exchange of contracts">Prior to exchange of contracts
+                                          </option>
+                                          <option value="Exchange of contracts">Exchange of contracts</option>
+                                          <option value="Completion">Completion</option>
+                                          <option value="Post-Completion">Post-Completion</option>
+                                          <%}%>
+                                    </select>
+                                    <!-- <input type="text" class="form-control form-control-size-fix "
+                                            id="instruction" placeholder="Instruction" name="instruction" required> -->
+                                  </div>
+                                </div>
+                                <div class="professional-input-box">
+                                  <div class="professional-text-fix">
+                                    <label>Start Date</label>
+                                    <input type="date" class="form-control form-control-size-fix " id="startDate1"
+                                      placeholder="Full Name" name="startDate" required>
+                                  </div>
+                                </div>
+                                <div class="professional-input-box">
+                                  <div class="professional-text-fix">
+                                    <label>End Date</label>
+                                    <input type="date" class="form-control form-control-size-fix " id="endDate1"
+                                      placeholder="Full Name" name="endDate" required>
+
+                                  </div>
+                                </div>
+                                <div class="">
+                                  <div class="">
+
+                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                      Phase</a>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row divv"></div>
+                              <!-- <div class="row">
+                              <div class="professional-input-box">
+                                <div class="professional-text-fix">
+                                  <label>Phase2</label>
+                                  <input type="text" class="form-control form-control-size-fix " id="phase2"
+                                    placeholder="Pre-exchange Submitting the contract" name="phase2">
+                                </div>
+
+                              </div>
+                              <div class="professional-input-box">
+                                <div class="professional-text-fix">
+                                  <label>Start Date</label>
+                                  <input type="date" class="form-control form-control-size-fix " id="startDate2"
+                                    placeholder="FullName" name="startDate2">
+                                </div>
+                              </div>
+                              <div class="professional-input-box">
+                                <div class="professional-text-fix">
+                                  <label>End Date</label>
+                                  <input type="date" class="form-control form-control-size-fix " id="endDate2"
+                                    placeholder="End Date" name="endDate2">
+                                </div>
+                              </div>
+                              <div class="">
+                                <a href="#" class="btn btn-add-task-fix">Add
+                                  Task</a>
+                              </div>
+                              <div class="">
+                                <a href="#" class="btn btn-add-plus-fix"><i class="fa fa-plus"></i></a>
+                              </div>
+
+                            </div> -->
+                            </div>
+                          </div>
+                        </div>
+                        <button type="submit" class="btn btn-next" style="width: 164px; border-radius: 5px;">Hire
+                          Now</button>
+                      </form>
+                      <!-- <div class="alert alert-info" id="msg"></div> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.css"
+      integrity="sha512-SZgE3m1he0aEF3tIxxnz/3mXu/u/wlMNxQSnE0Cni9j/O8Gs+TjM9tm1NX34nRQ7GiLwUEzwuE3Wv2FLz2667w=="
+      crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.js"
+      integrity="sha512-tCkLWlSXiiMsUaDl5+8bqwpGXXh0zZsgzX6pB9IQCZH+8iwXRYfcCpdxl/owoM6U4ap7QZDW4kw7djQUiQ4G2A=="
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+      integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+      crossorigin="anonymous"></script>
+
+
+    <script>
+      $(document).ready(function () {
+        $(".sidenav ul li").click(function () {
+          $(".sidenav ul li").removeClass("active");
+          $(this).addClass("active");
+        });
+      });
+      $(document).ready(function () {
+        $(".right-navbar li").click(function () {
+          $("right-navbar li").removeClass("active");
+          $(this).addClass("active");
+        });
+      });
+
+      // With JQuery
+      $("#ex8").slider({
+        tooltip: 'always',
+        tooltip_position: 'bottom',
+        formatter: function (value) {
+          return 'USD: ' + value;
+        },
+      });
+
+// // Without JQuery
+// var slider = new Slider("#ex8", {
+//   tooltip: 'always',
+//   tooltip_position:'bottom'
+// });
+
+    </script>
+
+
+    <script>
+
+      $(document).ready(function () {
+        // $('#msg').hide();
+        // $('#taskmsg').hide();
+        // $('#cancel_addtask_btn').click(function (e) {
+        //   $("#addTaskForm input").val("");
+        //   $("#addTaskForm textarea").val("");
+        //   $('#myModal').modal('toggle');
+        // })
+        $('.propertySelectBox').change(function (e) {
+          // e.preventDefault();
+          var propertyId = $('.propertySelectBox :selected').val();
+          if (propertyId) {
+            $.ajax({
+              type: "POST",
+              data: 'propertyId=' + propertyId,
+              url: "/api/filterPropertyAdress",
+              cache: false,
+              success: function (data) {
+                console.log(data)
+
+                // alert($('#address').val(data.data.ps_property_address))
+                $('.address').val(data.data.ps_property_address)
+                $('#city').val(data.data.ps_property_city_id)
+
+                $('#state').val(data.data.ps_property_state_id)
+                $('#country').val(data.data.ps_property_country_id)
+                $('#zipcode').val(data.data.ps_property_zipcode)
+              }
+            });
+          } else {
+            alert('something wrong')
+          }
+        });
+        $('#hirenowform').on('submit', function (e) {
+          e.preventDefault();
+          var formdata = $(this).serialize();
+          console.log('formdata:', formdata);
+          $.ajax({
+            type: "POST",
+            data: formdata,
+            url: "/api/hire-now",
+            cache: false,
+            success: function (data) {
+              console.log(data)
+              if (data.status == false) {
+                //$('#message').show();
+                $('.message').html('<span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
+                setTimeout(function () { $('.message').html(''); }, 5000);
+
+                //$('#msg').html(data.message).delay(5000).fadeOut('success');
+              } else {
+                console.log('message:', data.success_msg)
+                window.location.href = data.redirect;
+              }
+
+              //$('#ppts_property_id').val(data.data.pps_property_id);
+              //$('#phase_id').val(data.data._id);
+              //$("#hirenowform input").val("");
+              //$("#hirenowform textarea").val("");
+              //$('.propertySelectBox').prop('selectedIndex', 0);
+            }
+          });
+        })
+      });
+    </script>
+    <script>
+      $(document).ready(function () {
+        $(".buyertab").click(function (e) {
+          $.ajax({
+            type: "GET",
+            url: "/buyer",
+            cache: false,
+            success: function (html) {
+            }
+          });
+          location.reload(true);
+        });
+        $(".sellertab").click(function (e) {
+          $.ajax({
+            type: "GET",
+            url: "/seller",
+            cache: false,
+            success: function (html) {
+            }
+          });
+          location.reload(true);
+        });
+        $(".renovatortab").click(function (e) {
+          $.ajax({
+            type: "GET",
+            url: "/renovator",
+            cache: false,
+            success: function (html) {
+            }
+          });
+          location.reload(true);
+        });
+
+      });
+    </script>
+    <script>
+      $(document).ready(function () {
+        var count = 2;
+        $("a[name='addMorePhase']").click(function () {
+          var domElement = $('<div class="row"><div class="professional-input-box"><div class="professional-text-fix"><label>Phase' + count++ + '</label><select class="form-control" id="instruction" placeholder="Instruction" name="instruction" required><option value="">Select Phases</option> <%if(session.active_user_login=="renovator"){ %><option value="Strategic definition">Strategic definition</option><option value="Preparation and Briefing">Preparation and Briefing</option><option value="Spatial coordination">Spatial coordination</option><option value="Technical Design">Technical Design</option><option value="Manifacturing and Construction">Manifacturing and Construction</option><option value="Concept Design">Concept Design</option><option value="Handover">Handover</option><option value="Use">Use</option> <%}else{%><option value="Instruction">Instruction</option><option value="Pre-exchange Submitting the contract">Pre-exchange Submitting the contract</option><option value="Prior to exchange of contracts">Prior to exchange of contracts</option><option value="Exchange of contracts">Exchange of contracts</option><option value="Completion">Completion</option><option value="Post-Completion">Post-Completion</option> <%}%> </select></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>Start Date</label><input type="date" class="form-control form-control-size-fix "placeholder="FullName" name="startDate"></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>End Date</label><input type="date" class="form-control form-control-size-fix "placeholder="End Date" name="endDate"></div></div></div>');
+          $(".divv").before(domElement);
+        });
+      });
+    </script>
