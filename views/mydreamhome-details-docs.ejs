@@ -1,7 +1,7 @@
 <%- include('dashboard_header')-%>
   <%- include('edit-profile-model')-%>
     <!-- The Modal -->
-    <div class="modal fade permission-modal" id="myModal">
+    <div class="modal fade permission-modal" id="permissionModal">
       <div class="modal-dialog">
         <div class="modal-content">
 
@@ -177,7 +177,7 @@
                             <div class="recent-img">
                               <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
                                 class="mr-10" src="images/recent-user-3.png">
-                              <a href="#" data-toggle="modal" data-target="#myModal" value="<%=row._id%>"
+                              <a href="#" data-toggle="modal" data-target="#permissionModal" value="<%=row._id%>"
                                 class="getDocId">Change permission</a>
                             </div>
                           </td>
