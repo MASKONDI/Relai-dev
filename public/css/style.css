@@ -1664,6 +1664,7 @@ th.message-th {
     border-radius: 10px;
     background-color: #fff;
     border: 1px solid #d1d1d1;
+    overflow :auto;
 }
 .do-list-sec a{
     color:#000;
