@@ -337,43 +337,73 @@ app.get('/my-professionals-filter', isCustomer, async (req, res) => {
 
 
 // My Professional Filter name surname qualification
-// app.get('/my-professionals-searchbar', async (req, res) => {
-//   let professionalIDs = [];
+app.get('/my-professionals-searchbar', async (req, res) => {
+  let professionalIDs = [];
+  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
+  let AllhiredProfeshnoalID = [];
+  let serviceProvArray = [];
 
-//   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id });
-//   let serviceProvArray = [];
-//   for (var k of AllhiredProfeshnoal) {
-//     await ServiceProviderSchema.find({$and:[{ _id: k.pps_service_provider_id, sps_fullname: new RegExp(req.query.searchKeyword, 'i')}]}).then(async (service_provider_detail1) => {
-//       ServiceProviderPersonalDetailsSchema.find({ $and:[{ spods_service_provider_id: k.pps_service_provider_id, sps_fullname: new RegExp(req.query.searchKeyword, 'i')}] }).then(service_provider_detail2 => { 
-//           ServiceProviderEducationSchema.find({ $and:[{ spods_service_provider_id: k.pps_service_provider_id, spes_qualification_obtained: new RegExp(req.query.searchKeyword, 'i')}] }).then(service_provider_detail3 => {
-//             if (service_provider_detail1 || service_provider_detail2 || service_provider_detail3) { 
-//               var service_provider_detail = service_provider_detail1.concat(service_provider_detail2, service_provider_detail3);
-//               service_provider_detail.forEach(async function (providerData) {
-//                 if (("spes_service_provider_id" in providerData) == true) {
-//                   await professionalIDs.push(providerData.spes_service_provider_id.toString());
-//                 } else if (('spods_service_provider_id' in providerData) == true) {
-//                   await professionalIDs.push(providerData.spods_service_provider_id.toString());
-//                 } else {
-//                   await professionalIDs.push(providerData._id.toString());
-//                 }
-//               });
-//               let unique = [...new Set(professionalIDs)];
+  //console.log('MYYYY AllhiredProfeshnoal:',AllhiredProfeshnoal);
+  for (var k of AllhiredProfeshnoal) { 
+         await AllhiredProfeshnoalID.push(k.pps_service_provider_id.toString());
+   }
 
-//               ServiceProviderSchema.find({ _id: { $in: unique } }).then(service_provider_detail => {
-//                 res.send({
-//                   err_msg, success_msg, layout: false,
-//                   session: req.session,
-//                   data: service_provider_detail
-//                 })
-//               });
+   console.log('MYYYY AllhiredProfeshnoalID:',AllhiredProfeshnoalID);
+
+    ServiceProviderSchema.find({ _id: { $in: AllhiredProfeshnoalID }, sps_fullname: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail1 => {
+      ServiceProviderPersonalDetailsSchema.find({spods_service_provider_id:{ $in: AllhiredProfeshnoalID }, spods_surname: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail2 => {
+        ServiceProviderEducationSchema.find({spes_service_provider_id:{ $in: AllhiredProfeshnoalID }, spes_qualification_obtained: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail3 => {
+          if (service_provider_detail1 || service_provider_detail2 || service_provider_detail3) {
+            err_msg = req.flash('err_msg');
+            success_msg = req.flash('success_msg');
+            var service_provider_detail = service_provider_detail1.concat(service_provider_detail2, service_provider_detail3);
+  console.log('MYYYY service_provider_detail:',AllhiredProfeshnoal);
+
+            service_provider_detail.forEach(async function (providerData) {
+              if (("spes_service_provider_id" in providerData) == true) {
+                await professionalIDs.push(providerData.spes_service_provider_id.toString());
+              } else if (('spods_service_provider_id' in providerData) == true) {
+                await professionalIDs.push(providerData.spods_service_provider_id.toString());
+              } else {
+                await professionalIDs.push(providerData._id.toString());
+              }
+            });
+
+  console.log('MYYYY professionalIDs:',professionalIDs);
+
+            let unique = [...new Set(professionalIDs)];
+
+  console.log('MYYYY unique:',unique);
 
 
-//             }
-//           })
-//       })
-//     });
-//   }
-// });
+  ServiceProviderSchema.find({ _id: { $in: unique } }).then( async service_provider_detail => {
+    for (var sp_id of service_provider_detail) {
+      await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+        if (otherDetails) {
+          //console.log("other Details of customers", otherDetails);
+          const spProvider = JSON.stringify(sp_id);
+          const parseSpProvider = JSON.parse(spProvider);
+          parseSpProvider.professionalBody = otherDetails.spods_professional_body
+          serviceProvArray.push(parseSpProvider);
+          //console.log("service_provider Array list in loop:", serviceProvArray);
+        }
+      });
+    }
+    res.send({
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      filterData: serviceProvArray
+    })
+  });
+
+          }
+        });
+      });
+    }).catch((err) => {
+      console.log(err)
+    })
+
+});
 
 
 
