@@ -82,31 +82,31 @@
                             <div class="row">
                               <div class="col-sm-12 col-lg-4"><input type="text"
                                   class="form-control property-form-control-size-fix " id="propertyname"
-                                  placeholder="Hilton Avenue Flat" name="ps_property_name" data-rule-required="true"
+                                  placeholder="Hilton Avenue Flat*" name="ps_property_name" data-rule-required="true"
                                   data-msg-required="Property Name is required!" value=""></div>
                               <div class="col-sm-12 col-lg-4"><input type="text"
                                   class="form-control property-form-control-size-fix " id="address"
-                                  placeholder="Enter address" name="ps_property_address" data-rule-required="true"
+                                  placeholder="Enter address*" name="ps_property_address" data-rule-required="true"
                                   data-msg-required="Property address is required!" value=""></div>
                               <div class="col-sm-12 col-lg-4"><input type="text"
-                                  class="form-control property-form-control-size-fix " id="city" placeholder="City"
+                                  class="form-control property-form-control-size-fix " id="city" placeholder="City*"
                                   name="ps_property_city_id" data-rule-required="true"
                                   data-msg-required="City is required!" value="">
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-sm-12 col-lg-4"><input type="text"
-                                  class="form-control property-form-control-size-fix " id="state" placeholder="State"
+                                  class="form-control property-form-control-size-fix " id="state" placeholder="county*"
                                   name="ps_property_state_id" data-rule-required="true"
-                                  data-msg-required="State is required!" value="">
+                                  data-msg-required="county is required!" value="">
                               </div>
                               <div class="col-sm-12 col-lg-4"><input type="text"
                                   class="form-control property-form-control-size-fix " id="country"
-                                  placeholder="Country" name="ps_property_country_id" data-rule-required="true"
+                                  placeholder="Country*" name="ps_property_country_id" data-rule-required="true"
                                   data-msg-required="Country  is required!" value=""></div>
                               <div class="col-sm-12 col-lg-4"><input type="text"
                                   class="form-control property-form-control-size-fix " id="zipcode"
-                                  placeholder="Zip code" name="ps_property_zipcode" data-rule-required="true"
+                                  placeholder="Zip code*" name="ps_property_zipcode" data-rule-required="true"
                                   data-msg-required="Zipcode is required!" value="">
                               </div>
                             </div>
@@ -121,12 +121,12 @@
                             <div class="row">
                               <div class="col-sm-12 col-lg-4"><input type="text"
                                   class="form-control property-form-control-size-fix " id="buyer"
-                                  placeholder="Full Name" name="ps_other_party_fullname" value=""
+                                  placeholder="Full Name*" name="ps_other_party_fullname" value=""
                                   data-rule-required="true" data-msg-required="Full Name is required!"></div>
 
                               <div class="col-sm-12 col-lg-4"><input type="email"
                                   class="form-control property-form-control-size-fix " id="emailaddress"
-                                  placeholder="Enter email address" name="ps_other_party_emailid" value=""
+                                  placeholder="Enter email address*" name="ps_other_party_emailid" value=""
                                   data-rule-required="true" data-msg-required="Email is required!">
                               </div>
                               <!-- <div class="col-sm-12 col-lg-4"><input type="text"
@@ -148,16 +148,16 @@
                             <div class="row">
                               <div class="col-sm-12 col-lg-4"><input type="text"
                                   class="form-control property-form-control-size-fix " id="area"
-                                  placeholder="Area(sq. ft.)" name="ps_property_area" data-rule-required="true"
+                                  placeholder="Area(sq. ft.)*" name="ps_property_area" data-rule-required="true"
                                   data-msg-required="Area is required!" value="">
                               </div>
                               <div class="col-sm-12 col-lg-4"><input type="text"
                                   class="form-control property-form-control-size-fix " id="bedroom"
-                                  placeholder="Bedroom" name="ps_property_bedroom" data-rule-required="true"
+                                  placeholder="Bedroom*" name="ps_property_bedroom" data-rule-required="true"
                                   data-msg-required="Bedroom field is required!" value=""></div>
                               <div class="col-sm-12 col-lg-4"><input type="text"
                                   class="form-control property-form-control-size-fix " id="bedroom2"
-                                  placeholder="Bathroom" name="ps_property_bathroom" data-rule-required="true"
+                                  placeholder="Bathroom*" name="ps_property_bathroom" data-rule-required="true"
                                   data-msg-required="Bathroom  field is required!" value=""></div>
                             </div>
                             <div class="row">
@@ -180,13 +180,13 @@
                             <div class="col-sm-12 col-lg-12">
                               <!-- <form></form> -->
                               <!-- <form action="/upload-properties-pic" class="form" method="post"enctype="multipart/form-data"> -->
-                              <div class="property-box">
+                              <div class="property-box prop_1">
 
                                 <div class=property-inner-section>
-                                  <img src="images/upload-icon.png">
+                                  <img src="images/upload-icon.png" id="avtar1">
                                 </div>
-                                <div class="driving-liences-portfolio">
-                                  <p>Picture 1</p>
+                                <div class="driving-liences-portfolio ">
+                                  <p class="Picture_1">Picture 1</p>
                                 </div>
                                 <div class="property-upload">
                                   <!-- <a href="#">Upload</a> -->
@@ -195,20 +195,20 @@
                                 <span>
                                   <div class="custom-file-input">
                                     <input type="file" name="propertiespic" class="propertiespic" id="propertiespic1"
-                                      value="" required>
+                                      value="" required onchange="document.getElementById('avtar1').src = window.URL.createObjectURL(this.files[0])">
                                     <input type="button">
                                   </div>
                                 </span>
                               </div>
                               <!-- </form> -->
                               <!-- <form action="/upload-properties-pic" class="form" method="post"enctype="multipart/form-data"> -->
-                              <div class="property-box">
+                              <div class="property-box  prop_2">
 
                                 <div class=property-inner-section>
-                                  <img src="images/upload-icon.png">
+                                  <img src="images/upload-icon.png" id="avtar2">
                                 </div>
-                                <div class="driving-liences-portfolio">
-                                  <p>Picture 2</p>
+                                <div class="driving-liences-portfolio ">
+                                  <p CLASS="Picture_2">Picture 2</p>
                                 </div>
                                 <div class="property-upload">
                                   <!-- <a href="#">Upload</a> -->
@@ -217,20 +217,20 @@
                                 <span>
                                   <div class="custom-file-input">
                                     <input type="file" name="propertiespic" class="propertiespic2" id="propertiespic2"
-                                      value="">
+                                      value="" onchange="document.getElementById('avtar2').src = window.URL.createObjectURL(this.files[0])">
                                     <input type="button">
                                   </div>
                                 </span>
                               </div>
                               <!-- </form> -->
                               <!-- <form action="/upload-properties-pic" class="form" method="post"enctype="multipart/form-data"> -->
-                              <div class="property-box">
+                              <div class="property-box  prop_3">
 
                                 <div class=property-inner-section>
-                                  <img src="images/upload-icon.png">
+                                  <img src="images/upload-icon.png" id="avtar3">
                                 </div>
-                                <div class="driving-liences-portfolio">
-                                  <p>Picture 3</p>
+                                <div class="driving-liences-portfolio ">
+                                  <p CLASS="Picture_3">Picture 3</p>
                                 </div>
                                 <div class="property-upload">
                                   <!-- <a href="#">Upload</a> -->
@@ -239,7 +239,7 @@
                                 <span>
                                   <div class="custom-file-input">
                                     <input type="file" name="propertiespic" value="" class="propertiespic3"
-                                      id="propertiespic3">
+                                      id="propertiespic3" onchange="document.getElementById('avtar3').src = window.URL.createObjectURL(this.files[0])">
                                     <input type="button">
                                   </div>
                                 </span>
@@ -258,13 +258,13 @@
                           <div class="row">
                             <div class="col-sm-12 col-lg-12">
                               <!-- <form action="/upload-properties-plan-pic" class="form" method="post"enctype="multipart/form-data"> -->
-                              <div class="property-box">
+                              <div class="property-box  prop_4">
 
                                 <div class=property-inner-section>
-                                  <img src="images/upload-icon.png">
+                                  <img src="images/upload-icon.png" id="avtar4">
                                 </div>
-                                <div class="driving-liences-portfolio">
-                                  <p>Picture 1</p>
+                                <div class="driving-liences-portfolio ">
+                                  <p CLASS="Picture_4">Picture 1</p>
                                 </div>
                                 <div class="property-upload">
                                   <button class="btn btn-upload">Upload</button>
@@ -272,7 +272,7 @@
                                 <span>
                                   <div class="custom-file-input">
                                     <input type="file" name="propertiesplanpic" id="propertiesplanpic1" value=""
-                                      required>
+                                      required onchange="document.getElementById('avtar4').src = window.URL.createObjectURL(this.files[0])">
                                     <input type="button">
                                   </div>
                                 </span>
@@ -280,12 +280,12 @@
                               <!-- </form> -->
                               <!-- <form action="/upload-properties-plan-pic" class="form" method="post" enctype="multipart/form-data"> -->
 
-                              <div class="property-box">
+                              <div class="property-box  prop_5">
                                 <div class=property-inner-section>
-                                  <img src="images/upload-icon.png">
+                                  <img src="images/upload-icon.png" id="avtar5">
                                 </div>
-                                <div class="driving-liences-portfolio">
-                                  <p>Picture 2</p>
+                                <div class="driving-liences-portfolio ">
+                                  <p CLASS="Picture_5">Picture 2</p>
                                 </div>
                                 <div class="property-upload">
                                   <!-- <a href="#">Upload</a> -->
@@ -293,7 +293,7 @@
                                 </div>
                                 <span>
                                   <div class="custom-file-input">
-                                    <input type="file" name="propertiesplanpic" id="propertiesplanpic2" value="">
+                                    <input type="file" name="propertiesplanpic" id="propertiesplanpic2" value="" onchange="document.getElementById('avtar5').src = window.URL.createObjectURL(this.files[0])">
                                     <input type="button">
                                   </div>
                                 </span>
@@ -301,13 +301,13 @@
                               <!-- </form> -->
                               <!--<form action="/upload-properties-plan-pic" class="form" method="post"
                               enctype="multipart/form-data">-->
-                              <div class="property-box">
+                              <div class="property-box  prop_6">
 
                                 <div class=property-inner-section>
-                                  <img src="images/upload-icon.png">
+                                  <img src="images/upload-icon.png" id="avtar6">
                                 </div>
-                                <div class="driving-liences-portfolio">
-                                  <p>Picture 3</p>
+                                <div class="driving-liences-portfolio ">
+                                  <p CLASS="Picture_6">Picture 3</p>
                                 </div>
                                 <div class="property-upload">
                                   <!-- <a href="#">Upload</a> -->
@@ -315,7 +315,7 @@
                                 </div>
                                 <span>
                                   <div class="custom-file-input">
-                                    <input type="file" name="propertiesplanpic" id="propertiesplanpic3" value="">
+                                    <input type="file" name="propertiesplanpic" id="propertiesplanpic3" value="" onchange="document.getElementById('avtar6').src = window.URL.createObjectURL(this.files[0])">
                                     <input type="button">
                                   </div>
                                 </span>
@@ -439,6 +439,29 @@
         });
       });
     </script>
+    <script>
+      $(document).ready(function () {
+        $('.prop_1 input[type="file"]').change(function (e) {
+         $(".Picture_1").replaceWith(e.target.files[0].name)
+        });
+        $('.prop_2 input[type="file"]').change(function (e) {
+         $(".Picture_2").replaceWith(e.target.files[0].name)
+        });
+        $('.prop_3 input[type="file"]').change(function (e) {
+         $(".Picture_3").replaceWith(e.target.files[0].name)
+        });
+        $('.prop_4 input[type="file"]').change(function (e) {
+         $(".Picture_4").replaceWith(e.target.files[0].name)
+        });
+        $('.prop_5 input[type="file"]').change(function (e) {
+         $(".Picture_5").replaceWith(e.target.files[0].name)
+        });
+        $('.prop_6 input[type="file"]').change(function (e) {
+         $(".Picture_6").replaceWith(e.target.files[0].name)
+        });
+        
+      });
+      </script>
     </body>
 
     </html>
