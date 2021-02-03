@@ -20,6 +20,7 @@ const PropertiesPlanPictureSchema = require("../models/properties_plan_picture")
 const CustomerUploadDocsSchema = require("../models/customer_upload_document");
 const ComplaintsSchema = require("../models/Complaints");
 const CustomerSchema = require("../models/customers");
+const DateTime = require('node-datetime/src/datetime');
 //** Upload Document Start */
 
 var Storage = multer.diskStorage({
@@ -27,13 +28,18 @@ var Storage = multer.diskStorage({
     console.log('file==', file)
     if (file.fieldname === 'complaint_file') {
       callback(null, "./public/complaintFile");
+    } else if (file.fieldname === 'portfolio-docs') {
+      callback(null, "./public/portfolioImage");
     } else {
       callback(null, "./public/upload");
     }
 
   },
   filename: function (req, file, callback) {
-    callback(null, file.originalname);
+    const ext = path.extname(file.originalname);
+    console.log("ext",ext)
+    var datetimestamp = Date.now();
+    callback(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length - 1]);
   }
 });
 var maxSize = 1000000 * 1000;
@@ -102,35 +108,51 @@ app.post('/upload-profile-pic', upload.single('profile-pic'), (req, res, next) =
 
 
 // Uploading the image
-app.post('/upload', upload.single('portfolio-docs'), (req, res, next) => {
+app.post('/upload', upload.array('portfolio-docs', 10), async (req, res, next) => {
   var err_msg = null;
   var success_msg = null;
   //need to add conditions if session is expired
 
-  console.log("req is :", req.file);
+  console.log("req is ===:", req.files);
   console.log("req.session.user_id is :", req.session.user_id);
-  var obj = {
-    spps_filename: req.file.filename,
-    spps_service_provider_id: req.session.user_id,
-    //spps_type: req.file.fieldname,
-    spps_file: {
-      data: fs.readFileSync(path.join(__dirname + '../../public/upload/' + req.file.filename)),
-      contentType: 'image/png'
-    }
-  }
+  var c=0;
+  if (req.files.length != 0) {
+    await req.files.forEach(element => {
+      console.log('filename====',element.filename)
+      var obj = {
+        spps_filename: element.filename,
+        spps_service_provider_id: req.session.user_id,
+        //spps_type: req.file.fieldname,
+        spps_file: {
+          data: fs.readFileSync(path.join(__dirname + '../../public/portfolioImage/' + element.filename)),
+          contentType: 'image/png'
+        }
+      }
+       ServiceProviderPortfolioSchema.create(obj, (err, item) => {
+        if (err) {
+          console.log(err);
+          req.flash('err_msg', "Something went worng please try aftersome time");
+        }
+        else {
+          item.save();
+          console.log("file Submitted Successfully");
+          req.flash('success_msg', "Portfolio-docs Uploaded Successfully");
+         
+        }
+        c++;
+        if(c==req.files.length){
+          console.log('A')
+          res.redirect('/portfolio');
+        }
+      });
 
-  ServiceProviderPortfolioSchema.create(obj, (err, item) => {
-    if (err) {
-      console.log(err);
-      req.flash('err_msg', "Something went worng please try aftersome time");
-    }
-    else {
-      item.save();
-      console.log("file Submitted Successfully");
-      req.flash('success_msg', "Portfolio-docs Uploaded Successfully");
-      res.redirect('/portfolio');
-    }
-  });
+    })
+    //console.log(c,req.files.length)
+    
+    
+  } else {
+    req.flash('err_msg', "Something went worng please try aftersome time");
+  }
 });
 
 
