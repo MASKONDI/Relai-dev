@@ -23,10 +23,18 @@
                   <%= err_msg %>
                 </span>
                 <% }%>
+                <!-- <div class="isa_success">
+                  <i class="fa fa-check"></i>YOU HAVE REGISTER SUCCESSFULLY !!
+                </div> -->
                   <% if(typeof success_msg!='undefined' ){ %>
-                    <span class="succ_flash_msg" style="color: green;">
+                    <!-- <span class="succ_flash_msg" style="color: green;">
                       <%= success_msg %>
-                    </span>
+                    </span> -->      
+                     <span class="succ_flash_msg">  
+                        <div class="isa_success">
+                          <i class="fa fa-check"></i>  &nbsp;&nbsp; <%= success_msg %>
+                        </div>
+                      </span>   
                     <% }%>
 
                       <div class="form-group ">

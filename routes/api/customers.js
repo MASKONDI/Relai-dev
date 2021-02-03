@@ -140,6 +140,7 @@ router.post("/cust_register", (req, res) => {
             .save()
             .then(customers => {
               console.log("resposne is :", customers);
+              req.flash('success_msg','You have register sucessfully.')
               res.redirect("/signin")
             })
             .catch(err => {
@@ -764,7 +765,9 @@ function invite_function(req) {
       'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
   };
   smtpTransport.sendMail(mailOptions, function (err) {
-    if (err) { console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team'); res.redirect('/add-property') } else {
+    if (err) { console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team'); 
+    res.redirect('/add-property') 
+  } else {
       //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
       // res.redirect('/add-property')
     }

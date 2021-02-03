@@ -888,7 +888,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
   //console.log('session property id', req.query.id);
   if (req.query.id) {
     req.session.property_id = req.query.id
-    let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
+    let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id,pps_property_id:req.query.id, pps_is_active_user_flag: req.session.active_user_login });
     let allDocumentUploadByCustmer = await CustomerUploadDocsSchema.find({ $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.query.id, cuds_is_active_user_flag: req.session.active_user_login }] });
     //console.log('AllhiredProfeshnoal',AllhiredProfeshnoal);
     let serviceProvArray = [];

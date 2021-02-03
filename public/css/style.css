@@ -1344,6 +1344,7 @@ p.hours-ago.text-right {
     margin: 0;
     font-size: 15px;
     padding-right: 270px;
+    white-space: pre-wrap;
 }
 .messages-box {
     border-bottom: 1px dashed #333;

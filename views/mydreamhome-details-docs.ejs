@@ -12,10 +12,25 @@
           </div>
 
           <!-- Modal body -->
-          <div class="modal-body">
+          <!-- <div class="modal-body">
             <input type="hidden" name="cust_id" class="cust_id" value="<%=session.user_id%>">
             <% data.forEach(function(row){ %>
+              <label class="check-permission"><img src="images/recent-user-1.png">
+                <%= row.sps_fullname%>, <span>
+                    <%= row.sps_role_name%>
+                  </span>
+                  <input type="checkbox" name="selected[]" class="chekbox" value="<%= row._id%>">
+                  <span class="checkmark"></span>
 
+              </label>
+              <% });%>
+          </div> -->
+
+
+           <!-- Modal body -->
+           <div class="modal-body">
+            <input type="hidden" name="cust_id" class="cust_id" value="<%=session.user_id%>">
+           
               <div class="todo-list-table">
                 <table class="table table-responsive">
                   <thead>
@@ -27,6 +42,8 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <% data.forEach(function(row){ %>
+
                     <tr>
                       <td><label class="check-permission"><img src="images/recent-user-1.png">
                           <%= row.sps_fullname%>, <span>
@@ -42,11 +59,14 @@
                           <span class="checkmark"></span></label>
                       </td>
                     </tr>
+                    <% });%>
                   </tbody>
                 </table>
-                <% });%>
+               
               </div>
+             
           </div>
+
           <!-- Modal footer -->
           <div class="modal-footer">
             <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
@@ -201,6 +221,7 @@
                               <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
                                 class="mr-10" src="images/recent-user-3.png">
                               <a href="#" data-toggle="modal" data-target="#changePermisionModal" value="<%=row._id%>"
+
                                 class="getDocId">Change permission</a>
                             </div>
                           </td>
