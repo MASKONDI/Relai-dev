@@ -15,15 +15,37 @@
           <div class="modal-body">
             <input type="hidden" name="cust_id" class="cust_id" value="<%=session.user_id%>">
             <% data.forEach(function(row){ %>
-              <label class="check-permission"><img src="images/recent-user-1.png">
-                <%= row.sps_fullname%>, <span>
-                    <%= row.sps_role_name%>
-                  </span>
-                  <input type="checkbox" name="selected[]" class="chekbox" value="<%= row._id%>">
-                  <span class="checkmark"></span>
 
-              </label>
-              <% });%>
+              <div class="todo-list-table">
+                <table class="table table-responsive">
+                  <thead>
+                    <tr>
+                      <th style="width:70%">Hired Professional</th>
+                      <th>View</th>
+                      <th>Download</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><label class="check-permission"><img src="images/recent-user-1.png">
+                          <%= row.sps_fullname%>, <span>
+                              <%= row.sps_role_name%>
+                            </span>
+                        </label></td>
+                      <td> <label class="check-permission"><input type="checkbox" name="selected[]" class="chekbox"
+                            value="<%= row._id%>">
+                          <span class="checkmark"></span></label>
+                      </td>
+                      <td><label class="check-permission"><input type="checkbox" name="selected[]" class="chekbox"
+                            value="<%= row._id%>">
+                          <span class="checkmark"></span></label>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <% });%>
+              </div>
           </div>
           <!-- Modal footer -->
           <div class="modal-footer">
@@ -179,7 +201,6 @@
                               <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
                                 class="mr-10" src="images/recent-user-3.png">
                               <a href="#" data-toggle="modal" data-target="#changePermisionModal" value="<%=row._id%>"
-
                                 class="getDocId">Change permission</a>
                             </div>
                           </td>
