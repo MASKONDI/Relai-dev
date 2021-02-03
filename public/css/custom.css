@@ -894,13 +894,13 @@ font-size: 14px;
 
   }
 
-  .main-signup .carousel-control-next, .carousel-control-prev {
+/*  .main-signup .carousel-control-next, .carousel-control-prev {
 
     bottom: 108px!important;
 
     top: unset;
 
-  }
+  }*/
 
    .main-signup .carousel-caption h5{
 
@@ -1344,13 +1344,13 @@ margin-top: -80px!important;
 
 
 
-           .slider-tabing .main-signup .carousel-control-next, .carousel-control-prev {
+/*.carousel-control-next, .carousel-control-prev {
 
     bottom: 108px!important;
 
     top: unset;
 
-}
+}*/
 
 .current {
 
@@ -1529,7 +1529,10 @@ display: none;
     margin-right: 5px;
 
 }
-
+.slider-tabing .carousel {
+    margin: 20px auto;
+    padding: 0 0px;
+}
 }
 
      /*end of previous and next button media query*/

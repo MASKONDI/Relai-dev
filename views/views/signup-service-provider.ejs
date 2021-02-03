@@ -1,0 +1,250 @@
+<%- include('head')-%>
+
+  <section style="overflow: hidden;">
+    <div class="container-fluid p-0">
+      <div class="row">
+        <div class="col-lg-6 ">
+          <div class="signup">
+            <div class="clearfix header-login">
+              <div class="logo-signup float-left">
+                <a class="navbar-brand" href="/index"><img src="images/logo-2.png" class="d-inline-block align-top"></a>
+              </div>
+              <div class="float-right">
+                <a href="/signin-professional" class="signin text-right">
+                  <button type="submit" class="btn btn-sign">SIGN IN</button>
+                </a>
+              </div>
+            </div>
+            <p>START FOR FREE</p>
+            <h1>Let’s get you started</h1>
+            <form id="registerform" class="form" method="post" action="/api/service_provider_register">
+
+              <% if(typeof err_msg!='undefined' ){ %>
+                <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
+                  <%= err_msg %>
+                </span>
+                <% }%>
+                  <% if(typeof success_msg!='undefined' ){ %>
+                    <span class="succ_flash_msg" style="color: green;">
+                      <%= success_msg %>
+                    </span>
+                    <% }%>
+
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <input type="text" class="form-control form-control-size " id="fullName"
+                              placeholder="FullName" name="sps_fullname" required data-rule-required="true"
+                              data-rule-minlength="2" data-msg-required="Fullname is required!">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group ">
+                            <input type="text" class="form-control form-control-size" id="phoneNumber"
+                              placeholder="Phone Number" name="sps_phone_number" required data-rule-required="true"
+                              data-rule-minlength="10" data-msg-required="PhoneNumber is required!">
+
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="input-box-size-fix">
+                            <select class="form-control required" id="selectBox3" name="sps_role_name"
+                              data-rule-required="true" data-msg-required="Profession Name is required">
+                              <option value="">Select Profession</option>
+                              <option value="Accountant">Accountant
+                              </option>
+                              <option value="Architect"> Architect</option>
+                              <option value="Developer">Developer</option>
+                              <option value="Engineer">Engineer</option>
+                              <option value="Financial Advisor">Financial Advisor</option>
+                              <option value="Interior Designer">Interior Designer</option>
+                              <option value="Lawyer/Conveyancer">Lawyer/Conveyancer</option>
+                              <option value="Mortgage Broker">Developer</option>
+                              <option value="Surveyor"> Surveyor</option>
+                              <option value="Valuer"> Valuer</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group ">
+                            <input type="text" class="form-control form-control-size" id="text"
+                              placeholder="Experience in years" name="sps_experience" required data-rule-required="true"
+                              data-msg-required="Experience is required!">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group  ">
+                            <input type="email" class="form-control form-control-size" id="email" placeholder="Email ID"
+                              name="sps_email_id" required data-rule-required="true" data-rule-email="true"
+                              data-msg-required="Email Id is required." data-msg-email="Please Enter Valid Email-ID.">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group  ">
+                            <input type="text" class="form-control form-control-size" id="address" placeholder="Address"
+                              name="sps_address" required data-rule-required="true"
+                              data-msg-required="Address is required!">
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group  ">
+                            <input type="text" class="form-control form-control-size" id="city" placeholder="City"
+                              name="sps_city" required data-rule-required="true"
+                              data-msg-required="City name is required!">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group ">
+                            <input type="text" class="form-control form-control-size" id="country" placeholder="Country"
+                              name="sps_country_id" required data-rule-required="true"
+                              data-msg-required="Country name is required!">
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group  ">
+                            <input type="password" class="form-control form-control-size" id="password"
+                              placeholder="Password" name="sps_password" required data-rule-required="true"
+                              data-rule-minlength="6" data-msg-required="Password is required!">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group ">
+                            <input type="password" class="form-control form-control-size" id="password"
+                              placeholder="Confirm password" name="confirmPassword" required data-rule-required="true"
+                              data-rule-minlength="6" data-msg-required="Confirm Password is required!">
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <p class="text-center">By signing up, you agree to the <a href="/termandconditions">terms and
+                          conditions</a> of Relai.</p>
+                      <!-- <a href="signup-professionals-profile.html" class="btn btn-next">Next</a> -->
+
+                      <button type="submit" name="submit" class="btn btn-next">Next</button>
+
+                      <p class="text-center" style="margin-top :10px">Already have an account? <a href="/signin">
+                          Sign in
+                        </a> </p>
+            </form>
+          </div>
+
+        </div>
+
+        <div class="col-lg-6">
+          <div id="demo" class="carousel slide my-slider" data-ride="carousel">
+            <ol class="carousel-indicators">
+              <li data-target="#demo" data-slide-to="0" class="active"></li>
+              <li data-target="#demo" data-slide-to="1"></li>
+              <li data-target="#demo" data-slide-to="2"></li>
+            </ol>
+
+            <!-- The slideshow -->
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="images/login-side-img.png" alt="">
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Find the customer for your service</h5>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img src="images/login-side-img.png" alt="">
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Find the customer for your service</h5>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img src="images/login-side-img.png" alt="">
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Find the customer for your service</h5>
+                </div>
+              </div>
+            </div>
+
+            <!-- Left and right controls -->
+            <a class="carousel-control-prev" href="#demo" data-slide="prev">
+
+              <i class="fa fa-angle-left" aria-hidden="true"></i>
+            </a>
+            <a class="carousel-control-next" href="#demo" data-slide="next">
+              <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+    integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+    crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function () {
+      $(".sidenav ul li").click(function () {
+        $(".sidenav ul li").removeClass("active");
+        $(this).addClass("active");
+      });
+    });
+    $(document).ready(function () {
+      $(".right-navbar li").click(function () {
+        $("right-navbar li").removeClass("active");
+        $(this).addClass("active");
+      });
+    });
+  </script>
+  <script type="text/javascript">
+    $('#registerform').validate({
+      onfocusout: function (element) {
+        this.element(element);
+      },
+      errorClass: 'error_validate',
+      errorElement: 'span',
+      highlight: function (element, errorClass) {
+        $(element).removeClass(errorClass);
+      },
+      submitHandler: function (form) {
+        $('#submit').attr('disabled', true);
+        form.submit();
+      }
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var flash_msg = $('.flash_msg').html();
+      if (flash_msg != "" && flash_msg != undefined) {
+        setTimeout(function () { $('.flash_msg').html(''); }, 4000);
+      }
+    });
+
+    $(document).ready(function () {
+      var succ_flash_msg = $('.succ_flash_msg').html();
+      if (succ_flash_msg != "" && succ_flash_msg != undefined) {
+        setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
+      }
+    });  
+  </script>
+
+  </body>
+
+  </html>
