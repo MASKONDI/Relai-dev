@@ -4215,7 +4215,7 @@ margin-top:15px;
 .input-group.professional-search-input.col-lg-12 {
     padding: 0px;
 }
-a.btn.professional-search-btn {
+.btn.professional-search-btn {
     margin-left: 10px;
     width: 120px;
     background: #005377;
@@ -4228,12 +4228,17 @@ button.btn.professional-search-btn.dropdown-toggle {
     border: 2px solid #005377;
     margin-left: 10px;
     height: 38px;
+    border: 2px solid #005377;
+    color:#005377;
 }
 button.btn.professional-search-btn.dropdown-toggle {
     background: #ffff;
     border: 2px solid #005377;
     margin-left: 10px;
     height: 38px;
+}
+form#professional-search-form {
+    display: inline-flex;
 }
 .message-drop.float-left p {
     font-size: 14px;

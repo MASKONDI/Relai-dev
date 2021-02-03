@@ -73,21 +73,22 @@
                         </div>
                         <div class="float-right">
                           <div class="professional-right-sec">
-                            <div id="custom-search-input-fix" style="background-color: #f0f0f0 ;">
-                              <div class="input-group professional-search-input col-lg-12">
-                                <span class="input-group-btn">
-                                  <button class="btn btn-info" type="button">
-                                    <i class="fa fa-search" aria-hidden="true"></i>
-                                  </button>
-                                </span>
-                                <input type="text" class="form-control professional-search"
-                                  style="background-color: #f0f0f0;"
-                                  placeholder="Search professionals by name, surname, qualification " />
-
+                            <form id="professional-search-form" action="#" method="POST">
+                              <div id="custom-search-input-fix" style="background-color: #f0f0f0 ;">
+                                  <div class="input-group professional-search-input col-lg-12">
+                                    <span class="input-group-btn">
+                                      <button class="btn btn-info" type="button">
+                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                      </button>
+                                    </span>
+                                    <input type="text" required class="form-control professional-search"
+                                      style="background-color: #f0f0f0;"
+                                      placeholder="Search professionals by name, surname, qualification " />
+                                  </div>
                               </div>
-                            </div>
-                            <a href="javascript:void(0)" id="professional-search-btn"
-                              class="btn professional-search-btn">Search</a>
+                              <button type="submit"  id="professional-search-btn"
+                                class="btn professional-search-btn">Search</button>
+                            </form>
                             <div class="dropdown keep-inside-clicks-open">
                               <button class="btn professional-search-btn dropdown-toggle" type="button"
                                 id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
@@ -374,7 +375,9 @@
         });
       });
 
-      $("#professional-search-btn").click(function (e) {
+      //$("#professional-search-btn").click(function (e) {
+        $('#professional-search-form').on('submit', function (e) {
+          e.preventDefault();
         $('#loading').show();
         var searchVal = $('.professional-search').val();
         $.ajax({

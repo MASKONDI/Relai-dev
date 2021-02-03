@@ -116,15 +116,9 @@
                                   <img src="images/recent-user-1.png" alt="" title="">
                                 </div>
                                 <div class="message-content">
-                                  <h3>
-                                    <%= row.senderName%>
-                                  </h3>
-                                  <p>
-                                    <%= row.sms_message%>
-                                  </p>
-                                  <p class="hours-ago text-right">
-                                    <%= row.msgTime%> ago
-                                  </p>
+                                  <h3> <%= row.senderName%></h3>
+                                  <p><%= row.sms_message%></p>
+                                  <p class="hours-ago text-right"> <%= row.msgTime%></p>
                                 </div>
                               </div>
                               <% }); %>
@@ -172,8 +166,12 @@
       crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
-
+function scrollToBottom() {
+  var objDiv = document.getElementById("message_board");
+  objDiv.scrollTop = objDiv.scrollHeight;
+}
       $(document).ready(function () {
+        scrollToBottom();
         $(".sidenav ul li").click(function () {
           $(".sidenav ul li").removeClass("active");
           $(this).addClass("active");
