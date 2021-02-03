@@ -364,16 +364,18 @@
               success: function (data) {
                 if (data.status == 0) {
                   $("#error").show();
-                  $('#error').html(data.message).delay(5000).fadeOut('slow');
+                  $('#error').html(data.message).delay(3000).fadeOut('slow');
 
                 } else {
                   $("#msgg").show('');
-                  $('#msgg').html(data.message).delay(5000).fadeOut('slow');
+                  $('#msgg').html(data.message).delay(3000).fadeOut('slow');
+                  $('#task_name').val('');
+                  $('#notes').val('');
                   //$('#msg').html("data insert successfully").fadeIn('slow')
-                  setTimeout(function () {
+                  // setTimeout(function () {
 
-                    location.reload(true);
-                  }, 5000);
+                  //   location.reload(true);
+                  // }, 5000);
                 }
 
               }

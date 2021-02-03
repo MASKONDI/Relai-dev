@@ -39,7 +39,9 @@ var Storage = multer.diskStorage({
     const ext = path.extname(file.originalname);
     console.log("ext",ext)
     var datetimestamp = Date.now();
-    callback(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length - 1]);
+    const Filename = file.originalname
+const FilenameCleaned = Filename.replace(/\s/g, '')
+    callback(null, FilenameCleaned.split('.').join('-' + Date.now() + '.'));
   }
 });
 var maxSize = 1000000 * 1000;

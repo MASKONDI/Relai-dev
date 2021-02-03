@@ -246,7 +246,9 @@ var storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     var datetimestamp = Date.now();
-    cb(null, file.originalname)
+    const Filename = file.originalname
+    const FilenameCleaned = Filename.replace(/\s/g, '')
+    cb(null, FilenameCleaned.split('.').join('-' + Date.now() + '.'))
   }
 })
 
