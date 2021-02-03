@@ -1583,7 +1583,7 @@ a.btn.help-btn {
     margin-right: 0;
 }
 .my-dream-home-box {
-    width: 30%;
+    width: 93%;
     float: left;
     margin-right: 5%;
     margin-bottom: 50px;
@@ -1628,10 +1628,16 @@ a.btn.btn-new {
     position: relative;
 }
 .dream-home-img  img{
-    max-height: 240px;
-    min-height: 240px;
-    width: 100%;
+        max-height: 199px;
+        min-height: 199px;
+        width: 100%;
+        border-radius: 10px;
 }
+.carousel-item img{
+    max-height: 250px;
+    min-height: 250px;
+    border-radius: 10px;
+    }
 .location-part a {
     color: #8a8989;
 }

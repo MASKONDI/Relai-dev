@@ -243,7 +243,9 @@
 
 
             <div class="dashboard-inner">
-
+              <div style="display:none;" id="loading">
+                <img id="loading-image" src="https://thumbs.gfycat.com/BitterEarnestBeardeddragon-small.gif" alt="Loading..." />
+              </div>
               <div id="filter_data" class="row">
 
                 <% data.forEach(function(row){ %>
@@ -343,6 +345,9 @@
       });
 
       $("#professional-role li a").click(function (e) {
+        $('#professional-role li a').removeClass('active_role');
+        $(this).addClass('active_role');
+        $('#loading').show();
         var role = $(this).data('role');
         $.ajax({
           type: "GET",
@@ -352,7 +357,7 @@
           url: "/professionals-filter",
           cache: false,
           success: function (html) {
-
+            $('#loading').hide();
             console.log('result:', html.filterData)
             var htmlData = '';
             if (html.filterData.length > 0) {
@@ -370,6 +375,7 @@
       });
 
       $("#professional-search-btn").click(function (e) {
+        $('#loading').show();
         var searchVal = $('.professional-search').val();
         $.ajax({
           type: "GET",
@@ -379,7 +385,7 @@
           url: "/professionals-searchbar",
           cache: false,
           success: function (html) {
-
+            $('#loading').hide();
             console.log('result:', html.filterData)
             var htmlData = '';
             if (html.filterData.length > 0) {
