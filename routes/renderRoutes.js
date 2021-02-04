@@ -69,6 +69,23 @@ app.get('/intro', (req, res) => {
   res.render('intro');
 });
 
+app.get('/complaints', (req, res) => {
+  req.session.pagename = 'complaints';
+  res.render('complaints',{
+    //err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+
+app.get('/complaints-detail', (req, res) => {
+  req.session.pagename = 'complaints';
+  res.render('complaints-detail',{
+    //err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+
+
 
 //** customer Signup ***********8 */
 app.get("/signup", (req, res) => {
@@ -98,9 +115,10 @@ app.get('/dashboard', isCustomer, (req, res) => {
   console.log("current user session is :", req.session);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
+  req.session.pagename = 'dashboard';
   res.render('dashboard', {
     err_msg, success_msg, layout: false,
-    session: req.session
+    session: req.session,
   });
 });
 
@@ -109,6 +127,7 @@ app.get('/dashboard', isCustomer, (req, res) => {
 
 app.get('/track-your-progress', isCustomer, async(req, res) => {
   console.log("current user session is :", req.session);
+  req.session.pagename = 'track-your-progress';
 let AllProperty =  await PropertiesSchema.find({$and:[{ps_user_id:req.session.user_id,ps_is_active_user_flag:req.session.active_user_login}]})
   if(AllProperty){
     err_msg = req.flash('err_msg');
@@ -124,6 +143,7 @@ let AllProperty =  await PropertiesSchema.find({$and:[{ps_user_id:req.session.us
 
 app.get('/professionals', isCustomer, async (req, res) => {
   console.log("current user session is :", req.session);
+  req.session.pagename = 'professionals';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   await ServiceProviderSchema.find({ sps_status: 'active' }).then(async service_provider => {
@@ -159,6 +179,7 @@ app.get('/professionals', isCustomer, async (req, res) => {
 });
 
 app.get('/myprofessionals', isCustomer, async (req, res) => {
+  req.session.pagename = 'professionals';
   console.log("current user session is :", req.session);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -192,6 +213,7 @@ app.get('/myprofessionals', isCustomer, async (req, res) => {
 // });
 
 app.get('/professionals-detail', isCustomer, (req, res) => {
+  req.session.pagename = 'professionals';
   req.session.currentSarviceProviderId = req.query.id
   ServiceProviderSchema.findOne({ _id: req.query.id }).then(async service_provider_detail => {
     if (service_provider_detail) {
@@ -227,6 +249,7 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
 
 // All Professional Filter Role
 app.get('/professionals-filter', isCustomer, (req, res) => {
+  req.session.pagename = 'professionals';
   console.log('role data:', req.query.role);
   ServiceProviderSchema.find({ sps_role_name: req.query.role }).then( async service_provider_detail => {
     if (service_provider_detail) {
@@ -265,6 +288,7 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
 
 // All Professional Filter name surname qualification
 app.get('/professionals-searchbar', (req, res) => {
+  req.session.pagename = 'professionals';
   let professionalIDs = [];
   ServiceProviderSchema.find({ sps_fullname: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail1 => {
     ServiceProviderPersonalDetailsSchema.find({ spods_surname: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail2 => {
@@ -317,6 +341,7 @@ app.get('/professionals-searchbar', (req, res) => {
 
 // My professional filter role
 app.get('/my-professionals-filter', isCustomer, async (req, res) => {
+  req.session.pagename = 'professionals';
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
   let serviceProvArray = [];
   for (var k of AllhiredProfeshnoal) {
@@ -338,6 +363,7 @@ app.get('/my-professionals-filter', isCustomer, async (req, res) => {
 
 // My Professional Filter name surname qualification
 app.get('/my-professionals-searchbar', async (req, res) => {
+  req.session.pagename = 'professionals';
   let professionalIDs = [];
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
   let AllhiredProfeshnoalID = [];
@@ -412,6 +438,7 @@ app.get('/my-professionals-searchbar', async (req, res) => {
 
 
 app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
+  req.session.pagename = 'mydreamhome';
   console.log('property id is :', req.session.property_id);
   //req.session.property_id=req.query.id
   err_msg = req.flash('err_msg');
@@ -479,6 +506,7 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
 //   })
 // });
 app.get('/mydreamhome-details-to-dos', isCustomer, async (req, res) => {
+  req.session.pagename = 'mydreamhome-details-to-dos';
   console.log('property id kya hai mydreamhome-details-to-dos', req.session.property_id,req.session.active_user_login);
   if (req.session.property_id) {
     let pps_property_id = req.session.property_id;
@@ -521,6 +549,7 @@ app.get('/add-property', isCustomer, (req, res) => {
 });
 
 app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
+  req.session.pagename = 'mydreamhome';
   var newData = [];
   console.log(' property id  :', req.session.property_id);
   console.log('helooooo', req.query.pid);
@@ -642,6 +671,7 @@ app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
 })
 
 app.get('/professionals-detail-message', (req, res) => {
+  req.session.pagename = 'professionals';
   console.log('helooooo', req.query);
   //return
   var newData = [];
@@ -709,6 +739,7 @@ app.get('/professionals-detail-message', (req, res) => {
 
 
 app.get('/professionals-hirenow', isCustomer, async (req, res) => {
+  req.session.pagename = 'professionals';
   //console.log('spp_id', req.query.spp_id)
   var PropertyList = [];
   var SarviceProviderId = req.session.currentSarviceProviderId
@@ -807,6 +838,7 @@ app.get('/Resend-link', function (req, res) {
 
 
 app.get('/mydreamhome-details-phase-a', isCustomer, (req, res) => {
+  req.session.pagename = 'mydreamhome';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('mydreamhome-details-phase-a', {
@@ -824,7 +856,7 @@ app.get('/mydreamhome-details-phase-a', isCustomer, (req, res) => {
 // })
 //*************************property data display on mydream home page
 app.get('/mydreamhome', isCustomer, async (req, res) => {
-
+  req.session.pagename = 'mydreamhome';
   console.log("current session is", req.session);
   PropertiesSchema.find({ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
     if (data) {
@@ -861,6 +893,7 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
 
 })
 app.post('/getPropertyDetail', isCustomer, async (req, res) => {
+  req.session.pagename = 'mydreamhome';
   console.log('getProperty-detail:', req.body)
   console.log('session property id', req.body.property_id);
   req.session.property_id = req.body.property_id
@@ -916,6 +949,7 @@ app.post('/getPropertyDetail', isCustomer, async (req, res) => {
 app.get('/mydreamhome-details', isCustomer, async (req, res) => {
   //console.log("current session is", req.session);
   //console.log('session property id', req.query.id);
+  req.session.pagename = 'mydreamhome';
   if (req.query.id) {
     req.session.property_id = req.query.id
     let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id,pps_property_id:req.query.id, pps_is_active_user_flag: req.session.active_user_login });
