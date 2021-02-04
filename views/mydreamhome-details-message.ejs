@@ -112,7 +112,14 @@
       crossorigin="anonymous"></script>
 
     <script>
+
+function scrollToBottom() {
+  var objDiv = document.getElementById("message_board");
+  objDiv.scrollTop = objDiv.scrollHeight;
+}
+
       $(document).ready(function () {
+        scrollToBottom();
         $(".sidenav ul li").click(function () {
           $(".sidenav ul li").removeClass("active");
           $(this).addClass("active");
