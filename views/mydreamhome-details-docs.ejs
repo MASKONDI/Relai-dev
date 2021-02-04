@@ -54,7 +54,7 @@
                             value="<%= row._id%>">
                           <span class="checkmark"></span></label>
                       </td>
-                      <td><label class="check-permission"><input type="checkbox" name="selected[]" class="chekbox"
+                      <td><label class="check-permission"><input type="checkbox" name="selected1[]" class="chekbox_1"
                             value="<%= row._id%>">
                           <span class="checkmark"></span></label>
                       </td>
@@ -344,14 +344,20 @@
         var user_id = $('.cust_id').val();
         console.log(user_id)
         var checked_elem = [];
+        var checked_elem_1 = [];
         $('.chekbox:checkbox:checked').each(function (i) {
           checked_elem[i] = $(this).val();
 
         });
-        //console.log(checked_elem)
+        $('.chekbox_1:checkbox:checked').each(function (i) {
+          checked_elem_1[i] = $(this).val();
+
+        });
+        console.log('checked_elem',checked_elem)
+        console.log('checked_elem_1',checked_elem_1)
         $.ajax({
           type: "POST",
-          data: 'cust_id=' + user_id + '&checked_elem=' + checked_elem + '&id_element=' + id_element,
+          data: 'cust_id=' + user_id + '&checked_elem=' + checked_elem + '&id_element=' + id_element+'&checked_elem_1='+checked_elem_1,
           url: "/api/change-permision",
           cache: false,
           success: function (html) {
