@@ -140,7 +140,7 @@ router.post("/cust_register", (req, res) => {
             .save()
             .then(customers => {
               console.log("resposne is :", customers);
-              req.flash('success_msg','You have register sucessfully.')
+              req.flash('success_msg', 'You have register sucessfully.')
               res.redirect("/signin")
             })
             .catch(err => {
@@ -292,7 +292,7 @@ router.post("/add-property", async (req, res) => {
     const newProperty = new PropertiesSchema({
       //should be auto-generated mongodb objectId()
       // ps_property_id: req.body,
-      ps_unique_code: "properties-" + uuidv4(),
+      ps_unique_code: "prop-" + Math.random().toString(36).slice(-6),
       ps_user_id: req.session.user_id, //storing customer_ID
       ps_property_name: req.body.ps_property_name,
       ps_property_address: req.body.ps_property_address,
@@ -372,7 +372,7 @@ router.post("/add-property", async (req, res) => {
           });
           //Sending Invitation link to serviceProvider
           console.log("Invitation send to service provider", req.body);
-          await invite_function(req);
+          // await invite_function(req);
           res.redirect("/mydreamhome")
         }
 
@@ -467,7 +467,7 @@ router.post('/forget-password', function (req, res) {
                   service: 'Gmail',
                   auth: {
                     user: 'golearning4@gmail.com',
-                    pass: 'Maskondi#1997',
+                    pass: 'Krishna#1997',
                   }
                 });
                 const mailOptions = {
@@ -533,28 +533,70 @@ router.get(
 /* -------------------------------------------------------------------------------------------------
 POST : Change Permission api for giving Docs read/write permission to existing serviceProvider.
 ------------------------------------------------------------------------------------------------- */
-router.post('/change-permision', (req, res) => {
-  console.log(req.body.id_element)
+router.post('/change-permision', async (req, res) => {
+  console.log('doc id:', req.body.id_element)
 
   var idArray = req.body.checked_elem.split(",");
-
+  var idArray_1 = req.body.checked_elem_1.split(",");
   // DocumentPermissionSchema 
-  for (var service_provider_id of idArray) {
-    var Obj = {
-      dps_customer_id: req.body.cust_id,
-      dps_service_provider_id: service_provider_id,
-      dps_document_id: req.body.id_element,
-      dps_is_active_user_flag: req.session.active_user_login //active portal like: buyer/seller/renovator
+  console.log("idArray_1 download", idArray_1);
+  console.log("idArray view", idArray);
+  return;
+  //for (var service_provider_id of idArray) {
+  var obj = {};
+  idArray.forEach(async function (service_provider_id, i) {
+    if (service_provider_id && idArray_1[i]) {
+      console.log('AAAA')
+      Object.assign(obj,
+        {
+          dps_view_permission: "yes",
+          dps_download_permission: 'yes',
+          dps_customer_id: req.body.cust_id,
+          dps_service_provider_id: service_provider_id,
+          dps_document_id: req.body.id_element,
+          dps_is_active_user_flag: req.session.active_user_login
+
+        });
+
+    } else if (service_provider_id) {
+      console.log('BBBBB')
+      Object.assign(obj,
+        {
+          dps_view_permission: "yes",
+          dps_download_permission: 'no',
+          dps_customer_id: req.body.cust_id,
+          dps_service_provider_id: service_provider_id,
+          dps_document_id: req.body.id_element,
+          dps_is_active_user_flag: req.session.active_user_login
+
+        });
+
+    } else if (idArray_1[i]) {
+      console.log('CCCCC')
+      Object.assign(obj,
+        {
+          dps_view_permission: "no",
+          dps_download_permission: 'yes',
+          dps_customer_id: req.body.cust_id,
+          dps_service_provider_id: service_provider_id,
+          dps_document_id: req.body.id_element,
+          dps_is_active_user_flag: req.session.active_user_login
+
+        });
+
     }
+    console.log('obj', obj)
+
     var docPermissionSave = new DocumentPermissionSchema(Obj)
-    docPermissionSave.save().then((data) => {
+    docPermissionSave.save().then(async (data) => {
       console.log(data)
     }).catch(err => {
       console.log(err)
       req.flash('err_msg', 'Something went wrong please try after some time!');
 
     });
-  }
+  })
+  //}
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -637,8 +679,8 @@ POST : Add Task api is used for adding task(or Phase) details and sharing these 
 ------------------------------------------------------------------------------------------------- */
 
 router.post("/addTask", (req, res) => {
-  console.log("addTask post:",req.body);
-  
+  console.log("addTask post:", req.body);
+
   if (req.body.Phase == '' || req.body.Phase == undefined) {
     res.json({ status: 0, message: 'Task Add Failed' });
 
@@ -753,7 +795,7 @@ function invite_function(req) {
     service: 'Gmail',
     auth: {
       user: 'golearning4@gmail.com',
-      pass: 'Maskondi#1997',
+      pass: 'Krishna#1997',
     }
   });
   const mailOptions = {
@@ -767,9 +809,10 @@ function invite_function(req) {
       'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
   };
   smtpTransport.sendMail(mailOptions, function (err) {
-    if (err) { console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team'); 
-    res.redirect('/add-property') 
-  } else {
+    if (err) {
+      console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+      res.redirect('/add-property')
+    } else {
       //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
       // res.redirect('/add-property')
     }

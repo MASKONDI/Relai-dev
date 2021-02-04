@@ -531,7 +531,7 @@ router.post('/forget-password-professional', function (req, res) {
                   service: 'Gmail',
                   auth: {
                     user: 'golearning4@gmail.com',
-                    pass: 'Maskondi#1997',
+                    pass: 'Krishna#1997',
                   }
                 });
                 const mailOptions = {

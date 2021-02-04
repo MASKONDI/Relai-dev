@@ -138,7 +138,8 @@
                             <div class="clearfix">
                               <div class="float-left">
                                 <h3 class="apartment-name"><a href="#">
-                                    <%=propertyDetailData[0].ps_property_name%>
+                                    <%=propertyDetailData[0].ps_property_name%><span>(
+                                        <%=propertyDetailData[0].ps_unique_code%> )</span>
                                   </a></h3>
                                 <div class="location-part"><a href="#"><img src="images/location.png">
                                     <%=propertyDetailData[0].ps_property_address%>,
@@ -148,7 +149,8 @@
                               <div class="img-fix3 float-right">
                                 <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>"><img
                                     src="images/chat.png"></a>
-                                <a href="#" data-toggle="modal" data-target="#ComplaintModal"><img src="images/help.png"></a>
+                                <a href="#" data-toggle="modal" data-target="#ComplaintModal"><img
+                                    src="images/help.png"></a>
                               </div>
                             </div>
                             <div class="recent-img">
@@ -194,7 +196,7 @@
                                     <p>Estimated Time<br><b>2 year</b></p>
                                   </div>
                                 </div>
-                                
+
                               </div>
                             </div>
                           </div>
@@ -390,7 +392,7 @@
                                 <%});%>
                                   <%}else{%>
                                     <h6>Docs&File Not Uploaded</h6>
-                                    
+
                                     <%}%>
                       </ul>
 
