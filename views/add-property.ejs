@@ -35,7 +35,7 @@
             </div>
 
             <div class="dashboard-inner">
-              <form method="post" action="/api/add-property" id="propertyform" enctype="multipart/form-data">
+              <form method="post" action="" id="propertyform" enctype="multipart/form-data">
 
                 <% if(typeof err_msg!='undefined' ){ %>
                   <span class="error_validate flash_msg" style="color: red;">
@@ -303,6 +303,73 @@
                           </div>
                           <div class="row">
                             <div class="col-sm-12 col-lg-12">
+                              <p>STEP 6</p>
+                              <h6>Add Phases</h6>
+                            </div>
+                            <div class="message"></div>
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-12">
+                              <div class="home-section">
+                                <div class="row">
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>Phase1</label>
+                                      <select class="form-control" id="instruction" placeholder="Instruction"
+                                        name="instruction" required>
+                                        <option value="">Select Phases</option>
+                                        <%if(session.active_user_login=='renovator'){ %>
+                                          <option value="Strategic definition">Strategic definition</option>
+                                          <option value="Preparation and Briefing">Preparation and Briefing</option>
+                                          <option value="Spatial coordination">Spatial coordination</option>
+                                          <option value="Technical Design">Technical Design</option>
+                                          <option value="Manifacturing and Construction">Manifacturing and Construction
+                                          </option>
+                                          <option value="Concept Design">Concept Design</option>
+                                          <option value="Handover">Handover</option>
+                                          <option value="Use">Use</option>
+                                          <%}else{%>
+                                            <option value="Instruction">Instruction</option>
+                                            <option value="Pre-exchange Submitting the contract">Pre-exchange Submitting
+                                              the contract</option>
+                                            <option value="Prior to exchange of contracts">Prior to exchange of contracts
+                                            </option>
+                                            <option value="Exchange of contracts">Exchange of contracts</option>
+                                            <option value="Completion">Completion</option>
+                                            <option value="Post-Completion">Post-Completion</option>
+                                            <%}%>
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>Start Date</label>
+                                      <input type="date" class="form-control form-control-size-fix " id="startDate1"
+                                        placeholder="Full Name" name="startDate" required>
+                                    </div>
+                                  </div>
+                                  <div class="professional-input-box">
+                                    <div class="professional-text-fix">
+                                      <label>End Date</label>
+                                      <input type="date" class="form-control form-control-size-fix " id="endDate1"
+                                        placeholder="Full Name" name="endDate" required>
+  
+                                    </div>
+                                  </div>
+                                  <div class="">
+                                    <div class="">
+  
+                                      <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                        Phase</a>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row divv"></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-12">
                               <div class="property-btn">
                                 <button type="submit" class="btn submit-btn AddPropertyBtn">Add
                                   Property</button>
@@ -319,13 +386,14 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <!-- <script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    
+    <script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script> -->
+    crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
       integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
       crossorigin="anonymous"></script>
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"></script>
@@ -360,8 +428,8 @@
           $(element).removeClass(errorClass);
         },
         submitHandler: function (form) {
-          $('#submit').attr('disabled', true);
-          form.submit();
+         // $('#submit').attr('disabled', true);
+          //form.submit();
         }
       });
     </script>
@@ -420,7 +488,7 @@
     <script>
       $(document).ready(function () {
         $('.prop_1 input[type="file"]').change(function (e) {
-          alert()
+          
          $(".Picture_1").html(e.target.files[0].name)
         });
         $('.prop_2 input[type="file"]').change(function (e) {
@@ -440,6 +508,48 @@
         });
         
       });
+      </script>
+      <script>
+        $(document).ready(function () {
+          var count = 2;
+          $("a[name='addMorePhase']").click(function () {
+            var domElement = $('<div class="row"><div class="professional-input-box"><div class="professional-text-fix"><label>Phase' + count++ + '</label><select class="form-control" id="instruction" placeholder="Instruction" name="instruction" required><option value="">Select Phases</option> <%if(session.active_user_login=="renovator"){ %><option value="Strategic definition">Strategic definition</option><option value="Preparation and Briefing">Preparation and Briefing</option><option value="Spatial coordination">Spatial coordination</option><option value="Technical Design">Technical Design</option><option value="Manifacturing and Construction">Manifacturing and Construction</option><option value="Concept Design">Concept Design</option><option value="Handover">Handover</option><option value="Use">Use</option> <%}else{%><option value="Instruction">Instruction</option><option value="Pre-exchange Submitting the contract">Pre-exchange Submitting the contract</option><option value="Prior to exchange of contracts">Prior to exchange of contracts</option><option value="Exchange of contracts">Exchange of contracts</option><option value="Completion">Completion</option><option value="Post-Completion">Post-Completion</option> <%}%> </select></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>Start Date</label><input type="date" class="form-control form-control-size-fix "placeholder="FullName" name="startDate"></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>End Date</label><input type="date" class="form-control form-control-size-fix "placeholder="End Date" name="endDate"></div></div></div>');
+            $(".divv").before(domElement);
+          });
+          $('#propertyform').on('submit', function (e) {
+          e.preventDefault();
+          //var formdata = $(this).serialize();
+          var formData = new FormData($('#propertyform')[0])
+          //console.log('formdata:', formData);
+          $.ajax({
+            type: "POST",
+            data: formData,
+            url: "/api/add-property",
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+              console.log(data)
+              if (data.status == false) {
+                //$('#message').show();
+                $('.message').html('<span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
+                setTimeout(function () { $('.message').html(''); }, 5000);
+
+                //$('#msg').html(data.message).delay(5000).fadeOut('success');
+              } else {
+                console.log('message:', data.success_msg)
+                window.location.href = data.redirect;
+              }
+
+              //$('#ppts_property_id').val(data.data.pps_property_id);
+              //$('#phase_id').val(data.data._id);
+              //$("#hirenowform input").val("");
+              //$("#hirenowform textarea").val("");
+              //$('.propertySelectBox').prop('selectedIndex', 0);
+            }
+          });
+        })
+        });
       </script>
     </body>
 
