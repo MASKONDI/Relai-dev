@@ -1539,4 +1539,59 @@ app.get('/add-task-prfessional-property-phase', isCustomer, async function (req,
   })
 })
 
+
+
+app.get('/property-related-enquiry-proprty-list', isCustomer, async (req, res) => {
+  req.session.pagename = 'mydreamhome';
+  console.log("current session is", req.session);
+  PropertiesSchema.find({ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
+    if (data) {
+      let arr = [];
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        propertyData: data
+      });
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+})
+
+app.get('/service-provider-by-property', async (req, res) => {
+  let serviceProvArray = [];
+  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id,pps_property_id:req.query.property_id, pps_is_active_user_flag: req.session.active_user_login });
+  for (var k of AllhiredProfeshnoal) {
+    await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
+        serviceProvArray.push(allProfeshnoals);
+    });
+  }
+  res.send({
+    session: req.session,
+    hireServiceData: serviceProvArray
+  });
+});
+
+
+app.get('/complaints', isCustomer, async (req, res) => {
+  req.session.pagename = 'mydreamhome';
+  console.log("current session is", req.session);
+  PropertiesSchema.find({ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
+    if (data) {
+      let arr = [];
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        propertyData: data
+      });
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+})
+
 module.exports = app;

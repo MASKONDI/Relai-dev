@@ -855,5 +855,33 @@ router.post('/update-customer-profile', (req, res) => {
 });
 
 
+router.post('/new-raise-a-complaint', (req, res) => {
+  console.log('complain:',req)
+  const newComplaint = new ComplaintsSchema({  
+    coms_complaint_for: req.body.coms_complaint_for,
+    coms_complaint_help: req.body.coms_complaint_help,
+    coms_complaint_code: "C" + uuidv4(),//need to generate in  like C123 auto increment feature
+    coms_property_id: req.body.property_id,
+    coms_user_id: req.body.cust_user_id,
+    //coms_complaint_by: 'customer' //need to check if complaints filed via customer portal or service_provider portal
+    coms_complaint_subject: req.body.coms_complaint_subject,
+    coms_complaint_note: req.body.coms_complaint_note,
+    coms_is_active_user_flag: req.session.active_user_login
+    //coms_complaint_file: req.body.coms_complaint_file,
+  });
+
+  console.log('newComplaint:',newComplaint)
+
+  newComplaint.save().then(complaints => {
+    res.send({ status:true, message: 'You complaint submited successfully, we will review and connect with you soon !!' })
+  }).catch(err => {
+    console.log(err)
+    res.send({ status:false,'message': 'Something went wrong please try again later.' })
+
+  });
+});
+
+
+
 
 module.exports = router;
