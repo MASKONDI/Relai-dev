@@ -372,7 +372,7 @@ router.post("/add-property", async (req, res) => {
           });
           //Sending Invitation link to serviceProvider
           console.log("Invitation send to service provider", req.body);
-          await invite_function(req);
+          // await invite_function(req);
           res.redirect("/mydreamhome")
         }
 
@@ -533,59 +533,62 @@ router.get(
 /* -------------------------------------------------------------------------------------------------
 POST : Change Permission api for giving Docs read/write permission to existing serviceProvider.
 ------------------------------------------------------------------------------------------------- */
-router.post('/change-permision', async(req, res) => {
-  console.log('doc id:',req.body.id_element)
+router.post('/change-permision', async (req, res) => {
+  console.log('doc id:', req.body.id_element)
 
   var idArray = req.body.checked_elem.split(",");
-  var idArray_1=req.body.checked_elem_1.split(",");
+  var idArray_1 = req.body.checked_elem_1.split(",");
   // DocumentPermissionSchema 
-  console.log("idArray_1 download",idArray_1);
-  console.log("idArray view",idArray);
+  console.log("idArray_1 download", idArray_1);
+  console.log("idArray view", idArray);
   return;
   //for (var service_provider_id of idArray) {
-    var obj ={};
-    idArray.forEach(async function(service_provider_id,i){
-    if(service_provider_id && idArray_1[i]){
+  var obj = {};
+  idArray.forEach(async function (service_provider_id, i) {
+    if (service_provider_id && idArray_1[i]) {
       console.log('AAAA')
-      Object.assign(obj, 
-        {dps_view_permission: "yes",
-        dps_download_permission:'yes',
-        dps_customer_id:req.body.cust_id,
-        dps_service_provider_id: service_provider_id,
-        dps_document_id:req.body.id_element,
-        dps_is_active_user_flag: req.session.active_user_login
+      Object.assign(obj,
+        {
+          dps_view_permission: "yes",
+          dps_download_permission: 'yes',
+          dps_customer_id: req.body.cust_id,
+          dps_service_provider_id: service_provider_id,
+          dps_document_id: req.body.id_element,
+          dps_is_active_user_flag: req.session.active_user_login
 
-      });
-      
-    }else if(service_provider_id){
+        });
+
+    } else if (service_provider_id) {
       console.log('BBBBB')
-      Object.assign(obj, 
-        {dps_view_permission: "yes",
-        dps_download_permission:'no',
-        dps_customer_id:req.body.cust_id,
-        dps_service_provider_id: service_provider_id,
-        dps_document_id:req.body.id_element,
-        dps_is_active_user_flag: req.session.active_user_login
+      Object.assign(obj,
+        {
+          dps_view_permission: "yes",
+          dps_download_permission: 'no',
+          dps_customer_id: req.body.cust_id,
+          dps_service_provider_id: service_provider_id,
+          dps_document_id: req.body.id_element,
+          dps_is_active_user_flag: req.session.active_user_login
 
-      });
-      
-    }else if(idArray_1[i]){
+        });
+
+    } else if (idArray_1[i]) {
       console.log('CCCCC')
-      Object.assign(obj, 
-        {dps_view_permission: "no",
-        dps_download_permission:'yes',
-        dps_customer_id:req.body.cust_id,
-        dps_service_provider_id: service_provider_id,
-        dps_document_id:req.body.id_element,
-        dps_is_active_user_flag: req.session.active_user_login
+      Object.assign(obj,
+        {
+          dps_view_permission: "no",
+          dps_download_permission: 'yes',
+          dps_customer_id: req.body.cust_id,
+          dps_service_provider_id: service_provider_id,
+          dps_document_id: req.body.id_element,
+          dps_is_active_user_flag: req.session.active_user_login
 
-      });
-      
+        });
+
     }
-  console.log('obj',obj)
-    
+    console.log('obj', obj)
+
     var docPermissionSave = new DocumentPermissionSchema(Obj)
-    docPermissionSave.save().then(async(data) => {
+    docPermissionSave.save().then(async (data) => {
       console.log(data)
     }).catch(err => {
       console.log(err)
