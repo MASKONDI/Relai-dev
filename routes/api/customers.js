@@ -140,7 +140,7 @@ router.post("/cust_register", (req, res) => {
             .save()
             .then(customers => {
               console.log("resposne is :", customers);
-              req.flash('success_msg','You have register sucessfully.')
+              req.flash('success_msg', 'You have register sucessfully.')
               res.redirect("/signin")
             })
             .catch(err => {
@@ -292,7 +292,7 @@ router.post("/add-property", async (req, res) => {
     const newProperty = new PropertiesSchema({
       //should be auto-generated mongodb objectId()
       // ps_property_id: req.body,
-      ps_unique_code: "properties-" + uuidv4(),
+      ps_unique_code: "prop-" + Math.random().toString(36).slice(-6),
       ps_user_id: req.session.user_id, //storing customer_ID
       ps_property_name: req.body.ps_property_name,
       ps_property_address: req.body.ps_property_address,
@@ -467,7 +467,7 @@ router.post('/forget-password', function (req, res) {
                   service: 'Gmail',
                   auth: {
                     user: 'golearning4@gmail.com',
-                    pass: 'Maskondi#1997',
+                    pass: 'Krishna#1997',
                   }
                 });
                 const mailOptions = {
@@ -637,8 +637,8 @@ POST : Add Task api is used for adding task(or Phase) details and sharing these 
 ------------------------------------------------------------------------------------------------- */
 
 router.post("/addTask", (req, res) => {
-  console.log("addTask post:",req.body);
-  
+  console.log("addTask post:", req.body);
+
   if (req.body.Phase == '' || req.body.Phase == undefined) {
     res.json({ status: 0, message: 'Task Add Failed' });
 
@@ -753,7 +753,7 @@ function invite_function(req) {
     service: 'Gmail',
     auth: {
       user: 'golearning4@gmail.com',
-      pass: 'Maskondi#1997',
+      pass: 'Krishna#1997',
     }
   });
   const mailOptions = {
@@ -767,9 +767,10 @@ function invite_function(req) {
       'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
   };
   smtpTransport.sendMail(mailOptions, function (err) {
-    if (err) { console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team'); 
-    res.redirect('/add-property') 
-  } else {
+    if (err) {
+      console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+      res.redirect('/add-property')
+    } else {
       //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
       // res.redirect('/add-property')
     }
