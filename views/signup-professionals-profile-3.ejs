@@ -1,18 +1,16 @@
 <%- include('head')-%>
-
   <!-- The Modal -->
   <div class="modal permission-modal fade " id="myModal">
     <div class="modal-dialog">
       <div class="modal-content">
-
+        <form class="form" action="#" method="POST" id="educationForm">
         <!-- Modal Header -->
         <div class="modal-header text-center">
           <h2 class="modal-title w-100">Add Education</h2>
         </div>
-
+       
         <!-- Modal body -->
         <div class="modal-body">
-          <form class="form" action="/api/service_provider_education" method="post" id="form3">
             <input type="hidden" name="serviceProviderUserId" value="<%=session.user_id%>">
             <input type="text" class="form-control form-control-fix2" id="schoolName"
               placeholder="School(ex: Oxford University)" name="spes_university_school_name" data-rule-required="true"
@@ -178,7 +176,7 @@
                   </div>
                 </div>
               </div>
-              <form action="#" class="form form-section">
+             
                 <% if(typeof err_msg!='undefined' ){ %>
                   <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
                     <%= err_msg %>
@@ -190,6 +188,7 @@
                       </span>
                       <% }%>
                         <div class="eductaion-sec">
+                         <div class="education_lists"> 
                           <%education.forEach(function(row){%>
                           <div class="row">
                             <div class="col-sm-12 col-lg-9">
@@ -197,13 +196,6 @@
                                 <p><%=row.spes_university_school_name%></p>
                                 <h6><%=row.spes_qualification_obtained%></h6>
                                 <h6><%=moment(row.spes_from_date).format("YYYY")%>-<%=moment(row.spes_to_date).format("YYYY")%></h6>
-                                <%});%>
-                                <div class="edu-btn float-left">
-                                  <a href="#" class="btn add-edu-btn" data-toggle="modal" data-target="#myModal"><i
-                                      class="fa fa-plus"></i>&nbsp;&nbsp;
-                                    AddEducation</a>
-                                </div>
-
                               </div>
                             </div>
                             <div class="col-sm-12 col-lg-3">
@@ -212,9 +204,16 @@
                                   style="width:19%" src="images/delete-icon.png" alt="">
                               </div>
                             </div>
+                          </div> 
+                          <%});%>
+                         </div>
+                          <div class="row">
+                            <div class="edu-btn float-left">
+                              <a href="#" class="btn add-edu-btn" data-toggle="modal" data-target="#myModal"><i
+                                  class="fa fa-plus"></i>&nbsp;&nbsp;
+                                AddEducation</a>
+                            </div>
                           </div>
-                          
-
                         </div>
 
 
@@ -231,7 +230,7 @@
                               <a href="/signup-professionals-profile-4" class="btn btn-next" style="width: 164px;">
                                 NEXT</a>
                             </div>
-              </form>
+         
             </div>
           </div>
 
@@ -241,6 +240,7 @@
   </div>
 
   <!-- Optional JavaScript -->
+
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -248,9 +248,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+
   <script>
     $(document).ready(function () {
       $(".sidenav ul li").click(function () {
@@ -273,7 +275,7 @@
 
 
   <script type="text/javascript">
-    $('#form3').validate({
+    $('#educationForm').validate({
       onfocusout: function (element) {
         this.element(element);
       },
@@ -283,8 +285,22 @@
         $(element).removeClass(errorClass);
       },
       submitHandler: function (form) {
-        $('#submit').attr('disabled', true);
-        form.submit();
+        var formdata = $('#educationForm').serialize();
+          console.log('formdata:', formdata);
+          $.ajax({
+            type: "POST",
+            data: formdata,
+            url: "/api/service_provider_education",  
+            cache: false,
+            dataType:'json',
+            success: function (data) {
+              console.log(data)
+              var fromDateYear = new Date(data.educationDetail.spes_from_date).getFullYear();
+              var toDateYear = new Date(data.educationDetail.spes_to_date).getFullYear();
+              $('#myModal').modal('hide');
+              $('.education_lists').append('<div class="row"><div class="col-sm-12 col-lg-9"><div class=""><p>'+data.educationDetail.spes_university_school_name+'</p><h6>'+data.educationDetail.spes_qualification_obtained+'</h6><h6>'+fromDateYear+'-'+toDateYear+'</h6></div></div><div class="col-sm-12 col-lg-3"><div class=""> <img style="width:19%" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;<img style="width:19%" src="images/delete-icon.png" alt=""></div></div></div>')
+            }
+          });
       }
     });
   </script>
@@ -303,15 +319,6 @@
       }
     });  
   </script>
-
-
-
-
-
-
-
-
-
 
   </body>
 
