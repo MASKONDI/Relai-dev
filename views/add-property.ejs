@@ -180,7 +180,7 @@
                             <div class="col-sm-12 col-lg-12">
                               <!-- <form></form> -->
                               <!-- <form action="/upload-properties-pic" class="form" method="post"enctype="multipart/form-data"> -->
-                              <div class="property-box prop_1">
+                              <div class="property-box ">
 
                                 <div class=property-inner-section>
                                   <img src="images/upload-icon.png" id="avtar1">
@@ -193,7 +193,7 @@
                                   <button class="btn btn-upload">Upload</button>
                                 </div>
                                 <span>
-                                  <div class="custom-file-input">
+                                  <div class="custom-file-input prop_1">
                                     <input type="file" name="propertiespic" class="propertiespic" id="propertiespic1"
                                       value="" required onchange="document.getElementById('avtar1').src = window.URL.createObjectURL(this.files[0])">
                                     <input type="button">
@@ -442,22 +442,23 @@
     <script>
       $(document).ready(function () {
         $('.prop_1 input[type="file"]').change(function (e) {
-         $(".Picture_1").replaceWith(e.target.files[0].name)
+          alert()
+         $(".Picture_1").html(e.target.files[0].name)
         });
         $('.prop_2 input[type="file"]').change(function (e) {
-         $(".Picture_2").replaceWith(e.target.files[0].name)
+         $(".Picture_2").html(e.target.files[0].name)
         });
         $('.prop_3 input[type="file"]').change(function (e) {
-         $(".Picture_3").replaceWith(e.target.files[0].name)
+         $(".Picture_3").html(e.target.files[0].name)
         });
         $('.prop_4 input[type="file"]').change(function (e) {
-         $(".Picture_4").replaceWith(e.target.files[0].name)
+         $(".Picture_4").html(e.target.files[0].name)
         });
         $('.prop_5 input[type="file"]').change(function (e) {
-         $(".Picture_5").replaceWith(e.target.files[0].name)
+         $(".Picture_5").html(e.target.files[0].name)
         });
         $('.prop_6 input[type="file"]').change(function (e) {
-         $(".Picture_6").replaceWith(e.target.files[0].name)
+         $(".Picture_6").html(e.target.files[0].name)
         });
         
       });
