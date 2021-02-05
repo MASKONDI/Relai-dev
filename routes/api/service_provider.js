@@ -83,12 +83,14 @@ router.post("/service_provider_register", (req, res) => {
     } else {
       const newServiceProvider = new ServiceProviderSchema({
         sps_unique_code: "sp-" + uuidv4(),
-        sps_fullname: req.body.sps_fullname,
+        sps_firstname: req.body.sps_firstname,
+        sps_lastname: req.body.sps_lastname,
         sps_email_id: req.body.sps_email_id,
         sps_phone_number: req.body.sps_phone_number,
         sps_address: req.body.sps_address,
-        sps_country_id: req.body.sps_country_id,
-        sps_city: req.body.sps_city,
+        sps_country_id: req.body.country,
+        sps_city: req.body.city,
+        sps_state: req.body.state,
         sps_password: req.body.sps_password,
         sps_role_name: req.body.sps_role_name,
         sps_experience: req.body.sps_experience
@@ -105,7 +107,7 @@ router.post("/service_provider_register", (req, res) => {
               req.session.success = true,
                 // req.session._id = doc.user_id;
                 req.session.user_id = serviceProviders._id,
-                req.session.name = serviceProviders.sps_fullname,
+                req.session.name = serviceProviders.sps_firstname + ' ' + serviceProviders.sps_lastname,
                 req.session.email = serviceProviders.sps_email_id,
                 req.session.role = serviceProviders.sps_role_name,
                 req.session.is_user_logged_in = true,
@@ -229,11 +231,11 @@ router.post("/service_provider_education", (req, res) => {
   serviceProviderEducation
     .save()
     .then(serviceProviders => {
-      console.log("server response is: ", serviceProviders); 
+      console.log("server response is: ", serviceProviders);
       //res.redirect("/signup-professionals-profile-4")
       res.send({
-         educationDetail:serviceProviders, 
-         status:true
+        educationDetail: serviceProviders,
+        status: true
       });
     })
     .catch(err => {
@@ -241,9 +243,9 @@ router.post("/service_provider_education", (req, res) => {
       //req.flash('err_msg', 'Something went wrong please try after some time');
       //res.redirect('/signup-professionals-profile-3');
       res.send({
-        err_msg:'Something went wrong please try after some time',
-        status:false
-     }); 
+        err_msg: 'Something went wrong please try after some time',
+        status: false
+      });
 
     });
 });
@@ -431,13 +433,13 @@ router.post("/service_provider_signin",
           // req.session._id = doc.user_id;
           req.session.success = true
           req.session.user_id = service_provider._id;
-          req.session.name = service_provider.sps_fullname;
+          req.session.name = service_provider.sps_firstname + '' + service_provider.sps_lastname;
           req.session.email = service_provider.sps_email_id;
           req.session.role = service_provider.sps_role_name;
           req.session.is_user_logged_in = true;
 
           // service_provider Matched
-          const payload = { id: service_provider.id, sps_fullname: service_provider.sps_fullname, sps_email_id: service_provider.sps_email_id }; // Create JWT Payload
+          const payload = { id: service_provider.id, sps_fullname: service_provider.sps_firstname + '' + service_provider.sps_lastname, sps_email_id: service_provider.sps_email_id }; // Create JWT Payload
 
           // Sign Token
           jwt.sign(

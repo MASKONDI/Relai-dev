@@ -123,12 +123,13 @@ router.post("/cust_register", (req, res) => {
     } else {
       const newCustomer = new CustomerSchema({
         cus_unique_code: "cust-" + uuidv4(),
-        cus_fullname: req.body.cus_fullname,
+        cus_fullname: req.body.cus_firstname + ' ' + req.body.cus_lastname,
         cus_email_id: req.body.cus_email_id,
         cus_phone_number: req.body.cus_phone_number,
         cus_address: req.body.cus_address,
-        cus_country_id: req.body.cus_country_id,
-        cus_city: req.body.cus_city,
+        cus_country_id: req.body.country,
+        cus_city: req.body.city,
+        cus_state: req.body.state,
         cus_password: req.body.cus_password,
       });
 
