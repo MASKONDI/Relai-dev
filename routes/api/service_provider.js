@@ -85,6 +85,7 @@ router.post("/service_provider_register", (req, res) => {
         sps_unique_code: "sp-" + uuidv4(),
         sps_firstname: req.body.sps_firstname,
         sps_lastname: req.body.sps_lastname,
+        sps_fullname: req.body.sps_firstname + ' ' + req.body.sps_lastname,
         sps_email_id: req.body.sps_email_id,
         sps_phone_number: req.body.sps_phone_number,
         sps_address: req.body.sps_address,

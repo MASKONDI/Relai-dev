@@ -28,6 +28,10 @@ const ServiceProviderSchema = new Schema({
     type: String,
     required: true,
   },
+  sps_fullname: {
+    type: String,
+    required: true,
+  },
   sps_state: {
     type: String,
     required: true,
