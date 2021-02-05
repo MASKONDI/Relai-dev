@@ -23,7 +23,9 @@ const CustomerSchema = require("../models/customers");
 const ServiceProviderOtherDetailsSchema = require("../models/service_providers_other_details");
 const PropertiesPhaseSchema = require("../models/property_phase_schema");
 const phaseDetail = require("./api/phaseDetail");
-
+const ComplaintsSchema = require("../models/Complaints");
+//const ComplaintsSchema = require("../models/Complaints");
+const ComplaintDetailsSchema = require("../models/complaint_details_model");
 
 var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
@@ -69,21 +71,6 @@ app.get('/intro', (req, res) => {
   res.render('intro');
 });
 
-app.get('/complaints', (req, res) => {
-  req.session.pagename = 'complaints';
-  res.render('complaints',{
-    //err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
-
-app.get('/complaints-detail', (req, res) => {
-  req.session.pagename = 'complaints';
-  res.render('complaints-detail',{
-    //err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
 
 
 
@@ -1576,22 +1563,51 @@ app.get('/service-provider-by-property', async (req, res) => {
 
 
 app.get('/complaints', isCustomer, async (req, res) => {
-  req.session.pagename = 'mydreamhome';
-  console.log("current session is", req.session);
-  PropertiesSchema.find({ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
+  req.session.pagename = 'complaints';
+  console.log("current session is here", req.session);
+  ComplaintsSchema.find({ coms_user_id: req.session.user_id, coms_is_active_user_flag: req.session.active_user_login }).sort({ _id : -1 }).then(async (data) => {
+    console.log('dataaa:',data)
     if (data) {
       let arr = [];
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
-      res.send({
+      res.render('complaints',{
         err_msg, success_msg, layout: false,
         session: req.session,
-        propertyData: data
+        complaintData: data
       });
     }
   }).catch((err) => {
     console.log(err)
   })
 })
+
+
+app.get('/complaints-detail', isCustomer, async (req, res) => {
+  req.session.pagename = 'complaints';
+  console.log('idddd:',req.query)
+
+  let complaintData = await ComplaintsSchema.find({ coms_complaint_code: req.query.complaintID, coms_is_active_user_flag: req.session.active_user_login });
+  await ComplaintDetailsSchema.find({ comsd_id: req.query.complaintID }).sort({ _id : -1 }).then(async (data) => {
+    req.session.complaintID = req.query.complaintID;
+    console.log('dataaa:',data)
+    if (data) {
+      let arr = [];
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg'); 
+        res.render('complaints-detail',{
+          err_msg, success_msg, layout: false,
+          session: req.session,
+          complaintDetailsData: data,
+          complaintData: complaintData
+        });
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+
+
+});
+
 
 module.exports = app;
