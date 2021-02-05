@@ -40,92 +40,28 @@
                 <thead>
                   <tr>
                     <th>Complaint ID</th>
-                    <th>Client Name</th>
-                    <th class="message-th">Message</th>
-                    <th>Property Name</th>
+                    <th>Complaint Type</th>
+                    <th class="message-th">Complaint Subject</th>
                     <th>Date</th>
                     <th>Status</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
+                  <% var i=0; complaintData.forEach(function(row){ %>
                   <tr>
                     <td>
-                      <p>C1234</p>
+                      <p><%= row.coms_complaint_code%></p>
                     </td>
-                    <td>Andrew Wills </td>
-                    <td>Lorem ipsum dolor sit amet,</td>
-                    <td>Nacary Apartment </td>
-                    <td>16 Nov, 2020</td>
-                    <td><a href="complaints-detail.html" class="btn btn-pending">PENDING</a></td>
-                    <td> <a href="/complaints-detail"><img src="images/eye.png"></a> </td>
+                    <td><%= row.coms_complaint_help%></td>
+                    <td><%= row.coms_complaint_subject%></td>
+                    <td><%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(new Date(row.coms_created_at)) %> </td>
+                    <td><a href="complaints-detail.html" class="btn btn-pending"><%= row.coms_complaint_status%></a></td>
+                    <td> <a href="/complaints-detail?complaintID=<%= row.coms_complaint_code%>"><img src="images/eye.png"></a> </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <p>C1234 </p>
-
-                    </td>
-                    <td>Rachel Green </td>
-                    <td>Lorem ipsum dolor sit amet,</td>
-                    <td>Hilton Avenue </td>
-                    <td>16 Nov, 2020</td>
-                    <td><a href="complaints-detail.html" class="btn btn-complete">COMPLETED</a></td>
-                    <td> <a href="complaints-detail.html"><img src="images/eye.png"></a> </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p>C1234 </p>
-
-                    </td>
-                    <td>Jack Lee </td>
-                    <td>Lorem ipsum dolor sit amet,</td>
-                    <td>Princess Skyline</td>
-                    <td>16 Nov, 2020 </td>
-                    <td><a href="complaints-detail.html" class="btn btn-pending">PENDING</a></td>
-                    <td> <a href="complaints-detail.html"><img src="images/eye.png"></a> </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p>C1234 </p>
-
-                    </td>
-                    <td>Celia Ahern </td>
-                    <td>Lorem ipsum dolor sit amet,</td>
-                    <td>Princess Skyline </td>
-                    <td>16 Nov, 2020 </td>
-                    <td><a href="complaints-detail.html" class="btn btn-complete">COMPLETED</a>
-                    </td>
-                    <td> <a href="complaints-detail.html"><img src="images/eye.png"></a> </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      <p>C1234 </p>
-
-                    </td>
-                    <td>Monica Geller</td>
-                    <td>Lorem ipsum dolor sit amet,</td>
-                    <td>Hilton Avenue</td>
-                    <td>16 Nov, 2020 </td>
-                    <td><a href="complaints-detail.html" class="btn btn-pending">PENDING</a></td>
-                    <td> <a href="complaints-detail.html"><img src="images/eye.png"></a> </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p>C1234 </p>
-
-                    </td>
-                    <td>Monica Geller</td>
-                    <td>Lorem ipsum dolor sit amet,</td>
-                    <td>Hilton Avenue</td>
-                    <td>16 Nov, 2020 </td>
-                    <td><a href="complaints-detail.html" class="btn btn-pending">PENDING</a></td>
-                    <td> <a href="complaints-detail.html"><img src="images/eye.png"></a> </td>
-                  </tr>
+                  <% i++;});%> 
                 </tbody>
               </table>
-
-
             </div>
           </div>
         </div>
@@ -146,6 +82,10 @@
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+    integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+    crossorigin="anonymous"></script>
+
   <script>
     $(document).ready(function () {
       $(".sidenav ul li").click(function () {
@@ -158,6 +98,46 @@
         $("right-navbar li").removeClass("active");
         $(this).addClass("active");
       });
+    });
+
+    $('#mycomplent_form').validate({
+      onfocusout: function (element) {
+        this.element(element);
+      },
+      errorClass: 'error_validate',
+      errorElement: 'span',
+      errorColor: 'red',
+      highlight: function (element, errorClass) {
+        $(element).removeClass(errorClass);
+      },
+      submitHandler: function (form) {
+        $('#submit').attr('disabled', true);
+        //form.submit();
+        var formData = new FormData($('#mycomplent_form')[0]);
+         // var formData = new FormData(this);
+         // var formData = $(this).serialize();
+          console.log('formData:',formData)
+          $.ajax({
+            type: "POST",
+            data: formData,
+            url: "/api/new-raise-a-complaint", 
+            cache:false,
+            contentType: false,
+            processData: false,           
+            success: function (data) {
+              console.log(data);
+              if(data.status == true){
+                  $('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> '+data.message+'</div>')
+                  setTimeout(function(){ 
+                    $('#MyComplaintModal').modal('hide');
+                    location.reload(true);
+                  }, 6000);
+              }else{
+                $('.complaint_msg').html('<div class="isa_error"><i class="fa fa-check"></i> '+data.message+'</div>')
+              }
+            }
+          });
+      }
     });
 
     $("#coms_complaint_help").change(function () {
@@ -217,17 +197,20 @@
       })
 
       
-      $('#mycomplent_form').submit(function (e) {
+      //$('#mycomplent_form').submit(function (e) {
+      /*  $('#mycomplent_form').on('submit',(function(e) {
           e.preventDefault();
-          //var formData = new FormData($('#mycomplent_form')[0]);
+        var formData = new FormData($('#mycomplent_form')[0]);
          // var formData = new FormData(this);
-          var formData = $(this).serialize();
+         // var formData = $(this).serialize();
           console.log('formData:',formData)
           $.ajax({
             type: "POST",
             data: formData,
             url: "/api/new-raise-a-complaint", 
-            cache: false,            
+            cache:false,
+            contentType: false,
+            processData: false,           
             success: function (data) {
               console.log(data);
               if(data.status == true){
@@ -242,7 +225,7 @@
             }
           });
           //location.reload(true);
-        })
+        }));*/
 
 
   </script>

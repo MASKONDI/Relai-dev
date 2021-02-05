@@ -93,3 +93,34 @@
 #message_board::-webkit-scrollbar-thumb:window-inactive {
 	background: rgb(252, 250, 250);
 }
+
+.message-content {
+    padding-left: 10px;
+}
+.complaint_image{
+    cursor:zoom-in;
+    cursor:-webkit-zoom-in;
+    cursor:-moz-zoom-in;
+    width:10%;
+    margin: 0px 2px 20px 0px;
+}
+.uploaded_img {
+    width: 10%;
+    margin-left: 15px;
+    border-radius: 5px;
+    /*border: 2px solid #ccc;*/
+}
+#mycomplent_details_form a.upload-any {
+    display: flex;
+    width: 50%;
+}
+
+.comp_uploaded_img img#uploaded_img {
+    width: 20%;
+    padding: 6px;
+    border-radius: 10px;
+}
+.comp_uploaded_img {
+    text-align: center;
+}
+    

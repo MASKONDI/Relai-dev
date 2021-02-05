@@ -113,7 +113,7 @@
 <div class="modal permission-modal fade " id="MyComplaintModal">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form name="complaintform" id="mycomplent_form" method="POST" action="#" enctype="multipart/form-data">
+      <form name="complaintform" id="mycomplent_form" method="POST" action="" enctype="multipart/form-data">
         <!-- Modal Header -->
         <div class="modal-header text-center">
           <h2 class="modal-title w-100">Raise a Complaint</h2>
@@ -130,12 +130,12 @@
             <option value="Report a bug">Report a bug</option>
             <option value="Property Related Enquiry">Property Related Enquiry</option>
           </select>
-          <select  class="form-control selectBox" style="height:55px;display:none" id="property_id"
+          <select  data-rule-required="true" data-msg-required="Property is required!" class="form-control selectBox" style="height:55px;display:none" id="property_id"
           name="property_id">
             <option value="">Select Property</option>
           </select>
 
-          <select  class="form-control selectBox" style="height:55px;display:none" id="coms_complaint_for"
+          <select data-rule-required="true" data-msg-required="Professional is required!"  class="form-control selectBox" style="height:55px;display:none" id="coms_complaint_for"
             name="coms_complaint_for">
             <option value="">Select Professional</option>
           </select>
@@ -150,10 +150,10 @@
               style="color:black"><span class="clip-icon">Attach
                 files</span></i>
             <div class="custom-file-input">
-              <input type="file" id="image" name="complaint_file" value="">
+              <input onchange="document.getElementById('uploaded_img').src = window.URL.createObjectURL(this.files[0])" type="file" id="image" name="complaint_file" value="">
               <input type="button">
             </div>
-            </span>
+            <div class="comp_uploaded_img"><img id="uploaded_img" /></div>
           </a>
         </div>
 
