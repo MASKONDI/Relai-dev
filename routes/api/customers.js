@@ -291,48 +291,48 @@ router.post("/add-property", async (req, res) => {
     console.log("body:=", req.body);
     var err_msg = null;
     var success_msg = null;
-    
+
     let PropertySaved = await PropertyHelper.AddNewProperty(req);
     console.log('PropertySaved========', PropertySaved)
-    if(PropertySaved){
+    if (PropertySaved) {
       // console.log("instruction req is", req.body.instruction.length);
       // console.log("instruction req is Type", typeof (req.body.instruction));
       // console.log("req.session.active_user_login", req.session.active_user_login);
       var totalInstruction = 0;
       if (req.session.active_user_login == 'renovator') {
-      totalInstruction = 8;
-    } else {
-      totalInstruction = 6;
-    }
-    console.log("totalInstruction:", totalInstruction);
-    if (req.body.instruction.length >= totalInstruction && typeof (req.body.instruction) != 'string') {
-      req.body.instruction.forEach(async function (instruction, i) {
-        var user_id = req.session.user_id;
-       // var propertyId = req.body.propertyId;
-        var propertyId= PropertySaved._id
-        //var pps_professional_id = req.body.serviceProviderId;
-        var pps_phase_name = instruction;
-        var pps_phase_start_date = req.body.startDate[i]
-        var pps_phase_end_date = req.body.endDate[i]
-        var pps_is_active_user_flag = req.session.active_user_login;
-        let addPhaseResponce = await addTaskHelper.save_addPhase(propertyId, pps_phase_name, pps_phase_start_date, pps_phase_end_date, pps_is_active_user_flag);
-        console.log('addPhaseResponce A:', addPhaseResponce)
-      })
-      return res.send({
-        'success_msg': 'Saved successfully',
-        'status': true,
-        'redirect': '/add-task'
-      });
-      //res.redirect('/add-property');
-    }else {
-      //console.log("server validation error is:", errors);
-      //req.flash('err_msg', errors.instruction);
-      return res.send({
-        'err_msg': 'Please add all phases',
-        'status': false
-      });
-    }
-      
+        totalInstruction = 8;
+      } else {
+        totalInstruction = 6;
+      }
+      console.log("totalInstruction:", totalInstruction);
+      if (req.body.instruction.length >= totalInstruction && typeof (req.body.instruction) != 'string') {
+        req.body.instruction.forEach(async function (instruction, i) {
+          var user_id = req.session.user_id;
+          // var propertyId = req.body.propertyId;
+          var propertyId = PropertySaved._id
+          //var pps_professional_id = req.body.serviceProviderId;
+          var pps_phase_name = instruction;
+          var pps_phase_start_date = req.body.startDate[i]
+          var pps_phase_end_date = req.body.endDate[i]
+          var pps_is_active_user_flag = req.session.active_user_login;
+          let addPhaseResponce = await addTaskHelper.save_addPhase(propertyId, pps_phase_name, pps_phase_start_date, pps_phase_end_date, pps_is_active_user_flag);
+          console.log('addPhaseResponce A:', addPhaseResponce)
+        })
+        return res.send({
+          'success_msg': 'Saved successfully',
+          'status': true,
+          'redirect': '/add-task'
+        });
+        //res.redirect('/add-property');
+      } else {
+        //console.log("server validation error is:", errors);
+        //req.flash('err_msg', errors.instruction);
+        return res.send({
+          'err_msg': 'Please add all phases',
+          'status': false
+        });
+      }
+
     }
 
   });
@@ -368,7 +368,7 @@ router.post("/add-property", async (req, res) => {
 //     };
 //     let PropertySaved = await PropertyHelper.AddNewProperty(PropertyBoject);
 //     console.log('PropertySaved========', PropertySaved)
-    
+
 //     var totalInstruction = 0;
 //     //const { errors, isValid } = validateAddPhase(req.body);
 //     console.log("instruction req is", req.body.instruction.length);
@@ -526,6 +526,7 @@ POST : Forget password for customer portal. it will send 6 digit random password
 ------------------------------------------------------------------------------------------------- */
 router.post('/forget-password', function (req, res) {
   console.log("req.body is :", req.body);
+
   CustomerSchema.find({
     'cus_email_id': req.body.cus_email_id,
     //'cus_email_verification_status': 'yes'
@@ -581,6 +582,8 @@ router.post('/forget-password', function (req, res) {
 
                   text: 'Dear Customer,' + '\n\n' + 'New Password from Relai.\n\n' +
                     'Password: ' + new_pass + '\n\n' +
+
+                    'After Successfull registeration please copy this SecretToken in your dashboard section \n' + token + '\n\n' +
 
                     'We suggest you to please change your password after successfully logging in on the portal using the above password :\n' + 'Here is the change password link: http://' + req.headers.host + '/Change-password' + '\n\n' +
                     'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
@@ -710,7 +713,7 @@ POST : Hire now api is used for hiring professional(service_provider) for partic
 router.post("/hire-now", async (req, res) => {
   var err_msg = null;
   var success_msg = null;
-  if (req.body.propertyId&&req.body.serviceProviderId) {
+  if (req.body.propertyId && req.body.serviceProviderId) {
     const hirenow = new PropertyProfessionalSchema({
       pps_user_id: req.body.user_id,
       pps_property_id: req.body.propertyId,
@@ -922,43 +925,58 @@ router.post('/message', (req, res) => {
 Function : invite function is used for sending invite to service_provider via gmail. this function will call while adding new Property in customer Portal
 ------------------------------------------------------------------------------------------------- */
 
-function invite_function(req) {
+function invite_function(req, saved_property) {
   console.log("Request getting from server :", req.body);
-  var smtpTransport = nodemailer.createTransport({
-    // port: 25,
-    // host: 'localhost',
-    tls: {
-      rejectUnauthorized: false
-    },
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    service: 'Gmail',
-    auth: {
-      user: 'golearning4@gmail.com',
-      pass: 'Krishna#1997',
-    }
-  });
-  const mailOptions = {
-    to: req.body.ps_other_party_emailid,
-    from: 'golearning4@gmail.com',
-    subject: 'Invitaion letter from Relai',
+  const payload = { id: saved_property_id }; // Create Token Payload
 
-    text: 'Dear \n' + req.body.ps_other_party_fullname + '\n\n' + 'you are invited in Relai plateform.\n\n' +
+  // Sign Token
+  jwt.sign(
+    payload,
+    keys.secretOrKey,
+    { expiresIn: 3600 * 60 * 60 },
+    (err, token) => {
+      console.log("Sending Secret token along with customer request", token);
+      var smtpTransport = nodemailer.createTransport({
+        // port: 25,
+        // host: 'localhost',
+        tls: {
+          rejectUnauthorized: false
+        },
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        service: 'Gmail',
+        auth: {
+          user: 'golearning4@gmail.com',
+          pass: 'Krishna#1997',
+        }
+      });
+      const mailOptions = {
+        to: req.body.ps_other_party_emailid,
+        from: 'golearning4@gmail.com',
+        subject: 'Invitaion letter from Relai',
 
-      'We suggest you to please visit our Relai plateform and create your account as a service_provider \n' + 'Here is the registration link: http://' + req.headers.host + '/intro' + '\n\n' +
-      'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
-  };
-  smtpTransport.sendMail(mailOptions, function (err) {
-    if (err) {
-      console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
-      res.redirect('/add-property')
-    } else {
-      //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
-      // res.redirect('/add-property')
+        text: 'Dear \n' + req.body.ps_other_party_fullname + '\n\n' + 'you are invited in Relai plateform.\n\n' +
+
+          'We suggest you to please visit our Relai plateform and create your account as a service_provider \n' + 'Here is the registration link: http://' + req.headers.host + '/intro' + '\n\n' +
+
+          'After Successfull registeration please copy this SecretToken in your dashboard section \n' + token + '\n\n' +
+
+          'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+      };
+      smtpTransport.sendMail(mailOptions, function (err) {
+        if (err) {
+          console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+          res.redirect('/add-property')
+        } else {
+          //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
+          // res.redirect('/add-property')
+        }
+      });
     }
-  });
+  );
 }
+
 /* -------------------------------------------------------------------------------------------------
 POST : update-customer-profile is used for updating customer profile data 
 ------------------------------------------------------------------------------------------------- */
@@ -997,8 +1015,8 @@ router.post('/update-customer-profile', (req, res) => {
 
 
 router.post('/new-raise-a-complaint', (req, res) => {
-  console.log('complain:',req)
-  const newComplaint = new ComplaintsSchema({  
+  console.log('complain:', req)
+  const newComplaint = new ComplaintsSchema({
     coms_complaint_for: req.body.coms_complaint_for,
     coms_complaint_help: req.body.coms_complaint_help,
     coms_complaint_code: "C" + uuidv4(),//need to generate in  like C123 auto increment feature
@@ -1011,13 +1029,13 @@ router.post('/new-raise-a-complaint', (req, res) => {
     //coms_complaint_file: req.body.coms_complaint_file,
   });
 
-  console.log('newComplaint:',newComplaint)
+  console.log('newComplaint:', newComplaint)
 
   newComplaint.save().then(complaints => {
-    res.send({ status:true, message: 'You complaint submited successfully, we will review and connect with you soon !!' })
+    res.send({ status: true, message: 'You complaint submited successfully, we will review and connect with you soon !!' })
   }).catch(err => {
     console.log(err)
-    res.send({ status:false,'message': 'Something went wrong please try again later.' })
+    res.send({ status: false, 'message': 'Something went wrong please try again later.' })
 
   });
 });
