@@ -1,8 +1,4 @@
-<script>
-    var pageURL = window.location.href;
-    var lastURLSegment = pageURL.substr(pageURL.lastIndexOf('/') + 1).split('?');
-console.log(lastURLSegment[0]);
-</script>
+
 <ul class="dashboard-nav">
       <li class="<%if(session.pagename=='dashboard'){%>active<%}%>">
         <a href="/dashboard"><img class="act-img" src="images/dashboard-active.png"><img
