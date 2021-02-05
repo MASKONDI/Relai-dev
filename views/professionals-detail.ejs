@@ -136,67 +136,74 @@
                           <i class="fa fa-angle-right" aria-hidden="true"></i>
                         </a>
                       </div> -->
-                     
+
                       <div id="demo" class="carousel slide " data-ride="carousel">
                         <%if(portpolioImage.length>0){%>
-                        <!-- The slideshow -->
-                        <div class="carousel-inner">
-                          <div class="carousel-item active">
-                            <% var c=1 ; portpolioImage.forEach(function(row){ %>
-                                  <img class="image-size-fix" src="upload/<%=row.spps_filename%>" alt="">
-                                  <%if(c%6 == 0){%> </div> <div class="carousel-item"> <%}%>
-                            
-                            <% c++; });%>
-                        </div>
-                        <!-- Left and right controls -->
-                        <a class="carousel-control-prev" href="#demo" data-slide="prev">
-                          <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        </a>
-                        <a class="carousel-control-next" href="#demo" data-slide="next">
-                          <i class="fa fa-angle-right" aria-hidden="true"></i>
-                        </a>
-                        <%}else{%>
-                          <br/><h6>Portfolio Image Not Uploaded</h6>
-                        <%}%>
+                          <!-- The slideshow -->
+                          <div class="carousel-inner">
+                            <div class="carousel-item active">
+                              <% var c=1 ; portpolioImage.forEach(function(row){ %>
+                                <img class="image-size-fix"
+                                  style="min-height:150px;max-height:150px; border-radius: 10px;"
+                                  src="upload/<%=row.spps_filename%>" alt="">
+                                <%if(c%6==0){%>
+                            </div>
+                            <div class="carousel-item">
+                              <%}%>
+
+                                <% c++; });%>
+                            </div>
+                            <!-- Left and right controls -->
+                            <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                              <i class="fa fa-angle-left" aria-hidden="true"></i>
+                            </a>
+                            <a class="carousel-control-next" href="#demo" data-slide="next">
+                              <i class="fa fa-angle-right" aria-hidden="true"></i>
+                            </a>
+                            <%}else{%>
+                              <br />
+                              <h6>Portfolio Image Not Uploaded</h6>
+                              <%}%>
+                          </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-12 col-lg-12">
-                  <div class="professional-inner">
-                    <div class="professional-files-section">
-                      <div class="row">
-                        <div class="col-lg-6">
-                          <div class="float-left image-fix">
-                            <h6><b>Feedback</b></h6>
-                          </div>
-                        </div>
-                        <div class="col-lg-6">
-                          <div class="float-right image-fix">
-                            <img class="" style="width:13%" src="images/write-feedback.png"
-                              alt="Card image cap">&nbsp;<span class="feedback-text">
-                              Write a feedback
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="about-section">
+                <div class="row">
+                  <div class="col-sm-12 col-lg-12">
+                    <div class="professional-inner">
+                      <div class="professional-files-section">
                         <div class="row">
                           <div class="col-lg-6">
-                            <div class="float-left ">
-                              <h1 class="pointer-fix" style="color: #005377;">4.0</h1>
-                              <p style="margin-left: 20px;">out of 5</p>
+                            <div class="float-left image-fix">
+                              <h6><b>Feedback</b></h6>
                             </div>
-                            <div>
-                              <img class="feedback-img" src="images/feedback-2.png" alt="">
-                            </div>
-
                           </div>
-                          <div class="col col-lg-6">
-                            <img class="feedback-img2" src="images/feedback-1.png" alt="">
+                          <div class="col-lg-6">
+                            <div class="float-right image-fix">
+                              <img class="" style="width:13%" src="images/write-feedback.png"
+                                alt="Card image cap">&nbsp;<span class="feedback-text">
+                                Write a feedback
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="about-section">
+                          <div class="row">
+                            <div class="col-lg-6">
+                              <div class="float-left ">
+                                <h1 class="pointer-fix" style="color: #005377;">4.0</h1>
+                                <p style="margin-left: 20px;">out of 5</p>
+                              </div>
+                              <div>
+                                <img class="feedback-img" src="images/feedback-2.png" alt="">
+                              </div>
+
+                            </div>
+                            <div class="col col-lg-6">
+                              <img class="feedback-img2" src="images/feedback-1.png" alt="">
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -208,7 +215,6 @@
           </div>
         </div>
       </div>
-    </div>
     </div>
     </div>
     </div>

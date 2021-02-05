@@ -20,7 +20,15 @@ const ServiceProviderSchema = new Schema({
     enum: ['DEFAULT', 'solicitor'],
     default: 'DEFAULT',
   },
-  sps_fullname: {
+  sps_firstname: {
+    type: String,
+    required: true,
+  },
+  sps_lastname: {
+    type: String,
+    required: true,
+  },
+  sps_state: {
     type: String,
     required: true,
   },

@@ -173,7 +173,8 @@
                                 <span>
                                   <div class="custom-file-input prop_1">
                                     <input type="file" name="propertiespic" class="propertiespic" id="propertiespic1"
-                                      value="" required onchange="document.getElementById('avtar1').src = window.URL.createObjectURL(this.files[0])">
+                                      value="" required
+                                      onchange="document.getElementById('avtar1').src = window.URL.createObjectURL(this.files[0])">
                                     <input type="button">
                                   </div>
                                 </span>
@@ -195,7 +196,8 @@
                                 <span>
                                   <div class="custom-file-input">
                                     <input type="file" name="propertiespic" class="propertiespic2" id="propertiespic2"
-                                      value="" onchange="document.getElementById('avtar2').src = window.URL.createObjectURL(this.files[0])">
+                                      value=""
+                                      onchange="document.getElementById('avtar2').src = window.URL.createObjectURL(this.files[0])">
                                     <input type="button">
                                   </div>
                                 </span>
@@ -217,7 +219,8 @@
                                 <span>
                                   <div class="custom-file-input">
                                     <input type="file" name="propertiespic" value="" class="propertiespic3"
-                                      id="propertiespic3" onchange="document.getElementById('avtar3').src = window.URL.createObjectURL(this.files[0])">
+                                      id="propertiespic3"
+                                      onchange="document.getElementById('avtar3').src = window.URL.createObjectURL(this.files[0])">
                                     <input type="button">
                                   </div>
                                 </span>
@@ -250,7 +253,8 @@
                                 <span>
                                   <div class="custom-file-input">
                                     <input type="file" name="propertiesplanpic" id="propertiesplanpic1" value=""
-                                      required onchange="document.getElementById('avtar4').src = window.URL.createObjectURL(this.files[0])">
+                                      required
+                                      onchange="document.getElementById('avtar4').src = window.URL.createObjectURL(this.files[0])">
                                     <input type="button">
                                   </div>
                                 </span>
@@ -271,7 +275,8 @@
                                 </div>
                                 <span>
                                   <div class="custom-file-input">
-                                    <input type="file" name="propertiesplanpic" id="propertiesplanpic2" value="" onchange="document.getElementById('avtar5').src = window.URL.createObjectURL(this.files[0])">
+                                    <input type="file" name="propertiesplanpic" id="propertiesplanpic2" value=""
+                                      onchange="document.getElementById('avtar5').src = window.URL.createObjectURL(this.files[0])">
                                     <input type="button">
                                   </div>
                                 </span>
@@ -293,7 +298,8 @@
                                 </div>
                                 <span>
                                   <div class="custom-file-input">
-                                    <input type="file" name="propertiesplanpic" id="propertiesplanpic3" value="" onchange="document.getElementById('avtar6').src = window.URL.createObjectURL(this.files[0])">
+                                    <input type="file" name="propertiesplanpic" id="propertiesplanpic3" value=""
+                                      onchange="document.getElementById('avtar6').src = window.URL.createObjectURL(this.files[0])">
                                     <input type="button">
                                   </div>
                                 </span>
@@ -332,7 +338,8 @@
                                             <option value="Instruction">Instruction</option>
                                             <option value="Pre-exchange Submitting the contract">Pre-exchange Submitting
                                               the contract</option>
-                                            <option value="Prior to exchange of contracts">Prior to exchange of contracts
+                                            <option value="Prior to exchange of contracts">Prior to exchange of
+                                              contracts
                                             </option>
                                             <option value="Exchange of contracts">Exchange of contracts</option>
                                             <option value="Completion">Completion</option>
@@ -353,12 +360,12 @@
                                       <label>End Date</label>
                                       <input type="date" class="form-control form-control-size-fix " id="endDate1"
                                         placeholder="Full Name" name="endDate" required>
-  
+
                                     </div>
                                   </div>
                                   <div class="">
                                     <div class="">
-  
+
                                       <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
                                         Phase</a>
                                     </div>
@@ -386,14 +393,14 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    
+
     <script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
       integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
       crossorigin="anonymous"></script>
-      <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"></script>
@@ -428,7 +435,7 @@
           $(element).removeClass(errorClass);
         },
         submitHandler: function (form) {
-         // $('#submit').attr('disabled', true);
+          // $('#submit').attr('disabled', true);
           //form.submit();
         }
       });
@@ -488,35 +495,36 @@
     <script>
       $(document).ready(function () {
         $('.prop_1 input[type="file"]').change(function (e) {
-          
-         $(".Picture_1").html(e.target.files[0].name)
+
+          $(".Picture_1").html(e.target.files[0].name)
         });
         $('.prop_2 input[type="file"]').change(function (e) {
-         $(".Picture_2").html(e.target.files[0].name)
+          $(".Picture_2").html(e.target.files[0].name)
         });
         $('.prop_3 input[type="file"]').change(function (e) {
-         $(".Picture_3").html(e.target.files[0].name)
+          $(".Picture_3").html(e.target.files[0].name)
         });
         $('.prop_4 input[type="file"]').change(function (e) {
-         $(".Picture_4").html(e.target.files[0].name)
+          $(".Picture_4").html(e.target.files[0].name)
         });
         $('.prop_5 input[type="file"]').change(function (e) {
-         $(".Picture_5").html(e.target.files[0].name)
+          $(".Picture_5").html(e.target.files[0].name)
         });
         $('.prop_6 input[type="file"]').change(function (e) {
-         $(".Picture_6").html(e.target.files[0].name)
+          $(".Picture_6").html(e.target.files[0].name)
         });
-        
+
       });
-      </script>
-      <script>
-        $(document).ready(function () {
-          var count = 2;
-          $("a[name='addMorePhase']").click(function () {
-            var domElement = $('<div class="row"><div class="professional-input-box"><div class="professional-text-fix"><label>Phase' + count++ + '</label><select class="form-control" id="instruction" placeholder="Instruction" name="instruction" required><option value="">Select Phases</option> <%if(session.active_user_login=="renovator"){ %><option value="Strategic definition">Strategic definition</option><option value="Preparation and Briefing">Preparation and Briefing</option><option value="Spatial coordination">Spatial coordination</option><option value="Technical Design">Technical Design</option><option value="Manifacturing and Construction">Manifacturing and Construction</option><option value="Concept Design">Concept Design</option><option value="Handover">Handover</option><option value="Use">Use</option> <%}else{%><option value="Instruction">Instruction</option><option value="Pre-exchange Submitting the contract">Pre-exchange Submitting the contract</option><option value="Prior to exchange of contracts">Prior to exchange of contracts</option><option value="Exchange of contracts">Exchange of contracts</option><option value="Completion">Completion</option><option value="Post-Completion">Post-Completion</option> <%}%> </select></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>Start Date</label><input type="date" class="form-control form-control-size-fix "placeholder="FullName" name="startDate"></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>End Date</label><input type="date" class="form-control form-control-size-fix "placeholder="End Date" name="endDate"></div></div></div>');
-            $(".divv").before(domElement);
-          });
-          $('#propertyform').on('submit', function (e) {
+
+    </script>
+    <script>
+      $(document).ready(function () {
+        var count = 2;
+        $("a[name='addMorePhase']").click(function () {
+          var domElement = $('<div class="row"><div class="professional-input-box"><div class="professional-text-fix"><label>Phase' + count++ + '</label><select class="form-control" id="instruction" placeholder="Instruction" name="instruction" required><option value="">Select Phases</option> <%if(session.active_user_login=="renovator"){ %><option value="Strategic definition">Strategic definition</option><option value="Preparation and Briefing">Preparation and Briefing</option><option value="Spatial coordination">Spatial coordination</option><option value="Technical Design">Technical Design</option><option value="Manifacturing and Construction">Manifacturing and Construction</option><option value="Concept Design">Concept Design</option><option value="Handover">Handover</option><option value="Use">Use</option> <%}else{%><option value="Instruction">Instruction</option><option value="Pre-exchange Submitting the contract">Pre-exchange Submitting the contract</option><option value="Prior to exchange of contracts">Prior to exchange of contracts</option><option value="Exchange of contracts">Exchange of contracts</option><option value="Completion">Completion</option><option value="Post-Completion">Post-Completion</option> <%}%> </select></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>Start Date</label><input type="date" class="form-control form-control-size-fix "placeholder="FullName" name="startDate"></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>End Date</label><input type="date" class="form-control form-control-size-fix "placeholder="End Date" name="endDate"></div></div></div>');
+          $(".divv").before(domElement);
+        });
+        $('#propertyform').on('submit', function (e) {
           e.preventDefault();
           //var formdata = $(this).serialize();
           var formData = new FormData($('#propertyform')[0])
@@ -549,8 +557,8 @@
             }
           });
         })
-        });
-      </script>
+      });
+    </script>
     </body>
 
     </html>

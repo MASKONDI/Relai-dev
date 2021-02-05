@@ -1638,6 +1638,7 @@ a.btn.btn-new {
     min-height: 250px;
     border-radius: 10px;
     }
+
 .location-part a {
     color: #8a8989;
 }
@@ -3555,6 +3556,16 @@ color: #005377;
         margin-bottom: 0px;
         border-radius: 10px;
         margin-top: 15px;
+        padding-right:20px;
+        
+    }
+    .selectBox4{
+        width: 100%;
+        height: 44px;
+        margin-left: 0px;
+        margin-bottom: 0px;
+        border-radius: 5px;
+        /* margin-top: 15px; */
         padding-right:20px;
         
     }
