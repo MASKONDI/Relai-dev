@@ -41,7 +41,7 @@ const ComplaintDetailsSchema = require("../../models/complaint_details_model");
 const MessageSchema = require("../../models/message");
 const addTaskHelper = require("./addTask");
 const PropertyHelper = require("./propertyDetail");
-
+const PermisionHelper = require("./permision");
 var isCustomer = auth.isCustomer;
 // <<<<<<< HEAD
 // router.post('/filterPropertyAdress', (req, res) => {
@@ -124,12 +124,13 @@ router.post("/cust_register", (req, res) => {
     } else {
       const newCustomer = new CustomerSchema({
         cus_unique_code: "cust-" + uuidv4(),
-        cus_fullname: req.body.cus_fullname,
+        cus_fullname: req.body.cus_firstname + ' ' + req.body.cus_lastname,
         cus_email_id: req.body.cus_email_id,
         cus_phone_number: req.body.cus_phone_number,
         cus_address: req.body.cus_address,
-        cus_country_id: req.body.cus_country_id,
-        cus_city: req.body.cus_city,
+        cus_country_id: req.body.country,
+        cus_city: req.body.city,
+        cus_state: req.body.state,
         cus_password: req.body.cus_password,
       });
 
@@ -293,53 +294,57 @@ function checkFileType(file, cb) {
 }
 router.post("/add-property", async (req, res) => {
   upload(req, res, async () => {
-    console.log("body:=", req.body);
-    var err_msg = null;
-    var success_msg = null;
-    
-    let PropertySaved = await PropertyHelper.AddNewProperty(req);
-    console.log('PropertySaved========', PropertySaved)
-    if(PropertySaved){
-      // console.log("instruction req is", req.body.instruction.length);
-      // console.log("instruction req is Type", typeof (req.body.instruction));
-      // console.log("req.session.active_user_login", req.session.active_user_login);
-      var totalInstruction = 0;
-      if (req.session.active_user_login == 'renovator') {
-      totalInstruction = 8;
-    } else {
-      totalInstruction = 6;
-    }
-    console.log("totalInstruction:", totalInstruction);
-    if (req.body.instruction.length >= totalInstruction && typeof (req.body.instruction) != 'string') {
-      req.body.instruction.forEach(async function (instruction, i) {
-        var user_id = req.session.user_id;
-       // var propertyId = req.body.propertyId;
-        var propertyId= PropertySaved._id
-        //var pps_professional_id = req.body.serviceProviderId;
-        var pps_phase_name = instruction;
-        var pps_phase_start_date = req.body.startDate[i]
-        var pps_phase_end_date = req.body.endDate[i]
-        var pps_is_active_user_flag = req.session.active_user_login;
-        let addPhaseResponce = await addTaskHelper.save_addPhase(propertyId, pps_phase_name, pps_phase_start_date, pps_phase_end_date, pps_is_active_user_flag);
-        console.log('addPhaseResponce A:', addPhaseResponce)
-      })
-      return res.send({
-        'success_msg': 'Saved successfully',
-        'status': true,
-        'redirect': '/add-task'
-      });
-      //res.redirect('/add-property');
-    }else {
-      //console.log("server validation error is:", errors);
-      //req.flash('err_msg', errors.instruction);
-      return res.send({
-        'err_msg': 'Please add all phases',
-        'status': false
-      });
-    }
-      
-    }
+    //function invite_function(req, saved_property)//need to add invite function
+    if (req.body) {
+      console.log("body:=", req.body);
+      var err_msg = null;
+      var success_msg = null;
+      let PropertySaved = await PropertyHelper.AddNewProperty(req);
+      console.log('PropertySaved========', PropertySaved)
+      if (PropertySaved) {
+        return res.send({
+          'success_msg': ' Property Saved successfully',
+          'status': true,
+          'redirect': '/mydreamhome'
+        });
+        //   var totalInstruction = 0;
+        //   if (req.session.active_user_login == 'renovator') {
+        //   totalInstruction = 8;
+        // } else {
+        //   totalInstruction = 6;
+        // }
+        //console.log("totalInstruction:", totalInstruction);
+        // if (req.body.instruction.length >= totalInstruction && typeof (req.body.instruction) != 'string') {
+        //   req.body.instruction.forEach(async function (instruction, i) {
+        //     var user_id = req.session.user_id;
+        //     var propertyId= PropertySaved._id
+        //     var pps_phase_name = instruction;
+        //     var pps_phase_start_date = req.body.startDate[i]
+        //     var pps_phase_end_date = req.body.endDate[i]
+        //     var pps_is_active_user_flag = req.session.active_user_login;
+        //     let addPhaseResponce = await addTaskHelper.save_addPhase(propertyId, pps_phase_name, pps_phase_start_date, pps_phase_end_date, pps_is_active_user_flag);
+        //     console.log('addPhaseResponce A:', addPhaseResponce)
+        //   })
+        //   return res.send({
+        //     'success_msg': 'Saved successfully',
+        //     'status': true,
+        //     'redirect': '/add-task'
+        //   });
+        // }else {
 
+        //   return res.send({
+        //     'err_msg': 'Please add all phases',
+        //     'status': false
+        //   });
+        // }
+
+      } else {
+        return res.send({
+          'err_msg': 'Something Wrong Try Again ',
+          'status': false
+        });
+      }
+    }
   });
 
 });
@@ -373,7 +378,7 @@ router.post("/add-property", async (req, res) => {
 //     };
 //     let PropertySaved = await PropertyHelper.AddNewProperty(PropertyBoject);
 //     console.log('PropertySaved========', PropertySaved)
-    
+
 //     var totalInstruction = 0;
 //     //const { errors, isValid } = validateAddPhase(req.body);
 //     console.log("instruction req is", req.body.instruction.length);
@@ -644,13 +649,14 @@ POST : Change Permission api for giving Docs read/write permission to existing s
 ------------------------------------------------------------------------------------------------- */
 router.post('/change-permision', async (req, res) => {
   console.log('doc id:', req.body.id_element)
-
   var idArray = req.body.checked_elem.split(",");
   var idArray_1 = req.body.checked_elem_1.split(",");
   // DocumentPermissionSchema 
   console.log("idArray_1 download", idArray_1);
   console.log("idArray view", idArray);
+
   return;
+  PermisionHelper.changePermision(req.body);
   //for (var service_provider_id of idArray) {
   var obj = {};
   idArray.forEach(async function (service_provider_id, i) {
@@ -715,7 +721,7 @@ POST : Hire now api is used for hiring professional(service_provider) for partic
 router.post("/hire-now", async (req, res) => {
   var err_msg = null;
   var success_msg = null;
-  if (req.body.propertyId&&req.body.serviceProviderId) {
+  if (req.body.propertyId && req.body.serviceProviderId) {
     const hirenow = new PropertyProfessionalSchema({
       pps_user_id: req.body.user_id,
       pps_property_id: req.body.propertyId,
@@ -1000,7 +1006,6 @@ router.post('/update-customer-profile', (req, res) => {
     });
 });
 
-
 router.post('/new-raise-a-complaint', isCustomer, (req, res) => {
   upload(req, res, async () => {
     let newComplaint='';
@@ -1074,6 +1079,7 @@ if(Object.keys(files).length === 0){
     res.send({ status:false,'message': 'Something went wrong please try again later.' })
   }); 
 });
+
 });
 
 

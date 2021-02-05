@@ -1,45 +1,43 @@
 <%- include('dashboard_header')-%>
   <%- include('edit-profile-model')-%>
     <!-- The Modal -->
-    <!-- <div class="modal permission-modal fade " id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content"> -->
+    <div class="modal permission-modal fade " id="addTaskModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
 
-    <!-- Modal Header -->
-    <!-- <div class="modal-header text-center">
-          <h2 class="modal-title w-100">Add Task to Phase 1</h2>
-        </div>
-        <form name="addTaskForm" id="addTaskForm" action="api/addTask" method="post"> -->
-    <!-- Modal body -->
-    <!--<div class="modal-body">
-            <label class="label-fix">Describe this to-do</label>
-            <div class="alert alert-info" id="taskmsg"></div>
-            <input type="text" class="form-control form-control-fix2" id="subject" placeholder="Instruction"
-              name="todotask" required>
-            <input type="text" class="form-control form-control-fix2" id="professional"
-              placeholder="<%=serviceProvider.sps_fullname%>" name="professionalName"
-              value="<%=serviceProvider.sps_fullname%>" readonly>
-            <input type="hidden" name="professionalId" value="<%=serviceProvider._id%>">
-            <input type="hidden" name="currentUserId" value="<%=session.user_id%>">
-            <input type="hidden" name="ppts_property_id" id="ppts_property_id" value="">
-            <input type="hidden" name="phase_id" id="phase_id" value="">
-            <input type="date" class="form-control  form-control-fix2" id="duedate" placeholder="Due on" name="duedate"
-              required>
-            <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
-              placeholder="Add Notes(If any)"></textarea>
+          <!-- Modal Header -->
+          <div class="modal-header text-center">
+            <h2 class="modal-title w-100">Add Task</h2>
+          </div>
+          <form name="addTaskForm" id="addTaskForm" action="api/addTask" method="post">
+            <!-- Modal body -->
+            <div class="modal-body">
+              <label class="">Describe this to-do</label>
+              <!-- <div class="alert alert-info" id="taskmsg"></div> -->
+              <input type="text" class="form-control form-control-fix2" id="subject" placeholder="Instruction"
+                name="todotask" required>
+              <input type="text" class="form-control form-control-fix2" id="professional"
+                placeholder="<%=serviceProvider.sps_fullname%>" name="professionalName"
+                value="<%=serviceProvider.sps_fullname%>" readonly>
+              <input type="hidden" name="professionalId" value="<%=serviceProvider._id%>">
+              <input type="hidden" name="currentUserId" value="<%=session.user_id%>">
+              <input type="hidden" name="ppts_property_id" id="ppts_property_id" value="">
+              <input type="hidden" name="phase_id" id="phase_id" value="">
+              <input type="date" class="form-control  form-control-fix2" id="duedate" placeholder="Due on"
+                name="duedate" required>
+              <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
+                placeholder="Add Notes(If any)"></textarea>
 
-            <div class="model-btn-fix">
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-cancel" id="cancel_addtask_btn" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-cancel" id="addtask_btn" data-dismiss="">Add Task</button>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-cancel" id="cancel_addtask_btn" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-cancel" id="addtask_btn" data-dismiss="">Add Task</button>
 
-          </div>
-        </form>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  </div>-->
     <div class="dashboard-wpr">
       <div class="container-fluid">
         <div class="row content">
@@ -122,80 +120,77 @@
                             <div class="home-section">
                               <div class="row">
 
-                                <div class="col-sm-12 col-lg-3">
-                                  <div class="professional-input-box">
-                                    <div class="professional-text-fix">
-                                      <label>Select Property</label>
-                                      <select
-                                        class="form-control form-control-lg form-control-size-fix  propertySelectBox"
-                                        name="propertyId" data-rule-required="true"
-                                        data-msg-required="Property is required!" style="width: 94%;">
-                                        <option value="">Select property</option>
-                                        <% property.forEach(function(row){ %>
-                                          <option class="option" value="<%=row._id%>">
-                                            <%=row.ps_property_name%>
-                                          </option>
-                                          <% }); %>
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="col-sm-12 col-lg-3">
-                                  <div class="professional-input-box">
-                                    <div class="professional-text-fix">
-                                      <label>Address</label>
+                                <div class="col-sm-12 col-lg-4">
 
-
-                                      <input type="text" class="form-control address form-control-size-fix "
-                                        id="address" placeholder="1143 Buena Visa Avenue" name="address" value=""
-                                        data-rule-required="true" data-msg-required="Address is required!" required>
-                                    </div>
-
+                                  <div class="professional-text-fix">
+                                    <label>Select Property</label>
+                                    <select class="form-control selectBox6" name="propertyId" data-rule-required="true"
+                                      data-msg-required="Property is required!" style="height: 48px;">
+                                      <option value="">Select property</option>
+                                      <% property.forEach(function(row){ %>
+                                        <option class="option" value="<%=row._id%>">
+                                          <%=row.ps_property_name%>
+                                        </option>
+                                        <% }); %>
+                                    </select>
 
                                   </div>
                                 </div>
-                                <div class="col-sm-12 col-lg-3">
-                                  <div class="professional-input-box">
-                                    <div class="professional-text-fix">
-                                      <label>City</label>
-                                      <input type="text" class="form-control form-control-size-fix " id="city"
-                                        placeholder="Rufus" name="city" value="" data-rule-required="true"
-                                        data-msg-required="City is required!" required>
-                                    </div>
+                                <div class="col-sm-12 col-lg-4">
 
+                                  <div class="professional-text-fix">
+                                    <label>Address</label>
+
+
+                                    <input type="text" class="form-control address  selectBox6  " id="address"
+                                      placeholder="1143 Buena Visa Avenue" name="address" value=""
+                                      data-rule-required="true" data-msg-required="Address is required!" required>
                                   </div>
+
+
+
+                                </div>
+                                <div class="col-sm-12 col-lg-4">
+
+                                  <div class="professional-text-fix">
+                                    <label>City</label>
+                                    <input type="text" class="form-control  selectBox6  " id="city" placeholder="Rufus"
+                                      name="city" value="" data-rule-required="true"
+                                      data-msg-required="City is required!" required>
+                                  </div>
+
                                 </div>
                               </div>
                               <div class="row">
-                                <div class="col-sm-12 col-lg-3">
-                                  <div class="professional-input-box">
-                                    <div class="professional-text-fix">
-                                      <label>County</label>
-                                      <input type="text" class="form-control form-control-size-fix " id="state"
-                                        placeholder="Oregon" data-rule-required="true"
-                                        data-msg-required="County is required!" required name="state" value="">
-                                    </div>
+                                <div class="col-sm-12 col-lg-4">
+
+                                  <div class="professional-text-fix">
+                                    <label>County</label>
+                                    <input type="text" class="form-control  selectBox6  " id="state"
+                                      placeholder="Oregon" data-rule-required="true"
+                                      data-msg-required="County is required!" required name="state" value="">
                                   </div>
+
                                 </div>
-                                <div class="col-sm-12 col-lg-3">
-                                  <div class="professional-input-box">
-                                    <div class="professional-text-fix">
-                                      <label>Country</label>
-                                      <input type="text" class="form-control form-control-size-fix " id="country"
-                                        placeholder="United States" name="country" value="" data-rule-required="true"
-                                        data-msg-required="Country is required!" required>
-                                    </div>
+                                <div class="col-sm-12 col-lg-4">
+
+                                  <div class="professional-text-fix">
+                                    <label>Country</label>
+                                    <input type="text" class="form-control  selectBox6  " id="country"
+                                      placeholder="United States" name="country" value="" data-rule-required="true"
+                                      data-msg-required="Country is required!" required>
                                   </div>
+
                                 </div>
-                                <div class="col-sm-12 col-lg-3">
-                                  <div class="professional-input-box">
-                                    <div class="professional-text-fix">
-                                      <label>Zip code</label>
-                                      <input type="text" class="form-control form-control-size-fix " id="zipcode"
-                                        placeholder="97050" name="zipcode" value="" data-rule-required="true"
-                                        data-msg-required="Zipcode is required!" required>
-                                    </div>
+                                <div class="col-sm-12 col-lg-4">
+
+                                  <div class="professional-text-fix">
+                                    <label>Zip code</label>
+                                    <input type="text" class="form-control  selectBox6  " id="zipcode"
+                                      placeholder="97050" name="zipcode" value="" data-rule-required="true"
+                                      data-msg-required="Zipcode is required!" required>
                                   </div>
+
                                 </div>
                               </div>
                             </div>
@@ -203,7 +198,7 @@
                         </div>
 
                         <div class="row">
-                          <div class="col-sm-12 col-lg-6">
+                          <div class="col-sm-12 col-lg-4">
 
 
                             <div class="heading-top hirenow-fix float-left">
@@ -218,24 +213,30 @@
 
                             </div>
                           </div>
-                          <div class="col-sm-6 col-lg-6">
-
+                          <div class="col-sm-12 col-lg-4">
                             <div class="heading-top hirenow-fix float-left">
-
                               <label class="">STEP 3</label>
                               <h6 class="">Tell us expected delivery date</h6>
                             </div>
-                            <div class="col-sm-6 col-lg-6">
-
-
-                              <input type="date" style="margin-top:5px;width:90%"
-                                class="form-control form-control-size-fix " id="deliveryDate" placeholder="1 Dec 2011"
-                                name="pps_exptected_delivery_date" data-rule-required="true"
-                                data-msg-required="DeliveryDate is required!" required>
-
-
+                            <div class="col-sm-12 col-lg-12">
+                              <input type="date" style="margin-top:5px;width:90%" class="form-control  selectBox6  "
+                                id="deliveryDate" placeholder="1 Dec 2011" name="pps_exptected_delivery_date"
+                                data-rule-required="true" data-msg-required="DeliveryDate is required!" required>
                             </div>
                           </div>
+
+                          <div class="col-sm-12 col-lg-4">
+                            <div class="heading-top hirenow-fix float-left">
+                              <label class="">STEP 4</label>
+                              <h6 class="">Add Task for professional</h6>
+                            </div>
+
+
+                            <a href="#" class="btn btn-add-task-fix" data-toggle="modal" data-target="#addTaskModal">Add
+                              Task</a>
+
+                          </div>
+
                         </div>
 
                         <!-- <div class="row">
@@ -289,14 +290,14 @@
                                 <div class="professional-input-box">
                                   <div class="professional-text-fix">
                                     <label>Start Date</label>
-                                    <input type="date" class="form-control form-control-size-fix " id="startDate1"
+                                    <input type="date" class="form-control  selectBox6  " id="startDate1"
                                       placeholder="Full Name" name="startDate" required>
                                   </div>
                                 </div>
                                 <div class="professional-input-box">
                                   <div class="professional-text-fix">
                                     <label>End Date</label>
-                                    <input type="date" class="form-control form-control-size-fix " id="endDate1"
+                                    <input type="date" class="form-control  selectBox6  " id="endDate1"
                                       placeholder="Full Name" name="endDate" required>
 
                                   </div>
@@ -310,11 +311,11 @@
                                 </div>
                               </div>
                               <div class="row divv"></div> -->
-                              <!-- <div class="row">
+                          <!-- <div class="row">
                               <div class="professional-input-box">
                                 <div class="professional-text-fix">
                                   <label>Phase2</label>
-                                  <input type="text" class="form-control form-control-size-fix " id="phase2"
+                                  <input type="text" class="form-control  selectBox6  " id="phase2"
                                     placeholder="Pre-exchange Submitting the contract" name="phase2">
                                 </div>
 
@@ -322,14 +323,14 @@
                               <div class="professional-input-box">
                                 <div class="professional-text-fix">
                                   <label>Start Date</label>
-                                  <input type="date" class="form-control form-control-size-fix " id="startDate2"
+                                  <input type="date" class="form-control  selectBox6  " id="startDate2"
                                     placeholder="FullName" name="startDate2">
                                 </div>
                               </div>
                               <div class="professional-input-box">
                                 <div class="professional-text-fix">
                                   <label>End Date</label>
-                                  <input type="date" class="form-control form-control-size-fix " id="endDate2"
+                                  <input type="date" class="form-control  selectBox6  " id="endDate2"
                                     placeholder="End Date" name="endDate2">
                                 </div>
                               </div>
@@ -342,14 +343,14 @@
                               </div>
 
                             </div> -->
-                            <!-- </div>
+                          <!-- </div>
                           </div> -->
-                        </div> 
+                        </div>
                         <div>
-                        <button type="submit" class="btn btn-next" style="width: 164px; border-radius: 5px;">Hire
-                          Now</button>
-                          </div>
-                          <div class="message"></div>
+                          <button type="submit" class="btn btn-next" style="width: 164px; border-radius: 5px;">Hire
+                            Now</button>
+                        </div>
+                        <div class="message"></div>
                       </form>
                       <!-- <div class="alert alert-info" id="msg"></div> -->
                     </div>
@@ -528,7 +529,7 @@
       $(document).ready(function () {
         var count = 2;
         $("a[name='addMorePhase']").click(function () {
-          var domElement = $('<div class="row"><div class="professional-input-box"><div class="professional-text-fix"><label>Phase' + count++ + '</label><select class="form-control" id="instruction" placeholder="Instruction" name="instruction" required><option value="">Select Phases</option> <%if(session.active_user_login=="renovator"){ %><option value="Strategic definition">Strategic definition</option><option value="Preparation and Briefing">Preparation and Briefing</option><option value="Spatial coordination">Spatial coordination</option><option value="Technical Design">Technical Design</option><option value="Manifacturing and Construction">Manifacturing and Construction</option><option value="Concept Design">Concept Design</option><option value="Handover">Handover</option><option value="Use">Use</option> <%}else{%><option value="Instruction">Instruction</option><option value="Pre-exchange Submitting the contract">Pre-exchange Submitting the contract</option><option value="Prior to exchange of contracts">Prior to exchange of contracts</option><option value="Exchange of contracts">Exchange of contracts</option><option value="Completion">Completion</option><option value="Post-Completion">Post-Completion</option> <%}%> </select></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>Start Date</label><input type="date" class="form-control form-control-size-fix "placeholder="FullName" name="startDate"></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>End Date</label><input type="date" class="form-control form-control-size-fix "placeholder="End Date" name="endDate"></div></div></div>');
+          var domElement = $('<div class="row"><div class="professional-input-box"><div class="professional-text-fix"><label>Phase' + count++ + '</label><select class="form-control" id="instruction" placeholder="Instruction" name="instruction" required><option value="">Select Phases</option> <%if(session.active_user_login=="renovator"){ %><option value="Strategic definition">Strategic definition</option><option value="Preparation and Briefing">Preparation and Briefing</option><option value="Spatial coordination">Spatial coordination</option><option value="Technical Design">Technical Design</option><option value="Manifacturing and Construction">Manifacturing and Construction</option><option value="Concept Design">Concept Design</option><option value="Handover">Handover</option><option value="Use">Use</option> <%}else{%><option value="Instruction">Instruction</option><option value="Pre-exchange Submitting the contract">Pre-exchange Submitting the contract</option><option value="Prior to exchange of contracts">Prior to exchange of contracts</option><option value="Exchange of contracts">Exchange of contracts</option><option value="Completion">Completion</option><option value="Post-Completion">Post-Completion</option> <%}%> </select></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>Start Date</label><input type="date" class="form-control  selectBox6  "placeholder="FullName" name="startDate"></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>End Date</label><input type="date" class="form-control  selectBox6  "placeholder="End Date" name="endDate"></div></div></div>');
           $(".divv").before(domElement);
         });
       });

@@ -37,6 +37,10 @@ const CustomerSchema = new Schema({
     type: String,
     required: true,
   },
+  cus_state: {
+    type: String,
+    required: true,
+  },
   cus_password: {
     type: String,
     required: true,

@@ -426,7 +426,7 @@ app.get('/my-professionals-searchbar', async (req, res) => {
 
 app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
   req.session.pagename = 'mydreamhome';
-  console.log('property id is :', req.session.property_id);
+  //console.log('property id is :', req.session.property_id);
   //req.session.property_id=req.query.id
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -434,7 +434,7 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
   const allDocument = await CustomerUploadDocsSchema.find({ $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.session.property_id, cuds_is_active_user_flag: req.session.active_user_login }] });
   //const propertyDataObj = await PropertiesSchema.find();
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
-  console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
+  //console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
   let serviceProvArray = [];
   for (var k of AllhiredProfeshnoal) {
     await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
