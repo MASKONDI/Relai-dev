@@ -37,9 +37,12 @@ module.exports.AddNewProperty = function (req) {
             ps_property_bedroom: req.body.ps_property_bedroom,
             ps_property_bathroom: req.body.ps_property_bathroom,
             ps_additional_note: req.body.ps_additional_note,
-            ps_property_type: req.body.ps_property_type,
+            ps_property_type: req.body.property_type,
             ps_chain_property_id: req.body.ps_chain_property_id,
-            ps_is_active_user_flag: req.session.active_user_login
+            ps_is_active_user_flag: req.session.active_user_login,
+            ps_phase_array:req.body.Phase,
+            ps_phase_start_date:req.body.startDate,
+            pa_phase_end_date:req.body.endDate
         };
         const newProperty = new PropertiesSchema(PropertyBoject)
         //return;
