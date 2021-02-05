@@ -134,7 +134,7 @@
                                 class="form-control property-form-control-size-fix " id="emailaddress"
                                 placeholder="buyer/seller/renovator" name="ps_other_party_user_as" value=""
                                 data-rule-required="true" data-msg-required="buyer/seller/renovator is required!"> -->
-                              <select name="property_type" class="cities form-control selectBox5" id="property_type"
+                              <select name="property_type" class=" form-control selectBox5" id="property_type"
                                 required style="height: 48px;" data-rule-required="true"
                                 data-msg-required="Property Type is required!">
                                 <option value="">Select Property Type</option>
@@ -185,7 +185,7 @@
                               <h6>Add Phases</h6>
                             </div>
                           </div>
-                          <div class="message"></div>
+                          
                         </div>
                         <%if(session.active_user_login=='renovator'){ %>
                           <div class="row">
@@ -198,7 +198,7 @@
                                         <label>Phase1</label>
                                         <input type="read-only" class="form-control form-control-size-fix " id="Phase1"
                                           style="border-radius:10px; width:85%" placeholder="Strategic definition"
-                                          name="Phase1[]" value="Strategic definition" readonly>
+                                          name="Phase[]" value="Strategic definition" readonly>
                                       </div>
                                     </div>
                                   </div>
@@ -245,7 +245,7 @@
                                         <label>Phase2</label>
                                         <input type="read-only" class="form-control form-control-size-fix " id="Phase2"
                                           style="border-radius:10px; width:85%" placeholder="Preparation and Briefing"
-                                          name="Phase2[]" value="Preparation and Briefing" readonly>
+                                          name="Phase[]" value="Preparation and Briefing" readonly>
                                       </div>
                                     </div>
                                   </div>
@@ -292,7 +292,7 @@
                                         <label>Phase3</label>
                                         <input type="read-only" class="form-control form-control-size-fix " id="Phase3"
                                           style="border-radius:10px; width:85%" placeholder="Spatial coordination"
-                                          name="Phase3[]" value="Spatial coordination" readonly>
+                                          name="Phase[]" value="Spatial coordination" readonly>
                                       </div>
                                     </div>
                                   </div>
@@ -339,7 +339,7 @@
                                         <label>Phase4</label>
                                         <input type="read-only" class="form-control form-control-size-fix " id="Phase4"
                                           style="border-radius:10px; width:85%" placeholder="Technical Design"
-                                          name="Phase4[]" value="Technical Design" readonly>
+                                          name="Phase[]" value="Technical Design" readonly>
                                       </div>
                                     </div>
                                   </div>
@@ -386,7 +386,7 @@
                                         <label>Phase5</label>
                                         <input type="read-only" class="form-control form-control-size-fix " id="Phase5"
                                           style="border-radius:10px; width:85%"
-                                          placeholder="Manifacturing and Construction" name="Phase5[]"
+                                          placeholder="Manifacturing and Construction" name="Phase[]"
                                           value="Manifacturing and Construction" readonly>
                                       </div>
                                     </div>
@@ -434,7 +434,7 @@
                                         <label>Phase6</label>
                                         <input type="read-only" class="form-control form-control-size-fix " id="Pahse6"
                                           style="border-radius:10px; width:85%" placeholder="Concept Design"
-                                          name="Pahse6[]" value="Concept Design" readonly>
+                                          name="Pahse[]" value="Concept Design" readonly>
                                       </div>
                                     </div>
                                   </div>
@@ -480,7 +480,7 @@
                                       <div class="property-text-fix">
                                         <label>Phase7</label>
                                         <input type="read-only" class="form-control form-control-size-fix " id="Phase7"
-                                          style="border-radius:10px; width:85%" placeholder="Handover" name="Phase7[]"
+                                          style="border-radius:10px; width:85%" placeholder="Handover" name="Phase[]"
                                           value="Handover" readonly>
                                       </div>
                                     </div>
@@ -526,7 +526,7 @@
                                       <div class="property-text-fix">
                                         <label>Phase8</label>
                                         <input type="read-only" class="form-control form-control-size-fix " id="Phase8"
-                                          style="border-radius:10px; width:85%" placeholder="Use" name="Phase8[]"
+                                          style="border-radius:10px; width:85%" placeholder="Use" name="Phase[]"
                                           value="Use" readonly>
                                       </div>
                                     </div>
@@ -574,9 +574,9 @@
                                       <div class="property-input-box">
                                         <div class="property-text-fix">
                                           <label>Phase1</label>
-                                          <input type="read-only" class="form-control form-control-size-fix "
+                                          <input type="read-only" name="Phase[]" class="form-control form-control-size-fix "
                                             id="Instruction" style="border-radius:10px; width:85%"
-                                            placeholder="Instruction" value="Instruction" name="phase1[]" readonly>
+                                            placeholder="Instruction" value="Instruction"  readonly>
                                         </div>
                                       </div>
                                     </div>
@@ -609,7 +609,7 @@
                                     </div>
                                   </div> -->
                                   </div>
-                                  <div class="row divv"></div>
+                                  <!-- <div class="row divv"></div> -->
                                 </div>
                               </div>
                             </div>
@@ -624,7 +624,7 @@
                                           <label>Phase2</label>
                                           <input type="read-only" class="form-control form-control-size-fix "
                                             id="Phase2" style="border-radius:10px; width:85%"
-                                            placeholder="Pre-exchange Submitting the contract" name="Phase2[]"
+                                            placeholder="Pre-exchange Submitting the contract" name="Phase[]"
                                             value="Pre-exchange Submitting the contract" readonly>
                                         </div>
                                       </div>
@@ -673,7 +673,7 @@
                                           <label>Phase3</label>
                                           <input type="read-only" class="form-control form-control-size-fix "
                                             id="Phase3" style="border-radius:10px; width:85%"
-                                            placeholder="Prior to exchange of contracts" name="Phase3[]"
+                                            placeholder="Prior to exchange of contracts" name="Phase[]"
                                             value="Prior to exchange of contracts" readonly>
                                         </div>
                                       </div>
@@ -722,7 +722,7 @@
                                           <label>Phase4</label>
                                           <input type="read-only" class="form-control form-control-size-fix "
                                             id="Phase4" style="border-radius:10px; width:85%"
-                                            placeholder="Exchange of contracts" name="Phase4[]"
+                                            placeholder="Exchange of contracts" name="Phase[]"
                                             value="Exchange of contracts" readonly>
                                         </div>
                                       </div>
@@ -771,7 +771,7 @@
                                           <label>Phase5</label>
                                           <input type="read-only" class="form-control form-control-size-fix "
                                             id="Phase5" style="border-radius:10px; width:85%" placeholder="Completion"
-                                            name="Phase5[]" value="Completion" readonly>
+                                            name="Phase[]" value="Completion" readonly>
                                         </div>
                                       </div>
                                     </div>
@@ -819,7 +819,7 @@
                                           <label>Phase6</label>
                                           <input type="read-only" class="form-control form-control-size-fix "
                                             id="Phase6" style="border-radius:10px; width:85%"
-                                            placeholder="Post-Completion" name="Phase6[]" value="Post-Completion"
+                                            placeholder="Post-Completion" name="Phase[]" value="Post-Completion"
                                             readonly>
                                         </div>
                                       </div>
@@ -1023,7 +1023,7 @@
                                   <!-- </form> -->
                                 </div>
                               </div>
-
+                              <div class="message"></div>
                               <div class="row">
                                 <div class="col-sm-12 col-lg-12">
                                   <div class="property-btn">
@@ -1172,10 +1172,10 @@
     <script>
       $(document).ready(function () {
         var count = 2;
-        $("a[name='addMorePhase']").click(function () {
-          var domElement = $('<div class="row"><div class="col-sm-12 col-lg-3"><div class="property-input-box"><div class="property-text-fix"><label>Phase' + count++ + '</label><select class="form-control property-select-box" id="instruction" placeholder="Instruction" name="instruction" required><option value="">Select Phases</option> <%if(session.active_user_login=="renovator"){ %><option value="Strategic definition">Strategic definition</option><option value="Preparation and Briefing">Preparation and Briefing</option><option value="Spatial coordination">Spatial coordination</option><option value="Technical Design">Technical Design</option><option value="Manifacturing and Construction">Manifacturing and Construction</option><option value="Concept Design">Concept Design</option><option value="Handover">Handover</option><option value="Use">Use</option> <%}else{%><option value="Instruction">Instruction</option><option value="Pre-exchange Submitting the contract">Pre-exchange Submitting the contract</option><option value="Prior to exchange of contracts">Prior to exchange of contracts</option><option value="Exchange of contracts">Exchange of contracts</option><option value="Completion">Completion</option><option value="Post-Completion">Post-Completion</option> <%}%> </select></div></div></div><div class="col-sm-12 col-lg-3"><div class="property-input-box"><div class="property-text-fix"><label>Start Date</label><input type="date" class="form-control form-control-size-fix "placeholder="FullName" style="border-radius:10px ;" name="startDate"></div></div></div><div class="col-sm-12 col-lg-3"><div class="property-input-box"><div class="property-text-fix"><label>End Date</label><input type="date" class="form-control form-control-size-fix "placeholder="End Date" name="endDate" style="border-radius:10px ;"></div></div></div></div>');
-          $(".divv").before(domElement);
-        });
+        // $("a[name='addMorePhase']").click(function () {
+        //   var domElement = $('<div class="row"><div class="col-sm-12 col-lg-3"><div class="property-input-box"><div class="property-text-fix"><label>Phase' + count++ + '</label><select class="form-control property-select-box" id="instruction" placeholder="Instruction" name="instruction" required><option value="">Select Phases</option> <%if(session.active_user_login=="renovator"){ %><option value="Strategic definition">Strategic definition</option><option value="Preparation and Briefing">Preparation and Briefing</option><option value="Spatial coordination">Spatial coordination</option><option value="Technical Design">Technical Design</option><option value="Manifacturing and Construction">Manifacturing and Construction</option><option value="Concept Design">Concept Design</option><option value="Handover">Handover</option><option value="Use">Use</option> <%}else{%><option value="Instruction">Instruction</option><option value="Pre-exchange Submitting the contract">Pre-exchange Submitting the contract</option><option value="Prior to exchange of contracts">Prior to exchange of contracts</option><option value="Exchange of contracts">Exchange of contracts</option><option value="Completion">Completion</option><option value="Post-Completion">Post-Completion</option> <%}%> </select></div></div></div><div class="col-sm-12 col-lg-3"><div class="property-input-box"><div class="property-text-fix"><label>Start Date</label><input type="date" class="form-control form-control-size-fix "placeholder="FullName" style="border-radius:10px ;" name="startDate"></div></div></div><div class="col-sm-12 col-lg-3"><div class="property-input-box"><div class="property-text-fix"><label>End Date</label><input type="date" class="form-control form-control-size-fix "placeholder="End Date" name="endDate" style="border-radius:10px ;"></div></div></div></div>');
+        //   $(".divv").before(domElement);
+        // });
         $('#propertyform').on('submit', function (e) {
           e.preventDefault();
           //var formdata = $(this).serialize();

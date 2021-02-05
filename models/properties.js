@@ -73,8 +73,8 @@ const PropertiesSchema = new Schema({
   },
   ps_property_type: {
     type: String,
-    enum: ['new', 'chain'],
-    default: 'new'
+    enum: ['New', 'Chainproperty'],
+    default: 'New'
   },
   //should be mongodb generated objectId
   ps_chain_property_id: {
@@ -99,6 +99,15 @@ const PropertiesSchema = new Schema({
     type: String,
     enum: ['buyer', 'seller', 'renovator'],
 
+  },
+  ps_phase_array:{
+    type:Array,
+  },
+  ps_phase_start_date:{
+    type:Array,
+  },
+  pa_phase_end_date:{
+    type:Array,
   },
 });
 module.exports = properties = mongoose.model('properties', PropertiesSchema);
