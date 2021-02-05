@@ -24,9 +24,9 @@ module.exports.AddNewProperty = function (req) {
             ps_user_id: req.session.user_id, //storing customer_ID
             ps_property_name: req.body.ps_property_name,
             ps_property_address: req.body.ps_property_address,
-            ps_property_country_id: req.body.ps_property_country_id,
-            ps_property_state_id: req.body.ps_property_state_id,
-            ps_property_city_id: req.body.ps_property_city_id,
+            ps_property_country_id: req.body.country,
+            ps_property_state_id: req.body.state,
+            ps_property_city_id: req.body.city,
             ps_property_zipcode: req.body.ps_property_zipcode,
             //ps_property_user_as: req.body.ps_property_user_as,
             ps_property_user_as: req.session.active_user_login, //updaing active customer portal buyer/seller/renovator
@@ -38,7 +38,7 @@ module.exports.AddNewProperty = function (req) {
             ps_property_bathroom: req.body.ps_property_bathroom,
             ps_additional_note: req.body.ps_additional_note,
             ps_property_type: req.body.property_type,
-            ps_chain_property_id: req.body.ps_chain_property_id,
+            //ps_chain_property_id: req.body.ps_chain_property_id,
             ps_is_active_user_flag: req.session.active_user_login,
             ps_phase_array:req.body.Phase,
             ps_phase_start_date:req.body.startDate,

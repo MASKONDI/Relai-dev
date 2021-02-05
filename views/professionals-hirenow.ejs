@@ -9,20 +9,27 @@
           <div class="modal-header text-center">
             <h2 class="modal-title w-100">Add Task</h2>
           </div>
-          <form name="addTaskForm" id="addTaskForm" action="api/addTask" method="post">
+          <form name="addTaskForm" id="addTaskForm" action="" method="post">
             <!-- Modal body -->
             <div class="modal-body">
               <label class="">Describe this to-do</label>
+              <div class="errmessage"></div>
               <!-- <div class="alert alert-info" id="taskmsg"></div> -->
-              <input type="text" class="form-control form-control-fix2" id="subject" placeholder="Instruction"
-                name="todotask" required>
+              <!-- <input type="text" class="form-control form-control-fix2" id="subject" placeholder="Instruction"
+                name="todotask" required> -->
+                <select class="form-control selectBox2 phase_list" id="Phase" name="Phase"style="height: 48px;" data-rule-required="true" data-msg-required="phase  is required"required>
+                    <option value="">Select Phase</option>
+                    <option value=""></option>
+                </select>
+                <input type="text" class="form-control form-control-fix2" id="taskName" placeholder="Task Name"
+                name="task_name" required>
               <input type="text" class="form-control form-control-fix2" id="professional"
                 placeholder="<%=serviceProvider.sps_fullname%>" name="professionalName"
                 value="<%=serviceProvider.sps_fullname%>" readonly>
               <input type="hidden" name="professionalId" value="<%=serviceProvider._id%>">
               <input type="hidden" name="currentUserId" value="<%=session.user_id%>">
-              <input type="hidden" name="ppts_property_id" id="ppts_property_id" value="">
-              <input type="hidden" name="phase_id" id="phase_id" value="">
+              <input type="hidden" name="property_id" class="property_id" value="">
+              <!-- <input type="hidden" name="phase_id" id="phase_id" value=""> -->
               <input type="date" class="form-control  form-control-fix2" id="duedate" placeholder="Due on"
                 name="duedate" required>
               <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
@@ -124,7 +131,7 @@
 
                                   <div class="professional-text-fix">
                                     <label>Select Property</label>
-                                    <select class="form-control selectBox6" name="propertyId" data-rule-required="true"
+                                    <select class="form-control selectBox6 propertySelectBox property_list" name="propertyId" data-rule-required="true"
                                       data-msg-required="Property is required!" style="height: 48px;">
                                       <option value="">Select property</option>
                                       <% property.forEach(function(row){ %>
@@ -154,7 +161,7 @@
 
                                   <div class="professional-text-fix">
                                     <label>City</label>
-                                    <input type="text" class="form-control  selectBox6  " id="city" placeholder="Rufus"
+                                    <input type="text" class="form-control city selectBox6  " id="city" placeholder="Rufus"
                                       name="city" value="" data-rule-required="true"
                                       data-msg-required="City is required!" required>
                                   </div>
@@ -166,7 +173,7 @@
 
                                   <div class="professional-text-fix">
                                     <label>County</label>
-                                    <input type="text" class="form-control  selectBox6  " id="state"
+                                    <input type="text" class="form-control state selectBox6  " id="state"
                                       placeholder="Oregon" data-rule-required="true"
                                       data-msg-required="County is required!" required name="state" value="">
                                   </div>
@@ -176,7 +183,7 @@
 
                                   <div class="professional-text-fix">
                                     <label>Country</label>
-                                    <input type="text" class="form-control  selectBox6  " id="country"
+                                    <input type="text" class="form-control country selectBox6  " id="country"
                                       placeholder="United States" name="country" value="" data-rule-required="true"
                                       data-msg-required="Country is required!" required>
                                   </div>
@@ -442,14 +449,25 @@
               cache: false,
               success: function (data) {
                 console.log(data)
+                //alert(data.data)
 
                 // alert($('#address').val(data.data.ps_property_address))
                 $('.address').val(data.data.ps_property_address)
-                $('#city').val(data.data.ps_property_city_id)
-
-                $('#state').val(data.data.ps_property_state_id)
-                $('#country').val(data.data.ps_property_country_id)
+                $('.city').val(data.data.ps_property_city_id)
+             
+                $('.state').val(data.data.ps_property_state_id)
+                $('.country').val(data.data.ps_property_country_id)
                 $('#zipcode').val(data.data.ps_property_zipcode)
+                $('.property_id').val(data.data._id)
+                var htmlData = '';
+            htmlData += '<option value="">Select Phase</option>';
+            if (data.data.ps_phase_array.length > 0) {
+              $.each(data.data.ps_phase_array, function (i, data) {
+                console.log('val:', data)
+                htmlData += '<option value="' + data + '">' + data + '</option>';
+              });
+            }
+            $('.phase_list').html(htmlData);
               }
             });
           } else {
@@ -532,5 +550,48 @@
           var domElement = $('<div class="row"><div class="professional-input-box"><div class="professional-text-fix"><label>Phase' + count++ + '</label><select class="form-control" id="instruction" placeholder="Instruction" name="instruction" required><option value="">Select Phases</option> <%if(session.active_user_login=="renovator"){ %><option value="Strategic definition">Strategic definition</option><option value="Preparation and Briefing">Preparation and Briefing</option><option value="Spatial coordination">Spatial coordination</option><option value="Technical Design">Technical Design</option><option value="Manifacturing and Construction">Manifacturing and Construction</option><option value="Concept Design">Concept Design</option><option value="Handover">Handover</option><option value="Use">Use</option> <%}else{%><option value="Instruction">Instruction</option><option value="Pre-exchange Submitting the contract">Pre-exchange Submitting the contract</option><option value="Prior to exchange of contracts">Prior to exchange of contracts</option><option value="Exchange of contracts">Exchange of contracts</option><option value="Completion">Completion</option><option value="Post-Completion">Post-Completion</option> <%}%> </select></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>Start Date</label><input type="date" class="form-control  selectBox6  "placeholder="FullName" name="startDate"></div></div><div class="professional-input-box"><div class="professional-text-fix"><label>End Date</label><input type="date" class="form-control  selectBox6  "placeholder="End Date" name="endDate"></div></div></div>');
           $(".divv").before(domElement);
         });
+      });
+    </script>
+    <script>
+      $(document).ready(function () {
+        $("#cancel_addtask_btn").click(function(e){
+        e.preventDefault()
+          $('#taskName').val('');
+          $('#duedate').val('');
+          $('#notes').val('')
+          $('#Phase').val('');
+        })
+        $("#msgg").hide();
+        $("#error").hide();
+        $("#addTaskForm").on('submit', function (e) {
+          e.preventDefault();
+          var formData = $(this).serialize();
+          if (formData) {
+            $.ajax({
+              type: "POST",
+              data: formData,
+              url: "/api/addTask",
+              cache: false,
+              success: function (data) {
+                if (data.status == false) {
+                //$('#message').show();
+                $('.errmessage').html('<span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
+                setTimeout(function () { $('.errmessage').html(''); }, 5000);
+
+                //$('#msg').html(data.message).delay(5000).fadeOut('success');
+              } else {
+                $('.errmessage').html('<span class="error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
+                setTimeout(function () { $('.errmessage').html('');$('#taskName').val('');$('#duedate').val('');$('#notes').val('') }, 5000);
+                console.log('meserrmessagesage:', data.success_msg)
+                //window.location.href = data.redirect;
+              }
+
+              }
+            });
+            // location.reload(true);
+          } else {
+            alert('some thing wrong')
+          }
+        })
       });
     </script>

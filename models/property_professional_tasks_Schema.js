@@ -19,9 +19,14 @@ const PropertyProfessinoalTaskSchema = new Schema({
   },
   ppts_phase_id:{
       type: String,
-      required:true
+     // required:true
 
   },
+  ppts_phase_name:{
+    type: String,
+    required:true
+
+},
   ppts_task_name:{
     type:String,
     required:true

@@ -299,7 +299,7 @@ router.post("/add-property", async (req, res) => {
         return res.send({
           'success_msg': ' Property Saved successfully',
           'status': true,
-          'redirect': '/mydreamhome'
+          'redirect': '/add-property'
         });
         //   var totalInstruction = 0;
         //   if (req.session.active_user_login == 'renovator') {
@@ -825,20 +825,24 @@ POST : Add Task api is used for adding task(or Phase) details and sharing these 
 ------------------------------------------------------------------------------------------------- */
 
 router.post("/addTask", (req, res) => {
-  console.log("addTask post:", req.body);
-
   if (req.body.Phase == '' || req.body.Phase == undefined) {
-    res.json({ status: 0, message: 'Task Add Failed' });
-
-
+    return res.send({
+      'err_msg': 'Please Select All Fild',
+      'status': false,
+      'redirect': '/professionals-hirenow'
+    });
+    
+    
   } else {
+    console.log("addTask post:", req.body);
     const newTask = new PropertyProfessinoalTaskSchema({
-      ppts_property_id: req.body.Property,
+      ppts_property_id: req.body.property_id,
       ppts_user_id: req.session.user_id,
       ppts_task_name: req.body.task_name,
-      ppts_assign_to: req.body.Professionals,
+      ppts_assign_to: req.body.professionalId,
       ppts_due_date: req.body.duedate,
-      ppts_phase_id: req.body.Phase,
+      //ppts_phase_id: req.body.Phase,
+      ppts_phase_name:req.body.Phase,
       ppts_is_active_user_flag: req.session.active_user_login,
       ppts_note: req.body.notes
     });
@@ -846,8 +850,22 @@ router.post("/addTask", (req, res) => {
       .save()
       .then(addedTask => {
         console.log("server response is addedTask :", addedTask);
-        res.json({ status: 1, message: 'Task Add Successfully', data: addedTask });
-        // res.redirect("/professionals-hirenow")
+        //res.json({ status: 1, message: 'Task Add Successfully', data: addedTask });
+        if(addedTask){
+
+          return res.send({
+            'success_msg': 'Task Add Successfully',
+            'status': true,
+            'redirect': '/professionals-hirenow'
+          });
+          // res.redirect("/professionals-hirenow")
+        }else{
+          return res.send({
+            'err_msg': 'Please Add Task',
+            'status': false,
+            'redirect': '/professionals-hirenow'
+          });
+        }
       })
       .catch(err => {
         console.log(err)
