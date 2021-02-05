@@ -3,44 +3,22 @@
     <div class="dashboard-wpr">
       <div class="container-fluid">
         <div class="row content">
-          <div class="col-sm-2 sidenav hidden-xs-down">
-            <div class="user-login text-center">
-              <%- include('profile-image')-%>
-                <div class="user-name">
-                  <h2>
-                    <%= session.name %>
-                  </h2>
-                  <a href="#">
-                    <%= session.email %>
-                      <%- include('edit-profile-icon')-%>
-                  </a>
-                </div>
-
-            </div>
-
-            <ul class="dashboard-nav">
-              <li class="active">
-                <a href="/dashboard"><img class="act-img" src="images/dashboard-active.png"><img
-                    src="images/dashboard.png"> Dashboard</a>
-              </li>
-              <li>
-                <a href="/track-your-progress"><img class="act-img" src="images/track-active.png"><img
-                    src="images/track.png"> Track your progress</a>
-              </li>
-              <li>
-                <a href="/professionals"><img class="act-img" src="images/professionals-active.png"><img
-                    src="images/professionals.png"> Professionals</a>
-              </li>
-              <li>
-                <a href="/mydreamhome"><img class="act-img" src="images/dreamhome-active.png"><img
-                    src="images/dreamhome.png"> My dream home</a>
-              </li>
-              <li>
-                <a href="/mydreamhome-details-to-dos"><img class="act-img" src="images/to-do-list-active.png"><img
-                    src="images/to-do-list.png"> To do list</a>
-              </li>
-            </ul>
-          </div>
+<!--Sidebar-->
+<div class="col-sm-2 sidenav hidden-xs-down">
+  <div class="user-login text-center">
+    <%- include('profile-image')-%>
+      <div class="user-name">
+        <h2>
+          <%= session.name %>
+        </h2>
+        <a href="#">
+          <%= session.email %>
+            <%- include('edit-profile-icon')-%>
+        </a>
+      </div>
+  </div>
+<%- include('sidebar')-%>
+</div>
           <div class="col-sm-12 col-lg-10">
             <div class="dashboard-inner">
               <div class="row">

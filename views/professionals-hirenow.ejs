@@ -58,28 +58,7 @@
                   </a>
                 </div>
             </div>
-            <ul class="dashboard-nav">
-              <li>
-                <a href="/dashboard"><img class="act-img" src="images/dashboard-active.png"><img
-                    src="images/dashboard.png"> Dashboard</a>
-              </li>
-              <li>
-                <a href="/track-your-progress"><img class="act-img" src="images/track-active.png"><img
-                    src="images/track.png"> Track your progress</a>
-              </li>
-              <li class="active">
-                <a href="/professionals"><img class="act-img" src="images/professionals-active.png"><img
-                    src="images/professionals.png"> Professionals</a>
-              </li>
-              <li>
-                <a href="/mydreamhome"><img class="act-img" src="images/dreamhome-active.png"><img
-                    src="images/dreamhome.png"> My dream home</a>
-              </li>
-              <li>
-                <a href="/mydreamhome-details-to-dos"><img class="act-img" src="images/to-do-list-active.png"><img
-                    src="images/to-do-list.png"> To do list</a>
-              </li>
-            </ul>
+            <%- include('sidebar')-%>
           </div>
 
           <div class="col-sm-12 col-lg-10">
@@ -259,7 +238,7 @@
                           </div>
                         </div>
 
-                        <div class="row">
+                        <!-- <div class="row">
                           <div class="col-sm-12 col-lg-12">
                             <div class="docs-files">
 
@@ -273,25 +252,14 @@
 
                             </div>
                           </div>
-                        </div>
+                        </div> -->
                         <div class="row">
-                          <div class="col-sm-12 col-lg-12">
+                          <!--<div class="col-sm-12 col-lg-12">
                             <div class="home-section">
                               <div class="row">
                                 <div class="professional-input-box">
                                   <div class="professional-text-fix">
                                     <label>Phase1</label>
-                                    <!-- <% if(typeof err_msg!='undefined' ){ %>
-                                      <span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">
-                                        <%= err_msg %>
-                                      </span>
-                                      <% }%> -->
-                                    <!-- <% if(typeof success_msg!='undefined' ){ %>
-                                       <span class="succ_flash_msg" style="color: green;">
-                                            <%= success_msg %>
-                                          </span>
-                                          <% }%> -->
-
                                     <select class="form-control" id="instruction" placeholder="Instruction"
                                       name="instruction" required>
                                       <option value="">Select Phases</option>
@@ -316,8 +284,6 @@
                                           <option value="Post-Completion">Post-Completion</option>
                                           <%}%>
                                     </select>
-                                    <!-- <input type="text" class="form-control form-control-size-fix "
-                                            id="instruction" placeholder="Instruction" name="instruction" required> -->
                                   </div>
                                 </div>
                                 <div class="professional-input-box">
@@ -343,7 +309,7 @@
                                   </div>
                                 </div>
                               </div>
-                              <div class="row divv"></div>
+                              <div class="row divv"></div> -->
                               <!-- <div class="row">
                               <div class="professional-input-box">
                                 <div class="professional-text-fix">
@@ -376,11 +342,14 @@
                               </div>
 
                             </div> -->
-                            </div>
-                          </div>
-                        </div>
+                            <!-- </div>
+                          </div> -->
+                        </div> 
+                        <div>
                         <button type="submit" class="btn btn-next" style="width: 164px; border-radius: 5px;">Hire
                           Now</button>
+                          </div>
+                          <div class="message"></div>
                       </form>
                       <!-- <div class="alert alert-info" id="msg"></div> -->
                     </div>
@@ -504,6 +473,8 @@
 
                 //$('#msg').html(data.message).delay(5000).fadeOut('success');
               } else {
+                $('.message').html('<span class="error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
+                setTimeout(function () { $('.message').html(''); }, 5000);
                 console.log('message:', data.success_msg)
                 window.location.href = data.redirect;
               }

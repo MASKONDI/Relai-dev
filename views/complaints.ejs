@@ -1,73 +1,22 @@
-
-    <!-- The Modal -->
-  <div class="modal permission-modal fade " id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-        <!-- Modal Header -->
-        <div class="modal-header text-center">
-          <h2 class="modal-title w-100">Raise a Complaint</h2>
-        </div>
-
-        <!-- Modal body -->
-        <div class="modal-body">
-          <select class="form-control " id="selectBox">
-            <option value="0">Select professional</option>
-            <option value="">2</option>
-          </select>
-
-          <input type="text" class="form-control  form-control-fix2" id="subject" placeholder="Subject" name="subject">
-          <textarea class="form-control  form-control-fix2" rows="3" id="comment">Add Notes</textarea>
-
-          <div class="model-btn-fix">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-cancel" data-dismiss="modal">Save</button>
-        </div>
-      </div>
-    </div>
-  </div>
+<%- include('dashboard_header')-%>
+<%- include('edit-profile-model')-%>
     <div class="dashboard-wpr">
       <div class="container-fluid">
         <div class="row content">
           <div class="col-sm-2 sidenav hidden-xs-down">
             <div class="user-login text-center">
-              <div class="user-profile">
-                <img src="images/user-3.png" alt="" title="">
-              </div>
-              <div class="user-name">
-                <h6>John Doe,<span><i>
-                      Architect</i>
-                  </span></h6>
-
-                <a href="#"><i>johndoe12@gmail.com</i></a>
-              </div>
+              <%- include('profile-image')-%>
+                <div class="user-name">
+                  <h2>
+                    <%= session.name %>
+                  </h2>
+                  <a href="#">
+                    <%= session.email %>
+                      <%- include('edit-profile-icon')-%>
+                  </a>
+                </div>
             </div>
-            <ul class="dashboard-nav">
-              <li>
-                <a href="dashboard-professional.html"><img class="act-img" src="images/dashboard-active.png"><img
-                    src="images/dashboard.png"> Dashboard</a>
-              </li>
-              <li>
-                <a href="track-your-progress-professionals.html"><img class="act-img" src="images/track-active.png"><img
-                    src="images/track.png"> Track your progress</a>
-              </li>
-              <li>
-                <a href="property.html"><img class="act-img" src="images/dreamhome-active.png"><img
-                    src="images/dreamhome.png"> Properties</a>
-              </li>
-              <li class="active">
-                <a href="complaints.html"><img class="act-img" src="images/complaints-active.png"><img
-                    src="images/complaints.png"> Complaints</a>
-              </li>
-
-              <li>
-                <a href="professionals-to-do-list.html"><img class="act-img" src="images/to-do-list-active.png"><img
-                    src="images/to-do-list.png"> To do list</a>
-              </li>
-            </ul>
+            <%- include('sidebar')-%>
           </div>
           <div class="col-sm-12 col-lg-10">
 
@@ -79,7 +28,7 @@
               </div>
               <div class="col-sm-6 col-lg-6">
                 <div class="complaints float-right">
-                  <a href="#" data-toggle="modal" data-target="#myModal" class="btn btn-complaint">
+                  <a href="#" data-toggle="modal" data-target="#MyComplaintModal" class="btn btn-complaint">
                     Raise a New Complaint</a>
                 </div>
               </div>
@@ -87,7 +36,6 @@
             </div>
 
             <div class=" dashboard-inner">
-
               <table class="table table-responsive table-phase-fix">
                 <thead>
                   <tr>
@@ -110,7 +58,7 @@
                     <td>Nacary Apartment </td>
                     <td>16 Nov, 2020</td>
                     <td><a href="complaints-detail.html" class="btn btn-pending">PENDING</a></td>
-                    <td> <a href="complaints-detail.html"><img src="images/eye.png"></a> </td>
+                    <td> <a href="/complaints-detail"><img src="images/eye.png"></a> </td>
                   </tr>
                   <tr>
                     <td>
@@ -193,9 +141,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+
   <script>
     $(document).ready(function () {
       $(".sidenav ul li").click(function () {
@@ -209,6 +159,92 @@
         $(this).addClass("active");
       });
     });
+
+    $("#coms_complaint_help").change(function () {
+        // var propertyId = $('option:selected', this).attr('property-id');
+        var coms_complaint_help = this.value;
+        if(coms_complaint_help == 'Property Related Enquiry'){
+            $.ajax({
+              type: "GET",
+              url: "/property-related-enquiry-proprty-list",
+              cache: false,
+              success: function (html) {
+                $('#property_id').show();
+                console.log('result:', html)
+                var htmlData = '';
+                htmlData += '<option value="">Select Property</option>';
+                if (html.propertyData.length > 0) {
+                  $.each(html.propertyData, function (i, data) {
+                    console.log('val:', data)
+                     htmlData += '<option value="' + data._id + '">' + data.ps_property_name + '</option>';
+                  });
+                }
+                $('#property_id').html(htmlData);
+              }
+            });
+        }else{
+          $('#property_id,#coms_complaint_for').hide();
+          $('#property_id,#coms_complaint_for').html('');
+
+        }
+      })
+
+
+      $("#property_id").change(function () {
+        // var propertyId = $('option:selected', this).attr('property-id');
+        var property_id = this.value;
+            $.ajax({
+              type: "GET",
+              url: "/service-provider-by-property",
+              data:{
+                property_id:property_id
+              },
+              cache: false,
+              success: function (html) {
+                $('#coms_complaint_for').show();
+                console.log('result:', html)
+                var htmlData = '';
+                htmlData += '<option value="">Select Professional</option>';
+                if (html.hireServiceData.length > 0) {
+                  $.each(html.hireServiceData, function (i, data) {
+                    console.log('val:', data[0])
+                     htmlData += '<option value="' + data[0]._id + '">' + data[0].sps_fullname + '</option>';
+                  });
+                }
+                $('#coms_complaint_for').html(htmlData);
+              }
+            });
+      })
+
+      
+      $('#mycomplent_form').submit(function (e) {
+          e.preventDefault();
+          //var formData = new FormData($('#mycomplent_form')[0]);
+         // var formData = new FormData(this);
+          var formData = $(this).serialize();
+          console.log('formData:',formData)
+          $.ajax({
+            type: "POST",
+            data: formData,
+            url: "/api/new-raise-a-complaint", 
+            cache: false,            
+            success: function (data) {
+              console.log(data);
+              if(data.status == true){
+                  $('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> '+data.message+'</div>')
+                  setTimeout(function(){ 
+                    $('#MyComplaintModal').modal('hide');
+                    location.reload(true);
+                  }, 6000);
+              }else{
+                $('.complaint_msg').html('<div class="isa_error"><i class="fa fa-check"></i> '+data.message+'</div>')
+              }
+            }
+          });
+          //location.reload(true);
+        })
+
+
   </script>
 </body>
 

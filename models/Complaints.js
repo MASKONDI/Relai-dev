@@ -32,9 +32,12 @@ const ComplaintsSchema = new Schema({
   coms_complaint_note: {
     type: String,
   },
+  coms_complaint_help: {
+    type: String,
+  },
   coms_complaint_file: {
     data: Buffer,
-    contantType: String
+    contantType: String 
   },
   coms_complaint_filename: {
     type: String
