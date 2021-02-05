@@ -7,12 +7,12 @@
 
           <!-- Modal Header -->
           <div class="modal-header text-center">
-            <h2 class="modal-title w-100">Add Task to Phase 1</h2>
+            <h2 class="modal-title w-100">Add Task</h2>
           </div>
           <form name="addTaskForm" id="addTaskForm" action="api/addTask" method="post">
             <!-- Modal body -->
             <div class="modal-body">
-              <label class="label-fix">Describe this to-do</label>
+              <label class="">Describe this to-do</label>
               <!-- <div class="alert alert-info" id="taskmsg"></div> -->
               <input type="text" class="form-control form-control-fix2" id="subject" placeholder="Instruction"
                 name="todotask" required>
@@ -28,8 +28,6 @@
               <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
                 placeholder="Add Notes(If any)"></textarea>
 
-              <div class="model-btn-fix">
-              </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-cancel" id="cancel_addtask_btn" data-dismiss="modal">Cancel</button>
