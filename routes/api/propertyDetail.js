@@ -4,10 +4,11 @@ var fs = require('fs');
 const path = require('path');
 const PropertiesPictureSchema = require("../../models/properties_picture");
 const PropertiesPlanPictureSchema = require("../../models/properties_plan_picture");
-module.exports.GetPropertById = function (propertyId) {
+module.exports.GetPropertById = function (propertyId,ps_is_active_user_flag) {
     return new Promise(async function (resolve, reject) {
         //console.log('hello',pps_property_id,pps_is_active_user_flag)
-        var data = { _id: propertyId }
+        //var data = { _id: propertyId }
+        var data={$and:[{ps_is_active_user_flag: ps_is_active_user_flag,_id:propertyId}]}
         await PropertiesSchema.findOne(data).then(async (resp) => {
             let responce = await resp
             resolve(responce)
