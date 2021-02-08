@@ -5560,3 +5560,23 @@ a .clip-icon{
     margin-top: -6px;
     border-radius: 10px;
     }
+.professional-dropdown{
+    display: none; 
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 170px;
+    box-shadow: 0px 1px 16px 0px rgb(0 0 0 / 20%);
+    z-index: 1;
+    margin-left: 26px;
+    margin-top: 4px;
+}
+.professional-dropdown a {
+    color: black;
+     padding: 0px 12px 0px 0px; 
+    text-decoration: none;
+    font-family: 'Gill Sans MT';
+    display: block;
+  }.professional-dropdown a:hover {background-color: #ddd;}
+
+  .profile-dropdown:hover .professional-dropdown {display: block;}
+  

@@ -643,8 +643,6 @@ router.post('/forget-password', function (req, res) {
                   text: 'Dear Customer,' + '\n\n' + 'New Password from Relai.\n\n' +
                     'Password: ' + new_pass + '\n\n' +
 
-                    'After Successfull registeration please copy this SecretToken in your dashboard section \n' + token + '\n\n' +
-
                     'We suggest you to please change your password after successfully logging in on the portal using the above password :\n' + 'Here is the change password link: http://' + req.headers.host + '/Change-password' + '\n\n' +
                     'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
 
@@ -890,8 +888,8 @@ router.post("/addTask", (req, res) => {
       'status': false,
       'redirect': '/professionals-hirenow'
     });
-    
-    
+
+
   } else {
     console.log("addTask post:", req.body);
     const newTask = new PropertyProfessinoalTaskSchema({
@@ -901,7 +899,7 @@ router.post("/addTask", (req, res) => {
       ppts_assign_to: req.body.professionalId,
       ppts_due_date: req.body.duedate,
       //ppts_phase_id: req.body.Phase,
-      ppts_phase_name:req.body.Phase,
+      ppts_phase_name: req.body.Phase,
       ppts_is_active_user_flag: req.session.active_user_login,
       ppts_note: req.body.notes
     });
@@ -910,7 +908,7 @@ router.post("/addTask", (req, res) => {
       .then(addedTask => {
         console.log("server response is addedTask :", addedTask);
         //res.json({ status: 1, message: 'Task Add Successfully', data: addedTask });
-        if(addedTask){
+        if (addedTask) {
 
           return res.send({
             'success_msg': 'Task Add Successfully',
@@ -918,7 +916,7 @@ router.post("/addTask", (req, res) => {
             'redirect': '/professionals-hirenow'
           });
           // res.redirect("/professionals-hirenow")
-        }else{
+        } else {
           return res.send({
             'err_msg': 'Please Add Task',
             'status': false,
@@ -1088,65 +1086,65 @@ router.post('/update-customer-profile', (req, res) => {
         //req.session.isChanged();
         console.log("req session is :", req.session);
         res.redirect('/dashboard')
-      } 
+      }
     });
 });
 
 router.post('/new-raise-a-complaint', isCustomer, (req, res) => {
   upload(req, res, async () => {
-    let newComplaint='';
+    let newComplaint = '';
     const obj = JSON.parse(JSON.stringify(req.body));
     const files = JSON.parse(JSON.stringify(req.files));
-    const ComplaintId = 'C-'+uuidv4().slice(uuidv4().length - 4).toUpperCase();;
+    const ComplaintId = 'C-' + uuidv4().slice(uuidv4().length - 4).toUpperCase();;
 
-if(Object.keys(files).length === 0){
-    newComplaint = new ComplaintsSchema({  
-      coms_complaint_for: req.body.coms_complaint_for,
-      coms_complaint_help: req.body.coms_complaint_help,
-      coms_complaint_code: ComplaintId,//need to generate in  like C123 auto increment feature
-      coms_property_id: req.body.property_id,
-      coms_user_id: req.body.cust_user_id,
-      coms_complaint_subject: req.body.coms_complaint_subject,
-      coms_complaint_note: req.body.coms_complaint_note,
-      coms_is_active_user_flag: req.session.active_user_login,
-      coms_user_name:req.session.name,
-      coms_user_profile_img:req.session.imagename
-    });
-
-    newComplaintDetails = new ComplaintDetailsSchema({  
-      comsd_id: ComplaintId,
-      comsd_user_id: req.body.user_id,
-      comsd_complaint_note: req.body.coms_complaint_note,
-      comsd_user_name:req.session.name,
-      comsd_user_profile_img:req.session.imagename,
-      comsd_complaint_filename:'',
-    });
-
-}else{
-      newComplaint = new ComplaintsSchema({  
-         coms_complaint_for: req.body.coms_complaint_for,
-         coms_complaint_help: req.body.coms_complaint_help,
-         coms_complaint_code: ComplaintId,//need to generate in  like C123 auto increment feature
-         coms_property_id: req.body.property_id,
-         coms_user_id: req.body.cust_user_id,
-         coms_complaint_subject: req.body.coms_complaint_subject,
-         coms_complaint_note: req.body.coms_complaint_note,
-         coms_is_active_user_flag: req.session.active_user_login,
-         coms_user_name:req.session.name,
-         coms_user_profile_img:req.session.imagename,
-         coms_complaint_filename: req.files.complaint_file[0].filename,
-         coms_complaint_file: {
-           data: fs.readFileSync(path.join(__dirname + '../../../public/complaintFile/' + req.files.complaint_file[0].filename)),
-           contentType: 'image/png'
-         }
+    if (Object.keys(files).length === 0) {
+      newComplaint = new ComplaintsSchema({
+        coms_complaint_for: req.body.coms_complaint_for,
+        coms_complaint_help: req.body.coms_complaint_help,
+        coms_complaint_code: ComplaintId,//need to generate in  like C123 auto increment feature
+        coms_property_id: req.body.property_id,
+        coms_user_id: req.body.cust_user_id,
+        coms_complaint_subject: req.body.coms_complaint_subject,
+        coms_complaint_note: req.body.coms_complaint_note,
+        coms_is_active_user_flag: req.session.active_user_login,
+        coms_user_name: req.session.name,
+        coms_user_profile_img: req.session.imagename
       });
 
-      newComplaintDetails = new ComplaintDetailsSchema({  
+      newComplaintDetails = new ComplaintDetailsSchema({
         comsd_id: ComplaintId,
         comsd_user_id: req.body.user_id,
         comsd_complaint_note: req.body.coms_complaint_note,
-        comsd_user_name:req.session.name,
-        comsd_user_profile_img:req.session.imagename,
+        comsd_user_name: req.session.name,
+        comsd_user_profile_img: req.session.imagename,
+        comsd_complaint_filename: '',
+      });
+
+    } else {
+      newComplaint = new ComplaintsSchema({
+        coms_complaint_for: req.body.coms_complaint_for,
+        coms_complaint_help: req.body.coms_complaint_help,
+        coms_complaint_code: ComplaintId,//need to generate in  like C123 auto increment feature
+        coms_property_id: req.body.property_id,
+        coms_user_id: req.body.cust_user_id,
+        coms_complaint_subject: req.body.coms_complaint_subject,
+        coms_complaint_note: req.body.coms_complaint_note,
+        coms_is_active_user_flag: req.session.active_user_login,
+        coms_user_name: req.session.name,
+        coms_user_profile_img: req.session.imagename,
+        coms_complaint_filename: req.files.complaint_file[0].filename,
+        coms_complaint_file: {
+          data: fs.readFileSync(path.join(__dirname + '../../../public/complaintFile/' + req.files.complaint_file[0].filename)),
+          contentType: 'image/png'
+        }
+      });
+
+      newComplaintDetails = new ComplaintDetailsSchema({
+        comsd_id: ComplaintId,
+        comsd_user_id: req.body.user_id,
+        comsd_complaint_note: req.body.coms_complaint_note,
+        comsd_user_name: req.session.name,
+        comsd_user_profile_img: req.session.imagename,
         comsd_complaint_filename: req.files.complaint_file[0].filename,
         comsd_complaint_file: {
           data: fs.readFileSync(path.join(__dirname + '../../../public/complaintFile/' + req.files.complaint_file[0].filename)),
@@ -1154,60 +1152,60 @@ if(Object.keys(files).length === 0){
         }
       });
 
-}
-  console.log('newComplaint:',newComplaint)
-  newComplaint.save().then(complaints => {
-    newComplaintDetails.save().then(complaintsDetails => {
-      res.send({ status:true, message: 'You complaint submited successfully, we will review and connect with you soon !!' })
+    }
+    console.log('newComplaint:', newComplaint)
+    newComplaint.save().then(complaints => {
+      newComplaintDetails.save().then(complaintsDetails => {
+        res.send({ status: true, message: 'You complaint submited successfully, we will review and connect with you soon !!' })
+      });
+    }).catch(err => {
+      console.log(err)
+      res.send({ status: false, 'message': 'Something went wrong please try again later.' })
     });
-  }).catch(err => {
-    console.log(err)
-    res.send({ status:false,'message': 'Something went wrong please try again later.' })
-  }); 
-});
+  });
 
 });
 
 
 router.post('/complaint-details-discussion', isCustomer, (req, res) => {
   upload(req, res, async () => {
-    let newComplaintDetails='';
+    let newComplaintDetails = '';
     const obj = JSON.parse(JSON.stringify(req.body));
     const files = JSON.parse(JSON.stringify(req.files));
     //const ComplaintId = 'C-'+uuidv4().slice(uuidv4().length - 4).toUpperCase();;
 
-if(Object.keys(files).length === 0){
-    newComplaintDetails = new ComplaintDetailsSchema({  
-      comsd_id: req.body.complaintID,
-      comsd_user_id: req.session.user_id,
-      comsd_complaint_note: req.body.coms_complaint_note,
-      comsd_user_name:req.session.name,
-      comsd_user_profile_img:req.session.imagename,
-      comsd_complaint_filename:'',
-    });
-
-}else{
-      newComplaintDetails = new ComplaintDetailsSchema({  
+    if (Object.keys(files).length === 0) {
+      newComplaintDetails = new ComplaintDetailsSchema({
         comsd_id: req.body.complaintID,
         comsd_user_id: req.session.user_id,
         comsd_complaint_note: req.body.coms_complaint_note,
-        comsd_user_name:req.session.name,
-        comsd_user_profile_img:req.session.imagename,
+        comsd_user_name: req.session.name,
+        comsd_user_profile_img: req.session.imagename,
+        comsd_complaint_filename: '',
+      });
+
+    } else {
+      newComplaintDetails = new ComplaintDetailsSchema({
+        comsd_id: req.body.complaintID,
+        comsd_user_id: req.session.user_id,
+        comsd_complaint_note: req.body.coms_complaint_note,
+        comsd_user_name: req.session.name,
+        comsd_user_profile_img: req.session.imagename,
         comsd_complaint_filename: req.files.complaint_file[0].filename,
         comsd_complaint_file: {
           data: fs.readFileSync(path.join(__dirname + '../../../public/complaintFile/' + req.files.complaint_file[0].filename)),
           contentType: 'image/png'
         }
       });
-}
-  console.log('newComplaintDetails:',newComplaintDetails)
-   newComplaintDetails.save().then(complaintsDetails => {
-      res.send({ status:true, message: 'You complaint submited successfully, we will review and connect with you soon !!' })
-  }).catch(err => {
-    console.log(err)
-    res.send({ status:false,'message': 'Something went wrong please try again later.' })
-  }); 
-});
+    }
+    console.log('newComplaintDetails:', newComplaintDetails)
+    newComplaintDetails.save().then(complaintsDetails => {
+      res.send({ status: true, message: 'You complaint submited successfully, we will review and connect with you soon !!' })
+    }).catch(err => {
+      console.log(err)
+      res.send({ status: false, 'message': 'Something went wrong please try again later.' })
+    });
+  });
 });
 
 
