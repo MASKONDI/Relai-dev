@@ -729,7 +729,9 @@ router.post('/change-permision', async (req, res) => {
           req.flash('err_msg', 'Something went wrong.');
           //res.redirect('/forget-password')
         } else {
-          console.log('UpdatedocPermissionSave:',data)
+          res.send({
+            message:'Permission Updated !!'
+          })
         }
       })
 
@@ -746,6 +748,9 @@ router.post('/change-permision', async (req, res) => {
           var docPermissionSave = new DocumentPermissionSchema(permissionObject)
           docPermissionSave.save().then(async (data) => {
             console.log('docPermissionSave:',data)
+            res.send({
+              message:'Permission Updated !!'
+            })
           }).catch(err => {
             console.log(err)
             req.flash('err_msg', 'Something went wrong please try after some time!');
