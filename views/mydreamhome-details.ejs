@@ -1,11 +1,56 @@
 <%- include('dashboard_header')-%>
   <%- include('edit-profile-model')-%>
+
+    <!-- The Modal -->
+    <div class="modal fade permission-modal" id="removeProfessionalModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h2 class="modal-title text-center">Hired Professional</h2>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="todo-list-table">
+              <table class="table table-responsive">
+                <thead>
+                  <tr>
+                    <th style="width:88%"></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><label class="check-permission"><img src="images/recent-user-1.png">
+                        Krishna Rajput, <span>
+                          Developer
+                        </span>
+                      </label></td>
+                    <td>
+                      <a href=""><img src="images/delete-icon.png"></a>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-cancel" data-dismiss="modal">Refresh</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- The Modal -->
     <div class="modal permission-modal fade " id="ComplaintModal">
       <div class="modal-dialog">
         <div class="modal-content">
           <form name="complaintform" id="complent_form" method="post" action="" enctype="multipart/form-data">
-           
+
             <div class="modal-header text-center">
               <h2 class="modal-title w-100">Raise a Complaint</h2>
             </div>
@@ -117,7 +162,8 @@
                               <div class="float-left">
                                 <h3 class="apartment-name"><a href="#">
                                     <%=propertyDetailData[0].ps_property_name%><span>(
-                                        <%=propertyDetailData[0].ps_unique_code%> )</span>
+                                        <%=propertyDetailData[0].ps_unique_code%> )
+                                      </span>
                                   </a></h3>
                                 <div class="location-part"><a href="#"><img src="images/location.png">
                                     <%=propertyDetailData[0].ps_property_address%>,
@@ -134,7 +180,18 @@
                             <div class="recent-img">
                               <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
                                 class="mr-10" src="images/recent-user-3.png">
-                              <a href="#" class="add-professionals">Add/Remove Professionals</a>
+                              <!-- <a href="#" class="add-professionals">Add/Remove Professionals</a> -->
+                              <div class="profile-dropdown">
+                                <a href="#" class="add-professionals">Add/Remove Professionals</a>
+                                <div class="professional-dropdown">
+                                  <a href="/professionals">Add
+                                    Professionals</a>
+                                  <a href="#" data-toggle="modal" data-target="#removeProfessionalModal">Remove
+                                    Professionals</a>
+                                </div>
+                              </div>
+
+
                             </div>
                             <div class="apartment-details-full">
                               <div class="row">
