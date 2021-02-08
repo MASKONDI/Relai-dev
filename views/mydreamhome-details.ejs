@@ -359,13 +359,13 @@
                           <h3 class="text-center">To-do list</h3>
                         </a>
                       </div>
-                      <%if(phaseDetailObj.length==0){%>
+                      <%if(TaskDetailObj.length==0){%>
                         <h6>Phases Not Found</h6>
                         <%}else{%>
-                          <%phaseDetailObj.forEach(function(row,i){%>
+                          <%TaskDetailObj.forEach(function(row,i){%>
                             <label class="check-todos">
                               <p>
-                                <%=row.pps_phase_name%><a href="/mydreamhome-details-to-dos"><img
+                                <%=row.ppts_task_name%><a href="/mydreamhome-details-to-dos"><img
                                       src="images/recent-user-1.png"></a><em>
                                     <%=row.professionalName%>
                                   </em>

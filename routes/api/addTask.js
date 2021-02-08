@@ -1,8 +1,16 @@
 const PropertyProfessinoalTaskSchema = require("../../models/property_professional_tasks_Schema");
 const PropertiesPhaseSchema = require("../../models/property_phase_schema");
-module.exports.save_addTask = function () {
+module.exports.GetTaskById = function (ppts_property_id,ppts_is_active_user_flag) {
     return new Promise( async function (resolve, reject) {
-       
+       if(ppts_property_id!=null){
+        var data={$and:[{ppts_property_id: ppts_property_id,ppts_is_active_user_flag:ppts_is_active_user_flag}]}
+        PropertyProfessinoalTaskSchema.find(data).then(async(resp)=>{
+            let responce = await resp
+             resolve(responce)
+         }).catch((err)=>{
+             reject(err)
+         })
+       }
     });
 };
 
