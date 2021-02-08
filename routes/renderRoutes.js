@@ -540,7 +540,7 @@ app.get('/mydreamhome-details-to-dos', isCustomer, async (req, res) => {
   if (req.session.property_id) {
     let pps_property_id = req.session.property_id;
     let pps_is_active_user_flag = req.session.active_user_login
-    let TaskDetailObj = await TaskHelper.GetTaskById(pps_property_id, pps_is_active_user_flag);
+    let TaskDetailObj = await propertyDetail.GetPropertById(pps_property_id, pps_is_active_user_flag);
     if (TaskDetailObj) {
       console.log("TaskDetailObj:",TaskDetailObj)
 
@@ -867,16 +867,46 @@ app.get('/Resend-link', function (req, res) {
   });
   // }
 });
+// app.get('/mydreamhome-details-phase-a', isCustomer, async(req, res) => {
+//   req.session.pagename = 'mydreamhome';
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   res.render('mydreamhome-details-phase-a', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session,
+  
+//   });
+// })
+  
+    
+ 
+  
+  
 
-
-app.get('/mydreamhome-details-phase-a', isCustomer, (req, res) => {
-  req.session.pagename = 'mydreamhome';
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('mydreamhome-details-phase-a', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
+app.get('/mydreamhome-details-phase-a', isCustomer, async(req, res) => {
+  console.log('req:',req.session.property_id);
+ var propertyData = await  propertyDetail.GetPropertById(req.session.property_id,req.session.active_user_login);
+  var taskObject = await TaskHelper.GetTaskById(req.session.property_id,req.session.active_user_login)
+  console.log('taskObject',taskObject)
+  console.log("propertyData===",propertyData)
+  if(taskObject){
+    // return res.send({
+    //   'status':true,
+    //   'data':taskObject,
+    //   'redairect':'/mydreamhome-details-phase-a'
+    // })
+    req.session.pagename = 'mydreamhome';
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('mydreamhome-details-phase-a', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      taskObject:taskObject,
+      propertyData:propertyData
+    });
+  }
+  
+  
 })
 // app.get('/mydreamhome', isCustomer, (req, res) => {
 //   err_msg = req.flash('err_msg');
