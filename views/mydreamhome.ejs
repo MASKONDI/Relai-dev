@@ -60,10 +60,17 @@
                                   <%}else{%>
                                     <img src="images/nacary.png">
                                     <%}%>
-                                      <a href="/mydreamhome-details?id=<%=row._id%>"
-                                        class="btn btn-new mydreamHomeDetail" value="<%=row._id%>">
-                                        <%=row.ps_property_type%>
-                                      </a>
+                                      <% if(row.ps_property_type=='new' ){ %>
+                                        <a href="/mydreamhome-details?id=<%=row._id%>"
+                                          class="btn btn-new mydreamHomeDetail" value="<%=row._id%>">
+                                          <%=row.ps_property_type%>
+                                        </a>
+                                        <%} else {%>
+                                          <a href="/mydreamhome-details-chainproperty?id=<%=row._id%>"
+                                            class="btn btn-new mydreamHomeDetail" value="<%=row._id%>">
+                                            <%=row.ps_property_type%>
+                                          </a>
+                                          <%}%>
                               </div>
                               <div class="dream-home-description">
                                 <h3><a href="/mydreamhome-details?id=<%=row._id%>">
