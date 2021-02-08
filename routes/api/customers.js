@@ -699,70 +699,122 @@ router.get(
 POST : Change Permission api for giving Docs read/write permission to existing serviceProvider.
 ------------------------------------------------------------------------------------------------- */
 router.post('/change-permision', async (req, res) => {
-  console.log('doc id:', req.body.id_element)
-  var idArray = req.body.checked_elem.split(",");
-  var idArray_1 = req.body.checked_elem_1.split(",");
-  // DocumentPermissionSchema 
-  console.log("idArray_1 download", idArray_1);
-  console.log("idArray view", idArray);
+  console.log('doc id:', req.body.doc_id)
+  console.log('checkFlag:', req.body.checkFlag)
+  DocumentPermissionSchema.findOne({ dps_customer_id: req.body.cust_id,dps_service_provider_id:req.body.professionalId,dps_document_id: req.body.doc_id}).then(async (data) => { 
+    console.log('FindData:',data);
+    let permisionFlagDownload='';
+    let permisionFlagView='';
 
-  return;
-  PermisionHelper.changePermision(req.body);
-  //for (var service_provider_id of idArray) {
-  var obj = {};
-  idArray.forEach(async function (service_provider_id, i) {
-    if (service_provider_id && idArray_1[i]) {
-      console.log('AAAA')
-      Object.assign(obj,
-        {
-          dps_view_permission: "yes",
-          dps_download_permission: 'yes',
-          dps_customer_id: req.body.cust_id,
-          dps_service_provider_id: service_provider_id,
-          dps_document_id: req.body.id_element,
-          dps_is_active_user_flag: req.session.active_user_login
+     if(data){
 
-        });
+      if(req.body.checkFlag === 'viewaction'){
+        permisionFlagDownload= data.dps_download_permission;
+        permisionFlagView= req.body.viewFlag;
+        console.log('view....action...')
+      }else{
+        permisionFlagView= data.dps_view_permission;
+        permisionFlagDownload= req.body.downloadFlag;
+        console.log('download....action...')
+  
+      }
+      
+      console.log('permisionFlagView:',permisionFlagView);
+      console.log('permisionFlagDownload:',permisionFlagDownload);
 
-    } else if (service_provider_id) {
-      console.log('BBBBB')
-      Object.assign(obj,
-        {
-          dps_view_permission: "yes",
-          dps_download_permission: 'no',
-          dps_customer_id: req.body.cust_id,
-          dps_service_provider_id: service_provider_id,
-          dps_document_id: req.body.id_element,
-          dps_is_active_user_flag: req.session.active_user_login
+      
+      DocumentPermissionSchema.updateOne({'dps_service_provider_id': req.body.professionalId,'dps_customer_id':req.body.cust_id,'dps_document_id':req.body.doc_id }, { $set: { dps_view_permission: permisionFlagView,dps_download_permission:permisionFlagDownload,dps_is_active_user_flag:req.session.active_user_login }}, { upsert: true }, function (err) {
+        if (err) {
+          console.log("err is :", err);
+          req.flash('err_msg', 'Something went wrong.');
+          //res.redirect('/forget-password')
+        } else {
+          console.log('UpdatedocPermissionSave:',data)
+        }
+      })
 
-        });
+     }else{
+      let permissionObject = {
+        dps_view_permission: req.body.viewFlag,
+        dps_download_permission: req.body.downloadFlag,
+        dps_customer_id: req.body.cust_id,
+        dps_service_provider_id: req.body.professionalId,
+        dps_document_id: req.body.doc_id,
+        dps_is_active_user_flag: req.session.active_user_login
+      }
+      console.log('permissionObject:',permissionObject);
+          var docPermissionSave = new DocumentPermissionSchema(permissionObject)
+          docPermissionSave.save().then(async (data) => {
+            console.log('docPermissionSave:',data)
+          }).catch(err => {
+            console.log(err)
+            req.flash('err_msg', 'Something went wrong please try after some time!');
+          });
+     }
+  });
 
-    } else if (idArray_1[i]) {
-      console.log('CCCCC')
-      Object.assign(obj,
-        {
-          dps_view_permission: "no",
-          dps_download_permission: 'yes',
-          dps_customer_id: req.body.cust_id,
-          dps_service_provider_id: service_provider_id,
-          dps_document_id: req.body.id_element,
-          dps_is_active_user_flag: req.session.active_user_login
 
-        });
 
-    }
-    console.log('obj', obj)
 
-    var docPermissionSave = new DocumentPermissionSchema(Obj)
-    docPermissionSave.save().then(async (data) => {
-      console.log(data)
-    }).catch(err => {
-      console.log(err)
-      req.flash('err_msg', 'Something went wrong please try after some time!');
+  // var idArray = req.body.checked_elem.split(",");
+  // var idArray_1 = req.body.checked_elem_1.split(",");
+  // // DocumentPermissionSchema 
+  // console.log("idArray_1 download", idArray_1);
+  // console.log("idArray view", idArray);
+  // PermisionHelper.changePermision(req.body);
+  // var obj = {};
+  // idArray.forEach(async function (service_provider_id, i) {
+  //   if (service_provider_id && idArray_1[i]) {
+  //     console.log('AAAA')
+  //     Object.assign(obj,
+  //       {
+  //         dps_view_permission: "yes",
+  //         dps_download_permission: 'yes',
+  //         dps_customer_id: req.body.cust_id,
+  //         dps_service_provider_id: service_provider_id,
+  //         dps_document_id: req.body.id_element,
+  //         dps_is_active_user_flag: req.session.active_user_login
 
-    });
-  })
-  //}
+  //       });
+
+  //   } else if (service_provider_id) {
+  //     console.log('BBBBB')
+  //     Object.assign(obj,
+  //       {
+  //         dps_view_permission: "yes",
+  //         dps_download_permission: 'no',
+  //         dps_customer_id: req.body.cust_id,
+  //         dps_service_provider_id: service_provider_id,
+  //         dps_document_id: req.body.id_element,
+  //         dps_is_active_user_flag: req.session.active_user_login
+
+  //       });
+
+  //   } else if (idArray_1[i]) {
+  //     console.log('CCCCC')
+  //     Object.assign(obj,
+  //       {
+  //         dps_view_permission: "no",
+  //         dps_download_permission: 'yes',
+  //         dps_customer_id: req.body.cust_id,
+  //         dps_service_provider_id: service_provider_id,
+  //         dps_document_id: req.body.id_element,
+  //         dps_is_active_user_flag: req.session.active_user_login
+
+  //       });
+
+  //   }
+  //   console.log('obj', obj)
+
+  //   var docPermissionSave = new DocumentPermissionSchema(obj)
+  //   docPermissionSave.save().then(async (data) => {
+  //     console.log(data)
+  //   }).catch(err => {
+  //     console.log(err)
+  //     req.flash('err_msg', 'Something went wrong please try after some time!');
+
+  //   });
+  // })
 })
 
 /* -------------------------------------------------------------------------------------------------

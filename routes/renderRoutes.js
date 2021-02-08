@@ -26,7 +26,7 @@ const phaseDetail = require("./api/phaseDetail");
 const ComplaintsSchema = require("../models/Complaints");
 //const ComplaintsSchema = require("../models/Complaints");
 const ComplaintDetailsSchema = require("../models/complaint_details_model");
-
+const DocumentPermissionSchema = require('../models/document_permission')
 var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
 
@@ -470,11 +470,19 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
   for (var k of AllhiredProfeshnoal) {
     await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
       for (let i of allProfeshnoals) {
-        let temps = await i
+        var object_as_string = JSON.stringify(i);
+        const t = JSON.parse(object_as_string);
+        t.pps_property_id = k.pps_property_id;
+        let temps = await t
+        temps.pps_user_id = k.pps_user_id;
+        let tempsData = await temps
         serviceProvArray.push(temps)
       }
     });
   }
+
+  console.log('permisionnnn faa:', serviceProvArray)
+
   res.render('mydreamhome-details-docs', {
     err_msg, success_msg, layout: false,
     session: req.session,
@@ -1638,5 +1646,26 @@ app.get('/complaints-detail', isCustomer, async (req, res) => {
   })
 });
 
+
+app.get('/get-change-permision', isCustomer, async (req, res) => {
+  req.session.pagename = 'mydreamhome';
+  console.log('req.query:', req.query)
+  await DocumentPermissionSchema.find({ dps_document_id: req.query.docId, dps_is_active_user_flag: req.session.active_user_login }).sort({ _id: -1 }).then(async (data) => {
+    //req.session.complaintID = req.query.complaintID;
+    console.log('dataaa:', data)
+    if (data) {
+      let arr = [];
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        permissionDetailsData: data,
+      });
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+});
 
 module.exports = app;
