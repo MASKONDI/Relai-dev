@@ -212,12 +212,12 @@
                               <div class="row">
                                 <div class="col-6 col-sm-6 col-lg-3">
                                   <div class="start-date">
-                                    <p>Start date<br><b><%= startDate %></b></p>
+                                    <p>Start date<br><b><%=moment(startDate).format("Do MMM, YYYY"); %></b></p>
                                   </div>
                                 </div>
                                 <div class="col-6 col-sm-6 col-lg-3">
                                   <div class="start-date 1 Dec, 2021">
-                                    <p>End date<br><b><%= endDate %></b></p>
+                                    <p>End date<br><b><%=moment(endDate).format("Do MMM, YYYY"); %></b></p>
                                   </div>
                                 </div>
                                 <div class="col-6 col-sm-6 col-lg-3">

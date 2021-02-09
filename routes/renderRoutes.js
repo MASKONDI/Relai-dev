@@ -1100,8 +1100,8 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
           propertyImage: arr,
           hiredProfeshnoalList: serviceProvArray,
           allDocumentUploadByCustmer: allDocumentUploadByCustmer,
-          TaskDetailObj: todoArray
-
+          TaskDetailObj: todoArray,
+          moment: moment
 
         });
       }
