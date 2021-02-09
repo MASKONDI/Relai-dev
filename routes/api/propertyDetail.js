@@ -4,10 +4,11 @@ var fs = require('fs');
 const path = require('path');
 const PropertiesPictureSchema = require("../../models/properties_picture");
 const PropertiesPlanPictureSchema = require("../../models/properties_plan_picture");
-module.exports.GetPropertById = function (propertyId) {
+module.exports.GetPropertById = function (propertyId,ps_is_active_user_flag) {
     return new Promise(async function (resolve, reject) {
         //console.log('hello',pps_property_id,pps_is_active_user_flag)
-        var data = { _id: propertyId }
+        //var data = { _id: propertyId }
+        var data={$and:[{ps_is_active_user_flag: ps_is_active_user_flag,_id:propertyId}]}
         await PropertiesSchema.findOne(data).then(async (resp) => {
             let responce = await resp
             resolve(responce)
@@ -19,6 +20,25 @@ module.exports.GetPropertById = function (propertyId) {
 module.exports.AddNewProperty = function (req) {
     return new Promise(async function (resolve, reject) {
         //console.log('hello=============', req);
+        
+        var phaseArray=[];
+        for(var i in req.body.Phase){
+            var phaseObj={
+                phase_name:'',
+                start_date:'',
+                end_date:'',
+                phase_status:'pending',
+            };
+            phaseObj.phase_name=   req.body.Phase[i];
+            phaseObj.start_date=   req.body.startDate[i];
+            phaseObj.end_date=   req.body.endDate[i];
+            phaseArray.push(phaseObj);
+            
+            
+            console.log("phaseObj==========================",phaseObj)
+        }
+        console.log("phaseArray:============",phaseArray);
+
         var PropertyBoject = {
             ps_unique_code: "prop-" + Math.random().toString(36).slice(-6),
             ps_user_id: req.session.user_id, //storing customer_ID
@@ -40,11 +60,18 @@ module.exports.AddNewProperty = function (req) {
             ps_property_type: req.body.property_type,
             //ps_chain_property_id: req.body.ps_chain_property_id,
             ps_is_active_user_flag: req.session.active_user_login,
-            ps_phase_array:req.body.Phase,
-            ps_phase_start_date:req.body.startDate,
-            pa_phase_end_date:req.body.endDate
+            // ps_phase_array:req.body.Phase,
+            // ps_phase_start_date:req.body.startDate,
+            // pa_phase_end_date:req.body.endDate
+            ps_phase_array:phaseArray
         };
-        const newProperty = new PropertiesSchema(PropertyBoject)
+        console.log( req.body.Phase.length)
+        
+            
+      
+
+           const newProperty =  new PropertiesSchema(PropertyBoject)
+      
         //return;
         // var data={_id:propertyId}
         await newProperty.save().then(async (property) => {

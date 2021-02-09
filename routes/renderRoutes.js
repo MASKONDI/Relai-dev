@@ -23,7 +23,10 @@ const CustomerSchema = require("../models/customers");
 const ServiceProviderOtherDetailsSchema = require("../models/service_providers_other_details");
 const PropertiesPhaseSchema = require("../models/property_phase_schema");
 const phaseDetail = require("./api/phaseDetail");
+const propertyDetail = require("./api/propertyDetail");
+const TaskHelper = require("./api/addTask");
 const ComplaintsSchema = require("../models/Complaints");
+const PropertyProfessionalHelper = require("./api/propertyProfessionalDetails")
 //const ComplaintsSchema = require("../models/Complaints");
 const ComplaintDetailsSchema = require("../models/complaint_details_model");
 const DocumentPermissionSchema = require('../models/document_permission')
@@ -533,27 +536,30 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
 // });
 app.get('/mydreamhome-details-to-dos', isCustomer, async (req, res) => {
   req.session.pagename = 'mydreamhome-details-to-dos';
-  console.log('property id kya hai mydreamhome-details-to-dos', req.session.property_id, req.session.active_user_login);
+  console.log('property id  mydreamhome-details-to-dos', req.session.property_id,req.session.active_user_login);
   if (req.session.property_id) {
     let pps_property_id = req.session.property_id;
     let pps_is_active_user_flag = req.session.active_user_login
-    let phaseDetailObj = await phaseDetail.GetPhaseByPropertyId(pps_property_id, pps_is_active_user_flag);
-    if (phaseDetailObj) {
-      console.log("phaseDetailObj:", phaseDetailObj)
+    let TaskDetailObj = await propertyDetail.GetPropertById(pps_property_id, pps_is_active_user_flag);
+    if (TaskDetailObj) {
+      console.log("TaskDetailObj:",TaskDetailObj)
+
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('mydreamhome-details-to-dos', {
         err_msg, success_msg, layout: false,
         session: req.session,
-        moment: moment,
-        phaseDetailObj: phaseDetailObj
+        moment:moment,
+        TaskDetailObj:TaskDetailObj
+ 
       });
     } else {
-      console.log('phaseDetailObj not found')
+      console.log('TaskDetailObj not found')
     }
 
   } else {
     console.log('error in mydreamhome-details-to-dos get api')
+    res.redirect('/mydreamhome')
   }
 
 });
@@ -861,16 +867,46 @@ app.get('/Resend-link', function (req, res) {
   });
   // }
 });
+// app.get('/mydreamhome-details-phase-a', isCustomer, async(req, res) => {
+//   req.session.pagename = 'mydreamhome';
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   res.render('mydreamhome-details-phase-a', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session,
+  
+//   });
+// })
+  
+    
+ 
+  
+  
 
-
-app.get('/mydreamhome-details-phase-a', isCustomer, (req, res) => {
-  req.session.pagename = 'mydreamhome';
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('mydreamhome-details-phase-a', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
+app.get('/mydreamhome-details-phase-a', isCustomer, async(req, res) => {
+  console.log('req:',req.session.property_id);
+ var propertyData = await  propertyDetail.GetPropertById(req.session.property_id,req.session.active_user_login);
+  var taskObject = await TaskHelper.GetTaskById(req.session.property_id,req.session.active_user_login)
+  console.log('taskObject',taskObject)
+  console.log("propertyData===",propertyData)
+  if(taskObject){
+    // return res.send({
+    //   'status':true,
+    //   'data':taskObject,
+    //   'redairect':'/mydreamhome-details-phase-a'
+    // })
+    req.session.pagename = 'mydreamhome';
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('mydreamhome-details-phase-a', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      taskObject:taskObject,
+      propertyData:propertyData
+    });
+  }
+  
+  
 })
 // app.get('/mydreamhome', isCustomer, (req, res) => {
 //   err_msg = req.flash('err_msg');
@@ -1013,23 +1049,32 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
       });
     }
     let todoArray = [];
-    let phaseDetailObj = await phaseDetail.GetPhaseByPropertyId(req.query.id, req.session.req.session.active_user_login);
-
-    for (var ph of phaseDetailObj) {
-      let professionalObj = await phaseDetail.GetProfessionalById(ph.pps_professional_id);
+    var c=0;
+    let TaskDetailObj = await TaskHelper.GetTaskById(req.query.id,req.session.active_user_login);
+    //console.log("TaskDetailObj===================================================",TaskDetailObj)
+    for (var ph of TaskDetailObj) {
+      const PhaseObject = JSON.stringify(ph);
+      const to_do_data = JSON.parse(PhaseObject);
+      //console.log("to do deta ",to_do_data.ppts_assign_to)
+      let professionalObj = await PropertyProfessionalHelper.GetProfessionalById(to_do_data.ppts_assign_to);
       if (professionalObj) {
-        const PhaseObject = JSON.stringify(ph);
-        const to_do_data = JSON.parse(PhaseObject);
-        to_do_data.professionalName = professionalObj.sps_fullname
-        todoArray.push(to_do_data);
+        for(var Prof_fullname of professionalObj){
+          to_do_data.professionalName =Prof_fullname.sps_fullname
+       
+
+            todoArray.push(to_do_data);
+          
+        }
+        
       }
-
-
-
-
+      
+      
+      
+      
     }
+    //console.log("todoArray=======================",todoArray);
 
-    console.log("todoArray", todoArray);
+    //console.log("todoArray", todoArray);
     PropertiesSchema.find({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
       if (data) {
 
@@ -1055,15 +1100,15 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
           propertyImage: arr,
           hiredProfeshnoalList: serviceProvArray,
           allDocumentUploadByCustmer: allDocumentUploadByCustmer,
-          phaseDetailObj: todoArray
-
+          TaskDetailObj: todoArray,
+          moment: moment
 
         });
       }
     }).catch((err) => {
       console.log(err)
     })
-  } else {
+  }else{
     res.redirect('/mydreamhome');
   }
 })
@@ -1669,3 +1714,7 @@ app.get('/get-change-permision', isCustomer, async (req, res) => {
 });
 
 module.exports = app;
+
+
+
+

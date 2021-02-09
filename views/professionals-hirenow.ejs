@@ -464,14 +464,16 @@
                 $('#zipcode').val(data.data.ps_property_zipcode)
                 $('.property_id').val(data.data._id)
                 var htmlData = '';
+
                 htmlData += '<option value="">Select Phase</option>';
                 if (data.data.ps_phase_array.length > 0) {
                   $.each(data.data.ps_phase_array, function (i, data) {
                     console.log('val:', data)
-                    htmlData += '<option value="' + data + '">' + data + '</option>';
+                    htmlData += '<option value="' + data.phase_name + '">' + data.phase_name + '</option>';
                   });
                 }
                 $('.phase_list').html(htmlData);
+
               }
             });
           } else {

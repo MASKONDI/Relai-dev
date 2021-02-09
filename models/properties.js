@@ -103,11 +103,7 @@ const PropertiesSchema = new Schema({
   ps_phase_array:{
     type:Array,
   },
-  ps_phase_start_date:{
-    type:Array,
-  },
-  pa_phase_end_date:{
-    type:Array,
-  },
+  
+  
 });
 module.exports = properties = mongoose.model('properties', PropertiesSchema);

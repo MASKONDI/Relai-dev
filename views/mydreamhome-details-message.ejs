@@ -136,15 +136,18 @@ function scrollToBottom() {
       setInterval(function () {
         var professional_id = $("#chat_form #professional_id").val();
         var customer_id = $("#customer_id").val();
-        var property_id = $("#property_id").val();
-        getAllMessage(professional_id, customer_id, property_id);
+        var property_id = $("#chat_form  #property_id").val();
+        //console.log('professional_id:',professional_id);
+        //console.log('customer_id:',customer_id);
+        //console.log('property_id:',property_id);
+         getAllMessage(professional_id, customer_id, property_id);
       }, 1000);
 
       $('#chat_submit').click(function (e) {
         var comment = $("#comment").val();
         var professional_id = $("#chat_form #professional_id").val();
         var customer_id = $("#customer_id").val();
-        var property_id = $("#property_id").val();
+        var property_id = $("#chat_form #property_id").val();
         console.log('professional_id:', professional_id);
         console.log('customer_id:', customer_id);
         console.log('property_id:', property_id);
