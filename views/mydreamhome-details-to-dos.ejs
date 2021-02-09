@@ -58,11 +58,11 @@
                               <span class="checkmark"></span>
                             </label></td>
                           <td>
-                            
+                            <%if(row.phase_status=='pending'){%>
                             <a class="btn btn-pending">Pending</a>
-                           
-                              <!-- <a class="btn btn-complete">Complete</a> -->
-                              
+                            <%}else{%>
+                              <a class="btn btn-complete">Complete</a>
+                              <%}%>
                           </td>
                           <td><span><%=row.end_date%></span></td>
                           <td><a class="take-action" href="/mydreamhome-details-phase-a" id="">Take Action</a></td>

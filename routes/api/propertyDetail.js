@@ -26,7 +26,8 @@ module.exports.AddNewProperty = function (req) {
             var phaseObj={
                 phase_name:'',
                 start_date:'',
-                end_date:''
+                end_date:'',
+                phase_status:'pending',
             };
             phaseObj.phase_name=   req.body.Phase[i];
             phaseObj.start_date=   req.body.startDate[i];

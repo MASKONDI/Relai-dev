@@ -104,5 +104,6 @@ const PropertiesSchema = new Schema({
     type:Array,
   },
   
+  
 });
 module.exports = properties = mongoose.model('properties', PropertiesSchema);
