@@ -354,7 +354,7 @@ router.post("/add-property", async (req, res) => {
         console.log("sending invitation to professional with token");
         invite_function(req, PropertySaved);
         return res.send({
-          'success_msg': ' Property Saved successfully',
+          'success_msg': ' Your Property Saved successfully Please Wait We Are Prosessing...',
           'status': true,
           'redirect': '/add-property'
         });
