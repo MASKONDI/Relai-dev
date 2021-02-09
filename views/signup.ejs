@@ -30,13 +30,28 @@
                     </span>
                     <% }%>
 
-
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group  ">
                             <input type="text" class="form-control form-control-size " id="fullName"
-                              placeholder="FullName" name="cus_fullname" required data-rule-required="true"
-                              data-rule-minlength="2" data-msg-required="Fullname is required!">
+                              placeholder="Frist Name" name="cus_firstname" required data-rule-required="true"
+                              data-rule-minlength="2" data-msg-required="FirstName is required!">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group  ">
+                            <input type="text" class="form-control form-control-size " id="fullName"
+                              placeholder="Last Name" name="cus_lastname" required data-rule-required="true"
+                              data-rule-minlength="2" data-msg-required="LastName is required!">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group  ">
+                            <input type="email" class="form-control form-control-size" id="email" placeholder="Email ID"
+                              name="cus_email_id" required data-rule-required="true" data-rule-email="true"
+                              data-msg-required="Email Id is required." data-msg-email="Please Enter Valid Email-ID.">
                           </div>
                         </div>
                         <div class="col-md-6">
@@ -50,33 +65,45 @@
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group  ">
-                            <input type="email" class="form-control form-control-size" id="email" placeholder="Email ID"
-                              name="cus_email_id" required data-rule-required="true" data-rule-email="true"
-                              data-msg-required="Email Id is required." data-msg-email="Please Enter Valid Email-ID.">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group  ">
                             <input type="text" class="form-control form-control-size" id="address" placeholder="Address"
                               name="cus_address" required data-rule-required="true"
                               data-msg-required="Address is required!">
                           </div>
-
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group  ">
+                            <select name="country" class="countries form-control selectBox4" id="countryId" required
+                              style="height: 44px;" data-rule-required="true"
+                              data-msg-required="Country name is required!">
+                              <option value="">Select Country</option>
+                            </select>
+                          </div>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group  ">
-                            <input type="text" class="form-control form-control-size" id="city" placeholder="City"
+                            <select name="state" class="states form-control selectBox4" id="stateId" required
+                              style="height: 44px;" data-rule-required="true"
+                              data-msg-required="County name is required!">
+                              <option value="">Select County</option>
+                            </select>
+
+                            <!-- <input type="text" class="form-control form-control-size" id="city" placeholder="City"
                               name="cus_city" required data-rule-required="true"
-                              data-msg-required="City name is required!">
+                              data-msg-required="City name is required!"> -->
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group ">
-                            <input type="text" class="form-control form-control-size" id="country" placeholder="Country"
+                            <select name="city" class="cities form-control selectBox4" id="cityId" required
+                              style="height: 44px;" data-rule-required="true"
+                              data-msg-required="City name is required!">
+                              <option value="">Select City</option>
+                            </select>
+                            <!-- <input type="text" class="form-control form-control-size" id="country" placeholder="Country"
                               name="cus_country_id" required data-rule-required="true"
-                              data-msg-required="Country name is required!">
+                              data-msg-required="Country name is required!"> -->
                           </div>
                         </div>
                       </div>
@@ -111,6 +138,8 @@
 
         </div>
 
+
+
         <div class="col-md-6">
           <div class="login-slider">
             <div class="item">
@@ -137,11 +166,11 @@
       </div>
     </div>
   </section>
-
-
   <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="../js/slick.js"></script>
   <script type="text/javascript" src="../js/slick.min.js"></script>
+
+
 
   <script type="text/javascript">
     $(".login-slider").slick({
@@ -187,9 +216,10 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
-    integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
-    crossorigin="anonymous"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="../js/countrystatecity.js"></script>
+
   <script>
 
     $(document).ready(function () {
@@ -206,6 +236,9 @@
     });
 
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+    integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+    crossorigin="anonymous"></script>
   <script type="text/javascript">
     $('#registerform').validate({
       onfocusout: function (element) {
@@ -236,6 +269,19 @@
         setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
       }
     });  
+  </script>
+  <div style='margin-left: auto;margin-right: auto;text-align: center;'>
+    <br />
+    <hr /><br />
+  </div>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-149371669-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-149371669-1');
   </script>
 
   </body>

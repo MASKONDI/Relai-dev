@@ -18,28 +18,7 @@
                   </a>
                 </div>
             </div>
-            <ul class="dashboard-nav">
-              <li>
-                <a href="/dashboard"><img class="act-img" src="images/dashboard-active.png"><img
-                    src="images/dashboard.png"> Dashboard</a>
-              </li>
-              <li>
-                <a href="/track-your-progress"><img class="act-img" src="images/track-active.png"><img
-                    src="images/track.png"> Track your progress</a>
-              </li>
-              <li>
-                <a href="/professionals"><img class="act-img" src="images/professionals-active.png"><img
-                    src="images/professionals.png"> Professionals</a>
-              </li>
-              <li class="active">
-                <a href="/mydreamhome"><img class="act-img" src="images/dreamhome-active.png"><img
-                    src="images/dreamhome.png"> My dream home</a>
-              </li>
-              <li>
-                <a href="/mydreamhome-details-to-dos"><img class="act-img" src="images/to-do-list-active.png"><img
-                    src="images/to-do-list.png"> To do list</a>
-              </li>
-            </ul>
+            <%- include('sidebar')-%>
           </div>
           <div class="col-sm-12 col-lg-10">
             <div class="dashboard-inner">
@@ -157,15 +136,18 @@ function scrollToBottom() {
       setInterval(function () {
         var professional_id = $("#chat_form #professional_id").val();
         var customer_id = $("#customer_id").val();
-        var property_id = $("#property_id").val();
-        getAllMessage(professional_id, customer_id, property_id);
+        var property_id = $("#chat_form  #property_id").val();
+        //console.log('professional_id:',professional_id);
+        //console.log('customer_id:',customer_id);
+        //console.log('property_id:',property_id);
+         getAllMessage(professional_id, customer_id, property_id);
       }, 1000);
 
       $('#chat_submit').click(function (e) {
         var comment = $("#comment").val();
         var professional_id = $("#chat_form #professional_id").val();
         var customer_id = $("#customer_id").val();
-        var property_id = $("#property_id").val();
+        var property_id = $("#chat_form #property_id").val();
         console.log('professional_id:', professional_id);
         console.log('customer_id:', customer_id);
         console.log('property_id:', property_id);

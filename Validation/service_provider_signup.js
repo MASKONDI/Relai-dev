@@ -5,22 +5,22 @@ module.exports = function validateServiceProviderRegisterInput(req) {
   let errors = {};
   console.log("req.body is:", req);
 
-  req.sps_fullname = !isEmpty(req.sps_fullname) ? req.sps_fullname : '';
+  //req.sps_fullname = !isEmpty(req.sps_fullname) ? req.sps_fullname : '';
   req.sps_email_id = !isEmpty(req.sps_email_id) ? req.sps_email_id : '';
   req.sps_phone_number = !isEmpty(req.sps_phone_number) ? req.sps_phone_number : '';
   req.sps_password = !isEmpty(req.sps_password) ? req.sps_password : '';
   req.confirmPassword = !isEmpty(req.confirmPassword) ? req.confirmPassword : '';
   req.sps_address = !isEmpty(req.sps_address) ? req.sps_address : '';
-  req.sps_country_id = !isEmpty(req.sps_country_id) ? req.sps_country_id : '';
-  req.sps_city = !isEmpty(req.sps_city) ? req.sps_city : '';
+  //req.sps_country_id = !isEmpty(req.sps_country_id) ? req.sps_country_id : '';
+  //req.sps_city = !isEmpty(req.sps_city) ? req.sps_city : '';
 
   //name Validation
-  if (Validator.isEmpty(req.sps_fullname)) {
-    errors.sps_fullname = "Name field is required";
-  }
-  if (!Validator.isLength(req.sps_fullname, { min: 2, max: 30 })) {
-    errors.sps_fullname = 'Name must be between 2 and 30 characters';
-  }
+  // if (Validator.isEmpty(req.sps_fullname)) {
+  //   errors.sps_fullname = "Name field is required";
+  // }
+  // if (!Validator.isLength(req.sps_fullname, { min: 2, max: 30 })) {
+  //   errors.sps_fullname = 'Name must be between 2 and 30 characters';
+  // }
 
 
   //EmailId Validation
@@ -65,21 +65,21 @@ module.exports = function validateServiceProviderRegisterInput(req) {
     errors.sps_address = 'Address must be between 2 and 100 characters';
   }
 
-  //Country validation
-  if (Validator.isEmpty(req.sps_country_id)) {
-    errors.sps_country_id = "Country Name field is required";
-  }
-  if (!Validator.isLength(req.sps_country_id, { min: 2, max: 30 })) {
-    errors.sps_country_id = 'Country Name must be between 2 and 30 characters';
-  }
+  // //Country validation
+  // if (Validator.isEmpty(req.sps_country_id)) {
+  //   errors.sps_country_id = "Country Name field is required";
+  // }
+  // if (!Validator.isLength(req.sps_country_id, { min: 2, max: 30 })) {
+  //   errors.sps_country_id = 'Country Name must be between 2 and 30 characters';
+  // }
 
-  //City validation
-  if (Validator.isEmpty(req.sps_city)) {
-    errors.sps_city = "City Name field is required";
-  }
-  if (!Validator.isLength(req.sps_city, { min: 2, max: 30 })) {
-    errors.sps_city = 'City Name must be between 2 and 30 characters';
-  }
+  // //City validation
+  // if (Validator.isEmpty(req.sps_city)) {
+  //   errors.sps_city = "City Name field is required";
+  // }
+  // if (!Validator.isLength(req.sps_city, { min: 2, max: 30 })) {
+  //   errors.sps_city = 'City Name must be between 2 and 30 characters';
+  // }
 
   return {
     errors,

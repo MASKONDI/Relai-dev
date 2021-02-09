@@ -1,49 +1,39 @@
+<%- include('dashboard_header')-%>
 
     <div class="dashboard-wpr">
       <div class="container-fluid">
         <div class="row content">
           <div class="col-sm-2 sidenav hidden-xs-down">
             <div class="user-login text-center">
-              <div class="user-profile">
-                <img src="images/user-3.png" alt="" title="">
-              </div>
-              <div class="user-name">
-                <h6>John Doe,<span><i>
-                      Architect</i>
-                  </span></h6>
-                <a href="#"><i>johndoe12@gmail.com</i></a>
-              </div>
+              <%- include('profile-image')-%>
+                <div class="user-name">
+                  <h2>
+                    <%= session.name %>
+                  </h2>
+                  <a href="#">
+                    <%= session.email %>
+                      <%- include('edit-profile-icon')-%>
+                  </a>
+                </div>
             </div>
-            <ul class="dashboard-nav">
-              <li>
-                <a href="dashboard-professional.html"><img class="act-img" src="images/dashboard-active.png"><img
-                    src="images/dashboard.png"> Dashboard</a>
-              </li>
-              <li>
-                <a href="track-your-progress-professionals.html"><img class="act-img" src="images/track-active.png"><img
-                    src="images/track.png"> Track your progress</a>
-              </li>
-              <li>
-                <a href="property.html"><img class="act-img" src="images/dreamhome-active.png"><img
-                    src="images/dreamhome.png"> Properties</a>
-              </li>
-              <li class="active">
-                <a href="complaints.html"><img class="act-img" src="images/complaints-active.png"><img
-                    src="images/complaints.png"> Complaints</a>
-              </li>
-
-              <li>
-                <a href="professionals-to-do-list.html"><img class="act-img" src="images/to-do-list-active.png"><img
-                    src="images/to-do-list.png"> To do list</a>
-              </li>
-            </ul>
+            <%- include('sidebar')-%>
           </div>
           <div class="col-sm-12 col-lg-10">
 
             <div class="complaints-sec">
               <div class="complaints">
                 <h2>Complaints</h2>
+                <div class="row">
+                  <div class="breadcumb">
+                    <ul>
+                      <li><a href="/complaints"><i class="fa fa-long-arrow-left"
+                            aria-hidden="true"></i> Back to complaint lists</a></li>
+                    </ul>
+                  </div>
+                </div>
               </div>
+
+          
 
             </div>
 
@@ -56,23 +46,25 @@
                   <tr>
                     <th>Complaint ID</th>
                     <th>Client Name</th>
-                    <th class="message-th">Message</th>
-                    <th>Property Name</th>
+                    <th>Complaint Type</th>
+                    <th class="message-th">Complaint Subject</th>
                     <th>Date</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
+                  <% var i=0; complaintData.forEach(function(row){ %>
                   <tr>
                     <td>
-                      <p>C1234</p>
+                      <p><%= row.coms_complaint_code%></p>
                     </td>
-                    <td>Andrew Wills </td>
-                    <td>Lorem ipsum dolor sit amet,</td>
-                    <td>Nacary Apartment </td>
-                    <td>16 Nov, 2020</td>
-                    <td><a href="complaints-detail.html" class="btn btn-pending">PENDING</a></td>
+                    <td><%= row.coms_user_name%></td>
+                    <td><%= row.coms_complaint_help%></td>
+                    <td><%= row.coms_complaint_subject%></td>
+                    <td><%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(new Date(row.coms_created_at)) %> </td>
+                    <td><a href="complaints-detail.html" class="btn btn-pending"><%= row.coms_complaint_status%></a></td>
                   </tr>
+                  <% i++;});%> 
                 </tbody>
               </table>  
                 </div>
@@ -83,64 +75,44 @@
                   <div class="row">
                     <div class="col-sm-12 col-lg-12">
                       <div class="messages-section">
+
+                        <% var i=1; complaintDetailsData.forEach(function(row){ %>
+
                         <div class="messages-box clearfix">
                           <div class="message-user-img">
-                            <img src="images/recent-user-1.png" alt="" title="">
+                            <img src="upload/<%= row.comsd_user_profile_img%>" alt="" title="">
                           </div>
                           <div class="message-content">
-                            <h3>You</h3>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                              Ipsum
-                              has been the industry's standard dummy text ever since the 1500s,</p>
-                            <p class="hours-ago text-right">13 hours ago</p>
+                            <h3><%= row.comsd_user_name%></h3>
+                            <p><%= row.comsd_complaint_note%></p>
+                            <p class="hours-ago text-right"><%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(new Date(row.comsd_created_at)) %></p>
+                            <%if (row.comsd_complaint_filename) { %> <div class="rt-container"><img data-action="zoom" id="<%= i %>" class="complaint_image" src="complaintFile/<%= row.comsd_complaint_filename%>"/> </div> <% } %>
                           </div>
                         </div>
-                        <div class="messages-box clearfix">
-                          <div class="message-user-img">
-                            <img src="images/recent-user-1.png" alt="" title="">
-                          </div>
-                          <div class="message-content">
-                            <h3>Alex Jackson</h3>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                              Ipsum
-                              has been the industry's standard dummy text ever since the 1500s,</p>
-                            <p class="hours-ago text-right">13 hours ago</p>
-                          </div>
-                        </div>
-                        <div class="messages-box clearfix">
-                          <div class="message-user-img">
-                            <img src="images/recent-user-1.png" alt="" title="">
-                          </div>
-                          <div class="message-content">
-                            <h3>you</h3>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                              Ipsum
-                              has been the industry's standard dummy text ever since the 1500s,</p>
-                            <p class="hours-ago text-right">13 hours ago</p>
-                          </div>
-                        </div>
-                        <div class="messages-box clearfix">
-                          <div class="message-user-img">
-                            <img src="images/recent-user-1.png" alt="" title="">
-                          </div>
-                          <div class="message-content">
-                            <h3>Alex Jackson</h3>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                              Ipsum
-                              has been the industry's standard dummy text ever since the 1500s,</p>
-                            <p class="hours-ago text-right">13 hours ago</p>
-                          </div>
-                        </div>
+
+                        <% i++;});%> 
+                        <span class="complaint_msg"></span>
                         <div class="text-message-box clearfix">
-                          <div class="text-box">
-                            <textarea class="form-control" style="min-width: 80%; margin-bottom: 10px; " rows="3"
-                              id="comment">Write your reply here</textarea>
-
-                            <button type="submit" class="btn btn-next"
-                              style="width: 164px; float:right; border-radius: 5px;">
-                              Send</button>
-
-                          </div>
+                          <form name="complaintform" id="mycomplent_details_form" method="POST" action="" enctype="multipart/form-data">
+                            <div class="text-box">
+                              <textarea data-rule-required="true" data-msg-required="Comment is required!" name="coms_complaint_note" class="form-control" placeholder="Write your reply here" style="min-width: 80%; margin-bottom: 10px; " rows="3"
+                                id="comment"></textarea>
+                              <a href="#" class="upload-any float-left">
+                                  <i class="fa fa-paperclip float-right" style="color:black">
+                                    <span class="clip-icon">Attach files</span></i>
+                                    <div class="custom-file-input">
+                                      <input onchange="document.getElementById('uploaded_img').src = window.URL.createObjectURL(this.files[0])" type="file" id="image" name="complaint_file" value="">
+                                      <input type="button">
+                                    </div>
+                                    <div class="uploaded_img"><img id="uploaded_img" /></div>
+                              </a>
+                              <input type="hidden" value="<%= session.complaintID %>" name="complaintID"/>
+                              <button type="submit" class="btn btn-next"
+                                style="width: 164px; float:right; border-radius: 5px;">
+                                Send
+                              </button>
+                            </div>
+                          </form> 
                         </div>
                       </div>
                     </div>
@@ -148,11 +120,6 @@
                 </div>
 
               </div>
-
-
-
-
-
 
             </div>
           </div>
@@ -169,9 +136,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+    integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+    crossorigin="anonymous"></script>
+
   <script>
     $(document).ready(function () {
       $(".sidenav ul li").click(function () {
@@ -185,6 +157,93 @@
         $(this).addClass("active");
       });
     });
+
+    var previous=0;
+
+  $('.complaint_image').click(function(){
+    var s=$(this).attr('id');
+    $('#'+s).animate({'width':'85%'});
+    $('#'+s).css({'cursor':'zoom-out'});
+    if($('#'+previous).width()!=100)
+    {
+    $('#'+previous).animate({'width':'10%'});
+    $('#'+previous).css({'cursor':'zoom-in'});
+    }
+    previous=s;
+});
+
+ $('#mycomplent_details_form').validate({
+      onfocusout: function (element) {
+        this.element(element);
+      },
+      errorClass: 'error_validate',
+      errorElement: 'span',
+      errorColor: 'red',
+      highlight: function (element, errorClass) {
+        $(element).removeClass(errorClass);
+      },
+      submitHandler: function (form) {
+        $('#submit').attr('disabled', true);
+
+        var formData = new FormData($('#mycomplent_details_form')[0]);
+         // var formData = new FormData(this);
+         // var formData = $(this).serialize();
+          console.log('formData:',formData)
+          $.ajax({
+            type: "POST",
+            data: formData,
+            url: "/api/complaint-details-discussion", 
+            cache:false,
+            contentType: false,
+            processData: false,           
+            success: function (data) {
+              console.log(data);
+              if(data.status == true){
+                location.reload(true);
+                  // $('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> '+data.message+'</div>')
+                  // setTimeout(function(){ 
+                  //   $('#MyComplaintModal').modal('hide');
+                  //   location.reload(true);
+                  // }, 6000);
+              }else{
+                $('.complaint_msg').html('<div class="isa_error"><i class="fa fa-check"></i> '+data.message+'</div>')
+              }
+            }
+          });
+
+      }
+    });
+        // $('#mycomplent_details_form').on('submit',(function(e) {
+        //   e.preventDefault();
+        // var formData = new FormData($('#mycomplent_details_form')[0]);
+        //  // var formData = new FormData(this);
+        //  // var formData = $(this).serialize();
+        //   console.log('formData:',formData)
+        //   $.ajax({
+        //     type: "POST",
+        //     data: formData,
+        //     url: "/api/complaint-details-discussion", 
+        //     cache:false,
+        //     contentType: false,
+        //     processData: false,           
+        //     success: function (data) {
+        //       console.log(data);
+        //       if(data.status == true){
+        //         location.reload(true);
+        //           // $('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> '+data.message+'</div>')
+        //           // setTimeout(function(){ 
+        //           //   $('#MyComplaintModal').modal('hide');
+        //           //   location.reload(true);
+        //           // }, 6000);
+        //       }else{
+        //         $('.complaint_msg').html('<div class="isa_error"><i class="fa fa-check"></i> '+data.message+'</div>')
+        //       }
+        //     }
+        //   });
+        //   //location.reload(true);
+        // }));
+
+
   </script>
 </body>
 

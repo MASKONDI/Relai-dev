@@ -18,28 +18,7 @@
                   </a>
                 </div>
             </div>
-            <ul class="dashboard-nav">
-              <li>
-                <a href="/dashboard"><img class="act-img" src="images/dashboard-active.png"><img
-                    src="images/dashboard.png"> Dashboard</a>
-              </li>
-              <li>
-                <a href="/track-your-progress"><img class="act-img" src="images/track-active.png"><img
-                    src="images/track.png"> Track your progress</a>
-              </li>
-              <li>
-                <a href="/professionals"><img class="act-img" src="images/professionals-active.png"><img
-                    src="images/professionals.png"> Professionals</a>
-              </li>
-              <li class="active">
-                <a href="/mydreamhome"><img class="act-img" src="images/dreamhome-active.png"><img
-                    src="images/dreamhome.png"> My dream home</a>
-              </li>
-              <li>
-                <a href="/mydreamhome-details-to-dos"><img class="act-img" src="images/to-do-list-active.png"><img
-                    src="images/to-do-list.png"> To do list</a>
-              </li>
-            </ul>
+            <%- include('sidebar')-%>
           </div>
           <div class="col-sm-12 col-lg-10">
             <div class="dashboard-inner">
@@ -81,10 +60,17 @@
                                   <%}else{%>
                                     <img src="images/nacary.png">
                                     <%}%>
-                                      <a href="/mydreamhome-details?id=<%=row._id%>"
-                                        class="btn btn-new mydreamHomeDetail" value="<%=row._id%>">
-                                        <%=row.ps_property_type%>
-                                      </a>
+                                      <% if(row.ps_property_type=='New' ){ %> 
+                                        <a href="/mydreamhome-details?id=<%=row._id%>"
+                                          class="btn btn-new mydreamHomeDetail" value="<%=row._id%>">
+                                          <%=row.ps_property_type%>
+                                        </a>
+                                        <%} else {%>
+                                          <a href="/mydreamhome-details-chainproperty?id=<%=row._id%>"
+                                            class="btn btn-new mydreamHomeDetail" value="<%=row._id%>">
+                                            <%=row.ps_property_type%>
+                                          </a>
+                                          <%}%>
                               </div>
                               <div class="dream-home-description">
                                 <h3><a href="/mydreamhome-details?id=<%=row._id%>">

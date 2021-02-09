@@ -22,6 +22,12 @@ const ComplaintsSchema = new Schema({
     type: Schema.Types.ObjectId,
     //ref: "customers"    //Need to check if complain raised by service_provider then store sp_id
   },
+  coms_user_name: {
+    type: String,
+  },
+  coms_user_profile_img: {
+    type: String
+  },
   coms_complaint_by: {
     type: String,
     enum: ['customer', 'service_provider']
@@ -32,9 +38,12 @@ const ComplaintsSchema = new Schema({
   coms_complaint_note: {
     type: String,
   },
+  coms_complaint_help: {
+    type: String,
+  },
   coms_complaint_file: {
     data: Buffer,
-    contantType: String
+    contantType: String 
   },
   coms_complaint_filename: {
     type: String

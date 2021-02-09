@@ -37,10 +37,11 @@ const { resolve } = require("path");
 
 
 const ComplaintsSchema = require("../../models/Complaints");
+const ComplaintDetailsSchema = require("../../models/complaint_details_model");
 const MessageSchema = require("../../models/message");
-
-
-
+const addTaskHelper = require("./addTask");
+const PropertyHelper = require("./propertyDetail");
+const PermisionHelper = require("./permision");
 var isCustomer = auth.isCustomer;
 // <<<<<<< HEAD
 // router.post('/filterPropertyAdress', (req, res) => {
@@ -123,12 +124,13 @@ router.post("/cust_register", (req, res) => {
     } else {
       const newCustomer = new CustomerSchema({
         cus_unique_code: "cust-" + uuidv4(),
-        cus_fullname: req.body.cus_fullname,
+        cus_fullname: req.body.cus_firstname + ' ' + req.body.cus_lastname,
         cus_email_id: req.body.cus_email_id,
         cus_phone_number: req.body.cus_phone_number,
         cus_address: req.body.cus_address,
-        cus_country_id: req.body.cus_country_id,
-        cus_city: req.body.cus_city,
+        cus_country_id: req.body.country,
+        cus_city: req.body.city,
+        cus_state: req.body.state,
         cus_password: req.body.cus_password,
       });
 
@@ -242,7 +244,9 @@ var storage = multer.diskStorage({
     else if (file.fieldname === "propertiesplanpic") {
       cb(null, 'public/propplanimg');
     }
-
+    else if (file.fieldname === "complaint_file") {
+      cb(null, 'public/complaintFile');
+    }
   },
   filename: function (req, file, cb) {
     var datetimestamp = Date.now();
@@ -267,12 +271,15 @@ const upload = multer({
     },
     {
       name: 'propertiesplanpic', maxCount: 3
+    },
+    {
+      name: 'complaint_file', maxCount: 3
     }
   ]
 );
 function checkFileType(file, cb) {
 
-  if (file.fieldname === "propertiespic" || file.fieldname === "propertiesplanpic") {
+  if (file.fieldname === "propertiespic" || file.fieldname === "propertiesplanpic" || file.fieldname === "complaint_file") {
     if (
       file.mimetype === 'image/png' ||
       file.mimetype === 'image/jpg' ||
@@ -285,108 +292,265 @@ function checkFileType(file, cb) {
     }
   }
 }
-
-
 router.post("/add-property", async (req, res) => {
-  upload(req, res, () => {
-    const newProperty = new PropertiesSchema({
-      //should be auto-generated mongodb objectId()
-      // ps_property_id: req.body,
-      ps_unique_code: "prop-" + Math.random().toString(36).slice(-6),
-      ps_user_id: req.session.user_id, //storing customer_ID
-      ps_property_name: req.body.ps_property_name,
-      ps_property_address: req.body.ps_property_address,
-      ps_property_country_id: req.body.ps_property_country_id,
-      ps_property_state_id: req.body.ps_property_state_id,
-      ps_property_city_id: req.body.ps_property_city_id,
-      ps_property_zipcode: req.body.ps_property_zipcode,
-      //ps_property_user_as: req.body.ps_property_user_as,
-      ps_property_user_as: req.session.active_user_login, //updaing active customer portal buyer/seller/renovator
-      ps_other_party_fullname: req.body.ps_other_party_fullname,
-      ps_other_party_emailid: req.body.ps_other_party_emailid,
-      ps_other_party_invited: req.body.ps_other_party_invited,
-      ps_property_area: req.body.ps_property_area,
-      ps_property_bedroom: req.body.ps_property_bedroom,
-      ps_property_bathroom: req.body.ps_property_bathroom,
-      ps_additional_note: req.body.ps_additional_note,
-      ps_property_type: req.body.ps_property_type,
-      ps_chain_property_id: req.body.ps_chain_property_id,
-      ps_is_active_user_flag: req.session.active_user_login
-    });
-    newProperty
-      .save()
-      .then(async (property) => {
-        console.log('result', property)
-        if (property) {
-          await req.files.propertiespic.forEach(element => {
-            var obj = {
-              pps_property_id: property._id,
-              pps_property_image_name: element.filename,
-              pps_is_active_user_flag: req.session.active_user_login,
-              pps_property_image: {
-                data: fs.readFileSync(path.join(__dirname + '../../../public/propimg/' + element.filename)),
-                contentType: 'image/png'
-              }
-            }
+  upload(req, res, async () => {
 
-            PropertiesPictureSchema.create(obj, (err, item) => {
-              if (err) {
-                console.log(err);
-                req.flash('err_msg', "Something went worng please try after some time");
-                // res.redirect('/add-property');
-              }
-              else {
-                item.save();
-                console.log("file Submitted Successfully");
-                req.flash('success_msg', "Properties picture Uploaded Successfully");
-                //res.redirect('/add-property');
-              }
-            });
-          });
-          await req.files.propertiesplanpic.forEach(e => {
-            var obj = {
-              ppps_property_id: property._id,
-              ppps_plan_image_name: e.filename,
-              ppps_is_active_user_flag: req.session.active_user_login,
-              ppps_plan_image: {
-                data: fs.readFileSync(path.join(__dirname + '../../../public/propplanimg/' + e.filename)),
-                contentType: 'image/png'
-              }
-            }
+    // console.log("body:=", req.body);
+    // var err_msg = null;
+    // var success_msg = null;
 
-            PropertiesPlanPictureSchema.create(obj, (err, item) => {
-              if (err) {
-                console.log(err);
-                req.flash('err_msg', "Something went worng please try after some time");
-                //res.redirect('/add-property');
-              }
-              else {
-                item.save();
-                console.log("file Submitted Successfully");
-                req.flash('success_msg', "Properties picture Uploaded Successfully");
-                // res.redirect('/add-property');
+    // let PropertySaved = await PropertyHelper.AddNewProperty(req);
+    // console.log('PropertySaved========', PropertySaved)
+    // if (PropertySaved) {
+    //   // console.log("instruction req is", req.body.instruction.length);
+    //   // console.log("instruction req is Type", typeof (req.body.instruction));
+    //   // console.log("req.session.active_user_login", req.session.active_user_login);
+    //   var totalInstruction = 0;
+    //   if (req.session.active_user_login == 'renovator') {
+    //     totalInstruction = 8;
+    //   } else {
+    //     totalInstruction = 6;
+    //   }
+    //   console.log("totalInstruction:", totalInstruction);
+    //   if (req.body.instruction.length >= totalInstruction && typeof (req.body.instruction) != 'string') {
+    //     req.body.instruction.forEach(async function (instruction, i) {
+    //       var user_id = req.session.user_id;
+    //       // var propertyId = req.body.propertyId;
+    //       var propertyId = PropertySaved._id
+    //       //var pps_professional_id = req.body.serviceProviderId;
+    //       var pps_phase_name = instruction;
+    //       var pps_phase_start_date = req.body.startDate[i]
+    //       var pps_phase_end_date = req.body.endDate[i]
+    //       var pps_is_active_user_flag = req.session.active_user_login;
+    //       let addPhaseResponce = await addTaskHelper.save_addPhase(propertyId, pps_phase_name, pps_phase_start_date, pps_phase_end_date, pps_is_active_user_flag);
+    //       console.log('addPhaseResponce A:', addPhaseResponce)
+    //     })
+    //     return res.send({
+    //       'success_msg': 'Saved successfully',
+    //       'status': true,
+    //       'redirect': '/add-task'
+    //     });
+    //     //res.redirect('/add-property');
+    //   } else {
+    //     //console.log("server validation error is:", errors);
+    //     //req.flash('err_msg', errors.instruction);
+    //     return res.send({
+    //       'err_msg': 'Please add all phases',
+    //       'status': false
+    //     });
+    //   }
 
-              }
-            });
+    // }
 
-          });
-          //Sending Invitation link to serviceProvider
-          console.log("Invitation send to service provider", req.body);
-          // await invite_function(req);
-          res.redirect("/mydreamhome")
-        }
+    //function invite_function(req, saved_property)//need to add invite function
+    if (req.body) {
+      console.log("body:=", req.body);
+      var err_msg = null;
+      var success_msg = null;
+      let PropertySaved = await PropertyHelper.AddNewProperty(req);
+      console.log('PropertySaved========', PropertySaved)
+      if (PropertySaved) {
+        //sending invite function in add-property
+        console.log("sending invitation to professional with token");
+        invite_function(req, PropertySaved);
+        return res.send({
+          'success_msg': ' Property Saved successfully',
+          'status': true,
+          'redirect': '/add-property'
+        });
+        //   var totalInstruction = 0;
+        //   if (req.session.active_user_login == 'renovator') {
+        //   totalInstruction = 8;
+        // } else {
+        //   totalInstruction = 6;
+        // }
+        //console.log("totalInstruction:", totalInstruction);
+        // if (req.body.instruction.length >= totalInstruction && typeof (req.body.instruction) != 'string') {
+        //   req.body.instruction.forEach(async function (instruction, i) {
+        //     var user_id = req.session.user_id;
+        //     var propertyId= PropertySaved._id
+        //     var pps_phase_name = instruction;
+        //     var pps_phase_start_date = req.body.startDate[i]
+        //     var pps_phase_end_date = req.body.endDate[i]
+        //     var pps_is_active_user_flag = req.session.active_user_login;
+        //     let addPhaseResponce = await addTaskHelper.save_addPhase(propertyId, pps_phase_name, pps_phase_start_date, pps_phase_end_date, pps_is_active_user_flag);
+        //     console.log('addPhaseResponce A:', addPhaseResponce)
+        //   })
+        //   return res.send({
+        //     'success_msg': 'Saved successfully',
+        //     'status': true,
+        //     'redirect': '/add-task'
+        //   });
+        // }else {
 
-      })
-      .catch(err => {
-        console.log(err)
-        req.flash('err_msg', 'Something went wrong please try after some time!');
-        res.redirect('/add-property');
-
-      });
-
-  })
+        //   return res.send({
+        //     'err_msg': 'Please add all phases',
+        //     'status': false
+        //   });
+        // }
+      } else {
+        return res.send({
+          'err_msg': 'Something Wrong Try Again ',
+          'status': false
+        });
+      }
+    }
+  });
 
 });
+
+// router.post("/add-property", async (req, res) => {
+//   upload(req, res, async () => {
+//     console.log("body:=", req.body);
+//     var err_msg = null;
+//     var success_msg = null;
+//     var PropertyBoject = {
+//       ps_unique_code: "prop-" + Math.random().toString(36).slice(-6),
+//       ps_user_id: req.session.user_id, //storing customer_ID
+//       ps_property_name: req.body.ps_property_name,
+//       ps_property_address: req.body.ps_property_address,
+//       ps_property_country_id: req.body.ps_property_country_id,
+//       ps_property_state_id: req.body.ps_property_state_id,
+//       ps_property_city_id: req.body.ps_property_city_id,
+//       ps_property_zipcode: req.body.ps_property_zipcode,
+//       //ps_property_user_as: req.body.ps_property_user_as,
+//       ps_property_user_as: req.session.active_user_login, //updaing active customer portal buyer/seller/renovator
+//       ps_other_party_fullname: req.body.ps_other_party_fullname,
+//       ps_other_party_emailid: req.body.ps_other_party_emailid,
+//       ps_other_party_invited: req.body.ps_other_party_invited,
+//       ps_property_area: req.body.ps_property_area,
+//       ps_property_bedroom: req.body.ps_property_bedroom,
+//       ps_property_bathroom: req.body.ps_property_bathroom,
+//       ps_additional_note: req.body.ps_additional_note,
+//       ps_property_type: req.body.ps_property_type,
+//       ps_chain_property_id: req.body.ps_chain_property_id,
+//       ps_is_active_user_flag: req.session.active_user_login
+//     };
+//     let PropertySaved = await PropertyHelper.AddNewProperty(PropertyBoject);
+//     console.log('PropertySaved========', PropertySaved)
+
+//     var totalInstruction = 0;
+//     //const { errors, isValid } = validateAddPhase(req.body);
+//     console.log("instruction req is", req.body.instruction.length);
+//     console.log("instruction req is Type", typeof (req.body.instruction));
+//     console.log("req.session.active_user_login", req.session.active_user_login);
+
+//     if (req.session.active_user_login == 'renovator') {
+//       totalInstruction = 8;
+//     } else {
+//       totalInstruction = 6;
+//     }
+//     console.log("totalInstruction:", totalInstruction);
+//     if (req.body.instruction.length >= totalInstruction && typeof (req.body.instruction) != 'string') {
+//       req.body.instruction.forEach(async function (instruction, i) {
+//         var user_id = req.session.user_id;
+//         var propertyId = req.body.propertyId;
+//         var pps_professional_id = req.body.serviceProviderId;
+//         var pps_phase_name = instruction;
+//         var pps_phase_start_date = req.body.startDate[i]
+//         var pps_phase_end_date = req.body.endDate[i]
+//         var pps_is_active_user_flag = req.session.active_user_login;
+//         let addPhaseResponce = await addTaskHelper.save_addPhase(propertyId, pps_professional_id, pps_phase_name, pps_phase_start_date, pps_phase_end_date, pps_is_active_user_flag);
+//         console.log('addPhaseResponce A:', addPhaseResponce)
+//       })
+//       const newProperty = new PropertiesSchema({
+//         //should be auto-generated mongodb objectId()
+//         // ps_property_id: req.body,
+//         ps_unique_code: "prop-" + Math.random().toString(36).slice(-6),
+//         ps_user_id: req.session.user_id, //storing customer_ID
+//         ps_property_name: req.body.ps_property_name,
+//         ps_property_address: req.body.ps_property_address,
+//         ps_property_country_id: req.body.ps_property_country_id,
+//         ps_property_state_id: req.body.ps_property_state_id,
+//         ps_property_city_id: req.body.ps_property_city_id,
+//         ps_property_zipcode: req.body.ps_property_zipcode,
+//         //ps_property_user_as: req.body.ps_property_user_as,
+//         ps_property_user_as: req.session.active_user_login, //updaing active customer portal buyer/seller/renovator
+//         ps_other_party_fullname: req.body.ps_other_party_fullname,
+//         ps_other_party_emailid: req.body.ps_other_party_emailid,
+//         ps_other_party_invited: req.body.ps_other_party_invited,
+//         ps_property_area: req.body.ps_property_area,
+//         ps_property_bedroom: req.body.ps_property_bedroom,
+//         ps_property_bathroom: req.body.ps_property_bathroom,
+//         ps_additional_note: req.body.ps_additional_note,
+//         ps_property_type: req.body.ps_property_type,
+//         ps_chain_property_id: req.body.ps_chain_property_id,
+//         ps_is_active_user_flag: req.session.active_user_login
+//       });
+//       newProperty
+//         .save()
+//         .then(async (property) => {
+//           console.log('result', property)
+//           if (property) {
+//             await req.files.propertiespic.forEach(element => {
+//               var obj = {
+//                 pps_property_id: property._id,
+//                 pps_property_image_name: element.filename,
+//                 pps_is_active_user_flag: req.session.active_user_login,
+//                 pps_property_image: {
+//                   data: fs.readFileSync(path.join(__dirname + '../../../public/propimg/' + element.filename)),
+//                   contentType: 'image/png'
+//                 }
+//               }
+
+//               PropertiesPictureSchema.create(obj, (err, item) => {
+//                 if (err) {
+//                   console.log(err);
+//                   req.flash('err_msg', "Something went worng please try after some time");
+//                   // res.redirect('/add-property');
+//                 }
+//                 else {
+//                   item.save();
+//                   console.log("file Submitted Successfully");
+//                   req.flash('success_msg', "Properties picture Uploaded Successfully");
+//                   //res.redirect('/add-property');
+//                 }
+//               });
+//             });
+//             await req.files.propertiesplanpic.forEach(e => {
+//               var obj = {
+//                 ppps_property_id: property._id,
+//                 ppps_plan_image_name: e.filename,
+//                 ppps_is_active_user_flag: req.session.active_user_login,
+//                 ppps_plan_image: {
+//                   data: fs.readFileSync(path.join(__dirname + '../../../public/propplanimg/' + e.filename)),
+//                   contentType: 'image/png'
+//                 }
+//               }
+
+//               PropertiesPlanPictureSchema.create(obj, (err, item) => {
+//                 if (err) {
+//                   console.log(err);
+//                   req.flash('err_msg', "Something went worng please try after some time");
+//                   //res.redirect('/add-property');
+//                 }
+//                 else {
+//                   item.save();
+//                   console.log("file Submitted Successfully");
+//                   req.flash('success_msg', "Properties picture Uploaded Successfully");
+//                   // res.redirect('/add-property');
+
+//                 }
+//               });
+
+//             });
+//             //Sending Invitation link to serviceProvider
+//             console.log("Invitation send to service provider", req.body);
+//             // await invite_function(req);
+//             res.redirect("/mydreamhome")
+//           }
+
+//         })
+//         .catch(err => {
+//           console.log(err)
+//           req.flash('err_msg', 'Something went wrong please try after some time!');
+//           res.redirect('/add-property');
+
+//         });
+
+//   });
+
+// });
 /* -------------------------------------------------------------------------------------------------
 GET : fetch or search the service providers data based on name, surname, qualifications,
 location, reviews, ratings and quotations.
@@ -422,6 +586,7 @@ POST : Forget password for customer portal. it will send 6 digit random password
 ------------------------------------------------------------------------------------------------- */
 router.post('/forget-password', function (req, res) {
   console.log("req.body is :", req.body);
+
   CustomerSchema.find({
     'cus_email_id': req.body.cus_email_id,
     //'cus_email_verification_status': 'yes'
@@ -534,111 +699,137 @@ router.get(
 POST : Change Permission api for giving Docs read/write permission to existing serviceProvider.
 ------------------------------------------------------------------------------------------------- */
 router.post('/change-permision', async (req, res) => {
-  console.log('doc id:', req.body.id_element)
+  console.log('doc id:', req.body.doc_id)
+  console.log('checkFlag:', req.body.checkFlag)
+  DocumentPermissionSchema.findOne({ dps_customer_id: req.body.cust_id,dps_service_provider_id:req.body.professionalId,dps_document_id: req.body.doc_id}).then(async (data) => { 
+    console.log('FindData:',data);
+    let permisionFlagDownload='';
+    let permisionFlagView='';
 
-  var idArray = req.body.checked_elem.split(",");
-  var idArray_1 = req.body.checked_elem_1.split(",");
-  // DocumentPermissionSchema 
-  console.log("idArray_1 download", idArray_1);
-  console.log("idArray view", idArray);
-  return;
-  //for (var service_provider_id of idArray) {
-  var obj = {};
-  idArray.forEach(async function (service_provider_id, i) {
-    if (service_provider_id && idArray_1[i]) {
-      console.log('AAAA')
-      Object.assign(obj,
-        {
-          dps_view_permission: "yes",
-          dps_download_permission: 'yes',
-          dps_customer_id: req.body.cust_id,
-          dps_service_provider_id: service_provider_id,
-          dps_document_id: req.body.id_element,
-          dps_is_active_user_flag: req.session.active_user_login
+     if(data){
 
-        });
+      if(req.body.checkFlag === 'viewaction'){
+        permisionFlagDownload= data.dps_download_permission;
+        permisionFlagView= req.body.viewFlag;
+        console.log('view....action...')
+      }else{
+        permisionFlagView= data.dps_view_permission;
+        permisionFlagDownload= req.body.downloadFlag;
+        console.log('download....action...')
+  
+      }
+      
+      console.log('permisionFlagView:',permisionFlagView);
+      console.log('permisionFlagDownload:',permisionFlagDownload);
 
-    } else if (service_provider_id) {
-      console.log('BBBBB')
-      Object.assign(obj,
-        {
-          dps_view_permission: "yes",
-          dps_download_permission: 'no',
-          dps_customer_id: req.body.cust_id,
-          dps_service_provider_id: service_provider_id,
-          dps_document_id: req.body.id_element,
-          dps_is_active_user_flag: req.session.active_user_login
+      
+      DocumentPermissionSchema.updateOne({'dps_service_provider_id': req.body.professionalId,'dps_customer_id':req.body.cust_id,'dps_document_id':req.body.doc_id }, { $set: { dps_view_permission: permisionFlagView,dps_download_permission:permisionFlagDownload,dps_is_active_user_flag:req.session.active_user_login }}, { upsert: true }, function (err) {
+        if (err) {
+          console.log("err is :", err);
+          req.flash('err_msg', 'Something went wrong.');
+          //res.redirect('/forget-password')
+        } else {
+          res.send({
+            message:'Permission Updated !!'
+          })
+        }
+      })
 
-        });
+     }else{
+      let permissionObject = {
+        dps_view_permission: req.body.viewFlag,
+        dps_download_permission: req.body.downloadFlag,
+        dps_customer_id: req.body.cust_id,
+        dps_service_provider_id: req.body.professionalId,
+        dps_document_id: req.body.doc_id,
+        dps_is_active_user_flag: req.session.active_user_login
+      }
+      console.log('permissionObject:',permissionObject);
+          var docPermissionSave = new DocumentPermissionSchema(permissionObject)
+          docPermissionSave.save().then(async (data) => {
+            console.log('docPermissionSave:',data)
+            res.send({
+              message:'Permission Updated !!'
+            })
+          }).catch(err => {
+            console.log(err)
+            req.flash('err_msg', 'Something went wrong please try after some time!');
+          });
+     }
+  });
 
-    } else if (idArray_1[i]) {
-      console.log('CCCCC')
-      Object.assign(obj,
-        {
-          dps_view_permission: "no",
-          dps_download_permission: 'yes',
-          dps_customer_id: req.body.cust_id,
-          dps_service_provider_id: service_provider_id,
-          dps_document_id: req.body.id_element,
-          dps_is_active_user_flag: req.session.active_user_login
 
-        });
 
-    }
-    console.log('obj', obj)
 
-    var docPermissionSave = new DocumentPermissionSchema(Obj)
-    docPermissionSave.save().then(async (data) => {
-      console.log(data)
-    }).catch(err => {
-      console.log(err)
-      req.flash('err_msg', 'Something went wrong please try after some time!');
+  // var idArray = req.body.checked_elem.split(",");
+  // var idArray_1 = req.body.checked_elem_1.split(",");
+  // // DocumentPermissionSchema 
+  // console.log("idArray_1 download", idArray_1);
+  // console.log("idArray view", idArray);
+  // PermisionHelper.changePermision(req.body);
+  // var obj = {};
+  // idArray.forEach(async function (service_provider_id, i) {
+  //   if (service_provider_id && idArray_1[i]) {
+  //     console.log('AAAA')
+  //     Object.assign(obj,
+  //       {
+  //         dps_view_permission: "yes",
+  //         dps_download_permission: 'yes',
+  //         dps_customer_id: req.body.cust_id,
+  //         dps_service_provider_id: service_provider_id,
+  //         dps_document_id: req.body.id_element,
+  //         dps_is_active_user_flag: req.session.active_user_login
 
-    });
-  })
-  //}
+  //       });
+
+  //   } else if (service_provider_id) {
+  //     console.log('BBBBB')
+  //     Object.assign(obj,
+  //       {
+  //         dps_view_permission: "yes",
+  //         dps_download_permission: 'no',
+  //         dps_customer_id: req.body.cust_id,
+  //         dps_service_provider_id: service_provider_id,
+  //         dps_document_id: req.body.id_element,
+  //         dps_is_active_user_flag: req.session.active_user_login
+
+  //       });
+
+  //   } else if (idArray_1[i]) {
+  //     console.log('CCCCC')
+  //     Object.assign(obj,
+  //       {
+  //         dps_view_permission: "no",
+  //         dps_download_permission: 'yes',
+  //         dps_customer_id: req.body.cust_id,
+  //         dps_service_provider_id: service_provider_id,
+  //         dps_document_id: req.body.id_element,
+  //         dps_is_active_user_flag: req.session.active_user_login
+
+  //       });
+
+  //   }
+  //   console.log('obj', obj)
+
+  //   var docPermissionSave = new DocumentPermissionSchema(obj)
+  //   docPermissionSave.save().then(async (data) => {
+  //     console.log(data)
+  //   }).catch(err => {
+  //     console.log(err)
+  //     req.flash('err_msg', 'Something went wrong please try after some time!');
+
+  //   });
+  // })
 })
 
 /* -------------------------------------------------------------------------------------------------
 POST : Hire now api is used for hiring professional(service_provider) for particular property.
 ------------------------------------------------------------------------------------------------- */
 
-
-const addTaskHelper = require("./addTask");
 router.post("/hire-now", async (req, res) => {
   var err_msg = null;
   var success_msg = null;
-  var totalInstruction = 0;
-  //const { errors, isValid } = validateAddPhase(req.body);
-  console.log("instruction req is", req.body.instruction.length);
-  console.log("instruction req is Type", typeof (req.body.instruction));
-  console.log("req.session.active_user_login", req.session.active_user_login);
-
-  if (req.session.active_user_login == 'renovator') {
-    totalInstruction = 8;
-  } else {
-    totalInstruction = 6;
-  }
-  console.log("totalInstruction:", totalInstruction);
-
-  if (req.body.instruction.length >= totalInstruction && typeof (req.body.instruction) != 'string') {
-    req.body.instruction.forEach(async function (instruction, i) {
-      var user_id = req.body.user_id;
-      var propertyId = req.body.propertyId;
-      var pps_professional_id = req.body.serviceProviderId;
-      var pps_phase_name = instruction;
-      var pps_phase_start_date = req.body.startDate[i]
-      var pps_phase_end_date = req.body.endDate[i]
-      var pps_is_active_user_flag = req.session.active_user_login;
-      let addPhaseResponce = await addTaskHelper.save_addPhase(propertyId, pps_professional_id, pps_phase_name, pps_phase_start_date, pps_phase_end_date, pps_is_active_user_flag);
-      console.log('addPhaseResponce A:', addPhaseResponce)
-    })
-
-    // } else {
-    //   req.flash('err_msg', errors.instruction);
-    //   return res.redirect('/professionals-hirenow');
-    // }
-
+  if (req.body.propertyId && req.body.serviceProviderId) {
     const hirenow = new PropertyProfessionalSchema({
       pps_user_id: req.body.user_id,
       pps_property_id: req.body.propertyId,
@@ -654,9 +845,9 @@ router.post("/hire-now", async (req, res) => {
         console.log("server response is :", hireprofessional);
         //res.redirect('/add-task');
         return res.send({
-          'success_msg': 'Saved successfully',
+          'success_msg': ' Professional Hired successfully',
           'status': true,
-          'redirect': '/add-task'
+          'redirect': '/professionals-hirenow'
         });
       })
       .catch(err => {
@@ -668,31 +859,104 @@ router.post("/hire-now", async (req, res) => {
     //console.log("server validation error is:", errors);
     //req.flash('err_msg', errors.instruction);
     return res.send({
-      'err_msg': 'Please add all phases',
+      'err_msg': 'Please add all input fild',
       'status': false
     });
   }
 });
+
+// router.post("/hire-now", async (req, res) => {
+//   var err_msg = null;
+//   var success_msg = null;
+//   var totalInstruction = 0;
+//   //const { errors, isValid } = validateAddPhase(req.body);
+//   console.log("instruction req is", req.body.instruction.length);
+//   console.log("instruction req is Type", typeof (req.body.instruction));
+//   console.log("req.session.active_user_login", req.session.active_user_login);
+
+//   if (req.session.active_user_login == 'renovator') {
+//     totalInstruction = 8;
+//   } else {
+//     totalInstruction = 6;
+//   }
+//   console.log("totalInstruction:", totalInstruction);
+
+//   if (req.body.instruction.length >= totalInstruction && typeof (req.body.instruction) != 'string') {
+//     req.body.instruction.forEach(async function (instruction, i) {
+//       var user_id = req.body.user_id;
+//       var propertyId = req.body.propertyId;
+//       var pps_professional_id = req.body.serviceProviderId;
+//       var pps_phase_name = instruction;
+//       var pps_phase_start_date = req.body.startDate[i]
+//       var pps_phase_end_date = req.body.endDate[i]
+//       var pps_is_active_user_flag = req.session.active_user_login;
+//       let addPhaseResponce = await addTaskHelper.save_addPhase(propertyId, pps_professional_id, pps_phase_name, pps_phase_start_date, pps_phase_end_date, pps_is_active_user_flag);
+//       console.log('addPhaseResponce A:', addPhaseResponce)
+//     })
+
+//     // } else {
+//     //   req.flash('err_msg', errors.instruction);
+//     //   return res.redirect('/professionals-hirenow');
+//     // }
+
+//     const hirenow = new PropertyProfessionalSchema({
+//       pps_user_id: req.body.user_id,
+//       pps_property_id: req.body.propertyId,
+//       pps_service_provider_id: req.body.serviceProviderId,
+//       pps_pofessional_budget: req.body.pps_pofessional_budget,
+//       pps_exptected_delivery_date: req.body.pps_exptected_delivery_date,
+//       pps_is_active_user_flag: req.session.active_user_login
+//       //pps_status: req.body.pps_status,//TODO:we need to save later
+//     });
+//     hirenow
+//       .save()
+//       .then(async hireprofessional => {
+//         console.log("server response is :", hireprofessional);
+//         //res.redirect('/add-task');
+//         return res.send({
+//           'success_msg': 'Saved successfully',
+//           'status': true,
+//           'redirect': '/add-task'
+//         });
+//       })
+//       .catch(err => {
+//         console.log(err)
+//         req.flash('err_msg', 'Something went wrong please try again later.');
+//       });
+
+//   } else {
+//     //console.log("server validation error is:", errors);
+//     //req.flash('err_msg', errors.instruction);
+//     return res.send({
+//       'err_msg': 'Please add all phases',
+//       'status': false
+//     });
+//   }
+// });
 
 /* -------------------------------------------------------------------------------------------------
 POST : Add Task api is used for adding task(or Phase) details and sharing these details to hired professional.
 ------------------------------------------------------------------------------------------------- */
 
 router.post("/addTask", (req, res) => {
-  console.log("addTask post:", req.body);
-
   if (req.body.Phase == '' || req.body.Phase == undefined) {
-    res.json({ status: 0, message: 'Task Add Failed' });
+    return res.send({
+      'err_msg': 'Please Select All Fild',
+      'status': false,
+      'redirect': '/professionals-hirenow'
+    });
 
 
   } else {
+    console.log("addTask post:", req.body);
     const newTask = new PropertyProfessinoalTaskSchema({
-      ppts_property_id: req.body.Property,
+      ppts_property_id: req.body.property_id,
       ppts_user_id: req.session.user_id,
       ppts_task_name: req.body.task_name,
-      ppts_assign_to: req.body.Professionals,
+      ppts_assign_to: req.body.professionalId,
       ppts_due_date: req.body.duedate,
-      ppts_phase_id: req.body.Phase,
+      //ppts_phase_id: req.body.Phase,
+      ppts_phase_name: req.body.Phase,
       ppts_is_active_user_flag: req.session.active_user_login,
       ppts_note: req.body.notes
     });
@@ -700,8 +964,22 @@ router.post("/addTask", (req, res) => {
       .save()
       .then(addedTask => {
         console.log("server response is addedTask :", addedTask);
-        res.json({ status: 1, message: 'Task Add Successfully', data: addedTask });
-        // res.redirect("/professionals-hirenow")
+        //res.json({ status: 1, message: 'Task Add Successfully', data: addedTask });
+        if (addedTask) {
+
+          return res.send({
+            'success_msg': 'Task Add Successfully',
+            'status': true,
+            'redirect': '/professionals-hirenow'
+          });
+          // res.redirect("/professionals-hirenow")
+        } else {
+          return res.send({
+            'err_msg': 'Please Add Task',
+            'status': false,
+            'redirect': '/professionals-hirenow'
+          });
+        }
       })
       .catch(err => {
         console.log(err)
@@ -716,36 +994,36 @@ router.post("/addTask", (req, res) => {
 POST : Raise a complaints api is used for raising a complaints to particular service provider along with note and status.
 ------------------------------------------------------------------------------------------------- */
 
-router.post('/raise-a-complaint', (req, res) => {
+// router.post('/raise-a-complaint', (req, res) => {
 
-  console.log("request coming from server is :", req.body.image);
+//   console.log("request coming from server is :", req.body.image);
 
-  return;
+//   return;
 
-  const newComplaint = new ComplaintsSchema({
-    //should be mongodb generated id
-    //coms_id :
-    coms_complaint_for: req.body.sevice_provider_id,
-    coms_complaint_code: "C" + uuidv4(),//need to generate in  like C123 auto increment feature
-    coms_property_id: req.body.property_id,
-    coms_user_id: req.body.cust_user_id,
-    //coms_complaint_by: 'customer' //need to check if complaints filed via customer portal or service_provider portal
-    coms_complaint_subject: req.body.coms_complaint_subject,
-    coms_complaint_note: req.body.coms_complaint_note,
-    coms_is_active_user_flag: req.session.active_user_login
-    //coms_complaint_file: req.body.coms_complaint_file,
-  });
-  newComplaint.save().then(complaints => {
-    console.log("Getting respose from db is :", complaints);
-    req.flash('success_msg', 'complaints raise succesfully');
-    //res.redirect("/")
-    res.json({ complaints: complaints, 'message': 'complaint sent successfully' })
-  }).catch(err => {
-    console.log(err)
-    req.flash('err_msg', 'Something went wrong please try again later.');
-    res.redirect('/professionals-hirenow');
-  });
-});
+//   const newComplaint = new ComplaintsSchema({
+//     //should be mongodb generated id
+//     //coms_id :
+//     coms_complaint_for: req.body.sevice_provider_id,
+//     coms_complaint_code: "C" + uuidv4(),//need to generate in  like C123 auto increment feature
+//     coms_property_id: req.body.property_id,
+//     coms_user_id: req.body.cust_user_id,
+//     //coms_complaint_by: 'customer' //need to check if complaints filed via customer portal or service_provider portal
+//     coms_complaint_subject: req.body.coms_complaint_subject,
+//     coms_complaint_note: req.body.coms_complaint_note,
+//     coms_is_active_user_flag: req.session.active_user_login
+//     //coms_complaint_file: req.body.coms_complaint_file,
+//   });
+//   newComplaint.save().then(complaints => {
+//     console.log("Getting respose from db is :", complaints);
+//     req.flash('success_msg', 'complaints raise succesfully');
+//     //res.redirect("/")
+//     res.json({ complaints: complaints, 'message': 'complaint sent successfully' })
+//   }).catch(err => {
+//     console.log(err)
+//     req.flash('err_msg', 'Something went wrong please try again later.');
+//     res.redirect('/professionals-hirenow');
+//   });
+// });
 
 /* -------------------------------------------------------------------------------------------------
 POST : message api is used for sending message to service_provider or vice-versa.
@@ -781,43 +1059,58 @@ router.post('/message', (req, res) => {
 Function : invite function is used for sending invite to service_provider via gmail. this function will call while adding new Property in customer Portal
 ------------------------------------------------------------------------------------------------- */
 
-function invite_function(req) {
+function invite_function(req, saved_property) {
   console.log("Request getting from server :", req.body);
-  var smtpTransport = nodemailer.createTransport({
-    // port: 25,
-    // host: 'localhost',
-    tls: {
-      rejectUnauthorized: false
-    },
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    service: 'Gmail',
-    auth: {
-      user: 'golearning4@gmail.com',
-      pass: 'Krishna#1997',
-    }
-  });
-  const mailOptions = {
-    to: req.body.ps_other_party_emailid,
-    from: 'golearning4@gmail.com',
-    subject: 'Invitaion letter from Relai',
+  const payload = { id: saved_property._id, property_name: saved_property.ps_property_name }; // Create Token Payload
 
-    text: 'Dear \n' + req.body.ps_other_party_fullname + '\n\n' + 'you are invited in Relai plateform.\n\n' +
+  // Sign Token
+  jwt.sign(
+    payload,
+    keys.secretOrKey,
+    { expiresIn: 3600 * 60 * 60 },
+    (err, token) => {
+      console.log("Sending Secret token along with customer request", token);
+      var smtpTransport = nodemailer.createTransport({
+        // port: 25,
+        // host: 'localhost',
+        tls: {
+          rejectUnauthorized: false
+        },
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        service: 'Gmail',
+        auth: {
+          user: 'golearning4@gmail.com',
+          pass: 'Krishna#1997',
+        }
+      });
+      const mailOptions = {
+        to: req.body.ps_other_party_emailid,
+        from: 'golearning4@gmail.com',
+        subject: 'Invitaion letter from Relai',
 
-      'We suggest you to please visit our Relai plateform and create your account as a service_provider \n' + 'Here is the registration link: http://' + req.headers.host + '/intro' + '\n\n' +
-      'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
-  };
-  smtpTransport.sendMail(mailOptions, function (err) {
-    if (err) {
-      console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
-      res.redirect('/add-property')
-    } else {
-      //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
-      // res.redirect('/add-property')
+        text: 'Dear \n' + req.body.ps_other_party_fullname + '\n\n' + 'you are invited in Relai plateform.\n\n' +
+
+          'We suggest you to please visit our Relai plateform and create your account as a service_provider \n' + 'Here is the registration link: http://' + req.headers.host + '/intro' + '\n\n' +
+
+          'After Successfull registeration please copy this SecretToken in your dashboard section \n' + token + '\n\n' +
+
+          'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+      };
+      smtpTransport.sendMail(mailOptions, function (err) {
+        if (err) {
+          console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+          res.redirect('/add-property')
+        } else {
+          //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
+          // res.redirect('/add-property')
+        }
+      });
     }
-  });
+  );
 }
+
 /* -------------------------------------------------------------------------------------------------
 POST : update-customer-profile is used for updating customer profile data 
 ------------------------------------------------------------------------------------------------- */
@@ -854,6 +1147,123 @@ router.post('/update-customer-profile', (req, res) => {
     });
 });
 
+router.post('/new-raise-a-complaint', isCustomer, (req, res) => {
+  upload(req, res, async () => {
+    let newComplaint = '';
+    const obj = JSON.parse(JSON.stringify(req.body));
+    const files = JSON.parse(JSON.stringify(req.files));
+    const ComplaintId = 'C-' + uuidv4().slice(uuidv4().length - 4).toUpperCase();;
+
+    if (Object.keys(files).length === 0) {
+      newComplaint = new ComplaintsSchema({
+        coms_complaint_for: req.body.coms_complaint_for,
+        coms_complaint_help: req.body.coms_complaint_help,
+        coms_complaint_code: ComplaintId,//need to generate in  like C123 auto increment feature
+        coms_property_id: req.body.property_id,
+        coms_user_id: req.body.cust_user_id,
+        coms_complaint_subject: req.body.coms_complaint_subject,
+        coms_complaint_note: req.body.coms_complaint_note,
+        coms_is_active_user_flag: req.session.active_user_login,
+        coms_user_name: req.session.name,
+        coms_user_profile_img: req.session.imagename
+      });
+
+      newComplaintDetails = new ComplaintDetailsSchema({
+        comsd_id: ComplaintId,
+        comsd_user_id: req.body.user_id,
+        comsd_complaint_note: req.body.coms_complaint_note,
+        comsd_user_name: req.session.name,
+        comsd_user_profile_img: req.session.imagename,
+        comsd_complaint_filename: '',
+      });
+
+    } else {
+      newComplaint = new ComplaintsSchema({
+        coms_complaint_for: req.body.coms_complaint_for,
+        coms_complaint_help: req.body.coms_complaint_help,
+        coms_complaint_code: ComplaintId,//need to generate in  like C123 auto increment feature
+        coms_property_id: req.body.property_id,
+        coms_user_id: req.body.cust_user_id,
+        coms_complaint_subject: req.body.coms_complaint_subject,
+        coms_complaint_note: req.body.coms_complaint_note,
+        coms_is_active_user_flag: req.session.active_user_login,
+        coms_user_name: req.session.name,
+        coms_user_profile_img: req.session.imagename,
+        coms_complaint_filename: req.files.complaint_file[0].filename,
+        coms_complaint_file: {
+          data: fs.readFileSync(path.join(__dirname + '../../../public/complaintFile/' + req.files.complaint_file[0].filename)),
+          contentType: 'image/png'
+        }
+      });
+
+      newComplaintDetails = new ComplaintDetailsSchema({
+        comsd_id: ComplaintId,
+        comsd_user_id: req.body.user_id,
+        comsd_complaint_note: req.body.coms_complaint_note,
+        comsd_user_name: req.session.name,
+        comsd_user_profile_img: req.session.imagename,
+        comsd_complaint_filename: req.files.complaint_file[0].filename,
+        comsd_complaint_file: {
+          data: fs.readFileSync(path.join(__dirname + '../../../public/complaintFile/' + req.files.complaint_file[0].filename)),
+          contentType: 'image/png'
+        }
+      });
+
+    }
+    console.log('newComplaint:', newComplaint)
+    newComplaint.save().then(complaints => {
+      newComplaintDetails.save().then(complaintsDetails => {
+        res.send({ status: true, message: 'You complaint submited successfully, we will review and connect with you soon !!' })
+      });
+    }).catch(err => {
+      console.log(err)
+      res.send({ status: false, 'message': 'Something went wrong please try again later.' })
+    });
+  });
+
+});
+
+
+router.post('/complaint-details-discussion', isCustomer, (req, res) => {
+  upload(req, res, async () => {
+    let newComplaintDetails = '';
+    const obj = JSON.parse(JSON.stringify(req.body));
+    const files = JSON.parse(JSON.stringify(req.files));
+    //const ComplaintId = 'C-'+uuidv4().slice(uuidv4().length - 4).toUpperCase();;
+
+    if (Object.keys(files).length === 0) {
+      newComplaintDetails = new ComplaintDetailsSchema({
+        comsd_id: req.body.complaintID,
+        comsd_user_id: req.session.user_id,
+        comsd_complaint_note: req.body.coms_complaint_note,
+        comsd_user_name: req.session.name,
+        comsd_user_profile_img: req.session.imagename,
+        comsd_complaint_filename: '',
+      });
+
+    } else {
+      newComplaintDetails = new ComplaintDetailsSchema({
+        comsd_id: req.body.complaintID,
+        comsd_user_id: req.session.user_id,
+        comsd_complaint_note: req.body.coms_complaint_note,
+        comsd_user_name: req.session.name,
+        comsd_user_profile_img: req.session.imagename,
+        comsd_complaint_filename: req.files.complaint_file[0].filename,
+        comsd_complaint_file: {
+          data: fs.readFileSync(path.join(__dirname + '../../../public/complaintFile/' + req.files.complaint_file[0].filename)),
+          contentType: 'image/png'
+        }
+      });
+    }
+    console.log('newComplaintDetails:', newComplaintDetails)
+    newComplaintDetails.save().then(complaintsDetails => {
+      res.send({ status: true, message: 'You complaint submited successfully, we will review and connect with you soon !!' })
+    }).catch(err => {
+      console.log(err)
+      res.send({ status: false, 'message': 'Something went wrong please try again later.' })
+    });
+  });
+});
 
 
 module.exports = router;

@@ -1,16 +1,60 @@
 <%- include('dashboard_header')-%>
   <%- include('edit-profile-model')-%>
+
+    <!-- The Modal -->
+    <div class="modal fade permission-modal" id="removeProfessionalModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h2 class="modal-title text-center">Hired Professional</h2>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="todo-list-table">
+              <table class="table table-responsive">
+                <thead>
+                  <tr>
+                    <th style="width:88%"></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><label class="check-permission"><img src="images/recent-user-1.png">
+                        Krishna Rajput, <span>
+                          Developer
+                        </span>
+                      </label></td>
+                    <td>
+                      <a href=""><img src="images/delete-icon.png"></a>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-cancel" data-dismiss="modal">Refresh</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- The Modal -->
     <div class="modal permission-modal fade " id="ComplaintModal">
       <div class="modal-dialog">
         <div class="modal-content">
           <form name="complaintform" id="complent_form" method="post" action="" enctype="multipart/form-data">
-            <!-- Modal Header -->
+
             <div class="modal-header text-center">
               <h2 class="modal-title w-100">Raise a Complaint</h2>
             </div>
 
-            <!-- Modal body -->
             <div class="modal-body">
               <select class="form-control selectBox " style="height:55px" id="coms_complaint_for"
                 name="coms_complaint_for" data-rule-required="true" data-msg-required="professional is required!">
@@ -70,28 +114,7 @@
                   </a>
                 </div>
             </div>
-            <ul class="dashboard-nav">
-              <li>
-                <a href="/dashboard"><img class="act-img" src="images/dashboard-active.png"><img
-                    src="images/dashboard.png"> Dashboard</a>
-              </li>
-              <li>
-                <a href="/track-your-progress"><img class="act-img" src="images/track-active.png"><img
-                    src="images/track.png"> Track your progress</a>
-              </li>
-              <li>
-                <a href="/professionals"><img class="act-img" src="images/professionals-active.png"><img
-                    src="images/professionals.png"> Professionals</a>
-              </li>
-              <li class="active">
-                <a href="/mydreamhome"><img class="act-img" src="images/dreamhome-active.png"><img
-                    src="images/dreamhome.png"> My dream home</a>
-              </li>
-              <li>
-                <a href="/mydreamhome-details-to-dos"><img class="act-img" src="images/to-do-list-active.png"><img
-                    src="images/to-do-list.png"> To do list</a>
-              </li>
-            </ul>
+            <%- include('sidebar')-%>
           </div>
           <div class="col-sm-12 col-lg-10">
             <div class="dashboard-inner">
@@ -139,7 +162,8 @@
                               <div class="float-left">
                                 <h3 class="apartment-name"><a href="#">
                                     <%=propertyDetailData[0].ps_property_name%><span>(
-                                        <%=propertyDetailData[0].ps_unique_code%> )</span>
+                                        <%=propertyDetailData[0].ps_unique_code%> )
+                                      </span>
                                   </a></h3>
                                 <div class="location-part"><a href="#"><img src="images/location.png">
                                     <%=propertyDetailData[0].ps_property_address%>,
@@ -149,25 +173,51 @@
                               <div class="img-fix3 float-right">
                                 <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>"><img
                                     src="images/chat.png"></a>
-                                <a href="#" data-toggle="modal" data-target="#ComplaintModal"><img
+                                    <!-- #ComplaintModal -->
+                                    <!-- data-toggle="modal" data-target="#MyComplaintModal" -->
+                                <a href="javascript:void(0)" data-property_id="<%=propertyDetailData[0]._id%>" class="propertyComplaintModal"><img
                                     src="images/help.png"></a>
                               </div>
                             </div>
                             <div class="recent-img">
                               <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
                                 class="mr-10" src="images/recent-user-3.png">
-                              <a href="#" class="add-professionals">Add/Remove Professionals</a>
+                              <!-- <a href="#" class="add-professionals">Add/Remove Professionals</a> -->
+                              <div class="profile-dropdown">
+                                <a href="#" class="add-professionals">Add/Remove Professionals</a>
+                                <div class="professional-dropdown">
+                                  <a href="/professionals">Add
+                                    Professionals</a>
+                                  <a href="#" data-toggle="modal" data-target="#removeProfessionalModal">Remove
+                                    Professionals</a>
+                                </div>
+                              </div>
+
+
                             </div>
                             <div class="apartment-details-full">
+                               
+
+                               <% var i=0; var startDate=''; var endDate='';  propertyDetailData[0].ps_phase_array.forEach(function(phaserow){%>
+                                <%if(i==0){ %>
+                                  <%
+                                  startDate = phaserow.start_date; 
+                                  %>
+                                <%}%>
+                                <% if(propertyDetailData[0].ps_phase_array.length-1 == i){ %>
+                                    <% endDate = phaserow.end_date%>
+                                <%}%>
+                                <% i++; });%>
+
                               <div class="row">
                                 <div class="col-6 col-sm-6 col-lg-3">
                                   <div class="start-date">
-                                    <p>Start date<br><b>5 Apr, 2019</b></p>
+                                    <p>Start date<br><b><%=moment(startDate).format("Do MMM, YYYY"); %></b></p>
                                   </div>
                                 </div>
                                 <div class="col-6 col-sm-6 col-lg-3">
-                                  <div class="start-date">
-                                    <p>End date<br><b>1 Dec, 2021</b></p>
+                                  <div class="start-date 1 Dec, 2021">
+                                    <p>End date<br><b><%=moment(endDate).format("Do MMM, YYYY"); %></b></p>
                                   </div>
                                 </div>
                                 <div class="col-6 col-sm-6 col-lg-3">
@@ -324,13 +374,13 @@
                           <h3 class="text-center">To-do list</h3>
                         </a>
                       </div>
-                      <%if(phaseDetailObj.length==0){%>
+                      <%if(TaskDetailObj.length==0){%>
                         <h6>Phases Not Found</h6>
                         <%}else{%>
-                          <%phaseDetailObj.forEach(function(row,i){%>
+                          <%TaskDetailObj.forEach(function(row,i){%>
                             <label class="check-todos">
                               <p>
-                                <%=row.pps_phase_name%><a href="/mydreamhome-details-to-dos"><img
+                                <%=row.ppts_task_name%><a href="/mydreamhome-details-to-dos"><img
                                       src="images/recent-user-1.png"></a><em>
                                     <%=row.professionalName%>
                                   </em>
@@ -539,24 +589,35 @@
       });
     </script>
     <script>
-  //   $(document).ready(function () {
-  //   $("a[href$='mydreamhome-details-docs']").click(function(e){
-  //     var propertyId = $(this).attr('value');
-
-  //     $.ajax({
-  //       type: "POST",
-  //       data: 'propertyId=' + propertyId,
-  //       url: "/api/getPropertyById",
-  //       cache: false,
-  //       success: function (data) {
-  //         //$("#results").append(data);
-  //         return;
-  //         console.log(data);
-  //       }
-  //     });
-
-  //   });
-  // });
+    $(document).ready(function () {
+    $(".propertyComplaintModal").click(function(e){
+      $("#MyComplaintModal #coms_complaint_help").html("<option selected value='Property Related Enquiry'>Property Related Enquiry</option>");
+      var propertyId = $(this).data('property_id');
+      $("#MyComplaintModal #property_id").html("<option selected value='"+propertyId+"'></option>");
+      $.ajax({
+            type: "GET",
+            url: "/service-provider-by-property",
+            data:{
+              property_id:propertyId
+            },
+            cache: false,
+            success: function (html) {
+              $('#MyComplaintModal').modal('show');
+              $('#coms_complaint_for').show();
+              console.log('result:', html)
+              var htmlData = '';
+              htmlData += '<option value="">Select Professional</option>';
+              if (html.hireServiceData.length > 0) {
+                $.each(html.hireServiceData, function (i, data) {
+                  console.log('val:', data[0])
+                    htmlData += '<option value="' + data[0]._id + '">' + data[0].sps_fullname + '</option>';
+                });
+              }
+              $('#coms_complaint_for').html(htmlData);
+            }
+        });
+    });
+  });
     </script>
     <script type="text/javascript">
       $('#complaintform').validate({
@@ -589,6 +650,7 @@
         }
       });  
     </script>
+     <%- include('my-script') -%>
     </body>
 
 
