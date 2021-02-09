@@ -137,11 +137,11 @@
                             <div class="carousel-inner">
                               <% var c=0; propertyImage.forEach(function(rows){%>
                                 <%if(c==0){%>
-                                  <div class="carousel-item active">
+                                  <div class="carousel-item-fix carousel-item active">
                                     <img src="propimg/<%=rows.pps_property_image_name%>" alt="">
                                   </div>
                                   <%}else{%>
-                                    <div class="carousel-item ">
+                                    <div class="carousel-item-fix carousel-item ">
                                       <img src="propimg/<%=rows.pps_property_image_name%>" alt="">
                                     </div>
                                     <%}%>
@@ -173,10 +173,10 @@
                               <div class="img-fix3 float-right">
                                 <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>"><img
                                     src="images/chat.png"></a>
-                                    <!-- #ComplaintModal -->
-                                    <!-- data-toggle="modal" data-target="#MyComplaintModal" -->
-                                <a href="javascript:void(0)" data-property_id="<%=propertyDetailData[0]._id%>" class="propertyComplaintModal"><img
-                                    src="images/help.png"></a>
+                                <!-- #ComplaintModal -->
+                                <!-- data-toggle="modal" data-target="#MyComplaintModal" -->
+                                <a href="javascript:void(0)" data-property_id="<%=propertyDetailData[0]._id%>"
+                                  class="propertyComplaintModal"><img src="images/help.png"></a>
                               </div>
                             </div>
                             <div class="recent-img">
@@ -196,43 +196,46 @@
 
                             </div>
                             <div class="apartment-details-full">
-                               
 
-                               <% var i=0; var startDate=''; var endDate='';  propertyDetailData[0].ps_phase_array.forEach(function(phaserow){%>
+
+                              <% var i=0; var startDate='' ; var endDate='' ;
+                                propertyDetailData[0].ps_phase_array.forEach(function(phaserow){%>
                                 <%if(i==0){ %>
-                                  <%
-                                  startDate = phaserow.start_date; 
-                                  %>
-                                <%}%>
-                                <% if(propertyDetailData[0].ps_phase_array.length-1 == i){ %>
-                                    <% endDate = phaserow.end_date%>
-                                <%}%>
-                                <% i++; });%>
+                                  <% startDate=phaserow.start_date; %>
+                                    <%}%>
+                                      <% if(propertyDetailData[0].ps_phase_array.length-1==i){ %>
+                                        <% endDate=phaserow.end_date%>
+                                          <%}%>
+                                            <% i++; });%>
 
-                              <div class="row">
-                                <div class="col-6 col-sm-6 col-lg-3">
-                                  <div class="start-date">
-                                    <p>Start date<br><b><%=moment(startDate).format("Do MMM, YYYY"); %></b></p>
-                                  </div>
-                                </div>
-                                <div class="col-6 col-sm-6 col-lg-3">
-                                  <div class="start-date 1 Dec, 2021">
-                                    <p>End date<br><b><%=moment(endDate).format("Do MMM, YYYY"); %></b></p>
-                                  </div>
-                                </div>
-                                <div class="col-6 col-sm-6 col-lg-3">
-                                  <div class="start-date">
-                                    <p>Area<br><b>
-                                        <%=propertyDetailData[0].ps_property_area%> sq.ft.
-                                      </b></p>
-                                  </div>
-                                </div>
-                                <div class="col-6 col-sm-6 col-lg-3">
-                                  <div class="start-date">
-                                    <p>Duration<br><b>2 year</b></p>
-                                  </div>
-                                </div>
-                              </div>
+                                              <div class="row">
+                                                <div class="col-6 col-sm-6 col-lg-3">
+                                                  <div class="start-date">
+                                                    <p>Start date<br><b>
+                                                        <%=moment(startDate).format("Do MMM, YYYY"); %>
+                                                      </b></p>
+                                                  </div>
+                                                </div>
+                                                <div class="col-6 col-sm-6 col-lg-3">
+                                                  <div class="start-date 1 Dec, 2021">
+                                                    <p>End date<br><b>
+                                                        <%=moment(endDate).format("Do MMM, YYYY"); %>
+                                                      </b></p>
+                                                  </div>
+                                                </div>
+                                                <div class="col-6 col-sm-6 col-lg-3">
+                                                  <div class="start-date">
+                                                    <p>Area<br><b>
+                                                        <%=propertyDetailData[0].ps_property_area%> sq.ft.
+                                                      </b></p>
+                                                  </div>
+                                                </div>
+                                                <div class="col-6 col-sm-6 col-lg-3">
+                                                  <div class="start-date">
+                                                    <p>Duration<br><b>2 year</b></p>
+                                                  </div>
+                                                </div>
+                                              </div>
                             </div>
                             <div class="apartment-details-full">
                               <div class="row">
@@ -589,16 +592,16 @@
       });
     </script>
     <script>
-    $(document).ready(function () {
-    $(".propertyComplaintModal").click(function(e){
-      $("#MyComplaintModal #coms_complaint_help").html("<option selected value='Property Related Enquiry'>Property Related Enquiry</option>");
-      var propertyId = $(this).data('property_id');
-      $("#MyComplaintModal #property_id").html("<option selected value='"+propertyId+"'></option>");
-      $.ajax({
+      $(document).ready(function () {
+        $(".propertyComplaintModal").click(function (e) {
+          $("#MyComplaintModal #coms_complaint_help").html("<option selected value='Property Related Enquiry'>Property Related Enquiry</option>");
+          var propertyId = $(this).data('property_id');
+          $("#MyComplaintModal #property_id").html("<option selected value='" + propertyId + "'></option>");
+          $.ajax({
             type: "GET",
             url: "/service-provider-by-property",
-            data:{
-              property_id:propertyId
+            data: {
+              property_id: propertyId
             },
             cache: false,
             success: function (html) {
@@ -610,14 +613,14 @@
               if (html.hireServiceData.length > 0) {
                 $.each(html.hireServiceData, function (i, data) {
                   console.log('val:', data[0])
-                    htmlData += '<option value="' + data[0]._id + '">' + data[0].sps_fullname + '</option>';
+                  htmlData += '<option value="' + data[0]._id + '">' + data[0].sps_fullname + '</option>';
                 });
               }
               $('#coms_complaint_for').html(htmlData);
             }
+          });
         });
-    });
-  });
+      });
     </script>
     <script type="text/javascript">
       $('#complaintform').validate({
@@ -650,8 +653,8 @@
         }
       });  
     </script>
-     <%- include('my-script') -%>
-    </body>
+    <%- include('my-script') -%>
+      </body>
 
 
-    </html>
+      </html>

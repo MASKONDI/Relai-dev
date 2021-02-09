@@ -1633,7 +1633,7 @@ a.btn.btn-new {
         width: 100%;
         border-radius: 10px;
 }
-.carousel-item img{
+.carousel-item-fix img{
     max-height: 250px;
     min-height: 250px;
     border-radius: 10px;
