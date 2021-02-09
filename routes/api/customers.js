@@ -42,6 +42,7 @@ const MessageSchema = require("../../models/message");
 const addTaskHelper = require("./addTask");
 const PropertyHelper = require("./propertyDetail");
 const PermisionHelper = require("./permision");
+const propertyProfesshionalHelper = require('./propertyProfessionalDetails')
 var isCustomer = auth.isCustomer;
 // <<<<<<< HEAD
 // router.post('/filterPropertyAdress', (req, res) => {
@@ -1266,4 +1267,22 @@ router.post('/complaint-details-discussion', isCustomer, (req, res) => {
 });
 
 
+router.post('/removeProfesshional', isCustomer, async(req, res) => {
+   console.log("remove prof id" ,req.body.professhional_id,req.session)
+  var responce=await propertyProfesshionalHelper.removeProfessionalById(req.body.professhional_id,req.session.property_id)
+  if(responce){
+    return res.send({
+      'success_msg': 'Professional Removed successfully..',
+      'status': true,
+      
+    });
+  }else{
+    return res.send({
+      'err_msg': 'Something Wrong.',
+      'status': false,
+      
+    });
+  }
+  console.log("responce:",responce)
+})
 module.exports = router;

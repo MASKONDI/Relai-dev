@@ -1008,17 +1008,31 @@ app.post('/getPropertyDetail', isCustomer, async (req, res) => {
 
 
 })
+function tallyVotes(AllhiredProfeshnoal) {
+  return AllhiredProfeshnoal.reduce((total, i) => total + i.pps_pofessional_budget, 0);
+}
 app.get('/mydreamhome-details', isCustomer, async (req, res) => {
   //console.log("current session is", req.session);
   //console.log('session property id', req.query.id);
   req.session.pagename = 'mydreamhome';
   if (req.query.id) {
     req.session.property_id = req.query.id
-    let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_property_id: req.query.id, pps_is_active_user_flag: req.session.active_user_login });
+    let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({$and:[{pps_user_id: req.session.user_id, pps_property_id: req.query.id, pps_is_active_user_flag: req.session.active_user_login }]});
     let allDocumentUploadByCustmer = await CustomerUploadDocsSchema.find({ $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.query.id, cuds_is_active_user_flag: req.session.active_user_login }] });
-    //console.log('AllhiredProfeshnoal',AllhiredProfeshnoal);
+    console.log('AllhiredProfeshnoal',AllhiredProfeshnoal);
     let serviceProvArray = [];
+    let totalcostArray=[];
+    var cost = 0;
+    var to = [1,2,3]
+    //var sumof = tallyVotes(to)
+    var sumof = tallyVotes(AllhiredProfeshnoal)
+    console.log("sumofsumofsumofsumofsumof",sumof)
     for (var k of AllhiredProfeshnoal) {
+      var costs = parseInt(k.pps_pofessional_budget);
+      
+        cost = await parseInt(cost+costs);
+        
+        totalcostArray.push(cost)
       await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
         //console.log('allProfeshnoals:', allProfeshnoals)
         await MessageSchema.find({
@@ -1042,6 +1056,8 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
               const t = JSON.parse(object_as_string);
               t.sms_message = '...';
               //let temps = await i
+             
+              
               serviceProvArray.push(t)
             }
           }
@@ -1090,7 +1106,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
           })
 
         }
-
+        
         err_msg = req.flash('err_msg');
         success_msg = req.flash('success_msg');
         res.render('mydreamhome-details', {
@@ -1101,6 +1117,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
           hiredProfeshnoalList: serviceProvArray,
           allDocumentUploadByCustmer: allDocumentUploadByCustmer,
           TaskDetailObj: todoArray,
+          totalcost:sumof,
           moment: moment
 
         });
