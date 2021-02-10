@@ -36,537 +36,163 @@
             </div>
 
             <div class="dashboard-inner">
-              <form method="post" action="" id="propertyform" enctype="multipart/form-data">
+              <div class="firstFormDive">
+                <!--first form dive open-->
+                <form method="post" action="" id="propertyform1">
+                  <!--form1-->
+                  <!-- <form method="post" action="" id="propertyform" enctype="multipart/form-data"> -->
 
-                <% if(typeof err_msg!='undefined' ){ %>
-                  <span class="error_validate flash_msg" style="color: red;">
-                    <%= err_msg %>
-                  </span>
-                  <% }%>
-                    <% if(typeof success_msg!='undefined' ){ %>
-                      <span class="succ_flash_msg" style="color: green;">
-                        <%= success_msg %>
-                      </span>
-                      <% }%>
+                  <% if(typeof err_msg!='undefined' ){ %>
+                    <span class="error_validate flash_msg" style="color: red;">
+                      <%= err_msg %>
+                    </span>
+                    <% }%>
+                      <% if(typeof success_msg!='undefined' ){ %>
+                        <span class="succ_flash_msg" style="color: green;">
+                          <%= success_msg %>
+                        </span>
+                        <% }%>
 
 
-                        <div class="property-form">
+                          <div class="property-form">
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-12">
+                                <div class="property-step">
+                                  <p>STEP 1</p>
+                                  <h6>Add property name & address</h6>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="input-field">
+                              <div class="row">
+                                <div class="col-sm-12 col-lg-4"><input type="text"
+                                    class="form-control property-form-control-size-fix " id="propertyname"
+                                    placeholder="Hilton Avenue Flat*" name="ps_property_name" data-rule-required="true"
+                                    data-msg-required="Property Name is required!" value=""></div>
+                                <div class="col-sm-12 col-lg-4"><input type="text"
+                                    class="form-control property-form-control-size-fix " id="address"
+                                    placeholder="Enter address*" name="ps_property_address" data-rule-required="true"
+                                    data-msg-required="Property address is required!" value=""></div>
+                                <!-- <div class="col-sm-12 col-lg-4"><input type="text"
+                                  class="form-control property-form-control-size-fix " id="city" placeholder="City*"
+                                  name="ps_property_city_id" data-rule-required="true"
+                                  data-msg-required="City is required!" value=""> -->
+                                <div class="col-sm-12 col-lg-4">
+                                  <div class="form-group  ">
+                                    <select name="country" class="countries form-control selectBox5" id="countryId"
+                                      required style="height: 48px;" data-rule-required="true"
+                                      data-msg-required="Country name is required!">
+                                      <option value="">Select Country*</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-4">
+                                <div class="form-group  ">
+                                  <select name="state" class="states form-control selectBox5" id="stateId" required
+                                    style="height: 48px;" data-rule-required="true"
+                                    data-msg-required="County name is required!">
+                                    <option value="">Select County*</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-sm-12 col-lg-4">
+                                <div class="form-group ">
+                                  <select name="city" class="cities form-control selectBox5" id="cityId" required
+                                    style="height: 48px;" data-rule-required="true"
+                                    data-msg-required="City name is required!">
+                                    <option value="">Select City*</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-sm-12 col-lg-4"><input type="text"
+                                  class="form-control property-form-control-size-fix " id="zipcode"
+                                  placeholder="Zip code*" name="ps_property_zipcode" data-rule-required="true"
+                                  data-msg-required="Zipcode is required!" value="">
+                              </div>
+                            </div>
+                          </div>
                           <div class="row">
                             <div class="col-sm-12 col-lg-12">
                               <div class="property-step">
-                                <p>STEP 1</p>
-                                <h6>Add property name & address</h6>
+                                <p>STEP 2</p>
+                                <h6>Add other party</h6>
                               </div>
                             </div>
                           </div>
                           <div class="input-field">
                             <div class="row">
                               <div class="col-sm-12 col-lg-4"><input type="text"
-                                  class="form-control property-form-control-size-fix " id="propertyname"
-                                  placeholder="Hilton Avenue Flat*" name="ps_property_name" data-rule-required="true"
-                                  data-msg-required="Property Name is required!" value=""></div>
-                              <div class="col-sm-12 col-lg-4"><input type="text"
-                                  class="form-control property-form-control-size-fix " id="address"
-                                  placeholder="Enter address*" name="ps_property_address" data-rule-required="true"
-                                  data-msg-required="Property address is required!" value=""></div>
-                              <!-- <div class="col-sm-12 col-lg-4"><input type="text"
-                                  class="form-control property-form-control-size-fix " id="city" placeholder="City*"
-                                  name="ps_property_city_id" data-rule-required="true"
-                                  data-msg-required="City is required!" value=""> -->
-                              <div class="col-sm-12 col-lg-4">
-                                <div class="form-group  ">
-                                  <select name="country" class="countries form-control selectBox5" id="countryId"
-                                    required style="height: 48px;" data-rule-required="true"
-                                    data-msg-required="Country name is required!">
-                                    <option value="">Select Country*</option>
-                                  </select>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-sm-12 col-lg-4">
-                              <div class="form-group  ">
-                                <select name="state" class="states form-control selectBox5" id="stateId" required
-                                  style="height: 48px;" data-rule-required="true"
-                                  data-msg-required="County name is required!">
-                                  <option value="">Select County*</option>
-                                </select>
-                              </div>
-                            </div>
-                            <div class="col-sm-12 col-lg-4">
-                              <div class="form-group ">
-                                <select name="city" class="cities form-control selectBox5" id="cityId" required
-                                  style="height: 48px;" data-rule-required="true"
-                                  data-msg-required="City name is required!">
-                                  <option value="">Select City*</option>
-                                </select>
-                              </div>
-                            </div>
-                            <div class="col-sm-12 col-lg-4"><input type="text"
-                                class="form-control property-form-control-size-fix " id="zipcode"
-                                placeholder="Zip code*" name="ps_property_zipcode" data-rule-required="true"
-                                data-msg-required="Zipcode is required!" value="">
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-sm-12 col-lg-12">
-                            <div class="property-step">
-                              <p>STEP 2</p>
-                              <h6>Add other party</h6>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="input-field">
-                          <div class="row">
-                            <div class="col-sm-12 col-lg-4"><input type="text"
-                                class="form-control property-form-control-size-fix " id="buyer" placeholder="Full Name*"
-                                name="ps_other_party_fullname" value="" data-rule-required="true"
-                                data-msg-required="Full Name is required!"></div>
+                                  class="form-control property-form-control-size-fix " id="buyer"
+                                  placeholder="Full Name*" name="ps_other_party_fullname" value=""
+                                  data-rule-required="true" data-msg-required="Full Name is required!"></div>
 
-                            <div class="col-sm-12 col-lg-4"><input type="email"
-                                class="form-control property-form-control-size-fix " id="emailaddress"
-                                placeholder="Enter email address*" name="ps_other_party_emailid" value=""
-                                data-rule-required="true" data-msg-required="Email is required!">
-                            </div>
-                            <div class="col-sm-12 col-lg-4">
-                              <!-- <input type="text"
+                              <div class="col-sm-12 col-lg-4"><input type="email"
+                                  class="form-control property-form-control-size-fix " id="emailaddress"
+                                  placeholder="Enter email address*" name="ps_other_party_emailid" value=""
+                                  data-rule-required="true" data-msg-required="Email is required!">
+                              </div>
+                              <div class="col-sm-12 col-lg-4">
+                                <!-- <input type="text"
                                 class="form-control property-form-control-size-fix " id="emailaddress"
                                 placeholder="buyer/seller/renovator" name="ps_other_party_user_as" value=""
                                 data-rule-required="true" data-msg-required="buyer/seller/renovator is required!"> -->
-                              <select name="property_type" class=" form-control selectBox5" id="property_type" required
-                                style="height: 48px;" data-rule-required="true"
-                                data-msg-required="Property Type is required!">
-                                <option value="">Select Property Type</option>
-                                <option value="New">New</option>
-                                <option value="Chainproperty">Chainproperty</option>
-                              </select>
-                            </div>
+                                <select name="property_type" class=" form-control selectBox5" id="property_type"
+                                  required style="height: 48px;" data-rule-required="true"
+                                  data-msg-required="Property Type is required!">
+                                  <option value="">Select Property Type</option>
+                                  <option value="New">New</option>
+                                  <option value="Chain">Chain</option>
+                                </select>
+                              </div>
 
+                            </div>
                           </div>
-                        </div>
 
-                        <div class="row">
-                          <div class="col-sm-12 col-lg-12">
-                            <div class="property-step">
-                              <p>STEP 3</p>
-                              <h6>Add property details</h6>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="input-field">
-                          <div class="row">
-                            <div class="col-sm-12 col-lg-4"><input type="text"
-                                class="form-control property-form-control-size-fix " id="area"
-                                placeholder="Area(sq. ft.)*" name="ps_property_area" data-rule-required="true"
-                                data-msg-required="Area is required!" value="">
-                            </div>
-                            <div class="col-sm-12 col-lg-4"><input type="text"
-                                class="form-control property-form-control-size-fix " id="bedroom" placeholder="Bedroom*"
-                                name="ps_property_bedroom" data-rule-required="true"
-                                data-msg-required="Bedroom field is required!" value=""></div>
-                            <div class="col-sm-12 col-lg-4"><input type="text"
-                                class="form-control property-form-control-size-fix " id="bedroom2"
-                                placeholder="Bathroom*" name="ps_property_bathroom" data-rule-required="true"
-                                data-msg-required="Bathroom  field is required!" value=""></div>
-                          </div>
                           <div class="row">
                             <div class="col-sm-12 col-lg-12">
-                              <textarea type="text" style=" width:95%"
-                                class="form-control property-form-control-size-fix " id="address"
-                                name="ps_additional_note" value="" placeholder="Additional notes(if any)"></textarea>
+                              <div class="property-step">
+                                <p>STEP 3</p>
+                                <h6>Add property details</h6>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-sm-12 col-lg-12">
-                            <div class="property-step">
-                              <p>STEP 4</p>
-                              <h6>Add Phases</h6>
+                          <div class="input-field">
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-4"><input type="number"
+                                  class="form-control property-form-control-size-fix " id="area"
+                                  placeholder="Area(sq. ft.)*" name="ps_property_area" data-rule-required="true"
+                                  data-msg-required="Area is required!" value="">
+                              </div>
+                              <div class="col-sm-12 col-lg-4"><input type="number"
+                                  class="form-control property-form-control-size-fix " id="bedroom"
+                                  placeholder="Bedroom*" name="ps_property_bedroom" data-rule-required="true"
+                                  data-msg-required="Bedroom field is required!" value=""></div>
+                              <div class="col-sm-12 col-lg-4"><input type="number"
+                                  class="form-control property-form-control-size-fix " id="bedroom2"
+                                  placeholder="Bathroom*" name="ps_property_bathroom" data-rule-required="true"
+                                  data-msg-required="Bathroom  field is required!" value=""></div>
                             </div>
-                          </div>
-
-                        </div>
-                        <%if(session.active_user_login=='renovator'){ %>
-                          <div class="row">
-                            <div class="col-sm-12 col-lg-12">
-                              <div class="home-section">
-                                <div class="row">
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="property-text-fix">
-                                        <label>Phase1</label>
-                                        <input type="read-only" class="form-control form-control-size-fix " id="Phase1"
-                                          style="border-radius:10px; width:85%" placeholder="Strategic definition"
-                                          name="Phase[]" value="Strategic definition" readonly>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="proprty-text-fix">
-                                        <label>Start Date</label>
-                                        <input type="date" class="form-control form-control-size-fix " id="startDate1"
-                                          style="border-radius:10px; width:85%" placeholder="Start Date"
-                                          name="startDate[]" required>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="property-text-fix">
-                                        <label>End Date</label>
-                                        <input type="date" class="form-control form-control-size-fix " id="endDate1"
-                                          style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                          name="endDate[]" required>
-
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <!-- <div class="">
-                                  <div class="">
-
-                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
-                                      Phase</a>
-                                  </div>
-                                </div> -->
-                                </div>
-                                <div class="row divv"></div>
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-12">
+                                <textarea type="text" style=" width:95%"
+                                  class="form-control property-form-control-size-fix " id="address"
+                                  name="ps_additional_note" value="" placeholder="Additional notes(if any)"></textarea>
                               </div>
                             </div>
                           </div>
                           <div class="row">
                             <div class="col-sm-12 col-lg-12">
-                              <div class="home-section">
-                                <div class="row">
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="property-text-fix">
-                                        <label>Phase2</label>
-                                        <input type="read-only" class="form-control form-control-size-fix " id="Phase2"
-                                          style="border-radius:10px; width:85%" placeholder="Preparation and Briefing"
-                                          name="Phase[]" value="Preparation and Briefing" readonly>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="proprty-text-fix">
-                                        <label>Start Date</label>
-                                        <input type="date" class="form-control form-control-size-fix " id="startDate1"
-                                          style="border-radius:10px; width:85%" placeholder="Start Date"
-                                          name="startDate[]" required>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="property-text-fix">
-                                        <label>End Date</label>
-                                        <input type="date" class="form-control form-control-size-fix " id="endDate1"
-                                          style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                          name="endDate[]" required>
-
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <!-- <div class="">
-                                  <div class="">
-
-                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
-                                      Phase</a>
-                                  </div>
-                                </div> -->
-                                </div>
-                                <div class="row divv"></div>
+                              <div class="property-step">
+                                <p>STEP 4</p>
+                                <h6>Add Phases</h6>
                               </div>
                             </div>
+
                           </div>
-                          <div class="row">
-                            <div class="col-sm-12 col-lg-12">
-                              <div class="home-section">
-                                <div class="row">
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="property-text-fix">
-                                        <label>Phase3</label>
-                                        <input type="read-only" class="form-control form-control-size-fix " id="Phase3"
-                                          style="border-radius:10px; width:85%" placeholder="Spatial coordination"
-                                          name="Phase[]" value="Spatial coordination" readonly>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="proprty-text-fix">
-                                        <label>Start Date</label>
-                                        <input type="date" class="form-control form-control-size-fix " id="startDate1"
-                                          style="border-radius:10px; width:85%" placeholder="Start Date"
-                                          name="startDate[]" required>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="property-text-fix">
-                                        <label>End Date</label>
-                                        <input type="date" class="form-control form-control-size-fix " id="endDate1"
-                                          style="border-radius:10px; width: 85%;" placeholder="End Date[]"
-                                          name="endDate" required>
-
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <!-- <div class="">
-                                  <div class="">
-
-                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
-                                      Phase</a>
-                                  </div>
-                                </div> -->
-                                </div>
-                                <div class="row divv"></div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-sm-12 col-lg-12">
-                              <div class="home-section">
-                                <div class="row">
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="property-text-fix">
-                                        <label>Phase4</label>
-                                        <input type="read-only" class="form-control form-control-size-fix " id="Phase4"
-                                          style="border-radius:10px; width:85%" placeholder="Technical Design"
-                                          name="Phase[]" value="Technical Design" readonly>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="proprty-text-fix">
-                                        <label>Start Date</label>
-                                        <input type="date" class="form-control form-control-size-fix " id="startDate1"
-                                          style="border-radius:10px; width:85%" placeholder="Start Date"
-                                          name="startDate[]" required>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="property-text-fix">
-                                        <label>End Date</label>
-                                        <input type="date" class="form-control form-control-size-fix " id="endDate1"
-                                          style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                          name="endDate[]" required>
-
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <!-- <div class="">
-                                  <div class="">
-
-                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
-                                      Phase</a>
-                                  </div>
-                                </div> -->
-                                </div>
-                                <div class="row divv"></div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-sm-12 col-lg-12">
-                              <div class="home-section">
-                                <div class="row">
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="property-text-fix">
-                                        <label>Phase5</label>
-                                        <input type="read-only" class="form-control form-control-size-fix " id="Phase5"
-                                          style="border-radius:10px; width:85%"
-                                          placeholder="Manifacturing and Construction" name="Phase[]"
-                                          value="Manifacturing and Construction" readonly>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="proprty-text-fix">
-                                        <label>Start Date</label>
-                                        <input type="date" class="form-control form-control-size-fix " id="startDate1"
-                                          style="border-radius:10px; width:85%" placeholder="Start Date"
-                                          name="startDate" required>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="property-text-fix">
-                                        <label>End Date</label>
-                                        <input type="date" class="form-control form-control-size-fix " id="endDate1"
-                                          style="border-radius:10px; width: 85%;" placeholder="End Date" name="endDate"
-                                          required>
-
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <!-- <div class="">
-                                  <div class="">
-
-                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
-                                      Phase</a>
-                                  </div>
-                                </div> -->
-                                </div>
-                                <div class="row divv"></div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-sm-12 col-lg-12">
-                              <div class="home-section">
-                                <div class="row">
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="property-text-fix">
-                                        <label>Phase6</label>
-                                        <input type="read-only" class="form-control form-control-size-fix " id="Pahse6"
-                                          style="border-radius:10px; width:85%" placeholder="Concept Design"
-                                          name="Pahse[]" value="Concept Design" readonly>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="proprty-text-fix">
-                                        <label>Start Date</label>
-                                        <input type="date" class="form-control form-control-size-fix " id="startDate1"
-                                          style="border-radius:10px; width:85%" placeholder="Start Date"
-                                          name="startDate[]" required>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="property-text-fix">
-                                        <label>End Date</label>
-                                        <input type="date" class="form-control form-control-size-fix " id="endDate1"
-                                          style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                          name="endDate[]" required>
-
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <!-- <div class="">
-                                  <div class="">
-
-                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
-                                      Phase</a>
-                                  </div>
-                                </div> -->
-                                </div>
-                                <div class="row divv"></div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-sm-12 col-lg-12">
-                              <div class="home-section">
-                                <div class="row">
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="property-text-fix">
-                                        <label>Phase7</label>
-                                        <input type="read-only" class="form-control form-control-size-fix " id="Phase7"
-                                          style="border-radius:10px; width:85%" placeholder="Handover" name="Phase[]"
-                                          value="Handover" readonly>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="proprty-text-fix">
-                                        <label>Start Date</label>
-                                        <input type="date" class="form-control form-control-size-fix " id="startDate1"
-                                          style="border-radius:10px; width:85%" placeholder="Start Date"
-                                          name="startDate[]" required>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="property-text-fix">
-                                        <label>End Date</label>
-                                        <input type="date" class="form-control form-control-size-fix " id="endDate1"
-                                          style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                          name="endDate[]" required>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <!-- <div class="">
-                                  <div class="">
-
-                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
-                                      Phase</a>
-                                  </div>
-                                </div> -->
-                                </div>
-                                <div class="row divv"></div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-sm-12 col-lg-12">
-                              <div class="home-section">
-                                <div class="row">
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="property-text-fix">
-                                        <label>Phase8</label>
-                                        <input type="read-only" class="form-control form-control-size-fix " id="Phase8"
-                                          style="border-radius:10px; width:85%" placeholder="Use" name="Phase[]"
-                                          value="Use" readonly>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="proprty-text-fix">
-                                        <label>Start Date</label>
-                                        <input type="date" class="form-control form-control-size-fix " id="startDate1"
-                                          style="border-radius:10px; width:85%" placeholder="Start Date"
-                                          name="startDate[]" required>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-12 col-lg-4">
-                                    <div class="property-input-box">
-                                      <div class="property-text-fix">
-                                        <label>End Date</label>
-                                        <input type="date" class="form-control form-control-size-fix " id="endDate1"
-                                          style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                          name="endDate[]" required>
-
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <!-- <div class="">
-                                  <div class="">
-
-                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
-                                      Phase</a>
-                                  </div>
-                                </div> -->
-                                </div>
-                                <div class="row divv"></div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <%} else { %>
+                          <%if(session.active_user_login=='renovator'){ %>
                             <div class="row">
                               <div class="col-sm-12 col-lg-12">
                                 <div class="home-section">
@@ -575,10 +201,10 @@
                                       <div class="property-input-box">
                                         <div class="property-text-fix">
                                           <label>Phase1</label>
-                                          <input type="read-only" name="Phase[]"
-                                            class="form-control form-control-size-fix " id="Instruction"
-                                            style="border-radius:10px; width:85%" placeholder="Instruction"
-                                            value="Instruction" readonly>
+                                          <input type="read-only" class="form-control form-control-size-fix "
+                                            id="Phase1" style="border-radius:10px; width:85%"
+                                            placeholder="Strategic definition" name="Phase[]"
+                                            value="Strategic definition" readonly>
                                         </div>
                                       </div>
                                     </div>
@@ -604,18 +230,17 @@
                                       </div>
                                     </div>
                                     <!-- <div class="">
-                                    <div class="">
-  
-                                      <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
-                                        Phase</a>
-                                    </div>
-                                  </div> -->
+                                  <div class="">
+
+                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                      Phase</a>
                                   </div>
-                                  <!-- <div class="row divv"></div> -->
+                                </div> -->
+                                  </div>
+                                  <div class="row divv"></div>
                                 </div>
                               </div>
                             </div>
-
                             <div class="row">
                               <div class="col-sm-12 col-lg-12">
                                 <div class="home-section">
@@ -626,8 +251,8 @@
                                           <label>Phase2</label>
                                           <input type="read-only" class="form-control form-control-size-fix "
                                             id="Phase2" style="border-radius:10px; width:85%"
-                                            placeholder="Pre-exchange Submitting the contract" name="Phase[]"
-                                            value="Pre-exchange Submitting the contract" readonly>
+                                            placeholder="Preparation and Briefing" name="Phase[]"
+                                            value="Preparation and Briefing" readonly>
                                         </div>
                                       </div>
                                     </div>
@@ -653,18 +278,17 @@
                                       </div>
                                     </div>
                                     <!-- <div class="">
-                                    <div class="">
-  
-                                      <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
-                                        Phase</a>
-                                    </div>
-                                  </div> -->
+                                  <div class="">
+
+                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                      Phase</a>
+                                  </div>
+                                </div> -->
                                   </div>
                                   <div class="row divv"></div>
                                 </div>
                               </div>
                             </div>
-
                             <div class="row">
                               <div class="col-sm-12 col-lg-12">
                                 <div class="home-section">
@@ -675,8 +299,8 @@
                                           <label>Phase3</label>
                                           <input type="read-only" class="form-control form-control-size-fix "
                                             id="Phase3" style="border-radius:10px; width:85%"
-                                            placeholder="Prior to exchange of contracts" name="Phase[]"
-                                            value="Prior to exchange of contracts" readonly>
+                                            placeholder="Spatial coordination" name="Phase[]"
+                                            value="Spatial coordination" readonly>
                                         </div>
                                       </div>
                                     </div>
@@ -695,25 +319,24 @@
                                         <div class="property-text-fix">
                                           <label>End Date</label>
                                           <input type="date" class="form-control form-control-size-fix " id="endDate1"
-                                            style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                            name="endDate[]" required>
+                                            style="border-radius:10px; width: 85%;" placeholder="End Date[]"
+                                            name="endDate" required>
 
                                         </div>
                                       </div>
                                     </div>
                                     <!-- <div class="">
-                                    <div class="">
-  
-                                      <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
-                                        Phase</a>
-                                    </div>
-                                  </div> -->
+                                  <div class="">
+
+                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                      Phase</a>
+                                  </div>
+                                </div> -->
                                   </div>
                                   <div class="row divv"></div>
                                 </div>
                               </div>
                             </div>
-
                             <div class="row">
                               <div class="col-sm-12 col-lg-12">
                                 <div class="home-section">
@@ -724,104 +347,7 @@
                                           <label>Phase4</label>
                                           <input type="read-only" class="form-control form-control-size-fix "
                                             id="Phase4" style="border-radius:10px; width:85%"
-                                            placeholder="Exchange of contracts" name="Phase[]"
-                                            value="Exchange of contracts" readonly>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="col-sm-12 col-lg-4">
-                                      <div class="property-input-box">
-                                        <div class="proprty-text-fix">
-                                          <label>Start Date</label>
-                                          <input type="date" class="form-control form-control-size-fix " id="startDate1"
-                                            style="border-radius:10px; width:85%" placeholder="Start Date"
-                                            name="startDate[]" required>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="col-sm-12 col-lg-4">
-                                      <div class="property-input-box">
-                                        <div class="property-text-fix">
-                                          <label>End Date</label>
-                                          <input type="date" class="form-control form-control-size-fix " id="endDate1"
-                                            style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                            name="endDate[]" required>
-
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <!-- <div class="">
-                                    <div class="">
-  
-                                      <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
-                                        Phase</a>
-                                    </div>
-                                  </div> -->
-                                  </div>
-                                  <div class="row divv"></div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="row">
-                              <div class="col-sm-12 col-lg-12">
-                                <div class="home-section">
-                                  <div class="row">
-                                    <div class="col-sm-12 col-lg-4">
-                                      <div class="property-input-box">
-                                        <div class="property-text-fix">
-                                          <label>Phase5</label>
-                                          <input type="read-only" class="form-control form-control-size-fix "
-                                            id="Phase5" style="border-radius:10px; width:85%" placeholder="Completion"
-                                            name="Phase[]" value="Completion" readonly>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="col-sm-12 col-lg-4">
-                                      <div class="property-input-box">
-                                        <div class="proprty-text-fix">
-                                          <label>Start Date</label>
-                                          <input type="date" class="form-control form-control-size-fix " id="startDate1"
-                                            style="border-radius:10px; width:85%" placeholder="Start Date"
-                                            name="startDate[]" required>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="col-sm-12 col-lg-4">
-                                      <div class="property-input-box">
-                                        <div class="property-text-fix">
-                                          <label>End Date</label>
-                                          <input type="date" class="form-control form-control-size-fix " id="endDate1"
-                                            style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                            name="endDate[]" required>
-
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <!-- <div class="">
-                                    <div class="">
-  
-                                      <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
-                                        Phase</a>
-                                    </div>
-                                  </div> -->
-                                  </div>
-                                  <div class="row divv"></div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="row">
-                              <div class="col-sm-12 col-lg-12">
-                                <div class="home-section">
-                                  <div class="row">
-                                    <div class="col-sm-12 col-lg-4">
-                                      <div class="property-input-box">
-                                        <div class="property-text-fix">
-                                          <label>Phase6</label>
-                                          <input type="read-only" class="form-control form-control-size-fix "
-                                            id="Phase6" style="border-radius:10px; width:85%"
-                                            placeholder="Post-Completion" name="Phase[]" value="Post-Completion"
+                                            placeholder="Technical Design" name="Phase[]" value="Technical Design"
                                             readonly>
                                         </div>
                                       </div>
@@ -848,194 +374,705 @@
                                       </div>
                                     </div>
                                     <!-- <div class="">
+                                  <div class="">
+
+                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                      Phase</a>
+                                  </div>
+                                </div> -->
+                                  </div>
+                                  <div class="row divv"></div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-12">
+                                <div class="home-section">
+                                  <div class="row">
+                                    <div class="col-sm-12 col-lg-4">
+                                      <div class="property-input-box">
+                                        <div class="property-text-fix">
+                                          <label>Phase5</label>
+                                          <input type="read-only" class="form-control form-control-size-fix "
+                                            id="Phase5" style="border-radius:10px; width:85%"
+                                            placeholder="Manifacturing and Construction" name="Phase[]"
+                                            value="Manifacturing and Construction" readonly>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-4">
+                                      <div class="property-input-box">
+                                        <div class="proprty-text-fix">
+                                          <label>Start Date</label>
+                                          <input type="date" class="form-control form-control-size-fix " id="startDate1"
+                                            style="border-radius:10px; width:85%" placeholder="Start Date"
+                                            name="startDate" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-4">
+                                      <div class="property-input-box">
+                                        <div class="property-text-fix">
+                                          <label>End Date</label>
+                                          <input type="date" class="form-control form-control-size-fix " id="endDate1"
+                                            style="border-radius:10px; width: 85%;" placeholder="End Date"
+                                            name="endDate" required>
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!-- <div class="">
+                                  <div class="">
+
+                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                      Phase</a>
+                                  </div>
+                                </div> -->
+                                  </div>
+                                  <div class="row divv"></div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-12">
+                                <div class="home-section">
+                                  <div class="row">
+                                    <div class="col-sm-12 col-lg-4">
+                                      <div class="property-input-box">
+                                        <div class="property-text-fix">
+                                          <label>Phase6</label>
+                                          <input type="read-only" class="form-control form-control-size-fix "
+                                            id="Pahse6" style="border-radius:10px; width:85%"
+                                            placeholder="Concept Design" name="Pahse[]" value="Concept Design" readonly>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-4">
+                                      <div class="property-input-box">
+                                        <div class="proprty-text-fix">
+                                          <label>Start Date</label>
+                                          <input type="date" class="form-control form-control-size-fix " id="startDate1"
+                                            style="border-radius:10px; width:85%" placeholder="Start Date"
+                                            name="startDate[]" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-4">
+                                      <div class="property-input-box">
+                                        <div class="property-text-fix">
+                                          <label>End Date</label>
+                                          <input type="date" class="form-control form-control-size-fix " id="endDate1"
+                                            style="border-radius:10px; width: 85%;" placeholder="End Date"
+                                            name="endDate[]" required>
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!-- <div class="">
+                                  <div class="">
+
+                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                      Phase</a>
+                                  </div>
+                                </div> -->
+                                  </div>
+                                  <div class="row divv"></div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-12">
+                                <div class="home-section">
+                                  <div class="row">
+                                    <div class="col-sm-12 col-lg-4">
+                                      <div class="property-input-box">
+                                        <div class="property-text-fix">
+                                          <label>Phase7</label>
+                                          <input type="read-only" class="form-control form-control-size-fix "
+                                            id="Phase7" style="border-radius:10px; width:85%" placeholder="Handover"
+                                            name="Phase[]" value="Handover" readonly>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-4">
+                                      <div class="property-input-box">
+                                        <div class="proprty-text-fix">
+                                          <label>Start Date</label>
+                                          <input type="date" class="form-control form-control-size-fix " id="startDate1"
+                                            style="border-radius:10px; width:85%" placeholder="Start Date"
+                                            name="startDate[]" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-4">
+                                      <div class="property-input-box">
+                                        <div class="property-text-fix">
+                                          <label>End Date</label>
+                                          <input type="date" class="form-control form-control-size-fix " id="endDate1"
+                                            style="border-radius:10px; width: 85%;" placeholder="End Date"
+                                            name="endDate[]" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!-- <div class="">
+                                  <div class="">
+
+                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                      Phase</a>
+                                  </div>
+                                </div> -->
+                                  </div>
+                                  <div class="row divv"></div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-12">
+                                <div class="home-section">
+                                  <div class="row">
+                                    <div class="col-sm-12 col-lg-4">
+                                      <div class="property-input-box">
+                                        <div class="property-text-fix">
+                                          <label>Phase8</label>
+                                          <input type="read-only" class="form-control form-control-size-fix "
+                                            id="Phase8" style="border-radius:10px; width:85%" placeholder="Use"
+                                            name="Phase[]" value="Use" readonly>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-4">
+                                      <div class="property-input-box">
+                                        <div class="proprty-text-fix">
+                                          <label>Start Date</label>
+                                          <input type="date" class="form-control form-control-size-fix " id="startDate1"
+                                            style="border-radius:10px; width:85%" placeholder="Start Date"
+                                            name="startDate[]" required>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-4">
+                                      <div class="property-input-box">
+                                        <div class="property-text-fix">
+                                          <label>End Date</label>
+                                          <input type="date" class="form-control form-control-size-fix " id="endDate1"
+                                            style="border-radius:10px; width: 85%;" placeholder="End Date"
+                                            name="endDate[]" required>
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!-- <div class="">
+                                  <div class="">
+
+                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                      Phase</a>
+                                  </div>
+                                </div> -->
+                                  </div>
+                                  <div class="row divv"></div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <%} else { %>
+                              <div class="row">
+                                <div class="col-sm-12 col-lg-12">
+                                  <div class="home-section">
+                                    <div class="row">
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="property-text-fix">
+                                            <label>Phase1</label>
+                                            <input type="read-only" name="Phase[]"
+                                              class="form-control form-control-size-fix " id="Instruction"
+                                              style="border-radius:10px; width:85%" placeholder="Instruction"
+                                              value="Instruction" readonly>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="proprty-text-fix">
+                                            <label>Start Date</label>
+                                            <input type="date" class="form-control form-control-size-fix "
+                                              id="startDate1" style="border-radius:10px; width:85%"
+                                              placeholder="Start Date" name="startDate[]" required>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="property-text-fix">
+                                            <label>End Date</label>
+                                            <input type="date" class="form-control form-control-size-fix " id="endDate1"
+                                              style="border-radius:10px; width: 85%;" placeholder="End Date"
+                                              name="endDate[]" required>
+
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- <div class="">
                                     <div class="">
   
                                       <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
                                         Phase</a>
                                     </div>
                                   </div> -->
+                                    </div>
+                                    <!-- <div class="row divv"></div> -->
                                   </div>
-                                  <div class="row divv"></div>
                                 </div>
                               </div>
+
+                              <div class="row">
+                                <div class="col-sm-12 col-lg-12">
+                                  <div class="home-section">
+                                    <div class="row">
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="property-text-fix">
+                                            <label>Phase2</label>
+                                            <input type="read-only" class="form-control form-control-size-fix "
+                                              id="Phase2" style="border-radius:10px; width:85%"
+                                              placeholder="Pre-exchange Submitting the contract" name="Phase[]"
+                                              value="Pre-exchange Submitting the contract" readonly>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="proprty-text-fix">
+                                            <label>Start Date</label>
+                                            <input type="date" class="form-control form-control-size-fix "
+                                              id="startDate1" style="border-radius:10px; width:85%"
+                                              placeholder="Start Date" name="startDate[]" required>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="property-text-fix">
+                                            <label>End Date</label>
+                                            <input type="date" class="form-control form-control-size-fix " id="endDate1"
+                                              style="border-radius:10px; width: 85%;" placeholder="End Date"
+                                              name="endDate[]" required>
+
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- <div class="">
+                                    <div class="">
+  
+                                      <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                        Phase</a>
+                                    </div>
+                                  </div> -->
+                                    </div>
+                                    <div class="row divv"></div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-sm-12 col-lg-12">
+                                  <div class="home-section">
+                                    <div class="row">
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="property-text-fix">
+                                            <label>Phase3</label>
+                                            <input type="read-only" class="form-control form-control-size-fix "
+                                              id="Phase3" style="border-radius:10px; width:85%"
+                                              placeholder="Prior to exchange of contracts" name="Phase[]"
+                                              value="Prior to exchange of contracts" readonly>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="proprty-text-fix">
+                                            <label>Start Date</label>
+                                            <input type="date" class="form-control form-control-size-fix "
+                                              id="startDate1" style="border-radius:10px; width:85%"
+                                              placeholder="Start Date" name="startDate[]" required>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="property-text-fix">
+                                            <label>End Date</label>
+                                            <input type="date" class="form-control form-control-size-fix " id="endDate1"
+                                              style="border-radius:10px; width: 85%;" placeholder="End Date"
+                                              name="endDate[]" required>
+
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- <div class="">
+                                    <div class="">
+  
+                                      <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                        Phase</a>
+                                    </div>
+                                  </div> -->
+                                    </div>
+                                    <div class="row divv"></div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-sm-12 col-lg-12">
+                                  <div class="home-section">
+                                    <div class="row">
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="property-text-fix">
+                                            <label>Phase4</label>
+                                            <input type="read-only" class="form-control form-control-size-fix "
+                                              id="Phase4" style="border-radius:10px; width:85%"
+                                              placeholder="Exchange of contracts" name="Phase[]"
+                                              value="Exchange of contracts" readonly>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="proprty-text-fix">
+                                            <label>Start Date</label>
+                                            <input type="date" class="form-control form-control-size-fix "
+                                              id="startDate1" style="border-radius:10px; width:85%"
+                                              placeholder="Start Date" name="startDate[]" required>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="property-text-fix">
+                                            <label>End Date</label>
+                                            <input type="date" class="form-control form-control-size-fix " id="endDate1"
+                                              style="border-radius:10px; width: 85%;" placeholder="End Date"
+                                              name="endDate[]" required>
+
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- <div class="">
+                                    <div class="">
+  
+                                      <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                        Phase</a>
+                                    </div>
+                                  </div> -->
+                                    </div>
+                                    <div class="row divv"></div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-sm-12 col-lg-12">
+                                  <div class="home-section">
+                                    <div class="row">
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="property-text-fix">
+                                            <label>Phase5</label>
+                                            <input type="read-only" class="form-control form-control-size-fix "
+                                              id="Phase5" style="border-radius:10px; width:85%" placeholder="Completion"
+                                              name="Phase[]" value="Completion" readonly>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="proprty-text-fix">
+                                            <label>Start Date</label>
+                                            <input type="date" class="form-control form-control-size-fix "
+                                              id="startDate1" style="border-radius:10px; width:85%"
+                                              placeholder="Start Date" name="startDate[]" required>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="property-text-fix">
+                                            <label>End Date</label>
+                                            <input type="date" class="form-control form-control-size-fix " id="endDate1"
+                                              style="border-radius:10px; width: 85%;" placeholder="End Date"
+                                              name="endDate[]" required>
+
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- <div class="">
+                                    <div class="">
+  
+                                      <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                        Phase</a>
+                                    </div>
+                                  </div> -->
+                                    </div>
+                                    <div class="row divv"></div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-sm-12 col-lg-12">
+                                  <div class="home-section">
+                                    <div class="row">
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="property-text-fix">
+                                            <label>Phase6</label>
+                                            <input type="read-only" class="form-control form-control-size-fix "
+                                              id="Phase6" style="border-radius:10px; width:85%"
+                                              placeholder="Post-Completion" name="Phase[]" value="Post-Completion"
+                                              readonly>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="proprty-text-fix">
+                                            <label>Start Date</label>
+                                            <input type="date" class="form-control form-control-size-fix "
+                                              id="startDate1" style="border-radius:10px; width:85%"
+                                              placeholder="Start Date" name="startDate[]" required>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="property-text-fix">
+                                            <label>End Date</label>
+                                            <input type="date" class="form-control form-control-size-fix " id="endDate1"
+                                              style="border-radius:10px; width: 85%;" placeholder="End Date"
+                                              name="endDate[]" required>
+
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- <div class="">
+                                    <div class="">
+  
+                                      <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                        Phase</a>
+                                    </div>
+                                  </div> -->
+                                    </div>
+                                    <div class="row divv"></div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-sm-12 col-lg-12">
+                                  <div class="property-btn float-right">
+                                    <button type="submit" class="btn btn-next-info submit_first_form">Next</button>
+                                  </div>
+                                </div>
+                              </div>
+
+
+                </form>
+                <!--form1-->
+              </div><!-- first form div close-->
+              <%}%>
+                <div class="secondFormDiv">
+                  <!--second form dive start prop image-->
+
+                  <form method="post" action="" id="propertyform2" enctype="multipart/form-data">
+                    <!--second form-->
+
+                    <div class="row">
+                      <div class="col-sm-12 col-lg-12">
+                        <div class="property-step">
+                          <p>STEP 5</p>
+                          <h6>Add property pictures</h6>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-sm-12 col-lg-12">
+                        <!-- <form></form> -->
+                        <!-- <form action="/upload-properties-pic" class="form" method="post"enctype="multipart/form-data"> -->
+                        <div class="property-box ">
+
+                          <div class=property-inner-section>
+                            <img src="images/upload-icon.png" id="avtar1">
+                          </div>
+                          <div class="driving-liences-portfolio ">
+                            <p class="Picture_1">Picture 1</p>
+                          </div>
+                          <div class="property-upload">
+                            <!-- <a href="#">Upload</a> -->
+                            <button class="btn btn-upload">Upload</button>
+                          </div>
+                          <span>
+                            <div class="custom-file-input prop_1">
+                              <input type="file" name="propertiespic" class="propertiespic" id="propertiespic1" value=""
+                                required
+                                onchange="document.getElementById('avtar1').src = window.URL.createObjectURL(this.files[0])">
+                              <input type="button">
                             </div>
-                            <%}%>
+                          </span>
+                        </div>
+                        <!-- </form> -->
+                        <!-- <form action="/upload-properties-pic" class="form" method="post"enctype="multipart/form-data"> -->
+                        <div class="property-box  prop_2">
 
-                              <div class="row">
-                                <div class="col-sm-12 col-lg-12">
-                                  <div class="property-step">
-                                    <p>STEP 5</p>
-                                    <h6>Add property pictures</h6>
-                                  </div>
-                                </div>
-                              </div>
+                          <div class=property-inner-section>
+                            <img src="images/upload-icon.png" id="avtar2">
+                          </div>
+                          <div class="driving-liences-portfolio ">
+                            <p CLASS="Picture_2">Picture 2</p>
+                          </div>
+                          <div class="property-upload">
+                            <!-- <a href="#">Upload</a> -->
+                            <button class="btn btn-upload">Upload</button>
+                          </div>
+                          <span>
+                            <div class="custom-file-input">
+                              <input type="file" name="propertiespic" class="propertiespic2" id="propertiespic2"
+                                value=""
+                                onchange="document.getElementById('avtar2').src = window.URL.createObjectURL(this.files[0])">
+                              <input type="button">
+                            </div>
+                          </span>
+                        </div>
+                        <!-- </form> -->
+                        <!-- <form action="/upload-properties-pic" class="form" method="post"enctype="multipart/form-data"> -->
+                        <div class="property-box  prop_3">
 
-                              <div class="row">
-                                <div class="col-sm-12 col-lg-12">
-                                  <!-- <form></form> -->
-                                  <!-- <form action="/upload-properties-pic" class="form" method="post"enctype="multipart/form-data"> -->
-                                  <div class="property-box ">
+                          <div class=property-inner-section>
+                            <img src="images/upload-icon.png" id="avtar3">
+                          </div>
+                          <div class="driving-liences-portfolio ">
+                            <p CLASS="Picture_3">Picture 3</p>
+                          </div>
+                          <div class="property-upload">
+                            <!-- <a href="#">Upload</a> -->
+                            <button class="btn btn-upload">Upload</button>
+                          </div>
+                          <span>
+                            <div class="custom-file-input">
+                              <input type="file" name="propertiespic" value="" class="propertiespic3"
+                                id="propertiespic3"
+                                onchange="document.getElementById('avtar3').src = window.URL.createObjectURL(this.files[0])">
+                              <input type="button">
+                            </div>
+                          </span>
+                        </div>
+                        <!-- </form> -->
+                      </div>
+                    </div>
+                    <input type="hidden" class="img_property_id" name="property_id" value="">
+                    <div class="row">
+                      <div class="col-sm-12 col-lg-12">
+                        <div class="property-btn2">
+                          <button type="submit" class="btn btn-next-info  submit_second_form">Next</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <!--second form-->
+                </div>
+                <!--second form div close -->
+                <div class="thirdFormDiv">
+                  <!--third form div start prop plan image-->
 
-                                    <div class=property-inner-section>
-                                      <img src="images/upload-icon.png" id="avtar1">
-                                    </div>
-                                    <div class="driving-liences-portfolio ">
-                                      <p class="Picture_1">Picture 1</p>
-                                    </div>
-                                    <div class="property-upload">
-                                      <!-- <a href="#">Upload</a> -->
-                                      <button class="btn btn-upload">Upload</button>
-                                    </div>
-                                    <span>
-                                      <div class="custom-file-input prop_1">
-                                        <input type="file" name="propertiespic" class="propertiespic"
-                                          id="propertiespic1" value="" required
-                                          onchange="document.getElementById('avtar1').src = window.URL.createObjectURL(this.files[0])">
-                                        <input type="button">
-                                      </div>
-                                    </span>
-                                  </div>
-                                  <!-- </form> -->
-                                  <!-- <form action="/upload-properties-pic" class="form" method="post"enctype="multipart/form-data"> -->
-                                  <div class="property-box  prop_2">
+                  <div class="row">
+                    <div class="col-sm-12 col-lg-12">
+                      <div class="property-step">
+                        <p>STEP 6</p>
+                        <h6>Add plan pictures</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="message_data"></span>
+                  <form method="post" class="propertyPlanform" enctype="multipart/form-data">
+                    <div class="row">
+                      <div class="col-sm-12 col-lg-12">
+                        <div class="property-box  prop_4">
 
-                                    <div class=property-inner-section>
-                                      <img src="images/upload-icon.png" id="avtar2">
-                                    </div>
-                                    <div class="driving-liences-portfolio ">
-                                      <p CLASS="Picture_2">Picture 2</p>
-                                    </div>
-                                    <div class="property-upload">
-                                      <!-- <a href="#">Upload</a> -->
-                                      <button class="btn btn-upload">Upload</button>
-                                    </div>
-                                    <span>
-                                      <div class="custom-file-input">
-                                        <input type="file" name="propertiespic" class="propertiespic2"
-                                          id="propertiespic2" value=""
-                                          onchange="document.getElementById('avtar2').src = window.URL.createObjectURL(this.files[0])">
-                                        <input type="button">
-                                      </div>
-                                    </span>
-                                  </div>
-                                  <!-- </form> -->
-                                  <!-- <form action="/upload-properties-pic" class="form" method="post"enctype="multipart/form-data"> -->
-                                  <div class="property-box  prop_3">
+                          <div class=property-inner-section>
+                            <img src="images/upload-icon.png" id="avtarimg">
+                          </div>
+                          <div class="driving-liences-portfolio ">
+                            <p CLASS="Picture_4">Picture 1</p>
+                          </div>
+                          <div class="property-upload">
+                            <button class="btn btn-upload">Upload</button>
+                          </div>
+                          <span>
+                            <div class="custom-file-input">
+                              <input type="file" id="" name="planImage" value="" required
+                                onchange="document.getElementById('avtarimg').src = window.URL.createObjectURL(this.files[0])">
+                              <input type="button">
+                            </div>
+                          </span>
+                        </div>
+                        <div class="property-box  prop_5">
+                          <div class=property-inner-section>
+                            <img src="images/upload-icon.png" id="avtar5">
+                          </div>
+                          <div class="driving-liences-portfolio ">
+                            <p CLASS="Picture_5">Picture 2</p>
+                          </div>
+                          <div class="property-upload">
+                            <!-- <a href="#">Upload</a> -->
+                            <button class="btn btn-upload">Upload</button>
+                          </div>
+                          <span>
+                            <div class="custom-file-input">
+                              <input type="file" id="" name="planImage" value=""
+                                onchange="document.getElementById('avtar5').src = window.URL.createObjectURL(this.files[0])">
+                              <input type="button">
+                            </div>
+                          </span>
+                        </div>
+                        <div class="property-box  prop_6">
 
-                                    <div class=property-inner-section>
-                                      <img src="images/upload-icon.png" id="avtar3">
-                                    </div>
-                                    <div class="driving-liences-portfolio ">
-                                      <p CLASS="Picture_3">Picture 3</p>
-                                    </div>
-                                    <div class="property-upload">
-                                      <!-- <a href="#">Upload</a> -->
-                                      <button class="btn btn-upload">Upload</button>
-                                    </div>
-                                    <span>
-                                      <div class="custom-file-input">
-                                        <input type="file" name="propertiespic" value="" class="propertiespic3"
-                                          id="propertiespic3"
-                                          onchange="document.getElementById('avtar3').src = window.URL.createObjectURL(this.files[0])">
-                                        <input type="button">
-                                      </div>
-                                    </span>
-                                  </div>
-                                  <!-- </form> -->
-                                </div>
-                              </div>
+                          <div class=property-inner-section>
+                            <img src="images/upload-icon.png" id="avtar6">
+                          </div>
+                          <div class="driving-liences-portfolio ">
+                            <p CLASS="Picture_6">Picture 3</p>
+                          </div>
+                          <div class="property-upload">
+                            <!-- <a href="#">Upload</a> -->
+                            <button class="btn btn-upload">Upload</button>
+                          </div>
+                          <span>
+                            <div class="custom-file-input">
+                              <input type="file" id="" name="planImage" value=""
+                                onchange="document.getElementById('avtar6').src = window.URL.createObjectURL(this.files[0])">
+                              <input type="button">
+                            </div>
+                          </span>
+                        </div>
+                        <!-- </form> -->
+                      </div>
+                    </div>
 
-                              <div class="row">
-                                <div class="col-sm-12 col-lg-12">
-                                  <div class="property-step">
-                                    <p>STEP 6</p>
-                                    <h6>Add plan pictures</h6>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div class="row">
-                                <div class="col-sm-12 col-lg-12">
-                                  <!-- <form action="/upload-properties-plan-pic" class="form" method="post"enctype="multipart/form-data"> -->
-                                  <div class="property-box  prop_4">
-
-                                    <div class=property-inner-section>
-                                      <img src="images/upload-icon.png" id="avtar4">
-                                    </div>
-                                    <div class="driving-liences-portfolio ">
-                                      <p CLASS="Picture_4">Picture 1</p>
-                                    </div>
-                                    <div class="property-upload">
-                                      <button class="btn btn-upload">Upload</button>
-                                    </div>
-                                    <span>
-                                      <div class="custom-file-input">
-                                        <input type="file" name="propertiesplanpic" id="propertiesplanpic1" value=""
-                                          required
-                                          onchange="document.getElementById('avtar4').src = window.URL.createObjectURL(this.files[0])">
-                                        <input type="button">
-                                      </div>
-                                    </span>
-                                  </div>
-                                  <!-- </form> -->
-                                  <!-- <form action="/upload-properties-plan-pic" class="form" method="post" enctype="multipart/form-data"> -->
-
-                                  <div class="property-box  prop_5">
-                                    <div class=property-inner-section>
-                                      <img src="images/upload-icon.png" id="avtar5">
-                                    </div>
-                                    <div class="driving-liences-portfolio ">
-                                      <p CLASS="Picture_5">Picture 2</p>
-                                    </div>
-                                    <div class="property-upload">
-                                      <!-- <a href="#">Upload</a> -->
-                                      <button class="btn btn-upload">Upload</button>
-                                    </div>
-                                    <span>
-                                      <div class="custom-file-input">
-                                        <input type="file" name="propertiesplanpic" id="propertiesplanpic2" value=""
-                                          onchange="document.getElementById('avtar5').src = window.URL.createObjectURL(this.files[0])">
-                                        <input type="button">
-                                      </div>
-                                    </span>
-                                  </div>
-                                  <!-- </form> -->
-                                  <!--<form action="/upload-properties-plan-pic" class="form" method="post"
-                              enctype="multipart/form-data">-->
-                                  <div class="property-box  prop_6">
-
-                                    <div class=property-inner-section>
-                                      <img src="images/upload-icon.png" id="avtar6">
-                                    </div>
-                                    <div class="driving-liences-portfolio ">
-                                      <p CLASS="Picture_6">Picture 3</p>
-                                    </div>
-                                    <div class="property-upload">
-                                      <!-- <a href="#">Upload</a> -->
-                                      <button class="btn btn-upload">Upload</button>
-                                    </div>
-                                    <span>
-                                      <div class="custom-file-input">
-                                        <input type="file" name="propertiesplanpic" id="propertiesplanpic3" value=""
-                                          onchange="document.getElementById('avtar6').src = window.URL.createObjectURL(this.files[0])">
-                                        <input type="button">
-                                      </div>
-                                    </span>
-                                  </div>
-                                  <!-- </form> -->
-                                </div>
-                              </div>
-
-                              <div class="row">
-                                <div class="col-sm-12 col-lg-12">
-                                  <div class="property-btn">
-                                    <button type="submit" class="btn submit-btn AddPropertyBtn">Add
-                                      Property</button>
-                                  </div>
-                                </div>
-                              </div>
+                    <input type="hidden" class="plan_img_property_id" name="property_id" value="">
+                    <div class="row">
+                      <div class="col-sm-12 col-lg-12">
+                        <div class="property-btn">
+                          <button type="submit" class="btn submit-btn submit_third_form">Add
+                            Property</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <!--third form div close-->
             </div>
-            </form>
+            <!-- </form> -->
           </div>
         </div>
       </div>
@@ -1218,6 +1255,78 @@
         })
       });
     </script>
+    <script>
+      $(document).ready(function () {
+        $('.firstFormDive').show();
+        $(".secondFormDiv").hide();
+        $(".thirdFormDiv").hide();
+        $('#propertyform1').on('submit', function (e) {
+          e.preventDefault();
+          var formData = new FormData($('#propertyform1')[0]);
+          $.ajax({
+            type: "POST",
+            data: formData,
+            url: "/api/add-new-property",
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+              console.log(data)
+              if (data.status == true) {
+                $('.firstFormDive').hide();
+                $(".secondFormDiv").show();
+                var property_id = data.property_id;
+                $(".img_property_id").val(property_id);
+                $('#propertyform2').on('submit', function (e) {
+                  e.preventDefault();
+                  var formData1 = new FormData($('#propertyform2')[0]);
+                  $.ajax({
+                    type: "POST",
+                    data: formData1,
+                    url: "/api/add-new-property-image",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                      if (data.status == true) {
+                        $(".plan_img_property_id").val(property_id);
+                        $('.firstFormDive').hide();
+                        $(".secondFormDiv").hide();
+                        $(".thirdFormDiv").show();
+                        $('.propertyPlanform').on('submit', function (e) {
+                          e.preventDefault();
+                          var formData2 = new FormData($('.propertyPlanform')[0]);
+                          $.ajax({
+                            type: "POST",
+                            data: formData2,
+                            url: "/api/add-new-property-plan-image",
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            success: function (data) {
+                              if (data.status == true) {
+                                $('.message_data').show();
+                                $('.message_data').html('<div class="isa_success"><i style="margin: 0px 7px !important;" class="fa fa-check"></i> ' + data.message + '</div>');
+                                setTimeout(function () { $('.message_data').hide(); window.location.href = data.redirect; }, 3000);
+                              }
+                            }
+                          });
+                        })
+                      }
+                    }
+                  });
+                })
+              }
+            }
+          });
+        })
+      });
+    </script>
+
+
+
+
+
     </body>
 
     </html>

@@ -17,3 +17,20 @@ module.exports.GetProfessionalById = function (ppts_assign_to) {
     })
     });
 };
+module.exports.removeProfessionalById = function (pps_service_provider_id,pps_property_id) {
+    return new Promise( async function (resolve, reject) {
+       
+       var data={$and:[{pps_service_provider_id:pps_service_provider_id,pps_property_id:pps_property_id}]}
+   await PropertyProfessionalSchema.findOneAndRemove(data).then(async(resp)=>{
+     
+       if(resp){
+          
+           resolve(resp)
+       }
+       
+       
+    }).catch((err)=>{
+        reject(err)
+    })
+    });
+};

@@ -1904,6 +1904,7 @@ ul.docs-list.last-doc li{
 }
 .property-btn-fix.float-right {
     margin-top: 20px;
+   
 }
 .property-box {
     border: 2px dashed #d6d6d6;
@@ -4175,7 +4176,12 @@ width: 33%;
 
 .property-btn{
     margin-top: 20px;
-    margin-right: 10px;
+    margin-right: 50px;
+}
+.property-btn2{
+    margin-top: 20px;
+   text-align: center;
+   
 }
 .property-form p {
         font-size: 14px;
@@ -5593,4 +5599,10 @@ a .clip-icon{
     text-transform: capitalize;
     background-color: #005377
   }
-  
+  .btn-next-info {
+    color: #fff;
+    background-color: #005377;
+    border-color: #0053;
+    border-radius: 7px;
+   
+}

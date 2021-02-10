@@ -73,7 +73,7 @@ const PropertiesSchema = new Schema({
   },
   ps_property_type: {
     type: String,
-    enum: ['New', 'Chainproperty'],
+    enum: ['New', 'Chain'],
     default: 'New'
   },
   //should be mongodb generated objectId

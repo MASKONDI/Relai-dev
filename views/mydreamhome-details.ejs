@@ -50,6 +50,7 @@
           <div class="modal-header">
             <h2 class="modal-title text-center">Hired Professional</h2>
           </div>
+          <div class="message"></div>
 
           <!-- Modal body -->
           <div class="modal-body">
@@ -62,16 +63,25 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td><label class="check-permission"><img src="images/recent-user-1.png">
-                        Krishna Rajput, <span>
-                          Developer
-                        </span>
-                      </label></td>
-                    <td>
-                      <a href=""><img src="images/delete-icon.png"></a>
-                    </td>
-                  </tr>
+                  <%if(hiredProfeshnoalList.length==0){%>
+                    <tr>
+                      <td>Professional Not Hired</td>
+                    </tr>
+                    <%}else{%>
+                      <%hiredProfeshnoalList.forEach(function(row,i){%>
+                        <tr>
+                          <td><label class="check-permission"><img src="images/recent-user-1.png">
+                              <%=row.sps_fullname%>, <span>
+                                  <%=row.sps_role_name%>
+                                </span>
+                            </label></td>
+                          <td>
+                            <a href="" class="deleteProfesshional" id="<%=row._id%>"><img
+                                src="images/delete-icon.png"></a>
+                          </td>
+                        </tr>
+                        <%});%>
+                          <%}%>
 
                 </tbody>
               </table>
@@ -221,24 +231,25 @@
                                   title="Raise a complaint"><img src="images/help.png"></a>
                               </div>
                             </div>
+
                             <div class="col">
                               <div class="recent-img">
                                 <img src="images/recent-user-1.png"><img class="mr-10"
                                   src="images/recent-user-2.png"><img class="mr-10" src="images/recent-user-3.png">
                                 <!-- <a href="#" class="add-professionals">Add/Remove Professionals</a> -->
-
                                 <div class="profile-dropdown">
                                   <a href="#" class="add-professionals">Add/Remove Professionals</a>
                                   <div class="professional-dropdown">
                                     <a href="/professionals">Add
                                       Professionals</a>
-                                    <a href="#" data-toggle="modal" data-target="#removeProfessionalModal">Remove
+                                    <a href="javascript:void(0)" id="removeProfessional" data-toggle="modal"
+                                      data-target="#removeProfessionalModal">Remove
                                       Professionals</a>
                                   </div>
+                                  <a href="#" class="add-professionals" data-toggle="modal"
+                                    data-target="#addTask2Modal">Add
+                                    Task</a>
                                 </div>
-                                <a href="#" class="add-professionals" data-toggle="modal"
-                                  data-target="#addTask2Modal">Add
-                                  Task</a>
                               </div>
                             </div>
                             <div class="apartment-details-full">
@@ -287,7 +298,12 @@
                               <div class="row">
                                 <div class="col-6 col-sm-6 col-lg-3">
                                   <div class="start-date">
-                                    <p>Estimated Cost<br><b>$10000 </b></p>
+                                    <p>Estimated Cost<br><b>$<%=totalcost%></b></p>
+
+
+
+
+
                                   </div>
                                 </div>
                                 <div class="col-6 col-sm-6 col-lg-3">
@@ -702,9 +718,39 @@
         $('[data-toggle="tooltip"]').tooltip()
       });
     </script>
-
-    <%- include('my-script') -%>
+    <<<<<<< HEAD <%- include('my-script') -%>
       </body>
+      =======
+      <script>
+
+        $(document).ready(function () {
+          $('.deleteProfesshional').click(function (e) {
+            e.preventDefault();
+            var professhional_id = $(this).attr('id');
+            alert(professhional_id)
+            $.ajax({
+              type: "POST",
+              url: "/api/removeProfesshional",
+              data: {
+                professhional_id: professhional_id
+              },
+              cache: false,
+              success: function (data) {
+                if (data.status == false) {
+                  $('.message').html('<span class="alert alert-danger error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
+                  setTimeout(function () { $('.message').html(''); }, 3000);
+                } else {
+                  $('.message').html('<span class="alert alert-success error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
+                  setTimeout(function () { $('.message').html(''); window.location.reload(true) }, 3000);
+                }
+              }
+            });
+          });
+        });  
+      </script>
+      <%- include('my-script') -%>
+        </body>
+        >>>>>>> 044222be638277ed152f2641092fda3458c013af
 
 
-      </html>
+        </html>
