@@ -24,6 +24,8 @@ const ServiceProviderSchema = require("../../models/service_providers");
 const validateAddPhase = require('../../Validation/add_phase');
 const validateCustomerRegisterInput = require('../../Validation/cust_signup');
 const validateCustomerSigninInput = require('../../Validation/cust_signin');
+const validateChangePasswordInput = require('../../Validation/change_password');
+
 const DocumentPermissionSchema = require('../../models/document_permission')
 const PropertiesPictureSchema = require("../../models/properties_picture");
 const PropertiesPlanPictureSchema = require("../../models/properties_plan_picture");
@@ -280,12 +282,13 @@ const upload = multer({
 );
 function checkFileType(file, cb) {
 
+
   if (file.fieldname === "propertiespic" || file.fieldname === "planImage" || file.fieldname === "complaint_file") {
     if (
       file.mimetype === 'image/png' ||
       file.mimetype === 'image/jpg' ||
       file.mimetype === 'image/jpeg' ||
-      fiel.mimetype === 'image/gif'
+      file.mimetype === 'image/gif' || file.mimetype === 'application/pdf'
     ) { // check file type to be png, jpeg, or jpg
       cb(null, true);
     } else {
@@ -400,8 +403,8 @@ router.post("/add-property", async (req, res) => {
 
 });
 //=============property add section====================//
- 
-router.post("/add-new-property",isCustomer, async (req, res) => {
+
+router.post("/add-new-property", isCustomer, async (req, res) => {
   upload(req, res, async () => {
     if (req.body) {
       console.log("first form body:=", req.body);
@@ -414,7 +417,7 @@ router.post("/add-new-property",isCustomer, async (req, res) => {
         return res.send({
           'message': ' Your Property Saved plese add property image',
           'status': true,
-          'property_id':PropertySaved._id
+          'property_id': PropertySaved._id
         });
       } else {
         return res.send({
@@ -427,7 +430,7 @@ router.post("/add-new-property",isCustomer, async (req, res) => {
 
 });
 
-router.post("/add-new-property-image",isCustomer, async (req, res) => {
+router.post("/add-new-property-image", isCustomer, async (req, res) => {
   upload(req, res, async () => {
     if (req.body) {
       console.log("second form body:=", req.body);
@@ -438,7 +441,7 @@ router.post("/add-new-property-image",isCustomer, async (req, res) => {
         return res.send({
           'message': ' Your Property image Saved plese add property plan image',
           'status': true,
-          
+
         });
       } else {
         return res.send({
@@ -451,7 +454,7 @@ router.post("/add-new-property-image",isCustomer, async (req, res) => {
 
 });
 
-router.post("/add-new-property-plan-image",isCustomer, async (req, res) => {
+router.post("/add-new-property-plan-image", isCustomer, async (req, res) => {
   upload(req, res, async () => {
     if (req.body) {
       console.log("third form body:=", req.body);
@@ -462,14 +465,14 @@ router.post("/add-new-property-plan-image",isCustomer, async (req, res) => {
         return res.send({
           'message': ' Your Property Add SuccessFully',
           'status': true,
-          'redirect':'/mydreamhome'
-          
+          'redirect': '/mydreamhome'
+
         });
       } else {
         return res.send({
           'message': 'Something Wrong Try Again ',
           'status': false,
-          'redirect':'/add-property'
+          'redirect': '/add-property'
         });
       }
     }
@@ -594,7 +597,7 @@ router.post('/forget-password', function (req, res) {
                   text: 'Dear Customer,' + '\n\n' + 'New Password from Relai.\n\n' +
                     'Password: ' + new_pass + '\n\n' +
 
-                    'We suggest you to please change your password after successfully logging in on the portal using the above password :\n' + 'Here is the change password link: http://' + req.headers.host + '/Change-password' + '\n\n' +
+                    'We suggest you to please change your password after successfully logging in on the portal using the above password :\n' + 'Here is the link for signin: https://' + req.headers.host + '/signin' + '\n\n' +
                     'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
 
                 };
@@ -652,41 +655,41 @@ POST : Change Permission api for giving Docs read/write permission to existing s
 router.post('/change-permision', async (req, res) => {
   console.log('doc id:', req.body.doc_id)
   console.log('checkFlag:', req.body.checkFlag)
-  DocumentPermissionSchema.findOne({ dps_customer_id: req.body.cust_id,dps_service_provider_id:req.body.professionalId,dps_document_id: req.body.doc_id}).then(async (data) => { 
-    console.log('FindData:',data);
-    let permisionFlagDownload='';
-    let permisionFlagView='';
+  DocumentPermissionSchema.findOne({ dps_customer_id: req.body.cust_id, dps_service_provider_id: req.body.professionalId, dps_document_id: req.body.doc_id }).then(async (data) => {
+    console.log('FindData:', data);
+    let permisionFlagDownload = '';
+    let permisionFlagView = '';
 
-     if(data){
+    if (data) {
 
-      if(req.body.checkFlag === 'viewaction'){
-        permisionFlagDownload= data.dps_download_permission;
-        permisionFlagView= req.body.viewFlag;
+      if (req.body.checkFlag === 'viewaction') {
+        permisionFlagDownload = data.dps_download_permission;
+        permisionFlagView = req.body.viewFlag;
         console.log('view....action...')
-      }else{
-        permisionFlagView= data.dps_view_permission;
-        permisionFlagDownload= req.body.downloadFlag;
+      } else {
+        permisionFlagView = data.dps_view_permission;
+        permisionFlagDownload = req.body.downloadFlag;
         console.log('download....action...')
-  
-      }
-      
-      console.log('permisionFlagView:',permisionFlagView);
-      console.log('permisionFlagDownload:',permisionFlagDownload);
 
-      
-      DocumentPermissionSchema.updateOne({'dps_service_provider_id': req.body.professionalId,'dps_customer_id':req.body.cust_id,'dps_document_id':req.body.doc_id }, { $set: { dps_view_permission: permisionFlagView,dps_download_permission:permisionFlagDownload,dps_is_active_user_flag:req.session.active_user_login }}, { upsert: true }, function (err) {
+      }
+
+      console.log('permisionFlagView:', permisionFlagView);
+      console.log('permisionFlagDownload:', permisionFlagDownload);
+
+
+      DocumentPermissionSchema.updateOne({ 'dps_service_provider_id': req.body.professionalId, 'dps_customer_id': req.body.cust_id, 'dps_document_id': req.body.doc_id }, { $set: { dps_view_permission: permisionFlagView, dps_download_permission: permisionFlagDownload, dps_is_active_user_flag: req.session.active_user_login } }, { upsert: true }, function (err) {
         if (err) {
           console.log("err is :", err);
           req.flash('err_msg', 'Something went wrong.');
           //res.redirect('/forget-password')
         } else {
           res.send({
-            message:'Permission Updated !!'
+            message: 'Permission Updated !!'
           })
         }
       })
 
-     }else{
+    } else {
       let permissionObject = {
         dps_view_permission: req.body.viewFlag,
         dps_download_permission: req.body.downloadFlag,
@@ -695,18 +698,18 @@ router.post('/change-permision', async (req, res) => {
         dps_document_id: req.body.doc_id,
         dps_is_active_user_flag: req.session.active_user_login
       }
-      console.log('permissionObject:',permissionObject);
-          var docPermissionSave = new DocumentPermissionSchema(permissionObject)
-          docPermissionSave.save().then(async (data) => {
-            console.log('docPermissionSave:',data)
-            res.send({
-              message:'Permission Updated !!'
-            })
-          }).catch(err => {
-            console.log(err)
-            req.flash('err_msg', 'Something went wrong please try after some time!');
-          });
-     }
+      console.log('permissionObject:', permissionObject);
+      var docPermissionSave = new DocumentPermissionSchema(permissionObject)
+      docPermissionSave.save().then(async (data) => {
+        console.log('docPermissionSave:', data)
+        res.send({
+          message: 'Permission Updated !!'
+        })
+      }).catch(err => {
+        console.log(err)
+        req.flash('err_msg', 'Something went wrong please try after some time!');
+      });
+    }
   });
 
 
@@ -1093,6 +1096,7 @@ router.post('/update-customer-profile', (req, res) => {
         //req.flash('success_msg', 'Profile updated successfully.');
         //req.session.isChanged();
         console.log("req session is :", req.session);
+        req.flash('success_msg', "Profile Uploaded Successfully.");
         res.redirect('/dashboard')
       }
     });
@@ -1105,6 +1109,7 @@ router.post('/new-raise-a-complaint', isCustomer, (req, res) => {
     const files = JSON.parse(JSON.stringify(req.files));
     const ComplaintId = 'C-' + uuidv4().slice(uuidv4().length - 4).toUpperCase();;
 
+    console.log('filesfiles:', files)
     if (Object.keys(files).length === 0) {
       newComplaint = new ComplaintsSchema({
         coms_complaint_for: req.body.coms_complaint_for,
@@ -1126,6 +1131,7 @@ router.post('/new-raise-a-complaint', isCustomer, (req, res) => {
         comsd_user_name: req.session.name,
         comsd_user_profile_img: req.session.imagename,
         comsd_complaint_filename: '',
+        comsd_complaint_filetype: ''
       });
 
     } else {
@@ -1144,7 +1150,8 @@ router.post('/new-raise-a-complaint', isCustomer, (req, res) => {
         coms_complaint_file: {
           data: fs.readFileSync(path.join(__dirname + '../../../public/complaintFile/' + req.files.complaint_file[0].filename)),
           contentType: 'image/png'
-        }
+        },
+        coms_complaint_filetype: req.files.complaint_file[0].mimetype
       });
 
       newComplaintDetails = new ComplaintDetailsSchema({
@@ -1157,7 +1164,8 @@ router.post('/new-raise-a-complaint', isCustomer, (req, res) => {
         comsd_complaint_file: {
           data: fs.readFileSync(path.join(__dirname + '../../../public/complaintFile/' + req.files.complaint_file[0].filename)),
           contentType: 'image/png'
-        }
+        },
+        comsd_complaint_filetype: req.files.complaint_file[0].mimetype
       });
 
     }
@@ -1190,6 +1198,7 @@ router.post('/complaint-details-discussion', isCustomer, (req, res) => {
         comsd_user_name: req.session.name,
         comsd_user_profile_img: req.session.imagename,
         comsd_complaint_filename: '',
+        comsd_complaint_filetype: ''
       });
 
     } else {
@@ -1203,7 +1212,8 @@ router.post('/complaint-details-discussion', isCustomer, (req, res) => {
         comsd_complaint_file: {
           data: fs.readFileSync(path.join(__dirname + '../../../public/complaintFile/' + req.files.complaint_file[0].filename)),
           contentType: 'image/png'
-        }
+        },
+        comsd_complaint_filetype: req.files.complaint_file[0].mimetype
       });
     }
     console.log('newComplaintDetails:', newComplaintDetails)
@@ -1226,15 +1236,69 @@ router.post('/removeProfesshional', isCustomer, async(req, res) => {
       'success_msg': 'Professional Removed successfully..',
       'status': true,
       'id':responce._id
-      
     });
-  }else{
+  } else {
     return res.send({
       'err_msg': 'Something Wrong.',
       'status': false,
-      
+
     });
   }
-  console.log("responce:",responce)
+  console.log("responce:", responce)
 })
+
+
+
+//***************** post changes password **************//
+router.post('/change-password', isCustomer, function (req, res) {
+  console.log("calling change password API", req.body);
+  var user_id = req.session.user_id;
+  const { errors, isValid } = validateChangePasswordInput(req.body);
+  // Check Validation
+  if (!isValid) {
+    console.log("error is ", errors);
+    req.flash('err_msg', errors.confirmPassword);
+    return; // res.redirect('/change-Password');
+  }
+  var hashPassword = "";
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(req.body.cus_password, salt, (err, hash) => {
+      if (err) throw err;
+      hashPassword = hash;
+      CustomerSchema.updateOne({
+        '_id': req.session.user_id
+      }, {
+        $set: {
+          cus_password: hashPassword
+        }
+      }, {
+        upsert: true
+      }, function (err) {
+        if (err) {
+          console.log("err is :", err);
+          req.flash('err_msg', 'Something went wrong.');
+          return;
+        } else {
+          console.log("Password change successfully");
+          req.flash('success_msg', 'password change successfully');
+        }
+      });
+    });
+
+  });
+});
+
+router.post('/complaint-details-discussion-close', isCustomer, (req, res) => {
+
+  let ComplaintCode = req.body.complainCode;
+  ComplaintsSchema.updateOne({ 'coms_complaint_code': ComplaintCode }, { $set: { coms_complaint_status: 'completed' } }, { upsert: true }, function (err) {
+    if (err) {
+      res.send({ status: false, message: 'Something going wrong please check again !!' })
+    } else {
+      res.send({ status: true, message: 'Your complaint discussion closed successfully !!' })
+    }
+  });
+});
+
+
 module.exports = router;

@@ -1,150 +1,145 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
-    integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
-    crossorigin="anonymous"></script>
-  <script>
-    $(document).ready(function () {
-      $(".sidenav ul li").click(function () {
-        $(".sidenav ul li").removeClass("active");
-        $(this).addClass("active");
-      });
+  integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+  crossorigin="anonymous"></script>
+<script>
+  $(document).ready(function () {
+    $(".sidenav ul li").click(function () {
+      $(".sidenav ul li").removeClass("active");
+      $(this).addClass("active");
     });
-    $(document).ready(function () {
-      $(".right-navbar li").click(function () {
-        $("right-navbar li").removeClass("active");
-        $(this).addClass("active");
-      });
+  });
+  $(document).ready(function () {
+    $(".right-navbar li").click(function () {
+      $("right-navbar li").removeClass("active");
+      $(this).addClass("active");
     });
+  });
 
-    $('#mycomplent_form').validate({
-      onfocusout: function (element) {
-        this.element(element);
+  $('#mycomplent_form').validate({
+    onfocusout: function (element) {
+      this.element(element);
+    },
+    errorClass: 'error_validate',
+    errorElement: 'span',
+    errorColor: 'red',
+    highlight: function (element, errorClass) {
+      $(element).removeClass(errorClass);
+    },
+    submitHandler: function (form) {
+      $('#submit').attr('disabled', true);
+      //form.submit();
+      var formData = new FormData($('#mycomplent_form')[0]);
+      console.log('formData:', formData)
+      $.ajax({
+        type: "POST",
+        data: formData,
+        url: "/api/new-raise-a-complaint",
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+          console.log(data);
+          if (data.status == true) {
+            $('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> ' + data.message + '</div>')
+            setTimeout(function () {
+              $('#MyComplaintModal').modal('hide');
+              location.reload(true);
+            }, 6000);
+          } else {
+            $('.complaint_msg').html('<div class="isa_error"><i class="fa fa-check"></i> ' + data.message + '</div>')
+          }
+        }
+      });
+    }
+  });
+
+  $("#coms_complaint_help").change(function () {
+    // var propertyId = $('option:selected', this).attr('property-id');
+    var coms_complaint_help = this.value;
+    if (coms_complaint_help == 'Property Related Enquiry') {
+      $.ajax({
+        type: "GET",
+        url: "/property-related-enquiry-proprty-list",
+        cache: false,
+        success: function (html) {
+          $('#property_id').show();
+          console.log('result:', html)
+          var htmlData = '';
+          htmlData += '<option value="">Select Property</option>';
+          if (html.propertyData.length > 0) {
+            $.each(html.propertyData, function (i, data) {
+              console.log('val:', data)
+              htmlData += '<option value="' + data._id + '">' + data.ps_property_name + '</option>';
+            });
+          }
+          $('#property_id').html(htmlData);
+        }
+      });
+    } else {
+      $('#property_id,#coms_complaint_for').hide();
+      $('#property_id,#coms_complaint_for').html('');
+
+    }
+  })
+
+
+  $("#property_id").change(function () {
+    var property_id = this.value;
+    $.ajax({
+      type: "GET",
+      url: "/service-provider-by-property",
+      data: {
+        property_id: property_id
       },
-      errorClass: 'error_validate',
-      errorElement: 'span',
-      errorColor: 'red',
-      highlight: function (element, errorClass) {
-        $(element).removeClass(errorClass);
-      },
-      submitHandler: function (form) {
-        $('#submit').attr('disabled', true);
-        //form.submit();
-        var formData = new FormData($('#mycomplent_form')[0]);
-          console.log('formData:',formData)
-          $.ajax({
-            type: "POST",
-            data: formData,
-            url: "/api/new-raise-a-complaint", 
-            cache:false,
-            contentType: false,
-            processData: false,           
-            success: function (data) {
-              console.log(data);
-              if(data.status == true){
-                  $('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> '+data.message+'</div>')
-                  setTimeout(function(){ 
-                    $('#MyComplaintModal').modal('hide');
-                    location.reload(true);
-                  }, 6000);
-              }else{
-                $('.complaint_msg').html('<div class="isa_error"><i class="fa fa-check"></i> '+data.message+'</div>')
-              }
-            }
+      cache: false,
+      success: function (html) {
+        $('#coms_complaint_for').show();
+        console.log('result:', html)
+        var htmlData = '';
+        htmlData += '<option value="">Select Professional</option>';
+        if (html.hireServiceData.length > 0) {
+          $.each(html.hireServiceData, function (i, data) {
+            console.log('val:', data[0])
+            htmlData += '<option value="' + data[0]._id + '">' + data[0].sps_fullname + '</option>';
           });
+        }
+        $('#coms_complaint_for').html(htmlData);
       }
     });
+  })
 
-    $("#coms_complaint_help").change(function () {
-        // var propertyId = $('option:selected', this).attr('property-id');
-        var coms_complaint_help = this.value;
-        if(coms_complaint_help == 'Property Related Enquiry'){
-            $.ajax({
-              type: "GET",
-              url: "/property-related-enquiry-proprty-list",
-              cache: false,
-              success: function (html) {
-                $('#property_id').show();
-                console.log('result:', html)
-                var htmlData = '';
-                htmlData += '<option value="">Select Property</option>';
-                if (html.propertyData.length > 0) {
-                  $.each(html.propertyData, function (i, data) {
-                    console.log('val:', data)
-                     htmlData += '<option value="' + data._id + '">' + data.ps_property_name + '</option>';
-                  });
-                }
-                $('#property_id').html(htmlData);
-              }
-            });
-        }else{
-          $('#property_id,#coms_complaint_for').hide();
-          $('#property_id,#coms_complaint_for').html('');
 
+  //$('#mycomplent_form').submit(function (e) {
+  /*  $('#mycomplent_form').on('submit',(function(e) {
+      e.preventDefault();
+    var formData = new FormData($('#mycomplent_form')[0]);
+     // var formData = new FormData(this);
+     // var formData = $(this).serialize();
+      console.log('formData:',formData)
+      $.ajax({
+        type: "POST",
+        data: formData,
+        url: "/api/new-raise-a-complaint", 
+        cache:false,
+        contentType: false,
+        processData: false,           
+        success: function (data) {
+          console.log(data);
+          if(data.status == true){
+              $('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> '+data.message+'</div>')
+              setTimeout(function(){ 
+                $('#MyComplaintModal').modal('hide');
+                location.reload(true);
+              }, 6000);
+          }else{
+            $('.complaint_msg').html('<div class="isa_error"><i class="fa fa-check"></i> '+data.message+'</div>')
+          }
         }
-      })
+      });
+      //location.reload(true);
+    }));*/
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
 
-
-      $("#property_id").change(function () {
-        var property_id = this.value;
-            $.ajax({
-              type: "GET",
-              url: "/service-provider-by-property",
-              data:{
-                property_id:property_id
-              },
-              cache: false,
-              success: function (html) {
-                $('#coms_complaint_for').show();
-                console.log('result:', html)
-                var htmlData = '';
-                htmlData += '<option value="">Select Professional</option>';
-                if (html.hireServiceData.length > 0) {
-                  $.each(html.hireServiceData, function (i, data) {
-                    console.log('val:', data[0])
-                     htmlData += '<option value="' + data[0]._id + '">' + data[0].sps_fullname + '</option>';
-                  });
-                }
-                $('#coms_complaint_for').html(htmlData);
-              }
-            });
-      })
-
-      
-      //$('#mycomplent_form').submit(function (e) {
-      /*  $('#mycomplent_form').on('submit',(function(e) {
-          e.preventDefault();
-        var formData = new FormData($('#mycomplent_form')[0]);
-         // var formData = new FormData(this);
-         // var formData = $(this).serialize();
-          console.log('formData:',formData)
-          $.ajax({
-            type: "POST",
-            data: formData,
-            url: "/api/new-raise-a-complaint", 
-            cache:false,
-            contentType: false,
-            processData: false,           
-            success: function (data) {
-              console.log(data);
-              if(data.status == true){
-                  $('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> '+data.message+'</div>')
-                  setTimeout(function(){ 
-                    $('#MyComplaintModal').modal('hide');
-                    location.reload(true);
-                  }, 6000);
-              }else{
-                $('.complaint_msg').html('<div class="isa_error"><i class="fa fa-check"></i> '+data.message+'</div>')
-              }
-            }
-          });
-          //location.reload(true);
-        }));*/
-
-
-  </script>
-
-
-
-
-
-
-
+</script>

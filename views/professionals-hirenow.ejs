@@ -1,7 +1,7 @@
 <%- include('dashboard_header')-%>
   <%- include('edit-profile-model')-%>
     <!-- The Modal -->
-    <div class="modal permission-modal fade " id="addTaskModal">
+    <div class="modal permission-modal fade " data-backdrop="static" data-keyboard="false" id="addTaskModal">
       <div class="modal-dialog">
         <div class="modal-content">
 
@@ -37,11 +37,12 @@
                 placeholder="Add Notes(If any)"></textarea>
 
             </div>
+
             <div class="modal-footer">
               <button type="button" class="btn btn-cancel" id="cancel_addtask_btn" data-dismiss="modal">Cancel</button>
               <button type="submit" class="btn btn-cancel" id="addtask_btn" data-dismiss="">Add Task</button>
-
             </div>
+
           </form>
         </div>
       </div>
@@ -115,7 +116,7 @@
                             <div class="docs-files">
 
                               <div class="heading-top hirenow-fix float-left">
-                                <label class="">STEP 1</label>
+
                                 <h6 class="">Select the property you want to hire professional for</h6>
                               </div>
 
@@ -212,7 +213,7 @@
 
                             <div class="heading-top hirenow-fix float-left">
 
-                              <label class="">STEP 2</label>
+
                               <h6 class="">Tell us your approximate budget</h6>
                               <br />
                               <input class="range_slider" id="ex8" data-slider-id='ex1Slider' type="text"
@@ -224,7 +225,6 @@
                           </div>
                           <div class="col-sm-12 col-lg-4">
                             <div class="heading-top hirenow-fix float-left">
-                              <label class="">STEP 3</label>
                               <h6 class="">Tell us expected delivery date</h6>
                             </div>
                             <div class="col-sm-12 col-lg-12">
@@ -236,7 +236,6 @@
                           <div class="col">
 
                             <div class="heading-top hirenow-fix">
-                              <label class="">STEP 4</label>
                               <h6 class="">Add Task for professional</h6>
                             </div>
 
@@ -379,6 +378,7 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  
     <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
     crossorigin="anonymous"></script>-->
@@ -398,6 +398,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
       integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
       crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 
 
     <script>
@@ -435,6 +436,7 @@
     <script>
 
       $(document).ready(function () {
+        
         // $('#msg').hide();
         // $('#taskmsg').hide();
         // $('#cancel_addtask_btn').click(function (e) {
@@ -493,16 +495,52 @@
               console.log(data)
               if (data.status == false) {
                 //$('#message').show();
-                $('.message').html('<span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
-                setTimeout(function () { $('.message').html(''); }, 5000);
+                //$('.message').html('<span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
+                //setTimeout(function () { $('.message').html(''); }, 5000);
 
                 //$('#msg').html(data.message).delay(5000).fadeOut('success');
+
+                Swal.fire({
+                   // position: 'top-end',
+                    icon: 'error',
+                    title: data.err_msg,
+                    showConfirmButton: true,
+                    //timer: 1500
+                    confirmButtonColor: '#005377'
+                  })
+
               } else {
-                $('.message').html('<span class="error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
-                setTimeout(function () { $('.message').html(''); }, 5000);
-                console.log('message:', data.success_msg)
-                window.location.href = data.redirect;
-              }
+               // $('.message').html('<span class="error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
+                //setTimeout(function () { $('.message').html(''); }, 5000);
+                //console.log('message:', data.success_msg)
+                //window.location.href = data.redirect;
+
+                //  Swal.fire({
+                //     position: 'top-end',
+                //     icon: 'success',
+                //     title: data.success_msg,
+                //     showConfirmButton: false,
+                //     timer: 3000
+                //   })
+
+                  Swal.fire({
+                      icon: 'success',
+                      title: data.success_msg,
+                      showDenyButton: false,
+                      showCancelButton: true,
+                      confirmButtonColor: '#005377',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: `Professional List`,
+                    }).then((result) => {
+                      /* Read more about isConfirmed, isDenied below */
+                      if (result.isConfirmed) {
+                        //Swal.fire('Saved!', '', 'success')
+                        window.location.href = '/professionals';
+                      } else if (result.isDenied) {
+                        Swal.fire('Changes are not saved', '', 'info')
+                      }
+                    })
+                 }
 
               //$('#ppts_property_id').val(data.data.pps_property_id);
               //$('#phase_id').val(data.data._id);
@@ -567,6 +605,9 @@
           $('#notes').val('')
           $('#Phase').val('');
         })
+
+
+
         $("#msgg").hide();
         $("#error").hide();
         $("#addTaskForm").on('submit', function (e) {
@@ -580,16 +621,39 @@
               cache: false,
               success: function (data) {
                 if (data.status == false) {
+                  //$('#addTaskModal').modal('hide');
                   //$('#message').show();
-                  $('.errmessage').html('<span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
-                  setTimeout(function () { $('.errmessage').html(''); }, 3000);
-
+                 // $('.errmessage').html('<span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
+                  //setTimeout(function () { $('.errmessage').html(''); }, 3000);
                   //$('#msg').html(data.message).delay(5000).fadeOut('success');
+  
+                  Swal.fire({
+                   // position: 'top-end',
+                    icon: 'error',
+                    title: data.err_msg,
+                    showConfirmButton: true,
+                    confirmButtonColor: '#005377'
+                    //timer: 1500
+                  })
+
+
                 } else {
-                  $('.errmessage').html('<span class="error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
-                  setTimeout(function () { $('.errmessage').html(''); $('#taskName').val(''); $('#duedate').val(''); $('#notes').val('') }, 3000);
+                  //$('#addTaskModal').modal('hide');
+                  //$('.errmessage').html('<span class="error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
+                  //setTimeout(function () { $('.errmessage').html(''); $('#taskName').val(''); $('#duedate').val(''); $('#notes').val('') }, 3000);
                   console.log('meserrmessagesage:', data.success_msg)
                   //window.location.href = data.redirect;
+                   //swal(data.success_msg, "", "success");
+
+                   Swal.fire({
+                   // position: 'top-end',
+                    icon: 'success',
+                    title: data.success_msg,
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+                  })
+
                 }
 
               }

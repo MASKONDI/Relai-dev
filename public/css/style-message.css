@@ -124,6 +124,14 @@
     text-align: center;
 }
     
-.complaints a:hover {
+/* .complaints a:hover {
     color: #333  !important;
+
+} */
+
+ul.docs-list li span {
+    white-space: nowrap;
+    width: 95px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

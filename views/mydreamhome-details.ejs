@@ -1,6 +1,51 @@
 <%- include('dashboard_header')-%>
   <%- include('edit-profile-model')-%>
+    <!-- The Modal -->
+    <div class="modal permission-modal fade " id="addTask2Modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
 
+          <!-- Modal Header -->
+          <div class="modal-header text-center">
+            <h2 class="modal-title w-100">Add Task</h2>
+          </div>
+          <form name="addTaskForm" id="addTaskForm" action="" method="post">
+            <!-- Modal body -->
+            <div class="modal-body">
+              <label class="">Describe this to-do</label>
+              <div class="errmessage"></div>
+              <select class="form-control selectBox2 phase_list" id="Phase" name="Phase" style="height: 48px;"
+                data-rule-required="true" data-msg-required="phase  is required" required>
+                <option value="">Select Professional</option>
+                <option value=""></option>
+              </select>
+              <!-- <div class="alert alert-info" id="taskmsg"></div> -->
+              <!-- <input type="text" class="form-control form-control-fix2" id="subject" placeholder="Instruction"
+            name="todotask" required> -->
+              <select class="form-control selectBox2 phase_list" id="Phase" name="Phase" style="height: 48px;"
+                data-rule-required="true" data-msg-required="phase  is required" required>
+                <option value="">Select Phase</option>
+                <option value=""></option>
+              </select>
+              <input type="text" class="form-control form-control-fix2" id="taskName" placeholder="Task Name"
+                name="task_name" required>
+
+              <input type="date" class="form-control  form-control-fix2" id="duedate" placeholder="Due on"
+                name="duedate" required>
+              <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
+                placeholder="Add Notes(If any)"></textarea>
+
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-cancel" id="cancel_addtask_btn" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-cancel" id="addtask_btn" data-dismiss="">Add Task</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
     <!-- The Modal -->
     <div class="modal fade permission-modal" id="removeProfessionalModal">
       <div class="modal-dialog">
@@ -40,8 +85,7 @@
                     </td>
                   </tr>
                   <%});%>
-                  <%}%>
-
+                  <%}%>    
                 </tbody>
               </table>
             </div>
@@ -146,11 +190,11 @@
                             <div class="carousel-inner">
                               <% var c=0; propertyImage.forEach(function(rows){%>
                                 <%if(c==0){%>
-                                  <div class="carousel-item active">
+                                  <div class="carousel-item-fix carousel-item active">
                                     <img src="propimg/<%=rows.pps_property_image_name%>" alt="">
                                   </div>
                                   <%}else{%>
-                                    <div class="carousel-item ">
+                                    <div class="carousel-item-fix carousel-item ">
                                       <img src="propimg/<%=rows.pps_property_image_name%>" alt="">
                                     </div>
                                     <%}%>
@@ -180,79 +224,90 @@
                                   </a></div>
                               </div>
                               <div class="img-fix3 float-right">
-                                <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>"><img
+                                <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>"
+                                  data-toggle="tooltip" data-placement="top" title="Message"><img
                                     src="images/chat.png"></a>
-                                    <!-- #ComplaintModal -->
-                                    <!-- data-toggle="modal" data-target="#MyComplaintModal" -->
-                                <a href="javascript:void(0)" data-property_id="<%=propertyDetailData[0]._id%>" class="propertyComplaintModal"><img
-                                    src="images/help.png"></a>
+                                <!-- #ComplaintModal -->
+                                <!-- data-toggle="modal" data-target="#MyComplaintModal" -->
+                                <a href="javascript:void(0)" data-property_id="<%=propertyDetailData[0]._id%>"
+                                  class="propertyComplaintModal" data-toggle="tooltip" data-placement="top"
+                                  title="Raise a complaint"><img src="images/help.png"></a>
                               </div>
                             </div>
-                            <div class="recent-img">
-                              <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
-                                class="mr-10" src="images/recent-user-3.png">
-                              <!-- <a href="#" class="add-professionals">Add/Remove Professionals</a> -->
-                              <div class="profile-dropdown">
-                                <a href="#" class="add-professionals">Add/Remove Professionals</a>
-                                <div class="professional-dropdown">
-                                  <a href="/professionals">Add
-                                    Professionals</a>
-                                  <a href="javascript:void(0)"id="removeProfessional" data-toggle="modal" data-target="#removeProfessionalModal">Remove
-                                    Professionals</a>
+
+                            <div class="col">
+                              <div class="recent-img">
+                                <img src="images/recent-user-1.png"><img class="mr-10"
+                                  src="images/recent-user-2.png"><img class="mr-10" src="images/recent-user-3.png">
+                                <!-- <a href="#" class="add-professionals">Add/Remove Professionals</a> -->
+                                <div class="profile-dropdown">
+                                  <a href="#" class="add-professionals">Add/Remove Professionals</a>
+                                  <div class="professional-dropdown">
+                                    <a href="/professionals">Add
+                                      Professionals</a>
+                                    <a href="javascript:void(0)" id="removeProfessional" data-toggle="modal"
+                                      data-target="#removeProfessionalModal">Remove
+                                      Professionals</a>
+                                  </div>
                                 </div>
+                                <a href="#" class="add-professionals" data-toggle="modal"
+                                  data-target="#addTask2Modal">Add
+                                  Task</a>
+
                               </div>
-
-
                             </div>
                             <div class="apartment-details-full">
-                               
 
-                               <% var i=0; var startDate=''; var endDate='';  propertyDetailData[0].ps_phase_array.forEach(function(phaserow){%>
+
+                              <% var i=0; var startDate='' ; var endDate='' ;
+                                propertyDetailData[0].ps_phase_array.forEach(function(phaserow){%>
                                 <%if(i==0){ %>
-                                  <%
-                                  startDate = phaserow.start_date; 
-                                  %>
-                                <%}%>
-                                <% if(propertyDetailData[0].ps_phase_array.length-1 == i){ %>
-                                    <% endDate = phaserow.end_date%>
-                                <%}%>
-                                <% i++; });%>
+                                  <% startDate=phaserow.start_date; %>
+                                    <%}%>
+                                      <% if(propertyDetailData[0].ps_phase_array.length-1==i){ %>
+                                        <% endDate=phaserow.end_date%>
+                                          <%}%>
+                                            <% i++; });%>
 
-                              <div class="row">
-                                <div class="col-6 col-sm-6 col-lg-3">
-                                  <div class="start-date">
-                                    <p>Start date<br><b><%=moment(startDate).format("Do MMM, YYYY"); %></b></p>
-                                  </div>
-                                </div>
-                                <div class="col-6 col-sm-6 col-lg-3">
-                                  <div class="start-date 1 Dec, 2021">
-                                    <p>End date<br><b><%=moment(endDate).format("Do MMM, YYYY"); %></b></p>
-                                  </div>
-                                </div>
-                                <div class="col-6 col-sm-6 col-lg-3">
-                                  <div class="start-date">
-                                    <p>Area<br><b>
-                                        <%=propertyDetailData[0].ps_property_area%> sq.ft.
-                                      </b></p>
-                                  </div>
-                                </div>
-                                <div class="col-6 col-sm-6 col-lg-3">
-                                  <div class="start-date">
-                                    <p>Duration<br><b>2 year</b></p>
-                                  </div>
-                                </div>
-                              </div>
+                                              <div class="row">
+                                                <div class="col-6 col-sm-6 col-lg-3">
+                                                  <div class="start-date">
+                                                    <p>Start date<br><b>
+                                                        <%=moment(startDate).format("Do MMM, YYYY"); %>
+                                                      </b></p>
+                                                  </div>
+                                                </div>
+                                                <div class="col-6 col-sm-6 col-lg-3">
+                                                  <div class="start-date 1 Dec, 2021">
+                                                    <p>End date<br><b>
+                                                        <%=moment(endDate).format("Do MMM, YYYY"); %>
+                                                      </b></p>
+                                                  </div>
+                                                </div>
+                                                <div class="col-6 col-sm-6 col-lg-3">
+                                                  <div class="start-date">
+                                                    <p>Area<br><b>
+                                                        <%=propertyDetailData[0].ps_property_area%> sq.ft.
+                                                      </b></p>
+                                                  </div>
+                                                </div>
+                                                <div class="col-6 col-sm-6 col-lg-3">
+                                                  <div class="start-date">
+                                                    <p>Duration<br><b>2 year</b></p>
+                                                  </div>
+                                                </div>
+                                              </div>
                             </div>
                             <div class="apartment-details-full">
                               <div class="row">
                                 <div class="col-6 col-sm-6 col-lg-3">
                                   <div class="start-date">
-                                        <p>Estimated Cost<br><b>$<%=totalcost%></b></p>
-                                     
-                                        
-                                        
-                                         
-                                        
+                                    <p>Estimated Cost<br><b>$<%=totalcost%></b></p>
+
+
+
+
+
                                   </div>
                                 </div>
                                 <div class="col-6 col-sm-6 col-lg-3">
@@ -446,9 +501,9 @@
                         <%if(allDocumentUploadByCustmer.length>0){%>
                           <%allDocumentUploadByCustmer.forEach(function(row,i){%>
                             <%if(i<=2){%>
-                              <li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a
-                                  href="/mydreamhome-details-docs" value="<%=propertyDetailData[0]._id%>"><img
-                                    src="/upload/<%=row.cuds_document_name%>" alt="" title=""><br><span>
+                              <li><a href="/mydreamhome-details-docs" value="<%=propertyDetailData[0]._id%>"><img
+                                    src="/upload/<%=row.cuds_document_name%>" alt="" title=""><br><span
+                                    style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                     <%=row.cuds_document_name%>
                                   </span></a>
                               </li>
@@ -603,16 +658,16 @@
       });
     </script>
     <script>
-    $(document).ready(function () {
-    $(".propertyComplaintModal").click(function(e){
-      $("#MyComplaintModal #coms_complaint_help").html("<option selected value='Property Related Enquiry'>Property Related Enquiry</option>");
-      var propertyId = $(this).data('property_id');
-      $("#MyComplaintModal #property_id").html("<option selected value='"+propertyId+"'></option>");
-      $.ajax({
+      $(document).ready(function () {
+        $(".propertyComplaintModal").click(function (e) {
+          $("#MyComplaintModal #coms_complaint_help").html("<option selected value='Property Related Enquiry'>Property Related Enquiry</option>");
+          var propertyId = $(this).data('property_id');
+          $("#MyComplaintModal #property_id").html("<option selected value='" + propertyId + "'></option>");
+          $.ajax({
             type: "GET",
             url: "/service-provider-by-property",
-            data:{
-              property_id:propertyId
+            data: {
+              property_id: propertyId
             },
             cache: false,
             success: function (html) {
@@ -624,14 +679,14 @@
               if (html.hireServiceData.length > 0) {
                 $.each(html.hireServiceData, function (i, data) {
                   console.log('val:', data[0])
-                    htmlData += '<option value="' + data[0]._id + '">' + data[0].sps_fullname + '</option>';
+                  htmlData += '<option value="' + data[0]._id + '">' + data[0].sps_fullname + '</option>';
                 });
               }
               $('#coms_complaint_for').html(htmlData);
             }
+          });
         });
-    });
-  });
+      });
     </script>
     <script type="text/javascript">
       $('#complaintform').validate({
@@ -662,8 +717,12 @@
         if (succ_flash_msg != "" && succ_flash_msg != undefined) {
           setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
         }
-      });  
+      });
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      });
     </script>
+
     <script>
       
       $(document).ready(function () {
@@ -688,14 +747,17 @@
                 $('#removeProfessionalModal').modal('hide');
                 $('.message').html('<span class="alert alert-success error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
                 setTimeout(function () {  $('#removeProfessionalModal').modal('hide');$('.message').html('');window.location.reload(true) }, 3000);
+
               }
             }
+          });
         });
-       });
-      });  
-    </script>
-     <%- include('my-script') -%>
-    </body>
+          
+      })
+      </script>
+      <%- include('my-script') -%>
+        </body>
+       
 
 
-    </html>
+        </html>
