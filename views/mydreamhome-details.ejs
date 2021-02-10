@@ -730,6 +730,7 @@
         e.preventDefault();
         var professhional_id=$(this).attr('id');
         //alert(professhional_id)
+        var $tr = $(this).closest('tr');
         $.ajax({
             type: "POST",
             url: "/api/removeProfesshional",
@@ -743,11 +744,13 @@
                 setTimeout(function () { $('.message').html(''); }, 3000);
               }else{
                 console.log($(".propf_row_"+data.id));
-                $(".propf_row_"+data.id).css("display", "none");
-                $('#removeProfessionalModal').modal('hide');
+                //$(".propf_row_"+data.id).css("display", "none");
+                //$('#removeProfessionalModal').modal('hide');
                 $('.message').html('<span class="alert alert-success error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
-                setTimeout(function () {  $('#removeProfessionalModal').modal('hide');$('.message').html('');window.location.reload(true) }, 3000);
-
+                setTimeout(function () {$('.message').html('');window.location.reload(true) }, 3000);
+                $tr.find('td').fadeOut(1000,function(){ 
+                            $tr.remove();                    
+                        }); 
               }
             }
           });
