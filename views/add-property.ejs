@@ -36,7 +36,9 @@
             </div>
 
             <div class="dashboard-inner">
-              <form method="post" action="" id="propertyform" enctype="multipart/form-data">
+             <div class="firstFormDive"><!--first form dive open-->
+              <form method="post" action="" id="propertyform1"><!--form1-->
+              <!-- <form method="post" action="" id="propertyform" enctype="multipart/form-data"> -->
 
                 <% if(typeof err_msg!='undefined' ){ %>
                   <span class="error_validate flash_msg" style="color: red;">
@@ -140,7 +142,7 @@
                                 data-msg-required="Property Type is required!">
                                 <option value="">Select Property Type</option>
                                 <option value="New">New</option>
-                                <option value="Chainproperty">Chainproperty</option>
+                                <option value="Chain">Chain</option>
                               </select>
                             </div>
 
@@ -157,16 +159,16 @@
                         </div>
                         <div class="input-field">
                           <div class="row">
-                            <div class="col-sm-12 col-lg-4"><input type="text"
+                            <div class="col-sm-12 col-lg-4"><input type="number"
                                 class="form-control property-form-control-size-fix " id="area"
                                 placeholder="Area(sq. ft.)*" name="ps_property_area" data-rule-required="true"
                                 data-msg-required="Area is required!" value="">
                             </div>
-                            <div class="col-sm-12 col-lg-4"><input type="text"
+                            <div class="col-sm-12 col-lg-4"><input type="number"
                                 class="form-control property-form-control-size-fix " id="bedroom" placeholder="Bedroom*"
                                 name="ps_property_bedroom" data-rule-required="true"
                                 data-msg-required="Bedroom field is required!" value=""></div>
-                            <div class="col-sm-12 col-lg-4"><input type="text"
+                            <div class="col-sm-12 col-lg-4"><input type="number"
                                 class="form-control property-form-control-size-fix " id="bedroom2"
                                 placeholder="Bathroom*" name="ps_property_bathroom" data-rule-required="true"
                                 data-msg-required="Bathroom  field is required!" value=""></div>
@@ -858,9 +860,24 @@
                                 </div>
                               </div>
                             </div>
-                            <%}%>
+                            
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-12">
+                                <div class="property-btn">
+                                  <button type="submit" class="btn btn-info  submit_first_form">Next</button>
+                                </div>
+                              </div>
+                            </div>
+                          
 
-                              <div class="row">
+                          </form><!--form1-->
+                            </div><!-- first form div close-->
+                            <%}%>
+                              <div class="secondFormDiv"><!--second form dive start prop image-->
+
+                              <form method="post" action="" id="propertyform2" enctype="multipart/form-data"><!--second form-->
+                               
+                                <div class="row">
                                 <div class="col-sm-12 col-lg-12">
                                   <div class="property-step">
                                     <p>STEP 5</p>
@@ -943,7 +960,18 @@
                                   <!-- </form> -->
                                 </div>
                               </div>
-
+                              <input type="hidden" class="img_property_id" name="property_id" value="">
+                              <div class="row">
+                                <div class="col-sm-12 col-lg-12">
+                                  <div class="property-btn">
+                                    <button type="submit" class="btn btn-info  submit_second_form">Next</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </form><!--second form-->
+                            </div> <!--second form div close -->
+                            <div class="thirdFormDiv"><!--third form div start prop plan image-->
+                              
                               <div class="row">
                                 <div class="col-sm-12 col-lg-12">
                                   <div class="property-step">
@@ -952,14 +980,14 @@
                                   </div>
                                 </div>
                               </div>
-
+                              <span class="message_data"></span>
+                            <form method="post"  class="propertyPlanform" enctype="multipart/form-data">
                               <div class="row">
                                 <div class="col-sm-12 col-lg-12">
-                                  <!-- <form action="/upload-properties-plan-pic" class="form" method="post"enctype="multipart/form-data"> -->
                                   <div class="property-box  prop_4">
 
                                     <div class=property-inner-section>
-                                      <img src="images/upload-icon.png" id="avtar4">
+                                      <img src="images/upload-icon.png" id="avtarimg">
                                     </div>
                                     <div class="driving-liences-portfolio ">
                                       <p CLASS="Picture_4">Picture 1</p>
@@ -969,16 +997,11 @@
                                     </div>
                                     <span>
                                       <div class="custom-file-input">
-                                        <input type="file" name="propertiesplanpic" id="propertiesplanpic1" value=""
-                                          required
-                                          onchange="document.getElementById('avtar4').src = window.URL.createObjectURL(this.files[0])">
+                                        <input type="file"  id="" name="planImage" value="" required onchange="document.getElementById('avtarimg').src = window.URL.createObjectURL(this.files[0])">
                                         <input type="button">
                                       </div>
                                     </span>
                                   </div>
-                                  <!-- </form> -->
-                                  <!-- <form action="/upload-properties-plan-pic" class="form" method="post" enctype="multipart/form-data"> -->
-
                                   <div class="property-box  prop_5">
                                     <div class=property-inner-section>
                                       <img src="images/upload-icon.png" id="avtar5">
@@ -992,15 +1015,11 @@
                                     </div>
                                     <span>
                                       <div class="custom-file-input">
-                                        <input type="file" name="propertiesplanpic" id="propertiesplanpic2" value=""
-                                          onchange="document.getElementById('avtar5').src = window.URL.createObjectURL(this.files[0])">
+                                        <input type="file"  id="" name="planImage" value=""onchange="document.getElementById('avtar5').src = window.URL.createObjectURL(this.files[0])">
                                         <input type="button">
                                       </div>
                                     </span>
                                   </div>
-                                  <!-- </form> -->
-                                  <!--<form action="/upload-properties-plan-pic" class="form" method="post"
-                              enctype="multipart/form-data">-->
                                   <div class="property-box  prop_6">
 
                                     <div class=property-inner-section>
@@ -1015,8 +1034,7 @@
                                     </div>
                                     <span>
                                       <div class="custom-file-input">
-                                        <input type="file" name="propertiesplanpic" id="propertiesplanpic3" value=""
-                                          onchange="document.getElementById('avtar6').src = window.URL.createObjectURL(this.files[0])">
+                                        <input type="file"  id="" name="planImage" value=""onchange="document.getElementById('avtar6').src = window.URL.createObjectURL(this.files[0])">
                                         <input type="button">
                                       </div>
                                     </span>
@@ -1024,17 +1042,19 @@
                                   <!-- </form> -->
                                 </div>
                               </div>
-                              
+                              <input type="hidden" class="plan_img_property_id" name="property_id" value="">
                               <div class="row">
                                 <div class="col-sm-12 col-lg-12">
                                   <div class="property-btn">
-                                    <button type="submit" class="btn submit-btn AddPropertyBtn">Add
+                                    <button type="submit" class="btn submit-btn submit_third_form">Add
                                       Property</button>
                                   </div>
                                 </div>
                               </div>
+                            </form>
+                            </div><!--third form div close-->
             </div>
-            </form>
+            <!-- </form> -->
           </div>
         </div>
       </div>
@@ -1217,6 +1237,78 @@
         })
       });
     </script>
+    <script>
+       $(document).ready(function () {
+        $('.firstFormDive').show();
+        $(".secondFormDiv").hide();
+        $(".thirdFormDiv").hide();
+        $('#propertyform1').on('submit', function (e) {
+          e.preventDefault();
+          var formData = new FormData($('#propertyform1')[0]);
+          $.ajax({
+            type: "POST",
+            data: formData,
+            url: "/api/add-new-property",
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+              console.log(data)
+              if(data.status==true){
+                $('.firstFormDive').hide();
+                $(".secondFormDiv").show();
+                var property_id = data.property_id;
+                $(".img_property_id").val(property_id);
+                $('#propertyform2').on('submit', function (e) {
+                  e.preventDefault();
+                  var formData1 = new FormData($('#propertyform2')[0]);
+                  $.ajax({
+                      type: "POST",
+                      data: formData1,
+                      url: "/api/add-new-property-image",
+                      cache: false,
+                      contentType: false,
+                      processData: false,
+                      success: function (data) {
+                        if(data.status==true){
+                          $(".plan_img_property_id").val(property_id);
+                          $('.firstFormDive').hide();
+                          $(".secondFormDiv").hide();
+                          $(".thirdFormDiv").show();
+                          $('.propertyPlanform').on('submit', function (e) {
+                            e.preventDefault();
+                            var formData2 = new FormData($('.propertyPlanform')[0]);
+                            $.ajax({
+                                type: "POST",
+                                data: formData2,
+                                url: "/api/add-new-property-plan-image",
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                success: function (data) {
+                                  if(data.status==true){
+                                    $('.message_data').show();
+                                    $('.message_data').html('<div class="isa_success"><i style="margin: 0px 7px !important;" class="fa fa-check"></i> '+data.message+'</div>');
+                                    setTimeout(function(){ $('.message_data').hide();window.location.href = data.redirect; }, 3000);
+                                  }
+                                }
+                            });
+                          })
+                        }
+                      }
+                   });
+                })
+              }
+            }
+          });
+        })
+      });
+    </script>
+              
+
+             
+          
+          
     </body>
 
     </html>
