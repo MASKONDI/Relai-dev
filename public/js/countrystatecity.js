@@ -80,8 +80,10 @@ function locationInfo() {
                     jQuery.each(data['result'], function (key, val) {
 
                         var option = jQuery('<option />');
-                        option.attr('value', val).text(val);
+                        option.attr('value', val).text(val)
+                        console.log("val is ", val);
                         jQuery('.cities').append(option);
+                        //console.log("use state is 212", option[0].value);
                     });
                 }
                 else {
@@ -89,7 +91,9 @@ function locationInfo() {
                     var option = jQuery('<option />');
                     option.attr('value', usestate).text(usestate);
                     option.attr('selected', 'selected');
+
                     jQuery('.cities').append(option);
+
                 }
 
                 jQuery(".cities").prop("disabled", false);

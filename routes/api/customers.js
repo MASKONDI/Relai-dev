@@ -24,6 +24,8 @@ const ServiceProviderSchema = require("../../models/service_providers");
 const validateAddPhase = require('../../Validation/add_phase');
 const validateCustomerRegisterInput = require('../../Validation/cust_signup');
 const validateCustomerSigninInput = require('../../Validation/cust_signin');
+const validateChangePasswordInput = require('../../Validation/change_password');
+
 const DocumentPermissionSchema = require('../../models/document_permission')
 const PropertiesPictureSchema = require("../../models/properties_picture");
 const PropertiesPlanPictureSchema = require("../../models/properties_plan_picture");
@@ -643,7 +645,7 @@ router.post('/forget-password', function (req, res) {
                   text: 'Dear Customer,' + '\n\n' + 'New Password from Relai.\n\n' +
                     'Password: ' + new_pass + '\n\n' +
 
-                    'We suggest you to please change your password after successfully logging in on the portal using the above password :\n' + 'Here is the change password link: http://' + req.headers.host + '/Change-password' + '\n\n' +
+                    'We suggest you to please change your password after successfully logging in on the portal using the above password :\n' + 'Here is the link for signin: https://' + req.headers.host + '/signin' + '\n\n' +
                     'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
 
                 };
@@ -701,41 +703,41 @@ POST : Change Permission api for giving Docs read/write permission to existing s
 router.post('/change-permision', async (req, res) => {
   console.log('doc id:', req.body.doc_id)
   console.log('checkFlag:', req.body.checkFlag)
-  DocumentPermissionSchema.findOne({ dps_customer_id: req.body.cust_id,dps_service_provider_id:req.body.professionalId,dps_document_id: req.body.doc_id}).then(async (data) => { 
-    console.log('FindData:',data);
-    let permisionFlagDownload='';
-    let permisionFlagView='';
+  DocumentPermissionSchema.findOne({ dps_customer_id: req.body.cust_id, dps_service_provider_id: req.body.professionalId, dps_document_id: req.body.doc_id }).then(async (data) => {
+    console.log('FindData:', data);
+    let permisionFlagDownload = '';
+    let permisionFlagView = '';
 
-     if(data){
+    if (data) {
 
-      if(req.body.checkFlag === 'viewaction'){
-        permisionFlagDownload= data.dps_download_permission;
-        permisionFlagView= req.body.viewFlag;
+      if (req.body.checkFlag === 'viewaction') {
+        permisionFlagDownload = data.dps_download_permission;
+        permisionFlagView = req.body.viewFlag;
         console.log('view....action...')
-      }else{
-        permisionFlagView= data.dps_view_permission;
-        permisionFlagDownload= req.body.downloadFlag;
+      } else {
+        permisionFlagView = data.dps_view_permission;
+        permisionFlagDownload = req.body.downloadFlag;
         console.log('download....action...')
-  
-      }
-      
-      console.log('permisionFlagView:',permisionFlagView);
-      console.log('permisionFlagDownload:',permisionFlagDownload);
 
-      
-      DocumentPermissionSchema.updateOne({'dps_service_provider_id': req.body.professionalId,'dps_customer_id':req.body.cust_id,'dps_document_id':req.body.doc_id }, { $set: { dps_view_permission: permisionFlagView,dps_download_permission:permisionFlagDownload,dps_is_active_user_flag:req.session.active_user_login }}, { upsert: true }, function (err) {
+      }
+
+      console.log('permisionFlagView:', permisionFlagView);
+      console.log('permisionFlagDownload:', permisionFlagDownload);
+
+
+      DocumentPermissionSchema.updateOne({ 'dps_service_provider_id': req.body.professionalId, 'dps_customer_id': req.body.cust_id, 'dps_document_id': req.body.doc_id }, { $set: { dps_view_permission: permisionFlagView, dps_download_permission: permisionFlagDownload, dps_is_active_user_flag: req.session.active_user_login } }, { upsert: true }, function (err) {
         if (err) {
           console.log("err is :", err);
           req.flash('err_msg', 'Something went wrong.');
           //res.redirect('/forget-password')
         } else {
           res.send({
-            message:'Permission Updated !!'
+            message: 'Permission Updated !!'
           })
         }
       })
 
-     }else{
+    } else {
       let permissionObject = {
         dps_view_permission: req.body.viewFlag,
         dps_download_permission: req.body.downloadFlag,
@@ -744,18 +746,18 @@ router.post('/change-permision', async (req, res) => {
         dps_document_id: req.body.doc_id,
         dps_is_active_user_flag: req.session.active_user_login
       }
-      console.log('permissionObject:',permissionObject);
-          var docPermissionSave = new DocumentPermissionSchema(permissionObject)
-          docPermissionSave.save().then(async (data) => {
-            console.log('docPermissionSave:',data)
-            res.send({
-              message:'Permission Updated !!'
-            })
-          }).catch(err => {
-            console.log(err)
-            req.flash('err_msg', 'Something went wrong please try after some time!');
-          });
-     }
+      console.log('permissionObject:', permissionObject);
+      var docPermissionSave = new DocumentPermissionSchema(permissionObject)
+      docPermissionSave.save().then(async (data) => {
+        console.log('docPermissionSave:', data)
+        res.send({
+          message: 'Permission Updated !!'
+        })
+      }).catch(err => {
+        console.log(err)
+        req.flash('err_msg', 'Something went wrong please try after some time!');
+      });
+    }
   });
 
 
@@ -1264,6 +1266,52 @@ router.post('/complaint-details-discussion', isCustomer, (req, res) => {
     });
   });
 });
+
+
+//***************** post changes password **************//
+router.post('/change-password', isCustomer, function (req, res) {
+  console.log("calling change password API", req.body);
+  var user_id = req.session.user_id;
+  const { errors, isValid } = validateChangePasswordInput(req.body);
+  // Check Validation
+  if (!isValid) {
+    console.log("error is ", errors);
+    req.flash('err_msg', errors.confirmPassword);
+    return; // res.redirect('/change-Password');
+  }
+  var hashPassword = "";
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(req.body.cus_password, salt, (err, hash) => {
+      if (err) throw err;
+      hashPassword = hash;
+      CustomerSchema.updateOne({
+        '_id': req.session.user_id
+      }, {
+        $set: {
+          cus_password: hashPassword
+        }
+      }, {
+        upsert: true
+      }, function (err) {
+        if (err) {
+          console.log("err is :", err);
+          req.flash('err_msg', 'Something went wrong.');
+          return;
+        } else {
+          console.log("Password change successfully");
+          req.flash('success_msg', 'password change successfully');
+        }
+      });
+    });
+  });
+
+
+
+});
+
+
+
+
 
 
 module.exports = router;

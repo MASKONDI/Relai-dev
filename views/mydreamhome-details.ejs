@@ -1,6 +1,46 @@
 <%- include('dashboard_header')-%>
   <%- include('edit-profile-model')-%>
+    <!-- The Modal -->
+    <div class="modal permission-modal fade " id="addTask2Modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
 
+          <!-- Modal Header -->
+          <div class="modal-header text-center">
+            <h2 class="modal-title w-100">Add Task</h2>
+          </div>
+          <form name="addTaskForm" id="addTaskForm" action="" method="post">
+            <!-- Modal body -->
+            <div class="modal-body">
+              <label class="">Describe this to-do</label>
+              <div class="errmessage"></div>
+              <!-- <div class="alert alert-info" id="taskmsg"></div> -->
+              <!-- <input type="text" class="form-control form-control-fix2" id="subject" placeholder="Instruction"
+            name="todotask" required> -->
+              <select class="form-control selectBox2 phase_list" id="Phase" name="Phase" style="height: 48px;"
+                data-rule-required="true" data-msg-required="phase  is required" required>
+                <option value="">Select Phase</option>
+                <option value=""></option>
+              </select>
+              <input type="text" class="form-control form-control-fix2" id="taskName" placeholder="Task Name"
+                name="task_name" required>
+
+              <input type="date" class="form-control  form-control-fix2" id="duedate" placeholder="Due on"
+                name="duedate" required>
+              <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
+                placeholder="Add Notes(If any)"></textarea>
+
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-cancel" id="cancel_addtask_btn" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-cancel" id="addtask_btn" data-dismiss="">Add Task</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
     <!-- The Modal -->
     <div class="modal fade permission-modal" id="removeProfessionalModal">
       <div class="modal-dialog">
@@ -171,29 +211,35 @@
                                   </a></div>
                               </div>
                               <div class="img-fix3 float-right">
-                                <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>"><img
+                                <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>"
+                                  data-toggle="tooltip" data-placement="top" title="Message"><img
                                     src="images/chat.png"></a>
                                 <!-- #ComplaintModal -->
                                 <!-- data-toggle="modal" data-target="#MyComplaintModal" -->
                                 <a href="javascript:void(0)" data-property_id="<%=propertyDetailData[0]._id%>"
-                                  class="propertyComplaintModal"><img src="images/help.png"></a>
+                                  class="propertyComplaintModal" data-toggle="tooltip" data-placement="top"
+                                  title="Raise a complaint"><img src="images/help.png"></a>
                               </div>
                             </div>
-                            <div class="recent-img">
-                              <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
-                                class="mr-10" src="images/recent-user-3.png">
-                              <!-- <a href="#" class="add-professionals">Add/Remove Professionals</a> -->
-                              <div class="profile-dropdown">
-                                <a href="#" class="add-professionals">Add/Remove Professionals</a>
-                                <div class="professional-dropdown">
-                                  <a href="/professionals">Add
-                                    Professionals</a>
-                                  <a href="#" data-toggle="modal" data-target="#removeProfessionalModal">Remove
-                                    Professionals</a>
+                            <div class="col">
+                              <div class="recent-img">
+                                <img src="images/recent-user-1.png"><img class="mr-10"
+                                  src="images/recent-user-2.png"><img class="mr-10" src="images/recent-user-3.png">
+                                <!-- <a href="#" class="add-professionals">Add/Remove Professionals</a> -->
+
+                                <div class="profile-dropdown">
+                                  <a href="#" class="add-professionals">Add/Remove Professionals</a>
+                                  <div class="professional-dropdown">
+                                    <a href="/professionals">Add
+                                      Professionals</a>
+                                    <a href="#" data-toggle="modal" data-target="#removeProfessionalModal">Remove
+                                      Professionals</a>
+                                  </div>
                                 </div>
+                                <a href="#" class="add-professionals" data-toggle="modal"
+                                  data-target="#addTask2Modal">Add
+                                  Task</a>
                               </div>
-
-
                             </div>
                             <div class="apartment-details-full">
 
@@ -435,9 +481,9 @@
                         <%if(allDocumentUploadByCustmer.length>0){%>
                           <%allDocumentUploadByCustmer.forEach(function(row,i){%>
                             <%if(i<=2){%>
-                              <li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a
-                                  href="/mydreamhome-details-docs" value="<%=propertyDetailData[0]._id%>"><img
-                                    src="/upload/<%=row.cuds_document_name%>" alt="" title=""><br><span>
+                              <li><a href="/mydreamhome-details-docs" value="<%=propertyDetailData[0]._id%>"><img
+                                    src="/upload/<%=row.cuds_document_name%>" alt="" title=""><br><span
+                                    style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                     <%=row.cuds_document_name%>
                                   </span></a>
                               </li>
@@ -651,8 +697,12 @@
         if (succ_flash_msg != "" && succ_flash_msg != undefined) {
           setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
         }
-      });  
+      });
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      });
     </script>
+
     <%- include('my-script') -%>
       </body>
 

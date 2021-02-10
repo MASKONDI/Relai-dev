@@ -135,8 +135,8 @@
                                 class="form-control property-form-control-size-fix " id="emailaddress"
                                 placeholder="buyer/seller/renovator" name="ps_other_party_user_as" value=""
                                 data-rule-required="true" data-msg-required="buyer/seller/renovator is required!"> -->
-                              <select name="property_type" class=" form-control selectBox5" id="property_type"
-                                required style="height: 48px;" data-rule-required="true"
+                              <select name="property_type" class=" form-control selectBox5" id="property_type" required
+                                style="height: 48px;" data-rule-required="true"
                                 data-msg-required="Property Type is required!">
                                 <option value="">Select Property Type</option>
                                 <option value="New">New</option>
@@ -186,7 +186,7 @@
                               <h6>Add Phases</h6>
                             </div>
                           </div>
-                          
+
                         </div>
                         <%if(session.active_user_login=='renovator'){ %>
                           <div class="row">
@@ -575,9 +575,10 @@
                                       <div class="property-input-box">
                                         <div class="property-text-fix">
                                           <label>Phase1</label>
-                                          <input type="read-only" name="Phase[]" class="form-control form-control-size-fix "
-                                            id="Instruction" style="border-radius:10px; width:85%"
-                                            placeholder="Instruction" value="Instruction"  readonly>
+                                          <input type="read-only" name="Phase[]"
+                                            class="form-control form-control-size-fix " id="Instruction"
+                                            style="border-radius:10px; width:85%" placeholder="Instruction"
+                                            value="Instruction" readonly>
                                         </div>
                                       </div>
                                     </div>
@@ -1024,7 +1025,7 @@
                                   <!-- </form> -->
                                 </div>
                               </div>
-                              
+
                               <div class="row">
                                 <div class="col-sm-12 col-lg-12">
                                   <div class="property-btn">
@@ -1199,11 +1200,11 @@
                 //$('#msg').html(data.message).delay(5000).fadeOut('success');
               } else {
                 console.log('message:', data.success_msg)
-               // $( ".message" ).scroll();
-              // $('html, body').animate({ scrollTop: 0 }, 0);
-               $('html, body').animate({scrollTop:$('.message').position().top}, 'slow');
-                $('.message').html('<span class="error_validate flash_msg  alert alert-success" style="color: green; margin-bottom: 10px;">' +data.success_msg + '</span>');
-                setTimeout(function () {$('.message').html('');window.location.href='/mydreamhome' }, 15000);
+                // $( ".message" ).scroll();
+                // $('html, body').animate({ scrollTop: 0 }, 0);
+                $('html, body').animate({ scrollTop: $('.message').position().top }, 'slow');
+                $('.message').html('<span class="error_validate flash_msg  alert alert-success" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
+                setTimeout(function () { $('.message').html(''); window.location.href = '/mydreamhome' }, 15000);
                 //window.location.href = data.redirect;
               }
 

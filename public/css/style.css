@@ -1305,6 +1305,7 @@ label.check-permission span {
     border: none;
     text-align: center;
     margin: 0 auto;
+    display: flow-root;
 }
 .permission-modal .modal-dialog {
     max-width: 570px;
@@ -2583,6 +2584,7 @@ ul.docs-list.last-doc li{
         color: #005377;
         /* width: 81px; */
         padding: 7px 9px;
+        margin-top: 8px;
         margin-bottom: 50px;
         margin-left: 10px;
         border-radius: 10px;
@@ -4722,6 +4724,7 @@ a.btn.btn-add-property, a.btn.btn-get-help, button.btn.btn-cancel{
 }
 .permission-modal .modal-footer {
     margin: unset;
+    display: flex;
 }
 .docs-files .float-left, .docs-files .float-right {
     float: none !important;
@@ -5579,4 +5582,15 @@ a .clip-icon{
   }.professional-dropdown a:hover {background-color: #ddd;}
 
   .profile-dropdown:hover .professional-dropdown {display: block;}
+
+  .dream-home-edit-icon{
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    padding: 5px 10px;
+    color: #fff;
+    border-radius: 15px;
+    text-transform: capitalize;
+    background-color: #005377
+  }
   
