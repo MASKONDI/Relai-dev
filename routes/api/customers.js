@@ -476,6 +476,31 @@ router.post("/add-new-property-plan-image",isCustomer, async (req, res) => {
   });
 
 });
+
+router.get("/get_property_for_chain",isCustomer, async (req, res) => {
+  
+    if (req.body) {
+      console.log("get chain property body:=", req.session);
+      let AllProperty = await PropertyHelper.GetAllProperty(req.session.user_id,req.session.active_user_login);
+      console.log('AllProperty========', AllProperty);
+      if (AllProperty) {
+        return res.send({
+          'message': 'Select Property',
+          'status': true,
+          'data':AllProperty
+          
+        });
+      } else {
+        return res.send({
+          'message': 'Something Wrong Try Again ',
+          'status': false,
+          'redirect':'/add-property'
+        });
+      }
+    }
+  
+
+});
 //=============property add section close====================//
 /* -------------------------------------------------------------------------------------------------
 GET : fetch or search the service providers data based on name, surname, qualifications,
@@ -1027,7 +1052,7 @@ function invite_function(req, saved_property) {
       smtpTransport.sendMail(mailOptions, function (err) {
         if (err) {
           console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
-          res.redirect('/add-property')
+          //res.redirect('/add-property')
         } else {
           //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
           // res.redirect('/add-property')
@@ -1196,9 +1221,11 @@ router.post('/removeProfesshional', isCustomer, async(req, res) => {
    console.log("remove prof id" ,req.body.professhional_id,req.session)
   var responce=await propertyProfesshionalHelper.removeProfessionalById(req.body.professhional_id,req.session.property_id)
   if(responce){
+    console.log("remove responce==========",responce)
     return res.send({
       'success_msg': 'Professional Removed successfully..',
       'status': true,
+      'id':responce._id
       
     });
   }else{

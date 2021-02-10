@@ -29,7 +29,7 @@
                     </tr>
                     <%}else{%>
                       <%hiredProfeshnoalList.forEach(function(row,i){%>
-                  <tr>
+                  <tr class="propf_row_<%=row._id%>">
                     <td><label class="check-permission"><img src="images/recent-user-1.png">
                         <%=row.sps_fullname%>, <span>
                           <%=row.sps_role_name%>
@@ -670,7 +670,7 @@
        $('.deleteProfesshional').click(function(e){
         e.preventDefault();
         var professhional_id=$(this).attr('id');
-        alert(professhional_id)
+        //alert(professhional_id)
         $.ajax({
             type: "POST",
             url: "/api/removeProfesshional",
@@ -683,8 +683,11 @@
                 $('.message').html('<span class="alert alert-danger error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
                 setTimeout(function () { $('.message').html(''); }, 3000);
               }else{
+                console.log($(".propf_row_"+data.id));
+                $(".propf_row_"+data.id).css("display", "none");
+                $('#removeProfessionalModal').modal('hide');
                 $('.message').html('<span class="alert alert-success error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
-                setTimeout(function () { $('.message').html('');window.location.reload(true) }, 3000);
+                setTimeout(function () {  $('#removeProfessionalModal').modal('hide');$('.message').html('');window.location.reload(true) }, 3000);
               }
             }
         });

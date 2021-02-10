@@ -56,7 +56,7 @@
                           <div class="row">
                             <div class="col-sm-12 col-lg-12">
                               <div class="property-step">
-                                <p>STEP 1</p>
+                                <!-- <p>STEP 1</p> -->
                                 <h6>Add property name & address</h6>
                               </div>
                             </div>
@@ -115,7 +115,7 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-12">
                             <div class="property-step">
-                              <p>STEP 2</p>
+                              <!-- <p>STEP 2</p> -->
                               <h6>Add other party</h6>
                             </div>
                           </div>
@@ -147,12 +147,31 @@
                             </div>
 
                           </div>
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-4">
+                              <select name="ps_existing_property" class=" form-control selectBox5" id="ps_existing_property"
+                                required style="height: 48px;" data-rule-required="true"
+                                data-msg-required="existing property Type is required!">
+                                <option value="">Select existing Property</option>
+                                <option value="commercial">commercial</option>
+                                <option value="Residential">Residential</option>
+                              </select>
+                            </div>
+                            <div class="AllPropertyListingDiv col-sm-12 col-lg-4">
+                              <select name="ps_chain_property" class=" ps_chain_property form-control selectBox5" id="ps_chain_property"
+                                 style="height: 48px;" >
+                                <option value="">Select Property for Chain</option>
+                                <!-- <option value="commercial">commercial</option>
+                                <option value="Residential">Residential</option> -->
+                              </select>
+                            </div>
+                          </div>
                         </div>
 
                         <div class="row">
                           <div class="col-sm-12 col-lg-12">
                             <div class="property-step">
-                              <p>STEP 3</p>
+                              <!-- <p>STEP 3</p> -->
                               <h6>Add property details</h6>
                             </div>
                           </div>
@@ -184,7 +203,7 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-12">
                             <div class="property-step">
-                              <p>STEP 4</p>
+                              <!-- <p>STEP 4</p> -->
                               <h6>Add Phases</h6>
                             </div>
                           </div>
@@ -861,9 +880,9 @@
                               </div>
                             </div>
                             
-                            <div class="row">
+                            <div class="row ">
                               <div class="col-sm-12 col-lg-12">
-                                <div class="property-btn">
+                                <div class="property-btn float-right">
                                   <button type="submit" class="btn btn-info  submit_first_form">Next</button>
                                 </div>
                               </div>
@@ -880,7 +899,7 @@
                                 <div class="row">
                                 <div class="col-sm-12 col-lg-12">
                                   <div class="property-step">
-                                    <p>STEP 5</p>
+                                    <!-- <p>STEP 5</p> -->
                                     <h6>Add property pictures</h6>
                                   </div>
                                 </div>
@@ -975,7 +994,7 @@
                               <div class="row">
                                 <div class="col-sm-12 col-lg-12">
                                   <div class="property-step">
-                                    <p>STEP 6</p>
+                                    <!-- <p>STEP 6</p> -->
                                     <h6>Add plan pictures</h6>
                                   </div>
                                 </div>
@@ -1242,6 +1261,7 @@
         $('.firstFormDive').show();
         $(".secondFormDiv").hide();
         $(".thirdFormDiv").hide();
+        //$(".AllPropertyListingDiv").hide();
         $('#propertyform1').on('submit', function (e) {
           e.preventDefault();
           var formData = new FormData($('#propertyform1')[0]);
@@ -1303,6 +1323,34 @@
           });
         })
       });
+      $("#property_type").change(function(e){
+        if($(this).val()=='Chain'){
+          $(".AllPropertyListingDiv").show();
+          $.ajax({
+              type: "GET",
+              // data: 'propertyId=' + propertyId,
+              url: "/api/get_property_for_chain",
+              cache: false,
+              success: function (data) {
+                console.log(data)
+                var htmlData = '';
+
+                htmlData += '<option value="">Select Property for Chain</option>';
+                if (data.data.length > 0) {
+                  $.each(data.data, function (i, data) {
+                    console.log('val:', data)
+                    htmlData += '<option value="' + data._id + '">' + data.ps_property_name + '</option>';
+                  });
+                }
+                $('.ps_chain_property').html(htmlData);
+
+              }
+            });
+
+        }else{
+         // $(".AllPropertyListingDiv").hide();
+        }
+      })
     </script>
               
 

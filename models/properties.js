@@ -103,6 +103,12 @@ const PropertiesSchema = new Schema({
   ps_phase_array:{
     type:Array,
   },
+  ps_chain_property_id:{
+    type :Array,
+  },
+  ps_existing_property:{
+    type:String
+  }
   
   
 });

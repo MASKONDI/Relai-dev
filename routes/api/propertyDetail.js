@@ -17,6 +17,19 @@ module.exports.GetPropertById = function (propertyId, ps_is_active_user_flag) {
         })
     });
 };
+module.exports.GetAllProperty = function (user_id, ps_is_active_user_flag) {
+    return new Promise(async function (resolve, reject) {
+        //console.log('hello',pps_property_id,pps_is_active_user_flag)
+        //var data = { _id: propertyId }
+        var data = { $and: [{ ps_is_active_user_flag: ps_is_active_user_flag, ps_user_id: user_id }] }
+        await PropertiesSchema.find(data).then(async (resp) => {
+            let responce = await resp
+            resolve(responce)
+        }).catch((err) => {
+            reject(err)
+        })
+    });
+};
 module.exports.add_new_property_image = function (req) {
     return new Promise(async function (resolve, reject) {
         await req.files.propertiespic.forEach(element => {
@@ -83,6 +96,7 @@ module.exports.add_new_property_plan_image = function (req) {
 module.exports.Add_New_Propert = function (req) {
     return new Promise(async function (resolve, reject) {
         var phaseArray = [];
+        var chainPropertyIdArray=[];
         for (var i in req.body.Phase) {
             var phaseObj = {
                 phase_name: '',
@@ -95,6 +109,7 @@ module.exports.Add_New_Propert = function (req) {
             phaseObj.end_date = req.body.endDate[i];
             phaseArray.push(phaseObj);
         }
+        
         var PropertyBoject = {
             ps_unique_code: "prop-" + Math.random().toString(36).slice(-6),
             ps_user_id: req.session.user_id, //storing customer_ID
@@ -115,8 +130,16 @@ module.exports.Add_New_Propert = function (req) {
             ps_additional_note: req.body.ps_additional_note,
             ps_property_type: req.body.property_type,
             ps_is_active_user_flag: req.session.active_user_login,
-            ps_phase_array: phaseArray
+            ps_phase_array: phaseArray,
+            ps_existing_property:req.body.ps_existing_property,
+            ps_chain_property_id:chainPropertyIdArray
+            
         };
+        if(req.body.property_type=='Chain'){
+            
+
+            chainPropertyIdArray.push(req.body.ps_chain_property)
+        }
         const newProperty = new PropertiesSchema(PropertyBoject)
         await newProperty.save().then(async (property) => {
 
