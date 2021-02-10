@@ -1305,6 +1305,7 @@ label.check-permission span {
     border: none;
     text-align: center;
     margin: 0 auto;
+    display: flow-root;
 }
 .permission-modal .modal-dialog {
     max-width: 570px;
@@ -1633,7 +1634,7 @@ a.btn.btn-new {
         width: 100%;
         border-radius: 10px;
 }
-.carousel-item img{
+.carousel-item-fix img{
     max-height: 250px;
     min-height: 250px;
     border-radius: 10px;
@@ -1903,6 +1904,7 @@ ul.docs-list.last-doc li{
 }
 .property-btn-fix.float-right {
     margin-top: 20px;
+   
 }
 .property-box {
     border: 2px dashed #d6d6d6;
@@ -2583,6 +2585,7 @@ ul.docs-list.last-doc li{
         color: #005377;
         /* width: 81px; */
         padding: 7px 9px;
+        margin-top: 8px;
         margin-bottom: 50px;
         margin-left: 10px;
         border-radius: 10px;
@@ -4173,7 +4176,12 @@ width: 33%;
 
 .property-btn{
     margin-top: 20px;
-    margin-right: 10px;
+    margin-right: 50px;
+}
+.property-btn2{
+    margin-top: 20px;
+   text-align: center;
+   
 }
 .property-form p {
         font-size: 14px;
@@ -4722,6 +4730,7 @@ a.btn.btn-add-property, a.btn.btn-get-help, button.btn.btn-cancel{
 }
 .permission-modal .modal-footer {
     margin: unset;
+    display: flex;
 }
 .docs-files .float-left, .docs-files .float-right {
     float: none !important;
@@ -5579,4 +5588,21 @@ a .clip-icon{
   }.professional-dropdown a:hover {background-color: #ddd;}
 
   .profile-dropdown:hover .professional-dropdown {display: block;}
-  
+
+  .dream-home-edit-icon{
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    padding: 5px 10px;
+    color: #fff;
+    border-radius: 15px;
+    text-transform: capitalize;
+    background-color: #005377
+  }
+  .btn-next-info {
+    color: #fff;
+    background-color: #005377;
+    border-color: #0053;
+    border-radius: 7px;
+   
+}
