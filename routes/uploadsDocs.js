@@ -293,6 +293,7 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
           else {
             item.save();
             console.log("file Submitted Successfully");
+            req.flash('success_msg', "Document Uploaded Successfully.");
             res.redirect('/mydreamhome-details-docs');
           }
         });
