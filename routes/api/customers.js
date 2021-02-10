@@ -282,12 +282,13 @@ const upload = multer({
 );
 function checkFileType(file, cb) {
 
+
   if (file.fieldname === "propertiespic" || file.fieldname === "planImage" || file.fieldname === "complaint_file") {
     if (
       file.mimetype === 'image/png' ||
       file.mimetype === 'image/jpg' ||
       file.mimetype === 'image/jpeg' ||
-      fiel.mimetype === 'image/gif'
+      file.mimetype === 'image/gif' || file.mimetype === 'application/pdf'
     ) { // check file type to be png, jpeg, or jpg
       cb(null, true);
     } else {
@@ -1070,6 +1071,7 @@ router.post('/update-customer-profile', (req, res) => {
         //req.flash('success_msg', 'Profile updated successfully.');
         //req.session.isChanged();
         console.log("req session is :", req.session);
+        req.flash('success_msg', "Profile Uploaded Successfully.");
         res.redirect('/dashboard')
       }
     });
@@ -1082,6 +1084,7 @@ router.post('/new-raise-a-complaint', isCustomer, (req, res) => {
     const files = JSON.parse(JSON.stringify(req.files));
     const ComplaintId = 'C-' + uuidv4().slice(uuidv4().length - 4).toUpperCase();;
 
+    console.log('filesfiles:', files)
     if (Object.keys(files).length === 0) {
       newComplaint = new ComplaintsSchema({
         coms_complaint_for: req.body.coms_complaint_for,
@@ -1103,6 +1106,7 @@ router.post('/new-raise-a-complaint', isCustomer, (req, res) => {
         comsd_user_name: req.session.name,
         comsd_user_profile_img: req.session.imagename,
         comsd_complaint_filename: '',
+        comsd_complaint_filetype: ''
       });
 
     } else {
@@ -1121,7 +1125,8 @@ router.post('/new-raise-a-complaint', isCustomer, (req, res) => {
         coms_complaint_file: {
           data: fs.readFileSync(path.join(__dirname + '../../../public/complaintFile/' + req.files.complaint_file[0].filename)),
           contentType: 'image/png'
-        }
+        },
+        coms_complaint_filetype: req.files.complaint_file[0].mimetype
       });
 
       newComplaintDetails = new ComplaintDetailsSchema({
@@ -1134,7 +1139,8 @@ router.post('/new-raise-a-complaint', isCustomer, (req, res) => {
         comsd_complaint_file: {
           data: fs.readFileSync(path.join(__dirname + '../../../public/complaintFile/' + req.files.complaint_file[0].filename)),
           contentType: 'image/png'
-        }
+        },
+        comsd_complaint_filetype: req.files.complaint_file[0].mimetype
       });
 
     }
@@ -1167,6 +1173,7 @@ router.post('/complaint-details-discussion', isCustomer, (req, res) => {
         comsd_user_name: req.session.name,
         comsd_user_profile_img: req.session.imagename,
         comsd_complaint_filename: '',
+        comsd_complaint_filetype: ''
       });
 
     } else {
@@ -1180,7 +1187,8 @@ router.post('/complaint-details-discussion', isCustomer, (req, res) => {
         comsd_complaint_file: {
           data: fs.readFileSync(path.join(__dirname + '../../../public/complaintFile/' + req.files.complaint_file[0].filename)),
           contentType: 'image/png'
-        }
+        },
+        comsd_complaint_filetype: req.files.complaint_file[0].mimetype
       });
     }
     console.log('newComplaintDetails:', newComplaintDetails)
@@ -1192,6 +1200,7 @@ router.post('/complaint-details-discussion', isCustomer, (req, res) => {
     });
   });
 });
+
 
 
 
@@ -1230,15 +1239,27 @@ router.post('/change-password', isCustomer, function (req, res) {
         }
       });
     });
+
   });
 });
 
+router.post('/complaint-details-discussion-close', isCustomer, (req, res) => {
 
+  let ComplaintCode = req.body.complainCode;
+  ComplaintsSchema.updateOne({ 'coms_complaint_code': ComplaintCode }, { $set: { coms_complaint_status: 'completed' } }, { upsert: true }, function (err) {
+    if (err) {
+      res.send({ status: false, message: 'Something going wrong please check again !!' })
+    } else {
+      res.send({ status: true, message: 'Your complaint discussion closed successfully !!' })
+    }
+  });
+});
 
 router.post('/removeProfesshional', isCustomer, async (req, res) => {
   console.log("remove prof id", req.body.professhional_id, req.session)
   var responce = await propertyProfesshionalHelper.removeProfessionalById(req.body.professhional_id, req.session.property_id)
   if (responce) {
+
     return res.send({
       'success_msg': 'Professional Removed successfully..',
       'status': true,

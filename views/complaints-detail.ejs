@@ -50,10 +50,12 @@
                     <th class="message-th">Complaint Subject</th>
                     <th>Date</th>
                     <th>Status</th>
+                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <% var i=0; complaintData.forEach(function(row){ %>
+                  <% var i=0; var complaintStatus=''; complaintData.forEach(function(row){  %>
+                    <% complaintStatus = row.coms_complaint_status %>
                   <tr>
                     <td>
                       <p><%= row.coms_complaint_code%></p>
@@ -62,7 +64,8 @@
                     <td><%= row.coms_complaint_help%></td>
                     <td><%= row.coms_complaint_subject%></td>
                     <td><%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(new Date(row.coms_created_at)) %> </td>
-                    <td><a href="complaints-detail.html" class="btn btn-pending"><%= row.coms_complaint_status%></a></td>
+                    <td><a href="javascript:void(0)" class="btn btn-pending"><%= row.coms_complaint_status%></a></td>
+                    <td><%if (complaintStatus!='completed') { %> <button conplaint-code="<%= row.coms_complaint_code%>" href="javascript:void(0)" class="btn btn-sm btn-close btn-danger">Close</button> <% }else{%> <button  href="javascript:void(0)" class="btn btn-sm btn-success">Success</button><%}%></td>
                   </tr>
                   <% i++;});%> 
                 </tbody>
@@ -86,24 +89,29 @@
                             <h3><%= row.comsd_user_name%></h3>
                             <p><%= row.comsd_complaint_note%></p>
                             <p class="hours-ago text-right"><%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(new Date(row.comsd_created_at)) %></p>
-                            <%if (row.comsd_complaint_filename) { %> <div class="rt-container"><img data-action="zoom" id="<%= i %>" class="complaint_image" src="complaintFile/<%= row.comsd_complaint_filename%>"/> </div> <% } %>
+                            <%if (row.comsd_complaint_filename) { %> <div class="rt-container"> 
+                              <%if (row.comsd_complaint_filetype == '') { %> <img data-action="zoom" id="<%= i %>" class="complaint_image" src="complaintFile/<%= row.comsd_complaint_filename%>"/> </div><% }else if(row.comsd_complaint_filetype == 'application/pdf') %> <a download href="complaintFile/<%= row.comsd_complaint_filename%>"><img style="width: 30px !important;" class="complaint_image" src="images/pdficon.png"/> </a> <% } %>
                           </div>
                         </div>
 
                         <% i++;});%> 
                         <span class="complaint_msg"></span>
+                        <%if (complaintStatus!='completed') { %>
                         <div class="text-message-box clearfix">
                           <form name="complaintform" id="mycomplent_details_form" method="POST" action="" enctype="multipart/form-data">
                             <div class="text-box">
                               <textarea data-rule-required="true" data-msg-required="Comment is required!" name="coms_complaint_note" class="form-control" placeholder="Write your reply here" style="min-width: 80%; margin-bottom: 10px; " rows="3"
                                 id="comment"></textarea>
                               <a href="#" class="upload-any float-left">
+                                
                                   <i class="fa fa-paperclip float-right" style="color:black">
                                     <span class="clip-icon">Attach files</span></i>
                                     <div class="custom-file-input">
-                                      <input onchange="document.getElementById('uploaded_img').src = window.URL.createObjectURL(this.files[0])" type="file" id="image" name="complaint_file" value="">
+                                      <input accept="application/pdf,image/gif, image/jpeg, image/png" onchange="document.getElementById('uploaded_img').src = window.URL.createObjectURL(this.files[0])" type="file" id="image" name="complaint_file" value="">
                                       <input type="button">
+                                      
                                     </div>
+                                    <span style="margin-left:5px;">(Upload Image and pdf file type *)</span>
                                     <div class="uploaded_img"><img id="uploaded_img" /></div>
                               </a>
                               <input type="hidden" value="<%= session.complaintID %>" name="complaintID"/>
@@ -114,6 +122,8 @@
                             </div>
                           </form> 
                         </div>
+
+                        <%}%>
                       </div>
                     </div>
                   </div>
@@ -143,7 +153,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
     integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
     crossorigin="anonymous"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
   <script>
     $(document).ready(function () {
       $(".sidenav ul li").click(function () {
@@ -213,35 +223,47 @@
 
       }
     });
-        // $('#mycomplent_details_form').on('submit',(function(e) {
-        //   e.preventDefault();
-        // var formData = new FormData($('#mycomplent_details_form')[0]);
-        //  // var formData = new FormData(this);
-        //  // var formData = $(this).serialize();
-        //   console.log('formData:',formData)
-        //   $.ajax({
-        //     type: "POST",
-        //     data: formData,
-        //     url: "/api/complaint-details-discussion", 
-        //     cache:false,
-        //     contentType: false,
-        //     processData: false,           
-        //     success: function (data) {
-        //       console.log(data);
-        //       if(data.status == true){
-        //         location.reload(true);
-        //           // $('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> '+data.message+'</div>')
-        //           // setTimeout(function(){ 
-        //           //   $('#MyComplaintModal').modal('hide');
-        //           //   location.reload(true);
-        //           // }, 6000);
-        //       }else{
-        //         $('.complaint_msg').html('<div class="isa_error"><i class="fa fa-check"></i> '+data.message+'</div>')
-        //       }
-        //     }
-        //   });
-        //   //location.reload(true);
-        // }));
+
+
+
+        $( ".btn-close" ).click(function() {
+          var complainCode = $(this).attr('conplaint-code');
+          $.ajax({
+            type: "POST",
+            data: {
+              complainCode:complainCode
+            },
+            url: "/api/complaint-details-discussion-close", 
+            cache:false,           
+            success: function (data) {
+              console.log(data);
+              if(data.status == true){
+                //location.reload(true);
+                Swal.fire({
+                    icon: 'success',
+                    title: data.message,
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+                  })
+                  setTimeout(function(){ 
+                    location.reload(true);
+                  }, 3000);
+              }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: data.message,
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+                  })
+                  setTimeout(function(){ 
+                    location.reload(true);
+                  }, 3000);
+              }
+            }
+          });
+        });
 
 
   </script>

@@ -121,25 +121,30 @@
                       <div class="clearfix">
                         <div class="float-left">
                           <h2>Docs & Files</h2>
+                          <!-- <% if(typeof success_msg!="undefined" ){ %> <%= success_msg %> <% }%> -->
                         </div>
                         <form action="/upload-new-document" method="post" id="newDocumentform"
                           enctype="multipart/form-data">
 
                           <div class="float-right">
-                            <!-- <a href="#" class="btn btn-add-property">Add New Document</a>-->
-                            <a href="#" class="upload-any"><img src="images/upload.png"> <span>
+                           
+                          
+                              <a href="#" class="upload-any"><img src="images/upload.png"> <span>
                                 <div class="custom-file-input">
                                   <input type="hidden" name="property_id" value='<%=property._id%>'
                                     id="hiddenPropertyId">
-                                  <input type="file" id="image" name="new_Docs" value="" required>
+                                  <input onchange="previewFile(this);" type="file" id="image" name="new_Docs" value="" required>
                                   <input type="button">
                                 </div>
-                              </span></a>
+                              </span>
+                            </a>
+                          
                             <button class="btn btn-add-property">Add New Document</button>
                           </div>
                         </form>
                       </div>
                       <ul class="docs-list">
+                        <span id="upload-doc-view"></span>
                         <% allDocument.forEach(function(row){%>
                           <%if(row.cuds_document_type=='image'){%>
                             <li><a href="#"><img src="/upload/<%= row.cuds_document_name%>" alt="" title=""><br><span
@@ -284,6 +289,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery.counterup@2.1.0/jquery.counterup.min.js"></script>
     <!-- Bootstrap Form Validator https://cdnjs.com/libraries/1000hz-bootstrap-validator -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 
     <script>$(document).ready(function () {
         lightbox.option({
@@ -310,17 +316,36 @@
     <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
     <script>
       $(document).ready(function () {
-        $('.custom-file-input input[type="file"]').change(function (e) {
-          $(this).siblings('input[type="text"]').val(e.target.files[0].name);
-        });
+         var successAlert = '<% if(typeof success_msg!="undefined"){%><%=success_msg%><% }else{%>empty<%}%>';
+        // alert(successAlert);
+        console.log('successAlert:',successAlert);
+         if(successAlert !== 'empty'){
+               Swal.fire({
+                   // position: 'top-end',
+                    icon: 'success',
+                    title: successAlert,
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+                  })
+         }
       });
+
+
+  function previewFile(input){
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              console.log('filess:',e.target)
+               // $('.ddddd').attr('src', e.target.result);
+                $('#upload-doc-view').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img src="'+e.target.result+'" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
     </script>
     <script>
       var id_element = [];
-      // $(".getDocId").click(function (e) {
-      //   id_element = $(this).attr('value');
-      // })
-
       $(".changePermissionModal").click(function (e) {
         var docId = $(this).attr('value');
         // alert(docId);
@@ -463,19 +488,6 @@
       }
 
       $("#change-permision-save-btn").click(function (e) {
-        //e.preventDefault();
-        /*var user_id = $('.cust_id').val();
-        console.log(user_id)
-        var checked_elem = [];
-        var checked_elem_1 = [];
-        $('.chekbox:checkbox:checked').each(function (i) {
-          checked_elem[i] = $(this).val();
-        });
-        $('.chekbox_1:checkbox:checked').each(function (i) {
-          checked_elem_1[i] = $(this).val();
-        });
-        console.log('checked_elem',checked_elem)
-        console.log('checked_elem_1',checked_elem_1)*/
         var formData = $('#permissionForm').serialize();
         console.log('formData', formData)
         $.ajax({
