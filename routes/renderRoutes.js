@@ -30,6 +30,7 @@ const PropertyProfessionalHelper = require("./api/propertyProfessionalDetails")
 //const ComplaintsSchema = require("../models/Complaints");
 const ComplaintDetailsSchema = require("../models/complaint_details_model");
 const DocumentPermissionSchema = require('../models/document_permission')
+const RatingSchema = require("../models/service_provider_rating_Schema");
 var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
 
@@ -399,6 +400,10 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
       let serviceProOtherDetail = await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: service_provider_detail._id });
       console.log('serviceProOtherDetail:', serviceProOtherDetail)
       let portpolioImage = await ServiceProviderPortfolioSchema.find({ spps_service_provider_id: req.query.id })
+      
+      let professionalRating = await RatingSchema.find({ sprs_service_provider_id: req.query.id })
+      console.log('professionalRating:', professionalRating)
+
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('professionals-detail', {
@@ -406,7 +411,9 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
         session: req.session,
         service_provider_detail: service_provider_detail,
         serviceProOtherDetail: serviceProOtherDetail,
-        portpolioImage: portpolioImage
+        portpolioImage: portpolioImage,
+        professionalRating:professionalRating,
+        moment:moment
       });
 
     }

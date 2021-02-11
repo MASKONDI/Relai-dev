@@ -95,6 +95,7 @@
                             <p>
                               <%=serviceProOtherDetail.spods_professional_body%>
                             </p>
+                            <input type="hidden" id="spr_id" value="<%=serviceProOtherDetail.spods_service_provider_id%>" name="spr_id">
                             <%}%>
                       </div>
                     </div>
@@ -212,7 +213,34 @@
 
                             </div>
                             <div class="col col-lg-6">
-
+                              <% var c=1 ; professionalRating.forEach(function(prat){ %>
+                                <div class="side-feedback-sec">
+                                  <div class="img-rating-box">
+                                    <div class="img-side-part">
+                                      <img src="upload/<%= prat.sprs_submitted_profile_img %>" alt="">
+                                      <b><%= prat.sprs_submitted_by_name %></b>
+                                    </div>
+                                    <div class="rating-star">
+                                      <p>
+                                        <% for (var i =1; i <=5;  i++ ) { %>
+    <% if(i <= prat.sprs_rating){ %> 
+      <i class="fa fa-star"></i>
+      <% }else{ %> <i class="fa fa-star-o"></i> <% } } %>
+                                        <!-- <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-half-o"></i>
+                                        <i class="fa fa-star-o"></i> -->
+                                      </p>
+                                      <p> <%=moment(prat.sprs_created_at).format("Do MMM, YYYY"); %></p>
+                                    </div>
+                                  </div>
+                                  <div class="comment-text">
+                                    <p><%= prat.sprs_review %></p>
+                                  </div>
+                                </div>
+                              <% c++; }) %>
+<!-- 
                               <div class="side-feedback-sec">
                                 <div class="img-rating-box">
                                   <div class="img-side-part">
@@ -261,32 +289,7 @@
                                     unknown printer took a galley of type and scrambled it to make a type specimen book.
                                   </p>
                                 </div>
-                              </div>
-
-                              <div class="side-feedback-sec">
-                                <div class="img-rating-box">
-                                  <div class="img-side-part">
-                                    <img src="images/img_avatar.png" alt="">
-                                    <b>Soniya Patidar</b>
-                                  </div>
-                                  <div class="rating-star">
-                                    <p>
-                                      <i class="fa fa-star"></i>
-                                      <i class="fa fa-star"></i>
-                                      <i class="fa fa-star"></i>
-                                      <i class="fa fa-star-half-o"></i>
-                                      <i class="fa fa-star-o"></i>
-                                    </p>
-                                    <p>24 Mar 2019</p>
-                                  </div>
-                                </div>
-                                <div class="comment-text">
-                                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                                    Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-                                    unknown printer took a galley of type and scrambled it to make a type specimen book.
-                                  </p>
-                                </div>
-                              </div>
+                              </div> -->
                             </div>
                           </div>
                         </div>
@@ -316,6 +319,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+  integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+  crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <script>
       $(document).ready(function () {
         $(".sidenav ul li").click(function () {
@@ -363,6 +370,60 @@
           location.reload(true);
         });
       });
+
+  $('#feedbackForm').validate({
+    onfocusout: function (element) {
+      this.element(element);
+    },
+    errorClass: 'error_validate',
+    errorElement: 'span',
+    errorColor: 'red',
+    highlight: function (element, errorClass) {
+      $(element).removeClass(errorClass);
+    },
+    submitHandler: function (form) {
+      $('#submit').attr('disabled', true);
+      //form.submit();
+      var spr_id = $('#spr_id').val();
+      var formData = $('#feedbackForm').serialize()+'&spr_id='+spr_id;
+      console.log('formData:', formData)
+      $.ajax({
+        type: "POST",
+        data: formData,
+        url: "/api/add-feedback",
+        cache: false,
+        success: function (data) {
+          console.log(data);
+          if (data.status == true) {
+            //$('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> ' + data.message + '</div>')
+            $('#feedbackModal').modal('hide');
+              Swal.fire({
+                   // position: 'top-end',
+                    icon: 'success',
+                    title: data.message,
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 5000
+              })
+           setTimeout(function () {
+              location.reload(true);
+            }, 5000);
+
+          } else {
+            Swal.fire({
+                    icon: 'error',
+                    title: data.message,
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+            })
+            //$('.complaint_msg').html('<div class="isa_error"><i class="fa fa-check"></i> ' + data.message + '</div>')
+          }
+        }
+      });
+    }
+  });
+
     </script>
     </body>
 
