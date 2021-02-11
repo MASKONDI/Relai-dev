@@ -526,18 +526,21 @@
                   Swal.fire({
                       icon: 'success',
                       title: data.success_msg,
-                      showDenyButton: false,
-                      showCancelButton: true,
+                      showDenyButton: true,
+                      showCancelButton: false,
                       confirmButtonColor: '#005377',
+                      denyButtonColor: '#005377',
                       cancelButtonColor: '#d33',
                       confirmButtonText: `Professional List`,
+                      denyButtonText:`Hire Now`,
                     }).then((result) => {
                       /* Read more about isConfirmed, isDenied below */
                       if (result.isConfirmed) {
                         //Swal.fire('Saved!', '', 'success')
                         window.location.href = '/professionals';
                       } else if (result.isDenied) {
-                        Swal.fire('Changes are not saved', '', 'info')
+                        //Swal.fire('Changes are not saved', '', 'info')
+                        location.reload();
                       }
                     })
                  }
@@ -653,6 +656,9 @@
                     confirmButtonColor: '#005377',
                     timer: 3000
                   })
+
+                  $('#taskName,#notes,#duedate').val('');
+                  //$('#notes').val('');
 
                 }
 

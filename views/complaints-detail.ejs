@@ -89,8 +89,16 @@
                             <h3><%= row.comsd_user_name%></h3>
                             <p><%= row.comsd_complaint_note%></p>
                             <p class="hours-ago text-right"><%= new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'long', day: '2-digit'}).format(new Date(row.comsd_created_at)) %></p>
-                            <%if (row.comsd_complaint_filename) { %> <div class="rt-container"> 
-                              <%if (row.comsd_complaint_filetype == '') { %> <img data-action="zoom" id="<%= i %>" class="complaint_image" src="complaintFile/<%= row.comsd_complaint_filename%>"/> </div><% }else if(row.comsd_complaint_filetype == 'application/pdf') %> <a download href="complaintFile/<%= row.comsd_complaint_filename%>"><img style="width: 30px !important;" class="complaint_image" src="images/pdficon.png"/> </a> <% } %>
+                            <%if (row.comsd_complaint_filename) { %>
+                               <div class="rt-container"> 
+                              <%if (row.comsd_complaint_filetype == 'application/pdf') { %> 
+                                  <a download href="complaintFile/<%= row.comsd_complaint_filename%>"><img style="width: 30px !important;" class="complaint_image" src="images/pdficon.png"/> </a> 
+                                <% }else{ %> 
+                                    <img data-action="zoom" id="<%= i %>" class="complaint_image" src="complaintFile/<%= row.comsd_complaint_filename%>"/> 
+                                  <% } %>
+                                  <!-- <span><%= row.comsd_complaint_filename%></span> -->
+                            </div>
+                             <% } %>
                           </div>
                         </div>
 
@@ -107,12 +115,12 @@
                                   <i class="fa fa-paperclip float-right" style="color:black">
                                     <span class="clip-icon">Attach files</span></i>
                                     <div class="custom-file-input">
-                                      <input accept="application/pdf,image/gif, image/jpeg, image/png" onchange="document.getElementById('uploaded_img').src = window.URL.createObjectURL(this.files[0])" type="file" id="image" name="complaint_file" value="">
+                                      <input onchange="previewFile(this);" accept="application/pdf,image/gif, image/jpeg, image/png"  type="file" id="image" name="complaint_file" value="">
                                       <input type="button">
                                       
                                     </div>
                                     <span style="margin-left:5px;">(Upload Image and pdf file type *)</span>
-                                    <div class="uploaded_img"><img id="uploaded_img" /></div>
+                                    <div class="uploaded_img"><img id="uploaded_img" /><span class="complaint_imgname"></span></div>
                               </a>
                               <input type="hidden" value="<%= session.complaintID %>" name="complaintID"/>
                               <button type="submit" class="btn btn-next"
@@ -182,6 +190,35 @@
     previous=s;
 });
 
+function previewFile(input){
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              console.log('filess:',input.files[0])
+              if(input.files[0].type == 'image/jpeg' || input.files[0].type == 'image/png' || input.files[0].type == 'image/gif'){
+                $('#uploaded_img').attr('src', e.target.result);
+                $('.complaint_imgname').text(input.files[0].name);
+
+              }else if(input.files[0].type == 'application/pdf'){
+                $('#uploaded_img').attr('src', 'images/pdficon.png');
+                $('.complaint_imgname').text(input.files[0].name);
+                
+              }else{
+                 Swal.fire({
+                    icon: 'error',
+                    title: 'File type not supported !!',
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+                  })
+              }
+                //$('.ddddd').attr('src', e.target.result);
+               // $('#uploaded_img').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img src="'+e.target.result+'" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+  }
+
  $('#mycomplent_details_form').validate({
       onfocusout: function (element) {
         this.element(element);
@@ -228,7 +265,17 @@
 
         $( ".btn-close" ).click(function() {
           var complainCode = $(this).attr('conplaint-code');
-          $.ajax({
+
+
+Swal.fire({
+  title: 'Are you sure want to close ticket?',
+  showCancelButton: true,
+  confirmButtonText: `Yes`,
+  confirmButtonColor: '#005377',
+}).then((result) => {
+  if (result.isConfirmed) {
+     
+    $.ajax({
             type: "POST",
             data: {
               complainCode:complainCode
@@ -263,7 +310,10 @@
               }
             }
           });
-        });
+  }
+})
+
+ });
 
 
   </script>
