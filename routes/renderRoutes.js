@@ -29,7 +29,8 @@ const ComplaintsSchema = require("../models/Complaints");
 const PropertyProfessionalHelper = require("./api/propertyProfessionalDetails")
 //const ComplaintsSchema = require("../models/Complaints");
 const ComplaintDetailsSchema = require("../models/complaint_details_model");
-const DocumentPermissionSchema = require('../models/document_permission')
+const DocumentPermissionSchema = require('../models/document_permission');
+const message = require('../models/message');
 var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
 
@@ -1251,6 +1252,42 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
     PropertiesSchema.find({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
       if (data) {
 
+        console.log("Property Data is *************************", data[0].ps_phase_array);
+        //var totaldiff = "";
+        data[0].ps_phase_array.forEach(function (item) {
+          var startDate = "";
+          var endDate = "";
+          console.log("start date" + item.start_date + " end Date" + item.end_date);
+          // message = message + calcDate(item.start_date, item.end_date);
+          var startDate = new Date(Date.parse(item.start_date));
+          var endDate = new Date(Date.parse(item.end_date));
+
+          //var totaldiff = Math.floor(startDate.getTime() - endDate.getTime());
+          var totaldiff = timeDiffCalc(startDate, endDate);
+          console.log("total date is :", totaldiff);
+        });
+        console.log("total date is :", totaldiff);
+        // var message = "";
+        // console.log("total time difference", message);
+        // var day = 1000 * 60 * 60 * 24;
+        // var days = Math.floor(totaldiff / day);
+        // if (days > 31) {
+        //   var months = Math.floor(days / 31);
+        //   message += months + " months "
+        //   if (months > 12) {
+        //     var years = Math.floor(months / 12);
+        //     message += years + " y\n"
+        //   }
+        //   message += days + " days "
+        // }
+        // // var months = Math.floor(days / 31);
+        // // var years = Math.floor(months / 12);
+
+
+        // // message += years + " y\n"
+        // // message += months + " months "
+
+        // console.log("message in days is", message);
         let arr = [];
         for (let img of data) {
           await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
@@ -1275,6 +1312,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
           allDocumentUploadByCustmer: allDocumentUploadByCustmer,
           TaskDetailObj: todoArray,
           totalcost: sumof,
+
           moment: moment
 
         });
@@ -1287,6 +1325,23 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
   }
 })
 
+function calcDate(date1, date2) {
+  var startDate = new Date(Date.parse(date1));
+  var endDate = new Date(Date.parse(date2));
+
+  var diff = Math.floor(startDate.getTime() - endDate.getTime());
+  var day = 1000 * 60 * 60 * 24;
+
+  // var days = Math.floor(diff / day);
+  // var months = Math.floor(days / 31);
+  // var years = Math.floor(months / 12);
+
+  // var message = "";
+  // message += years + " y\n"
+  // message += months + " months "
+  // message += days + " days "
+  return diff
+}
 
 
 
