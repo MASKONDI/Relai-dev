@@ -105,6 +105,7 @@ app.get("/mydreamhome-details-chainproperty", isCustomer, async (req, res) => {
 
   await PropertiesSchema.findOne({ ps_user_id: req.session.user_id, _id: req.query.id }).then(async (chainPropertyDetails) => {
     if (chainPropertyDetails) {
+
       await PropertiesSchema.findOne({
         _id: chainPropertyDetails.ps_chain_property_id
       }).then(async (existing_property_details) => {
@@ -115,9 +116,11 @@ app.get("/mydreamhome-details-chainproperty", isCustomer, async (req, res) => {
             let temp = await image
             propImage.push(temp);
           }
+          //var message = await timeDifference(existing_property_details);
           var object_as_string = JSON.stringify(existing_property_details);
           const t = JSON.parse(object_as_string);
           t.propertyImage = await propImage;
+          //t.estimated_time = await message;
 
           let prop = await t;
           propertyArray.push(prop)
@@ -137,9 +140,11 @@ app.get("/mydreamhome-details-chainproperty", isCustomer, async (req, res) => {
           let temp = await image
           propImage.push(temp);
         }
+        //var message = await timeDifference(chainPropertyDetails);
         var object_as_string = JSON.stringify(chainPropertyDetails);
         const t = JSON.parse(object_as_string);
         t.propertyImage = await propImage;
+        //t.estimated_time = await message;
 
         let prop = await t;
         propertyArray.push(prop)
@@ -1180,6 +1185,38 @@ app.post('/getPropertyDetail', isCustomer, async (req, res) => {
 function tallyVotes(AllhiredProfeshnoal) {
   return AllhiredProfeshnoal.reduce((total, i) => total + i.pps_pofessional_budget, 0);
 }
+function timeDifference(data) {
+  var date = [];
+  data[0].ps_phase_array.forEach(function (item) {
+    var startDate = "";
+    var endDate = "";
+    let diffInMilliSeconds;
+    var days = "";
+    console.log("start date" + item.start_date + " end Date" + item.end_date);
+    // message = message + calcDate(item.start_date, item.end_date);
+    startDate = new Date(Date.parse(item.start_date));
+    endDate = new Date(Date.parse(item.end_date));
+    diffInMilliSeconds = Math.abs(endDate - startDate) / 1000;
+    // calculate days
+    days = Math.floor(diffInMilliSeconds / 86400);
+    date.push(days);
+
+    console.log("total date is :", days);
+  });
+  var estimated_time = date.reduce((total, i) => total + i, 0);
+  var message = "";
+  if (estimated_time > 31) {
+    var months = Math.floor(estimated_time / 31);
+    var day = estimated_time % 31;
+    message += months + " months " + day + " days"
+  } else {
+    message += estimated_time + " days "
+  }
+  console.log("estimated_time :", message);
+  return message;
+}
+
+
 app.get('/mydreamhome-details', isCustomer, async (req, res) => {
   //console.log("current session is", req.session);
   //console.log('session property id', req.query.id);
@@ -1265,40 +1302,8 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
 
         console.log("Property Data is *************************", data[0].ps_phase_array);
         //var totaldiff = "";
-        data[0].ps_phase_array.forEach(function (item) {
-          var startDate = "";
-          var endDate = "";
-          console.log("start date" + item.start_date + " end Date" + item.end_date);
-          // message = message + calcDate(item.start_date, item.end_date);
-          var startDate = new Date(Date.parse(item.start_date));
-          var endDate = new Date(Date.parse(item.end_date));
+        var message = timeDifference(data);
 
-          //var totaldiff = Math.floor(startDate.getTime() - endDate.getTime());
-          var totaldiff = timeDiffCalc(startDate, endDate);
-          console.log("total date is :", totaldiff);
-        });
-        console.log("total date is :", totaldiff);
-        // var message = "";
-        // console.log("total time difference", message);
-        // var day = 1000 * 60 * 60 * 24;
-        // var days = Math.floor(totaldiff / day);
-        // if (days > 31) {
-        //   var months = Math.floor(days / 31);
-        //   message += months + " months "
-        //   if (months > 12) {
-        //     var years = Math.floor(months / 12);
-        //     message += years + " y\n"
-        //   }
-        //   message += days + " days "
-        // }
-        // // var months = Math.floor(days / 31);
-        // // var years = Math.floor(months / 12);
-
-
-        // // message += years + " y\n"
-        // // message += months + " months "
-
-        // console.log("message in days is", message);
         let arr = [];
         for (let img of data) {
           await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
@@ -1323,7 +1328,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
           allDocumentUploadByCustmer: allDocumentUploadByCustmer,
           TaskDetailObj: todoArray,
           totalcost: sumof,
-
+          estimated_time: message,
           moment: moment
 
         });
