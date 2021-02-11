@@ -114,16 +114,25 @@ router.post("/cust_register", (req, res) => {
   // Check Validation
   if (!isValid) {
     console.log("server validation error is:", errors);
-    req.flash('err_msg', errors.confirmPassword);
-    return res.redirect('/signup');
+    //req.flash('err_msg', errors.confirmPassword);
+    //return res.redirect('/signup');
+    res.send({
+      message:errors.confirmPassword,
+      status:false
+    })
   }
 
   CustomerSchema.findOne({ cus_email_id: req.body.cus_email_id }).then(customers => {
     if (customers) {
       errors.cus_email_id = 'Email already exists';
       console.log('errors is : ', errors);
-      req.flash('err_msg', errors.cus_email_id);
-      res.redirect('/signup');
+      //req.flash('err_msg', errors.cus_email_id);
+      //res.redirect('/signup');
+      res.send({
+        message:errors.cus_email_id,
+        status:false
+      })
+
     } else {
       const newCustomer = new CustomerSchema({
         cus_unique_code: "cust-" + uuidv4(),
@@ -145,13 +154,23 @@ router.post("/cust_register", (req, res) => {
             .save()
             .then(customers => {
               console.log("resposne is :", customers);
-              req.flash('success_msg', 'You have register sucessfully.')
-              res.redirect("/signin")
+              //req.flash('success_msg', 'You have register sucessfully.')
+              //res.redirect("/signin")
+              res.send({
+                message:"You have register sucessfully.",
+                status:true
+              })
+
             })
             .catch(err => {
               console.log(err)
-              req.flash('err_msg', 'Something went wron please try again later.');
-              res.redirect('/signup');
+              //req.flash('err_msg', 'Something went wron please try again later.');
+              //res.redirect('/signup');
+              res.send({
+                message:'Something went wron please try again later.',
+                status:false
+              })
+
             });
         });
       });
@@ -173,8 +192,12 @@ router.post("/cust_signin", (req, res) => {
   // Check Validation
   if (!isValid) {
     console.log("error is ", errors);
-    req.flash('err_msg', "please enter valid emailid and password")
-    return res.redirect('/signin');
+    //req.flash('err_msg', "please enter valid emailid and password")
+   // return res.redirect('/signin');
+        res.send({
+          message:"please enter valid emailid and password",
+          status:false
+        })
   }
 
   // Find Customer by 
@@ -182,8 +205,12 @@ router.post("/cust_signin", (req, res) => {
     // Check for Customer
     if (!customers) {
       errors.cus_email_id = 'Customers not found';
-      req.flash('err_msg', errors.cus_email_id);
-      return res.redirect('/signin');
+      //req.flash('err_msg', errors.cus_email_id);
+      //return res.redirect('/signin');
+      res.send({
+        message:"Customers not found",
+        status:false
+      })
     }
     // Check Password
     bcrypt.compare(cus_password, customers.cus_password).then(isMatch => {
@@ -222,12 +249,22 @@ router.post("/cust_signin", (req, res) => {
             });
           }
         );
-        res.redirect('/dashboard')
+       // res.redirect('/dashboard')
+       res.send({
+        message:"Signin successfully, we are processing please wait...",
+        status:true
+      })
+
       } else {
-        errors.cus_password = 'Password incorrect';
-        console.log("Password incorrect", errors);
-        req.flash("err_msg", errors.cus_password);
-        return res.redirect('/signin');
+        //errors.cus_password = 'Password incorrect';
+        //console.log("Password incorrect", errors);
+        //req.flash("err_msg", errors.cus_password);
+        //return res.redirect('/signin');
+        res.send({
+          message:"Password incorrect",
+          status:false
+        })
+
       }
     });
   });
@@ -547,8 +584,12 @@ router.post('/forget-password', function (req, res) {
   }, function (err, result) {
     if (err) {
       console.log('err', err);
-      req.flash('err_msg', 'Please enter registered Email address.');
-      res.redirect('/forget-password');
+     // req.flash('err_msg', 'Please enter registered Email address.');
+      //res.redirect('/forget-password');
+      res.send({
+        message:'Please enter registered Email address.',
+        status:false
+      })
     } else {
 
       if (result != '' && result != null) {
@@ -570,8 +611,13 @@ router.post('/forget-password', function (req, res) {
             }, function (err) {
               if (err) {
                 console.log("err is :", err);
-                req.flash('err_msg', 'Something went wrong.');
-                res.redirect('/forget-password')
+                //req.flash('err_msg', 'Something went wrong.');
+                //res.redirect('/forget-password')
+                res.send({
+                  message:'Something went wrong.',
+                  status:false
+                })
+
               } else {
 
                 var smtpTransport = nodemailer.createTransport({
@@ -603,8 +649,12 @@ router.post('/forget-password', function (req, res) {
                 };
                 smtpTransport.sendMail(mailOptions, function (err) {
                   if (err) { console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong.please connect support team'); res.redirect('/forget-password') } else {
-                    req.flash('success_msg', 'Password has been sent successfully to your registered email, please check your mail...');
-                    res.redirect('/forget-password')
+                   // req.flash('success_msg', 'Password has been sent successfully to your registered email, please check your mail...');
+                    //res.redirect('/forget-password')
+                    res.send({
+                      message:'Password has been sent successfully to your registered email, please check your mail...',
+                      status:true
+                    })
                   }
                 });
               }
@@ -612,8 +662,12 @@ router.post('/forget-password', function (req, res) {
           });
         });
       } else {
-        req.flash('err_msg', 'Please enter registered Email address.');
-        res.redirect('/forget-password');
+        //req.flash('err_msg', 'Please enter registered Email address.');
+        //res.redirect('/forget-password');
+        res.send({
+          message:'Please enter registered Email address.',
+          status:false
+        })
       }
 
     }
@@ -1254,38 +1308,83 @@ router.post('/change-password', isCustomer, function (req, res) {
   console.log("calling change password API", req.body);
   var user_id = req.session.user_id;
   const { errors, isValid } = validateChangePasswordInput(req.body);
+
   // Check Validation
   if (!isValid) {
     console.log("error is ", errors);
-    req.flash('err_msg', errors.confirmPassword);
-    return; // res.redirect('/change-Password');
+    //req.flash('err_msg', errors.confirmPassword);
+    if(errors.confirmPassword){
+
+   
+    res.send({
+      message:errors.confirmPassword,
+      status:false,
+      validationType:'length'
+    })
+  }else{
+    res.send({
+      message:errors.cus_password,
+      status:false,
+      validationType:'length'
+    })
   }
-  var hashPassword = "";
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(req.body.cus_password, salt, (err, hash) => {
-      if (err) throw err;
-      hashPassword = hash;
-      CustomerSchema.updateOne({
-        '_id': req.session.user_id
-      }, {
-        $set: {
-          cus_password: hashPassword
-        }
-      }, {
-        upsert: true
-      }, function (err) {
-        if (err) {
-          console.log("err is :", err);
-          req.flash('err_msg', 'Something went wrong.');
-          return;
-        } else {
-          console.log("Password change successfully");
-          req.flash('success_msg', 'password change successfully');
+    return; // res.redirect('/change-Password');
+  }else{
+    // Find Customer by 
+    CustomerSchema.findOne({ _id : req.session.user_id }).then(customers => {
+      bcrypt.compare(req.body.oldPassword, customers.cus_password).then(isMatch => {
+        if (isMatch) {
+          //enableing session variable
+          var hashPassword = "";
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(req.body.cus_password, salt, (err, hash) => {
+              if (err) throw err;
+              hashPassword = hash;
+              CustomerSchema.updateOne({
+                '_id': req.session.user_id
+              }, {
+                $set: {
+                  cus_password: hashPassword
+                }
+              }, {
+                upsert: true
+              }, function (err) {
+                if (err) {
+                  res.send({
+                    message:'Something went wrong please try again.',
+                    status:false,
+                    validationType:'server'
+                  })
+
+                  //console.log("err is :", err);
+                  //req.flash('err_msg', 'Something went wrong.');
+                  return;
+                } else {
+                  //console.log("Password change successfully");
+                  //req.flash('success_msg', 'password change successfully');
+                  res.send({
+                    message:'Password change successfully.',
+                    status:true,
+                    validationType:''
+                  })
+
+                }
+              });
+            });
+          });
+          req.session.success = true;
+        }else{
+          //console.log('not matched')
+          res.send({
+            message:'Old password wrong please check again.',
+            status:false,
+            validationType:'matched'
+          })
         }
       });
     });
+  }
 
-  });
 });
 
 router.post('/complaint-details-discussion-close', isCustomer, (req, res) => {

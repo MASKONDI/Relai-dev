@@ -16,10 +16,10 @@
             </div>
             <p>START FOR FREE</p>
             <h1>Let’s get you started</h1>
-            <form id="registerform" class="form" method="post" action="/api/cust_register">
+            <form id="registerform" class="form" method="POST" action="#">
 
 
-              <% if(typeof err_msg!='undefined' ){ %>
+              <!-- <% if(typeof err_msg!='undefined' ){ %>
                 <span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">
                   <%= err_msg %>
                 </span>
@@ -28,7 +28,7 @@
                     <span class="succ_flash_msg" style="color: green;">
                       <%= success_msg %>
                     </span>
-                    <% }%>
+                    <% }%> -->
 
                       <div class="row">
                         <div class="col-md-6">
@@ -220,7 +220,7 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript" src="../js/countrystatecity.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
   <script>
 
     $(document).ready(function () {
@@ -241,20 +241,72 @@
     integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
     crossorigin="anonymous"></script>
   <script type="text/javascript">
+    // $('#registerform').validate({
+    //   onfocusout: function (element) {
+    //     this.element(element);
+    //   },
+    //   errorClass: 'error_validate',
+    //   errorElement: 'span',
+    //   highlight: function (element, errorClass) {
+    //     $(element).removeClass(errorClass);
+    //   },
+    //   submitHandler: function (form) {
+    //     $('#submit').attr('disabled', true);
+    //     form.submit();
+    //   }
+    // });
+
     $('#registerform').validate({
       onfocusout: function (element) {
         this.element(element);
       },
       errorClass: 'error_validate',
       errorElement: 'span',
+      errorColor: 'red',
       highlight: function (element, errorClass) {
         $(element).removeClass(errorClass);
       },
       submitHandler: function (form) {
-        $('#submit').attr('disabled', true);
-        form.submit();
+       var formData = $('#registerform').serialize();
+          console.log('formData:',formData)
+          $.ajax({
+            type: "POST",
+            data: formData,
+            url: "/api/cust_register", 
+            cache:false,          
+            success: function (data) {
+              console.log(data);
+              if(data.status == false){
+                 Swal.fire({
+                      icon: 'error',
+                      title: data.message,
+                      showConfirmButton: false,
+                      confirmButtonColor: '#005377',
+                      timer: 4000
+                    })
+
+              }else{
+                Swal.fire({
+                      icon: 'success',
+                      title: data.message,
+                      showConfirmButton: false,
+                      confirmButtonColor: '#005377',
+                      timer: 4000
+                    })
+
+                setTimeout(function(){ 
+                        //location.reload(true);
+                        window.location.href="/signin";
+                }, 4000);
+
+              }
+            }
+          });
+
+
       }
     });
+
   </script>
   <script>
     jQuery.extend(jQuery.validator.messages, {

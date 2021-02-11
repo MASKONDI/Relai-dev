@@ -157,8 +157,9 @@
                                 <option value="Residential">Residential</option>
                               </select>
                             </div>
-                            <div class="AllPropertyListingDiv col-sm-12 col-lg-4">
-                              <select name="ps_chain_property" class=" ps_chain_property form-control selectBox5" id="ps_chain_property"
+                            <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
+                              <select name="ps_chain_property" data-rule-required="true"
+                              data-msg-required="existing property Type is required!" class="ps_chain_property form-control selectBox5" id="ps_chain_property"
                                  style="height: 48px;" >
                                 <option value="">Select Property for Chain</option>
                                 <!-- <option value="commercial">commercial</option>
@@ -1102,6 +1103,8 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <script type="text/javascript" src="../js/countrystatecity.js"></script>
 
     <script>
@@ -1315,9 +1318,31 @@
                               processData: false,
                               success: function (data) {
                                 if (data.status == true) {
-                                  $('.message_data').show();
-                                  $('.message_data').html('<div class="isa_success"><i style="margin: 0px 7px !important;" class="fa fa-check"></i> ' + data.message + '</div>');
-                                  setTimeout(function () { $('.message_data').hide(); window.location.href = data.redirect; }, 3000);
+                                  
+                  Swal.fire({
+                      icon: 'success',
+                      title: data.message,
+                      showDenyButton: true,
+                      showCancelButton: false,
+                      confirmButtonColor: '#005377',
+                      denyButtonColor:'#005377',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: `Dream Home List`,
+                      denyButtonText: `Add Property`,
+                    }).then((result) => {
+                      /* Read more about isConfirmed, isDenied below */
+                      if (result.isConfirmed) {
+                        //Swal.fire('Saved!', '', 'success')
+                        window.location.href = '/mydreamhome';
+                      } else if (result.isDenied) {
+                        //Swal.fire('Changes are not saved', '', 'info')
+                        window.location.href = '/add-property';
+                      }
+                    })
+
+                                  //$('.message_data').show();
+                                  //$('.message_data').html('<div class="isa_success"><i style="margin: 0px 7px !important;" class="fa fa-check"></i> ' + data.message + '</div>');
+                                 // setTimeout(function () { $('.message_data').hide(); window.location.href = data.redirect; }, 3000);
                                 }
                               }
                             });
@@ -1342,7 +1367,7 @@
                 success: function (data) {
                   console.log(data)
                   var htmlData = '';
-  
+                  $('.AllPropertyListingDiv').show();
                   htmlData += '<option value="">Select Property for Chain</option>';
                   if (data.data.length > 0) {
                     $.each(data.data, function (i, data) {
@@ -1356,7 +1381,7 @@
               });
   
           }else{
-           // $(".AllPropertyListingDiv").hide();
+            $(".AllPropertyListingDiv").hide();
           }
         })
       </script>

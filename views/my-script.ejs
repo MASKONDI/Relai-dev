@@ -1,6 +1,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
   integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
   crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+
 <script>
   $(document).ready(function () {
     $(".sidenav ul li").click(function () {
@@ -40,13 +42,29 @@
         success: function (data) {
           console.log(data);
           if (data.status == true) {
-            $('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> ' + data.message + '</div>')
-            setTimeout(function () {
-              $('#MyComplaintModal').modal('hide');
+            //$('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> ' + data.message + '</div>')
+            $('#MyComplaintModal').modal('hide');
+              Swal.fire({
+                   // position: 'top-end',
+                    icon: 'success',
+                    title: data.message,
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 5000
+              })
+           setTimeout(function () {
               location.reload(true);
-            }, 6000);
+            }, 5000);
+
           } else {
-            $('.complaint_msg').html('<div class="isa_error"><i class="fa fa-check"></i> ' + data.message + '</div>')
+            Swal.fire({
+                    icon: 'error',
+                    title: data.message,
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+            })
+            //$('.complaint_msg').html('<div class="isa_error"><i class="fa fa-check"></i> ' + data.message + '</div>')
           }
         }
       });
@@ -81,6 +99,31 @@
 
     }
   })
+
+  function previewFile1(input){
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              console.log('filess:',input.files[0])
+              if(input.files[0].type == 'image/jpeg' || input.files[0].type == 'image/png' || input.files[0].type == 'image/gif'){
+                $('#uploaded_img').attr('src', e.target.result);
+              }else if(input.files[0].type == 'application/pdf'){
+                $('#uploaded_img').attr('src', 'images/pdficon.png');
+              }else{
+                 Swal.fire({
+                    icon: 'error',
+                    title: 'File type not supported !!',
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+                  })
+              }
+              $('.imgcompaint_name').text(input.files[0].name);
+               // $('#uploaded_img').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img src="'+e.target.result+'" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+  }
 
 
   $("#property_id").change(function () {

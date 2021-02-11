@@ -65,7 +65,7 @@
                         <%= new Intl.DateTimeFormat('en-GB', { year: 'numeric' , month: 'long' , day: '2-digit'
                           }).format(new Date(row.coms_created_at)) %>
                       </td>
-                      <td><a href="/complaints-detail" class="btn btn-pending">
+                      <td><a href="javascript:void(0)" class="btn btn-pending">
                           <%= row.coms_complaint_status%>
                         </a></td>
                       <td> <a href="/complaints-detail?complaintID=<%= row.coms_complaint_code%>" data-toggle="tooltip"
