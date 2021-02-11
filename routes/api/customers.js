@@ -40,6 +40,7 @@ const { resolve } = require("path");
 
 const ComplaintsSchema = require("../../models/Complaints");
 const ComplaintDetailsSchema = require("../../models/complaint_details_model");
+const RatingSchema = require("../../models/service_provider_rating_Schema");
 const MessageSchema = require("../../models/message");
 const addTaskHelper = require("./addTask");
 const PropertyHelper = require("./propertyDetail");
@@ -1396,6 +1397,31 @@ router.post('/complaint-details-discussion-close', isCustomer, (req, res) => {
     } else {
       res.send({ status: true, message: 'Your complaint discussion closed successfully !!' })
     }
+  });
+});
+
+
+
+router.post('/add-feedback', isCustomer, (req, res) => {
+  upload(req, res, async () => {
+    let RatingObj = '';
+    //const ComplaintId = 'C-'+uuidv4().slice(uuidv4().length - 4).toUpperCase();;
+      RatingObj = new RatingSchema({
+        sprs_service_provider_id:req.body.spr_id,
+        sprs_submitted_by:req.session.user_id,
+        sprs_submitted_by_name:req.session.name,
+        sprs_rating:req.body.rating,
+        sprs_review:req.body.feedback_message,
+        sprs_submitted_profile_img:req.session.imagename,
+        sprs_is_active_user_flag:req.session.active_user_login
+      });
+    console.log('RatingData:', RatingObj)
+    RatingObj.save().then(complaintsDetails => {
+      res.send({ status: true, message: 'Thank you for your feedback !!' })
+    }).catch(err => {
+      console.log(err)
+      res.send({ status: false, message: 'Something went wrong please try again later.' })
+    });
   });
 });
 
