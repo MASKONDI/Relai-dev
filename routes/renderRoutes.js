@@ -1042,8 +1042,8 @@ app.get('/Resend-link', function (req, res) {
 
 app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
   console.log('req:', req.session.property_id);
-  var propertyData = await propertyDetail.GetPropertById(req.query.property_id, req.session.active_user_login);
-  var taskObject = await TaskHelper.GetTaskById(req.query.property_id, req.session.active_user_login)
+  var propertyData = await propertyDetail.GetPropertById(req.query.id, req.session.active_user_login);
+  var taskObject = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login)
   console.log('taskObject', taskObject)
   console.log("propertyData===", propertyData)
   if (taskObject) {
