@@ -308,6 +308,17 @@
     });
 
   </script>
+  <script>
+    jQuery.extend(jQuery.validator.messages, {
+      accept: "Please enter a value with a valid extension.",
+      maxlength: jQuery.validator.format("Please enter no more than {0} digit."),
+      minlength: jQuery.validator.format("Please enter at least {0} digit."),
+      rangelength: jQuery.validator.format("Please enter a value between {0} and {1} characters long."),
+      range: jQuery.validator.format("Please enter a value between {0} and {1}."),
+      max: jQuery.validator.format("Please enter a value less than or equal to {0}."),
+      min: jQuery.validator.format("Please enter a value greater than or equal to {0}.")
+    });
+  </script>
   <script type="text/javascript">
     $(document).ready(function () {
       var flash_msg = $('.flash_msg').html();

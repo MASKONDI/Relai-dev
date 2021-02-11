@@ -5604,5 +5604,93 @@ a .clip-icon{
     background-color: #005377;
     border-color: #0053;
     border-radius: 7px;
-   
 }
+
+.side-feedback-sec{
+    margin: 20px;
+    }
+    .side-feedback-sec .img-rating-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+    }
+    .side-feedback-sec .img-rating-box .img-side-part{
+    color: #000;
+    } 
+    .side-feedback-sec .img-rating-box .img-side-part img {
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+    .side-feedback-sec .img-rating-box .rating-star p i {
+        color: #f0a309;
+    }
+    .side-feedback-sec .img-rating-box .rating-star p {
+        margin-bottom: 0;
+        text-align: right;
+        font-size: 12px;
+        font-weight: 500;
+        color: #c1c1c1;
+    }
+    .side-feedback-sec .comment-text {
+        font-size: 12px;
+        font-weight: 500;
+        color: #afadad;
+        text-align: justify;
+        font-weight: 500;
+        margin: 10px 0;
+    }
+    
+    .feedback-modal .modal-title {
+        margin-bottom: 30px;
+        color: #005377;
+        font-weight: 600;
+        font-size: 22px;
+    }
+    .feedback-modal .form-group label {
+        font-weight: 600;
+        /* color: #000; */
+    }
+    .feedback-modal .form-group .form-control{
+        border-radius: 0;
+    }
+    .feedback-modal .btn-add-property{
+        margin: 0;
+    }
+
+     .rating { 
+  border: none;
+  float: left;
+}
+
+.rating > input { display: none; } 
+.rating > label:before { 
+  margin: 5px;
+  font-size: 1.25em;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f005";
+}
+
+.rating > .half:before { 
+  content: "\f089";
+  position: absolute;
+}  
+  .rating > label { 
+    color: #ddd; 
+   float: right; 
+  }
+  
+  /**** CSS Magic to Highlight Stars on Hover ****/
+  
+  .rating > input:checked ~ label, 
+  .rating:not(:checked) > label:hover,
+  .rating:not(:checked) > label:hover ~ label { color: #FFD700;  } 
+  
+  .rating > input:checked + label:hover,
+  .rating > input:checked ~ label:hover,
+  .rating > label:hover  input:checked  label,
+  .rating > input:checked  label:hover  label { color: #FFED85;  } 
+  

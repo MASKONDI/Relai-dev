@@ -14,10 +14,14 @@
             <div class="modal-body">
               <label class="">Describe this to-do</label>
               <div class="errmessage"></div>
-              <select class="form-control selectBox2 phase_list" id="Phase" name="Phase" style="height: 48px;"
-                data-rule-required="true" data-msg-required="phase  is required" required>
-                <option value="">Select Professional</option>
-                <option value=""></option>
+              <select class="form-control selectBox2 " style="height:48px" id="task_for" name="coms_complaint_for"
+                data-rule-required="true" data-msg-required="professional is required!">
+                <option value="">Select professional</option>
+                <%hiredProfeshnoalList.forEach(function(row){%>
+                  <option value="<%=row._id%>">
+                    <%=row.sps_fullname%>
+                  </option>
+                  <%});%>
               </select>
               <!-- <div class="alert alert-info" id="taskmsg"></div> -->
               <!-- <input type="text" class="form-control form-control-fix2" id="subject" placeholder="Instruction"
@@ -74,18 +78,19 @@
                     </tr>
                     <%}else{%>
                       <%hiredProfeshnoalList.forEach(function(row,i){%>
-                  <tr class="propf_row_<%=row._id%>">
-                    <td><label class="check-permission"><img src="images/recent-user-1.png">
-                        <%=row.sps_fullname%>, <span>
-                          <%=row.sps_role_name%>
-                        </span>
-                      </label></td>
-                    <td>
-                      <a href="" class="deleteProfesshional" id="<%=row._id%>" ><img src="images/delete-icon.png"></a>
-                    </td>
-                  </tr>
-                  <%});%>
-                  <%}%>    
+                        <tr class="propf_row_<%=row._id%>">
+                          <td><label class="check-permission"><img src="images/recent-user-1.png">
+                              <%=row.sps_fullname%>, <span>
+                                  <%=row.sps_role_name%>
+                                </span>
+                            </label></td>
+                          <td>
+                            <a href="" class="deleteProfesshional" id="<%=row._id%>"><img
+                                src="images/delete-icon.png"></a>
+                          </td>
+                        </tr>
+                        <%});%>
+                          <%}%>
                 </tbody>
               </table>
             </div>
@@ -724,43 +729,43 @@
     </script>
 
     <script>
-      
+
       $(document).ready(function () {
-       $('.deleteProfesshional').click(function(e){
-        e.preventDefault();
-        var professhional_id=$(this).attr('id');
-        //alert(professhional_id)
-        var $tr = $(this).closest('tr');
-        $.ajax({
+        $('.deleteProfesshional').click(function (e) {
+          e.preventDefault();
+          var professhional_id = $(this).attr('id');
+          //alert(professhional_id)
+          var $tr = $(this).closest('tr');
+          $.ajax({
             type: "POST",
             url: "/api/removeProfesshional",
-            data:{
-              professhional_id:professhional_id
+            data: {
+              professhional_id: professhional_id
             },
             cache: false,
             success: function (data) {
-              if(data.status==false){
+              if (data.status == false) {
                 $('.message').html('<span class="alert alert-danger error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
                 setTimeout(function () { $('.message').html(''); }, 3000);
-              }else{
-                console.log($(".propf_row_"+data.id));
+              } else {
+                console.log($(".propf_row_" + data.id));
                 //$(".propf_row_"+data.id).css("display", "none");
                 //$('#removeProfessionalModal').modal('hide');
                 $('.message').html('<span class="alert alert-success error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
-                setTimeout(function () {$('.message').html('');window.location.reload(true) }, 3000);
-                $tr.find('td').fadeOut(1000,function(){ 
-                            $tr.remove();                    
-                        }); 
+                setTimeout(function () { $('.message').html(''); window.location.reload(true) }, 3000);
+                $tr.find('td').fadeOut(1000, function () {
+                  $tr.remove();
+                });
               }
             }
           });
         });
-          
+
       })
-      </script>
-      <%- include('my-script') -%>
-        </body>
-       
+    </script>
+    <%- include('my-script') -%>
+      </body>
 
 
-        </html>
+
+      </html>
