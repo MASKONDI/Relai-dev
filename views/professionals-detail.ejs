@@ -202,18 +202,10 @@
 
                         <div class="about-section">
                           <div class="row">
-                            <div class="col-lg-6">
-                              <div class="float-left ">
-                                <h1 class="pointer-fix" style="color: #005377;">4.0</h1>
-                                <p style="margin-left: 20px;">out of 5</p>
-                              </div>
-                              <div>
-                                <img class="feedback-img" src="images/feedback-2.png" alt="">
-                              </div>
-
-                            </div>
-                            <div class="col col-lg-6">
-                              <% var c=1 ; professionalRating.forEach(function(prat){ %>
+                            <div style="order: 2;" class="col col-lg-6">
+                              <% var plantRateSum = 0;  %>
+                              <% var c=1 ; var total = professionalRating.length; professionalRating.forEach(function(prat){ %>
+                                <% plantRateSum += parseInt(prat.sprs_rating) %> 
                                 <div class="side-feedback-sec">
                                   <div class="img-rating-box">
                                     <div class="img-side-part">
@@ -223,9 +215,9 @@
                                     <div class="rating-star">
                                       <p>
                                         <% for (var i =1; i <=5;  i++ ) { %>
-    <% if(i <= prat.sprs_rating){ %> 
-      <i class="fa fa-star"></i>
-      <% }else{ %> <i class="fa fa-star-o"></i> <% } } %>
+                                            <% if(i <= prat.sprs_rating){ %> 
+                                              <i class="fa fa-star"></i>
+                                              <% }else{ %> <i class="fa fa-star-o"></i> <% } } %>
                                         <!-- <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
@@ -239,58 +231,21 @@
                                     <p><%= prat.sprs_review %></p>
                                   </div>
                                 </div>
-                              <% c++; }) %>
-<!-- 
-                              <div class="side-feedback-sec">
-                                <div class="img-rating-box">
-                                  <div class="img-side-part">
-                                    <img src="images/img_avatar.png" alt="">
-                                    <b>Soniya Patidar</b>
-                                  </div>
-                                  <div class="rating-star">
-                                    <p>
-                                      <i class="fa fa-star"></i>
-                                      <i class="fa fa-star"></i>
-                                      <i class="fa fa-star"></i>
-                                      <i class="fa fa-star-half-o"></i>
-                                      <i class="fa fa-star-o"></i>
-                                    </p>
-                                    <p>24 Mar 2019</p>
-                                  </div>
-                                </div>
-                                <div class="comment-text">
-                                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                                    Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-                                    unknown printer took a galley of type and scrambled it to make a type specimen book.
-                                  </p>
-                                </div>
-                              </div>
-
-                              <div class="side-feedback-sec">
-                                <div class="img-rating-box">
-                                  <div class="img-side-part">
-                                    <img src="images/img_avatar.png" alt="">
-                                    <b>Soniya Patidar</b>
-                                  </div>
-                                  <div class="rating-star">
-                                    <p>
-                                      <i class="fa fa-star"></i>
-                                      <i class="fa fa-star"></i>
-                                      <i class="fa fa-star"></i>
-                                      <i class="fa fa-star-half-o"></i>
-                                      <i class="fa fa-star-o"></i>
-                                    </p>
-                                    <p>24 Mar 2019</p>
-                                  </div>
-                                </div>
-                                <div class="comment-text">
-                                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                                    Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-                                    unknown printer took a galley of type and scrambled it to make a type specimen book.
-                                  </p>
-                                </div>
-                              </div> -->
+                              <% c++; });  var avgRating = Math.round(plantRateSum/total);  %>
+                              <!-- <%= total %>
+                              <%= plantRateSum %> -->
+                              
                             </div>
+                            <div style="order: 1;" class="col-lg-6">
+                              <div class="float-left ">
+                                <h1 class="pointer-fix" style="color: #005377;"><%= avgRating.toFixed(1) %></h1>
+                                <p style="margin-left: 20px;">out of 5</p>
+                              </div>
+                              <div>
+                                <img class="feedback-img" src="images/feedback-2.png" alt="">
+                              </div>
+                            </div>
+
                           </div>
                         </div>
                       </div>
