@@ -272,12 +272,13 @@
                     <div class="row">
                       <div class="float-left card-header-fix">
                         <div class="semi-circle">
-                          <img class="card-img-top" src="images/recent-user-2.png" alt="">
+                          <a href="/professionals-detail?id=<%=row._id%>"> <img class="card-img-top"
+                            src="images/recent-user-2.png" alt="Card image cap"> </a>
                         </div>
                       </div>
                       <div class="float-right card-content-fix">
                         <h5>
-                          <%= row.sps_fullname%>
+                          <a href="/professionals-detail?id=<%=row._id%>"><%= row.sps_fullname%></a> 
                         </h5>
                         <p>
                           <%= row.sps_role_name%>
@@ -293,15 +294,14 @@
                         </span>
                       </div>
                       <div class="float-right card-icon-fix2">
-                        <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span>4.0
+                        <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span><%= row.avgRating %>
                           Rating</span>
 
                       </div>
                     </div>
                     <div class="card-body">
                       <button type="button" class="btn btn-cancel" style="margin-top: 30px; margin-bottom: 0px;"><a
-                          style="color:#fff;" href="/track-your-progress">Track
-                          Progress</a></button>
+                          style="color:#fff;" href="/professionals-detail?id=<%=row._id%>">View</a></button>
                     </div>
                   </div>
                 </div>
