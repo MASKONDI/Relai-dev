@@ -238,7 +238,7 @@
                             </div>
                             <div style="order: 1;" class="col-lg-6">
                               <div class="float-left ">
-                                <h1 class="pointer-fix" style="color: #005377;"><%= avgRating.toFixed(1) %></h1>
+                                <h1 class="pointer-fix" style="color: #005377;"><% if(!isNaN(avgRating)){ %><%= avgRating.toFixed(1) %> <% }else{%>0.0<% } %></h1>
                                 <p style="margin-left: 20px;">out of 5</p>
                               </div>
                               <div>
