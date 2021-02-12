@@ -116,11 +116,12 @@ app.get("/mydreamhome-details-chainproperty", isCustomer, async (req, res) => {
             let temp = await image
             propImage.push(temp);
           }
-          //var message = await timeDifference(existing_property_details);
+          console.log("existing_property_details", existing_property_details.ps_phase_array);
+          var message = await timeDifference(existing_property_details.ps_phase_array);
           var object_as_string = JSON.stringify(existing_property_details);
           const t = JSON.parse(object_as_string);
           t.propertyImage = await propImage;
-          //t.estimated_time = await message;
+          t.estimated_time = await message;
 
           let prop = await t;
           propertyArray.push(prop)
@@ -140,11 +141,12 @@ app.get("/mydreamhome-details-chainproperty", isCustomer, async (req, res) => {
           let temp = await image
           propImage.push(temp);
         }
-        //var message = await timeDifference(chainPropertyDetails);
+        console.log("chainPropertyDetails is :", chainPropertyDetails.ps_phase_array);
+        var message = await timeDifference(chainPropertyDetails.ps_phase_array);
         var object_as_string = JSON.stringify(chainPropertyDetails);
         const t = JSON.parse(object_as_string);
         t.propertyImage = await propImage;
-        //t.estimated_time = await message;
+        t.estimated_time = await message;
 
         let prop = await t;
         propertyArray.push(prop)
@@ -1230,7 +1232,7 @@ function tallyVotes(AllhiredProfeshnoal) {
 }
 function timeDifference(data) {
   var date = [];
-  data[0].ps_phase_array.forEach(function (item) {
+  data.forEach(function (item) {
     var startDate = "";
     var endDate = "";
     let diffInMilliSeconds;
@@ -1248,7 +1250,16 @@ function timeDifference(data) {
   });
   var estimated_time = date.reduce((total, i) => total + i, 0);
   var message = "";
-  if (estimated_time > 31) {
+  if (estimated_time > 365) {
+    var year = Math.floor(estimated_time / 365);
+    var days = estimated_time % 365;
+    if (days > 31) {
+      var months = Math.floor(days / 31);
+      var day = days % 31;
+      message += year + " year " + months + " months " + day + " days"
+    }
+  }
+  else if (estimated_time > 31) {
     var months = Math.floor(estimated_time / 31);
     var day = estimated_time % 31;
     message += months + " months " + day + " days"
@@ -1345,7 +1356,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
 
         console.log("Property Data is *************************", data[0].ps_phase_array);
         //var totaldiff = "";
-        var message = timeDifference(data);
+        var message = timeDifference(data[0].ps_phase_array);
 
         let arr = [];
         for (let img of data) {
@@ -1383,25 +1394,6 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
     res.redirect('/mydreamhome');
   }
 })
-
-function calcDate(date1, date2) {
-  var startDate = new Date(Date.parse(date1));
-  var endDate = new Date(Date.parse(date2));
-
-  var diff = Math.floor(startDate.getTime() - endDate.getTime());
-  var day = 1000 * 60 * 60 * 24;
-
-  // var days = Math.floor(diff / day);
-  // var months = Math.floor(days / 31);
-  // var years = Math.floor(months / 12);
-
-  // var message = "";
-  // message += years + " y\n"
-  // message += months + " months "
-  // message += days + " days "
-  return diff
-}
-
 
 
 //*******Service Provider and signup and profiles routes */
@@ -1763,7 +1755,8 @@ app.get('/buyer', isCustomer, function (req, res) {
   var active_user = req.session.active_user_login;
   if (test == true && active_user != 'buyer') {
     req.session.active_user_login = "buyer"
-    req.session.isChanged();
+    //req.session.isChanged();
+    res.redirect('/dashboard')
     console.log("current user login and session is", req.session);
   }
 
@@ -1776,7 +1769,8 @@ app.get('/seller', isCustomer, function (req, res) {
   var active_user = req.session.active_user_login;
   if (test == true && active_user != 'seller') {
     req.session.active_user_login = "seller"
-    req.session.isChanged();
+    //req.session.isChanged();
+    res.redirect('/dashboard')
     console.log("current user login and session is", req.session);
   }
 });
@@ -1788,10 +1782,26 @@ app.get('/renovator', isCustomer, function (req, res) {
   var active_user = req.session.active_user_login;
   if (test == true && active_user != 'renovator') {
     req.session.active_user_login = "renovator"
-    req.session.isChanged();
+    //req.session.isChanged();
+    res.redirect('/dashboard')
     console.log("current user login and session", req.session);
   }
 });
+
+
+app.get('/otp', function (req, res) {
+  console.log("");
+
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('otp', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+
+
+
 
 app.get('/add-task', isCustomer, async function (req, res) {
   return new Promise(async function (resolve, reject) {
