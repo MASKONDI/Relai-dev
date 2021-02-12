@@ -106,6 +106,18 @@ router.post('/filterPropertyAdress', (req, res) => {
   }
 })
 
+function generateOTP() {
+
+  // Declare a digits variable  
+  // which stores all digits 
+  var digits = '0123456789';
+  let OTP = '';
+  for (let i = 0; i < 4; i++) {
+    OTP += digits[Math.floor(Math.random() * 10)];
+  }
+  return OTP;
+}
+
 
 router.post("/cust_register", (req, res) => {
   console.log("rq.body", req.body);
@@ -118,8 +130,8 @@ router.post("/cust_register", (req, res) => {
     //req.flash('err_msg', errors.confirmPassword);
     //return res.redirect('/signup');
     res.send({
-      message:errors.confirmPassword,
-      status:false
+      message: errors.confirmPassword,
+      status: false
     })
   }
 
@@ -130,11 +142,23 @@ router.post("/cust_register", (req, res) => {
       //req.flash('err_msg', errors.cus_email_id);
       //res.redirect('/signup');
       res.send({
-        message:errors.cus_email_id,
-        status:false
+        message: errors.cus_email_id,
+        status: false
       })
 
     } else {
+
+      var now = new Date();
+      now.setMinutes(now.getMinutes() + 03); // timestamp
+      now = new Date(now); // Date object
+
+      var otp_expire = now
+      console.log("otp_expire time is", now);
+
+      var otp = generateOTP()
+      console.log("otp is", otp);
+
+
       const newCustomer = new CustomerSchema({
         cus_unique_code: "cust-" + uuidv4(),
         cus_fullname: req.body.cus_firstname + ' ' + req.body.cus_lastname,
@@ -145,6 +169,9 @@ router.post("/cust_register", (req, res) => {
         cus_city: req.body.city,
         cus_state: req.body.state,
         cus_password: req.body.cus_password,
+        cus_otp: otp,
+        cus_otp_expie_time: otp_expire
+
       });
 
       bcrypt.genSalt(10, (err, salt) => {
@@ -154,12 +181,13 @@ router.post("/cust_register", (req, res) => {
           newCustomer
             .save()
             .then(customers => {
-              console.log("resposne is :", customers);
+              //sending OTP for email verification
+              otp_verification(req, otp);
               //req.flash('success_msg', 'You have register sucessfully.')
               //res.redirect("/signin")
               res.send({
-                message:"You have register sucessfully.",
-                status:true
+                message: "You have register sucessfully.",
+                status: true
               })
 
             })
@@ -168,8 +196,8 @@ router.post("/cust_register", (req, res) => {
               //req.flash('err_msg', 'Something went wron please try again later.');
               //res.redirect('/signup');
               res.send({
-                message:'Something went wron please try again later.',
-                status:false
+                message: 'Something went wrong please try again later.',
+                status: false
               })
 
             });
@@ -194,11 +222,11 @@ router.post("/cust_signin", (req, res) => {
   if (!isValid) {
     console.log("error is ", errors);
     //req.flash('err_msg', "please enter valid emailid and password")
-   // return res.redirect('/signin');
-        res.send({
-          message:"please enter valid emailid and password",
-          status:false
-        })
+    // return res.redirect('/signin');
+    res.send({
+      message: "please enter valid emailid and password",
+      status: false
+    })
   }
 
   // Find Customer by 
@@ -209,8 +237,8 @@ router.post("/cust_signin", (req, res) => {
       //req.flash('err_msg', errors.cus_email_id);
       //return res.redirect('/signin');
       res.send({
-        message:"Customers not found",
-        status:false
+        message: "Customers not found",
+        status: false
       })
     }
     // Check Password
@@ -250,11 +278,11 @@ router.post("/cust_signin", (req, res) => {
             });
           }
         );
-       // res.redirect('/dashboard')
-       res.send({
-        message:"Signin successfully, we are processing please wait...",
-        status:true
-      })
+        // res.redirect('/dashboard')
+        res.send({
+          message: "Signin successfully, we are processing please wait...",
+          status: true
+        })
 
       } else {
         //errors.cus_password = 'Password incorrect';
@@ -262,8 +290,8 @@ router.post("/cust_signin", (req, res) => {
         //req.flash("err_msg", errors.cus_password);
         //return res.redirect('/signin');
         res.send({
-          message:"Password incorrect",
-          status:false
+          message: "Password incorrect",
+          status: false
         })
 
       }
@@ -452,6 +480,7 @@ router.post("/add-new-property", isCustomer, async (req, res) => {
         //sending invite function in add-property
         console.log("sending invitation to professional with token");
         invite_function(req, PropertySaved);
+        customer_invitation(req, PropertySaved);
         return res.send({
           'message': ' Your Property Saved plese add property image',
           'status': true,
@@ -518,28 +547,28 @@ router.post("/add-new-property-plan-image", isCustomer, async (req, res) => {
 
 });
 
-router.get("/get_property_for_chain",isCustomer, async (req, res) => {
-  
-    if (req.body) {
-      console.log("get chain property body:=", req.session);
-      let AllProperty = await PropertyHelper.GetAllProperty(req.session.user_id,req.session.active_user_login);
-      console.log('AllProperty========', AllProperty);
-      if (AllProperty) {
-        return res.send({
-          'message': 'Select Property',
-          'status': true,
-          'data':AllProperty
-          
-        });
-      } else {
-        return res.send({
-          'message': 'Something Wrong Try Again ',
-          'status': false,
-          'redirect':'/add-property'
-        });
-      }
+router.get("/get_property_for_chain", isCustomer, async (req, res) => {
+
+  if (req.body) {
+    console.log("get chain property body:=", req.session);
+    let AllProperty = await PropertyHelper.GetAllProperty(req.session.user_id, req.session.active_user_login);
+    console.log('AllProperty========', AllProperty);
+    if (AllProperty) {
+      return res.send({
+        'message': 'Select Property',
+        'status': true,
+        'data': AllProperty
+
+      });
+    } else {
+      return res.send({
+        'message': 'Something Wrong Try Again ',
+        'status': false,
+        'redirect': '/add-property'
+      });
     }
-  
+  }
+
 
 });
 //=============property add section close====================//
@@ -585,11 +614,11 @@ router.post('/forget-password', function (req, res) {
   }, function (err, result) {
     if (err) {
       console.log('err', err);
-     // req.flash('err_msg', 'Please enter registered Email address.');
+      // req.flash('err_msg', 'Please enter registered Email address.');
       //res.redirect('/forget-password');
       res.send({
-        message:'Please enter registered Email address.',
-        status:false
+        message: 'Please enter registered Email address.',
+        status: false
       })
     } else {
 
@@ -615,8 +644,8 @@ router.post('/forget-password', function (req, res) {
                 //req.flash('err_msg', 'Something went wrong.');
                 //res.redirect('/forget-password')
                 res.send({
-                  message:'Something went wrong.',
-                  status:false
+                  message: 'Something went wrong.',
+                  status: false
                 })
 
               } else {
@@ -650,11 +679,11 @@ router.post('/forget-password', function (req, res) {
                 };
                 smtpTransport.sendMail(mailOptions, function (err) {
                   if (err) { console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong.please connect support team'); res.redirect('/forget-password') } else {
-                   // req.flash('success_msg', 'Password has been sent successfully to your registered email, please check your mail...');
+                    // req.flash('success_msg', 'Password has been sent successfully to your registered email, please check your mail...');
                     //res.redirect('/forget-password')
                     res.send({
-                      message:'Password has been sent successfully to your registered email, please check your mail...',
-                      status:true
+                      message: 'Password has been sent successfully to your registered email, please check your mail...',
+                      status: true
                     })
                   }
                 });
@@ -666,8 +695,8 @@ router.post('/forget-password', function (req, res) {
         //req.flash('err_msg', 'Please enter registered Email address.');
         //res.redirect('/forget-password');
         res.send({
-          message:'Please enter registered Email address.',
-          status:false
+          message: 'Please enter registered Email address.',
+          status: false
         })
       }
 
@@ -1101,7 +1130,7 @@ function invite_function(req, saved_property) {
 
         text: 'Dear \n' + req.body.ps_other_party_fullname + '\n\n' + 'you are invited in Relai plateform.\n\n' +
 
-          'We suggest you to please visit our Relai plateform and create your account as a service_provider \n' + 'Here is the registration link: http://' + req.headers.host + '/intro' + '\n\n' +
+          'We suggest you to please visit our Relai plateform and create your account as a service_provider \n' + 'Here is the registration link: http://' + req.headers.host + '/signup?email=' + req.body.ps_other_party_emailid + '\n\n' +
 
           'After Successfull registeration please copy this SecretToken in your dashboard section \n' + token + '\n\n' +
 
@@ -1120,6 +1149,162 @@ function invite_function(req, saved_property) {
   );
 }
 
+function customer_invitation(req, saved_property) {
+  console.log("Request getting from server :", req.body);
+  console.log("Customer session :", req.session);
+
+  var smtpTransport = nodemailer.createTransport({
+    // port: 25,
+    // host: 'localhost',
+    tls: {
+      rejectUnauthorized: false
+    },
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    service: 'Gmail',
+    auth: {
+      user: 'golearning4@gmail.com',
+      pass: 'Krishna#1997',
+    }
+  });
+  const mailOptions = {
+    to: req.session.email,
+    from: 'golearning4@gmail.com',
+    subject: 'Invitaion letter from Relai',
+
+    text: 'Dear \n' + req.session.name + '\n\n' + 'you have send successfully invitation to\n' + req.body.ps_other_party_fullname + ' for ' + saved_property.ps_property_name + ' via Relai plateform.\n\n' +
+
+      'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+  };
+  smtpTransport.sendMail(mailOptions, function (err) {
+    if (err) {
+      console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+      //res.redirect('/add-property')
+    } else {
+      //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
+      // res.redirect('/add-property')
+    }
+  });
+}
+
+
+//Sending otp for email verifictaion while registering user
+function otp_verification(req, otp) {
+  console.log("Customer Data :", req.body);
+  console.log("OTP for customer verification:", otp);
+
+  var smtpTransport = nodemailer.createTransport({
+    // port: 25,
+    // host: 'localhost',
+    tls: {
+      rejectUnauthorized: false
+    },
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    service: 'Gmail',
+    auth: {
+      user: 'golearning4@gmail.com',
+      pass: 'Krishna#1997',
+    }
+  });
+  const mailOptions = {
+    to: req.body.cus_email_id,
+    from: 'golearning4@gmail.com',
+    subject: 'OTP verification from Relai',
+
+    text: 'Dear \n' + req.body.cus_firstname + ' ' + req.body.cus_lastname + '\n\n' + 'your OTP for email-validation is  \n' + otp + '\n\n' +
+      'We suggest you to please hit given url and submit otp:\n' + ' http://' + req.headers.host + '/otp?email=' + req.body.cus_email_id + '\n\n' +
+
+      'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+  };
+  smtpTransport.sendMail(mailOptions, function (err) {
+    if (err) {
+      console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+      //res.redirect('/add-property')
+    } else {
+      //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
+      // res.redirect('/add-property')
+    }
+  });
+}
+
+
+router.post('/otp_verfication', function (req, res) {
+  console.log("req.body is :", req.body);
+  var otp1 = req.body.otp1;
+  var otp2 = req.body.otp2;
+  var otp3 = req.body.otp3;
+  var otp4 = req.body.otp4;
+  var otp = otp1 + otp2 + otp3 + otp4;
+  console.log("getting otp from form data", otp);
+
+  CustomerSchema.find({
+    'cus_email_id': req.body.cus_email_id,
+    //'cus_email_verification_status': 'yes'
+  }, function (err, result) {
+    if (err) {
+      console.log('err', err);
+      // req.flash('err_msg', 'Please enter registered Email address.');
+      //res.redirect('/forget-password');
+      res.send({
+        message: 'Customer Not Found.',
+        status: false
+      })
+    }
+    else {
+
+      if (result != '' && result != null) {
+        console.log("customer results is :", result[0].cus_otp);
+        console.log("OTP is ", otp);
+        if (parseInt(result[0].cus_otp) === parseInt(otp)) {
+
+          CustomerSchema.updateOne({
+            'cus_email_id': req.body.cus_email_id
+          }, {
+            $set: {
+              cus_email_verification_status: 'yes'
+            }
+          }, {
+            upsert: true
+          }, function (err) {
+            if (err) {
+              console.log("err is :", err);
+              //req.flash('err_msg', 'Something went wrong.');
+              //res.redirect('/forget-password')
+              res.send({
+                message: 'Something went wrong.',
+                status: false
+              })
+
+            } else {
+
+              res.send({
+                message: 'OTP verification done successfully.',
+                status: false
+              })
+            }
+          });
+
+        } else {
+          console.log("please input valid email id");
+          res.send({
+            message: 'OTP verification failed.',
+            status: false
+          })
+        }
+      } else {
+        console.log("Customer Data not found");
+        res.send({
+          message: 'Customer Data not found.',
+          status: false
+        })
+      }
+    }
+  });
+
+});
 /* -------------------------------------------------------------------------------------------------
 POST : update-customer-profile is used for updating customer profile data 
 ------------------------------------------------------------------------------------------------- */
@@ -1282,15 +1467,15 @@ router.post('/complaint-details-discussion', isCustomer, (req, res) => {
 });
 
 
-router.post('/removeProfesshional', isCustomer, async(req, res) => {
-   console.log("remove prof id" ,req.body.professhional_id,req.session)
-  var responce=await propertyProfesshionalHelper.removeProfessionalById(req.body.professhional_id,req.session.property_id)
-  if(responce){
-    console.log("remove responce==========",responce)
+router.post('/removeProfesshional', isCustomer, async (req, res) => {
+  console.log("remove prof id", req.body.professhional_id, req.session)
+  var responce = await propertyProfesshionalHelper.removeProfessionalById(req.body.professhional_id, req.session.property_id)
+  if (responce) {
+    console.log("remove responce==========", responce)
     return res.send({
       'success_msg': 'Professional Removed successfully..',
       'status': true,
-      'id':responce._id
+      'id': responce._id
     });
   } else {
     return res.send({
@@ -1314,25 +1499,25 @@ router.post('/change-password', isCustomer, function (req, res) {
   if (!isValid) {
     console.log("error is ", errors);
     //req.flash('err_msg', errors.confirmPassword);
-    if(errors.confirmPassword){
+    if (errors.confirmPassword) {
 
-   
-    res.send({
-      message:errors.confirmPassword,
-      status:false,
-      validationType:'length'
-    })
-  }else{
-    res.send({
-      message:errors.cus_password,
-      status:false,
-      validationType:'length'
-    })
-  }
+
+      res.send({
+        message: errors.confirmPassword,
+        status: false,
+        validationType: 'length'
+      })
+    } else {
+      res.send({
+        message: errors.cus_password,
+        status: false,
+        validationType: 'length'
+      })
+    }
     return; // res.redirect('/change-Password');
-  }else{
+  } else {
     // Find Customer by 
-    CustomerSchema.findOne({ _id : req.session.user_id }).then(customers => {
+    CustomerSchema.findOne({ _id: req.session.user_id }).then(customers => {
       bcrypt.compare(req.body.oldPassword, customers.cus_password).then(isMatch => {
         if (isMatch) {
           //enableing session variable
@@ -1352,9 +1537,9 @@ router.post('/change-password', isCustomer, function (req, res) {
               }, function (err) {
                 if (err) {
                   res.send({
-                    message:'Something went wrong please try again.',
-                    status:false,
-                    validationType:'server'
+                    message: 'Something went wrong please try again.',
+                    status: false,
+                    validationType: 'server'
                   })
 
                   //console.log("err is :", err);
@@ -1364,9 +1549,9 @@ router.post('/change-password', isCustomer, function (req, res) {
                   //console.log("Password change successfully");
                   //req.flash('success_msg', 'password change successfully');
                   res.send({
-                    message:'Password change successfully.',
-                    status:true,
-                    validationType:''
+                    message: 'Password change successfully.',
+                    status: true,
+                    validationType: ''
                   })
 
                 }
@@ -1374,12 +1559,12 @@ router.post('/change-password', isCustomer, function (req, res) {
             });
           });
           req.session.success = true;
-        }else{
+        } else {
           //console.log('not matched')
           res.send({
-            message:'Old password wrong please check again.',
-            status:false,
-            validationType:'matched'
+            message: 'Old password wrong please check again.',
+            status: false,
+            validationType: 'matched'
           })
         }
       });
@@ -1406,15 +1591,15 @@ router.post('/add-feedback', isCustomer, (req, res) => {
   upload(req, res, async () => {
     let RatingObj = '';
     //const ComplaintId = 'C-'+uuidv4().slice(uuidv4().length - 4).toUpperCase();;
-      RatingObj = new RatingSchema({
-        sprs_service_provider_id:req.body.spr_id,
-        sprs_submitted_by:req.session.user_id,
-        sprs_submitted_by_name:req.session.name,
-        sprs_rating:req.body.rating,
-        sprs_review:req.body.feedback_message,
-        sprs_submitted_profile_img:req.session.imagename,
-        sprs_is_active_user_flag:req.session.active_user_login
-      });
+    RatingObj = new RatingSchema({
+      sprs_service_provider_id: req.body.spr_id,
+      sprs_submitted_by: req.session.user_id,
+      sprs_submitted_by_name: req.session.name,
+      sprs_rating: req.body.rating,
+      sprs_review: req.body.feedback_message,
+      sprs_submitted_profile_img: req.session.imagename,
+      sprs_is_active_user_flag: req.session.active_user_login
+    });
     console.log('RatingData:', RatingObj)
     RatingObj.save().then(complaintsDetails => {
       res.send({ status: true, message: 'Thank you for your feedback !!' })

@@ -15,7 +15,7 @@
               </div>
             </div>
             <p>START FOR FREE</p>
-            <h1>Let’s get you started</h1>
+            <h1>Customer Registration</h1>
             <form id="registerform" class="form" method="POST" action="#">
 
 
@@ -35,7 +35,7 @@
                   <div class="form-group  ">
                     <input type="text" class="form-control form-control-size " id="fullName" placeholder="Forename"
                       name="cus_firstname" required data-rule-required="true" data-rule-minlength="2"
-                      data-msg-required="Fore Name is required!">
+                      data-msg-required="Forename is required!">
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -340,6 +340,24 @@
     gtag('js', new Date());
 
     gtag('config', 'UA-149371669-1');
+  </script>
+  <script>function getParameterByName(name, url = window.location.href) {
+      name = name.replace(/[\[\]]/g, '\\$&');
+      var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+    var email = getParameterByName('email'); // "lorem"
+    if (email) {
+      $('#email').val(email);
+      $('#email').attr('readonly', 'readonly');
+    }
+    else {
+      $('#email').val('');
+      $('#email').attrRemove('readonly');
+    }
   </script>
 
   </body>

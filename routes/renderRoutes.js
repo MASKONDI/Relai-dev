@@ -1712,7 +1712,8 @@ app.get('/buyer', isCustomer, function (req, res) {
   var active_user = req.session.active_user_login;
   if (test == true && active_user != 'buyer') {
     req.session.active_user_login = "buyer"
-    req.session.isChanged();
+    //req.session.isChanged();
+    res.redirect('/dashboard')
     console.log("current user login and session is", req.session);
   }
 
@@ -1725,7 +1726,8 @@ app.get('/seller', isCustomer, function (req, res) {
   var active_user = req.session.active_user_login;
   if (test == true && active_user != 'seller') {
     req.session.active_user_login = "seller"
-    req.session.isChanged();
+    //req.session.isChanged();
+    res.redirect('/dashboard')
     console.log("current user login and session is", req.session);
   }
 });
@@ -1737,10 +1739,26 @@ app.get('/renovator', isCustomer, function (req, res) {
   var active_user = req.session.active_user_login;
   if (test == true && active_user != 'renovator') {
     req.session.active_user_login = "renovator"
-    req.session.isChanged();
+    //req.session.isChanged();
+    res.redirect('/dashboard')
     console.log("current user login and session", req.session);
   }
 });
+
+
+app.get('/otp', function (req, res) {
+  console.log("");
+
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('otp', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+
+
+
 
 app.get('/add-task', isCustomer, async function (req, res) {
   return new Promise(async function (resolve, reject) {
