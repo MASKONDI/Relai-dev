@@ -193,15 +193,15 @@
                           <div class="row">
                             <div class="col-sm-12 col-lg-9">
                               <div class="">
-                                <p><%=row.spes_university_school_name%></p>
+                                <p><b><%=row.spes_university_school_name%></b></p>
                                 <h6><%=row.spes_qualification_obtained%></h6>
                                 <h6><%=moment(row.spes_from_date).format("YYYY")%>-<%=moment(row.spes_to_date).format("YYYY")%></h6>
                               </div>
                             </div>
                             <div class="col-sm-12 col-lg-3">
                               <div class="">
-                                <img style="width:19%" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;<img
-                                  style="width:19%" src="images/delete-icon.png" alt="">
+                                <img style="width:19%" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;
+                                <img onclick="deleteEducation('<%= row._id %>')" style="width:19%" src="images/delete-icon.png" alt="">
                               </div>
                             </div>
                           </div> 
@@ -272,8 +272,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
     integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
     crossorigin="anonymous"></script>
-
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
   <script type="text/javascript">
     $('#educationForm').validate({
       onfocusout: function (element) {
@@ -303,6 +302,57 @@
           });
       }
     });
+
+
+    function deleteEducation(id){
+      var eduId = id;
+      Swal.fire({ 
+        title: 'Are you sure want to remove?',
+        showCancelButton: true,
+        confirmButtonText: `Yes`,
+        confirmButtonColor: '#005377',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+                  type: "POST",
+                  data: {
+                    eduId:eduId,
+                    action:'education-delete'
+                  },
+                  url: "/api/delete-professional-basic-details", 
+                  cache:false,           
+                  success: function (data) {
+                    console.log(data);
+                    if(data.status == true){
+                      //location.reload(true);
+                      Swal.fire({
+                          icon: 'success',
+                          title: data.message,
+                          showConfirmButton: false,
+                          confirmButtonColor: '#005377',
+                          timer: 3000
+                        })
+                        setTimeout(function(){ 
+                          location.reload(true);
+                        }, 3000);
+                    }else{
+                      Swal.fire({
+                          icon: 'error',
+                          title: data.message,
+                          showConfirmButton: false,
+                          confirmButtonColor: '#005377',
+                          timer: 3000
+                        })
+                        setTimeout(function(){ 
+                          location.reload(true);
+                        }, 3000);
+                    }
+                  }
+            });
+        }
+      })
+    }
+
   </script>
   <script type="text/javascript">
     $(document).ready(function () {
