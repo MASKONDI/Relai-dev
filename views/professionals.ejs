@@ -238,7 +238,7 @@
                         </div>
                         <div class="float-right card-content-fix">
                           <h5>
-                            <%= row.sps_fullname%>
+                            <a href="/professionals-detail?id=<%=row._id%>"><%= row.sps_fullname%></a> 
                           </h5>
                           <p>
                             <%= row.sps_role_name%>
@@ -254,7 +254,7 @@
                           </span>
                         </div>
                         <div class="float-right card-icon-fix2">
-                          <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>4.0
+                          <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span><%= row.avgRating %>
                             Rating</span>
 
                         </div>

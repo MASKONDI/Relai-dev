@@ -90,7 +90,23 @@ router.get('/test', (req, res) => {
 })
 
 
-router.post('/filterPropertyAdress', (req, res) => {
+router.post('/filterPropertyAdress', async (req, res) => {
+console.log('iddddd:',req.body.spId)
+  if(req.body.spId){
+    let hiredProfeshnoal = await PropertyProfessionalSchema.findOne({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login, pps_service_provider_id:req.body.spId });
+    console.log('Change AllhiredProfeshnoal', hiredProfeshnoal);  
+    PropertiesSchema.findOne({ _id: hiredProfeshnoal.pps_property_id }).then(async (data) => {
+      if (data) {
+        //console.log(data)
+        res.json({ data: data});
+      }
+    }).catch((err) => {
+      res.json({ data: '' });
+    })
+  }else{
+    console.log('property id not found')
+  }
+ 
   if (req.body.propertyId) {
     PropertiesSchema.findOne({ _id: req.body.propertyId }).then(async (data) => {
       if (data) {
