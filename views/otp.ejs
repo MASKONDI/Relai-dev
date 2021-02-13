@@ -17,7 +17,7 @@
             <p>SIGN UP</p>
             <h1>One Time Password</h1>
             <p style="color : #706e6e;">Enter OTP sent on your phone number/email id</p>
-            <form class="form" action="/api/otp_verfication" method="post">
+            <form class="form" action="/api/otp_verfication" method="post" id="otpform">
               <% if(typeof success_msg!='undefined' ){ %>
 
                 <span class="succ_flash_msg">
@@ -40,11 +40,12 @@
 
                   </div>
                   <div class="opt-text">
-                    <a href="#">Resend OTP ?</a>
+                    <a href="javascript:void(0)" id="resend-otp">Resend OTP ?</a>
+
                   </div>
                   <div class="otp-submit">
                     <!-- <a href=".html" class="btn signin-submit-btn">SUBMIT</a> -->
-                    <button type="submit" name="submit" class="btn signin-submit-btn">SUBMIT</button>
+                    <button type="submit" name="submit" class="btn signin-submit-btn" id="otp-submit">SUBMIT</button>
                   </div>
             </form>
           </div>
@@ -117,15 +118,16 @@
 
   </script>
 
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
   <script>
     $(document).ready(function () {
       $(".sidenav ul li").click(function () {
@@ -139,6 +141,73 @@
         $(this).addClass("active");
       });
     });
+  </script>
+
+  <script type="text/javascript"> $('#otpform').validate({
+      onfocusout: function (element) {
+        this.element(element);
+      },
+      errorClass: 'error_validate',
+      errorElement: 'span',
+      errorColor: 'red',
+      highlight: function (element, errorClass) {
+        $(element).removeClass(errorClass);
+      },
+      submitHandler: function (form) {
+        var formData = $('#otpform').serialize();
+        alert(formData);
+        console.log('formData:', formData)
+        $.ajax({
+          type: "POST",
+          data: formData,
+          url: "/api/otp_verfication",
+          cache: false,
+          success: function (data) {
+            console.log(data);
+            if (data.status == false) {
+              Swal.fire({
+                icon: 'error',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 4000
+              })
+
+            } else {
+              Swal.fire({
+                icon: 'success',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 4000
+              })
+
+              setTimeout(function () {
+                //location.reload(true);
+                window.location.href = "/signin";
+              }, 4000);
+
+            }
+          }
+        });
+
+
+      }
+    });</script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var flash_msg = $('.flash_msg').html();
+      if (flash_msg != "" && flash_msg != undefined) {
+        setTimeout(function () { $('.flash_msg').html(''); }, 4000);
+      }
+    });
+
+    $(document).ready(function () {
+      var succ_flash_msg = $('.succ_flash_msg').html();
+      if (succ_flash_msg != "" && succ_flash_msg != undefined) {
+        setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
+      }
+    });  
   </script>
   <script>
     function getParameterByName(name, url = window.location.href) {
@@ -158,6 +227,89 @@
 
     }
   </script>
+
+  <script type="text/javascript">
+
+    $(document).ready(function () {
+
+      $("#otpform").on('submit', function (e) {
+        e.preventDefault();
+        var formData = $('#otpform').serialize();
+        console.log('formData:', formData)
+        $.ajax({
+          type: "POST",
+          data: formData,
+          url: "/api/otp_verfication",
+          cache: false,
+          success: function (data) {
+            console.log(data);
+            if (data.status == false) {
+              Swal.fire({
+                icon: 'error',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 4000
+              })
+
+            } else {
+              Swal.fire({
+                icon: 'success',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 4000
+              })
+
+              setTimeout(function () {
+                //location.reload(true);
+                window.location.href = "/signin";
+              }, 4000);
+
+            }
+          }
+        });
+      })
+      $('#resend-otp').click(function (e) {
+        var email = $('#email').val();
+        $.ajax({
+          type: "POST",
+          data: { email: email },
+          url: "/api/resend-otp-link",
+          cache: false,
+          success: function (data) {
+            if (data.status == false) {
+              Swal.fire({
+                icon: 'error',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 4000
+              })
+
+            } else {
+              Swal.fire({
+                icon: 'success',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 4000
+              })
+
+              setTimeout(function () {
+                //location.reload(true);
+                window.location.href = "/otp?email=" + email;
+              }, 4000);
+
+            }
+          }
+        });
+      });
+    });
+
+  </script>
+
+
   </body>
 
   </html>
