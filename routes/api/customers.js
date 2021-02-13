@@ -91,22 +91,22 @@ router.get('/test', (req, res) => {
 
 
 router.post('/filterPropertyAdress', async (req, res) => {
-console.log('iddddd:',req.body.spId)
-  if(req.body.spId){
-    let hiredProfeshnoal = await PropertyProfessionalSchema.findOne({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login, pps_service_provider_id:req.body.spId });
-    console.log('Change AllhiredProfeshnoal', hiredProfeshnoal);  
+  console.log('iddddd:', req.body.spId)
+  if (req.body.spId) {
+    let hiredProfeshnoal = await PropertyProfessionalSchema.findOne({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login, pps_service_provider_id: req.body.spId });
+    console.log('Change AllhiredProfeshnoal', hiredProfeshnoal);
     PropertiesSchema.findOne({ _id: hiredProfeshnoal.pps_property_id }).then(async (data) => {
       if (data) {
         //console.log(data)
-        res.json({ data: data});
+        res.json({ data: data });
       }
     }).catch((err) => {
       res.json({ data: '' });
     })
-  }else{
+  } else {
     console.log('property id not found')
   }
- 
+
   if (req.body.propertyId) {
     PropertiesSchema.findOne({ _id: req.body.propertyId }).then(async (data) => {
       if (data) {
@@ -201,7 +201,9 @@ router.post("/cust_register", (req, res) => {
               otp_verification(req, otp);
               //req.flash('success_msg', 'You have register sucessfully.')
               //res.redirect("/signin")
+              console.log("registered customers data is ", customers);
               res.send({
+                customers: customers,
                 message: "You have register sucessfully.",
                 status: true
               })
@@ -1307,7 +1309,7 @@ function invite_function(req, saved_property) {
 
         text: 'Dear \n' + req.body.ps_other_party_fullname + '\n\n' + 'you are invited in Relai plateform.\n\n' +
 
-          'We suggest you to please visit our Relai plateform and create your account as a service_provider \n' + 'Here is the registration link: http://' + req.headers.host + '/signup?email=' + req.body.ps_other_party_emailid + '\n\n' +
+          'We suggest you to please visit our Relai plateform and create your account \n' + 'Here is the registration link: http://' + req.headers.host + '/signup?email=' + req.body.ps_other_party_emailid + '\n\n' +
 
           'After Successfull registeration please copy this SecretToken in your dashboard section \n' + token + '\n\n' +
 
@@ -1391,8 +1393,7 @@ function otp_verification(req, otp) {
     from: 'golearning4@gmail.com',
     subject: 'OTP verification from Relai',
 
-    text: 'Dear \n' + req.body.cus_firstname + ' ' + req.body.cus_lastname + '\n\n' + 'your OTP for email-validation is  \n' + otp + '\n\n' +
-      'We suggest you to please hit given url and submit otp:\n' + ' http://' + req.headers.host + '/otp?email=' + req.body.cus_email_id + '\n\n' +
+    text: 'Dear \n' + req.body.cus_firstname + ' ' + req.body.cus_lastname + '\n\n' + 'your OTP for email-validation is  \n' + otp + '\n\n' + 'We suggest you to please hit given url and submit otp:\n' + ' http://' + req.headers.host + '/otp?email=' + req.body.cus_email_id + '\n\n' +
 
       'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
   };
@@ -1406,6 +1407,109 @@ function otp_verification(req, otp) {
     }
   });
 }
+
+router.post('/resend-otp-link', function (req, res) {
+  console.log("Sending otp link to registered email-id", req.body.email);
+  CustomerSchema.find({
+    'cus_email_id': req.body.email,
+    //'cus_email_verification_status': 'yes'
+  }, function (err, result) {
+    if (err) {
+      console.log('err', err);
+      // req.flash('err_msg', 'Please enter registered Email address.');
+      //res.redirect('/forget-password');
+      res.send({
+        message: 'Customer Not Found.',
+        status: false
+      })
+    }
+    else {
+
+      if (result != '' && result != null) {
+        console.log("customer results is :", result[0].cus_otp);
+        var now = new Date();
+        now.setMinutes(now.getMinutes() + 03); // timestamp
+        now = new Date(now); // Date object
+
+        var otp_expire = now
+        console.log("otp_expire time is", now);
+        var otp = generateOTP();
+        console.log(" Generated OTP is ", otp);
+
+        CustomerSchema.updateOne({
+          'cus_email_id': req.body.email
+        }, {
+          $set: {
+            cus_otp: otp,
+            cus_otp_expie_time: otp_expire
+          }
+        }, {
+          upsert: true
+        }, function (err) {
+          if (err) {
+            console.log("err is :", err);
+            //req.flash('err_msg', 'Something went wrong.');
+            //res.redirect('/forget-password')
+            res.send({
+              message: 'Something went wrong.',
+              status: false
+            })
+          } else {
+            var smtpTransport = nodemailer.createTransport({
+              // port: 25,
+              // host: 'localhost',
+              tls: {
+                rejectUnauthorized: false
+              },
+              host: 'smtp.gmail.com',
+              port: 465,
+              secure: true,
+              service: 'Gmail',
+              auth: {
+                user: 'golearning4@gmail.com',
+                pass: 'Krishna#1997',
+              }
+            });
+            const mailOptions = {
+              to: req.body.email,
+              from: 'golearning4@gmail.com',
+              subject: 'OTP verification from Relai',
+
+              text: 'Dear \n' + result[0].cus_fullname + '\n\n' + 'your OTP for email-validation is  \n' + otp + '\n\n' + 'We suggest you to please hit given url and submit otp:\n' + ' http://' + req.headers.host + '/otp?email=' + req.body.email + '\n\n' +
+
+                'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+            };
+            smtpTransport.sendMail(mailOptions, function (err) {
+              if (err) {
+                console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+                //res.redirect('/add-property')
+              } else {
+                //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
+                // res.redirect('/add-property')
+                console.log("OTP send Successfully");
+                res.send({
+                  message: 'OTP Send successfully please check your registered-Email.',
+                  status: true
+                })
+              }
+            });
+
+          }
+        });
+
+
+      } else {
+        console.log("Customer Data not found");
+        res.send({
+          message: 'Customer Data not found.',
+          status: false
+        })
+      }
+    }
+  });
+
+});
+
 
 
 router.post('/otp_verfication', function (req, res) {
@@ -1459,13 +1563,13 @@ router.post('/otp_verfication', function (req, res) {
 
               res.send({
                 message: 'OTP verification done successfully.',
-                status: false
+                status: true
               })
             }
           });
 
         } else {
-          console.log("please input valid email id");
+          console.log("please enter valid OTP");
           res.send({
             message: 'OTP verification failed.',
             status: false
@@ -1787,6 +1891,7 @@ router.post('/add-feedback', isCustomer, (req, res) => {
   });
 });
 
+
 router.post("/addTask_from_Dreamhome_detial", (req, res) => {
   
   console.log("addTask_fromDreamgome=========",req.body)
@@ -1839,5 +1944,20 @@ router.post("/addTask_from_Dreamhome_detial", (req, res) => {
     });
   }
 })
+
+
+/************* Verifing Sercret Token */
+router.post('/submit_token', (req, res) => {
+  console.log("secret token is", req.body.token);
+  //console.log("secret token is", req.session.email);
+  var decoded = jwt.verify(token, keys.secretOrKey);
+  console.log("decoded string is :", decoded);
+  return res.json(decoded);
+
+})
+
+
+
+
 module.exports = router;
 

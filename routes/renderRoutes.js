@@ -80,7 +80,9 @@ app.get('/intro', (req, res) => {
   res.render('intro');
 });
 
-
+app.get('/signin-intro', (req, res) => {
+  res.render('signin-intro');
+});
 
 
 //** customer Signup ***********8 */
@@ -353,15 +355,15 @@ app.get('/professionals', isCustomer, async (req, res) => {
             console.log('spp id:', sp_id._id)
             let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
             console.log('professionalRating:', professionalRating)
-            var sumRating=0;
-            for(var RatingData of professionalRating){
-                       sumRating += parseInt(RatingData.sprs_rating);
+            var sumRating = 0;
+            for (var RatingData of professionalRating) {
+              sumRating += parseInt(RatingData.sprs_rating);
             }
-            let avgRating = Math.round(sumRating/professionalRating.length);
-            if(!isNaN(avgRating)){
-                avgRating = avgRating.toFixed(1);
-            }else{
-                avgRating = 0.0;
+            let avgRating = Math.round(sumRating / professionalRating.length);
+            if (!isNaN(avgRating)) {
+              avgRating = avgRating.toFixed(1);
+            } else {
+              avgRating = 0.0;
             }
 
             console.log("avgRating:", avgRating);
@@ -374,7 +376,7 @@ app.get('/professionals', isCustomer, async (req, res) => {
           }
         });
       }
-     // console.log("service_provider Array list is:", serviceProvArray);
+      // console.log("service_provider Array list is:", serviceProvArray);
       res.render('professionals', {
         err_msg, success_msg, layout: false,
         session: req.session,
@@ -398,19 +400,19 @@ app.get('/myprofessionals', isCustomer, async (req, res) => {
 
         let professionalRating = await RatingSchema.find({ sprs_service_provider_id: i._id })
         console.log('professionalRating:', professionalRating)
-        var sumRating=0;
-        for(var RatingData of professionalRating){
-                   sumRating += parseInt(RatingData.sprs_rating);
+        var sumRating = 0;
+        for (var RatingData of professionalRating) {
+          sumRating += parseInt(RatingData.sprs_rating);
         }
-        let avgRating = Math.round(sumRating/professionalRating.length);
-        if(!isNaN(avgRating)){
-            avgRating = avgRating.toFixed(1);
-        }else{
-            avgRating = 0.0;
+        let avgRating = Math.round(sumRating / professionalRating.length);
+        if (!isNaN(avgRating)) {
+          avgRating = avgRating.toFixed(1);
+        } else {
+          avgRating = 0.0;
         }
         console.log('avgRating:', avgRating)
 
-      
+
         let temps = await i
 
         const spProvider = JSON.stringify(temps);
@@ -446,9 +448,9 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
   ServiceProviderSchema.findOne({ _id: req.query.id }).then(async service_provider_detail => {
     if (service_provider_detail) {
 
-      let hiredProfeshnoal = await PropertyProfessionalSchema.findOne({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login, pps_service_provider_id:req.query.id });
+      let hiredProfeshnoal = await PropertyProfessionalSchema.findOne({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login, pps_service_provider_id: req.query.id });
       console.log('AllhiredProfeshnoal', hiredProfeshnoal);
-       let serviceProvArray = [];
+      let serviceProvArray = [];
 
       //spods_service_provider_id
       let serviceProOtherDetail = await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: service_provider_detail._id });
@@ -467,7 +469,7 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
         serviceProOtherDetail: serviceProOtherDetail,
         portpolioImage: portpolioImage,
         professionalRating: professionalRating,
-        hiredProfeshnoal:hiredProfeshnoal,
+        hiredProfeshnoal: hiredProfeshnoal,
         moment: moment
       });
 
