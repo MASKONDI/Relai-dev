@@ -1731,13 +1731,100 @@ router.post('/add-feedback', isCustomer, (req, res) => {
 });
 
 
+/************ Tagging Property with seller*/
+router.post('/refresh', (req, res) => {
+  console.log('session is ', req.session.email);
+
+  PropertiesSchema.find({ ps_other_party_emailid: req.session.email, ps_is_active_user_flag: req.session.active_user_login })
+    .then(async (data) => {
+      if (data) {
+        let arr = [];
+        console.log("properties Data is :", data);
+        for (let img of data) {
+          await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
+
+            let temp = await result
+            //for(let image of result){
+            //  let temp = await image
+            arr.push(temp)
+            // }
+          })
+
+        }
+        // console.log('++++++++',arr)
+        res.send({
+          message: "Property Added successfully",
+          status: true
+        })
+
+        err_msg = req.flash('err_msg');
+        success_msg = req.flash('success_msg');
+        //res.json(data);
+        res.render('mydreamhome', {
+          err_msg, success_msg, layout: false,
+          session: req.session,
+          propertyData: data,
+          propertyImage: arr
+
+        });
+
+      }
+      else {
+        res.send({
+          message: "there is no property ffound ",
+          status: false
+        })
+      }
+    }).catch((err) => {
+      console.log(err)
+    })
+});
+
+
+
+
+
+
 /************* Verifing Sercret Token */
 router.post('/submit_token', (req, res) => {
-  console.log("secret token is", req.body.token);
+  console.log("secret token is", req.query.token);
   //console.log("secret token is", req.session.email);
-  var decoded = jwt.verify(token, keys.secretOrKey);
-  console.log("decoded string is :", decoded);
-  return res.json(decoded);
+  var decoded = jwt.verify(req.query.token, keys.secretOrKey);
+  console.log("decoded string is :", decoded.id);
+  PropertiesSchema.find({ _id: decoded.id }).then(async (data) => {
+    if (data) {
+      let arr = [];
+
+      for (let img of data) {
+        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
+
+          let temp = await result
+          //for(let image of result){
+          //  let temp = await image
+          arr.push(temp)
+          // }
+        })
+
+      }
+      // console.log('++++++++',arr)
+
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.json(data);
+      res.render('mydreamhome', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        propertyData: data,
+        propertyImage: arr
+
+      });
+
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+
+  // return res.json(decoded);
 
 })
 
