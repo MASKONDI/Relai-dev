@@ -9,7 +9,7 @@
                 <a class="navbar-brand" href="/index"><img src="images/logo-2.png" class="d-inline-block align-top"></a>
               </div>
               <div class="float-right">
-                <a href="/signin" class="signin text-right">
+                <a href="/signin-intro" class="signin text-right">
                   <button type="submit" class="btn btn-sign">SIGN IN</button>
                 </a>
               </div>
@@ -33,14 +33,14 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group  ">
-                    <input type="text" class="form-control form-control-size " id="fullName" placeholder="Forename"
+                    <input type="text" class="form-control form-control-size " id="Forename" placeholder="Forename"
                       name="cus_firstname" required data-rule-required="true" data-rule-minlength="2"
                       data-msg-required="Forename is required!">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group  ">
-                    <input type="text" class="form-control form-control-size " id="fullName" placeholder="Surname"
+                    <input type="text" class="form-control form-control-size " id="Surname" placeholder="Surname"
                       name="cus_lastname" required data-rule-required="true" data-rule-minlength="2"
                       data-msg-required="Surname is required!">
                   </div>
@@ -290,7 +290,7 @@
 
               setTimeout(function () {
                 //location.reload(true);
-                window.location.href = "/signin";
+                window.location.href = "/otp?email=" + data.customers.cus_email_id;
               }, 4000);
 
             }
@@ -305,7 +305,7 @@
   <script>
     jQuery.extend(jQuery.validator.messages, {
       accept: "Please enter a value with a valid extension.",
-      maxlength: jQuery.validator.format("Please enter no more than {0} digit."),
+      maxlength: jQuery.validator.format("Please  don't enter more than {0} digit."),
       minlength: jQuery.validator.format("Please enter at least {0} digit."),
       rangelength: jQuery.validator.format("Please enter a value between {0} and {1} characters long."),
       range: jQuery.validator.format("Please enter a value between {0} and {1}."),
