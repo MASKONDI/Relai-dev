@@ -504,6 +504,139 @@ router.get("/get_property_for_chain",isCustomer, async (req, res) => {
   
 
 });
+router.post('/Editproperty', isCustomer, async(req, res) => {
+  upload(req, res, async () => {
+  // console.log("deepak ji--++++++++++++++++++ ", req.body)
+  if (req.body.editPropertyId!='') {
+    var property_id = req.query.property_id;
+    var active_user = req.session.active_user_login;
+    req.session.propertyEditId = property_id
+    let edit_property_Obj = await PropertyHelper.EditPropertyById(req);
+    if(edit_property_Obj){
+      //console.log(edit_property_Obj);
+      return res.send({
+        'message':'property edit successfully',
+        'status':true,
+        'property_id':req.body.editPropertyId
+      })
+    }
+   
+
+  }else{
+    return res.send({
+      'message':'property id not found in edit property',
+      'status':false,
+      
+    })
+  }
+});
+});
+
+router.post('/EditpropertyImage', isCustomer, async(req, res) => {
+  upload(req, res, async () => {
+  //console.log("edit property image body data--++++++++++++++++++ ", req.body);
+  //console.log("edit property file data--++++++++++++++++++ ", req.files);
+  if(req.files.propertiespic){
+ // console.log("A")
+  //let edit_property_img_Obj = await PropertyHelper.EditPropertyImageById(req);
+  //if(edit_property_img_Obj){
+    //console.log("edit_property_img_Obj",edit_property_img_Obj)
+    return res.send({
+      'message':'property image successfully update',
+      'status':true,
+      'property_id':req.body.property_id,
+      'flage':'A'
+    })
+  //}
+  }else{
+   
+    return res.send({
+      'message':'property image successfully update',
+      'status':true,
+      'property_id':req.body.property_id,
+      'flage':'A'
+    })
+  }
+
+});
+});
+router.post('/EditpropertyPlanImage', isCustomer, async(req, res) => {
+  upload(req, res, async () => {
+  //console.log("edit property plan image data--++++++++++++++++++ ", req.body,req.files);
+  if(req.files.planImage){
+     //console.log("plan A")
+    // let edit_property_paln_img_Obj = await PropertyHelper.EditPropertyPlanImageById(req);
+    // if(edit_property_paln_img_Obj){
+      return res.send({
+        'message':'property successfully update',
+        'status':true,
+        'redirect': '/mydreamhome',
+        'flage':'A'
+      })
+    // }
+  }else{
+    console.log("plan B")
+    return res.send({
+      'message':'property successfully update',
+      'status':true,
+      'redirect': '/mydreamhome',
+      'flage':'A'
+    })
+  }
+ 
+});
+});
+router.post('/Edit_property_Image', isCustomer, async(req, res) => {
+  upload(req, res, async () => {
+  console.log("prop req.body", req.body);
+  console.log("prop req.file ", req.files);
+  if(req.files.propertiespic){
+  console.log("A")
+  let edit_property_img_Obj = await PropertyHelper.EditPropertyImageById(req);
+  if(edit_property_img_Obj){
+    //console.log("edit_property_img_Obj",edit_property_img_Obj)
+    return res.send({
+      'message':'property image successfully update',
+      'status':true,
+      'property_id':req.body.property_id
+    })
+  }
+  }else{
+   
+    return res.send({
+      'message':'property image successfully update',
+      'status':true,
+      'property_id':req.body.property_id
+    })
+  }
+
+});
+});
+router.post('/Edit_property_Plan_Image', isCustomer, async(req, res) => {
+  upload(req, res, async () => {
+  console.log("plan req.files: ",req.files);
+  console.log("plan req.body: ", req.body);
+  if(req.files.planImage){
+     console.log("plan A")
+     let edit_property_paln_img_Obj = await PropertyHelper.EditPropertyPlanImageById(req);
+     if(edit_property_paln_img_Obj){
+      return res.send({
+        'message':'property successfully update',
+        'status':true,
+        'redirect': '/mydreamhome'
+      })
+     }
+  }else{
+    console.log("plan B")
+    return res.send({
+      'message':'property successfully update',
+      'status':true,
+      'redirect': '/mydreamhome'
+    })
+  }
+ 
+});
+});
 //=============property add section close====================//
 /* -------------------------------------------------------------------------------------------------
 GET : fetch or search the service providers data based on name, surname, qualifications,

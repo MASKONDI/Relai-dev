@@ -571,14 +571,40 @@ app.get('/mydreamhome-details-to-dos', isCustomer, async (req, res) => {
 //     session: req.session
 //   });
 // });
-app.get('/add-property', isCustomer, (req, res) => {
+app.get('/add-property', isCustomer, async(req, res) => {
+  //req.session.propertyEditId
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
+  console.log("deep:==",req.query)
+  if (req.query.property_id != null) {
+    
+    var property_id = req.query.property_id;
+    var active_user = req.session.active_user_login;
+    req.session.propertyEditId = property_id
+    let propertyObj = await propertyDetail.GetPropertById(property_id, active_user);
+    let propertyImageObject = await propertyDetail.GetPropertImageById(property_id, active_user);
+    let propertyPlanImageObject = await propertyDetail.GetPropertPlanImageById(property_id, active_user);
+    // console.log("propertyObj",propertyObj)
+    // console.log("propertyImageObject",propertyImageObject)
+    // console.log("propertyPlanImageObject",propertyPlanImageObject)
+    res.render('add-property', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    propertyObj:propertyObj,
+    propertyImageObject:propertyImageObject,
+    propertyPlanImageObject:propertyPlanImageObject
+
+  });
+}else{
+ 
   res.render('add-property', {
     err_msg, success_msg, layout: false,
-    session: req.session
+    session: req.session,
+    propertyObj:'null'
   });
+}
 });
+
 
 app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
   req.session.pagename = 'mydreamhome';
@@ -1728,6 +1754,39 @@ app.get('/get-change-permision', isCustomer, async (req, res) => {
   }).catch((err) => {
     console.log(err)
   })
+});
+app.get('/edit-property', isCustomer, async(req, res) => {
+  //req.session.propertyEditId
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  console.log("deep:==",req.query)
+  if (req.query.property_id != null) {
+    
+    var property_id = req.query.property_id;
+    var active_user = req.session.active_user_login;
+    req.session.propertyEditId = property_id
+    let propertyObj = await propertyDetail.GetPropertById(property_id, active_user);
+    let propertyImageObject = await propertyDetail.GetPropertImageById(property_id, active_user);
+    let propertyPlanImageObject = await propertyDetail.GetPropertPlanImageById(property_id, active_user);
+    // console.log("propertyObj",propertyObj)
+    // console.log("propertyImageObject",propertyImageObject)
+    // console.log("propertyPlanImageObject",propertyPlanImageObject)
+    res.render('edit-property', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    propertyObj:propertyObj,
+    propertyImageObject:propertyImageObject,
+    propertyPlanImageObject:propertyPlanImageObject
+
+  });
+}else{
+ 
+  res.render('edit-property', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    propertyObj:'null'
+  });
+}
 });
 
 module.exports = app;
