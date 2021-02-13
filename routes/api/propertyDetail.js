@@ -43,7 +43,8 @@ module.exports.EditPropertyById = function (req) {
             ps_is_active_user_flag: req.session.active_user_login,
             ps_phase_array: phaseArray,
             ps_existing_property:req.body.ps_existing_property,
-            ps_chain_property_id:chainPropertyIdArray
+            ps_chain_property_id:chainPropertyIdArray,
+            ps_other_property_type:req.body.ps_other_property_type
             
         };
         if(req.body.property_type=='Chain'){
@@ -173,6 +174,20 @@ module.exports.GetAllProperty = function (user_id, ps_is_active_user_flag) {
         })
     });
 };
+module.exports.GetAllPropertyInEdit = function (user_id, ps_is_active_user_flag,property_id) {
+    return new Promise(async function (resolve, reject) {
+        //console.log('hello',pps_property_id,pps_is_active_user_flag)
+        //var data = { _id: propertyId }
+        
+        var data = { $and: [{ ps_is_active_user_flag: ps_is_active_user_flag, ps_user_id: user_id,ps_property_id:{$ne:property_id}}] }
+        await PropertiesSchema.find().where(data).then(async (resp) => {
+            let responce = await resp
+            resolve(responce)
+        }).catch((err) => {
+            reject(err)
+        })
+    });
+};
 module.exports.add_new_property_image = function (req) {
     return new Promise(async function (resolve, reject) {
         await req.files.propertiespic.forEach(element => {
@@ -275,7 +290,8 @@ module.exports.Add_New_Propert = function (req) {
             ps_is_active_user_flag: req.session.active_user_login,
             ps_phase_array: phaseArray,
             ps_existing_property:req.body.ps_existing_property,
-            ps_chain_property_id:chainPropertyIdArray
+            ps_chain_property_id:chainPropertyIdArray,
+            ps_other_property_type:req.body.ps_other_property_type
             
         };
         if(req.body.property_type=='Chain'){

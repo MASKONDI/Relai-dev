@@ -153,8 +153,8 @@
 
 
                                     <input type="text" class="form-control address  selectBox6  " id="address"
-                                      placeholder="1143 Buena Visa Avenue" name="address" value=""
-                                      data-rule-required="true" data-msg-required="Address is required!" required>
+                                      placeholder="Address" name="address" value="" data-rule-required="true"
+                                      data-msg-required="Address is required!" required>
                                   </div>
 
 
@@ -165,7 +165,7 @@
                                   <div class="professional-text-fix">
                                     <label>City</label>
                                     <input type="text" class="form-control city selectBox6  " id="city"
-                                      placeholder="Rufus" name="city" value="" data-rule-required="true"
+                                      placeholder="City" name="city" value="" data-rule-required="true"
                                       data-msg-required="City is required!" required>
                                   </div>
 
@@ -177,7 +177,7 @@
                                   <div class="professional-text-fix">
                                     <label>County</label>
                                     <input type="text" class="form-control state selectBox6  " id="state"
-                                      placeholder="Oregon" data-rule-required="true"
+                                      placeholder="County" data-rule-required="true"
                                       data-msg-required="County is required!" required name="state" value="">
                                   </div>
 
@@ -187,7 +187,7 @@
                                   <div class="professional-text-fix">
                                     <label>Country</label>
                                     <input type="text" class="form-control country selectBox6  " id="country"
-                                      placeholder="United States" name="country" value="" data-rule-required="true"
+                                      placeholder="Country" name="country" value="" data-rule-required="true"
                                       data-msg-required="Country is required!" required>
                                   </div>
 
@@ -197,7 +197,7 @@
                                   <div class="professional-text-fix">
                                     <label>Zip code</label>
                                     <input type="text" class="form-control  selectBox6  " id="zipcode"
-                                      placeholder="97050" name="zipcode" value="" data-rule-required="true"
+                                      placeholder="zipcode" name="zipcode" value="" data-rule-required="true"
                                       data-msg-required="Zipcode is required!" required>
                                   </div>
 
@@ -217,8 +217,8 @@
                               <h6 class="">Tell us your approximate budget</h6>
                               <br />
                               <input class="range_slider" id="ex8" data-slider-id='ex1Slider' type="text"
-                                name="pps_pofessional_budget" data-slider-min="100" data-slider-max="10000"
-                                data-slider-step="10" data-slider-value="4000" />
+                                name="pps_pofessional_budget" data-slider-min="0" data-slider-max="10000"
+                                data-slider-step="10" data-slider-value="0" />
                               <br />
 
                             </div>
@@ -378,7 +378,7 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  
+
     <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
     crossorigin="anonymous"></script>-->
@@ -398,7 +398,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
       integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
       crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 
 
     <script>
@@ -436,7 +436,7 @@
     <script>
 
       $(document).ready(function () {
-        
+
         // $('#msg').hide();
         // $('#taskmsg').hide();
         // $('#cancel_addtask_btn').click(function (e) {
@@ -501,16 +501,16 @@
                 //$('#msg').html(data.message).delay(5000).fadeOut('success');
 
                 Swal.fire({
-                   // position: 'top-end',
-                    icon: 'error',
-                    title: data.err_msg,
-                    showConfirmButton: true,
-                    //timer: 1500
-                    confirmButtonColor: '#005377'
-                  })
+                  // position: 'top-end',
+                  icon: 'error',
+                  title: data.err_msg,
+                  showConfirmButton: true,
+                  //timer: 1500
+                  confirmButtonColor: '#005377'
+                })
 
               } else {
-               // $('.message').html('<span class="error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
+                // $('.message').html('<span class="error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
                 //setTimeout(function () { $('.message').html(''); }, 5000);
                 //console.log('message:', data.success_msg)
                 //window.location.href = data.redirect;
@@ -523,24 +523,27 @@
                 //     timer: 3000
                 //   })
 
-                  Swal.fire({
-                      icon: 'success',
-                      title: data.success_msg,
-                      showDenyButton: false,
-                      showCancelButton: true,
-                      confirmButtonColor: '#005377',
-                      cancelButtonColor: '#d33',
-                      confirmButtonText: `Professional List`,
-                    }).then((result) => {
-                      /* Read more about isConfirmed, isDenied below */
-                      if (result.isConfirmed) {
-                        //Swal.fire('Saved!', '', 'success')
-                        window.location.href = '/professionals';
-                      } else if (result.isDenied) {
-                        Swal.fire('Changes are not saved', '', 'info')
-                      }
-                    })
-                 }
+                Swal.fire({
+                  icon: 'success',
+                  title: data.success_msg,
+                  showDenyButton: true,
+                  showCancelButton: false,
+                  confirmButtonColor: '#005377',
+                  denyButtonColor: '#005377',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: `Professional List`,
+                  denyButtonText: `Hire Now`,
+                }).then((result) => {
+                  /* Read more about isConfirmed, isDenied below */
+                  if (result.isConfirmed) {
+                    //Swal.fire('Saved!', '', 'success')
+                    window.location.href = '/professionals';
+                  } else if (result.isDenied) {
+                    //Swal.fire('Changes are not saved', '', 'info')
+                    location.reload();
+                  }
+                })
+              }
 
               //$('#ppts_property_id').val(data.data.pps_property_id);
               //$('#phase_id').val(data.data._id);
@@ -623,12 +626,12 @@
                 if (data.status == false) {
                   //$('#addTaskModal').modal('hide');
                   //$('#message').show();
-                 // $('.errmessage').html('<span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
+                  // $('.errmessage').html('<span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
                   //setTimeout(function () { $('.errmessage').html(''); }, 3000);
                   //$('#msg').html(data.message).delay(5000).fadeOut('success');
-  
+
                   Swal.fire({
-                   // position: 'top-end',
+                    // position: 'top-end',
                     icon: 'error',
                     title: data.err_msg,
                     showConfirmButton: true,
@@ -643,16 +646,19 @@
                   //setTimeout(function () { $('.errmessage').html(''); $('#taskName').val(''); $('#duedate').val(''); $('#notes').val('') }, 3000);
                   console.log('meserrmessagesage:', data.success_msg)
                   //window.location.href = data.redirect;
-                   //swal(data.success_msg, "", "success");
+                  //swal(data.success_msg, "", "success");
 
-                   Swal.fire({
-                   // position: 'top-end',
+                  Swal.fire({
+                    // position: 'top-end',
                     icon: 'success',
                     title: data.success_msg,
                     showConfirmButton: false,
                     confirmButtonColor: '#005377',
                     timer: 3000
                   })
+
+                  $('#taskName,#notes,#duedate').val('');
+                  //$('#notes').val('');
 
                 }
 

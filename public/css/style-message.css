@@ -116,12 +116,14 @@
 }
 
 .comp_uploaded_img img#uploaded_img {
-    width: 20%;
+    width: 15%;
     padding: 6px;
     border-radius: 10px;
 }
 .comp_uploaded_img {
     text-align: center;
+    display: inline-block;
+    margin-bottom: 15px;
 }
     
 /* .complaints a:hover {
@@ -134,4 +136,10 @@ ul.docs-list li span {
     width: 95px;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.permission-modal .modal-footer {
+    display: list-item;
+}
+span#comment-error {
+    color: red;
 }

@@ -63,7 +63,11 @@
                               <div class="col-sm-12 col-lg-12">
                                 <div class="property-step">
                                   <!-- <p>STEP 1</p> -->
+                                  <%if(propertyObj=='null'){%>
                                   <h6>Add property name & address</h6>
+                                  <%}else{%>
+                                    <h6>Edit property name & address</h6>
+                                    <%}%>
                                 </div>
                               </div>
                             </div>
@@ -171,7 +175,11 @@
                             <div class="col-sm-12 col-lg-12">
                               <div class="property-step">
                                 <!-- <p>STEP 2</p> -->
+                                <%if(propertyObj=='null'){%>
                                 <h6>Add other party</h6>
+                                <%}else{%>
+                                  <h6>Edit other party</h6>
+                                  <%}%>
                               </div>
                             </div>
                           </div>
@@ -189,6 +197,7 @@
                                       data-msg-required="Full Name is required!">
                                     <%}%>
                               </div>
+
 
                               <div class="col-sm-12 col-lg-4">
                                 <%if(propertyObj=='null'){%>
@@ -212,7 +221,7 @@
                                     <option value="Chain">Chain</option>
                                   </select>
                                   <%}else{%>
-                                    <select name="property_type" class=" form-control selectBox5" id="property_type"
+                                    <select name="property_type" class=" form-control selectBox5" id="property_type_inEdit"
                                       required style="height: 48px;" data-rule-required="true"
                                       data-msg-required="Property Type is required!">
                                       <option value="<%=propertyObj.ps_property_type%>">
@@ -227,6 +236,30 @@
                                     <%}%>
                               </div>
 
+                          <!-- </div>
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-4">
+                              <select name="ps_existing_property" class=" form-control selectBox5" id="ps_existing_property"
+                                required style="height: 48px;" data-rule-required="true"
+                                data-msg-required="existing property Type is required!">
+                                <option value="">Select existing Property</option>
+                                <option value="commercial">commercial</option>
+                                <option value="Residential">Residential</option>
+                              </select>
+                            </div>
+                            <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
+                              <select name="ps_chain_property" data-rule-required="true"
+                              data-msg-required="existing property Type is required!" class="ps_chain_property form-control selectBox5" id="ps_chain_property"
+                                 style="height: 48px;" >
+                                <option value="">Select Property for Chain</option>
+                                <option value="commercial">commercial</option>
+                                <option value="Residential">Residential</option> 
+                              </select>
+                            </div>
+                          </div>
+                        </div> -->
+
+
                             </div>
                             <div class="row">
                               <div class="col-sm-12 col-lg-4">
@@ -235,7 +268,7 @@
                                     id="ps_existing_property" required style="height: 48px;" data-rule-required="true"
                                     data-msg-required="existing property Type is required!">
                                     <option value="">Select existing Property</option>
-                                    <option value="commercial">commercial</option>
+                                    <option value="Commercial">Commercial</option>
                                     <option value="Residential">Residential</option>
                                   </select>
                                   <%}else{%>
@@ -245,22 +278,71 @@
                                       <option value="<%=propertyObj.ps_existing_property%>">
                                         <%=propertyObj.ps_existing_property%>
                                       </option>
-                                      <%if(propertyObj.ps_existing_property=='commercial'){%>
+                                      <%if(propertyObj.ps_existing_property=='Commercial'){%>
                                         <option value="Residential">Residential</option>
                                         <%}else{%>
-                                          <option value="commercial">commercial</option>
+                                          <option value="Commercial">Commercial</option>
 
                                           <%}%>
                                     </select>
                                     <%}%>
                               </div>
-                              <div class="AllPropertyListingDiv col-sm-12 col-lg-4">
+                              <div class="col-sm-12 col-lg-4">
+                                <%if(propertyObj=='null'){%>
+                                  <select name="ps_other_property_type" class=" form-control selectBox5"
+                                    id="ps_other_property_type"  style="height: 48px;" data-rule-required="false"
+                                    data-msg-required="Other property Type is required!">
+                                    <option value="">Select Other Property Type</option>
+                                    <option value="Buyer">Buyer</option>
+                                    <option value="Seller">Seller</option>
+                                    <option value="Renovator">Renovator</option>
+                                    <option value="StateAgents">StateAgents</option>
+                                  </select>
+                                  <%}else{%>
+                                    <select name="ps_other_property_type" class=" form-control selectBox5"
+                                    id="ps_other_property_type"  style="height: 48px;" data-rule-required="false"
+                                    data-msg-required="Other property Type is required!">
+                                    <option value="<%=propertyObj.ps_other_property_type%>"><%=propertyObj.ps_other_property_type%></option>
+                                    <%if(propertyObj.ps_other_property_type=='Buyer'){%>
+                                      <option value="Seller">Seller</option>
+                                      <option value="Renovator">Renovator</option>
+                                      <option value="StateAgents">StateAgents</option>
+                                      <%}else if(propertyObj.ps_other_property_type=='Seller'){%>
+                                        <option value="Buyer">Buyer</option>
+                                        <option value="Renovator">Renovator</option>
+                                        <option value="StateAgents">StateAgents</option>
+                                        <%}else if(propertyObj.ps_other_property_type=='Renovator'){%>
+                                          <option value="Buyer">Buyer</option>
+                                          <option value="Seller">Seller</option>
+                                          <option value="StateAgents">StateAgents</option>
+                                          <%}else{%>
+                                            <option value="Buyer">Buyer</option>
+                                            <option value="Seller">Seller</option>
+                                             <option value="Renovator">Renovator</option>
+                                    
+                                            <%}%>
+                                    
+                                  </select>
+                                    <%}%>
+                              </div>
+                              <%if(propertyObj=='null'){%>
+                              <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
                                 <select name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
                                   id="ps_chain_property" style="height: 48px;">
                                   <option value="">Select Property for Chain</option>
 
                                 </select>
                               </div>
+                              <%}else{%>
+                                <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
+                                  <select name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
+                                    id="ps_chain_property" style="height: 48px;">
+                                    <option value="">Select Property for Chain</option>
+  
+                                  </select>
+                                </div>
+                                <%}%>
+
                             </div>
                           </div>
 
@@ -268,7 +350,11 @@
                             <div class="col-sm-12 col-lg-12">
                               <div class="property-step">
                                 <!-- <p>STEP 3</p> -->
+                                <%if(propertyObj=='null'){%>
                                 <h6>Add property details</h6>
+                                <%}else{%>
+                                  <h6>Edit property details</h6>
+                                  <%}%>
                               </div>
                             </div>
                           </div>
@@ -331,7 +417,11 @@
                             <div class="col-sm-12 col-lg-12">
                               <div class="property-step">
                                 <!-- <p>STEP 4</p> -->
+                                <%if(propertyObj=='null'){%>
                                 <h6>Add Phases</h6>
+                                <%}else{%>
+                                  <h6>Edit Phases</h6>
+                                  <%}%>
                               </div>
                             </div>
 
@@ -1838,6 +1928,8 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <script type="text/javascript" src="../js/countrystatecity.js"></script>
 
     <script>
@@ -2038,9 +2130,29 @@
                             processData: false,
                             success: function (data) {
                               if (data.status == true) {
-                                $('.message_data').show();
-                                $('.message_data').html('<div class="isa_success"><i style="margin: 0px 7px !important;" class="fa fa-check"></i> ' + data.message + '</div>');
-                                setTimeout(function () { $('.message_data').hide(); window.location.href = data.redirect; }, 3000);
+                                // $('.message_data').show();
+                                // $('.message_data').html('<div class="isa_success"><i style="margin: 0px 7px !important;" class="fa fa-check"></i> ' + data.message + '</div>');
+                                // setTimeout(function () { $('.message_data').hide(); window.location.href = data.redirect; }, 3000);
+                                Swal.fire({
+                                  icon: 'success',
+                                  title: data.message,
+                                  showDenyButton: true,
+                                  showCancelButton: false,
+                                  confirmButtonColor: '#005377',
+                                  denyButtonColor:'#005377',
+                                  cancelButtonColor: '#d33',
+                                  confirmButtonText: `Dream Home List`,
+                                  denyButtonText: `Add Property`,
+                                }).then((result) => {
+                                  /* Read more about isConfirmed, isDenied below */
+                                  if (result.isConfirmed) {
+                                    //Swal.fire('Saved!', '', 'success')
+                                    window.location.href = '/mydreamhome';
+                                  } else if (result.isDenied) {
+                                    //Swal.fire('Changes are not saved', '', 'info')
+                                    window.location.href = '/add-property';
+                                  }
+                                })
                               }
                             }
                           });
@@ -2053,7 +2165,7 @@
             }
           });
         })
-      });
+      
       $("#property_type").change(function (e) {
         if ($(this).val() == 'Chain') {
           $(".AllPropertyListingDiv").show();
@@ -2065,7 +2177,7 @@
             success: function (data) {
               console.log(data)
               var htmlData = '';
-
+              $(".AllPropertyListingDiv").show();
               htmlData += '<option value="">Select Property for Chain</option>';
               if (data.data.length > 0) {
                 $.each(data.data, function (i, data) {
@@ -2079,12 +2191,105 @@
           });
 
         } else {
-          // $(".AllPropertyListingDiv").hide();
+           $(".AllPropertyListingDiv").hide();
         }
       })
+    });
+    </script>
+    
+      <script>
+        // $(document).ready(function () {
+        //   $('.firstFormDive').show();
+        //   $(".secondFormDiv").hide();
+        //   $(".thirdFormDiv").hide();
+        //   //$(".AllPropertyListingDiv").hide();
+        //   $('#propertyform1').on('submit', function (e) {
+        //     e.preventDefault();
+        //     var formData = new FormData($('#propertyform1')[0]);
+        //     $.ajax({
+        //       type: "POST",
+        //       data: formData,
+        //       url: "/api/add-new-property",
+        //       cache: false,
+        //       contentType: false,
+        //       processData: false,
+        //       success: function (data) {
+        //         console.log(data)
+        //         if (data.status == true) {
+        //           $('.firstFormDive').hide();
+        //           $(".secondFormDiv").show();
+        //           var property_id = data.property_id;
+        //           $(".img_property_id").val(property_id);
+        //           $('#propertyform2').on('submit', function (e) {
+        //             e.preventDefault();
+        //             var formData1 = new FormData($('#propertyform2')[0]);
+        //             $.ajax({
+        //               type: "POST",
+        //               data: formData1,
+        //               url: "/api/add-new-property-image",
+        //               cache: false,
+        //               contentType: false,
+        //               processData: false,
+        //               success: function (data) {
+        //                 if (data.status == true) {
+        //                   $(".plan_img_property_id").val(property_id);
+        //                   $('.firstFormDive').hide();
+        //                   $(".secondFormDiv").hide();
+        //                   $(".thirdFormDiv").show();
+        //                   $('.propertyPlanform').on('submit', function (e) {
+        //                     e.preventDefault();
+        //                     var formData2 = new FormData($('.propertyPlanform')[0]);
+        //                     $.ajax({
+        //                       type: "POST",
+        //                       data: formData2,
+        //                       url: "/api/add-new-property-plan-image",
+        //                       cache: false,
+        //                       contentType: false,
+        //                       processData: false,
+        //                       success: function (data) {
+        //                         if (data.status == true) {
+                                  
+        //           Swal.fire({
+        //               icon: 'success',
+        //               title: data.message,
+        //               showDenyButton: true,
+        //               showCancelButton: false,
+        //               confirmButtonColor: '#005377',
+        //               denyButtonColor:'#005377',
+        //               cancelButtonColor: '#d33',
+        //               confirmButtonText: `Dream Home List`,
+        //               denyButtonText: `Add Property`,
+        //             }).then((result) => {
+        //               /* Read more about isConfirmed, isDenied below */
+        //               if (result.isConfirmed) {
+        //                 //Swal.fire('Saved!', '', 'success')
+        //                 window.location.href = '/mydreamhome';
+        //               } else if (result.isDenied) {
+        //                 //Swal.fire('Changes are not saved', '', 'info')
+        //                 window.location.href = '/add-property';
+        //               }
+        //             })
+
+        //                           //$('.message_data').show();
+        //                           //$('.message_data').html('<div class="isa_success"><i style="margin: 0px 7px !important;" class="fa fa-check"></i> ' + data.message + '</div>');
+        //                          // setTimeout(function () { $('.message_data').hide(); window.location.href = data.redirect; }, 3000);
+        //                         }
+        //                       }
+        //                     });
+        //                   })
+        //                 }
+        //               }
+        //             });
+        //           })
+        //         }
+        //       }
+
+        //     })
+        //   })
+        // })
     </script>
     <script>
-      $(document).ready(function () {
+    $(document).ready(function () {
 
         $("#PropertyImageOne").change(function (e) {
           e.preventDefault();
@@ -2113,6 +2318,7 @@
             }
           })
         });
+
         $("#PropertyImageTwo").change(function (e) {
           //alert("2")
           e.preventDefault();
@@ -2204,9 +2410,9 @@
           })
         });
 
-      });
+     
       $("#PropertyPlanImageTwo").change(function (e) {
-        alert("2")
+        //alert("2")
         e.preventDefault();
         var isnewPitcher = $("#plan_image_two_id").val();
         if (isnewPitcher == '') {
@@ -2236,7 +2442,7 @@
         })
       });
       $("#PropertyPlanImageThree").change(function (e) {
-        alert("3")
+        //alert("3")
         e.preventDefault();
         var isnewPitcher = $("#plan_image_three_id").val();
         if (isnewPitcher == '') {
@@ -2262,12 +2468,47 @@
           processData: false,
           success: function (data) {
 
+
           }
         })
       });
-
+    });
     </script>
+    <!-- script for in case of edit property chain property should no be show onw property in drop down -->
+    <script>
+     $(document).ready(function () {
+      $("#property_type_inEdit").change(function (e) {
+        if ($(this).val() == 'Chain') {
+          var property_id_getchain = $("#editPropertyId").val()
+          $(".AllPropertyListingDiv").show();
+          $.ajax({
+            type: "GET",
+             data: {property_id:property_id_getchain},
+            url: "/api/get_property_for_chain_inEdit",
+            cache: false,
+            success: function (data) {
+              console.log(data)
+              var htmlData = '';
+              $(".AllPropertyListingDiv").show();
+              htmlData += '<option value="">Select Property for Chain</option>';
+              if (data.data.length > 0) {
+                $.each(data.data, function (i, data) {
+                  console.log('val:', data)
+                  htmlData += '<option value="' + data._id + '">' + data.ps_property_name + '</option>';
+                });
+              }
+              $('.ps_chain_property').html(htmlData);
 
+            }
+          });
+
+        } else {
+           $(".AllPropertyListingDiv").hide();
+        }
+      })
+    })
+      </script>
+      <!-- in case of edit property chain property should no be show onw property in drop down -->
     </body>
 
     </html>

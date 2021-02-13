@@ -29,7 +29,13 @@ const ComplaintsSchema = require("../models/Complaints");
 const PropertyProfessionalHelper = require("./api/propertyProfessionalDetails")
 //const ComplaintsSchema = require("../models/Complaints");
 const ComplaintDetailsSchema = require("../models/complaint_details_model");
+
+
+const message = require('../models/message');
+
 const DocumentPermissionSchema = require('../models/document_permission')
+const RatingSchema = require("../models/service_provider_rating_Schema");
+
 var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
 
@@ -94,31 +100,195 @@ app.get("/mydreamhome-details-chainproperty", isCustomer, async (req, res) => {
   success_msg = req.flash('success_msg');
   req.session.pagename = 'mydreamhome-details-chainproperty';
   console.log("customer session id is", req.session.user_id);
+  console.log(" req issssssssssssssssss", req.query.id);
+  var propertyArray = [];
 
-  var allProperties = await PropertiesSchema.find({ ps_user_id: req.session.user_id });
+  await PropertiesSchema.findOne({ ps_user_id: req.session.user_id, _id: req.query.id }).then(async (chainPropertyDetails) => {
+    if (chainPropertyDetails) {
 
-  var propertyImage = [];
-  // var propertyArray =[];
-  for (let prop of allProperties) {
-    //propertyArray.push(img);
-    await PropertiesPictureSchema.find({ pps_property_id: prop._id }).then(async (result) => {
-      //let temp = await result
-      for (let image of result) {
-        let temp = await image
-        propertyImage.push(temp);
-      }
-    })
+      await PropertiesSchema.findOne({
+        _id: chainPropertyDetails.ps_chain_property_id
+      }).then(async (existing_property_details) => {
+        var propImage = [];
+        await PropertiesPictureSchema.find({ pps_property_id: existing_property_details._id }).then(async (result) => {
+          //let temp = await result
+          for (let image of result) {
+            let temp = await image
+            propImage.push(temp);
+          }
+          console.log("existing_property_details", existing_property_details.ps_phase_array);
+          var message = await timeDifference(existing_property_details.ps_phase_array);
+          var object_as_string = JSON.stringify(existing_property_details);
+          const t = JSON.parse(object_as_string);
+          t.propertyImage = await propImage;
+          t.estimated_time = await message;
 
-  }
-  console.log(allProperties);
+          let prop = await t;
+          propertyArray.push(prop)
+          console.log("existing PROPERTY ARRAY IS", propertyArray);
+        }).catch((err) => {
+          console.log("Something went wrong", err)
+        })
 
+      }).catch((err) => {
+        console.log("something went wrong")
+      });
+
+      var propImage = [];
+      await PropertiesPictureSchema.find({ pps_property_id: chainPropertyDetails._id }).then(async (result) => {
+        //let temp = await result
+        for (let image of result) {
+          let temp = await image
+          propImage.push(temp);
+        }
+        console.log("chainPropertyDetails is :", chainPropertyDetails.ps_phase_array);
+        var message = await timeDifference(chainPropertyDetails.ps_phase_array);
+        var object_as_string = JSON.stringify(chainPropertyDetails);
+        const t = JSON.parse(object_as_string);
+        t.propertyImage = await propImage;
+        t.estimated_time = await message;
+
+        let prop = await t;
+        propertyArray.push(prop)
+        console.log("chain PROPERTY ARRAY IS", propertyArray);
+      }).catch((err) => {
+        console.log(err)
+      });
+    }
+  })
   res.render('mydreamhome-details-chainproperty', {
     err_msg, success_msg, layout: false,
     session: req.session,
-    propertyArray: allProperties,
-    propertyImage: propertyImage
+    propertyArray: propertyArray,
+
+    moment: moment
   });
 })
+//   var propertyArray = [];
+
+//   //propertyArray.push(img);
+//   await PropertiesPictureSchema.find({ pps_property_id: prop._id }).then(async (result) => {
+//     //let temp = await result
+//     for (let image of result) {
+//       let temp = await image
+//       propertyImage.push(temp);
+//     }
+//   })
+
+// }
+// console.log(allProperties);
+//   req.session.pagename = 'mydreamhome';
+//   if (req.query.id) {
+//     req.session.property_id = req.query.id
+//     let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ $and: [{ pps_user_id: req.session.user_id, pps_property_id: req.query.id, pps_is_active_user_flag: req.session.active_user_login }] });
+//     let allDocumentUploadByCustmer = await CustomerUploadDocsSchema.find({ $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.query.id, cuds_is_active_user_flag: req.session.active_user_login }] });
+//     console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
+//     let serviceProvArray = [];
+//     let totalcostArray = [];
+//     var cost = 0;
+//     var to = [1, 2, 3]
+//     //var sumof = tallyVotes(to)
+//     var sumof = tallyVotes(AllhiredProfeshnoal)
+//     console.log("sumofsumofsumofsumofsumof", sumof)
+//     for (var k of AllhiredProfeshnoal) {
+//       var costs = parseInt(k.pps_pofessional_budget);
+
+//       cost = await parseInt(cost + costs);
+
+//       totalcostArray.push(cost)
+//       await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
+//         //console.log('allProfeshnoals:', allProfeshnoals)
+//         await MessageSchema.find({
+//           $or: [
+//             { $and: [{ sms_sender_id: req.session.user_id }, { sms_receiver_id: k.pps_service_provider_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
+//             { $and: [{ sms_sender_id: k.pps_service_provider_id }, { sms_receiver_id: req.session.user_id }] }
+//           ]
+//         }).then(async (msgdata) => {
+//           //console.log('msgdata=', msgdata)
+//           for (let i of allProfeshnoals) {
+//             if (msgdata.length > 0) {
+//               var object_as_string = JSON.stringify(i);
+//               const t = JSON.parse(object_as_string);
+//               // console.log('lastIndex:', msgdata.slice(-1)[0]);
+//               let msgData = msgdata.slice(-1)[0];
+//               t.sms_message = msgData.sms_message;
+//               //let temps = await i
+//               serviceProvArray.push(t)
+//             } else {
+//               var object_as_string = JSON.stringify(i);
+//               const t = JSON.parse(object_as_string);
+//               t.sms_message = '...';
+//               //let temps = await i
+
+
+//               serviceProvArray.push(t)
+//             }
+//           }
+//         })
+//       });
+//     }
+//     let todoArray = [];
+//     var c = 0;
+//     let TaskDetailObj = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login);
+//     //console.log("TaskDetailObj===================================================",TaskDetailObj)
+//     for (var ph of TaskDetailObj) {
+//       const PhaseObject = JSON.stringify(ph);
+//       const to_do_data = JSON.parse(PhaseObject);
+//       //console.log("to do deta ",to_do_data.ppts_assign_to)
+//       let professionalObj = await PropertyProfessionalHelper.GetProfessionalById(to_do_data.ppts_assign_to);
+//       if (professionalObj) {
+//         for (var Prof_fullname of professionalObj) {
+//           to_do_data.professionalName = Prof_fullname.sps_fullname
+//           todoArray.push(to_do_data);
+
+//         }
+//       }
+//     }
+//     //console.log("todoArray=======================",todoArray);
+
+//     //console.log("todoArray", todoArray);
+//     PropertiesSchema.find({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
+//       if (data) {
+
+//         let arr = [];
+//         for (let img of data) {
+//           await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
+//             //let temp = await result
+//             for (let image of result) {
+//               let temp = await image
+//               arr.push(temp)
+//             }
+
+//           })
+
+//         }
+
+//         err_msg = req.flash('err_msg');
+//         success_msg = req.flash('success_msg');
+//         res.render('mydreamhome-details-chainproperty', {
+//           err_msg, success_msg, layout: false,
+//           session: req.session,
+//           propertyDetailData: data,
+//           propertyImage: arr,
+//           hiredProfeshnoalList: serviceProvArray,
+//           allDocumentUploadByCustmer: allDocumentUploadByCustmer,
+//           TaskDetailObj: todoArray,
+//           totalcost: sumof,
+//           moment: moment,
+//           propertyArray: allProperties,
+
+//         });
+//       }
+//     }).catch((err) => {
+//       console.log(err)
+//     })
+//   } else {
+//     res.redirect('/mydreamhome');
+//   }
+// })
+
+
+
 
 
 app.get('/signin', (req, res) => {
@@ -180,16 +350,31 @@ app.get('/professionals', isCustomer, async (req, res) => {
       for (var sp_id of service_provider) {
         await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
           if (otherDetails) {
-            //console.log("other Details of customers", otherDetails);
+            console.log('spp id:', sp_id._id)
+            let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+            console.log('professionalRating:', professionalRating)
+            var sumRating=0;
+            for(var RatingData of professionalRating){
+                       sumRating += parseInt(RatingData.sprs_rating);
+            }
+            let avgRating = Math.round(sumRating/professionalRating.length);
+            if(!isNaN(avgRating)){
+                avgRating = avgRating.toFixed(1);
+            }else{
+                avgRating = 0.0;
+            }
+
+            console.log("avgRating:", avgRating);
             const spProvider = JSON.stringify(sp_id);
             const parseSpProvider = JSON.parse(spProvider);
             parseSpProvider.professionalBody = otherDetails.spods_professional_body
+            parseSpProvider.avgRating = avgRating;
             serviceProvArray.push(parseSpProvider);
             //console.log("service_provider Array list in loop:", serviceProvArray);
           }
         });
       }
-      //console.log("service_provider Array list is:", serviceProvArray);
+     // console.log("service_provider Array list is:", serviceProvArray);
       res.render('professionals', {
         err_msg, success_msg, layout: false,
         session: req.session,
@@ -210,11 +395,33 @@ app.get('/myprofessionals', isCustomer, async (req, res) => {
   for (var k of AllhiredProfeshnoal) {
     await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
       for (let i of allProfeshnoals) {
+
+        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: i._id })
+        console.log('professionalRating:', professionalRating)
+        var sumRating=0;
+        for(var RatingData of professionalRating){
+                   sumRating += parseInt(RatingData.sprs_rating);
+        }
+        let avgRating = Math.round(sumRating/professionalRating.length);
+        if(!isNaN(avgRating)){
+            avgRating = avgRating.toFixed(1);
+        }else{
+            avgRating = 0.0;
+        }
+        console.log('avgRating:', avgRating)
+
+      
         let temps = await i
-        serviceProvArray.push(temps)
+
+        const spProvider = JSON.stringify(temps);
+        const parseSpProvider = JSON.parse(spProvider);
+        parseSpProvider.avgRating = avgRating
+        serviceProvArray.push(parseSpProvider)
       }
     });
   }
+  console.log('serviceProvArray:', serviceProvArray)
+
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('myprofessionals', {
@@ -238,10 +445,19 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
   req.session.currentSarviceProviderId = req.query.id
   ServiceProviderSchema.findOne({ _id: req.query.id }).then(async service_provider_detail => {
     if (service_provider_detail) {
+
+      let hiredProfeshnoal = await PropertyProfessionalSchema.findOne({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login, pps_service_provider_id:req.query.id });
+      console.log('AllhiredProfeshnoal', hiredProfeshnoal);
+       let serviceProvArray = [];
+
       //spods_service_provider_id
       let serviceProOtherDetail = await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: service_provider_detail._id });
       console.log('serviceProOtherDetail:', serviceProOtherDetail)
       let portpolioImage = await ServiceProviderPortfolioSchema.find({ spps_service_provider_id: req.query.id })
+
+      let professionalRating = await RatingSchema.find({ sprs_service_provider_id: req.query.id })
+      console.log('professionalRating:', professionalRating)
+
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('professionals-detail', {
@@ -249,7 +465,10 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
         session: req.session,
         service_provider_detail: service_provider_detail,
         serviceProOtherDetail: serviceProOtherDetail,
-        portpolioImage: portpolioImage
+        portpolioImage: portpolioImage,
+        professionalRating: professionalRating,
+        hiredProfeshnoal:hiredProfeshnoal,
+        moment: moment
       });
 
     }
@@ -536,22 +755,22 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
 // });
 app.get('/mydreamhome-details-to-dos', isCustomer, async (req, res) => {
   req.session.pagename = 'mydreamhome-details-to-dos';
-  console.log('property id  mydreamhome-details-to-dos', req.session.property_id,req.session.active_user_login);
+  console.log('property id  mydreamhome-details-to-dos', req.session.property_id, req.session.active_user_login);
   if (req.session.property_id) {
     let pps_property_id = req.session.property_id;
     let pps_is_active_user_flag = req.session.active_user_login
     let TaskDetailObj = await propertyDetail.GetPropertById(pps_property_id, pps_is_active_user_flag);
     if (TaskDetailObj) {
-      console.log("TaskDetailObj:",TaskDetailObj)
+      console.log("TaskDetailObj:", TaskDetailObj)
 
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('mydreamhome-details-to-dos', {
         err_msg, success_msg, layout: false,
         session: req.session,
-        moment:moment,
-        TaskDetailObj:TaskDetailObj
- 
+        moment: moment,
+        TaskDetailObj: TaskDetailObj
+
       });
     } else {
       console.log('TaskDetailObj not found')
@@ -900,22 +1119,22 @@ app.get('/Resend-link', function (req, res) {
 //   res.render('mydreamhome-details-phase-a', {
 //     err_msg, success_msg, layout: false,
 //     session: req.session,
-  
+
 //   });
 // })
-  
-    
- 
-  
-  
 
-app.get('/mydreamhome-details-phase-a', isCustomer, async(req, res) => {
-  console.log('req:',req.session.property_id);
- var propertyData = await  propertyDetail.GetPropertById(req.session.property_id,req.session.active_user_login);
-  var taskObject = await TaskHelper.GetTaskById(req.session.property_id,req.session.active_user_login)
-  console.log('taskObject',taskObject)
-  console.log("propertyData===",propertyData)
-  if(taskObject){
+
+
+
+
+
+app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
+  console.log('req:', req.session.property_id);
+  var propertyData = await propertyDetail.GetPropertById(req.query.id, req.session.active_user_login);
+  var taskObject = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login)
+  console.log('taskObject', taskObject)
+  console.log("propertyData===", propertyData)
+  if (taskObject) {
     // return res.send({
     //   'status':true,
     //   'data':taskObject,
@@ -927,12 +1146,12 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async(req, res) => {
     res.render('mydreamhome-details-phase-a', {
       err_msg, success_msg, layout: false,
       session: req.session,
-      taskObject:taskObject,
-      propertyData:propertyData
+      taskObject: taskObject,
+      propertyData: propertyData
     });
   }
-  
-  
+
+
 })
 // app.get('/mydreamhome', isCustomer, (req, res) => {
 //   err_msg = req.flash('err_msg');
@@ -1013,7 +1232,7 @@ app.post('/getPropertyDetail', isCustomer, async (req, res) => {
         })
 
       }
-
+      console.log("data",data)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('mydreamhome-details', {
@@ -1037,28 +1256,69 @@ app.post('/getPropertyDetail', isCustomer, async (req, res) => {
 function tallyVotes(AllhiredProfeshnoal) {
   return AllhiredProfeshnoal.reduce((total, i) => total + i.pps_pofessional_budget, 0);
 }
+function timeDifference(data) {
+  var date = [];
+  data.forEach(function (item) {
+    var startDate = "";
+    var endDate = "";
+    let diffInMilliSeconds;
+    var days = "";
+    console.log("start date" + item.start_date + " end Date" + item.end_date);
+    // message = message + calcDate(item.start_date, item.end_date);
+    startDate = new Date(Date.parse(item.start_date));
+    endDate = new Date(Date.parse(item.end_date));
+    diffInMilliSeconds = Math.abs(endDate - startDate) / 1000;
+    // calculate days
+    days = Math.floor(diffInMilliSeconds / 86400);
+    date.push(days);
+
+    console.log("total date is :", days);
+  });
+  var estimated_time = date.reduce((total, i) => total + i, 0);
+  var message = "";
+  if (estimated_time > 365) {
+    var year = Math.floor(estimated_time / 365);
+    var days = estimated_time % 365;
+    if (days > 31) {
+      var months = Math.floor(days / 31);
+      var day = days % 31;
+      message += year + " year " + months + " months " + day + " days"
+    }
+  }
+  else if (estimated_time > 31) {
+    var months = Math.floor(estimated_time / 31);
+    var day = estimated_time % 31;
+    message += months + " months " + day + " days"
+  } else {
+    message += estimated_time + " days "
+  }
+  console.log("estimated_time :", message);
+  return message;
+}
+
+
 app.get('/mydreamhome-details', isCustomer, async (req, res) => {
   //console.log("current session is", req.session);
   //console.log('session property id', req.query.id);
   req.session.pagename = 'mydreamhome';
   if (req.query.id) {
     req.session.property_id = req.query.id
-    let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({$and:[{pps_user_id: req.session.user_id, pps_property_id: req.query.id, pps_is_active_user_flag: req.session.active_user_login }]});
+    let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ $and: [{ pps_user_id: req.session.user_id, pps_property_id: req.query.id, pps_is_active_user_flag: req.session.active_user_login }] });
     let allDocumentUploadByCustmer = await CustomerUploadDocsSchema.find({ $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.query.id, cuds_is_active_user_flag: req.session.active_user_login }] });
-    console.log('AllhiredProfeshnoal',AllhiredProfeshnoal);
+    console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
     let serviceProvArray = [];
-    let totalcostArray=[];
+    let totalcostArray = [];
     var cost = 0;
-    var to = [1,2,3]
+    var to = [1, 2, 3]
     //var sumof = tallyVotes(to)
     var sumof = tallyVotes(AllhiredProfeshnoal)
-    console.log("sumofsumofsumofsumofsumof",sumof)
+    console.log("sumofsumofsumofsumofsumof", sumof)
     for (var k of AllhiredProfeshnoal) {
       var costs = parseInt(k.pps_pofessional_budget);
-      
-        cost = await parseInt(cost+costs);
-        
-        totalcostArray.push(cost)
+
+      cost = await parseInt(cost + costs);
+
+      totalcostArray.push(cost)
       await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
         //console.log('allProfeshnoals:', allProfeshnoals)
         await MessageSchema.find({
@@ -1082,8 +1342,8 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
               const t = JSON.parse(object_as_string);
               t.sms_message = '...';
               //let temps = await i
-             
-              
+
+
               serviceProvArray.push(t)
             }
           }
@@ -1091,34 +1351,38 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
       });
     }
     let todoArray = [];
-    var c=0;
-    let TaskDetailObj = await TaskHelper.GetTaskById(req.query.id,req.session.active_user_login);
-    //console.log("TaskDetailObj===================================================",TaskDetailObj)
+    var c = 0;
+    let TaskDetailObj = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login);
+    console.log("TaskDetailObj===================================================",TaskDetailObj)
     for (var ph of TaskDetailObj) {
       const PhaseObject = JSON.stringify(ph);
       const to_do_data = JSON.parse(PhaseObject);
       //console.log("to do deta ",to_do_data.ppts_assign_to)
       let professionalObj = await PropertyProfessionalHelper.GetProfessionalById(to_do_data.ppts_assign_to);
       if (professionalObj) {
-        for(var Prof_fullname of professionalObj){
-          to_do_data.professionalName =Prof_fullname.sps_fullname
-       
+        for (var Prof_fullname of professionalObj) {
+          to_do_data.professionalName = Prof_fullname.sps_fullname
 
-            todoArray.push(to_do_data);
-          
+
+          todoArray.push(to_do_data);
+
         }
-        
+
       }
-      
-      
-      
-      
+
+
+
+
     }
     //console.log("todoArray=======================",todoArray);
 
     //console.log("todoArray", todoArray);
     PropertiesSchema.find({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
       if (data) {
+
+        console.log("Property Data is *************************", data[0].ps_phase_array);
+        //var totaldiff = "";
+        var message = timeDifference(data[0].ps_phase_array);
 
         let arr = [];
         for (let img of data) {
@@ -1132,7 +1396,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
           })
 
         }
-        
+         console.log("data=======================",data)
         err_msg = req.flash('err_msg');
         success_msg = req.flash('success_msg');
         res.render('mydreamhome-details', {
@@ -1143,7 +1407,8 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
           hiredProfeshnoalList: serviceProvArray,
           allDocumentUploadByCustmer: allDocumentUploadByCustmer,
           TaskDetailObj: todoArray,
-          totalcost:sumof,
+          totalcost: sumof,
+          estimated_time: message,
           moment: moment
 
         });
@@ -1151,12 +1416,10 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
     }).catch((err) => {
       console.log(err)
     })
-  }else{
+  } else {
     res.redirect('/mydreamhome');
   }
 })
-
-
 
 
 //*******Service Provider and signup and profiles routes */
@@ -1518,7 +1781,8 @@ app.get('/buyer', isCustomer, function (req, res) {
   var active_user = req.session.active_user_login;
   if (test == true && active_user != 'buyer') {
     req.session.active_user_login = "buyer"
-    req.session.isChanged();
+    //req.session.isChanged();
+    res.redirect('/dashboard')
     console.log("current user login and session is", req.session);
   }
 
@@ -1531,7 +1795,8 @@ app.get('/seller', isCustomer, function (req, res) {
   var active_user = req.session.active_user_login;
   if (test == true && active_user != 'seller') {
     req.session.active_user_login = "seller"
-    req.session.isChanged();
+    //req.session.isChanged();
+    res.redirect('/dashboard')
     console.log("current user login and session is", req.session);
   }
 });
@@ -1543,10 +1808,26 @@ app.get('/renovator', isCustomer, function (req, res) {
   var active_user = req.session.active_user_login;
   if (test == true && active_user != 'renovator') {
     req.session.active_user_login = "renovator"
-    req.session.isChanged();
+    //req.session.isChanged();
+    res.redirect('/dashboard')
     console.log("current user login and session", req.session);
   }
 });
+
+
+app.get('/otp', function (req, res) {
+  console.log("");
+
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('otp', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+
+
+
 
 app.get('/add-task', isCustomer, async function (req, res) {
   return new Promise(async function (resolve, reject) {
@@ -1759,7 +2040,7 @@ app.get('/edit-property', isCustomer, async(req, res) => {
   //req.session.propertyEditId
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  console.log("deep:==",req.query)
+  console.log("edit:==",req.query)
   if (req.query.property_id != null) {
     
     var property_id = req.query.property_id;
@@ -1788,6 +2069,82 @@ app.get('/edit-property', isCustomer, async(req, res) => {
   });
 }
 });
+app.get('/to-do-list', isCustomer, async (req, res) => {
+  var err_msg=null;
+  var success_msg=null;
+  console.log("todo")
+   req.session.pagename = 'to-do-list';
+   let propertyObj = await propertyDetail.GetAllProperty(req.session.user_id,req.session.active_user_login);
+  console.log('property in to-do-list', propertyObj);
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+ res.render('to-do-list', {
+   err_msg, success_msg, layout: false,
+   session: req.session,
+   propertyObj:propertyObj,
+   moment: moment,
+   TaskDetailObj: []
+
+ });
+
+
+});
+
+app.post('/get_property_by_id', isCustomer, async (req, res) => {
+ 
+if(req.body.property_id){
+  let singlePropertyObj = await propertyDetail.GetPropertById(req.body.property_id, req.session.active_user_login);
+  console.log('singlePropertyObj', singlePropertyObj);
+  if(singlePropertyObj){
+    return res.send({
+      'status':true,
+      'message':'single property found success',
+      'data':singlePropertyObj
+    })
+  }
+}else{
+  return res.send({
+    'status':false,
+    'message':'property id not found'
+  })
+}
+
+
+});   
+app.get('/take-action', isCustomer, async (req, res) => {
+  
+  console.log('from get take action url====',req.query)
+  var property_id = req.query.prop;
+  var phase_name = req.query.phase;
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name,req.session.active_user_login);
+  var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
+  console.log("taskObject by phase name take action",taskObject)
+
+  
+  if (taskObject) {
+    // return res.send({
+    //   'status':true,
+    //   'data':taskObject,
+    //   'redairect':'/mydreamhome-details-phase-a'
+    // })
+    req.session.pagename = 'to-do-list';
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('mydreamhome-details-phase-a', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      taskObject: taskObject,
+      propertyData: propertyData
+    });
+  }else{
+    return res.send({
+      'status':false,
+      'message':'some thing wrong'
+    })
+  }
+
+
+}) 
 
 module.exports = app;
 

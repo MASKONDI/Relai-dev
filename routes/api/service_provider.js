@@ -570,4 +570,36 @@ router.post('/forget-password-professional', function (req, res) {
 
 
 
+/* -------------------------------------------------------------------------------------------------
+POST : service_provider_delete_action post api
+------------------------------------------------------------------------------------------------- */
+
+router.post("/delete-professional-basic-details", async (req, res) => {
+  var err_msg = null;
+  var success_msg = null;
+  //TODO:need to add condition is session is expired
+  let deleteData ='';
+  console.log("req.body is : ", req.body);
+  console.log("req.session.user_id is ", req.session.user_id);
+if(req.body.action == 'education-delete'){
+  deleteData = await ServiceProviderEducationSchema.deleteOne( { _id : req.body.eduId } );
+}
+if(deleteData){
+  console.log("server response is success: ", deleteData);
+  res.send({
+    deleteData: deleteData,
+    message:'Deleted Successfully !!',
+    status: true
+  });
+}else{
+  console.log("server response is error: ", deleteData);
+  res.send({
+    deleteData: deleteData,
+    message:'Something going wrong please try again !!',
+    status: false
+  });
+}
+     
+});
+
 module.exports = router;
