@@ -31,7 +31,7 @@
                     <%if(propertyObj=='null'){%>
                       <h2>Add Property</h2>
                       <%}else{%>
-                        <h2>Edit Property</h2>
+                        <h2>Update Property</h2>
                         <%}%>
                   </div>
                   <div class="message"></div>
@@ -64,10 +64,10 @@
                                 <div class="property-step">
                                   <!-- <p>STEP 1</p> -->
                                   <%if(propertyObj=='null'){%>
-                                  <h6>Add property name & address</h6>
-                                  <%}else{%>
-                                    <h6>Edit property name & address</h6>
-                                    <%}%>
+                                    <h6>Add property name & address</h6>
+                                    <%}else{%>
+                                      <h6>Update property name & address</h6>
+                                      <%}%>
                                 </div>
                               </div>
                             </div>
@@ -163,9 +163,9 @@
                                     placeholder="Zip code*" name="ps_property_zipcode" data-rule-required="true"
                                     data-msg-required="Zipcode is required!" value="">
                                   <%}else{%>
-                                    <input type="number" class="form-control property-form-control-size-fix " id="zipcode"
-                                      placeholder="Zip code*" name="ps_property_zipcode" data-rule-required="true"
-                                      data-msg-required="Zipcode is required!"
+                                    <input type="number" class="form-control property-form-control-size-fix "
+                                      id="zipcode" placeholder="Zip code*" name="ps_property_zipcode"
+                                      data-rule-required="true" data-msg-required="Zipcode is required!"
                                       value="<%=propertyObj.ps_property_zipcode%>">
                                     <%}%>
                               </div>
@@ -176,10 +176,10 @@
                               <div class="property-step">
                                 <!-- <p>STEP 2</p> -->
                                 <%if(propertyObj=='null'){%>
-                                <h6>Add other party</h6>
-                                <%}else{%>
-                                  <h6>Edit other party</h6>
-                                  <%}%>
+                                  <h6>Add other party</h6>
+                                  <%}else{%>
+                                    <h6>Update other party</h6>
+                                    <%}%>
                               </div>
                             </div>
                           </div>
@@ -213,16 +213,16 @@
                               </div>
                               <div class="col-sm-12 col-lg-4">
                                 <%if(propertyObj=='null'){%>
-                                  <select name="property_type" class=" form-control selectBox5 property_type_inEdit" id="property_type"
-                                    required style="height: 48px;" data-rule-required="true"
+                                  <select name="property_type" class=" form-control selectBox5 property_type_inEdit"
+                                    id="property_type" required style="height: 48px;" data-rule-required="true"
                                     data-msg-required="Property Type is required!">
                                     <option value="">Select Property Type</option>
                                     <option value="New">New</option>
                                     <option value="Chain">Chain</option>
                                   </select>
                                   <%}else{%>
-                                    <select name="property_type" class=" form-control selectBox5 property_type_inEdit" id="property_type_inEdit"
-                                      required style="height: 48px;" data-rule-required="true"
+                                    <select name="property_type" class=" form-control selectBox5 property_type_inEdit"
+                                      id="property_type_inEdit" required style="height: 48px;" data-rule-required="true"
                                       data-msg-required="Property Type is required!">
                                       <option value="<%=propertyObj.ps_property_type%>">
                                         <%=propertyObj.ps_property_type%>
@@ -236,7 +236,7 @@
                                     <%}%>
                               </div>
 
-                          <!-- </div>
+                              <!-- </div>
                           <div class="row">
                             <div class="col-sm-12 col-lg-4">
                               <select name="ps_existing_property" class=" form-control selectBox5" id="ps_existing_property"
@@ -272,8 +272,9 @@
                                     <option value="Residential">Residential</option>
                                   </select>
                                   <%}else{%>
-                                    <select name="ps_existing_property" class=" form-control selectBox5 ExistingPropClass"
-                                      id="ps_existing_property" required style="height: 48px;" data-rule-required="true"
+                                    <select name="ps_existing_property"
+                                      class=" form-control selectBox5 ExistingPropClass" id="ps_existing_property"
+                                      required style="height: 48px;" data-rule-required="true"
                                       data-msg-required="Existing property Type is required!">
                                       <option value="<%=propertyObj.ps_existing_property%>">
                                         <%=propertyObj.ps_existing_property%>
@@ -290,7 +291,7 @@
                               <div class="col-sm-12 col-lg-4">
                                 <%if(propertyObj=='null'){%>
                                   <select name="ps_other_property_type" class=" form-control selectBox5"
-                                    id="ps_other_property_type"  style="height: 48px;" data-rule-required="false"
+                                    id="ps_other_property_type" style="height: 48px;" data-rule-required="false"
                                     data-msg-required="Other property Type is required!">
                                     <option value="">Select Other Property Type</option>
                                     <option value="Buyer">Buyer</option>
@@ -300,48 +301,52 @@
                                   </select>
                                   <%}else{%>
                                     <select name="ps_other_property_type" class=" form-control selectBox5"
-                                    id="ps_other_property_type"  style="height: 48px;" data-rule-required="false"
-                                    data-msg-required="Other property Type is required!">
-                                    <option value="<%=propertyObj.ps_other_property_type%>"><%=propertyObj.ps_other_property_type%></option>
-                                    <%if(propertyObj.ps_other_property_type=='Buyer'){%>
-                                      <option value="Seller">Seller</option>
-                                      <option value="Renovator">Renovator</option>
-                                      <option value="State Agents">State Agents</option>
-                                      <%}else if(propertyObj.ps_other_property_type=='Seller'){%>
-                                        <option value="Buyer">Buyer</option>
+                                      id="ps_other_property_type" style="height: 48px;" data-rule-required="false"
+                                      data-msg-required="Other property Type is required!">
+                                      <option value="<%=propertyObj.ps_other_property_type%>">
+                                        <%=propertyObj.ps_other_property_type%>
+                                      </option>
+                                      <%if(propertyObj.ps_other_property_type=='Buyer'){%>
+                                        <option value="Seller">Seller</option>
                                         <option value="Renovator">Renovator</option>
                                         <option value="State Agents">State Agents</option>
-                                        <%}else if(propertyObj.ps_other_property_type=='Renovator'){%>
+                                        <%}else if(propertyObj.ps_other_property_type=='Seller' ){%>
                                           <option value="Buyer">Buyer</option>
-                                          <option value="Seller">Seller</option>
+                                          <option value="Renovator">Renovator</option>
                                           <option value="State Agents">State Agents</option>
-                                          <%}else{%>
+                                          <%}else if(propertyObj.ps_other_property_type=='Renovator' ){%>
                                             <option value="Buyer">Buyer</option>
                                             <option value="Seller">Seller</option>
-                                             <option value="Renovator">Renovator</option>
-                                    
-                                            <%}%>
-                                    
-                                  </select>
+                                            <option value="State Agents">State Agents</option>
+                                            <%}else{%>
+                                              <option value="Buyer">Buyer</option>
+                                              <option value="Seller">Seller</option>
+                                              <option value="Renovator">Renovator</option>
+
+                                              <%}%>
+
+                                    </select>
                                     <%}%>
                               </div>
                               <%if(propertyObj=='null'){%>
-                              <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
-                                <select name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
-                                  id="ps_chain_property" style="height: 48px;">
-                                  <!-- <option value="">Select Property For Chain</option> -->
-
-                                </select>
-                              </div>
-                              <%}else{%>
                                 <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
                                   <select name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
                                     id="ps_chain_property" style="height: 48px;">
-                                    <option value="<%=propertyObj.ps_chain_property_name[0]%>"><%=propertyObj.ps_chain_property_name%></option>
-  
+                                    <!-- <option value="">Select Property For Chain</option> -->
+
                                   </select>
                                 </div>
-                                <%}%>
+                                <%}else{%>
+                                  <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
+                                    <select name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
+                                      id="ps_chain_property" style="height: 48px;">
+                                      <option value="<%=propertyObj.ps_chain_property_name[0]%>">
+                                        <%=propertyObj.ps_chain_property_name%>
+                                      </option>
+
+                                    </select>
+                                  </div>
+                                  <%}%>
 
                             </div>
                           </div>
@@ -351,10 +356,10 @@
                               <div class="property-step">
                                 <!-- <p>STEP 3</p> -->
                                 <%if(propertyObj=='null'){%>
-                                <h6>Add property details</h6>
-                                <%}else{%>
-                                  <h6>Edit property details</h6>
-                                  <%}%>
+                                  <h6>Add property details</h6>
+                                  <%}else{%>
+                                    <h6>Update property details</h6>
+                                    <%}%>
                               </div>
                             </div>
                           </div>
@@ -377,8 +382,8 @@
                                     placeholder="Bedroom*" name="ps_property_bedroom" data-rule-required="true"
                                     data-msg-required="Bedroom field is required!" value=""> -->
 
-                                    <select name="ps_property_bedroom" class=" form-control selectBox5"
-                                    id="bedroom"  style="height: 48px;" data-rule-required="true"
+                                  <select name="ps_property_bedroom" class=" form-control selectBox5" id="bedroom"
+                                    style="height: 48px;" data-rule-required="true"
                                     data-msg-required="Bedroom field is required!">
                                     <option value="">Select Bedroom</option>
                                     <option value="1">1</option>
@@ -397,27 +402,12 @@
                                       placeholder="Bedroom*" name="ps_property_bedroom" data-rule-required="true"
                                       data-msg-required="Bedroom field is required!"
                                       value="<%=propertyObj.ps_property_bedroom%>"> -->
-                                      <select name="ps_property_bedroom" class=" form-control selectBox5"
-                                    id="bedroom"  style="height: 48px;" data-rule-required="true"
-                                    data-msg-required="Bedroom field is required!" value="">
-                                    <%if(propertyObj.ps_property_bedroom==''){%>
-                                      <option value="">Select Bedroom</option>
-                                      <option value="1">1</option>
-                                      <option value="2">2</option>
-                                      <option value="3">3</option>
-                                      <option value="4">4</option>
-                                      <option value="5">5</option>
-                                      <option value="6">6</option>
-                                      <option value="7">7</option>
-                                      <option value="8">8</option>
-                                      <option value="9">9</option>
-                                      <option value="10">10</option>
-                                    </select>
-                                    <%}else{%>
-                                      <option value="<%=propertyObj.ps_property_bedroom%>"><%=propertyObj.ps_property_bedroom%></option>
-                                      <%if(propertyObj.ps_property_bedroom=='1'){%>
-                                       
-                                       
+                                    <select name="ps_property_bedroom" class=" form-control selectBox5" id="bedroom"
+                                      style="height: 48px;" data-rule-required="true"
+                                      data-msg-required="Bedroom field is required!" value="">
+                                      <%if(propertyObj.ps_property_bedroom==''){%>
+                                        <option value="">Select Bedroom</option>
+                                        <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
                                         <option value="4">4</option>
@@ -427,19 +417,36 @@
                                         <option value="8">8</option>
                                         <option value="9">9</option>
                                         <option value="10">10</option>
-                                      </select>
-                                    <%}else if(propertyObj.ps_property_bedroom=='2'){%>
-                                      <option value="1">1</option>
-                                      <option value="3">3</option>
-                                      <option value="4">4</option>
-                                      <option value="5">5</option>
-                                      <option value="6">6</option>
-                                      <option value="7">7</option>
-                                      <option value="8">8</option>
-                                      <option value="9">9</option>
-                                      <option value="10">10</option>
                                     </select>
-                                          <%}else if(propertyObj.ps_property_bedroom=='3'){%>
+                                    <%}else{%>
+                                      <option value="<%=propertyObj.ps_property_bedroom%>">
+                                        <%=propertyObj.ps_property_bedroom%>
+                                      </option>
+                                      <%if(propertyObj.ps_property_bedroom=='1'){%>
+
+
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        </select>
+                                        <%}else if(propertyObj.ps_property_bedroom=='2' ){%>
+                                          <option value="1">1</option>
+                                          <option value="3">3</option>
+                                          <option value="4">4</option>
+                                          <option value="5">5</option>
+                                          <option value="6">6</option>
+                                          <option value="7">7</option>
+                                          <option value="8">8</option>
+                                          <option value="9">9</option>
+                                          <option value="10">10</option>
+                                          </select>
+                                          <%}else if(propertyObj.ps_property_bedroom=='3' ){%>
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="4">4</option>
@@ -449,8 +456,8 @@
                                             <option value="8">8</option>
                                             <option value="9">9</option>
                                             <option value="10">10</option>
-                                          </select>
-                                            <%}else if(propertyObj.ps_property_bedroom=='4'){%>
+                                            </select>
+                                            <%}else if(propertyObj.ps_property_bedroom=='4' ){%>
                                               <option value="1">1</option>
                                               <option value="2">2</option>
                                               <option value="3">3</option>
@@ -460,9 +467,9 @@
                                               <option value="8">8</option>
                                               <option value="9">9</option>
                                               <option value="10">10</option>
-                                             
-                                            </select>
-                                              <%}else if(propertyObj.ps_property_bedroom=='5'){%>
+
+                                              </select>
+                                              <%}else if(propertyObj.ps_property_bedroom=='5' ){%>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
@@ -473,11 +480,11 @@
                                                 <option value="9">9</option>
                                                 <option value="10">10</option>
 
-                                                
-                                                
-                                                         
-                                              </select>
-                                                <%}else if(propertyObj.ps_property_bedroom=='6'){%>
+
+
+
+                                                </select>
+                                                <%}else if(propertyObj.ps_property_bedroom=='6' ){%>
                                                   <option value="1">1</option>
                                                   <option value="2">2</option>
                                                   <option value="3">3</option>
@@ -487,8 +494,8 @@
                                                   <option value="8">8</option>
                                                   <option value="9">9</option>
                                                   <option value="10">10</option>
-                                                </select>
-                                                  <%}else if(propertyObj.ps_property_bedroom=='7'){%>
+                                                  </select>
+                                                  <%}else if(propertyObj.ps_property_bedroom=='7' ){%>
                                                     <option value="1">1</option>
                                                     <option value="2">2</option>
                                                     <option value="3">3</option>
@@ -498,19 +505,19 @@
                                                     <option value="8">8</option>
                                                     <option value="9">9</option>
                                                     <option value="10">10</option>
-                                                  </select>
-                                                    <%}else if(propertyObj.ps_property_bedroom=='8'){%>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                    <option value="6">6</option>
-                                                    <option value="7">7</option>
-                                                    <option value="9">9</option>
-                                                    <option value="10">10</option>
                                                     </select>
-                                                      <%}else if(propertyObj.ps_property_bedroom=='9'){%>
+                                                    <%}else if(propertyObj.ps_property_bedroom=='8' ){%>
+                                                      <option value="1">1</option>
+                                                      <option value="2">2</option>
+                                                      <option value="3">3</option>
+                                                      <option value="4">4</option>
+                                                      <option value="5">5</option>
+                                                      <option value="6">6</option>
+                                                      <option value="7">7</option>
+                                                      <option value="9">9</option>
+                                                      <option value="10">10</option>
+                                                      </select>
+                                                      <%}else if(propertyObj.ps_property_bedroom=='9' ){%>
                                                         <option value="1">1</option>
                                                         <option value="2">2</option>
                                                         <option value="3">3</option>
@@ -520,35 +527,35 @@
                                                         <option value="7">7</option>
                                                         <option value="8">8</option>
                                                         <option value="10">10</option>
-                                                      </select>
+                                                        </select>
                                                         <%}else{%>
                                                           <option value="1">1</option>
-                                                        <option value="2">2</option>
-                                                        <option value="3">3</option>
-                                                        <option value="4">4</option>
-                                                        <option value="5">5</option>
-                                                        <option value="6">6</option>
-                                                        <option value="7">7</option>
-                                                        <option value="8">8</option>
-                                                        <option value="9">19</option>
-                                                          
-                                                        </select>
+                                                          <option value="2">2</option>
+                                                          <option value="3">3</option>
+                                                          <option value="4">4</option>
+                                                          <option value="5">5</option>
+                                                          <option value="6">6</option>
+                                                          <option value="7">7</option>
+                                                          <option value="8">8</option>
+                                                          <option value="9">19</option>
+
+                                                          </select>
                                                           <%}%>
-                                                        
-                                      
-                                      
-                                    <%}%>
-                                    
-                                    
-                                    <%}%>
+
+
+
+                                                            <%}%>
+
+
+                                                              <%}%>
                               </div>
                               <div style="display:none;" class="col-sm-12 col-lg-4 property_detial">
                                 <%if(propertyObj=='null'){%>
                                   <!-- <input type="number" class="form-control property-form-control-size-fix " id="bedroom2"
                                     placeholder="Bathroom*" name="ps_property_bathroom" data-rule-required="true"
                                     data-msg-required="Bathroom  field is required!" value=""> -->
-                                    <select name="ps_property_bathroom" class=" form-control selectBox5"
-                                    id="bedroom2"  style="height: 48px;" data-rule-required="true"
+                                  <select name="ps_property_bathroom" class=" form-control selectBox5" id="bedroom2"
+                                    style="height: 48px;" data-rule-required="true"
                                     data-msg-required="Bathroom field is required!">
                                     <option value="">Select Bathroom</option>
                                     <option value="1">1</option>
@@ -567,8 +574,8 @@
                                       id="bedroom2" placeholder="Bathroom*" name="ps_property_bathroom"
                                       data-rule-required="true" data-msg-required="Bathroom  field is required!"
                                       value="<%=propertyObj.ps_property_bathroom%>"> -->
-                                      <select name="ps_property_bathroom" class=" form-control selectBox5"
-                                      id="bedroom2"  style="height: 48px;" data-rule-required="true"
+                                    <select name="ps_property_bathroom" class=" form-control selectBox5" id="bedroom2"
+                                      style="height: 48px;" data-rule-required="true"
                                       data-msg-required="Bathroom field is required!">
                                       <%if(propertyObj.ps_property_bathroom==''){%>
                                         <option value="">Select Bathroom</option>
@@ -582,24 +589,15 @@
                                         <option value="8">8</option>
                                         <option value="9">9</option>
                                         <option value="10">10</option>
-                                       </select>
-                                      <%}else{%>
-                                        <option value="<%=propertyObj.ps_property_bathroom%>"><%=propertyObj.ps_property_bathroom%></option>
-                                        <%if(propertyObj.ps_property_bathroom=='1'){%>
-                                       
-                                       
-                                          <option value="2">2</option>
-                                          <option value="3">3</option>
-                                          <option value="4">4</option>
-                                          <option value="5">5</option>
-                                          <option value="6">6</option>
-                                          <option value="7">7</option>
-                                          <option value="8">8</option>
-                                          <option value="9">9</option>
-                                          <option value="10">10</option>
-                                        </select>
-                                      <%}else if(propertyObj.ps_property_bathroom=='2'){%>
-                                        <option value="1">1</option>
+                                    </select>
+                                    <%}else{%>
+                                      <option value="<%=propertyObj.ps_property_bathroom%>">
+                                        <%=propertyObj.ps_property_bathroom%>
+                                      </option>
+                                      <%if(propertyObj.ps_property_bathroom=='1'){%>
+
+
+                                        <option value="2">2</option>
                                         <option value="3">3</option>
                                         <option value="4">4</option>
                                         <option value="5">5</option>
@@ -608,68 +606,79 @@
                                         <option value="8">8</option>
                                         <option value="9">9</option>
                                         <option value="10">10</option>
-                                      </select>
-                                            <%}else if(propertyObj.ps_property_bathroom=='3'){%>
+                                        </select>
+                                        <%}else if(propertyObj.ps_property_bathroom=='2' ){%>
+                                          <option value="1">1</option>
+                                          <option value="3">3</option>
+                                          <option value="4">4</option>
+                                          <option value="5">5</option>
+                                          <option value="6">6</option>
+                                          <option value="7">7</option>
+                                          <option value="8">8</option>
+                                          <option value="9">9</option>
+                                          <option value="10">10</option>
+                                          </select>
+                                          <%}else if(propertyObj.ps_property_bathroom=='3' ){%>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            </select>
+                                            <%}else if(propertyObj.ps_property_bathroom=='4' ){%>
                                               <option value="1">1</option>
                                               <option value="2">2</option>
-                                              <option value="4">4</option>
+                                              <option value="3">3</option>
                                               <option value="5">5</option>
                                               <option value="6">6</option>
                                               <option value="7">7</option>
                                               <option value="8">8</option>
                                               <option value="9">9</option>
                                               <option value="10">10</option>
-                                            </select>
-                                              <%}else if(propertyObj.ps_property_bathroom=='4'){%>
+
+                                              </select>
+                                              <%}else if(propertyObj.ps_property_bathroom=='5' ){%>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
-                                                <option value="5">5</option>
+                                                <option value="4">4</option>
                                                 <option value="6">6</option>
                                                 <option value="7">7</option>
                                                 <option value="8">8</option>
                                                 <option value="9">9</option>
                                                 <option value="10">10</option>
-                                               
-                                              </select>
-                                                <%}else if(propertyObj.ps_property_bathroom=='5'){%>
+
+
+
+
+                                                </select>
+                                                <%}else if(propertyObj.ps_property_bathroom=='6' ){%>
                                                   <option value="1">1</option>
                                                   <option value="2">2</option>
                                                   <option value="3">3</option>
                                                   <option value="4">4</option>
-                                                  <option value="6">6</option>
+                                                  <option value="5">5</option>
                                                   <option value="7">7</option>
                                                   <option value="8">8</option>
                                                   <option value="9">9</option>
                                                   <option value="10">10</option>
-  
-                                                  
-                                                  
-                                                           
-                                                </select>
-                                                  <%}else if(propertyObj.ps_property_bathroom=='6'){%>
+                                                  </select>
+                                                  <%}else if(propertyObj.ps_property_bathroom=='7' ){%>
                                                     <option value="1">1</option>
                                                     <option value="2">2</option>
                                                     <option value="3">3</option>
                                                     <option value="4">4</option>
                                                     <option value="5">5</option>
-                                                    <option value="7">7</option>
+                                                    <option value="6">6</option>
                                                     <option value="8">8</option>
                                                     <option value="9">9</option>
                                                     <option value="10">10</option>
-                                                  </select>
-                                                    <%}else if(propertyObj.ps_property_bathroom=='7'){%>
-                                                      <option value="1">1</option>
-                                                      <option value="2">2</option>
-                                                      <option value="3">3</option>
-                                                      <option value="4">4</option>
-                                                      <option value="5">5</option>
-                                                      <option value="6">6</option>
-                                                      <option value="8">8</option>
-                                                      <option value="9">9</option>
-                                                      <option value="10">10</option>
                                                     </select>
-                                                      <%}else if(propertyObj.ps_property_bathroom=='8'){%>
+                                                    <%}else if(propertyObj.ps_property_bathroom=='8' ){%>
                                                       <option value="1">1</option>
                                                       <option value="2">2</option>
                                                       <option value="3">3</option>
@@ -680,7 +689,18 @@
                                                       <option value="9">9</option>
                                                       <option value="10">10</option>
                                                       </select>
-                                                        <%}else if(propertyObj.ps_property_bathroom=='9'){%>
+                                                      <%}else if(propertyObj.ps_property_bathroom=='9' ){%>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="10">10</option>
+                                                        </select>
+                                                        <%}else{%>
                                                           <option value="1">1</option>
                                                           <option value="2">2</option>
                                                           <option value="3">3</option>
@@ -689,24 +709,13 @@
                                                           <option value="6">6</option>
                                                           <option value="7">7</option>
                                                           <option value="8">8</option>
-                                                          <option value="10">10</option>
-                                                        </select>
-                                                          <%}else{%>
-                                                            <option value="1">1</option>
-                                                          <option value="2">2</option>
-                                                          <option value="3">3</option>
-                                                          <option value="4">4</option>
-                                                          <option value="5">5</option>
-                                                          <option value="6">6</option>
-                                                          <option value="7">7</option>
-                                                          <option value="8">8</option>
                                                           <option value="9">19</option>
-                                                            
+
                                                           </select>
-                                                        <%}%>
-                                                        <%}%>
-                                      
-                                    <%}%>
+                                                          <%}%>
+                                                            <%}%>
+
+                                                              <%}%>
                               </div>
                             </div>
                             <div class="row">
@@ -731,10 +740,10 @@
                               <div class="property-step">
                                 <!-- <p>STEP 4</p> -->
                                 <%if(propertyObj=='null'){%>
-                                <h6>Add Phases</h6>
-                                <%}else{%>
-                                  <h6>Edit Phases</h6>
-                                  <%}%>
+                                  <h6>Add Phases</h6>
+                                  <%}else{%>
+                                    <h6>Update Phases</h6>
+                                    <%}%>
                               </div>
                             </div>
 
@@ -824,11 +833,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix "
                                               id="startDate1" style="border-radius:10px; width:85%"
-                                              placeholder="Start Date" name="startDate[]" >
+                                              placeholder="Start Date" name="startDate[]">
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" 
+                                                placeholder="Start Date" name="startDate[]"
                                                 value="<%=propertyObj.ps_phase_array[1].start_date%>">
                                               <%}%>
                                         </div>
@@ -841,11 +850,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix " id="endDate1"
                                               style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                              name="endDate[]" >
+                                              name="endDate[]">
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" 
+                                                placeholder="End Date" name="endDate[]"
                                                 value="<%=propertyObj.ps_phase_array[1].end_date%>">
                                               <%}%>
 
@@ -886,11 +895,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix "
                                               id="startDate1" style="border-radius:10px; width:85%"
-                                              placeholder="Start Date" name="startDate[]" >
+                                              placeholder="Start Date" name="startDate[]">
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" 
+                                                placeholder="Start Date" name="startDate[]"
                                                 value="<%=propertyObj.ps_phase_array[2].start_date%>">
                                               <%}%>
                                         </div>
@@ -903,11 +912,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix " id="endDate1"
                                               style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                              name="endDate[]" >
+                                              name="endDate[]">
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" 
+                                                placeholder="End Date" name="endDate[]"
                                                 value="<%=propertyObj.ps_phase_array[2].end_date%>">
                                               <%}%>
 
@@ -948,11 +957,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix "
                                               id="startDate1" style="border-radius:10px; width:85%"
-                                              placeholder="Start Date" name="startDate[]" >
+                                              placeholder="Start Date" name="startDate[]">
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" 
+                                                placeholder="Start Date" name="startDate[]"
                                                 value="<%=propertyObj.ps_phase_array[3].start_date%>">
                                               <%}%>
                                         </div>
@@ -965,11 +974,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix " id="endDate1"
                                               style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                              name="endDate[]" >
+                                              name="endDate[]">
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" 
+                                                placeholder="End Date" name="endDate[]"
                                                 value="<%=propertyObj.ps_phase_array[3].end_date%>">
                                               <%}%>
 
@@ -1010,11 +1019,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix "
                                               id="startDate1" style="border-radius:10px; width:85%"
-                                              placeholder="Start Date" name="startDate[]" >
+                                              placeholder="Start Date" name="startDate[]">
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" 
+                                                placeholder="Start Date" name="startDate[]"
                                                 value="<%=propertyObj.ps_phase_array[4].start_date%>">
                                               <%}%>
                                         </div>
@@ -1027,11 +1036,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix " id="endDate1"
                                               style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                              name="endDate[]" >
+                                              name="endDate[]">
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" 
+                                                placeholder="End Date" name="endDate[]"
                                                 value="<%=propertyObj.ps_phase_array[4].end_date%>">
                                               <%}%>
 
@@ -1071,11 +1080,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix "
                                               id="startDate1" style="border-radius:10px; width:85%"
-                                              placeholder="Start Date" name="startDate[]" >
+                                              placeholder="Start Date" name="startDate[]">
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" 
+                                                placeholder="Start Date" name="startDate[]"
                                                 value="<%=propertyObj.ps_phase_array[5].start_date%>">
                                               <%}%>
                                         </div>
@@ -1088,11 +1097,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix " id="endDate1"
                                               style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                              name="endDate[]" >
+                                              name="endDate[]">
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" 
+                                                placeholder="End Date" name="endDate[]"
                                                 value="<%=propertyObj.ps_phase_array[5].end_date%>">
                                               <%}%>
 
@@ -1132,11 +1141,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix "
                                               id="startDate1" style="border-radius:10px; width:85%"
-                                              placeholder="Start Date" name="startDate[]" >
+                                              placeholder="Start Date" name="startDate[]">
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" 
+                                                placeholder="Start Date" name="startDate[]"
                                                 value="<%=propertyObj.ps_phase_array[6].start_date%>">
                                               <%}%>
                                         </div>
@@ -1149,11 +1158,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix " id="endDate1"
                                               style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                              name="endDate[]" >
+                                              name="endDate[]">
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" 
+                                                placeholder="End Date" name="endDate[]"
                                                 value="<%=propertyObj.ps_phase_array[6].end_date%>">
                                               <%}%>
                                         </div>
@@ -1192,11 +1201,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix "
                                               id="startDate1" style="border-radius:10px; width:85%"
-                                              placeholder="Start Date" name="startDate[]" >
+                                              placeholder="Start Date" name="startDate[]">
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" 
+                                                placeholder="Start Date" name="startDate[]"
                                                 value="<%=propertyObj.ps_phase_array[7].start_date%>">
                                               <%}%>
                                         </div>
@@ -1209,11 +1218,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix " id="endDate1"
                                               style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                              name="endDate[]" >
+                                              name="endDate[]">
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" 
+                                                placeholder="End Date" name="endDate[]"
                                                 value="<%=propertyObj.ps_phase_array[7].end_date%>">
                                               <%}%>
 
@@ -1256,12 +1265,12 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" >
+                                                placeholder="Start Date" name="startDate[]">
                                               <%}else{%>
 
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="startDate1" style="border-radius:10px; width:85%"
-                                                  placeholder="Start Date" name="startDate[]" 
+                                                  placeholder="Start Date" name="startDate[]"
                                                   value="<%=propertyObj.ps_phase_array[0].start_date%>">
                                                 <%}%>
                                           </div>
@@ -1274,11 +1283,11 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" >
+                                                placeholder="End Date" name="endDate[]">
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="endDate1" style="border-radius:10px; width: 85%;"
-                                                  placeholder="End Date" name="endDate[]" 
+                                                  placeholder="End Date" name="endDate[]"
                                                   value="<%=propertyObj.ps_phase_array[0].end_date%>">
                                                 <%}%>
 
@@ -1320,11 +1329,11 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" >
+                                                placeholder="Start Date" name="startDate[]">
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="startDate1" style="border-radius:10px; width:85%"
-                                                  placeholder="Start Date" name="startDate[]" 
+                                                  placeholder="Start Date" name="startDate[]"
                                                   value="<%=propertyObj.ps_phase_array[1].start_date%>">
                                                 <%}%>
                                           </div>
@@ -1337,11 +1346,11 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" >
+                                                placeholder="End Date" name="endDate[]">
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="endDate1" style="border-radius:10px; width: 85%;"
-                                                  placeholder="End Date" name="endDate[]" 
+                                                  placeholder="End Date" name="endDate[]"
                                                   value="<%=propertyObj.ps_phase_array[1].end_date%>">
                                                 <%}%>
 
@@ -1383,12 +1392,12 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" >
+                                                placeholder="Start Date" name="startDate[]">
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="startDate1" style="border-radius:10px; width:85%"
                                                   placeholder="Start Date" name="startDate[]"
-                                                  value="<%=propertyObj.ps_phase_array[2].start_date%>" >
+                                                  value="<%=propertyObj.ps_phase_array[2].start_date%>">
                                                 <%}%>
                                           </div>
                                         </div>
@@ -1400,11 +1409,11 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" >
+                                                placeholder="End Date" name="endDate[]">
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="endDate1" style="border-radius:10px; width: 85%;"
-                                                  placeholder="End Date" name="endDate[]" 
+                                                  placeholder="End Date" name="endDate[]"
                                                   value="<%=propertyObj.ps_phase_array[2].end_date%>">
                                                 <%}%>
 
@@ -1446,11 +1455,11 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" >
+                                                placeholder="Start Date" name="startDate[]">
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="startDate1" style="border-radius:10px; width:85%"
-                                                  placeholder="Start Date" name="startDate[]" 
+                                                  placeholder="Start Date" name="startDate[]"
                                                   value="<%=propertyObj.ps_phase_array[3].start_date%>">
                                                 <%}%>
                                           </div>
@@ -1463,11 +1472,11 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" >
+                                                placeholder="End Date" name="endDate[]">
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="endDate1" style="border-radius:10px; width: 85%;"
-                                                  placeholder="End Date" name="endDate[]" 
+                                                  placeholder="End Date" name="endDate[]"
                                                   value="<%=propertyObj.ps_phase_array[3].end_date%>">
                                                 <%}%>
 
@@ -1508,12 +1517,12 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" >
+                                                placeholder="Start Date" name="startDate[]">
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="startDate1" style="border-radius:10px; width:85%"
                                                   placeholder="Start Date" name="startDate[]"
-                                                  value="<%=propertyObj.ps_phase_array[4].start_date%>" >
+                                                  value="<%=propertyObj.ps_phase_array[4].start_date%>">
                                                 <%}%>
                                           </div>
                                         </div>
@@ -1525,11 +1534,11 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" >
+                                                placeholder="End Date" name="endDate[]">
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="endDate1" style="border-radius:10px; width: 85%;"
-                                                  placeholder="End Date" name="endDate[]" 
+                                                  placeholder="End Date" name="endDate[]"
                                                   value="<%=propertyObj.ps_phase_array[4].end_date%>">
                                                 <%}%>
 
@@ -1571,12 +1580,12 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" >
+                                                placeholder="Start Date" name="startDate[]">
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="startDate1" style="border-radius:10px; width:85%"
                                                   placeholder="Start Date" name="startDate[]"
-                                                  value="<%=propertyObj.ps_phase_array[5].start_date%>" >
+                                                  value="<%=propertyObj.ps_phase_array[5].start_date%>">
                                                 <%}%>
                                           </div>
                                         </div>
@@ -1588,11 +1597,11 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" >
+                                                placeholder="End Date" name="endDate[]">
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="endDate1" style="border-radius:10px; width: 85%;"
-                                                  placeholder="End Date" name="endDate[]" 
+                                                  placeholder="End Date" name="endDate[]"
                                                   value="<%=propertyObj.ps_phase_array[4].end_date%>">
                                                 <%}%>
 
@@ -1688,8 +1697,8 @@
                           </div>
                           <span>
                             <div class="custom-file-input">
-                              <input type="file" name="propertiespic" class="propertiespic2" id="propertiespic2"
-                                value=""
+                              <input type="file" name="propertiespic" class="propertiespic2 propertiespic"
+                                id="propertiespic2" value=""
                                 onchange="document.getElementById('avtar2').src = window.URL.createObjectURL(this.files[0])">
                               <input type="button">
                             </div>
@@ -1711,7 +1720,7 @@
                           </div>
                           <span>
                             <div class="custom-file-input">
-                              <input type="file" name="propertiespic" value="" class="propertiespic3"
+                              <input type="file" name="propertiespic" value="" class="propertiespic3 propertiespic"
                                 id="propertiespic3"
                                 onchange="document.getElementById('avtar3').src = window.URL.createObjectURL(this.files[0])">
                               <input type="button">
@@ -1739,7 +1748,7 @@
                         <div class="col-sm-12 col-lg-12">
                           <div class="property-step">
                             <!-- <p>STEP 5</p> -->
-                            <h6>Edit property pictures</h6>
+                            <h6>Update property pictures</h6>
                           </div>
                         </div>
                       </div>
@@ -2045,7 +2054,7 @@
                         <div class="col-sm-12 col-lg-12">
                           <div class="property-step">
                             <!-- <p>STEP 6</p> -->
-                            <h6>Edit plan pictures</h6>
+                            <h6>Update plan pictures</h6>
                           </div>
                         </div>
                       </div>
@@ -2241,7 +2250,7 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <script type="text/javascript" src="../js/countrystatecity.js"></script>
 
@@ -2402,115 +2411,122 @@
                 $(".img_property_id").val(property_id);
                 $('#propertyform2').on('submit', function (e) {
                   e.preventDefault();
+                  //var ext = $('.propertiespic').val().split('.').pop().toLowerCase();
+                  //if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg', 'jfif']) == -1) {
+                    //alert('invalid extension!');
+                  //} else {
+                    //alert('passs')
 
-                  var property_image_id = $(".editPropertyImageId").val();
-                  console.log(property_image_id)
-                  if (property_image_id == '') {
-                    var prop_Img_api_url = "/api/add-new-property-image";
-                  } else {
-                    var prop_Img_api_url = "/api/EditpropertyImage";
-                  }
-                  var formData1 = new FormData($('#propertyform2')[0]);
-                  $.ajax({
-                    type: "POST",
-                    data: formData1,
-                    url: prop_Img_api_url,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    success: function (data) {
-                      if (data.status == true) {
-                        $(".plan_img_property_id").val(property_id);
-                        $('.firstFormDive').hide();
-                        $(".secondFormDiv").hide();
-                        $(".thirdFormDiv").show();
-                        $('.propertyPlanform').on('submit', function (e) {
-                          e.preventDefault();
-                          var property_plan_image_id = $(".editPropertyPlanImageId").val();
-                          //alert(property_plan_image_id)
-                          if (property_plan_image_id == '') {
-                            var prop_Plan_Img_api_url = "/api/add-new-property-plan-image";
-                          } else {
-                            var prop_Plan_Img_api_url = "/api/EditpropertyPlanImage";
-                          }
-                          var formData2 = new FormData($('.propertyPlanform')[0]);
-                          $.ajax({
-                            type: "POST",
-                            data: formData2,
-                            url: prop_Plan_Img_api_url,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            success: function (data) {
-                              if (data.status == true) {
-                                // $('.message_data').show();
-                                // $('.message_data').html('<div class="isa_success"><i style="margin: 0px 7px !important;" class="fa fa-check"></i> ' + data.message + '</div>');
-                                // setTimeout(function () { $('.message_data').hide(); window.location.href = data.redirect; }, 3000);
-                                Swal.fire({
-                                  icon: 'success',
-                                  title: data.message,
-                                  showDenyButton: true,
-                                  showCancelButton: false,
-                                  confirmButtonColor: '#005377',
-                                  denyButtonColor:'#005377',
-                                  cancelButtonColor: '#d33',
-                                  confirmButtonText: `Dream Home List`,
-                                  denyButtonText: `Add Property`,
-                                }).then((result) => {
-                                  /* Read more about isConfirmed, isDenied below */
-                                  if (result.isConfirmed) {
-                                    //Swal.fire('Saved!', '', 'success')
-                                    window.location.href = '/mydreamhome';
-                                  } else if (result.isDenied) {
-                                    //Swal.fire('Changes are not saved', '', 'info')
-                                    window.location.href = '/add-property';
-                                  }
-                                })
-                              }
-                            }
-                          });
-                        })
-                      }
+
+                    var property_image_id = $(".editPropertyImageId").val();
+                    console.log(property_image_id)
+                    if (property_image_id == '') {
+                      var prop_Img_api_url = "/api/add-new-property-image";
+                    } else {
+                      var prop_Img_api_url = "/api/EditpropertyImage";
                     }
-                  });
+                    var formData1 = new FormData($('#propertyform2')[0]);
+                    $.ajax({
+                      type: "POST",
+                      data: formData1,
+                      url: prop_Img_api_url,
+                      cache: false,
+                      contentType: false,
+                      processData: false,
+                      success: function (data) {
+                        if (data.status == true) {
+                          $(".plan_img_property_id").val(property_id);
+                          $('.firstFormDive').hide();
+                          $(".secondFormDiv").hide();
+                          $(".thirdFormDiv").show();
+                          $('.propertyPlanform').on('submit', function (e) {
+                            e.preventDefault();
+                            var property_plan_image_id = $(".editPropertyPlanImageId").val();
+                            //alert(property_plan_image_id)
+                            if (property_plan_image_id == '') {
+                              var prop_Plan_Img_api_url = "/api/add-new-property-plan-image";
+                            } else {
+                              var prop_Plan_Img_api_url = "/api/EditpropertyPlanImage";
+                            }
+                            var formData2 = new FormData($('.propertyPlanform')[0]);
+                            $.ajax({
+                              type: "POST",
+                              data: formData2,
+                              url: prop_Plan_Img_api_url,
+                              cache: false,
+                              contentType: false,
+                              processData: false,
+                              success: function (data) {
+                                if (data.status == true) {
+                                  // $('.message_data').show();
+                                  // $('.message_data').html('<div class="isa_success"><i style="margin: 0px 7px !important;" class="fa fa-check"></i> ' + data.message + '</div>');
+                                  // setTimeout(function () { $('.message_data').hide(); window.location.href = data.redirect; }, 3000);
+                                  Swal.fire({
+                                    icon: 'success',
+                                    title: data.message,
+                                    showDenyButton: true,
+                                    showCancelButton: false,
+                                    confirmButtonColor: '#005377',
+                                    denyButtonColor: '#005377',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: `Dream Home List`,
+                                    denyButtonText: `Add Property`,
+                                  }).then((result) => {
+                                    /* Read more about isConfirmed, isDenied below */
+                                    if (result.isConfirmed) {
+                                      //Swal.fire('Saved!', '', 'success')
+                                      window.location.href = '/mydreamhome';
+                                    } else if (result.isDenied) {
+                                      //Swal.fire('Changes are not saved', '', 'info')
+                                      window.location.href = '/add-property';
+                                    }
+                                  })
+                                }
+                              }
+                            });
+                          })
+                        }
+                      }
+                    });
+                  //}
                 })
               }
             }
           });
         })
-      
-      $("#property_type").change(function (e) {
-        if ($(this).val() == 'Chain') {
-          $(".AllPropertyListingDiv").show();
-          $.ajax({
-            type: "GET",
-            // data: 'propertyId=' + propertyId,
-            url: "/api/get_property_for_chain",
-            cache: false,
-            success: function (data) {
-              console.log(data)
-              var htmlData = '';
-              $(".AllPropertyListingDiv").show();
-              htmlData += '<option value="">Select Property for Chain</option>';
-              if (data.data.length > 0) {
-                $.each(data.data, function (i, data) {
-                  console.log('val:', data)
-                  htmlData += '<option value="' + data._id + '">' + data.ps_property_name + '</option>';
-                });
+
+        $("#property_type").change(function (e) {
+          if ($(this).val() == 'Chain') {
+            $(".AllPropertyListingDiv").show();
+            $.ajax({
+              type: "GET",
+              // data: 'propertyId=' + propertyId,
+              url: "/api/get_property_for_chain",
+              cache: false,
+              success: function (data) {
+                console.log(data)
+                var htmlData = '';
+                $(".AllPropertyListingDiv").show();
+                htmlData += '<option value="">Select Property for Chain</option>';
+                if (data.data.length > 0) {
+                  $.each(data.data, function (i, data) {
+                    console.log('val:', data)
+                    htmlData += '<option value="' + data._id + '">' + data.ps_property_name + '</option>';
+                  });
+                }
+                $('.ps_chain_property').html(htmlData);
+
               }
-              $('.ps_chain_property').html(htmlData);
+            });
 
-            }
-          });
-
-        } else {
-           $(".AllPropertyListingDiv").hide();
-        }
-      })
-    });
+          } else {
+            $(".AllPropertyListingDiv").hide();
+          }
+        })
+      });
     </script>
-    
-      <script>
+
+    <script>
         // $(document).ready(function () {
         //   $('.firstFormDive').show();
         //   $(".secondFormDiv").hide();
@@ -2561,7 +2577,7 @@
         //                       processData: false,
         //                       success: function (data) {
         //                         if (data.status == true) {
-                                  
+
         //           Swal.fire({
         //               icon: 'success',
         //               title: data.message,
@@ -2602,7 +2618,7 @@
         // })
     </script>
     <script>
-    $(document).ready(function () {
+      $(document).ready(function () {
 
         $("#PropertyImageOne").change(function (e) {
           e.preventDefault();
@@ -2723,124 +2739,124 @@
           })
         });
 
-     
-      $("#PropertyPlanImageTwo").change(function (e) {
-        //alert("2")
-        e.preventDefault();
-        var isnewPitcher = $("#plan_image_two_id").val();
-        if (isnewPitcher == '') {
-          var urls = "/api/add-new-property-plan-image";
 
-        } else {
-          //alert(isnewPitcher)
-          var urls = "/api/Edit_property_Plan_Image";
-        }
-        var gfg = new FormData();
-        gfg.append('planImage',
-          e.target.files[0]);
-        gfg.append('image_id',
-          $("#plan_image_two_id").val());
-        gfg.append('property_id',
-          $(".img_property_id").val());
-        $.ajax({
-          type: "POST",
-          data: gfg,
-          url: urls,
-          cache: false,
-          contentType: false,
-          processData: false,
-          success: function (data) {
+        $("#PropertyPlanImageTwo").change(function (e) {
+          //alert("2")
+          e.preventDefault();
+          var isnewPitcher = $("#plan_image_two_id").val();
+          if (isnewPitcher == '') {
+            var urls = "/api/add-new-property-plan-image";
 
+          } else {
+            //alert(isnewPitcher)
+            var urls = "/api/Edit_property_Plan_Image";
           }
-        })
-      });
-      $("#PropertyPlanImageThree").change(function (e) {
-        //alert("3")
-        e.preventDefault();
-        var isnewPitcher = $("#plan_image_three_id").val();
-        if (isnewPitcher == '') {
-          var urls = "/api/add-new-property-plan-image";
+          var gfg = new FormData();
+          gfg.append('planImage',
+            e.target.files[0]);
+          gfg.append('image_id',
+            $("#plan_image_two_id").val());
+          gfg.append('property_id',
+            $(".img_property_id").val());
+          $.ajax({
+            type: "POST",
+            data: gfg,
+            url: urls,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
 
-        } else {
-          //alert(isnewPitcher)
-          var urls = "/api/Edit_property_Plan_Image";
-        }
-        var gfg = new FormData();
-        gfg.append('planImage',
-          e.target.files[0]);
-        gfg.append('image_id',
-          $("#plan_image_three_id").val());
-        gfg.append('property_id',
-          $(".img_property_id").val());
-        $.ajax({
-          type: "POST",
-          data: gfg,
-          url: urls,
-          cache: false,
-          contentType: false,
-          processData: false,
-          success: function (data) {
+            }
+          })
+        });
+        $("#PropertyPlanImageThree").change(function (e) {
+          //alert("3")
+          e.preventDefault();
+          var isnewPitcher = $("#plan_image_three_id").val();
+          if (isnewPitcher == '') {
+            var urls = "/api/add-new-property-plan-image";
 
-
+          } else {
+            //alert(isnewPitcher)
+            var urls = "/api/Edit_property_Plan_Image";
           }
-        })
+          var gfg = new FormData();
+          gfg.append('planImage',
+            e.target.files[0]);
+          gfg.append('image_id',
+            $("#plan_image_three_id").val());
+          gfg.append('property_id',
+            $(".img_property_id").val());
+          $.ajax({
+            type: "POST",
+            data: gfg,
+            url: urls,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+
+            }
+          })
+        });
       });
-    });
     </script>
     <!-- script for in case of edit property chain property should no be show onw property in drop down -->
     <script>
-     $(document).ready(function () {
-      $("#property_type_inEdit").change(function (e) {
-        if ($(this).val() == 'Chain') {
-          var property_id_getchain = $("#editPropertyId").val()
-          $(".AllPropertyListingDiv").show();
-          $.ajax({
-            type: "GET",
-             data: {property_id:property_id_getchain},
-            url: "/api/get_property_for_chain_inEdit",
-            cache: false,
-            success: function (data) {
-              console.log(data)
-              var htmlData = '';
-              $(".AllPropertyListingDiv").show();
-              htmlData += '<option value="">Select Property for Chain</option>';
-              if (data.data.length > 0) {
-                $.each(data.data, function (i, data) {
-                  console.log('val:', data)
-                  htmlData += '<option value="' + data._id + '">' + data.ps_property_name + '</option>';
-                });
+      $(document).ready(function () {
+        $("#property_type_inEdit").change(function (e) {
+          if ($(this).val() == 'Chain') {
+            var property_id_getchain = $("#editPropertyId").val()
+            $(".AllPropertyListingDiv").show();
+            $.ajax({
+              type: "GET",
+              data: { property_id: property_id_getchain },
+              url: "/api/get_property_for_chain_inEdit",
+              cache: false,
+              success: function (data) {
+                console.log(data)
+                var htmlData = '';
+                $(".AllPropertyListingDiv").show();
+                htmlData += '<option value="">Select Property for Chain</option>';
+                if (data.data.length > 0) {
+                  $.each(data.data, function (i, data) {
+                    console.log('val:', data)
+                    htmlData += '<option value="' + data._id + '">' + data.ps_property_name + '</option>';
+                  });
+                }
+                $('.ps_chain_property').html(htmlData);
+
               }
-              $('.ps_chain_property').html(htmlData);
+            });
 
-            }
-          });
-
-        } else {
-           $(".AllPropertyListingDiv").hide();
-        }
-      })
-      $(".ExistingPropClass").change(function(e){
-        //alert($(this).val())
-        var isexisting = $(this).val();
-        if(isexisting=='Residential'){
+          } else {
+            $(".AllPropertyListingDiv").hide();
+          }
+        })
+        $(".ExistingPropClass").change(function (e) {
+          //alert($(this).val())
+          var isexisting = $(this).val();
+          if (isexisting == 'Residential') {
+            $(".property_detial").show();
+          } else {
+            $(".property_detial").hide();
+          }
+        })
+        if ($('.ExistingPropClass').val() == 'Residential') {
           $(".property_detial").show();
-        }else{
+        } else {
           $(".property_detial").hide();
         }
+        if ($(".property_type_inEdit").val() == 'Chain') {
+          $(".AllPropertyListingDiv").show()
+        } else {
+          $(".AllPropertyListingDiv").hide()
+        }
       })
-      if($('.ExistingPropClass').val()=='Residential'){
-        $(".property_detial").show();
-      }else{
-        $(".property_detial").hide();
-      }
-      if($(".property_type_inEdit").val()=='Chain'){
-        $(".AllPropertyListingDiv").show()
-      }else{
-        $(".AllPropertyListingDiv").show()
-      }
-    })
-      </script>
-      <!-- in case of edit property chain property should no be show onw property in drop down -->
+    </script>
+    <!-- in case of edit property chain property should no be show onw property in drop down -->
     </body>
 
     </html>

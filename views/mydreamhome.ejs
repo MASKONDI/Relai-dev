@@ -56,10 +56,15 @@
                               <div class="dream-home-img">
 
                                 <%if(propertyImage.length>0){%>
-
+                                    <%if(propertyImage[i].length>0){%>
                                   <img src="propimg/<%=propertyImage[i][0].pps_property_image_name%>">
                                   <a href="/add-property?property_id=<%=row._id%>" class="editProperty"
                                     id="<%=row._id%>"><i class="fa fa-edit dream-home-edit-icon "></i></a>
+                                    <%}else{%>
+                                      <img src="images/nacary.png">
+                                      <a href="/add-property?property_id=<%=row._id%>" class="editProperty"
+                                        id="<%=row._id%>"><i class="fa fa-edit dream-home-edit-icon "></i></a>
+                                      <%}%>
                                   <%}else{%>
                                     <img src="images/nacary.png">
                                     <a href="javascript:void(0)" class=""> <i
