@@ -175,6 +175,9 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <%if(allDocument.length==0){%>
+                      <tr><td><h5>Docs & Files Not Uploaded</h5></td></tr>
+                      <%}else{%>
                     <% allDocument.forEach(function(row){ %>
                       <%if(row.cuds_document_type=='image'){%>
                         <tr>
@@ -254,6 +257,7 @@
                           </tr>
                           <%}%>
                             <% });%>
+                            <%}%>
                   </tbody>
                 </table>
               </div>
