@@ -202,8 +202,10 @@ router.post("/cust_register", (req, res) => {
               //req.flash('success_msg', 'You have register sucessfully.')
               //res.redirect("/signin")
               //Calling Submit token function for assign/createing invite property Object 
-              console.log("Token is ", req.body.token);
-              submit_token(token, customers._id);
+              if (req.body.token) {
+                console.log("Token is ", req.body.token);
+                submit_token(req.body.token, customers._id);
+              }
               console.log("registered customers data is ", customers);
               res.send({
                 customers: customers,
@@ -282,6 +284,11 @@ router.post("/cust_signin", (req, res) => {
           req.session.imagename = customers.cus_profile_image_name
         } else {
           req.session.imagename = '';
+        }
+        console.log("token is", req.body.token);
+        if (req.body.token) {
+          console.log("Token is ", req.body.token);
+          submit_token(req.body.token, customers._id);
         }
         //req.session.isChanged = true
         // Customer Matched
@@ -1312,10 +1319,9 @@ function invite_function(req, saved_property) {
 
         text: 'Dear \n' + req.body.ps_other_party_fullname + '\n\n' + 'you are invited in Relai plateform.\n\n' +
 
-          'We suggest you to please visit our Relai plateform and create your account \n' + 'Here is the registration link: http://' + req.headers.host + '/signup?email=' + req.body.ps_other_party_emailid + '\n\n' + '&token=' + token + '\n\n' +
+          'We suggest you to please visit our Relai plateform and create your account \n' + 'Here is the registration link: http://' + req.headers.host + '/signup?email=' + req.body.ps_other_party_emailid + '&token=' + token + '\n\n' +
 
-          'if you already registered please hit given url \n' + ' http://' + req.headers.host + '/signup?email=' + req.body.ps_other_party_emailid + '\n\n' + '&token=' + token + '\n\n' +
-
+          'if you already registered please hit given url \n' + ' http://' + req.headers.host + '/signin?email=' + req.body.ps_other_party_emailid + '&token=' + token + '\n\n' +
 
           'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
       };
@@ -2068,7 +2074,7 @@ async function add_new_property(propertyData, propertyImage, user_id) {
   }
   var PropertyBoject = {
     ps_unique_code: propertyData[0].ps_unique_code,
-    // ps_user_id: user_id, //storing customer_ID
+    ps_user_id: user_id, //storing customer_ID
     ps_property_name: propertyData[0].ps_property_name,
     ps_property_address: propertyData[0].ps_property_address,
     ps_property_country_id: propertyData[0].ps_property_country_id,

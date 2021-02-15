@@ -50,6 +50,7 @@
 
 
                   <div class="form-group ">
+                    <input type="hidden" class="form-control " id="token" name="token">
                     <input type="email" class="form-control signin-form-control" id="email" placeholder="Email ID"
                       name="cus_email_id" data-rule-required="true" data-rule-email="true"
                       data-msg-required="Please Enter Email Id!" data-msg-email="Please Enter Valid Email-ID!">
@@ -206,8 +207,8 @@
       submitHandler: function (form) {
         //$('#submit').attr('disabled', true);
         // form.submit();
-//$('.loader-box').show()
-        $('.loader-box').attr('style','display:flex !important');
+        //$('.loader-box').show()
+        $('.loader-box').attr('style', 'display:flex !important');
         var formData = $('#loginform').serialize();
         console.log('formData:', formData)
         $.ajax({
@@ -218,7 +219,7 @@
           success: function (data) {
             console.log(data);
             if (data.status == false) {
-            $('.loader-box').attr('style','display:none !important');
+              $('.loader-box').attr('style', 'display:none !important');
               //$('#changePasswordModal').modal('hide');
               // $('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> 0000'+data.message+'</div>')
               Swal.fire({
@@ -230,7 +231,7 @@
               })
 
             } else {
-            $('.loader-box').attr('style','display:none !important');
+              $('.loader-box').attr('style', 'display:none !important');
               Swal.fire({
                 icon: 'success',
                 title: data.message,
@@ -265,10 +266,33 @@
       if (succ_flash_msg != "" && succ_flash_msg != undefined) {
         setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
       }
-    });  
+    });
+
   </script>
 
-
+  <script>function getParameterByName(name, url = window.location.href) {
+      name = name.replace(/[\[\]]/g, '\\$&');
+      var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+    var email = getParameterByName('email'); // "lorem"
+    var token = getParameterByName('token');
+    alert(token);
+    if (token) {
+      $('#token').val(token);
+    }
+    if (email) {
+      $('#email').val(email);
+      $('#email').attr('readonly', 'readonly');
+    }
+    else {
+      $('#email').val('');
+      $('#email').attrRemove('readonly');
+    }
+  </script>
 
   </body>
 
