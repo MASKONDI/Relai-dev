@@ -41,8 +41,8 @@
               <input type="text" class="form-control form-control-fix2" id="taskName" placeholder="Task Name"
                 name="task_name" required>
 
-              <input type="date" class="form-control  form-control-fix2" id="duedate" placeholder="Due on"
-                name="duedate" required>
+              <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate" placeholder="Due on"
+                name="duedate" required placeholder="Due on">
               <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
                 placeholder="Add Notes(If any)"></textarea>
 
@@ -455,7 +455,7 @@
                   <div class="col-sm-6 col-lg-4">
                     <div class="do-list-sec">
                       <div class="do-list-header">
-                        <a href="/mydreamhome-details-to-dos">
+                        <a href="/to-do-list">
                           <h3 class="text-center">To-do list</h3>
                         </a>
                       </div>
@@ -465,7 +465,8 @@
                           <%TaskDetailObj.forEach(function(row,i){%>
                             <label class="check-todos">
                               <p>
-                                <%=row.ppts_task_name%><a href="/mydreamhome-details-to-dos"><img
+                                <!-- mydreamhome-details-to-dos -->
+                                <%=row.ppts_task_name%><a href="javascript:void(0)"><img
                                       src="images/recent-user-1.png"></a><em>
                                     <%=row.professionalName%>
                                   </em>
