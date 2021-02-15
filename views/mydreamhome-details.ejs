@@ -9,15 +9,15 @@
           <div class="modal-header text-center">
             <h2 class="modal-title w-100">Add Task</h2>
           </div>
-          <form name="addTaskForm" id="addTaskForm" action="" method="post">
+          <form name="addTaskForm_mydreamhome_detial" id="addTaskForm_mydreamhome_detial" action="" method="post">
             <!-- Modal body -->
             <div class="modal-body">
               <label class="">Describe this to-do</label>
               <div class="errmessage"></div>
-              <select class="form-control selectBox2 " style="height:48px" id="task_for" name="coms_complaint_for"
+              <select class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
                 data-rule-required="true" data-msg-required="professional is required!">
                 <option value="">Select professional</option>
-                <%hiredProfeshnoalList.forEach(function(row){%>
+                <%hiredProfeshnoalList.forEach(function(row,i){%>
                   <option value="<%=row._id%>">
                     <%=row.sps_fullname%>
                   </option>
@@ -29,7 +29,14 @@
               <select class="form-control selectBox2 phase_list" id="Phase" name="Phase" style="height: 48px;"
                 data-rule-required="true" data-msg-required="phase  is required" required>
                 <option value="">Select Phase</option>
-                <option value=""></option>
+                <%if(propertyDetailData.length>0){%>
+                  <%propertyDetailData[0].ps_phase_array.forEach(function(row,i){%>
+                <option value="<%=row.phase_name%>"><%=row.phase_name%></option>
+                <%});%>
+                <input type="hidden" name="property_id_add_task" value="<%=propertyDetailData[0]._id%>">
+                <%}else{%>
+                  <p>property data null</p>
+                  <%}%>
               </select>
               <input type="text" class="form-control form-control-fix2" id="taskName" placeholder="Task Name"
                 name="task_name" required>
@@ -42,8 +49,8 @@
             </div>
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-cancel" id="cancel_addtask_btn" data-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-cancel" id="addtask_btn" data-dismiss="">Add Task</button>
+              <button type="button" class="btn btn-cancel" id="cancel_addtask2_btn" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-cancel" id="addtask2_btn" data-dismiss="">Add Task</button>
             </div>
 
           </form>
@@ -453,7 +460,7 @@
                         </a>
                       </div>
                       <%if(TaskDetailObj.length==0){%>
-                        <h6>Phases Not Found</h6>
+                        <h6>Task Not Found</h6>
                         <%}else{%>
                           <%TaskDetailObj.forEach(function(row,i){%>
                             <label class="check-todos">
@@ -766,6 +773,66 @@
         });
 
       })
+    </script>
+    <script>
+      $(document).ready(function () {
+        $("#cancel_addtask2_btn").click(function (e) {
+          e.preventDefault()
+          $('#taskName').val('');
+          $('#duedate').val('');
+          $('#notes').val('')
+          $('#Phase').val('');
+        })
+        $("#addTaskForm_mydreamhome_detial").on('submit', function (e) {
+          e.preventDefault();
+          var formData = $(this).serialize();
+          
+          if (formData) {
+            $.ajax({
+              type: "POST",
+              data: formData,
+              url: "/api/addTask_from_Dreamhome_detial",
+              cache: false,
+              success: function (data) {
+                if (data.status == false) {
+                  
+                  Swal.fire({
+                    // position: 'top-end',
+                    icon: 'error',
+                    title: data.err_msg,
+                    showConfirmButton: true,
+                    confirmButtonColor: '#005377'
+                    //timer: 1500
+                  })
+
+
+                } else {
+                  
+                  console.log('meserrmessagesage:', data.success_msg)
+                  
+
+                  Swal.fire({
+                    // position: 'top-end',
+                    icon: 'success',
+                    title: data.success_msg,
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+                  })
+
+                  $('#taskName,#notes,#duedate').val('');
+                  
+
+                }
+
+              }
+            });
+            
+          } else {
+            alert('some thing wrong')
+          }
+        })
+      });
     </script>
     <%- include('my-script') -%>
       </body>

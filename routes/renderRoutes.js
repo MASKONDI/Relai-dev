@@ -792,14 +792,40 @@ app.get('/mydreamhome-details-to-dos', isCustomer, async (req, res) => {
 //     session: req.session
 //   });
 // });
-app.get('/add-property', isCustomer, (req, res) => {
+app.get('/add-property', isCustomer, async(req, res) => {
+  //req.session.propertyEditId
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
+  console.log("deep:==",req.query)
+  if (req.query.property_id != null) {
+    
+    var property_id = req.query.property_id;
+    var active_user = req.session.active_user_login;
+    req.session.propertyEditId = property_id
+    let propertyObj = await propertyDetail.GetPropertById(property_id, active_user);
+    let propertyImageObject = await propertyDetail.GetPropertImageById(property_id, active_user);
+    let propertyPlanImageObject = await propertyDetail.GetPropertPlanImageById(property_id, active_user);
+    // console.log("propertyObj",propertyObj)
+    // console.log("propertyImageObject",propertyImageObject)
+    // console.log("propertyPlanImageObject",propertyPlanImageObject)
+    res.render('add-property', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    propertyObj:propertyObj,
+    propertyImageObject:propertyImageObject,
+    propertyPlanImageObject:propertyPlanImageObject
+
+  });
+}else{
+ 
   res.render('add-property', {
     err_msg, success_msg, layout: false,
-    session: req.session
+    session: req.session,
+    propertyObj:'null'
   });
+}
 });
+
 
 app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
   req.session.pagename = 'mydreamhome';
@@ -1208,7 +1234,7 @@ app.post('/getPropertyDetail', isCustomer, async (req, res) => {
         })
 
       }
-
+      console.log("data",data)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('mydreamhome-details', {
@@ -1329,7 +1355,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
     let todoArray = [];
     var c = 0;
     let TaskDetailObj = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login);
-    //console.log("TaskDetailObj===================================================",TaskDetailObj)
+    console.log("TaskDetailObj===================================================",TaskDetailObj)
     for (var ph of TaskDetailObj) {
       const PhaseObject = JSON.stringify(ph);
       const to_do_data = JSON.parse(PhaseObject);
@@ -1372,7 +1398,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
           })
 
         }
-
+         console.log("data=======================",data)
         err_msg = req.flash('err_msg');
         success_msg = req.flash('success_msg');
         res.render('mydreamhome-details', {
@@ -2012,6 +2038,115 @@ app.get('/get-change-permision', isCustomer, async (req, res) => {
     console.log(err)
   })
 });
+app.get('/edit-property', isCustomer, async(req, res) => {
+  //req.session.propertyEditId
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  console.log("edit:==",req.query)
+  if (req.query.property_id != null) {
+    
+    var property_id = req.query.property_id;
+    var active_user = req.session.active_user_login;
+    req.session.propertyEditId = property_id
+    let propertyObj = await propertyDetail.GetPropertById(property_id, active_user);
+    let propertyImageObject = await propertyDetail.GetPropertImageById(property_id, active_user);
+    let propertyPlanImageObject = await propertyDetail.GetPropertPlanImageById(property_id, active_user);
+    // console.log("propertyObj",propertyObj)
+    // console.log("propertyImageObject",propertyImageObject)
+    // console.log("propertyPlanImageObject",propertyPlanImageObject)
+    res.render('edit-property', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    propertyObj:propertyObj,
+    propertyImageObject:propertyImageObject,
+    propertyPlanImageObject:propertyPlanImageObject
+
+  });
+}else{
+ 
+  res.render('edit-property', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    propertyObj:'null'
+  });
+}
+});
+app.get('/to-do-list', isCustomer, async (req, res) => {
+  var err_msg=null;
+  var success_msg=null;
+  console.log("todo")
+   req.session.pagename = 'to-do-list';
+   let propertyObj = await propertyDetail.GetAllProperty(req.session.user_id,req.session.active_user_login);
+  console.log('property in to-do-list', propertyObj);
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+ res.render('to-do-list', {
+   err_msg, success_msg, layout: false,
+   session: req.session,
+   propertyObj:propertyObj,
+   moment: moment,
+   TaskDetailObj: []
+
+ });
+
+
+});
+
+app.post('/get_property_by_id', isCustomer, async (req, res) => {
+ 
+if(req.body.property_id){
+  let singlePropertyObj = await propertyDetail.GetPropertById(req.body.property_id, req.session.active_user_login);
+  console.log('singlePropertyObj', singlePropertyObj);
+  if(singlePropertyObj){
+    return res.send({
+      'status':true,
+      'message':'single property found success',
+      'data':singlePropertyObj
+    })
+  }
+}else{
+  return res.send({
+    'status':false,
+    'message':'property id not found'
+  })
+}
+
+
+});   
+app.get('/take-action', isCustomer, async (req, res) => {
+  
+  console.log('from get take action url====',req.query)
+  var property_id = req.query.prop;
+  var phase_name = req.query.phase;
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name,req.session.active_user_login);
+  var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
+  console.log("taskObject by phase name take action",taskObject)
+
+  
+  if (taskObject) {
+    // return res.send({
+    //   'status':true,
+    //   'data':taskObject,
+    //   'redairect':'/mydreamhome-details-phase-a'
+    // })
+    req.session.pagename = 'to-do-list';
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('mydreamhome-details-phase-a', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      taskObject: taskObject,
+      propertyData: propertyData
+    });
+  }else{
+    return res.send({
+      'status':false,
+      'message':'some thing wrong'
+    })
+  }
+
+
+}) 
 
 module.exports = app;
 

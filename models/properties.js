@@ -48,7 +48,7 @@ const PropertiesSchema = new Schema({
     type: String,
     enum: ['buyer', 'seller', 'renovator']
   },
-  ps_other_party_fullName: {
+  ps_other_party_fullname: {
     type: String,
   },
   ps_other_party_emailid: {
@@ -108,6 +108,10 @@ const PropertiesSchema = new Schema({
   },
   ps_existing_property:{
     type:String
+  },
+  ps_other_property_type:{
+    type: String,
+    enum: ['Buyer', 'Seller', 'Renovator','StateAgents'],
   }
   
   

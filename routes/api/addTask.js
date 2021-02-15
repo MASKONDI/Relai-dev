@@ -15,6 +15,20 @@ module.exports.GetTaskById = function (ppts_property_id,ppts_is_active_user_flag
     });
 };
 
+module.exports.GetTaskByPhaseName = function (ppts_property_id,ppts_phase_name,ppts_is_active_user_flag) {
+    return new Promise( async function (resolve, reject) {
+       if(ppts_property_id!=null){
+        var data={$and:[{ppts_property_id: ppts_property_id,ppts_phase_name:ppts_phase_name,ppts_is_active_user_flag:ppts_is_active_user_flag}]}
+        PropertyProfessinoalTaskSchema.find(data).then(async(resp)=>{
+            console.log('resp:====',resp)
+            let responce = await resp
+             resolve(responce)
+         }).catch((err)=>{
+             reject(err)
+         })
+       }
+    });
+};
 
 module.exports.save_addPhase = function (pps_property_id,pps_phase_name,pps_phase_start_date,pps_phase_end_date,pps_is_active_user_flag) {
     return new Promise( async function (resolve, reject) {

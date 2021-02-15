@@ -589,6 +589,167 @@ router.get("/get_property_for_chain", isCustomer, async (req, res) => {
 
 
 });
+
+router.get("/get_property_for_chain_inEdit", isCustomer, async (req, res) => {
+
+  if (req.body) {
+    //console.log("req.body=============+++++++++$$$$$$$$$",req.body)
+    //console.log("req.query============",req.query)
+
+    console.log("edit chain property body:=", req.session);
+    let AllProperty = await PropertyHelper.GetAllPropertyInEdit(req.session.user_id, req.session.active_user_login, req.query.property_id);
+    console.log('AllProperty wher not own prop========', AllProperty);
+    if (AllProperty) {
+      return res.send({
+        'message': 'Select Property',
+        'status': true,
+        'data': AllProperty
+
+      });
+    } else {
+      return res.send({
+        'message': 'Something Wrong Try Again ',
+        'status': false,
+        'redirect': '/add-property'
+      });
+    }
+  }
+
+
+});
+router.post('/Editproperty', isCustomer, async (req, res) => {
+  upload(req, res, async () => {
+    // console.log("deepak ji--++++++++++++++++++ ", req.body)
+    if (req.body.editPropertyId != '') {
+      var property_id = req.query.property_id;
+      var active_user = req.session.active_user_login;
+      req.session.propertyEditId = property_id
+      let edit_property_Obj = await PropertyHelper.EditPropertyById(req);
+      if (edit_property_Obj) {
+        //console.log(edit_property_Obj);
+        return res.send({
+          'message': 'property edit successfully',
+          'status': true,
+          'property_id': req.body.editPropertyId
+        })
+      }
+
+
+    } else {
+      return res.send({
+        'message': 'property id not found in edit property',
+        'status': false,
+
+      })
+    }
+  });
+});
+
+router.post('/EditpropertyImage', isCustomer, async (req, res) => {
+  upload(req, res, async () => {
+    //console.log("edit property image body data--++++++++++++++++++ ", req.body);
+    //console.log("edit property file data--++++++++++++++++++ ", req.files);
+    if (req.files.propertiespic) {
+      // console.log("A")
+      //let edit_property_img_Obj = await PropertyHelper.EditPropertyImageById(req);
+      //if(edit_property_img_Obj){
+      //console.log("edit_property_img_Obj",edit_property_img_Obj)
+      return res.send({
+        'message': 'property image successfully update',
+        'status': true,
+        'property_id': req.body.property_id,
+        'flage': 'A'
+      })
+      //}
+    } else {
+
+      return res.send({
+        'message': 'property image successfully update',
+        'status': true,
+        'property_id': req.body.property_id,
+        'flage': 'A'
+      })
+    }
+
+  });
+});
+router.post('/EditpropertyPlanImage', isCustomer, async (req, res) => {
+  upload(req, res, async () => {
+    //console.log("edit property plan image data--++++++++++++++++++ ", req.body,req.files);
+    if (req.files.planImage) {
+      //console.log("plan A")
+      // let edit_property_paln_img_Obj = await PropertyHelper.EditPropertyPlanImageById(req);
+      // if(edit_property_paln_img_Obj){
+      return res.send({
+        'message': 'property successfully update',
+        'status': true,
+        'redirect': '/mydreamhome',
+        'flage': 'A'
+      })
+      // }
+    } else {
+      console.log("plan B")
+      return res.send({
+        'message': 'property successfully update',
+        'status': true,
+        'redirect': '/mydreamhome',
+        'flage': 'A'
+      })
+    }
+
+  });
+});
+router.post('/Edit_property_Image', isCustomer, async (req, res) => {
+  upload(req, res, async () => {
+    console.log("prop req.body", req.body);
+    console.log("prop req.file ", req.files);
+    if (req.files.propertiespic) {
+      console.log("A")
+      let edit_property_img_Obj = await PropertyHelper.EditPropertyImageById(req);
+      if (edit_property_img_Obj) {
+        //console.log("edit_property_img_Obj",edit_property_img_Obj)
+        return res.send({
+          'message': 'property image successfully update',
+          'status': true,
+          'property_id': req.body.property_id
+        })
+      }
+    } else {
+
+      return res.send({
+        'message': 'property image successfully update',
+        'status': true,
+        'property_id': req.body.property_id
+      })
+    }
+
+  });
+});
+router.post('/Edit_property_Plan_Image', isCustomer, async (req, res) => {
+  upload(req, res, async () => {
+    console.log("plan req.files: ", req.files);
+    console.log("plan req.body: ", req.body);
+    if (req.files.planImage) {
+      console.log("plan A")
+      let edit_property_paln_img_Obj = await PropertyHelper.EditPropertyPlanImageById(req);
+      if (edit_property_paln_img_Obj) {
+        return res.send({
+          'message': 'property successfully update',
+          'status': true,
+          'redirect': '/mydreamhome'
+        })
+      }
+    } else {
+      console.log("plan B")
+      return res.send({
+        'message': 'property successfully update',
+        'status': true,
+        'redirect': '/mydreamhome'
+      })
+    }
+
+  });
+});
 //=============property add section close====================//
 /* -------------------------------------------------------------------------------------------------
 GET : fetch or search the service providers data based on name, surname, qualifications,
@@ -1731,6 +1892,7 @@ router.post('/add-feedback', isCustomer, (req, res) => {
 });
 
 
+
 /************ Tagging Property with seller*/
 router.post('/refresh', (req, res) => {
   console.log('session is ', req.session.email);
@@ -1784,6 +1946,59 @@ router.post('/refresh', (req, res) => {
 
 
 
+router.post("/addTask_from_Dreamhome_detial", (req, res) => {
+
+  console.log("addTask_fromDreamgome=========", req.body)
+  if (req.body.Phase == '' || req.body.Phase == undefined || req.body.service_provider_id == '') {
+    return res.send({
+      'err_msg': 'Please Select All Fild',
+      'status': false,
+      'redirect': '/professionals-hirenow'
+    });
+
+
+  } else {
+    console.log("addTask post:", req.body);
+    const newTask = new PropertyProfessinoalTaskSchema({
+      ppts_property_id: req.body.property_id_add_task,
+      ppts_user_id: req.session.user_id,
+      ppts_task_name: req.body.task_name,
+      ppts_assign_to: req.body.service_provider_id,
+      ppts_due_date: req.body.duedate,
+      //ppts_phase_id: req.body.Phase,
+      ppts_phase_name: req.body.Phase,
+      ppts_is_active_user_flag: req.session.active_user_login,
+      ppts_note: req.body.notes
+    });
+    newTask
+      .save()
+      .then(addedTask => {
+        console.log("server response is addedTask :", addedTask);
+        //res.json({ status: 1, message: 'Task Add Successfully', data: addedTask });
+        if (addedTask) {
+
+          return res.send({
+            'success_msg': 'Task Add Successfully',
+            'status': true,
+            //'redirect': '/professionals-hirenow'
+          });
+          // res.redirect("/professionals-hirenow")
+        } else {
+          return res.send({
+            'err_msg': 'Please Add Task',
+            'status': false,
+            //'redirect': '/professionals-hirenow'
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        req.flash('err_msg', 'Something went wrong please try again later.');
+        res.redirect('/mydreamhome');
+      });
+  }
+})
+
 
 /************* Verifing Sercret Token */
 router.post('/submit_token', (req, res) => {
@@ -1830,4 +2045,6 @@ router.post('/submit_token', (req, res) => {
 
 
 
+
 module.exports = router;
+
