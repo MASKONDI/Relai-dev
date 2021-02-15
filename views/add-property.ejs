@@ -264,7 +264,7 @@
                             <div class="row">
                               <div class="col-sm-12 col-lg-4">
                                 <%if(propertyObj=='null'){%>
-                                  <select name="ps_existing_property" class=" form-control selectBox5"
+                                  <select name="ps_existing_property" class=" form-control selectBox5 ExistingPropClass"
                                     id="ps_existing_property" required style="height: 48px;" data-rule-required="true"
                                     data-msg-required="Existing property Type is required!">
                                     <option value="">Select Existing Property</option>
@@ -272,7 +272,7 @@
                                     <option value="Residential">Residential</option>
                                   </select>
                                   <%}else{%>
-                                    <select name="ps_existing_property" class=" form-control selectBox5"
+                                    <select name="ps_existing_property" class=" form-control selectBox5 ExistingPropClass"
                                       id="ps_existing_property" required style="height: 48px;" data-rule-required="true"
                                       data-msg-required="Existing property Type is required!">
                                       <option value="<%=propertyObj.ps_existing_property%>">
@@ -296,7 +296,7 @@
                                     <option value="Buyer">Buyer</option>
                                     <option value="Seller">Seller</option>
                                     <option value="Renovator">Renovator</option>
-                                    <option value="StateAgents">StateAgents</option>
+                                    <option value="State Agents">State Agents</option>
                                   </select>
                                   <%}else{%>
                                     <select name="ps_other_property_type" class=" form-control selectBox5"
@@ -360,7 +360,7 @@
                           </div>
                           <div class="input-field">
                             <div class="row">
-                              <div class="col-sm-12 col-lg-4">
+                              <div class="col-sm-12 col-lg-4 ">
                                 <%if(propertyObj=='null'){%>
                                   <input type="number" class="form-control property-form-control-size-fix " id="area"
                                     placeholder="Area(sq. ft.)*" name="ps_property_area" data-rule-required="true"
@@ -371,7 +371,7 @@
                                       data-msg-required="Area is required!" value="<%=propertyObj.ps_property_area%>">
                                     <%}%>
                               </div>
-                              <div class="col-sm-12 col-lg-4">
+                              <div style="display:none;" class="col-sm-12 col-lg-4 property_detial">
                                 <%if(propertyObj=='null'){%>
                                   <input type="number" class="form-control property-form-control-size-fix " id="bedroom"
                                     placeholder="Bedroom*" name="ps_property_bedroom" data-rule-required="true"
@@ -383,7 +383,7 @@
                                       value="<%=propertyObj.ps_property_bedroom%>">
                                     <%}%>
                               </div>
-                              <div class="col-sm-12 col-lg-4">
+                              <div style="display:none;" class="col-sm-12 col-lg-4 property_detial">
                                 <%if(propertyObj=='null'){%>
                                   <input type="number" class="form-control property-form-control-size-fix " id="bedroom2"
                                     placeholder="Bathroom*" name="ps_property_bathroom" data-rule-required="true"
@@ -2504,6 +2504,15 @@
 
         } else {
            $(".AllPropertyListingDiv").hide();
+        }
+      })
+      $(".ExistingPropClass").change(function(e){
+        //alert($(this).val())
+        var isexisting = $(this).val();
+        if(isexisting=='Residential'){
+          $(".property_detial").show();
+        }else{
+          $(".property_detial").hide();
         }
       })
     })

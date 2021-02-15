@@ -111,7 +111,7 @@ const PropertiesSchema = new Schema({
   },
   ps_other_property_type:{
     type: String,
-    enum: ['Buyer', 'Seller', 'Renovator','StateAgents'],
+    enum: ['Buyer', 'Seller', 'Renovator','State Agents'],
   }
   
   
