@@ -1647,7 +1647,7 @@ router.post('/new-raise-a-complaint', isCustomer, (req, res) => {
 
       newComplaintDetails = new ComplaintDetailsSchema({
         comsd_id: ComplaintId,
-        comsd_user_id: req.body.user_id,
+        comsd_user_id: req.session.user_id,
         comsd_complaint_note: req.body.coms_complaint_note,
         comsd_user_name: req.session.name,
         comsd_user_profile_img: req.session.imagename,

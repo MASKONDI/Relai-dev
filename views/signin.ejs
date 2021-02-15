@@ -206,7 +206,8 @@
       submitHandler: function (form) {
         //$('#submit').attr('disabled', true);
         // form.submit();
-
+//$('.loader-box').show()
+        $('.loader-box').attr('style','display:flex !important');
         var formData = $('#loginform').serialize();
         console.log('formData:', formData)
         $.ajax({
@@ -217,6 +218,7 @@
           success: function (data) {
             console.log(data);
             if (data.status == false) {
+            $('.loader-box').attr('style','display:none !important');
               //$('#changePasswordModal').modal('hide');
               // $('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> 0000'+data.message+'</div>')
               Swal.fire({
@@ -228,6 +230,7 @@
               })
 
             } else {
+            $('.loader-box').attr('style','display:none !important');
               Swal.fire({
                 icon: 'success',
                 title: data.message,

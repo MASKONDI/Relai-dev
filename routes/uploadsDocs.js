@@ -19,6 +19,7 @@ const PropertiesPictureSchema = require("../models/properties_picture");
 const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
 const CustomerUploadDocsSchema = require("../models/customer_upload_document");
 const ComplaintsSchema = require("../models/Complaints");
+const ComplaintsDetailsSchema = require("../models/complaint_details_model");
 const CustomerSchema = require("../models/customers");
 const DateTime = require('node-datetime/src/datetime');
 //** Upload Document Start */
@@ -83,10 +84,10 @@ app.post('/upload-profile-pic', upload.single('profile-pic'), (req, res, next) =
         console.log("Something went wrong")
       }
       else {
-
-        // MessageSchema.findByIdAndUpdate({ sms_sender_id: user_id }, { $set: { cus_profile_image_name: obj.cus_profile_image_name, cus_profile_image: obj.cus_profile_image, cus_updated_at: Date.now() } });
-
-        console.log("file submitting successfully : ", customers);
+        console.log('myyyyyyyyyyyyyyyyyyyyyy:',obj.cus_profile_image_name);
+        console.log('ffffffffffffffff:',req.session.user_id);
+        ComplaintsDetailsSchema.updateOne({comsd_user_id: req.session.user_id}, { $set: { comsd_user_profile_img: obj.cus_profile_image_name } });
+       // console.log("file submitting successfully : ", profile);
         //TODO: Want to update session after editprofile
         req.session.imagename = obj.cus_profile_image_name
         // req.session._id = doc.user_id;
@@ -104,6 +105,8 @@ app.post('/upload-profile-pic', upload.single('profile-pic'), (req, res, next) =
         //req.session.isChanged();
         console.log("req session is :", req.session);
         res.redirect('/dashboard')
+
+    
       }
     });
 });

@@ -498,6 +498,7 @@
         });
         $('#hirenowform').on('submit', function (e) {
           e.preventDefault();
+          $('.loader-box').attr('style','display:flex !important');
           var formdata = $(this).serialize();
           console.log('formdata:', formdata);
           $.ajax({
@@ -508,6 +509,7 @@
             success: function (data) {
               console.log(data)
               if (data.status == false) {
+                $('.loader-box').attr('style','display:none !important');
                 //$('#message').show();
                 //$('.message').html('<span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
                 //setTimeout(function () { $('.message').html(''); }, 5000);
@@ -524,6 +526,7 @@
                 })
 
               } else {
+                $('.loader-box').attr('style','display:none !important');
                 // $('.message').html('<span class="error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
                 //setTimeout(function () { $('.message').html(''); }, 5000);
                 //console.log('message:', data.success_msg)

@@ -223,11 +223,7 @@
 
 
             <div class="dashboard-inner">
-              <div style="display:none;" id="loading">
-                <img id="loading-image" src="https://thumbs.gfycat.com/BitterEarnestBeardeddragon-small.gif" alt="Loading..." />
-              </div>
               <div id="filter_data" class="row">
-
                 <% data.forEach(function(row){ %>
                   <div class="col-lg-3">
                     <div class="card card-fix2">
@@ -327,7 +323,7 @@
       $("#professional-role li a").click(function (e) {
         $('#professional-role li a').removeClass('active_role');
         $(this).addClass('active_role');
-        $('#loading').show();
+        $('.loader-box').attr('style','display:flex !important');
         var role = $(this).data('role');
         $.ajax({
           type: "GET",
@@ -337,7 +333,7 @@
           url: "/professionals-filter",
           cache: false,
           success: function (html) {
-            $('#loading').hide();
+            $('.loader-box').attr('style','display:none !important');
             console.log('result:', html.filterData)
             var htmlData = '';
             if (html.filterData.length > 0) {
@@ -357,7 +353,7 @@
       //$("#professional-search-btn").click(function (e) {
         $('#professional-search-form').on('submit', function (e) {
           e.preventDefault();
-        $('#loading').show();
+          $('.loader-box').attr('style','display:flex !important');
         var searchVal = $('.professional-search').val();
         $.ajax({
           type: "GET",
@@ -367,7 +363,7 @@
           url: "/professionals-searchbar",
           cache: false,
           success: function (html) {
-            $('#loading').hide();
+            $('.loader-box').attr('style','display:none !important');
             console.log('result:', html.filterData)
             var htmlData = '';
             if (html.filterData.length > 0) {
