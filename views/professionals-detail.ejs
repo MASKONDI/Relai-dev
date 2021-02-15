@@ -18,6 +18,19 @@
               <!-- <div class="alert alert-info" id="taskmsg"></div> -->
               <!-- <input type="text" class="form-control form-control-fix2" id="subject" placeholder="Instruction"
                 name="todotask" required> -->
+                <%if(propertyObj.length==0){%>
+                  <%}else{%>
+                    <select class="form-control selectBox2 " id="property_id" name="property_id" style="height: 48px;"
+                data-rule-required="true" data-msg-required="property  is required" required>
+                <option value="">Select Property</option>
+                <%propertyObj.forEach(function(row,i){%>
+                      
+                     <option value="<%=row._id%>"><%=row.ps_property_name%></option>
+                
+              
+                      <%});%>
+                    </select>
+                      <%}%>
               <select class="form-control selectBox2 phase_list" id="Phase" name="Phase" style="height: 48px;"
                 data-rule-required="true" data-msg-required="phase  is required" required>
                 <option value="">Select Phase</option>
@@ -31,7 +44,7 @@
               <input type="hidden" id="professionalId" name="professionalId" value="">
               <input type="hidden" name="currentUserId" value="<%=session.user_id%>">
 
-              <input type="hidden" name="property_id" class="property_id" value="">
+              <!-- <input type="hidden" name="property_id" class="property_id" value=""> -->
               <!-- <input type="hidden" name="phase_id" id="phase_id" value=""> -->
               <input type="date" class="form-control  form-control-fix2" id="duedate" placeholder="Due on"
                 name="duedate" required>

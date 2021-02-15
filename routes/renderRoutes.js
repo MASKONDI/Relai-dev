@@ -475,8 +475,13 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
       } else {
         avgRating = 0;
       }
-
-
+      var propertyObjArray=[];
+      let propertyObj = await PropertyProfessionalHelper.GetAllHiredProertyByUserId(req.query.id,req.session.active_user_login,req.session.user_id);
+      for(var pr of propertyObj){
+        var property_object = await pr;
+        propertyObjArray.push(property_object)
+      }
+      console.log("propertyObj========",propertyObjArray)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('professionals-detail', {
@@ -488,7 +493,8 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
         professionalRating: professionalRating,
         hiredProfeshnoal: hiredProfeshnoal,
         avgRating:avgRating,
-        moment: moment
+        moment: moment,
+        propertyObj:propertyObjArray[0]
       });
 
     }

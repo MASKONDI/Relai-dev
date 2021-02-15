@@ -1,5 +1,6 @@
 const PropertyProfessionalSchema=require("../../models/property_professional_Schema");
 const ServiceProviderSchema=require("../../models/service_providers");
+const PropertiesSchema = require("../../models/properties");
 module.exports.GetProfessionalById = function (ppts_assign_to) {
     return new Promise( async function (resolve, reject) {
        // console.log('hello',professional_id)
@@ -26,6 +27,31 @@ module.exports.removeProfessionalById = function (pps_service_provider_id,pps_pr
        if(resp){
           
            resolve(resp)
+       }
+       
+       
+    }).catch((err)=>{
+        reject(err)
+    })
+    });
+};
+
+module.exports.GetAllHiredProertyByUserId = function (pps_service_provider_id,pps_is_active_user_flag,user_id) {
+    return new Promise( async function (resolve, reject) {
+       // console.log('hello',professional_id)
+       var data={$and:[{pps_service_provider_id:pps_service_provider_id,pps_is_active_user_flag:pps_is_active_user_flag,pps_user_id:user_id}]}
+   await PropertyProfessionalSchema.find(data).then(async(resp)=>{
+       console.log("resp=:",resp)
+       if(resp){
+           var pushArray=[]
+          for(var k of resp){ 
+          var allhiredProp = await PropertiesSchema.find({_id:k.pps_property_id})
+                console.log("kkkkkkkkkkkkkkkkkk",k)
+                pushArray.push(allhiredProp)
+          }
+           var tt=await pushArray;
+           // console.log("ppppppppppppppppp",allhiredProp)
+           resolve(tt)
        }
        
        
