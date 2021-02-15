@@ -76,11 +76,11 @@
                                 <div class="col-sm-12 col-lg-4">
                                   <%if(propertyObj=='null'){%>
                                     <input type="text" class="form-control property-form-control-size-fix "
-                                      id="propertyname" placeholder="Hilton Avenue Flat*" name="ps_property_name"
+                                      id="propertyname" placeholder="Add Property Name*" name="ps_property_name"
                                       data-rule-required="true" data-msg-required="Property Name is required!" value="">
                                     <%}else{%>
                                       <input type="text" class="form-control property-form-control-size-fix "
-                                        id="propertyname" placeholder="Hilton Avenue Flat*" name="ps_property_name"
+                                        id="propertyname" placeholder="Edit Property Name*" name="ps_property_name"
                                         data-rule-required="true" data-msg-required="Property Name is required!"
                                         value="<%=propertyObj.ps_property_name%>">
                                       <%}%>
@@ -159,11 +159,11 @@
                               </div>
                               <div class="col-sm-12 col-lg-4">
                                 <%if(propertyObj=='null'){%>
-                                  <input type="text" class="form-control property-form-control-size-fix " id="zipcode"
+                                  <input type="number" class="form-control property-form-control-size-fix " id="zipcode"
                                     placeholder="Zip code*" name="ps_property_zipcode" data-rule-required="true"
                                     data-msg-required="Zipcode is required!" value="">
                                   <%}else{%>
-                                    <input type="text" class="form-control property-form-control-size-fix " id="zipcode"
+                                    <input type="number" class="form-control property-form-control-size-fix " id="zipcode"
                                       placeholder="Zip code*" name="ps_property_zipcode" data-rule-required="true"
                                       data-msg-required="Zipcode is required!"
                                       value="<%=propertyObj.ps_property_zipcode%>">
@@ -203,12 +203,12 @@
                                 <%if(propertyObj=='null'){%>
                                   <input type="email" class="form-control property-form-control-size-fix "
                                     id="emailaddress" placeholder="Enter email address*" name="ps_other_party_emailid"
-                                    value="" data-rule-required="true" data-msg-required="Email is required!">
+                                    value="" data-rule-required="true" data-msg-required="Email is required!" required>
                                   <%}else{%>
                                     <input type="email" class="form-control property-form-control-size-fix "
                                       id="emailaddress" placeholder="Enter email address*" name="ps_other_party_emailid"
                                       value="<%=propertyObj.ps_other_party_emailid%>" data-rule-required="true"
-                                      data-msg-required="Email is required!">
+                                      data-msg-required="Email is required!" required>
                                     <%}%>
                               </div>
                               <div class="col-sm-12 col-lg-4">
@@ -266,15 +266,15 @@
                                 <%if(propertyObj=='null'){%>
                                   <select name="ps_existing_property" class=" form-control selectBox5"
                                     id="ps_existing_property" required style="height: 48px;" data-rule-required="true"
-                                    data-msg-required="existing property Type is required!">
-                                    <option value="">Select existing Property</option>
+                                    data-msg-required="Existing property Type is required!">
+                                    <option value="">Select Existing Property</option>
                                     <option value="Commercial">Commercial</option>
                                     <option value="Residential">Residential</option>
                                   </select>
                                   <%}else{%>
                                     <select name="ps_existing_property" class=" form-control selectBox5"
                                       id="ps_existing_property" required style="height: 48px;" data-rule-required="true"
-                                      data-msg-required="existing property Type is required!">
+                                      data-msg-required="Existing property Type is required!">
                                       <option value="<%=propertyObj.ps_existing_property%>">
                                         <%=propertyObj.ps_existing_property%>
                                       </option>
@@ -329,7 +329,7 @@
                               <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
                                 <select name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
                                   id="ps_chain_property" style="height: 48px;">
-                                  <option value="">Select Property for Chain</option>
+                                  <option value="">Select Property For Chain</option>
 
                                 </select>
                               </div>
@@ -337,7 +337,7 @@
                                 <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
                                   <select name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
                                     id="ps_chain_property" style="height: 48px;">
-                                    <option value="">Select Property for Chain</option>
+                                    <option value="">Select Property For Chain</option>
   
                                   </select>
                                 </div>
@@ -362,22 +362,22 @@
                             <div class="row">
                               <div class="col-sm-12 col-lg-4">
                                 <%if(propertyObj=='null'){%>
-                                  <input type="text" class="form-control property-form-control-size-fix " id="area"
+                                  <input type="number" class="form-control property-form-control-size-fix " id="area"
                                     placeholder="Area(sq. ft.)*" name="ps_property_area" data-rule-required="true"
                                     data-msg-required="Area is required!" value="">
                                   <%}else{%>
-                                    <input type="text" class="form-control property-form-control-size-fix " id="area"
+                                    <input type="number" class="form-control property-form-control-size-fix " id="area"
                                       placeholder="Area(sq. ft.)*" name="ps_property_area" data-rule-required="true"
                                       data-msg-required="Area is required!" value="<%=propertyObj.ps_property_area%>">
                                     <%}%>
                               </div>
                               <div class="col-sm-12 col-lg-4">
                                 <%if(propertyObj=='null'){%>
-                                  <input type="text" class="form-control property-form-control-size-fix " id="bedroom"
+                                  <input type="number" class="form-control property-form-control-size-fix " id="bedroom"
                                     placeholder="Bedroom*" name="ps_property_bedroom" data-rule-required="true"
                                     data-msg-required="Bedroom field is required!" value="">
                                   <%}else{%>
-                                    <input type="text" class="form-control property-form-control-size-fix " id="bedroom"
+                                    <input type="number" class="form-control property-form-control-size-fix " id="bedroom"
                                       placeholder="Bedroom*" name="ps_property_bedroom" data-rule-required="true"
                                       data-msg-required="Bedroom field is required!"
                                       value="<%=propertyObj.ps_property_bedroom%>">
@@ -385,11 +385,11 @@
                               </div>
                               <div class="col-sm-12 col-lg-4">
                                 <%if(propertyObj=='null'){%>
-                                  <input type="text" class="form-control property-form-control-size-fix " id="bedroom2"
+                                  <input type="number" class="form-control property-form-control-size-fix " id="bedroom2"
                                     placeholder="Bathroom*" name="ps_property_bathroom" data-rule-required="true"
                                     data-msg-required="Bathroom  field is required!" value="">
                                   <%}else{%>
-                                    <input type="text" class="form-control property-form-control-size-fix "
+                                    <input type="number" class="form-control property-form-control-size-fix "
                                       id="bedroom2" placeholder="Bathroom*" name="ps_property_bathroom"
                                       data-rule-required="true" data-msg-required="Bathroom  field is required!"
                                       value="<%=propertyObj.ps_property_bathroom%>">
