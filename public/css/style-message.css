@@ -137,9 +137,18 @@ ul.docs-list li span {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.permission-modal .modal-footer {
+/* .permission-modal .modal-footer {
     display: list-item;
-}
+} */
 span#comment-error {
     color: red;
+}
+.complaints a:hover {
+    color: #333 !important;
+}
+.message-user-img img {
+    vertical-align: middle;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
 }

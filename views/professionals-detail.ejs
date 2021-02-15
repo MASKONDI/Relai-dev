@@ -74,6 +74,8 @@
           </div>
           <div class="col-sm-12 col-lg-10">
             <div class="dashboard-inner professtional_section">
+
+              
               <div class="row">
                 <div class="col-sm-12 col-lg-12">
                   <div class=" user-fix">
@@ -97,7 +99,7 @@
                       </span>
                     </div>
                     <div class="float-left icon-fix2">
-                      <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span>4.0
+                      <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span><%= avgRating%>
                         Rating</span>
                     </div>
 
@@ -118,13 +120,6 @@
                   </div>
                 </div>
               </div>
-              <!-- <div class="float-left icon-fix2">
-                <a href="#" class="btn btn-add-property">Hire Now</a>
-              </div>
-              <div class="float-right btn-hire">
-                <a href="#" class="btn btn-add-property">Drop a message</a>
-              </div> -->
-
 
 
               <div class="row">
@@ -159,6 +154,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="row">
                 <div class="col-sm-12 col-lg-12">
                   <div class="professional-inner">
@@ -169,35 +165,7 @@
                       <div class="float-right">
                         <p>0 Videos &bull; <%=portpolioImage.length%> Photos</p>
                       </div>
-                      <!-- <div id="demo" class="carousel slide " data-ride="carousel">
-                       
-                        <div class="carousel-inner">
-                          <%if(portpolioImage.length>0){%>
-                              <% var c=0 ; portpolioImage.forEach(function(row){ %>
-                                  <%if(c==0){%>
-                                    <div class="carousel-item active">
-                                      <img class="image-size-fix" src="upload/<%=row.spps_filename%>" alt="">
-                                    </div>
-                                  <%}else{%>
-                                      <div class="carousel-item ">
-                                        <img class="image-size-fix" src="upload/<%=row.spps_filename%>" alt="">
-                                      </div>
-                                  <%}%>
-                              <% c++; });%>
-                            <%}else{%>
-                              <h6>Portfolio Image Not Uploaded<h6>
-                            <%}%>
-
-                        </div>
-                        
-                        <a class="carousel-control-prev" href="#demo" data-slide="prev">
-
-                          <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        </a>
-                        <a class="carousel-control-next" href="#demo" data-slide="next">
-                          <i class="fa fa-angle-right" aria-hidden="true"></i>
-                        </a>
-                      </div> -->
+                
 
                       <div id="demo" class="carousel slide " data-ride="carousel">
                         <%if(portpolioImage.length>0){%>
@@ -231,85 +199,87 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-sm-12 col-lg-12">
-                    <div class="professional-inner">
-                      <div class="professional-files-section">
-                        <div class="row">
-                          <div class="col-lg-6">
-                            <div class="float-left image-fix">
-                              <h6><b>Feedback</b></h6>
-                            </div>
-                          </div>
-                          <div class="col-lg-6">
-                            <div class="text-right">
-                              <a href="JavaScript:void(0);" type="button" data-toggle="modal"
-                                data-target="#feedbackModal">
-                                <div class="float-right image-fix">
-                                  <img class="" style="width:13%" src="images/write-feedback.png"
-                                    alt="Card image cap">&nbsp;<span class="feedback-text">
-                                    Write a feedback
-                                  </span>
-                                </div>
-                              </a>
-                            </div>
+              </div>
 
+              
+              <div class="row">
+                <div class="col-sm-12 col-lg-12">
+                  <div class="professional-inner">
+                    <div class="professional-files-section">
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <div class="float-left image-fix">
+                            <h6><b>Feedback</b></h6>
                           </div>
                         </div>
-
-                        <div class="about-section">
-                          <div class="row">
-                            <div style="order: 2;" class="col col-lg-6">
-                              <% var plantRateSum = 0;  %>
-                              <% var c=1 ; var total = professionalRating.length; professionalRating.forEach(function(prat){ %>
-                                <% plantRateSum += parseInt(prat.sprs_rating) %> 
-                                <div class="side-feedback-sec">
-                                  <div class="img-rating-box">
-                                    <div class="img-side-part">
-                                      <img src="upload/<%= prat.sprs_submitted_profile_img %>" alt="">
-                                      <b><%= prat.sprs_submitted_by_name %></b>
-                                    </div>
-                                    <div class="rating-star">
-                                      <p>
-                                        <% for (var i =1; i <=5;  i++ ) { %>
-                                            <% if(i <= prat.sprs_rating){ %> 
-                                              <i class="fa fa-star"></i>
-                                              <% }else{ %> <i class="fa fa-star-o"></i> <% } } %>
-                                        <!-- <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-half-o"></i>
-                                        <i class="fa fa-star-o"></i> -->
-                                      </p>
-                                      <p> <%=moment(prat.sprs_created_at).format("Do MMM, YYYY"); %></p>
-                                    </div>
-                                  </div>
-                                  <div class="comment-text">
-                                    <p><%= prat.sprs_review %></p>
-                                  </div>
-                                </div>
-                              <% c++; });  var avgRating = Math.round(plantRateSum/total);  %>
-                              <!-- <%= total %>
-                              <%= plantRateSum %> -->
-                              
-                            </div>
-                            <div style="order: 1;" class="col-lg-6">
-                              <div class="float-left ">
-                                <h1 class="pointer-fix" style="color: #005377;"><% if(!isNaN(avgRating)){ %><%= avgRating.toFixed(1) %> <% }else{%>0.0<% } %></h1>
-                                <p style="margin-left: 20px;">out of 5</p>
+                        <div class="col-lg-6">
+                          <div class="text-right">
+                            <a href="JavaScript:void(0);" type="button" data-toggle="modal"
+                              data-target="#feedbackModal">
+                              <div class="float-right image-fix">
+                                <img class="" style="width:13%" src="images/write-feedback.png"
+                                  alt="Card image cap">&nbsp;<span class="feedback-text">
+                                  Write a feedback
+                                </span>
                               </div>
-                              <div>
-                                <img class="feedback-img" src="images/feedback-2.png" alt="">
-                              </div>
-                            </div>
-
+                            </a>
                           </div>
+              
                         </div>
                       </div>
+                        <div class="row">
+                          <div style="order: 2;" class="col col-lg-6">
+                            <% var plantRateSum = 0;  %>
+                            <% var c=1 ; var total = professionalRating.length; professionalRating.forEach(function(prat){ %>
+                              <% plantRateSum += parseInt(prat.sprs_rating) %> 
+                              <div class="side-feedback-sec">
+                                <div class="img-rating-box">
+                                  <div class="img-side-part">
+                                    <img src="upload/<%= prat.sprs_submitted_profile_img %>" alt="">
+                                    <b><%= prat.sprs_submitted_by_name %></b>
+                                  </div>
+                                  <div class="rating-star">
+                                    <p>
+                                      <% for (var i =1; i <=5;  i++ ) { %>
+                                          <% if(i <= prat.sprs_rating){ %> 
+                                            <i class="fa fa-star"></i>
+                                            <% }else{ %> <i class="fa fa-star-o"></i> <% } } %>
+                                      <!-- <i class="fa fa-star"></i>
+                                      <i class="fa fa-star"></i>
+                                      <i class="fa fa-star"></i>
+                                      <i class="fa fa-star-half-o"></i>
+                                      <i class="fa fa-star-o"></i> -->
+                                    </p>
+                                    <p> <%=moment(prat.sprs_created_at).format("Do MMM, YYYY"); %></p>
+                                  </div>
+                                </div>
+                                <div class="comment-text">
+                                  <p><%= prat.sprs_review %></p>
+                                </div>
+                              </div>
+                            <% c++; });  var avgRating = Math.round(plantRateSum/total);  %>
+                            <!-- <%= total %>
+                            <%= plantRateSum %> -->
+                            
+                          </div>
+                          <div style="order: 1;" class="col-lg-6">
+                            <div class="float-left ">
+                              <h1 class="pointer-fix" style="color: #005377;"><% if(!isNaN(avgRating)){ %><%= avgRating.toFixed(1) %> <% }else{%>0.0<% } %></h1>
+                              <p style="margin-left: 20px;">out of 5</p>
+                            </div>
+                            <div>
+                              <img class="feedback-img" src="images/feedback-2.png" alt="">
+                            </div>
+                          </div>
+              
+                        </div>
+                     
                     </div>
                   </div>
                 </div>
               </div>
+
+
             </div>
           </div>
         </div>
@@ -404,6 +374,11 @@
     submitHandler: function (form) {
       $('#submit').attr('disabled', true);
       //form.submit();
+      //var isChecked = $('.rating_radio').prop('checked');
+      var isChecked = $("input:radio[name='rating']").is(":checked")
+
+      if(isChecked == true){
+        $('#rating_message').hide();
       var spr_id = $('#spr_id').val();
       var formData = $('#feedbackForm').serialize()+'&spr_id='+spr_id;
       console.log('formData:', formData)
@@ -415,7 +390,7 @@
         success: function (data) {
           console.log(data);
           if (data.status == true) {
-            //$('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> ' + data.message + '</div>')
+            //$('#rating_message').html('<div class="isa_success"><i class="fa fa-check"></i> ' + data.message + '</div>')
             $('#feedbackModal').modal('hide');
               Swal.fire({
                    // position: 'top-end',
@@ -441,6 +416,10 @@
           }
         }
       });
+    }else{
+      $('#rating_message').show();
+      $('#rating_message').text('Rating is required!');
+    }
     }
   });
 

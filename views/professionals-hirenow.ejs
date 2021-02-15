@@ -134,7 +134,7 @@
                                   <div class="professional-text-fix">
                                     <label>Select Property</label>
                                     <select class="form-control selectBox6 propertySelectBox property_list"
-                                      name="propertyId" data-rule-required="true"
+                                      name="propertyId" required data-rule-required="true"
                                       data-msg-required="Property is required!" style="height: 48px;">
                                       <option value="">Select property</option>
                                       <% property.forEach(function(row){ %>
@@ -197,7 +197,7 @@
                                   <div class="professional-text-fix">
                                     <label>Zip code</label>
                                     <input type="text" class="form-control  selectBox6  " id="zipcode"
-                                      placeholder="zipcode" name="zipcode" value="" data-rule-required="true"
+                                      placeholder="Zip code" name="zipcode" value="" data-rule-required="true"
                                       data-msg-required="Zipcode is required!" required>
                                   </div>
 
@@ -228,7 +228,7 @@
                               <h6 class="">Tell us expected delivery date</h6>
                             </div>
                             <div class="col-sm-12 col-lg-12">
-                              <input type="date" style="margin-top:5px;width:90%" class="form-control  selectBox6  "
+                              <input type="date" style="margin-top:5px;width:90%" class="form-control selectBox6"
                                 id="deliveryDate" placeholder="1 Dec 2011" name="pps_exptected_delivery_date"
                                 data-rule-required="true" data-msg-required="DeliveryDate is required!" required>
                             </div>
@@ -398,11 +398,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
       integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
       crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
-
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+  
 
     <script>
       $(document).ready(function () {
+
+    var dtToday = new Date();
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if(month < 10)
+        month = '0' + month.toString();
+    if(day < 10)
+        day = '0' + day.toString();
+
+    var maxDate = year + '-' + month + '-' + day;
+    $('#deliveryDate').attr('min', maxDate);
+
+
         $(".sidenav ul li").click(function () {
           $(".sidenav ul li").removeClass("active");
           $(this).addClass("active");

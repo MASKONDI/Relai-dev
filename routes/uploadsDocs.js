@@ -83,6 +83,9 @@ app.post('/upload-profile-pic', upload.single('profile-pic'), (req, res, next) =
         console.log("Something went wrong")
       }
       else {
+
+        // MessageSchema.findByIdAndUpdate({ sms_sender_id: user_id }, { $set: { cus_profile_image_name: obj.cus_profile_image_name, cus_profile_image: obj.cus_profile_image, cus_updated_at: Date.now() } });
+
         console.log("file submitting successfully : ", customers);
         //TODO: Want to update session after editprofile
         req.session.imagename = obj.cus_profile_image_name
