@@ -306,15 +306,15 @@
                                     <%if(propertyObj.ps_other_property_type=='Buyer'){%>
                                       <option value="Seller">Seller</option>
                                       <option value="Renovator">Renovator</option>
-                                      <option value="StateAgents">StateAgents</option>
+                                      <option value="State Agents">State Agents</option>
                                       <%}else if(propertyObj.ps_other_property_type=='Seller'){%>
                                         <option value="Buyer">Buyer</option>
                                         <option value="Renovator">Renovator</option>
-                                        <option value="StateAgents">StateAgents</option>
+                                        <option value="State Agents">State Agents</option>
                                         <%}else if(propertyObj.ps_other_property_type=='Renovator'){%>
                                           <option value="Buyer">Buyer</option>
                                           <option value="Seller">Seller</option>
-                                          <option value="StateAgents">StateAgents</option>
+                                          <option value="State Agents">State Agents</option>
                                           <%}else{%>
                                             <option value="Buyer">Buyer</option>
                                             <option value="Seller">Seller</option>
@@ -402,21 +402,144 @@
                                     data-msg-required="Bedroom field is required!" value="">
                                     <%if(propertyObj.ps_property_bedroom==''){%>
                                       <option value="">Select Bedroom</option>
+                                      <option value="1">1</option>
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
+                                      <option value="4">4</option>
+                                      <option value="5">5</option>
+                                      <option value="6">6</option>
+                                      <option value="7">7</option>
+                                      <option value="8">8</option>
+                                      <option value="9">9</option>
+                                      <option value="10">10</option>
+                                    </select>
                                     <%}else{%>
                                       <option value="<%=propertyObj.ps_property_bedroom%>"><%=propertyObj.ps_property_bedroom%></option>
+                                      <%if(propertyObj.ps_property_bedroom=='1'){%>
+                                       
+                                       
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                      </select>
+                                    <%}else if(propertyObj.ps_property_bedroom=='2'){%>
+                                      <option value="1">1</option>
+                                      <option value="3">3</option>
+                                      <option value="4">4</option>
+                                      <option value="5">5</option>
+                                      <option value="6">6</option>
+                                      <option value="7">7</option>
+                                      <option value="8">8</option>
+                                      <option value="9">9</option>
+                                      <option value="10">10</option>
+                                    </select>
+                                          <%}else if(propertyObj.ps_property_bedroom=='3'){%>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                          </select>
+                                            <%}else if(propertyObj.ps_property_bedroom=='4'){%>
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="5">5</option>
+                                              <option value="6">6</option>
+                                              <option value="7">7</option>
+                                              <option value="8">8</option>
+                                              <option value="9">9</option>
+                                              <option value="10">10</option>
+                                             
+                                            </select>
+                                              <%}else if(propertyObj.ps_property_bedroom=='5'){%>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+
+                                                
+                                                
+                                                         
+                                              </select>
+                                                <%}else if(propertyObj.ps_property_bedroom=='6'){%>
+                                                  <option value="1">1</option>
+                                                  <option value="2">2</option>
+                                                  <option value="3">3</option>
+                                                  <option value="4">4</option>
+                                                  <option value="5">5</option>
+                                                  <option value="7">7</option>
+                                                  <option value="8">8</option>
+                                                  <option value="9">9</option>
+                                                  <option value="10">10</option>
+                                                </select>
+                                                  <%}else if(propertyObj.ps_property_bedroom=='7'){%>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                  </select>
+                                                    <%}else if(propertyObj.ps_property_bedroom=='8'){%>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                    </select>
+                                                      <%}else if(propertyObj.ps_property_bedroom=='9'){%>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="10">10</option>
+                                                      </select>
+                                                        <%}else{%>
+                                                          <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">19</option>
+                                                          
+                                                        </select>
+                                                          <%}%>
+                                                        
+                                      
+                                      
                                     <%}%>
                                     
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                  </select>
+                                    
                                     <%}%>
                               </div>
                               <div style="display:none;" class="col-sm-12 col-lg-4 property_detial">
@@ -449,20 +572,140 @@
                                       data-msg-required="Bathroom field is required!">
                                       <%if(propertyObj.ps_property_bathroom==''){%>
                                         <option value="">Select Bathroom</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                       </select>
                                       <%}else{%>
                                         <option value="<%=propertyObj.ps_property_bathroom%>"><%=propertyObj.ps_property_bathroom%></option>
-                                      <%}%>
-                                      <option value="1">1</option>
-                                      <option value="2">2</option>
-                                      <option value="3">3</option>
-                                      <option value="4">4</option>
-                                      <option value="5">5</option>
-                                      <option value="6">6</option>
-                                      <option value="7">7</option>
-                                      <option value="8">8</option>
-                                      <option value="9">9</option>
-                                      <option value="10">10</option>
-                                    </select>
+                                        <%if(propertyObj.ps_property_bathroom=='1'){%>
+                                       
+                                       
+                                          <option value="2">2</option>
+                                          <option value="3">3</option>
+                                          <option value="4">4</option>
+                                          <option value="5">5</option>
+                                          <option value="6">6</option>
+                                          <option value="7">7</option>
+                                          <option value="8">8</option>
+                                          <option value="9">9</option>
+                                          <option value="10">10</option>
+                                        </select>
+                                      <%}else if(propertyObj.ps_property_bathroom=='2'){%>
+                                        <option value="1">1</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                      </select>
+                                            <%}else if(propertyObj.ps_property_bathroom=='3'){%>
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                              <option value="6">6</option>
+                                              <option value="7">7</option>
+                                              <option value="8">8</option>
+                                              <option value="9">9</option>
+                                              <option value="10">10</option>
+                                            </select>
+                                              <%}else if(propertyObj.ps_property_bathroom=='4'){%>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                               
+                                              </select>
+                                                <%}else if(propertyObj.ps_property_bathroom=='5'){%>
+                                                  <option value="1">1</option>
+                                                  <option value="2">2</option>
+                                                  <option value="3">3</option>
+                                                  <option value="4">4</option>
+                                                  <option value="6">6</option>
+                                                  <option value="7">7</option>
+                                                  <option value="8">8</option>
+                                                  <option value="9">9</option>
+                                                  <option value="10">10</option>
+  
+                                                  
+                                                  
+                                                           
+                                                </select>
+                                                  <%}else if(propertyObj.ps_property_bathroom=='6'){%>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                  </select>
+                                                    <%}else if(propertyObj.ps_property_bathroom=='7'){%>
+                                                      <option value="1">1</option>
+                                                      <option value="2">2</option>
+                                                      <option value="3">3</option>
+                                                      <option value="4">4</option>
+                                                      <option value="5">5</option>
+                                                      <option value="6">6</option>
+                                                      <option value="8">8</option>
+                                                      <option value="9">9</option>
+                                                      <option value="10">10</option>
+                                                    </select>
+                                                      <%}else if(propertyObj.ps_property_bathroom=='8'){%>
+                                                      <option value="1">1</option>
+                                                      <option value="2">2</option>
+                                                      <option value="3">3</option>
+                                                      <option value="4">4</option>
+                                                      <option value="5">5</option>
+                                                      <option value="6">6</option>
+                                                      <option value="7">7</option>
+                                                      <option value="9">9</option>
+                                                      <option value="10">10</option>
+                                                      </select>
+                                                        <%}else if(propertyObj.ps_property_bathroom=='9'){%>
+                                                          <option value="1">1</option>
+                                                          <option value="2">2</option>
+                                                          <option value="3">3</option>
+                                                          <option value="4">4</option>
+                                                          <option value="5">5</option>
+                                                          <option value="6">6</option>
+                                                          <option value="7">7</option>
+                                                          <option value="8">8</option>
+                                                          <option value="10">10</option>
+                                                        </select>
+                                                          <%}else{%>
+                                                            <option value="1">1</option>
+                                                          <option value="2">2</option>
+                                                          <option value="3">3</option>
+                                                          <option value="4">4</option>
+                                                          <option value="5">5</option>
+                                                          <option value="6">6</option>
+                                                          <option value="7">7</option>
+                                                          <option value="8">8</option>
+                                                          <option value="9">19</option>
+                                                            
+                                                          </select>
+                                                        <%}%>
+                                                        <%}%>
+                                      
                                     <%}%>
                               </div>
                             </div>
