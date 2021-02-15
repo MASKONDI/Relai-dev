@@ -213,7 +213,7 @@
                               </div>
                               <div class="col-sm-12 col-lg-4">
                                 <%if(propertyObj=='null'){%>
-                                  <select name="property_type" class=" form-control selectBox5" id="property_type"
+                                  <select name="property_type" class=" form-control selectBox5 property_type_inEdit" id="property_type"
                                     required style="height: 48px;" data-rule-required="true"
                                     data-msg-required="Property Type is required!">
                                     <option value="">Select Property Type</option>
@@ -221,7 +221,7 @@
                                     <option value="Chain">Chain</option>
                                   </select>
                                   <%}else{%>
-                                    <select name="property_type" class=" form-control selectBox5" id="property_type_inEdit"
+                                    <select name="property_type" class=" form-control selectBox5 property_type_inEdit" id="property_type_inEdit"
                                       required style="height: 48px;" data-rule-required="true"
                                       data-msg-required="Property Type is required!">
                                       <option value="<%=propertyObj.ps_property_type%>">
@@ -373,26 +373,96 @@
                               </div>
                               <div style="display:none;" class="col-sm-12 col-lg-4 property_detial">
                                 <%if(propertyObj=='null'){%>
-                                  <input type="number" class="form-control property-form-control-size-fix " id="bedroom"
+                                  <!-- <input type="number" class="form-control property-form-control-size-fix " id="bedroom"
                                     placeholder="Bedroom*" name="ps_property_bedroom" data-rule-required="true"
-                                    data-msg-required="Bedroom field is required!" value="">
+                                    data-msg-required="Bedroom field is required!" value=""> -->
+
+                                    <select name="ps_property_bedroom" class=" form-control selectBox5"
+                                    id="bedroom"  style="height: 48px;" data-rule-required="true"
+                                    data-msg-required="Bedroom field is required!">
+                                    <option value="">Select Bedroom</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                  </select>
                                   <%}else{%>
-                                    <input type="number" class="form-control property-form-control-size-fix " id="bedroom"
+                                    <!-- <input type="number" class="form-control property-form-control-size-fix " id="bedroom"
                                       placeholder="Bedroom*" name="ps_property_bedroom" data-rule-required="true"
                                       data-msg-required="Bedroom field is required!"
-                                      value="<%=propertyObj.ps_property_bedroom%>">
+                                      value="<%=propertyObj.ps_property_bedroom%>"> -->
+                                      <select name="ps_property_bedroom" class=" form-control selectBox5"
+                                    id="bedroom"  style="height: 48px;" data-rule-required="true"
+                                    data-msg-required="Bedroom field is required!" value="">
+                                    <%if(propertyObj.ps_property_bedroom==''){%>
+                                      <option value="">Select Bedroom</option>
+                                    <%}else{%>
+                                      <option value="<%=propertyObj.ps_property_bedroom%>"><%=propertyObj.ps_property_bedroom%></option>
+                                    <%}%>
+                                    
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                  </select>
                                     <%}%>
                               </div>
                               <div style="display:none;" class="col-sm-12 col-lg-4 property_detial">
                                 <%if(propertyObj=='null'){%>
-                                  <input type="number" class="form-control property-form-control-size-fix " id="bedroom2"
+                                  <!-- <input type="number" class="form-control property-form-control-size-fix " id="bedroom2"
                                     placeholder="Bathroom*" name="ps_property_bathroom" data-rule-required="true"
-                                    data-msg-required="Bathroom  field is required!" value="">
+                                    data-msg-required="Bathroom  field is required!" value=""> -->
+                                    <select name="ps_property_bathroom" class=" form-control selectBox5"
+                                    id="bedroom2"  style="height: 48px;" data-rule-required="true"
+                                    data-msg-required="Bathroom field is required!">
+                                    <option value="">Select Bathroom</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                  </select>
                                   <%}else{%>
-                                    <input type="number" class="form-control property-form-control-size-fix "
+                                    <!-- <input type="number" class="form-control property-form-control-size-fix "
                                       id="bedroom2" placeholder="Bathroom*" name="ps_property_bathroom"
                                       data-rule-required="true" data-msg-required="Bathroom  field is required!"
-                                      value="<%=propertyObj.ps_property_bathroom%>">
+                                      value="<%=propertyObj.ps_property_bathroom%>"> -->
+                                      <select name="ps_property_bathroom" class=" form-control selectBox5"
+                                      id="bedroom2"  style="height: 48px;" data-rule-required="true"
+                                      data-msg-required="Bathroom field is required!">
+                                      <%if(propertyObj.ps_property_bathroom==''){%>
+                                        <option value="">Select Bathroom</option>
+                                      <%}else{%>
+                                        <option value="<%=propertyObj.ps_property_bathroom%>"><%=propertyObj.ps_property_bathroom%></option>
+                                      <%}%>
+                                      <option value="1">1</option>
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
+                                      <option value="4">4</option>
+                                      <option value="5">5</option>
+                                      <option value="6">6</option>
+                                      <option value="7">7</option>
+                                      <option value="8">8</option>
+                                      <option value="9">9</option>
+                                      <option value="10">10</option>
+                                    </select>
                                     <%}%>
                               </div>
                             </div>
@@ -511,11 +581,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix "
                                               id="startDate1" style="border-radius:10px; width:85%"
-                                              placeholder="Start Date" name="startDate[]" required>
+                                              placeholder="Start Date" name="startDate[]" >
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" required
+                                                placeholder="Start Date" name="startDate[]" 
                                                 value="<%=propertyObj.ps_phase_array[1].start_date%>">
                                               <%}%>
                                         </div>
@@ -528,11 +598,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix " id="endDate1"
                                               style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                              name="endDate[]" required>
+                                              name="endDate[]" >
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" required
+                                                placeholder="End Date" name="endDate[]" 
                                                 value="<%=propertyObj.ps_phase_array[1].end_date%>">
                                               <%}%>
 
@@ -573,11 +643,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix "
                                               id="startDate1" style="border-radius:10px; width:85%"
-                                              placeholder="Start Date" name="startDate[]" required>
+                                              placeholder="Start Date" name="startDate[]" >
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" required
+                                                placeholder="Start Date" name="startDate[]" 
                                                 value="<%=propertyObj.ps_phase_array[2].start_date%>">
                                               <%}%>
                                         </div>
@@ -590,11 +660,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix " id="endDate1"
                                               style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                              name="endDate[]" required>
+                                              name="endDate[]" >
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" required
+                                                placeholder="End Date" name="endDate[]" 
                                                 value="<%=propertyObj.ps_phase_array[2].end_date%>">
                                               <%}%>
 
@@ -635,11 +705,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix "
                                               id="startDate1" style="border-radius:10px; width:85%"
-                                              placeholder="Start Date" name="startDate[]" required>
+                                              placeholder="Start Date" name="startDate[]" >
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" required
+                                                placeholder="Start Date" name="startDate[]" 
                                                 value="<%=propertyObj.ps_phase_array[3].start_date%>">
                                               <%}%>
                                         </div>
@@ -652,11 +722,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix " id="endDate1"
                                               style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                              name="endDate[]" required>
+                                              name="endDate[]" >
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" required
+                                                placeholder="End Date" name="endDate[]" 
                                                 value="<%=propertyObj.ps_phase_array[3].end_date%>">
                                               <%}%>
 
@@ -697,11 +767,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix "
                                               id="startDate1" style="border-radius:10px; width:85%"
-                                              placeholder="Start Date" name="startDate[]" required>
+                                              placeholder="Start Date" name="startDate[]" >
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" required
+                                                placeholder="Start Date" name="startDate[]" 
                                                 value="<%=propertyObj.ps_phase_array[4].start_date%>">
                                               <%}%>
                                         </div>
@@ -714,11 +784,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix " id="endDate1"
                                               style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                              name="endDate[]" required>
+                                              name="endDate[]" >
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" required
+                                                placeholder="End Date" name="endDate[]" 
                                                 value="<%=propertyObj.ps_phase_array[4].end_date%>">
                                               <%}%>
 
@@ -758,11 +828,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix "
                                               id="startDate1" style="border-radius:10px; width:85%"
-                                              placeholder="Start Date" name="startDate[]" required>
+                                              placeholder="Start Date" name="startDate[]" >
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" required
+                                                placeholder="Start Date" name="startDate[]" 
                                                 value="<%=propertyObj.ps_phase_array[5].start_date%>">
                                               <%}%>
                                         </div>
@@ -775,11 +845,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix " id="endDate1"
                                               style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                              name="endDate[]" required>
+                                              name="endDate[]" >
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" required
+                                                placeholder="End Date" name="endDate[]" 
                                                 value="<%=propertyObj.ps_phase_array[5].end_date%>">
                                               <%}%>
 
@@ -819,11 +889,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix "
                                               id="startDate1" style="border-radius:10px; width:85%"
-                                              placeholder="Start Date" name="startDate[]" required>
+                                              placeholder="Start Date" name="startDate[]" >
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" required
+                                                placeholder="Start Date" name="startDate[]" 
                                                 value="<%=propertyObj.ps_phase_array[6].start_date%>">
                                               <%}%>
                                         </div>
@@ -836,11 +906,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix " id="endDate1"
                                               style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                              name="endDate[]" required>
+                                              name="endDate[]" >
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" required
+                                                placeholder="End Date" name="endDate[]" 
                                                 value="<%=propertyObj.ps_phase_array[6].end_date%>">
                                               <%}%>
                                         </div>
@@ -879,11 +949,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix "
                                               id="startDate1" style="border-radius:10px; width:85%"
-                                              placeholder="Start Date" name="startDate[]" required>
+                                              placeholder="Start Date" name="startDate[]" >
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" required
+                                                placeholder="Start Date" name="startDate[]" 
                                                 value="<%=propertyObj.ps_phase_array[7].start_date%>">
                                               <%}%>
                                         </div>
@@ -896,11 +966,11 @@
                                           <%if(propertyObj=='null'){%>
                                             <input type="date" class="form-control form-control-size-fix " id="endDate1"
                                               style="border-radius:10px; width: 85%;" placeholder="End Date"
-                                              name="endDate[]" required>
+                                              name="endDate[]" >
                                             <%}else{%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" required
+                                                placeholder="End Date" name="endDate[]" 
                                                 value="<%=propertyObj.ps_phase_array[7].end_date%>">
                                               <%}%>
 
@@ -943,12 +1013,12 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" required>
+                                                placeholder="Start Date" name="startDate[]" >
                                               <%}else{%>
 
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="startDate1" style="border-radius:10px; width:85%"
-                                                  placeholder="Start Date" name="startDate[]" required
+                                                  placeholder="Start Date" name="startDate[]" 
                                                   value="<%=propertyObj.ps_phase_array[0].start_date%>">
                                                 <%}%>
                                           </div>
@@ -961,11 +1031,11 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" required>
+                                                placeholder="End Date" name="endDate[]" >
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="endDate1" style="border-radius:10px; width: 85%;"
-                                                  placeholder="End Date" name="endDate[]" required
+                                                  placeholder="End Date" name="endDate[]" 
                                                   value="<%=propertyObj.ps_phase_array[0].end_date%>">
                                                 <%}%>
 
@@ -1007,11 +1077,11 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" required>
+                                                placeholder="Start Date" name="startDate[]" >
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="startDate1" style="border-radius:10px; width:85%"
-                                                  placeholder="Start Date" name="startDate[]" required
+                                                  placeholder="Start Date" name="startDate[]" 
                                                   value="<%=propertyObj.ps_phase_array[1].start_date%>">
                                                 <%}%>
                                           </div>
@@ -1024,11 +1094,11 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" required>
+                                                placeholder="End Date" name="endDate[]" >
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="endDate1" style="border-radius:10px; width: 85%;"
-                                                  placeholder="End Date" name="endDate[]" required
+                                                  placeholder="End Date" name="endDate[]" 
                                                   value="<%=propertyObj.ps_phase_array[1].end_date%>">
                                                 <%}%>
 
@@ -1070,12 +1140,12 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" required>
+                                                placeholder="Start Date" name="startDate[]" >
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="startDate1" style="border-radius:10px; width:85%"
                                                   placeholder="Start Date" name="startDate[]"
-                                                  value="<%=propertyObj.ps_phase_array[2].start_date%>" required>
+                                                  value="<%=propertyObj.ps_phase_array[2].start_date%>" >
                                                 <%}%>
                                           </div>
                                         </div>
@@ -1087,11 +1157,11 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" required>
+                                                placeholder="End Date" name="endDate[]" >
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="endDate1" style="border-radius:10px; width: 85%;"
-                                                  placeholder="End Date" name="endDate[]" required
+                                                  placeholder="End Date" name="endDate[]" 
                                                   value="<%=propertyObj.ps_phase_array[2].end_date%>">
                                                 <%}%>
 
@@ -1133,11 +1203,11 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" required>
+                                                placeholder="Start Date" name="startDate[]" >
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="startDate1" style="border-radius:10px; width:85%"
-                                                  placeholder="Start Date" name="startDate[]" required
+                                                  placeholder="Start Date" name="startDate[]" 
                                                   value="<%=propertyObj.ps_phase_array[3].start_date%>">
                                                 <%}%>
                                           </div>
@@ -1150,11 +1220,11 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" required>
+                                                placeholder="End Date" name="endDate[]" >
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="endDate1" style="border-radius:10px; width: 85%;"
-                                                  placeholder="End Date" name="endDate[]" required
+                                                  placeholder="End Date" name="endDate[]" 
                                                   value="<%=propertyObj.ps_phase_array[3].end_date%>">
                                                 <%}%>
 
@@ -1195,12 +1265,12 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" required>
+                                                placeholder="Start Date" name="startDate[]" >
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="startDate1" style="border-radius:10px; width:85%"
                                                   placeholder="Start Date" name="startDate[]"
-                                                  value="<%=propertyObj.ps_phase_array[4].start_date%>" required>
+                                                  value="<%=propertyObj.ps_phase_array[4].start_date%>" >
                                                 <%}%>
                                           </div>
                                         </div>
@@ -1212,11 +1282,11 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" required>
+                                                placeholder="End Date" name="endDate[]" >
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="endDate1" style="border-radius:10px; width: 85%;"
-                                                  placeholder="End Date" name="endDate[]" required
+                                                  placeholder="End Date" name="endDate[]" 
                                                   value="<%=propertyObj.ps_phase_array[4].end_date%>">
                                                 <%}%>
 
@@ -1258,12 +1328,12 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="startDate1" style="border-radius:10px; width:85%"
-                                                placeholder="Start Date" name="startDate[]" required>
+                                                placeholder="Start Date" name="startDate[]" >
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="startDate1" style="border-radius:10px; width:85%"
                                                   placeholder="Start Date" name="startDate[]"
-                                                  value="<%=propertyObj.ps_phase_array[5].start_date%>" required>
+                                                  value="<%=propertyObj.ps_phase_array[5].start_date%>" >
                                                 <%}%>
                                           </div>
                                         </div>
@@ -1275,11 +1345,11 @@
                                             <%if(propertyObj=='null'){%>
                                               <input type="date" class="form-control form-control-size-fix "
                                                 id="endDate1" style="border-radius:10px; width: 85%;"
-                                                placeholder="End Date" name="endDate[]" required>
+                                                placeholder="End Date" name="endDate[]" >
                                               <%}else{%>
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="endDate1" style="border-radius:10px; width: 85%;"
-                                                  placeholder="End Date" name="endDate[]" required
+                                                  placeholder="End Date" name="endDate[]" 
                                                   value="<%=propertyObj.ps_phase_array[4].end_date%>">
                                                 <%}%>
 
@@ -2515,6 +2585,16 @@
           $(".property_detial").hide();
         }
       })
+      if($('.ExistingPropClass').val()=='Residential'){
+        $(".property_detial").show();
+      }else{
+        $(".property_detial").hide();
+      }
+      // if($(".property_type_inEdit").val()=='Chain'){
+      //   $(".AllPropertyListingDiv").show()
+      // }else{
+      //   $(".AllPropertyListingDiv").show()
+      // }
     })
       </script>
       <!-- in case of edit property chain property should no be show onw property in drop down -->
