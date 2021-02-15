@@ -106,6 +106,9 @@ const PropertiesSchema = new Schema({
   ps_chain_property_id:{
     type :Array,
   },
+  ps_chain_property_name:{
+    type :Array,
+  },
   ps_existing_property:{
     type:String
   },

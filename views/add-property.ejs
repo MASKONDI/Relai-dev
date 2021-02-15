@@ -329,7 +329,7 @@
                               <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
                                 <select name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
                                   id="ps_chain_property" style="height: 48px;">
-                                  <option value="">Select Property For Chain</option>
+                                  <!-- <option value="">Select Property For Chain</option> -->
 
                                 </select>
                               </div>
@@ -337,7 +337,7 @@
                                 <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
                                   <select name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
                                     id="ps_chain_property" style="height: 48px;">
-                                    <option value="">Select Property For Chain</option>
+                                    <option value="<%=propertyObj.ps_chain_property_name[0]%>"><%=propertyObj.ps_chain_property_name%></option>
   
                                   </select>
                                 </div>
@@ -2833,11 +2833,11 @@
       }else{
         $(".property_detial").hide();
       }
-      // if($(".property_type_inEdit").val()=='Chain'){
-      //   $(".AllPropertyListingDiv").show()
-      // }else{
-      //   $(".AllPropertyListingDiv").show()
-      // }
+      if($(".property_type_inEdit").val()=='Chain'){
+        $(".AllPropertyListingDiv").show()
+      }else{
+        $(".AllPropertyListingDiv").show()
+      }
     })
       </script>
       <!-- in case of edit property chain property should no be show onw property in drop down -->

@@ -176,10 +176,10 @@ module.exports.GetAllProperty = function (user_id, ps_is_active_user_flag) {
 };
 module.exports.GetAllPropertyInEdit = function (user_id, ps_is_active_user_flag,property_id) {
     return new Promise(async function (resolve, reject) {
-        //console.log('hello',pps_property_id,pps_is_active_user_flag)
+      console.log('hello',property_id)
         //var data = { _id: propertyId }
         
-        var data = { $and: [{ ps_is_active_user_flag: ps_is_active_user_flag, ps_user_id: user_id,ps_property_id:{$ne:property_id}}] }
+        var data = { $and: [{ ps_is_active_user_flag: ps_is_active_user_flag, ps_user_id: user_id,},{_id:{$ne:property_id}}] }
         await PropertiesSchema.find().where(data).then(async (resp) => {
             let responce = await resp
             resolve(responce)
@@ -255,6 +255,7 @@ module.exports.Add_New_Propert = function (req) {
     return new Promise(async function (resolve, reject) {
         var phaseArray = [];
         var chainPropertyIdArray=[];
+        var chainPropertyNameArray=[];
         for (var i in req.body.Phase) {
             var phaseObj = {
                 phase_name: '',
@@ -291,12 +292,13 @@ module.exports.Add_New_Propert = function (req) {
             ps_phase_array: phaseArray,
             ps_existing_property:req.body.ps_existing_property,
             ps_chain_property_id:chainPropertyIdArray,
-            ps_other_property_type:req.body.ps_other_property_type
+            ps_other_property_type:req.body.ps_other_property_type,
+            ps_chain_property_name:chainPropertyNameArray
             
         };
         if(req.body.property_type=='Chain'){
-            
-
+            var chain_propnameByid=await PropertiesSchema.findOne({_id:req.body.ps_chain_property});
+            chainPropertyNameArray.push(chain_propnameByid.ps_property_name);
             chainPropertyIdArray.push(req.body.ps_chain_property)
         }
         const newProperty = new PropertiesSchema(PropertyBoject)
