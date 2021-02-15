@@ -5694,3 +5694,80 @@ a .clip-icon{
   .rating > label:hover  input:checked  label,
   .rating > input:checked  label:hover  label { color: #FFED85;  } 
   
+
+
+  /*********Rating Progress Bar************/
+  .star-rating-piramid{
+    width: 20%;
+    }
+    .star-rating-piramid ul {
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 0;
+        text-align: right;
+        justify-content: flex-end;
+        margin-bottom: 0;
+    }
+    .star-rating-piramid ul li {
+        list-style: none;
+        color: #bdb9b9;
+        margin: 0 1px;
+        font-size: 12px;
+    }
+    .progress-rating {
+        width: 80%;
+    }
+    .progress-rating ul{
+        padding-left: 0;
+        text-align: right;
+        margin-bottom: 0;
+    }
+    .progress-rating ul li {
+        list-style: none;
+        margin: 8px 10px 13px;
+    }
+    .ratting-overall-box{
+        display: flex;
+        align-items: top;
+    }
+    .progress-rating .progress {
+        height: 5px;
+        background-color: transparent;
+    }
+    .pointer-fix.new-rating-number{
+    color: #005377;
+    margin: 0;
+    }
+
+    /*******Loader Style********/
+    .loader-box {
+        background-color: rgba(0, 0, 0,0.7);
+        position: fixed;
+        z-index: 10000;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .loader-box img{
+        height: 120px;
+        width: 120px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #ddd;
+    }
+    @media (max-width: 768px) {
+
+        .star-rating-piramid {
+            width: 35%;
+        }
+        .progress-rating {
+            width: 65%;
+        }
+        .mt-5{
+            margin-top: 0 !important;
+        }
+        }
