@@ -261,6 +261,7 @@
         $(element).removeClass(errorClass);
       },
       submitHandler: function (form) {
+        $('.loader-box').attr('style','display:flex !important');
         var formData = $('#registerform').serialize();
         console.log('formData:', formData)
         $.ajax({
@@ -271,6 +272,7 @@
           success: function (data) {
             console.log(data);
             if (data.status == false) {
+              $('.loader-box').attr('style','display:none !important');
               Swal.fire({
                 icon: 'error',
                 title: data.message,
@@ -280,6 +282,7 @@
               })
 
             } else {
+              $('.loader-box').attr('style','display:none !important');
               Swal.fire({
                 icon: 'success',
                 title: data.message,

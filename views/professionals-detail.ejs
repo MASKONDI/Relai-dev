@@ -548,6 +548,7 @@
       var isChecked = $("input:radio[name='rating']").is(":checked")
 
       if(isChecked == true){
+        $('.loader-box').attr('style','display:flex !important');
         $('#rating_message').hide();
       var spr_id = $('#spr_id').val();
       var formData = $('#feedbackForm').serialize()+'&spr_id='+spr_id;
@@ -560,6 +561,7 @@
         success: function (data) {
           console.log(data);
           if (data.status == true) {
+            $('.loader-box').attr('style','display:none !important');
             //$('#rating_message').html('<div class="isa_success"><i class="fa fa-check"></i> ' + data.message + '</div>')
             $('#feedbackModal').modal('hide');
               Swal.fire({
@@ -575,6 +577,7 @@
             }, 5000);
 
           } else {
+            $('.loader-box').attr('style','display:none !important');
             Swal.fire({
                     icon: 'error',
                     title: data.message,
