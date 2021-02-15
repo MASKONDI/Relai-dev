@@ -2388,6 +2388,7 @@
         $(".thirdFormDiv").hide();
         $('#propertyform1').on('submit', function (e) {
           e.preventDefault();
+          $('.loader-box').attr('style','display:flex !important');
           var property_id = $("#editPropertyId").val();
           if (property_id == '') {
             var apiurl = "/api/add-new-property";
@@ -2405,12 +2406,14 @@
             success: function (data) {
               console.log(data)
               if (data.status == true) {
+                $('.loader-box').attr('style','display:none !important');
                 $('.firstFormDive').hide();
                 $(".secondFormDiv").show();
                 var property_id = data.property_id;
                 $(".img_property_id").val(property_id);
                 $('#propertyform2').on('submit', function (e) {
                   e.preventDefault();
+                  $('.loader-box').attr('style','display:flex !important');
                   //var ext = $('.propertiespic').val().split('.').pop().toLowerCase();
                   //if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg', 'jfif']) == -1) {
                     //alert('invalid extension!');
@@ -2435,12 +2438,14 @@
                       processData: false,
                       success: function (data) {
                         if (data.status == true) {
+                          $('.loader-box').attr('style','display:none !important');
                           $(".plan_img_property_id").val(property_id);
                           $('.firstFormDive').hide();
                           $(".secondFormDiv").hide();
                           $(".thirdFormDiv").show();
                           $('.propertyPlanform').on('submit', function (e) {
                             e.preventDefault();
+                            $('.loader-box').attr('style','display:flex !important');
                             var property_plan_image_id = $(".editPropertyPlanImageId").val();
                             //alert(property_plan_image_id)
                             if (property_plan_image_id == '') {
@@ -2458,6 +2463,7 @@
                               processData: false,
                               success: function (data) {
                                 if (data.status == true) {
+                                  $('.loader-box').attr('style','display:none !important');
                                   // $('.message_data').show();
                                   // $('.message_data').html('<div class="isa_success"><i style="margin: 0px 7px !important;" class="fa fa-check"></i> ' + data.message + '</div>');
                                   // setTimeout(function () { $('.message_data').hide(); window.location.href = data.redirect; }, 3000);

@@ -152,3 +152,25 @@ span#comment-error {
     height: 45px;
     border-radius: 50%;
 }
+
+
+.loader-box {
+    background-color: rgba(0, 0, 0,0.7);
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    }
+    .loader-box img {
+    height: 120px;
+    width: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #ddd;
+    }
+
