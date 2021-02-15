@@ -201,6 +201,9 @@ router.post("/cust_register", (req, res) => {
               otp_verification(req, otp);
               //req.flash('success_msg', 'You have register sucessfully.')
               //res.redirect("/signin")
+              //Calling Submit token function for assign/createing invite property Object 
+              console.log("Token is ", req.body.token);
+              submit_token(token, customers._id);
               console.log("registered customers data is ", customers);
               res.send({
                 customers: customers,
@@ -1309,9 +1312,10 @@ function invite_function(req, saved_property) {
 
         text: 'Dear \n' + req.body.ps_other_party_fullname + '\n\n' + 'you are invited in Relai plateform.\n\n' +
 
-          'We suggest you to please visit our Relai plateform and create your account \n' + 'Here is the registration link: http://' + req.headers.host + '/signup?email=' + req.body.ps_other_party_emailid + '\n\n' +
+          'We suggest you to please visit our Relai plateform and create your account \n' + 'Here is the registration link: http://' + req.headers.host + '/signup?email=' + req.body.ps_other_party_emailid + '\n\n' + '&token=' + token + '\n\n' +
 
-          'After Successfull registeration please copy this SecretToken in your dashboard section \n' + token + '\n\n' +
+          'if you already registered please hit given url \n' + ' http://' + req.headers.host + '/signup?email=' + req.body.ps_other_party_emailid + '\n\n' + '&token=' + token + '\n\n' +
+
 
           'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
       };
@@ -2001,10 +2005,10 @@ router.post("/addTask_from_Dreamhome_detial", (req, res) => {
 
 
 /************* Verifing Sercret Token */
-router.post('/submit_token', (req, res) => {
-  console.log("secret token is", req.query.token);
+async function submit_token(token, user_id) {
+  console.log("secret token is", token);
   //console.log("secret token is", req.session.email);
-  var decoded = jwt.verify(req.query.token, keys.secretOrKey);
+  var decoded = jwt.verify(token, keys.secretOrKey);
   console.log("decoded string is :", decoded.id);
   PropertiesSchema.find({ _id: decoded.id }).then(async (data) => {
     if (data) {
@@ -2021,30 +2025,123 @@ router.post('/submit_token', (req, res) => {
         })
 
       }
-      // console.log('++++++++',arr)
+      console.log('++++++++', arr);
 
-      err_msg = req.flash('err_msg');
-      success_msg = req.flash('success_msg');
-      res.json(data);
-      res.render('mydreamhome', {
-        err_msg, success_msg, layout: false,
-        session: req.session,
-        propertyData: data,
-        propertyImage: arr
+      add_new_property(data, arr, user_id);
 
-      });
+
+      // err_msg = req.flash('err_msg');
+      // success_msg = req.flash('success_msg');
+      // res.json(data);
+      // res.render('mydreamhome', {
+      //   err_msg, success_msg, layout: false,
+      //   session: req.session,
+      //   propertyData: data,
+      //   propertyImage: arr
+
+      // });
 
     }
   }).catch((err) => {
     console.log(err)
   })
-
   // return res.json(decoded);
+};
 
-})
+async function add_new_property(propertyData, propertyImage, user_id) {
+  //console.log("Property Data is", propertyData);
+  //console.log("Property Data is***************", propertyData[0].ps_phase_array);
+  var phaseArray = [];
+  var chainPropertyIdArray = [];
+  var chainPropertyNameArray = [];
+  for (var i in propertyData.ps_phase_array) {
+    var phaseObj = {
+      phase_name: '',
+      start_date: '',
+      end_date: '',
+      phase_status: 'pending',
+    };
+    phaseObj.phase_name = propertyData[0].ps_phase_array.phase_name[i];
+    phaseObj.start_date = propertyData[0].ps_phase_array.start_date[i];
+    phaseObj.end_date = propertyData[0].ps_phase_array.end_date[i];
+    phaseArray.push(phaseObj);
+  }
+  var PropertyBoject = {
+    ps_unique_code: propertyData[0].ps_unique_code,
+    // ps_user_id: user_id, //storing customer_ID
+    ps_property_name: propertyData[0].ps_property_name,
+    ps_property_address: propertyData[0].ps_property_address,
+    ps_property_country_id: propertyData[0].ps_property_country_id,
+    ps_property_state_id: propertyData[0].ps_property_state_id,
+    ps_property_city_id: propertyData[0].ps_property_city_id,
+    ps_property_zipcode: propertyData[0].ps_property_zipcode,
+    //ps_property_user_as: req.body.ps_property_user_as,
+    ps_property_user_as: propertyData[0].ps_property_user_as, //updaing active customer portal buyer/seller/renovator
+    ps_other_party_fullname: propertyData[0].ps_other_party_fullname,
+    ps_other_party_emailid: propertyData[0].ps_other_party_emailid,
+    ps_other_party_invited: propertyData[0].ps_other_party_invited,
+    ps_property_area: propertyData[0].ps_property_area,
+    ps_property_bedroom: propertyData[0].ps_property_bedroom,
+    ps_property_bathroom: propertyData[0].ps_property_bathroom,
+    ps_additional_note: propertyData[0].ps_additional_note,
+    ps_property_type: propertyData[0].ps_property_type,
+    ps_is_active_user_flag: propertyData[0].ps_is_active_user_flag,
+    ps_phase_array: phaseArray,
+    ps_existing_property: propertyData[0].ps_existing_property,
+    ps_chain_property_id: chainPropertyIdArray,
+    ps_other_property_type: propertyData[0].ps_other_property_type,
+    ps_chain_property_name: chainPropertyNameArray
 
+  };
+  if (propertyData[0].property_type == 'Chain') {
+    var chain_propnameByid = await PropertiesSchema.findOne({ _id: propertyData[0].ps_chain_property });
+    chainPropertyNameArray.push(chain_propnameByid.ps_property_name);
+    chainPropertyIdArray.push(propertyData[0].ps_chain_property)
+  }
+  console.log("Property Object is :", PropertyBoject);
+  const newProperty = new PropertiesSchema(PropertyBoject);
+  await newProperty.save().then(async (property) => {
+    //if (property) {
+    //     let responce = await property
+    console.log("newly added Property is :", property);
+    await add_property_Image(propertyImage, property._id);
+    // }
+  }).catch((err) => {
+    console.log("err response is");
+  })
+};
 
+async function add_property_Image(propertyImage, propertyId) {
+  console.log("saveing PropertyImage is : ", propertyImage[0])
+  await propertyImage[0].forEach(element => {
+    var obj = {
+      pps_property_id: propertyId,
+      pps_property_image_name: element.pps_property_image_name,
+      pps_is_active_user_flag: element.pps_is_active_user_flag,
+      // pps_property_image: {
+      //     data: fs.readFileSync(path.join(__dirname + '../../../public/propimg/' + element.filename)),
+      //     contentType: 'image/png'
+      // }
+    }
+    PropertiesPictureSchema.create(obj, (err, item) => {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        item.save().then(async (propertyImageResponce) => {
+          console.log("Saved  Image response is", propertyImageResponce);
+          // if(propertyImageResponce){
+          //     let responce = await propertyImageResponce
+          //     resolve(responce);
+          // }
+        }).catch((err) => {
+          // reject(err)
+        });
+      }
+    });
+  });
 
+}
 
 module.exports = router;
 
