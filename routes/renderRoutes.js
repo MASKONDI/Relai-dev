@@ -363,7 +363,7 @@ app.get('/professionals', isCustomer, async (req, res) => {
             if (!isNaN(avgRating)) {
               avgRating = avgRating.toFixed(1);
             } else {
-              avgRating = 0.0;
+              avgRating = 0;
             }
 
             console.log("avgRating:", avgRating);
@@ -408,7 +408,7 @@ app.get('/myprofessionals', isCustomer, async (req, res) => {
         if (!isNaN(avgRating)) {
           avgRating = avgRating.toFixed(1);
         } else {
-          avgRating = 0.0;
+          avgRating = 0;
         }
         console.log('avgRating:', avgRating)
 
@@ -422,14 +422,18 @@ app.get('/myprofessionals', isCustomer, async (req, res) => {
       }
     });
   }
-  console.log('serviceProvArray:', serviceProvArray)
+  //const UserviceProvArray = [...new Set(serviceProvArray.map(item => item))]; // [ 'A', 'B']
 
+  const UserviceProvArray = [...new Map(serviceProvArray.map(item => [item['_id'], item])).values()];
+
+  //const UserviceProvArray = [ ...new Set(serviceProvArray)]  
+  console.log('serviceProvArray:', UserviceProvArray)
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('myprofessionals', {
     err_msg, success_msg, layout: false,
     session: req.session,
-    data: serviceProvArray
+    data: UserviceProvArray
   });
 });
 
@@ -457,8 +461,21 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
       console.log('serviceProOtherDetail:', serviceProOtherDetail)
       let portpolioImage = await ServiceProviderPortfolioSchema.find({ spps_service_provider_id: req.query.id })
 
-      let professionalRating = await RatingSchema.find({ sprs_service_provider_id: req.query.id })
+      let professionalRating = await RatingSchema.find({ sprs_service_provider_id: req.query.id }).sort({ _id: -1 })
       console.log('professionalRating:', professionalRating)
+
+
+      var sumRating = 0;
+      for (var RatingData of professionalRating) {
+        sumRating += parseInt(RatingData.sprs_rating);
+      }
+      let avgRating = Math.round(sumRating / professionalRating.length);
+      if (!isNaN(avgRating)) {
+        avgRating = avgRating.toFixed(1);
+      } else {
+        avgRating = 0;
+      }
+
 
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
@@ -470,6 +487,7 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
         portpolioImage: portpolioImage,
         professionalRating: professionalRating,
         hiredProfeshnoal: hiredProfeshnoal,
+        avgRating:avgRating,
         moment: moment
       });
 
@@ -1620,6 +1638,7 @@ app.get('/get-message', async (req, res) => {
 
 app.get('/get-message-property', async (req, res) => {
   var newData = [];
+  var newData1 = [];
   MessageSchema.find({
     $or: [
       { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }, { sms_property_id: req.query.sms_property_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
@@ -1642,24 +1661,42 @@ app.get('/get-message-property', async (req, res) => {
 
         var object_as_string = JSON.stringify(providerData);
         const t = JSON.parse(object_as_string);
-        console.log('t:', t);
+        //console.log('t:', t);
         t.msgTime = msg_time;
         await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
+       // await ServiceProviderSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async professional => {
           if (professional) {
             //console.log('professional:',professional.sps_fullname);
             t.senderName = await professional.sps_fullname;
             //console.log('providerData xxxx New:',t);
-          } else {
-            t.senderName = await 'You';
           }
 
         });
         const s = await t;
-        console.log('providerData New:', s);
-        newData.push(s);
+       // console.log('providerData New:', s);
+
+        //newData.push(s);
+        //var object_as_string1 = JSON.stringify(newData);
+       // const tt = JSON.parse(object_as_string1);
+        //console.log('tt--===:', tt);
+
+        await CustomerSchema.findOne({ _id: s.sms_sender_id }).then(async customer => {
+        //await CustomerSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async customer => {
+          if (customer) {
+            //console.log('professional:',professional.sps_fullname);
+            s.senderName = await customer.cus_fullname;
+            s.sms_user_profile_img = await customer.cus_profile_image_name;
+            //console.log('providerData xxxx New:',t);
+          }
+
+        });
+        const ss = await s;
+       // console.log('providerData Newssssss:', ss);
+        newData.push(ss);
+        
 
       }
-      // console.log('Get newData',newData);
+       console.log('Get newData',newData);
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.send({

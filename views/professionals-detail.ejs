@@ -26,11 +26,10 @@
               <input type="text" class="form-control form-control-fix2" id="taskName" placeholder="Task Name"
                 name="task_name" required>
 
-               <input type="text" class="form-control form-control-fix2" id="professional"
-                placeholder="" name="professionalName"
-                value="" readonly> 
-               <input type="hidden" id="professionalId" name="professionalId" value=""> 
-               <input type="hidden" name="currentUserId" value="<%=session.user_id%>">
+              <input type="text" class="form-control form-control-fix2" id="professional" placeholder=""
+                name="professionalName" value="" readonly>
+              <input type="hidden" id="professionalId" name="professionalId" value="">
+              <input type="hidden" name="currentUserId" value="<%=session.user_id%>">
 
               <input type="hidden" name="property_id" class="property_id" value="">
               <!-- <input type="hidden" name="phase_id" id="phase_id" value=""> -->
@@ -97,23 +96,23 @@
                       </span>
                     </div>
                     <div class="float-left icon-fix2">
-                      <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span>4.0
+                      <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span><%= avgRating%>
                         Rating</span>
                     </div>
 
-                   
+
                     <% if(hiredProfeshnoal){ %>
                       <div class="float-left btn-hire-now-small">
                         <a href="javascript:void(0)" id="addTask-btn" class="btn btn-add-property">Add Task</a>
                       </div>
                       <% } %>
-                      <div class="float-left btn-hire-now-small">
-                        <a href="/professionals-hirenow" class="btn btn-add-property">Hire Now</a>
-                      </div> 
-                    <div class="float-left btn-hire">
-                      <a href="/professionals-detail-message?spp_id=<%=service_provider_detail._id%>&cus_id=<%=session.user_id%>"
-                        class="btn btn-message">Drop a message</a>
-                    </div>
+                        <div class="float-left btn-hire-now-small">
+                          <a href="/professionals-hirenow" class="btn btn-add-property">Hire Now</a>
+                        </div>
+                        <div class="float-left btn-hire">
+                          <a href="/professionals-detail-message?spp_id=<%=service_provider_detail._id%>&cus_id=<%=session.user_id%>"
+                            class="btn btn-message">Drop a message</a>
+                        </div>
 
                   </div>
                 </div>
@@ -152,7 +151,8 @@
                             <p>
                               <%=serviceProOtherDetail.spods_professional_body%>
                             </p>
-                            <input type="hidden" id="spr_id" value="<%=serviceProOtherDetail.spods_service_provider_id%>" name="spr_id">
+                            <input type="hidden" id="spr_id"
+                              value="<%=serviceProOtherDetail.spods_service_provider_id%>" name="spr_id">
                             <%}%>
                       </div>
                     </div>
@@ -260,40 +260,48 @@
                         <div class="about-section">
                           <div class="row">
                             <div style="order: 2;" class="col col-lg-6">
-                              <% var plantRateSum = 0;  %>
-                              <% var c=1 ; var total = professionalRating.length; professionalRating.forEach(function(prat){ %>
-                                <% plantRateSum += parseInt(prat.sprs_rating) %> 
-                                <div class="side-feedback-sec">
-                                  <div class="img-rating-box">
-                                    <div class="img-side-part">
-                                      <img src="upload/<%= prat.sprs_submitted_profile_img %>" alt="">
-                                      <b><%= prat.sprs_submitted_by_name %></b>
-                                    </div>
-                                    <div class="rating-star">
-                                      <p>
-                                        <% for (var i =1; i <=5;  i++ ) { %>
-                                            <% if(i <= prat.sprs_rating){ %> 
-                                              <i class="fa fa-star"></i>
-                                              <% }else{ %> <i class="fa fa-star-o"></i> <% } } %>
-                                        <!-- <i class="fa fa-star"></i>
+                              <% var plantRateSum=0; %>
+                                <% var c=1 ; var total=professionalRating.length;
+                                  professionalRating.forEach(function(prat){ %>
+                                  <% plantRateSum +=parseInt(prat.sprs_rating) %>
+                                    <div class="side-feedback-sec">
+                                      <div class="img-rating-box">
+                                        <div class="img-side-part">
+                                          <img src="upload/<%= prat.sprs_submitted_profile_img %>" alt="">
+                                          <b>
+                                            <%= prat.sprs_submitted_by_name %>
+                                          </b>
+                                        </div>
+                                        <div class="rating-star">
+                                          <p>
+                                            <% for (var i=1; i <=5; i++ ) { %>
+                                              <% if(i <=prat.sprs_rating){ %>
+                                                <i class="fa fa-star"></i>
+                                                <% }else{ %> <i class="fa fa-star-o"></i>
+                                                  <% } } %>
+                                                    <!-- <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star-half-o"></i>
                                         <i class="fa fa-star-o"></i> -->
-                                      </p>
-                                      <p> <%=moment(prat.sprs_created_at).format("Do MMM, YYYY"); %></p>
+                                          </p>
+                                          <p>
+                                            <%=moment(prat.sprs_created_at).format("Do MMM, YYYY"); %>
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <div class="comment-text">
+                                        <p>
+                                          <%= prat.sprs_review %>
+                                        </p>
+                                      </div>
                                     </div>
-                                  </div>
-                                  <div class="comment-text">
-                                    <p><%= prat.sprs_review %></p>
-                                  </div>
-                                </div>
-                              <% c++; });  var avgRating = Math.round(plantRateSum/total);  %>
-                              <!-- <%= total %>
+                                    <% c++; }); var avgRating=Math.round(plantRateSum/total); %>
+                                      <!-- <%= total %>
                               <%= plantRateSum %> -->
-                              
+
                             </div>
-                            <div style="order: 1;" class="col-lg-6">
+                            <!-- <div style="order: 1;" class="col-lg-6">
                               <div class="float-left ">
                                 <h1 class="pointer-fix" style="color: #005377;"><% if(!isNaN(avgRating)){ %><%= avgRating.toFixed(1) %> <% }else{%>0.0<% } %></h1>
                                 <p style="margin-left: 20px;">out of 5</p>
@@ -301,6 +309,136 @@
                               <div>
                                 <img class="feedback-img" src="images/feedback-2.png" alt="">
                               </div>
+                            </div> -->
+                            <div class="col-lg-6">
+                              <div class="row align-item-center mt-3">
+                                <div class="col-lg-2">
+                                  <div class="float-left ">
+                                    <h1 class="pointer-fix" style="color: #005377;">
+                                      <% if(!isNaN(avgRating)){ %>
+                                        <%= avgRating.toFixed(1) %>
+                                          <% }else{%>0.0<% } %>
+                                    </h1>
+                                    <p style="margin-left: 20px;">out of 5</p>
+                                  </div>
+                                </div>
+                                <div class="col-lg-10 mt-5">
+                                  <div class="ratting-overall-box">
+                                    <div class="star-rating-piramid">
+                                      <ul>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                      </ul>
+                                      <ul>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                      </ul>
+                                      <ul>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                      </ul>
+                                      <ul>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                      </ul>
+                                      <ul>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <div class="progress-rating">
+                                      <ul>
+                                        <li>
+                                          <div class="progress">
+                                            <div class="progress-bar progress-bar-success" role="progressbar"
+                                              aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                                              style="width:90%; background-color:#ffc107">
+                                            </div>
+                                          </div>
+                                        </li>
+                                      </ul>
+                                      <ul>
+                                        <li>
+                                          <div class="progress">
+                                            <div class="progress-bar progress-bar-success" role="progressbar"
+                                              aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                                              style="width:70%; background-color:#ffc107">
+                                            </div>
+                                          </div>
+                                        </li>
+                                      </ul>
+                                      <ul>
+                                        <li>
+                                          <div class="progress">
+                                            <div class="progress-bar progress-bar-success" role="progressbar"
+                                              aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                                              style="width:50%; background-color:#ffc107">
+                                            </div>
+                                          </div>
+                                        </li>
+                                      </ul>
+                                      <ul>
+                                        <li>
+                                          <div class="progress">
+                                            <div class="progress-bar progress-bar-success" role="progressbar"
+                                              aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                                              style="width:40%;background-color:#ffc107">
+                                            </div>
+                                          </div>
+                                        </li>
+                                      </ul>
+                                      <ul>
+                                        <li>
+                                          <div class="progress">
+                                            <div class="progress-bar progress-bar-success" role="progressbar"
+                                              aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                                              style="width:20%;background-color:#ffc107">
+                                            </div>
+                                          </div>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+
+
                             </div>
 
                           </div>
@@ -318,6 +456,7 @@
     </div>
     </div>
 
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -331,18 +470,18 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
-  integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
-  crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+      integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <script>
       $(document).ready(function () {
 
         setTimeout(function () {
-         var sps_fullname =  $('.professtional_section #sps_fullname').val();
-         var sps_id =  $('.professtional_section #sps_id').val();
-         $('#professional').val(sps_fullname);
-         $('#professionalId').val(sps_id);
+          var sps_fullname = $('.professtional_section #sps_fullname').val();
+          var sps_id = $('.professtional_section #sps_id').val();
+          $('#professional').val(sps_fullname);
+          $('#professionalId').val(sps_id);
         }, 5000);
 
         $(".sidenav ul li").click(function () {
@@ -391,6 +530,7 @@
         });
       });
 
+
   $('#feedbackForm').validate({
     onfocusout: function (element) {
       this.element(element);
@@ -404,6 +544,11 @@
     submitHandler: function (form) {
       $('#submit').attr('disabled', true);
       //form.submit();
+      //var isChecked = $('.rating_radio').prop('checked');
+      var isChecked = $("input:radio[name='rating']").is(":checked")
+
+      if(isChecked == true){
+        $('#rating_message').hide();
       var spr_id = $('#spr_id').val();
       var formData = $('#feedbackForm').serialize()+'&spr_id='+spr_id;
       console.log('formData:', formData)
@@ -415,7 +560,7 @@
         success: function (data) {
           console.log(data);
           if (data.status == true) {
-            //$('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> ' + data.message + '</div>')
+            //$('#rating_message').html('<div class="isa_success"><i class="fa fa-check"></i> ' + data.message + '</div>')
             $('#feedbackModal').modal('hide');
               Swal.fire({
                    // position: 'top-end',
@@ -441,6 +586,10 @@
           }
         }
       });
+    }else{
+      $('#rating_message').show();
+      $('#rating_message').text('Rating is required!');
+    }
     }
   });
 
@@ -476,45 +625,45 @@
                   $('#taskName,#notes,#duedate').val('');
                 }
               }
-            });
-            // location.reload(true);
-          } else {
-            alert('some thing wrong')
-          }
-        })
+          });
+          // location.reload(true);
+        } else {
+          alert('some thing wrong')
+        }
+      })
 
-        $("#addTask-btn").click(function (e) {
-            $('#addTaskModal').modal('show');
-            var sp_id = $('#sps_id').val();
-            if (sp_id) {
-            $.ajax({
-              type: "POST",
-              data:{
-                spId:sp_id
-              },
-              url: "/api/filterPropertyAdress",
-              cache: false,
-              success: function (data) {
-                console.log(data)
-                var htmlData = '';
-                htmlData += '<option value="">Select Phase</option>';
-                if (data.data.ps_phase_array.length > 0) {
-                  $.each(data.data.ps_phase_array, function (i, data) {
-                    console.log('val:', data)
-                    htmlData += '<option value="' + data.phase_name + '">' + data.phase_name + '</option>';
-                  });
-                }
-                $('.phase_list').html(htmlData);
-                 $('#addTaskModal .property_id').val(data.data._id);
+      $("#addTask-btn").click(function (e) {
+        $('#addTaskModal').modal('show');
+        var sp_id = $('#sps_id').val();
+        if (sp_id) {
+          $.ajax({
+            type: "POST",
+            data: {
+              spId: sp_id
+            },
+            url: "/api/filterPropertyAdress",
+            cache: false,
+            success: function (data) {
+              console.log(data)
+              var htmlData = '';
+              htmlData += '<option value="">Select Phase</option>';
+              if (data.data.ps_phase_array.length > 0) {
+                $.each(data.data.ps_phase_array, function (i, data) {
+                  console.log('val:', data)
+                  htmlData += '<option value="' + data.phase_name + '">' + data.phase_name + '</option>';
+                });
               }
-            });
-          } else {
-            alert('something wrong')
-          }
+              $('.phase_list').html(htmlData);
+              $('#addTaskModal .property_id').val(data.data._id);
+            }
+          });
+        } else {
+          alert('something wrong')
+        }
 
-        });
+      });
 
-        
+
         // $(document).ready(function () {
         //   // e.preventDefault();
         //   var propertyId = $('.propertySelectBox :selected').val();

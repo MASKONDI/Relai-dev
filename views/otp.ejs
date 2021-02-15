@@ -29,14 +29,14 @@
 
                   <div class="form-group form-inline">
                     <input type="hidden" name="cus_email_id" id="email" value="">
-                    <input type="password" class="form-control otp-form-control" size="2" style="width:18%" id="otp1"
-                      placeholder="" name="otp1">
-                    <input type="password" class="form-control otp-form-control" size="2" style="width:18%" id="otp2"
-                      placeholder="" name="otp2">
-                    <input type="password" class="form-control otp-form-control" size="2" style="width:18%" id="otp3"
-                      placeholder="" name="otp3">
-                    <input type="password" class="form-control otp-form-control" size="2" style="width:18%" id="otp4"
-                      placeholder="" name="otp4">
+                    <input type="password" class="form-control otp-form-control inputs" size="2" style="width:18%"
+                      id="otp1" placeholder="" name="otp1" maxlength="1">
+                    <input type="password" class="form-control otp-form-control inputs" size="2" style="width:18%"
+                      id="otp2" placeholder="" name="otp2" maxlength="1">
+                    <input type="password" class="form-control otp-form-control inputs" size="2" style="width:18%"
+                      id="otp3" placeholder="" name="otp3" maxlength="1">
+                    <input type="password" class="form-control otp-form-control inputs" size="2" style="width:18%"
+                      id="otp4" placeholder="" name="otp4" maxlength="1">
 
                   </div>
                   <div class="opt-text">
@@ -308,7 +308,14 @@
     });
 
   </script>
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+    $(".inputs").keyup(function () {
+      if (this.value.length == this.maxLength) {
+        $(this).next('.inputs').focus();
+      }
+    });
+  </script>
 
   </body>
 
