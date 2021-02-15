@@ -33,6 +33,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group  ">
+                    <input type="hidden" class="form-control " id="token" name="token">
                     <input type="text" class="form-control form-control-size " id="Forename" placeholder="Forename"
                       name="cus_firstname" required data-rule-required="true" data-rule-minlength="2"
                       data-msg-required="Forename is required!">
@@ -261,7 +262,7 @@
         $(element).removeClass(errorClass);
       },
       submitHandler: function (form) {
-        $('.loader-box').attr('style','display:flex !important');
+        $('.loader-box').attr('style', 'display:flex !important');
         var formData = $('#registerform').serialize();
         console.log('formData:', formData)
         $.ajax({
@@ -272,7 +273,7 @@
           success: function (data) {
             console.log(data);
             if (data.status == false) {
-              $('.loader-box').attr('style','display:none !important');
+              $('.loader-box').attr('style', 'display:none !important');
               Swal.fire({
                 icon: 'error',
                 title: data.message,
@@ -282,7 +283,7 @@
               })
 
             } else {
-              $('.loader-box').attr('style','display:none !important');
+              $('.loader-box').attr('style', 'display:none !important');
               Swal.fire({
                 icon: 'success',
                 title: data.message,
@@ -353,6 +354,10 @@
       return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
     var email = getParameterByName('email'); // "lorem"
+    var token = getParameterByName('token');
+    if (token) {
+      $('#token').val(token);
+    }
     if (email) {
       $('#email').val(email);
       $('#email').attr('readonly', 'readonly');
