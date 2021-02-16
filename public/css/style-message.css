@@ -146,6 +146,9 @@ span#comment-error {
 .complaints a:hover {
     color: #333 !important;
 }
+.complaints .btn-complaint:hover {
+    color: #fff !important;
+}
 .message-user-img img {
     vertical-align: middle;
     width: 45px;

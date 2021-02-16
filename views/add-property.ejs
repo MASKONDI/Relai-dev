@@ -205,7 +205,7 @@
                                     id="emailaddress" placeholder="Enter email address*" name="ps_other_party_emailid"
                                     value="" data-rule-required="true" data-msg-required="Email is required!" required>
                                   <%}else{%>
-                                    <input type="email" class="form-control property-form-control-size-fix "
+                                    <input type="email" readonly class="form-control property-form-control-size-fix "
                                       id="emailaddress" placeholder="Enter email address*" name="ps_other_party_emailid"
                                       value="<%=propertyObj.ps_other_party_emailid%>" data-rule-required="true"
                                       data-msg-required="Email is required!" required>
@@ -721,16 +721,9 @@
                             <div class="row">
                               <div class="col-sm-12 col-lg-12">
                                 <%if(propertyObj=='null'){%>
-                                  <textarea type="text" style=" width:95%"
-                                    class="form-control property-form-control-size-fix " id="address"
-                                    name="ps_additional_note" value="" placeholder="Additional notes(if any)">
-                              </textarea>
+                                  <textarea type="text" style=" width:95%"class="form-control property-form-control-size-fix " id="address"name="ps_additional_note" value="" placeholder="Additional notes(if any)"></textarea>
                                   <%}else{%>
-                                    <textarea type="text" style=" width:95%"
-                                      class="form-control property-form-control-size-fix " id="address"
-                                      name="ps_additional_note" value="<%=propertyObj.ps_additional_note%>"
-                                      placeholder="Additional notes(if any)">
-                              </textarea>
+                                    <textarea type="text" style=" width:95%"class="form-control property-form-control-size-fix " id="address"name="ps_additional_note" value=""placeholder="Additional notes(if any)"><%=propertyObj.ps_additional_note%></textarea>
                                     <%}%>
                               </div>
                             </div>
@@ -1667,7 +1660,7 @@
                             <img src="images/upload-icon.png" id="avtar1">
                           </div>
                           <div class="driving-liences-portfolio ">
-                            <p class="Picture_1">Picture 1</p>
+                            <p class="Picture_1"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 1</p>
                           </div>
                           <div class="property-upload">
                             <!-- <a href="#">Upload</a> -->
@@ -1689,7 +1682,7 @@
                             <img src="images/upload-icon.png" id="avtar2">
                           </div>
                           <div class="driving-liences-portfolio ">
-                            <p CLASS="Picture_2">Picture 2</p>
+                            <p CLASS="Picture_2"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 2</p>
                           </div>
                           <div class="property-upload">
                             <!-- <a href="#">Upload</a> -->
@@ -1712,7 +1705,7 @@
                             <img src="images/upload-icon.png" id="avtar3">
                           </div>
                           <div class="driving-liences-portfolio ">
-                            <p CLASS="Picture_3">Picture 3</p>
+                            <p CLASS="Picture_3"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 3</p>
                           </div>
                           <div class="property-upload">
                             <!-- <a href="#">Upload</a> -->
@@ -1767,7 +1760,7 @@
                                   id="avtar_<%=propertyImageObject[0]._id%>">
                               </div>
                               <div class="driving-liences-portfolio ">
-                                <p class="Picture_0">
+                                <p class="Picture_0"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                   <%=propertyImageObject[0].pps_property_image_name%>
                                 </p>
                               </div>
@@ -1803,7 +1796,7 @@
                                   <img src="images/upload-icon.png" id="avtar1">
                                 </div>
                                 <div class="driving-liences-portfolio ">
-                                  <p class="Picture_1">Picture 1</p>
+                                  <p class="Picture_1"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 1</p>
                                 </div>
                                 <div class="property-upload">
                                   <!-- <a href="#">Upload</a> -->
@@ -1830,7 +1823,7 @@
                                         id="avtar_<%=propertyImageObject[1]._id%>">
                                     </div>
                                     <div class="driving-liences-portfolio ">
-                                      <p class="Picture_1">
+                                      <p class="Picture_1"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                         <%=propertyImageObject[1].pps_property_image_name%>
                                       </p>
                                     </div>
@@ -1862,7 +1855,7 @@
                                         <img src="images/upload-icon.png" id="avtar2">
                                       </div>
                                       <div class="driving-liences-portfolio ">
-                                        <p CLASS="Picture_2">Picture 2</p>
+                                        <p CLASS="Picture_2"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 2</p>
                                       </div>
                                       <div class="property-upload">
                                         <!-- <a href="#">Upload</a> -->
@@ -1889,7 +1882,7 @@
                                               id="avtar_<%=propertyImageObject[2]._id%>">
                                           </div>
                                           <div class="driving-liences-portfolio ">
-                                            <p class="Picture_2">
+                                            <p class="Picture_2"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                               <%=propertyImageObject[2].pps_property_image_name%>
                                             </p>
                                           </div>
@@ -1921,7 +1914,7 @@
                                               <img src="images/upload-icon.png" id="avtar3">
                                             </div>
                                             <div class="driving-liences-portfolio ">
-                                              <p CLASS="Picture_3">Picture 3</p>
+                                              <p CLASS="Picture_3"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 3</p>
                                             </div>
                                             <div class="property-upload">
                                               <!-- <a href="#">Upload</a> -->
@@ -1980,7 +1973,7 @@
                             <img src="images/upload-icon.png" id="avtar4">
                           </div>
                           <div class="driving-liences-portfolio ">
-                            <p CLASS="Picture_4">Picture 1</p>
+                            <p CLASS="Picture_4"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 1</p>
                           </div>
                           <div class="property-upload">
                             <button class="btn btn-upload">Upload</button>
@@ -1999,7 +1992,7 @@
                             <img src="images/upload-icon.png" id="avtar5">
                           </div>
                           <div class="driving-liences-portfolio ">
-                            <p CLASS="Picture_5">Picture 2</p>
+                            <p CLASS="Picture_5"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 2</p>
                           </div>
                           <div class="property-upload">
                             <!-- <a href="#">Upload</a> -->
@@ -2019,7 +2012,7 @@
                             <img src="images/upload-icon.png" id="avtar6">
                           </div>
                           <div class="driving-liences-portfolio ">
-                            <p CLASS="Picture_6">Picture 3</p>
+                            <p CLASS="Picture_6"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 3</p>
                           </div>
                           <div class="property-upload">
                             <!-- <a href="#">Upload</a> -->
@@ -2071,7 +2064,7 @@
                                   id="avtar_<%=propertyPlanImageObject[0]._id%>">
                               </div>
                               <div class="driving-liences-portfolio ">
-                                <p CLASS="planPicture_0">
+                                <p CLASS="planPicture_0"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                   <%=propertyPlanImageObject[0].ppps_plan_image_name%>"
                                 </p>
                               </div>
@@ -2095,7 +2088,7 @@
                                   <img src="images/upload-icon.png" id="avtar4">
                                 </div>
                                 <div class="driving-liences-portfolio ">
-                                  <p CLASS="Picture_4">Picture 1</p>
+                                  <p CLASS="Picture_4"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 1</p>
                                 </div>
                                 <div class="property-upload">
                                   <button class="btn btn-upload">Upload</button>
@@ -2119,7 +2112,7 @@
                                         id="avtar_<%=propertyPlanImageObject[1]._id%>">
                                     </div>
                                     <div class="driving-liences-portfolio ">
-                                      <p CLASS="planPicture_1">
+                                      <p CLASS="planPicture_1"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                         <%=propertyPlanImageObject[1].ppps_plan_image_name%>"
                                       </p>
                                     </div>
@@ -2142,7 +2135,7 @@
                                         <img src="images/upload-icon.png" id="avtar5">
                                       </div>
                                       <div class="driving-liences-portfolio ">
-                                        <p CLASS="Picture_5">Picture 2</p>
+                                        <p CLASS="Picture_5"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 2</p>
                                       </div>
                                       <div class="property-upload">
                                         <!-- <a href="#">Upload</a> -->
@@ -2169,7 +2162,7 @@
                                               id="avtar_<%=propertyPlanImageObject[2]._id%>">
                                           </div>
                                           <div class="driving-liences-portfolio ">
-                                            <p CLASS="planPicture_2">
+                                            <p CLASS="planPicture_2"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                               <%=propertyPlanImageObject[2].ppps_plan_image_name%>"
                                             </p>
                                           </div>
@@ -2193,7 +2186,7 @@
                                               <img src="images/upload-icon.png" id="avtar6">
                                             </div>
                                             <div class="driving-liences-portfolio ">
-                                              <p CLASS="Picture_6">Picture 3</p>
+                                              <p CLASS="Picture_6"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 3</p>
                                             </div>
                                             <div class="property-upload">
                                               <!-- <a href="#">Upload</a> -->
@@ -2219,7 +2212,7 @@
                       <div class="row">
                         <div class="col-sm-12 col-lg-12">
                           <div class="property-btn">
-                            <button type="submit" class="btn submit-btn submit_third_form">Edit
+                            <button type="submit" class="btn submit-btn submit_third_form">Update
                               Property</button>
                           </div>
                         </div>
@@ -2475,7 +2468,7 @@
                                     confirmButtonColor: '#005377',
                                     denyButtonColor: '#005377',
                                     cancelButtonColor: '#d33',
-                                    confirmButtonText: `Dream Home List`,
+                                    confirmButtonText: `My dream home`,
                                     denyButtonText: `Add Property`,
                                   }).then((result) => {
                                     /* Read more about isConfirmed, isDenied below */
