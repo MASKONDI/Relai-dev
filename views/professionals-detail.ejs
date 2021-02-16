@@ -18,7 +18,7 @@
               <!-- <div class="alert alert-info" id="taskmsg"></div> -->
               <!-- <input type="text" class="form-control form-control-fix2" id="subject" placeholder="Instruction"
                 name="todotask" required> -->
-                <%if(propertyObj.length==0){%>
+                <%if(!propertyObj){%>
                   <%}else{%>
                     <select class="form-control selectBox2 " id="property_id" name="property_id" style="height: 48px;"
                 data-rule-required="true" data-msg-required="property  is required" required>
@@ -46,8 +46,8 @@
 
               <!-- <input type="hidden" name="property_id" class="property_id" value=""> -->
               <!-- <input type="hidden" name="phase_id" id="phase_id" value=""> -->
-              <input type="date" class="form-control  form-control-fix2" id="duedate" placeholder="Due on"
-                name="duedate" required>
+              <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate" placeholder="Due on"
+                name="duedate" placeholder="Due On Date" required>
               <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
                 placeholder="Add Notes(If any)"></textarea>
 

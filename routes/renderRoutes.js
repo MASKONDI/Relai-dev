@@ -481,7 +481,7 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
         var property_object = await pr;
         propertyObjArray.push(property_object)
       }
-      console.log("propertyObj========",propertyObjArray)
+      console.log("propertyObj========",propertyObj)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('professionals-detail', {
@@ -494,7 +494,7 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
         hiredProfeshnoal: hiredProfeshnoal,
         avgRating:avgRating,
         moment: moment,
-        propertyObj:propertyObjArray[0]
+        propertyObj:propertyObj
       });
 
     }
