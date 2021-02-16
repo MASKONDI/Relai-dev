@@ -20,6 +20,7 @@ const PropertiesPlanPictureSchema = require("../models/properties_plan_picture")
 const CustomerUploadDocsSchema = require("../models/customer_upload_document");
 const ComplaintsSchema = require("../models/Complaints");
 const ComplaintsDetailsSchema = require("../models/complaint_details_model");
+const RatingSchema = require("../models/service_provider_rating_Schema");
 const CustomerSchema = require("../models/customers");
 const DateTime = require('node-datetime/src/datetime');
 //** Upload Document Start */
@@ -79,16 +80,27 @@ app.post('/upload-profile-pic', upload.single('profile-pic'), (req, res, next) =
   }
   console.log("object is :", obj.cus_profile_image_name);
   CustomerSchema.findByIdAndUpdate({ _id: user_id }, { $set: { cus_profile_image_name: obj.cus_profile_image_name, cus_profile_image: obj.cus_profile_image, cus_updated_at: Date.now() } },
-    function (err, customers) {
+  async  function (err, customers) {
       if (err) {
         console.log("Something went wrong")
       }
       else {
         console.log('myyyyyyyyyyyyyyyyyyyyyy:',obj.cus_profile_image_name);
         console.log('ffffffffffffffff:',req.session.user_id);
-        ComplaintsDetailsSchema.updateOne({comsd_user_id: req.session.user_id}, { $set: { comsd_user_profile_img: obj.cus_profile_image_name } });
+
        
-        // console.log("file submitting successfully : ", profile);
+        await ComplaintsDetailsSchema.updateMany({comsd_user_profile_img: obj.cus_profile_image_name}).where({comsd_user_id: req.session.user_id}).then( async (comres) =>{
+              console.log('comrescomres:',comres)
+            await RatingSchema.updateMany({sprs_submitted_profile_img: obj.cus_profile_image_name}).where({sprs_submitted_by: req.session.user_id}).then( async (ratingres) =>{
+
+              console.log('ratingres:',ratingres)
+            });
+
+        })
+
+        // ComplaintsDetailsSchema.updateOne({comsd_user_id: req.session.user_id}, { $set: { comsd_user_profile_img: obj.cus_profile_image_name } });
+       // console.log("file submitting successfully : ", profile);
+
         //TODO: Want to update session after editprofile
         req.session.imagename = obj.cus_profile_image_name
         // req.session._id = doc.user_id;

@@ -221,7 +221,7 @@ router.post("/cust_register", (req, res) => {
               console.log("registered customers data is ", customers);
               res.send({
                 customers: customers,
-                message: "You have register sucessfully.",
+                message: "You have registered sucessfully, please check your email to verify your account.",
                 status: true
               })
 
@@ -259,8 +259,10 @@ router.post("/cust_signin", (req, res) => {
     //req.flash('err_msg', "please enter valid emailid and password")
     // return res.redirect('/signin');
     res.send({
-      message: "please enter valid emailid and password",
-      status: false
+      message: "please enter valid email and password",
+      status: false,
+      redirectpage:false,
+      redirect:''
     })
   }
 
@@ -273,14 +275,18 @@ router.post("/cust_signin", (req, res) => {
       //return res.redirect('/signin');
       res.send({
         message: "Customers not found",
-        status: false
+        status: false,
+        redirectpage:false,
+        redirect:''
       })
     }
 
     if (customers.cus_email_verification_status == 'no') {
       res.send({
         message: "Please verify  OTP first",
-        status: false
+        status: false,
+        redirectpage:true,
+        redirect:"/otp?email="+cus_email_id
         //redirect to OTP
       })
     }
@@ -339,7 +345,9 @@ router.post("/cust_signin", (req, res) => {
         //return res.redirect('/signin');
         res.send({
           message: "Password incorrect",
-          status: false
+          status: false,
+          redirectpage:false,
+          redirect:''
         })
 
       }

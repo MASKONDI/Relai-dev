@@ -230,6 +230,15 @@
                 timer: 4000
               })
 
+              if(data.redirectpage == true){
+                setTimeout(function () {
+                //location.reload(true);
+                window.location.href =  data.redirect;
+              }, 4000);
+              }
+             
+
+
             } else {
               $('.loader-box').attr('style', 'display:none !important');
               Swal.fire({
