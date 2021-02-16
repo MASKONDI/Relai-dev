@@ -2544,8 +2544,13 @@ ul.docs-list.last-doc li{
         margin-left: 35px;
         padding-left: 20px;
     }
-    .icon-fix2, .btn-hire-now-small{
+    .icon-fix2{
         padding-top: 25px;
+        margin-left: 15px;
+        padding-left: 20px;
+    }
+    .btn-hire-now-small{
+        padding-top: 15px;
         margin-left: 15px;
         padding-left: 20px;
     }
