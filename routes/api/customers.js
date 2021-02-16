@@ -2036,38 +2036,51 @@ async function submit_token(token, user_id) {
   //console.log("secret token is", req.session.email);
   var decoded = jwt.verify(token, keys.secretOrKey);
   console.log("decoded string is :", decoded.id);
-  PropertiesSchema.find({ _id: decoded.id }).then(async (data) => {
-    if (data) {
-      let arr = [];
+  PropertiesSchema.findOne({ _id: decoded.id }).then(async (data) => {
+    if (data.is_invite_accepted == "no") {
+      // let arr = [];
 
-      for (let img of data) {
-        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
+      // for (let img of data) {
+      //   await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
 
-          let temp = await result
-          //for(let image of result){
-          //  let temp = await image
-          arr.push(temp)
-          // }
-        })
-
-      }
-      console.log('++++++++', arr);
-
-      add_new_property(data, arr, user_id);
-
-
-      // err_msg = req.flash('err_msg');
-      // success_msg = req.flash('success_msg');
-      // res.json(data);
-      // res.render('mydreamhome', {
-      //   err_msg, success_msg, layout: false,
-      //   session: req.session,
-      //   propertyData: data,
-      //   propertyImage: arr
-
-      // });
-
+      //     let temp = await result
+      //     //for(let image of result){
+      //     //  let temp = await image
+      //     arr.push(temp)
+      //     // }
+      //   })
+      console.log("property id is user id", decoded.id);
+      console.log();
+      // }
+      PropertiesSchema.updateOne({ '_id': decoded.id }, { $set: { ps_tagged_user_id: user_id, is_invite_accepted: 'yes' } }, { upsert: true }, function (err) {
+        if (err) {
+          // res.send({ status: false, message: 'Something going wrong please check again !!' })
+          console.log('Something going wrong please check again !!'.err);
+        } else {
+          // res.send({ status: true, message: 'Your Property Added succfully !!' })
+          console.log('Your Property Added succfully !!');
+        }
+      });
+    } else {
+      console.log("Property already added successfully");
     }
+    // console.log('++++++++', arr);
+
+    // add_new_property(data, arr, user_id);
+
+
+    // err_msg = req.flash('err_msg');
+    // success_msg = req.flash('success_msg');
+    // res.json(data);
+    // res.render('mydreamhome', {
+    //   err_msg, success_msg, layout: false,
+    //   session: req.session,
+    //   propertyData: data,
+    //   propertyImage: arr
+
+    // });
+
+    // }
   }).catch((err) => {
     console.log(err)
   })
