@@ -47,6 +47,8 @@ const PropertyHelper = require("./propertyDetail");
 const PermisionHelper = require("./permision");
 const propertyProfesshionalHelper = require('./propertyProfessionalDetails')
 var isCustomer = auth.isCustomer;
+const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
 // <<<<<<< HEAD
 // router.post('/filterPropertyAdress', (req, res) => {
 //   console.log('filterPropertyAdress==', req.body.propertyId)
@@ -145,10 +147,20 @@ router.post("/cust_register", (req, res) => {
     console.log("server validation error is:", errors);
     //req.flash('err_msg', errors.confirmPassword);
     //return res.redirect('/signup');
-    res.send({
-      message: errors.confirmPassword,
-      status: false
-    })
+    console.log('errosss:',errors)
+    if(errors.confirmPassword){
+        res.send({
+          message: errors.confirmPassword,
+          status: false
+        })
+    }else{
+        res.send({
+          message: errors.cus_email_id,
+          status: false
+        })
+    }
+
+   
   }
 
   CustomerSchema.findOne({ cus_email_id: req.body.cus_email_id }).then(customers => {
