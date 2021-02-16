@@ -87,7 +87,8 @@ app.post('/upload-profile-pic', upload.single('profile-pic'), (req, res, next) =
         console.log('myyyyyyyyyyyyyyyyyyyyyy:',obj.cus_profile_image_name);
         console.log('ffffffffffffffff:',req.session.user_id);
         ComplaintsDetailsSchema.updateOne({comsd_user_id: req.session.user_id}, { $set: { comsd_user_profile_img: obj.cus_profile_image_name } });
-       // console.log("file submitting successfully : ", profile);
+       
+        // console.log("file submitting successfully : ", profile);
         //TODO: Want to update session after editprofile
         req.session.imagename = obj.cus_profile_image_name
         // req.session._id = doc.user_id;

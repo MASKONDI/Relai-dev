@@ -30,9 +30,13 @@
                 data-rule-required="true" data-msg-required="phase  is required" required>
                 <option value="">Select Phase</option>
                 <%if(propertyDetailData.length>0){%>
+                  <%if(!propertyDetailData[0].ps_phase_array){%>
+                    <option value="">Null</option>
+                    <%}else{%>
                   <%propertyDetailData[0].ps_phase_array.forEach(function(row,i){%>
                 <option value="<%=row.phase_name%>"><%=row.phase_name%></option>
                 <%});%>
+                <%}%>
                 <input type="hidden" name="property_id_add_task" value="<%=propertyDetailData[0]._id%>">
                 <%}else{%>
                   <p>property data null</p>
