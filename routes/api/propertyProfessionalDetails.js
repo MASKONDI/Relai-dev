@@ -46,7 +46,7 @@ module.exports.GetAllHiredProertyByUserId = function (pps_service_provider_id,pp
            var pushArray=[]
           for(var k of resp){ 
           var allhiredProp = await PropertiesSchema.findOne({_id:k.pps_property_id})
-                console.log("kkkkkkkkkkkkkkkkkk",allhiredProp)
+                //console.log("kkkkkkkkkkkkkkkkkk",allhiredProp)
                 pushArray.push(allhiredProp)
           }
            var tt=await pushArray;
