@@ -92,7 +92,12 @@
                             <% chatData.forEach(function(row){ %>
                               <div class="messages-box clearfix">
                                 <div class="message-user-img">
-                                  <img src="images/recent-user-1.png" alt="" title="">
+                                  <!-- <img src="images/recent-user-1.png" alt="" title=""> -->
+                                  <% if(row.sms_user_profile_img){ %>
+                                    <img src="upload/<%= row.sms_user_profile_img%>" alt="" title="">
+                                  <% }else{ %>
+                                    <img src="images/img_avatar.png" alt="" title="">
+                                  <%}%>
                                 </div>
                                 <div class="message-content">
                                   <h3> <%= row.senderName%></h3>
@@ -183,7 +188,15 @@ function scrollToBottom() {
             if (datas.chatData.length > 0) {
               var htmlData = '';
               $.each(datas.chatData, function (i, data) {
-                htmlData += '<div class="messages-box clearfix"><div class="message-user-img"> <img src="images/recent-user-1.png" alt="" title=""></div><div class="message-content"><h3>' + data.senderName + '</h3><p>' + data.sms_message + '</p><p class="hours-ago text-right">' + data.msgTime + '</p></div></div>';
+                var imageData='';
+                if(data.sms_user_profile_img){
+                  imageData = '<img src="upload/'+data.sms_user_profile_img+'" alt="" title="">';
+                }else{
+                  imageData = '<img src="images/img_avatar.png" alt="" title="">';
+                }
+                htmlData += '<div class="messages-box clearfix"><div class="message-user-img">'+imageData+'</div><div class="message-content"><h3>' + data.senderName + '</h3><p>'+data.sms_message.trim()+'</p><p class="hours-ago text-right">' + data.msgTime + '</p></div></div>';
+              
+               // htmlData += '<div class="messages-box clearfix"><div class="message-user-img"> <img src="images/recent-user-1.png" alt="" title=""></div><div class="message-content"><h3>' + data.senderName + '</h3><p>' + data.sms_message + '</p><p class="hours-ago text-right">' + data.msgTime + '</p></div></div>';
               });
               $('#message_board').html(htmlData);
             }

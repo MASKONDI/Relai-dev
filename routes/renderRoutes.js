@@ -905,27 +905,6 @@ app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
         var dateTime = date + ' ' + time;
 
 
-        //  var today1 = new Date(providerData.sms_msg_Date);
-        // var date1 = today1.getFullYear() + '/' + (today1.getMonth() + 1) + '/' + today1.getDate();
-        //  var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
-        //var dateTime1 = date1 + ' ' + time1;
-
-        //var msg_time = timeDiffCalc(new Date(dateTime), new Date(dateTime1));
-
-        //var object_as_string = JSON.stringify(providerData);
-        //const t = JSON.parse(object_as_string);
-        //t.msgTime = msg_time;
-        //await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
-        // if (professional) {
-        //  console.log('professional:', professional.sps_fullname);
-        // t.senderName = await professional.sps_fullname;
-        //console.log('providerData xxxx New:',t);
-        //} else {
-        // t.senderName = await 'You';
-        //}
-
-
-
         var today1 = new Date(providerData.sms_msg_Date);
         var date1 = today1.getFullYear() + '/' + (today1.getMonth() + 1) + '/' + today1.getDate();
         var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
@@ -936,19 +915,51 @@ app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
         var object_as_string = JSON.stringify(providerData);
         const t = JSON.parse(object_as_string);
         t.msgTime = msg_time;
-        await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
-          if (professional) {
-            console.log('professional:', professional.sps_fullname);
-            t.senderName = await professional.sps_fullname;
-            //console.log('providerData xxxx New:',t);
-          } else {
-            t.senderName = await 'You';
-          }
+        // await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
+        //   if (professional) {
+        //     console.log('professional:', professional.sps_fullname);
+        //     t.senderName = await professional.sps_fullname;
+        //     //console.log('providerData xxxx New:',t);
+        //   } else {
+        //     t.senderName = await 'You';
+        //   }
 
-        });
-        const s = await t;
-        //console.log('providerData New:',s);
-        newData.push(s);
+        // });
+        // const s = await t;
+        // //console.log('providerData New:',s);
+        // newData.push(s);
+
+        await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
+          // await ServiceProviderSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async professional => {
+             if (professional) {
+               //console.log('professional:',professional.sps_fullname);
+               t.senderName = await professional.sps_fullname;
+               //console.log('providerData xxxx New:',t);
+             }
+   
+           });
+           const s = await t;
+          // console.log('providerData New:', s);
+   
+           //newData.push(s);
+           //var object_as_string1 = JSON.stringify(newData);
+          // const tt = JSON.parse(object_as_string1);
+           //console.log('tt--===:', tt);
+   
+           await CustomerSchema.findOne({ _id: s.sms_sender_id }).then(async customer => {
+           //await CustomerSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async customer => {
+             if (customer) {
+               //console.log('professional:',professional.sps_fullname);
+               s.senderName = await customer.cus_fullname;
+               s.sms_user_profile_img = await customer.cus_profile_image_name;
+               //console.log('providerData xxxx New:',t);
+             }
+   
+           });
+           const ss = await s;
+          // console.log('providerData Newssssss:', ss);
+           newData.push(ss);
+
       }
 
     }
@@ -1004,19 +1015,50 @@ app.get('/professionals-detail-message', (req, res) => {
             var object_as_string = JSON.stringify(providerData);
             const t = JSON.parse(object_as_string);
             t.msgTime = msg_time;
-            await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
-              if (professional) {
-                console.log('professional:', professional.sps_fullname);
-                t.senderName = await professional.sps_fullname;
-                //console.log('providerData xxxx New:',t);
-              } else {
-                t.senderName = await 'You';
-              }
+            // await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
+            //   if (professional) {
+            //     console.log('professional:', professional.sps_fullname);
+            //     t.senderName = await professional.sps_fullname;
+            //     //console.log('providerData xxxx New:',t);
+            //   } else {
+            //     t.senderName = await 'You';
+            //   }
 
-            });
-            const s = await t;
-            //console.log('providerData New:',s);
-            newData.push(s);
+            // });
+            // const s = await t;
+            // //console.log('providerData New:',s);
+            // newData.push(s);
+
+            await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
+              // await ServiceProviderSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async professional => {
+                 if (professional) {
+                   //console.log('professional:',professional.sps_fullname);
+                   t.senderName = await professional.sps_fullname;
+                   //console.log('providerData xxxx New:',t);
+                 }
+       
+               });
+               const s = await t;
+              // console.log('providerData New:', s);
+       
+               //newData.push(s);
+               //var object_as_string1 = JSON.stringify(newData);
+              // const tt = JSON.parse(object_as_string1);
+               //console.log('tt--===:', tt);
+       
+               await CustomerSchema.findOne({ _id: s.sms_sender_id }).then(async customer => {
+               //await CustomerSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async customer => {
+                 if (customer) {
+                   //console.log('professional:',professional.sps_fullname);
+                   s.senderName = await customer.cus_fullname;
+                   s.sms_user_profile_img = await customer.cus_profile_image_name;
+                   //console.log('providerData xxxx New:',t);
+                 }
+       
+               });
+               const ss = await s;
+              // console.log('providerData Newssssss:', ss);
+               newData.push(ss);
 
           }
 
@@ -1572,25 +1614,6 @@ app.get('/get-message', async (req, res) => {
     ]
   }).then(async (data) => {
     if (data) {
-      // data.forEach(async function (providerData) {
-      //   var today = new Date();
-      //   var date = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
-      //   var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-      //   var dateTime = date+' '+time;
-
-      //   var today1 = new Date(providerData.sms_msg_Date);
-      //   var date1 = today1.getFullYear()+'/'+(today1.getMonth()+1)+'/'+today1.getDate();
-      //   var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
-      //   var dateTime1 = date1+' '+time1;
-
-      //   var msg_time = timeDiffCalc(new Date(dateTime), new Date(dateTime1));
-      //   var object_as_string = JSON.stringify(providerData);  
-      //              const t =    JSON.parse(object_as_string);
-      //              t.msgTime = msg_time;
-      //             //console.log('providerData New:',t);
-      //          newData.push(t);
-      //  });
-
 
 
       for (let providerData of data) {
@@ -1609,19 +1632,52 @@ app.get('/get-message', async (req, res) => {
         var object_as_string = JSON.stringify(providerData);
         const t = JSON.parse(object_as_string);
         t.msgTime = msg_time;
-        await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
-          if (professional) {
-            //console.log('professional:',professional.sps_fullname);
-            t.senderName = await professional.sps_fullname;
-            //console.log('providerData xxxx New:',t);
-          } else {
-            t.senderName = await 'You';
-          }
+        // await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
+        //   if (professional) {
+        //     //console.log('professional:',professional.sps_fullname);
+        //     t.senderName = await professional.sps_fullname;
+        //     //console.log('providerData xxxx New:',t);
+        //   } else {
+        //     t.senderName = await 'You';
+        //   }
 
-        });
-        const s = await t;
-        //console.log('providerData New:',s);
-        newData.push(s);
+        // });
+        // const s = await t;
+        // //console.log('providerData New:',s);
+        // newData.push(s);
+
+
+        await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
+          // await ServiceProviderSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async professional => {
+             if (professional) {
+               //console.log('professional:',professional.sps_fullname);
+               t.senderName = await professional.sps_fullname;
+               //console.log('providerData xxxx New:',t);
+             }
+   
+           });
+           const s = await t;
+          // console.log('providerData New:', s);
+   
+           //newData.push(s);
+           //var object_as_string1 = JSON.stringify(newData);
+          // const tt = JSON.parse(object_as_string1);
+           //console.log('tt--===:', tt);
+   
+           await CustomerSchema.findOne({ _id: s.sms_sender_id }).then(async customer => {
+           //await CustomerSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async customer => {
+             if (customer) {
+               //console.log('professional:',professional.sps_fullname);
+               s.senderName = await customer.cus_fullname;
+               s.sms_user_profile_img = await customer.cus_profile_image_name;
+               //console.log('providerData xxxx New:',t);
+             }
+   
+           });
+           const ss = await s;
+          // console.log('providerData Newssssss:', ss);
+           newData.push(ss);
+
 
       }
       // console.log('Get newData',newData);
