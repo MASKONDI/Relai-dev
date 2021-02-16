@@ -1341,6 +1341,7 @@ function timeDifference(data) {
     date.push(days);
 
     console.log("total date is :", days);
+    
   });
   var estimated_time = date.reduce((total, i) => total + i, 0);
   var message = "";
@@ -1361,7 +1362,13 @@ function timeDifference(data) {
     message += estimated_time + " days "
   }
   console.log("estimated_time :", message);
-  return message;
+  if(isNaN(estimated_time)){
+    console.log("aaa",estimated_time)
+    return 'NA';
+  }else{
+    console.log("bbb",estimated_time)
+    return message;
+  }
 }
 
 
@@ -1421,7 +1428,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
     let todoArray = [];
     var c = 0;
     let TaskDetailObj = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login);
-    console.log("TaskDetailObj===================================================",TaskDetailObj)
+    //console.log("TaskDetailObj===================================================",TaskDetailObj)
     for (var ph of TaskDetailObj) {
       const PhaseObject = JSON.stringify(ph);
       const to_do_data = JSON.parse(PhaseObject);
@@ -1448,10 +1455,10 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
     PropertiesSchema.find({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
       if (data) {
 
-        console.log("Property Data is *************************", data[0].ps_phase_array);
+        //console.log("Property Data is *************************", data[0].ps_phase_array);
         //var totaldiff = "";
         var message = timeDifference(data[0].ps_phase_array);
-
+        
         let arr = [];
         for (let img of data) {
           await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
@@ -1464,7 +1471,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
           })
 
         }
-         console.log("data=======================",data)
+         //console.log("data=======================",data)
         err_msg = req.flash('err_msg');
         success_msg = req.flash('success_msg');
         res.render('mydreamhome-details', {
