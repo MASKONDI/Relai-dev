@@ -251,12 +251,12 @@
     </script>
     <script>
       $(document).ready(function () {
-        $(".sidenav ul li").click(function () {
+        $(".sidenav ul li").dblclick(function () {
           $(".sidenav ul li").removeClass("active");
           $(this).addClass("active");
         });
       });
-      $('.right-navbar li').click(function () {
+      $('.right-navbar li').dblclick(function () {
         $('.right-navbar li').each(function () {
           $(this).removeClass('active');
         });
