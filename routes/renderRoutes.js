@@ -475,13 +475,13 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
       } else {
         avgRating = 0;
       }
-      var propertyObjArray=[];
-      let propertyObj = await PropertyProfessionalHelper.GetAllHiredProertyByUserId(req.query.id,req.session.active_user_login,req.session.user_id);
-      for(var pr of propertyObj){
+      var propertyObjArray = [];
+      let propertyObj = await PropertyProfessionalHelper.GetAllHiredProertyByUserId(req.query.id, req.session.active_user_login, req.session.user_id);
+      for (var pr of propertyObj) {
         var property_object = await pr;
         propertyObjArray.push(property_object)
       }
-      console.log("propertyObj========",propertyObj)
+      console.log("propertyObj========", propertyObj)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('professionals-detail', {
@@ -492,9 +492,9 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
         portpolioImage: portpolioImage,
         professionalRating: professionalRating,
         hiredProfeshnoal: hiredProfeshnoal,
-        avgRating:avgRating,
+        avgRating: avgRating,
         moment: moment,
-        propertyObj:propertyObj
+        propertyObj: propertyObj
       });
 
     }
@@ -816,13 +816,13 @@ app.get('/mydreamhome-details-to-dos', isCustomer, async (req, res) => {
 //     session: req.session
 //   });
 // });
-app.get('/add-property', isCustomer, async(req, res) => {
+app.get('/add-property', isCustomer, async (req, res) => {
   //req.session.propertyEditId
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  console.log("deep:==",req.query)
+  console.log("deep:==", req.query)
   if (req.query.property_id != null) {
-    
+
     var property_id = req.query.property_id;
     var active_user = req.session.active_user_login;
     req.session.propertyEditId = property_id
@@ -833,21 +833,21 @@ app.get('/add-property', isCustomer, async(req, res) => {
     // console.log("propertyImageObject",propertyImageObject)
     // console.log("propertyPlanImageObject",propertyPlanImageObject)
     res.render('add-property', {
-    err_msg, success_msg, layout: false,
-    session: req.session,
-    propertyObj:propertyObj,
-    propertyImageObject:propertyImageObject,
-    propertyPlanImageObject:propertyPlanImageObject
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      propertyObj: propertyObj,
+      propertyImageObject: propertyImageObject,
+      propertyPlanImageObject: propertyPlanImageObject
 
-  });
-}else{
- 
-  res.render('add-property', {
-    err_msg, success_msg, layout: false,
-    session: req.session,
-    propertyObj:'null'
-  });
-}
+    });
+  } else {
+
+    res.render('add-property', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      propertyObj: 'null'
+    });
+  }
 });
 
 
@@ -1233,7 +1233,12 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
 app.get('/mydreamhome', isCustomer, async (req, res) => {
   req.session.pagename = 'mydreamhome';
   console.log("current session is", req.session);
-  PropertiesSchema.find({ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
+  PropertiesSchema.find({
+    $or: [
+      { $and: [{ ps_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login },] },
+      { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login }] }
+    ]
+  }).then(async (data) => {
     if (data) {
       let arr = [];
 
@@ -1300,7 +1305,7 @@ app.post('/getPropertyDetail', isCustomer, async (req, res) => {
         })
 
       }
-      console.log("data",data)
+      console.log("data", data)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('mydreamhome-details', {
@@ -1421,7 +1426,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
     let todoArray = [];
     var c = 0;
     let TaskDetailObj = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login);
-    console.log("TaskDetailObj===================================================",TaskDetailObj)
+    console.log("TaskDetailObj===================================================", TaskDetailObj)
     for (var ph of TaskDetailObj) {
       const PhaseObject = JSON.stringify(ph);
       const to_do_data = JSON.parse(PhaseObject);
@@ -1464,7 +1469,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
           })
 
         }
-         console.log("data=======================",data)
+        console.log("data=======================", data)
         err_msg = req.flash('err_msg');
         success_msg = req.flash('success_msg');
         res.render('mydreamhome-details', {
@@ -1726,7 +1731,7 @@ app.get('/get-message-property', async (req, res) => {
         //console.log('t:', t);
         t.msgTime = msg_time;
         await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
-       // await ServiceProviderSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async professional => {
+          // await ServiceProviderSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async professional => {
           if (professional) {
             //console.log('professional:',professional.sps_fullname);
             t.senderName = await professional.sps_fullname;
@@ -1735,15 +1740,15 @@ app.get('/get-message-property', async (req, res) => {
 
         });
         const s = await t;
-       // console.log('providerData New:', s);
+        // console.log('providerData New:', s);
 
         //newData.push(s);
         //var object_as_string1 = JSON.stringify(newData);
-       // const tt = JSON.parse(object_as_string1);
+        // const tt = JSON.parse(object_as_string1);
         //console.log('tt--===:', tt);
 
         await CustomerSchema.findOne({ _id: s.sms_sender_id }).then(async customer => {
-        //await CustomerSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async customer => {
+          //await CustomerSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async customer => {
           if (customer) {
             //console.log('professional:',professional.sps_fullname);
             s.senderName = await customer.cus_fullname;
@@ -1753,12 +1758,12 @@ app.get('/get-message-property', async (req, res) => {
 
         });
         const ss = await s;
-       // console.log('providerData Newssssss:', ss);
+        // console.log('providerData Newssssss:', ss);
         newData.push(ss);
-        
+
 
       }
-       console.log('Get newData',newData);
+      console.log('Get newData', newData);
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.send({
@@ -2137,13 +2142,13 @@ app.get('/get-change-permision', isCustomer, async (req, res) => {
     console.log(err)
   })
 });
-app.get('/edit-property', isCustomer, async(req, res) => {
+app.get('/edit-property', isCustomer, async (req, res) => {
   //req.session.propertyEditId
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  console.log("edit:==",req.query)
+  console.log("edit:==", req.query)
   if (req.query.property_id != null) {
-    
+
     var property_id = req.query.property_id;
     var active_user = req.session.active_user_login;
     req.session.propertyEditId = property_id
@@ -2154,74 +2159,74 @@ app.get('/edit-property', isCustomer, async(req, res) => {
     // console.log("propertyImageObject",propertyImageObject)
     // console.log("propertyPlanImageObject",propertyPlanImageObject)
     res.render('edit-property', {
-    err_msg, success_msg, layout: false,
-    session: req.session,
-    propertyObj:propertyObj,
-    propertyImageObject:propertyImageObject,
-    propertyPlanImageObject:propertyPlanImageObject
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      propertyObj: propertyObj,
+      propertyImageObject: propertyImageObject,
+      propertyPlanImageObject: propertyPlanImageObject
 
-  });
-}else{
- 
-  res.render('edit-property', {
-    err_msg, success_msg, layout: false,
-    session: req.session,
-    propertyObj:'null'
-  });
-}
+    });
+  } else {
+
+    res.render('edit-property', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      propertyObj: 'null'
+    });
+  }
 });
 app.get('/to-do-list', isCustomer, async (req, res) => {
-  var err_msg=null;
-  var success_msg=null;
+  var err_msg = null;
+  var success_msg = null;
   console.log("todo")
-   req.session.pagename = 'to-do-list';
-   let propertyObj = await propertyDetail.GetAllProperty(req.session.user_id,req.session.active_user_login);
+  req.session.pagename = 'to-do-list';
+  let propertyObj = await propertyDetail.GetAllProperty(req.session.user_id, req.session.active_user_login);
   console.log('property in to-do-list', propertyObj);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
- res.render('to-do-list', {
-   err_msg, success_msg, layout: false,
-   session: req.session,
-   propertyObj:propertyObj,
-   moment: moment,
-   TaskDetailObj: []
+  res.render('to-do-list', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    propertyObj: propertyObj,
+    moment: moment,
+    TaskDetailObj: []
 
- });
+  });
 
 
 });
 
 app.post('/get_property_by_id', isCustomer, async (req, res) => {
- 
-if(req.body.property_id){
-  let singlePropertyObj = await propertyDetail.GetPropertById(req.body.property_id, req.session.active_user_login);
-  console.log('singlePropertyObj', singlePropertyObj);
-  if(singlePropertyObj){
+
+  if (req.body.property_id) {
+    let singlePropertyObj = await propertyDetail.GetPropertById(req.body.property_id, req.session.active_user_login);
+    console.log('singlePropertyObj', singlePropertyObj);
+    if (singlePropertyObj) {
+      return res.send({
+        'status': true,
+        'message': 'single property found success',
+        'data': singlePropertyObj
+      })
+    }
+  } else {
     return res.send({
-      'status':true,
-      'message':'single property found success',
-      'data':singlePropertyObj
+      'status': false,
+      'message': 'property id not found'
     })
   }
-}else{
-  return res.send({
-    'status':false,
-    'message':'property id not found'
-  })
-}
 
 
-});   
+});
 app.get('/take-action', isCustomer, async (req, res) => {
-  
-  console.log('from get take action url====',req.query)
+
+  console.log('from get take action url====', req.query)
   var property_id = req.query.prop;
   var phase_name = req.query.phase;
-  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name,req.session.active_user_login);
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
-  console.log("taskObject by phase name take action",taskObject)
+  console.log("taskObject by phase name take action", taskObject)
 
-  
+
   if (taskObject) {
     // return res.send({
     //   'status':true,
@@ -2237,15 +2242,15 @@ app.get('/take-action', isCustomer, async (req, res) => {
       taskObject: taskObject,
       propertyData: propertyData
     });
-  }else{
+  } else {
     return res.send({
-      'status':false,
-      'message':'some thing wrong'
+      'status': false,
+      'message': 'some thing wrong'
     })
   }
 
 
-}) 
+})
 
 module.exports = app;
 
