@@ -147,20 +147,20 @@ router.post("/cust_register", (req, res) => {
     console.log("server validation error is:", errors);
     //req.flash('err_msg', errors.confirmPassword);
     //return res.redirect('/signup');
-    console.log('errosss:',errors)
-    if(errors.confirmPassword){
-        res.send({
-          message: errors.confirmPassword,
-          status: false
-        })
-    }else{
-        res.send({
-          message: errors.cus_email_id,
-          status: false
-        })
+    console.log('errosss:', errors)
+    if (errors.confirmPassword) {
+      res.send({
+        message: errors.confirmPassword,
+        status: false
+      })
+    } else {
+      res.send({
+        message: errors.cus_email_id,
+        status: false
+      })
     }
 
-   
+
   }
 
   CustomerSchema.findOne({ cus_email_id: req.body.cus_email_id }).then(customers => {
@@ -274,6 +274,14 @@ router.post("/cust_signin", (req, res) => {
       res.send({
         message: "Customers not found",
         status: false
+      })
+    }
+
+    if (customers.cus_email_verification_status == 'no') {
+      res.send({
+        message: "Please verify  OTP first",
+        status: false
+        //redirect to OTP
       })
     }
     // Check Password
