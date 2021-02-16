@@ -81,6 +81,16 @@ router.post("/service_provider_register", (req, res) => {
       req.flash('err_msg', errors.sps_email_id);
       return res.redirect('/signup-service-provider');
     } else {
+      var now = new Date();
+      now.setMinutes(now.getMinutes() + 03); // timestamp
+      now = new Date(now); // Date object
+
+      var otp_expire = now
+      console.log("otp_expire time is", now);
+
+      var otp = generateOTP()
+      console.log("otp is", otp);
+
       const newServiceProvider = new ServiceProviderSchema({
         sps_unique_code: "sp-" + uuidv4(),
         sps_firstname: req.body.sps_firstname,
@@ -105,6 +115,8 @@ router.post("/service_provider_register", (req, res) => {
             .save()
             .then(serviceProviders => {
               console.log("service_provider is", serviceProviders);
+              //calling Otp verfication
+              otp_verification(req, otp);
               req.session.success = true,
                 // req.session._id = doc.user_id;
                 req.session.user_id = serviceProviders._id,
@@ -578,28 +590,264 @@ router.post("/delete-professional-basic-details", async (req, res) => {
   var err_msg = null;
   var success_msg = null;
   //TODO:need to add condition is session is expired
-  let deleteData ='';
+  let deleteData = '';
   console.log("req.body is : ", req.body);
   console.log("req.session.user_id is ", req.session.user_id);
-if(req.body.action == 'education-delete'){
-  deleteData = await ServiceProviderEducationSchema.deleteOne( { _id : req.body.eduId } );
+  if (req.body.action == 'education-delete') {
+    deleteData = await ServiceProviderEducationSchema.deleteOne({ _id: req.body.eduId });
+  }
+  if (deleteData) {
+    console.log("server response is success: ", deleteData);
+    res.send({
+      deleteData: deleteData,
+      message: 'Deleted Successfully !!',
+      status: true
+    });
+  } else {
+    console.log("server response is error: ", deleteData);
+    res.send({
+      deleteData: deleteData,
+      message: 'Something going wrong please try again !!',
+      status: false
+    });
+  }
+
+});
+
+
+function generateOTP() {
+
+  // Declare a digits variable  
+  // which stores all digits 
+  var digits = '0123456789';
+  let OTP = '';
+  for (let i = 0; i < 4; i++) {
+    OTP += digits[Math.floor(Math.random() * 10)];
+  }
+  return OTP;
 }
-if(deleteData){
-  console.log("server response is success: ", deleteData);
-  res.send({
-    deleteData: deleteData,
-    message:'Deleted Successfully !!',
-    status: true
+
+
+router.post('/resend-otp-link', function (req, res) {
+  console.log("Sending otp link to registered email-id", req.body.email);
+  ServiceProviderSchema.find({
+    'sps_email_id': req.body.email,
+    //'cus_email_verification_status': 'yes'
+  }, function (err, result) {
+    if (err) {
+      console.log('err', err);
+      // req.flash('err_msg', 'Please enter registered Email address.');
+      //res.redirect('/forget-password');
+      res.send({
+        message: 'Service Provider Not Found.',
+        status: false
+      })
+    }
+    else {
+
+      if (result != '' && result != null) {
+        console.log("Service Provider results is :", result[0].cus_otp);
+        var now = new Date();
+        now.setMinutes(now.getMinutes() + 03); // timestamp
+        now = new Date(now); // Date object
+
+        var otp_expire = now
+        console.log("otp_expire time is", now);
+        var otp = generateOTP();
+        console.log(" Generated OTP is ", otp);
+
+        ServiceProviderSchema.updateOne({
+          'sps_email_id': req.body.email
+        }, {
+          $set: {
+            sps_otp: otp,
+            sps_otp_expie_time: otp_expire
+          }
+        }, {
+          upsert: true
+        }, function (err) {
+          if (err) {
+            console.log("err is :", err);
+            //req.flash('err_msg', 'Something went wrong.');
+            //res.redirect('/forget-password')
+            res.send({
+              message: 'Something went wrong.',
+              status: false
+            })
+          } else {
+            var smtpTransport = nodemailer.createTransport({
+              // port: 25,
+              // host: 'localhost',
+              tls: {
+                rejectUnauthorized: false
+              },
+              host: 'smtp.gmail.com',
+              port: 465,
+              secure: true,
+              service: 'Gmail',
+              auth: {
+                user: 'golearning4@gmail.com',
+                pass: 'Krishna#1997',
+              }
+            });
+            const mailOptions = {
+              to: req.body.email,
+              from: 'golearning4@gmail.com',
+              subject: 'OTP verification from Relai',
+
+              text: 'Dear \n' + result[0].sps_firstname + result[0].sps_lastname + '\n\n' + 'your OTP for email-validation is  \n' + otp + '\n\n' + 'We suggest you to please hit given url and submit otp:\n' + ' http://' + req.headers.host + '/otp?email=' + req.body.email + '\n\n' +
+
+                'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+            };
+            smtpTransport.sendMail(mailOptions, function (err) {
+              if (err) {
+                console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+                //res.redirect('/add-property')
+              } else {
+                //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
+                // res.redirect('/add-property')
+                console.log("OTP send Successfully");
+                res.send({
+                  message: 'OTP Send successfully please check your registered-Email.',
+                  status: true
+                })
+              }
+            });
+
+          }
+        });
+
+
+      } else {
+        console.log("Service Provider Data not found");
+        res.send({
+          message: 'Service Provider Data not found.',
+          status: false
+        })
+      }
+    }
   });
-}else{
-  console.log("server response is error: ", deleteData);
-  res.send({
-    deleteData: deleteData,
-    message:'Something going wrong please try again !!',
-    status: false
+
+});
+
+
+
+
+
+//Sending otp for email verifictaion while registering user
+function otp_verification(req, otp) {
+  console.log("Customer Data :", req.body);
+  console.log("OTP for customer verification:", otp);
+
+  var smtpTransport = nodemailer.createTransport({
+    // port: 25,
+    // host: 'localhost',
+    tls: {
+      rejectUnauthorized: false
+    },
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    service: 'Gmail',
+    auth: {
+      user: 'golearning4@gmail.com',
+      pass: 'Krishna#1997',
+    }
+  });
+  const mailOptions = {
+    to: req.body.sps_email_id,
+    from: 'golearning4@gmail.com',
+    subject: 'OTP verification from Relai',
+
+    text: 'Dear \n' + req.body.sps_firstname + ' ' + req.body.sps_lastname + '\n\n' + 'your OTP for email-validation is  \n' + otp + '\n\n' + 'We suggest you to please hit given url and submit otp:\n' + ' http://' + req.headers.host + '/otp?email=' + req.body.sps_email_id + '\n\n' +
+
+      'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+  };
+  smtpTransport.sendMail(mailOptions, function (err) {
+    if (err) {
+      console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+      //res.redirect('/add-property')
+    } else {
+      //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
+      // res.redirect('/add-property')
+    }
   });
 }
-     
+
+/*********OTP Verification for ServiceProvider****************/
+router.post('/otp_verfication', function (req, res) {
+  console.log("req.body is :", req.body);
+  var otp1 = req.body.otp1;
+  var otp2 = req.body.otp2;
+  var otp3 = req.body.otp3;
+  var otp4 = req.body.otp4;
+  var otp = otp1 + otp2 + otp3 + otp4;
+  console.log("getting otp from form data", otp);
+
+  ServiceProviderSchema.find({
+    'sps_email_id': req.body.sps_email_id,
+    //'cus_email_verification_status': 'yes'
+  }, function (err, result) {
+    if (err) {
+      console.log('err', err);
+      // req.flash('err_msg', 'Please enter registered Email address.');
+      //res.redirect('/forget-password');
+      res.send({
+        message: 'Service Provider Not Found.',
+        status: false
+      })
+    }
+    else {
+
+      if (result != '' && result != null) {
+        console.log("Service Provider results is :", result[0].sps_otp);
+        console.log("OTP is ", otp);
+        if (parseInt(result[0].sps_otp) === parseInt(otp)) {
+
+          ServiceProviderSchema.updateOne({
+            'sps_email_id': req.body.sps_email_id
+          }, {
+            $set: {
+              sps_email_verification_status: 'yes'
+            }
+          }, {
+            upsert: true
+          }, function (err) {
+            if (err) {
+              console.log("err is :", err);
+              //req.flash('err_msg', 'Something went wrong.');
+              //res.redirect('/forget-password')
+              res.send({
+                message: 'Something went wrong.',
+                status: false
+              })
+
+            } else {
+
+              res.send({
+                message: 'OTP verification done successfully.',
+                status: true
+              })
+            }
+          });
+
+        } else {
+          console.log("please enter valid OTP");
+          res.send({
+            message: 'OTP verification failed.',
+            status: false
+          })
+        }
+      } else {
+        console.log("Service Provider Data not found");
+        res.send({
+          message: 'Service Provider Data not found.',
+          status: false
+        })
+      }
+    }
+  });
+
 });
 
 module.exports = router;
