@@ -539,7 +539,7 @@
                 //     showConfirmButton: false,
                 //     timer: 3000
                 //   })
-
+                  
                 Swal.fire({
                   icon: 'success',
                   title: data.success_msg,
@@ -550,9 +550,11 @@
                   cancelButtonColor: '#d33',
                   confirmButtonText: `Professional List`,
                   denyButtonText: `Hire Now`,
+                  html: '<button type="button" data-target="#addTaskModal" role="button"data-toggle="modal" tabindex="0" class="addbtn btn btn-info SwalBtn1 customSwalBtn"onclick="swal.closeModal(); return false;">' + 'Add Task' + '</button>',
                 }).then((result) => {
+                  console.log(result)
                   /* Read more about isConfirmed, isDenied below */
-                  $("#addTaskModal").modal('show')
+                 // $("#addTaskModal").modal('show')
                   if (result.isConfirmed) {
                     //Swal.fire('Saved!', '', 'success')
                     window.location.href = '/professionals';

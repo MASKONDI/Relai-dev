@@ -5776,3 +5776,7 @@ a .clip-icon{
             margin-top: 0 !important;
         }
         }
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }       
