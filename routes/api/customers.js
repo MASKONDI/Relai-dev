@@ -249,6 +249,29 @@ router.post("/cust_signin", (req, res) => {
   var err_msg = null;
   var success_msg = null;
 
+
+
+
+  // const payload = { client_id: '2ouoqgb43ev8u5ttf3jpblgobg' }; // Create JWT Payload
+  // const keysss = { grant_type: '14dbrro9ethfupco8kcqdhe7a0ajq1irvrc1oc7hrhri5s5v83br' }; // Create JWT Payload
+
+  // // Sign Token
+  // jwt.sign(
+  //   payload,
+  //   keysss.grant_type,
+  //   { expiresIn: 3600 },
+  //   (err, token) => {
+
+  //     console.log('My tocke:',token)
+  //     res.json({
+  //       success: true,
+  //       token: 'Bearer ' + token
+  //     });
+  //   }
+  // );
+
+
+
   const cus_email_id = req.body.cus_email_id;
   const cus_password = req.body.cus_password;
   const { errors, isValid } = validateCustomerSigninInput(req.body);
