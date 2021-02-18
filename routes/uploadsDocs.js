@@ -307,13 +307,23 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
           if (err) {
             console.log(err); console.log(err);
             req.flash('err_msg', "Something went worng please try after some time");
-            res.redirect('/mydreamhome-details-docs');
+            res.send({
+              'status':false,
+              'message':'Something Wrong',
+              'redirect':'/mydreamhome-details-docs'
+            })
+           // res.redirect('/mydreamhome-details-docs');
           }
           else {
             item.save();
             console.log("file Submitted Successfully");
             req.flash('success_msg', "Document Uploaded Successfully.");
-            res.redirect('/mydreamhome-details-docs');
+            res.send({
+              'status':true,
+              'message':'Document Upload Successfully',
+              'redirect':'/mydreamhome-details-docs'
+            })
+            //res.redirect('/mydreamhome-details-docs');
           }
         });
 

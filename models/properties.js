@@ -100,23 +100,30 @@ const PropertiesSchema = new Schema({
     enum: ['buyer', 'seller', 'renovator'],
 
   },
-  ps_phase_array:{
-    type:Array,
+  ps_phase_array: {
+    type: Array,
   },
-  ps_chain_property_id:{
-    type :Array,
+  ps_chain_property_id: {
+    type: Array,
   },
-  ps_chain_property_name:{
-    type :Array,
+  ps_chain_property_name: {
+    type: Array,
   },
-  ps_existing_property:{
-    type:String
+  ps_existing_property: {
+    type: String
   },
-  ps_other_property_type:{
+  ps_other_property_type: {
     type: String,
-    enum: ['Buyer', 'Seller', 'Renovator','State Agents'],
+    enum: ['Buyer', 'Seller', 'Renovator', 'State Agents'],
+  },
+  ps_tagged_user_id: {
+    type: Schema.Types.ObjectId,
+  },
+  is_invite_accepted: {
+    type: String,
+    enum: ['yes', 'no'],
+    default: 'no'
   }
-  
-  
+
 });
 module.exports = properties = mongoose.model('properties', PropertiesSchema);

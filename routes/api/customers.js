@@ -245,7 +245,7 @@ router.post("/cust_register", (req, res) => {
 
 
 
-router.post("/cust_signin", (req, res) => {
+router.post("/cust_signin", async (req, res) => {
   var err_msg = null;
   var success_msg = null;
 
@@ -284,98 +284,106 @@ router.post("/cust_signin", (req, res) => {
     res.send({
       message: "please enter valid email and password",
       status: false,
-      redirectpage:false,
-      redirect:''
+      redirectpage: false,
+      redirect: ''
     })
   }
-
-  // Find Customer by 
-  CustomerSchema.findOne({ cus_email_id }).then(customers => {
-    // Check for Customer
-    if (!customers) {
-      errors.cus_email_id = 'Customers not found';
-      //req.flash('err_msg', errors.cus_email_id);
-      //return res.redirect('/signin');
-      res.send({
-        message: "Customers not found",
-        status: false,
-        redirectpage:false,
-        redirect:''
-      })
-    }
-
-    if (customers.cus_email_verification_status == 'no') {
-      res.send({
-        message: "Please verify  OTP first",
-        status: false,
-        redirectpage:true,
-        redirect:"/otp?email="+cus_email_id
-        //redirect to OTP
-      })
-    }
-    // Check Password
-    bcrypt.compare(cus_password, customers.cus_password).then(isMatch => {
-      if (isMatch) {
-        //enableing session variable
-        req.session.success = true;
-        // req.session._id = doc.user_id;
-        req.session.user_id = customers._id;
-        req.session.name = customers.cus_fullname;
-        req.session.email = customers.cus_email_id;
-        req.session.is_user_logged_in = true;
-        req.session.active_user_login = "buyer";
-        req.session.address = customers.cus_address;
-        req.session.city = customers.cus_city;
-        req.session.phoneNumber = customers.cus_phone_number;
-        req.session.country = customers.cus_country_id;
-        //req.session.profilePicture= customer.profile_picture
-        if (customers.cus_profile_image_name) {
-          req.session.imagename = customers.cus_profile_image_name
-        } else {
-          req.session.imagename = '';
-        }
-        console.log("token is", req.body.token);
-        if (req.body.token) {
-          console.log("Token is ", req.body.token);
-          submit_token(req.body.token, customers._id);
-        }
-        //req.session.isChanged = true
-        // Customer Matched
-        const payload = { id: customers.id, cus_fullname: customers.cus_fullname, cus_email_id: customers.cus_email_id }; // Create JWT Payload
-
-        // Sign Token
-        jwt.sign(
-          payload,
-          keys.secretOrKey,
-          { expiresIn: 3600 },
-          (err, token) => {
-            res.json({
-              success: true,
-              token: 'Bearer ' + token
-            });
-          }
-        );
-        // res.redirect('/dashboard')
-        res.send({
-          message: "Signin successfully, we are processing please wait...",
-          status: true
-        })
-
-      } else {
-        //errors.cus_password = 'Password incorrect';
-        //console.log("Password incorrect", errors);
-        //req.flash("err_msg", errors.cus_password);
+  else {
+    // Find Customer by 
+    CustomerSchema.findOne({ cus_email_id }).then(async customers => {
+      // Check for Customer
+      if (!customers) {
+        errors.cus_email_id = 'Customers not found';
+        //req.flash('err_msg', errors.cus_email_id);
         //return res.redirect('/signin');
         res.send({
-          message: "Password incorrect",
+          message: "Customers not found",
           status: false,
-          redirectpage:false,
-          redirect:''
+          redirectpage: false,
+          redirect: ''
         })
+      }
 
+      else if (customers.cus_email_verification_status == 'no') {
+
+        console.log("Sending Otp if user email not verified");
+        otp_send(req, customers);
+        res.send({
+          message: "Please verify  OTP first",
+          status: false,
+          redirectpage: true,
+          redirect: "/otp?email=" + cus_email_id
+          //redirect to OTP
+        })
+        //}
+      } else {
+        console.log("console BBBBB");
+        // Check Password
+        bcrypt.compare(cus_password, customers.cus_password).then(isMatch => {
+          if (isMatch) {
+            //enableing session variable
+            req.session.success = true;
+            // req.session._id = doc.user_id;
+            req.session.user_id = customers._id;
+            req.session.name = customers.cus_fullname;
+            req.session.email = customers.cus_email_id;
+            req.session.is_user_logged_in = true;
+            req.session.active_user_login = "buyer";
+            req.session.address = customers.cus_address;
+            req.session.city = customers.cus_city;
+            req.session.phoneNumber = customers.cus_phone_number;
+            req.session.country = customers.cus_country_id;
+            //req.session.profilePicture= customer.profile_picture
+            if (customers.cus_profile_image_name) {
+              req.session.imagename = customers.cus_profile_image_name
+            } else {
+              req.session.imagename = '';
+            }
+            console.log("token is", req.body.token);
+            if (req.body.token) {
+              console.log("Token is ", req.body.token);
+              submit_token(req.body.token, customers._id);
+            }
+            //req.session.isChanged = true
+            // Customer Matched
+            const payload = { id: customers.id, cus_fullname: customers.cus_fullname, cus_email_id: customers.cus_email_id }; // Create JWT Payload
+
+            // Sign Token
+            jwt.sign(
+              payload,
+              keys.secretOrKey,
+              { expiresIn: 3600 },
+              (err, token) => {
+                res.json({
+                  success: true,
+                  token: 'Bearer ' + token
+                });
+              }
+            );
+            // res.redirect('/dashboard')
+            res.send({
+              message: "Signin successfully, we are processing please wait...",
+              status: true
+            })
+
+          } else {
+            //errors.cus_password = 'Password incorrect';
+            //console.log("Password incorrect", errors);
+            //req.flash("err_msg", errors.cus_password);
+            //return res.redirect('/signin');
+            res.send({
+              message: "Password incorrect",
+              status: false,
+              redirectpage: false,
+              redirect: ''
+            })
+
+          }
+        });
       }
     });
-  });
+
+  }
 });
 
 
@@ -1469,6 +1477,82 @@ function otp_verification(req, otp) {
   });
 }
 
+//Sending otp for email verifictaion while registering user
+function otp_send(req, customer) {
+  console.log("Customer Data :", customer);
+
+  var now = new Date();
+  now.setMinutes(now.getMinutes() + 03); // timestamp
+  now = new Date(now); // Date object
+
+  var otp_expire = now
+  console.log("otp_expire time is", now);
+  var otp = generateOTP();
+  console.log(" Generated OTP is ", otp);
+
+  CustomerSchema.updateOne({
+    'cus_email_id': customer.cus_email_id
+  }, {
+    $set: {
+      cus_otp: otp,
+      cus_otp_expie_time: otp_expire
+    }
+  }, {
+    upsert: true
+  }, function (err) {
+    if (err) {
+      console.log("err is :", err);
+      // res.send({
+      //   message: 'Something went wrong.',
+      //   status: false
+      // })
+    } else {
+      var smtpTransport = nodemailer.createTransport({
+        // port: 25,
+        // host: 'localhost',
+        tls: {
+          rejectUnauthorized: false
+        },
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        service: 'Gmail',
+        auth: {
+          user: 'golearning4@gmail.com',
+          pass: 'Krishna#1997',
+        }
+      });
+      const mailOptions = {
+        to: customer.cus_email_id,
+        from: 'golearning4@gmail.com',
+        subject: 'OTP verification from Relai',
+
+        text: 'Dear \n' + customer.cus_fullname + '\n\n' + 'your OTP for email-validation is  \n' + otp + '\n\n' + 'We suggest you to please hit given url and submit otp:\n' + ' http://' + req.headers.host + '/otp?email=' + customer.cus_email_id + '\n\n' +
+
+          'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+      };
+      smtpTransport.sendMail(mailOptions, function (err) {
+        if (err) {
+          //console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+          console.log("Something went wrong");
+
+        } else {
+          console.log("OTP send Successfully");
+          // return true;
+
+        }
+      });
+    }
+  }).catch(err => {
+    console.log(err)
+  })
+};
+
+
+
+
+
+
 router.post('/resend-otp-link', function (req, res) {
   console.log("Sending otp link to registered email-id", req.body.email);
   CustomerSchema.find({
@@ -2067,38 +2151,51 @@ async function submit_token(token, user_id) {
   //console.log("secret token is", req.session.email);
   var decoded = jwt.verify(token, keys.secretOrKey);
   console.log("decoded string is :", decoded.id);
-  PropertiesSchema.find({ _id: decoded.id }).then(async (data) => {
-    if (data) {
-      let arr = [];
+  PropertiesSchema.findOne({ _id: decoded.id }).then(async (data) => {
+    if (data.is_invite_accepted == "no") {
+      // let arr = [];
 
-      for (let img of data) {
-        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
+      // for (let img of data) {
+      //   await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
 
-          let temp = await result
-          //for(let image of result){
-          //  let temp = await image
-          arr.push(temp)
-          // }
-        })
-
-      }
-      console.log('++++++++', arr);
-
-      add_new_property(data, arr, user_id);
-
-
-      // err_msg = req.flash('err_msg');
-      // success_msg = req.flash('success_msg');
-      // res.json(data);
-      // res.render('mydreamhome', {
-      //   err_msg, success_msg, layout: false,
-      //   session: req.session,
-      //   propertyData: data,
-      //   propertyImage: arr
-
-      // });
-
+      //     let temp = await result
+      //     //for(let image of result){
+      //     //  let temp = await image
+      //     arr.push(temp)
+      //     // }
+      //   })
+      console.log("property id is user id", decoded.id);
+      console.log();
+      // }
+      PropertiesSchema.updateOne({ '_id': decoded.id }, { $set: { ps_tagged_user_id: user_id, is_invite_accepted: 'yes' } }, { upsert: true }, function (err) {
+        if (err) {
+          // res.send({ status: false, message: 'Something going wrong please check again !!' })
+          console.log('Something going wrong please check again !!'.err);
+        } else {
+          // res.send({ status: true, message: 'Your Property Added succfully !!' })
+          console.log('Your Property Added succfully !!');
+        }
+      });
+    } else {
+      console.log("Property already added successfully");
     }
+    // console.log('++++++++', arr);
+
+    // add_new_property(data, arr, user_id);
+
+
+    // err_msg = req.flash('err_msg');
+    // success_msg = req.flash('success_msg');
+    // res.json(data);
+    // res.render('mydreamhome', {
+    //   err_msg, success_msg, layout: false,
+    //   session: req.session,
+    //   propertyData: data,
+    //   propertyImage: arr
+
+    // });
+
+    // }
   }).catch((err) => {
     console.log(err)
   })

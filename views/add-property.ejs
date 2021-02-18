@@ -159,11 +159,11 @@
                               </div>
                               <div class="col-sm-12 col-lg-4">
                                 <%if(propertyObj=='null'){%>
-                                  <input type="number" class="form-control property-form-control-size-fix " id="zipcode"
+                                  <input type="text" class="form-control property-form-control-size-fix " id="zipcode"
                                     placeholder="Zip code*" name="ps_property_zipcode" data-rule-required="true"
                                     data-msg-required="Zipcode is required!" value="">
                                   <%}else{%>
-                                    <input type="number" class="form-control property-form-control-size-fix "
+                                    <input type="text" class="form-control property-form-control-size-fix "
                                       id="zipcode" placeholder="Zip code*" name="ps_property_zipcode"
                                       data-rule-required="true" data-msg-required="Zipcode is required!"
                                       value="<%=propertyObj.ps_property_zipcode%>">
