@@ -69,7 +69,7 @@
                   <div class="heading-top float-left">
                     <h2>
                       <%=propertyData.ps_property_name%> <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Phase
-                        A : <%if(taskObject.length>0){%><%=taskObject[0].ppts_phase_name%>
+                        E : <%if(taskObject.length>0){%><%=taskObject[0].ppts_phase_name%>
                             <%}else{%>No Result<%}%>
                     </h2>
                   </div>
@@ -96,17 +96,17 @@
                     </div>
                     <% if(session.active_user_login=='buyer' ){%>
                       <div class="float-right">
-                        <a href="#" class="add-professionals" data-toggle="modal" data-target="#buyerPhaseA">Add
+                        <a href="#" class="add-professionals" data-toggle="modal" data-target="#buyerPhaseE">Add
                           Existing Task</a>
                       </div>
                       <%} else if(session.active_user_login=='seller' ){%>
                         <div class="float-right">
-                          <a href="#" class="add-professionals" data-toggle="modal" data-target="#sellerPhaseA">Add
+                          <a href="#" class="add-professionals" data-toggle="modal" data-target="#sellerPhaseE">Add
                             Existing Task</a>
                         </div>
                         <%} else {%>
                           <div class="float-right">
-                            <a href="#" class="add-professionals" data-toggle="modal" data-target="#renovatorPhaseA">Add
+                            <a href="#" class="add-professionals" data-toggle="modal" data-target="#renovatorPhaseE">Add
                               Existing Task</a>
                           </div>
                           <%}%>

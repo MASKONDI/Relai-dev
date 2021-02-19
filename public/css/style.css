@@ -5776,6 +5776,22 @@ a .clip-icon{
             margin-top: 0 !important;
         }
         }
+
+
+        /* input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+} */
+
+.table-checkbox{
+    border: 2px solid #c1c1c1;
+    border-radius:10px; 
+    margin-top: 20px;
+}
+
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
