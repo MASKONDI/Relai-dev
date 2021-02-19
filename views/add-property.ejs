@@ -1880,7 +1880,7 @@
                               <span>
                                 <div class="custom-file-input">
                                   <input type="file" name="planImage" id="PropertyPlanImageOne" value=""
-                                    onchange="previewPlanFile(this,'<%=i%>')">
+                                    onchange="previewPlanFile(this,'<%=i%>','<%=row._id%>')">
                                   <input type="button">
                                   <input type="hidden" name="plan_image_one_id"
                                     value="<%=row._id%>" id="plan_image_one_id">
@@ -2396,36 +2396,36 @@
             }
           })
         });
-        $("#PropertyPlanImageOne").change(function (e) {
-          //alert("1")
-          e.preventDefault();
-          var isnewPitcher = $("#plan_image_one_id").val();
-          if (isnewPitcher == '') {
-            var urls = "/api/add-new-property-plan-image";
+        // $("#PropertyPlanImageOne").change(function (e) {
+        //   //alert("1")
+        //   e.preventDefault();
+        //   var isnewPitcher = $("#plan_image_one_id").val();
+        //   if (isnewPitcher == '') {
+        //     var urls = "/api/add-new-property-plan-image";
 
-          } else {
-            //alert(isnewPitcher)
-            var urls = "/api/Edit_property_Plan_Image";
-          }
-          var gfg = new FormData();
-          gfg.append('planImage',
-            e.target.files[0]);
-          gfg.append('image_id',
-            $("#plan_image_one_id").val());
-          gfg.append('property_id',
-            $(".img_property_id").val());
-          $.ajax({
-            type: "POST",
-            data: gfg,
-            url: urls,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (data) {
+        //   } else {
+        //     //alert(isnewPitcher)
+        //     var urls = "/api/Edit_property_Plan_Image";
+        //   }
+        //   var gfg = new FormData();
+        //   gfg.append('planImage',
+        //     e.target.files[0]);
+        //   gfg.append('image_id',
+        //     $("#plan_image_one_id").val());
+        //   gfg.append('property_id',
+        //     $(".img_property_id").val());
+        //   $.ajax({
+        //     type: "POST",
+        //     data: gfg,
+        //     url: urls,
+        //     cache: false,
+        //     contentType: false,
+        //     processData: false,
+        //     success: function (data) {
 
-            }
-          })
-        });
+        //     }
+        //   })
+        // });
 
 
         $("#PropertyPlanImageTwo").change(function (e) {
@@ -2628,6 +2628,37 @@
               $('#addmorePlanAvtar'+count).attr('src',e.target.result)
             }
           reader.readAsDataURL(input.files[0]);
+          if(prop_plan_img_id!=''){
+            var urls = "/api/Edit_property_Plan_Image";
+            var gfg = new FormData();
+          gfg.append('planImage',
+          input.files[0]);
+          gfg.append('image_id',prop_plan_img_id);
+          gfg.append('property_id',
+            $(".img_property_id").val());
+          $.ajax({
+            type: "POST",
+            data: gfg,
+            url: urls,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+            }
+          })
+
+          }else{
+
+          }
+          // if (isnewPitcher == '') {
+          //   var urls = "/api/add-new-property-plan-image";
+
+          // } else {
+          //   //alert(isnewPitcher)
+          //   var urls = "/api/Edit_property_Plan_Image";
+          // }
+         
           
       }
   }
