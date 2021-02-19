@@ -258,6 +258,7 @@
     crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript" src="../js/countrystatecity.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 
 
   <script>
@@ -299,8 +300,46 @@
         $(element).removeClass(errorClass);
       },
       submitHandler: function (form) {
-        $('#submit').attr('disabled', true);
-        form.submit();
+        $('.loader-box').attr('style', 'display:flex !important');
+        var formData = $('#registerform').serialize();
+        console.log('formData:', formData)
+        $.ajax({
+          type: "POST",
+          data: formData,
+          url: "/api/service_provider_register",
+          cache: false,
+          success: function (data) {
+            console.log(data);
+            if (data.status == false) {
+              $('.loader-box').attr('style', 'display:none !important');
+              Swal.fire({
+                icon: 'error',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 4000
+              })
+
+            } else {
+              $('.loader-box').attr('style', 'display:none !important');
+              Swal.fire({
+                icon: 'success',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 4000
+              })
+
+              setTimeout(function () {
+                //location.reload(true);
+                window.location.href = "/otp-professional?email=" + data.serviceProviders.sps_email_id;
+              }, 4000);
+
+            }
+          }
+        });
+
+
       }
     });
   </script>

@@ -133,6 +133,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
     integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
     crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+
 
   <script>
     $(document).ready(function () {
@@ -161,8 +163,63 @@
         $(element).removeClass(errorClass);
       },
       submitHandler: function (form) {
-        $('#submit').attr('disabled', true);
-        form.submit();
+        //     $('#submit').attr('disabled', true);
+        //     form.submit();
+        //   }
+        // });
+        $('.loader-box').attr('style', 'display:flex !important');
+        var formData = $('#loginform').serialize();
+        console.log('formData:', formData)
+        $.ajax({
+          type: "POST",
+          data: formData,
+          url: "/api/service_provider_signin",
+          cache: false,
+          success: function (data) {
+            console.log(data);
+
+            if (data.status == false) {
+              $('.loader-box').attr('style', 'display:none !important');
+              //$('#changePasswordModal').modal('hide');
+              // $('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> 0000'+data.message+'</div>')
+              alert(data.message);
+              Swal.fire({
+                icon: 'error',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 4000
+              })
+
+              if (data.redirectpage == true) {
+                setTimeout(function () {
+                  //location.reload(true);
+                  window.location.href = data.redirect;
+                }, 4000);
+              }
+
+
+
+            } else {
+              $('.loader-box').attr('style', 'display:none !important');
+              Swal.fire({
+                icon: 'success',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 4000
+              })
+
+              setTimeout(function () {
+                //location.reload(true);
+                window.location.href = "/dashboard-professional";
+              }, 4000);
+
+            }
+          }
+        });
+
+
       }
     });
   </script>

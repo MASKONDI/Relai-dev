@@ -70,16 +70,32 @@ router.post("/service_provider_register", (req, res) => {
   //Check Validation
   if (!isValid) {
     console.log("errors is ", errors);
-    req.flash('err_msg', errors.confirmPassword);
-    return res.redirect('/signup-service-provider')
+    // req.flash('err_msg', errors.confirmPassword);
+    // return res.redirect('/signup-service-provider')
+    console.log('errosss:', errors)
+    if (errors.confirmPassword) {
+      res.send({
+        message: errors.confirmPassword,
+        status: false
+      })
+    } else {
+      res.send({
+        message: errors.sps_email_id,
+        status: false
+      })
+    }
   }
 
   ServiceProviderSchema.findOne({ sps_email_id: req.body.sps_email_id }).then(serviceProviders => {
     if (serviceProviders) {
       errors.sps_email_id = 'Email already exists';
       console.log("error is :", errors);
-      req.flash('err_msg', errors.sps_email_id);
-      return res.redirect('/signup-service-provider');
+      // req.flash('err_msg', errors.sps_email_id);
+      // return res.redirect('/signup-service-provider');
+      res.send({
+        message: errors.sps_email_id,
+        status: false
+      })
     } else {
       var now = new Date();
       now.setMinutes(now.getMinutes() + 03); // timestamp
@@ -104,7 +120,9 @@ router.post("/service_provider_register", (req, res) => {
         sps_state: req.body.state,
         sps_password: req.body.sps_password,
         sps_role_name: req.body.sps_role_name,
-        sps_experience: req.body.sps_experience
+        sps_experience: req.body.sps_experience,
+        sps_otp: otp,
+        sps_otp_expie_time: otp_expire,
       });
 
       bcrypt.genSalt(10, (err, salt) => {
@@ -124,13 +142,25 @@ router.post("/service_provider_register", (req, res) => {
                 req.session.email = serviceProviders.sps_email_id,
                 req.session.role = serviceProviders.sps_role_name,
                 req.session.is_user_logged_in = true,
-                req.flash('service_provider', serviceProviders);
-              res.redirect("/signup-professionals-profile")
+                //   req.flash('service_provider', serviceProviders);
+                // res.redirect("/signup-professionals-profile")
+                res.send({
+                  serviceProviders: serviceProviders,
+                  message: "You have registered sucessfully, please check your email to verify your account.",
+                  status: true,
+
+                })
+
             })
             .catch(err => {
               console.log(err)
-              req.flash('err_msg', 'You have entered wrong email or password please try again.');
-              res.redirect('/signup-service-provider');
+              // req.flash('err_msg', 'You have entered wrong email or password please try again.');
+              // res.redirect('/signup-service-provider');
+              res.send({
+                message: 'Something went wrong please try again later.',
+                status: false
+              })
+
             });
         });
       });
@@ -426,57 +456,171 @@ router.post("/service_provider_signin",
 
     // Check Validation
     if (!isValid) {
-      req.flash('err_msg', "please enter valid emailid and password")
-      return res.redirect('/signin-professional');
+      // req.flash('err_msg', "please enter valid emailid and password")
+      // return res.redirect('/signin-professional');
+      console.log("error is ", errors);
+      //req.flash('err_msg', "please enter valid emailid and password")
+      // return res.redirect('/signin');
+      res.send({
+        message: "please enter valid email and password",
+        status: false,
+        redirectpage: false,
+        redirect: ''
+      })
     }
+    else {
+      // Find Customer by 
+      ServiceProviderSchema.findOne({ sps_email_id }).then(service_provider => {
+        // Check for Customer
+        if (!service_provider) {
+          console.log("service provider not found");
+          errors.sps_email_id = 'service provider not found';
+          //req.flash('err_msg', errors.cus_email_id);
+          //return res.redirect('/signin');
+          res.send({
+            message: "Service provider not found",
+            status: false,
+            redirectpage: false,
+            redirect: ''
+          })
+        }
+        else if (service_provider.sps_email_verification_status == 'no') {
 
-    // Find Customer by 
-    ServiceProviderSchema.findOne({ sps_email_id }).then(service_provider => {
-      // Check for Customer
-      if (!service_provider) {
-        errors.sps_email_id = 'Service Provider not found';
-        console.log("Service Provider not found");
-        req.flash('err_msg', errors.sps_email_id);
-        return res.redirect('/signin-professional');
-      }
-      // Check Password
-      bcrypt.compare(sps_password, service_provider.sps_password).then(isMatch => {
-        if (isMatch) {
-          //enableing session variable
-          // req.session._id = doc.user_id;
-          req.session.success = true
-          req.session.user_id = service_provider._id;
-          req.session.name = service_provider.sps_firstname + '' + service_provider.sps_lastname;
-          req.session.email = service_provider.sps_email_id;
-          req.session.role = service_provider.sps_role_name;
-          req.session.is_user_logged_in = true;
-
-          // service_provider Matched
-          const payload = { id: service_provider.id, sps_fullname: service_provider.sps_firstname + '' + service_provider.sps_lastname, sps_email_id: service_provider.sps_email_id }; // Create JWT Payload
-
-          // Sign Token
-          jwt.sign(
-            payload,
-            keys.secretOrKey,
-            { expiresIn: 3600 },
-            (err, token) => {
-              res.json({
-                success: true,
-                token: 'Bearer ' + token
-              });
-            }
-          );
-          res.redirect('/dashboard-professional')
+          console.log("Sending Otp if user email not verified");
+          otp_send(req, service_provider);
+          res.send({
+            message: "Please verify  OTP first",
+            status: false,
+            redirectpage: true,
+            redirect: "/otp-professional?email=" + sps_email_id
+            //redirect to OTP
+          })
+          //}
         } else {
-          errors.sps_password = 'Password incorrect';
-          console.log("Password incorrect");
-          req.flash("err_msg", errors.sps_password);
-          return res.redirect('/signin-professional');
+          // Check Password
+          bcrypt.compare(sps_password, service_provider.sps_password).then(isMatch => {
+            if (isMatch) {
+              //enableing session variable
+              // req.session._id = doc.user_id;
+              req.session.success = true
+              req.session.user_id = service_provider._id;
+              req.session.name = service_provider.sps_firstname + '' + service_provider.sps_lastname;
+              req.session.email = service_provider.sps_email_id;
+              req.session.role = service_provider.sps_role_name;
+              req.session.is_user_logged_in = true;
+
+              // service_provider Matched
+              const payload = { id: service_provider.id, sps_fullname: service_provider.sps_firstname + '' + service_provider.sps_lastname, sps_email_id: service_provider.sps_email_id }; // Create JWT Payload
+
+              // Sign Token
+              jwt.sign(
+                payload,
+                keys.secretOrKey,
+                { expiresIn: 3600 },
+                (err, token) => {
+                  res.json({
+                    success: true,
+                    token: 'Bearer ' + token
+                  });
+                }
+              );
+              console.log("Signin Successfully");
+              // res.redirect('/dashboard-professional')
+              res.send({
+                message: "Signin successfully, we are processing please wait...",
+                status: true
+              })
+
+            } else {
+              console.log("password incorrect");
+              // errors.sps_password = 'Password incorrect';
+              // console.log("Password incorrect");
+              // req.flash("err_msg", errors.sps_password);
+              // return res.redirect('/signin-professional');
+              res.send({
+                message: "Password incorrect",
+                status: false,
+                redirectpage: false,
+                redirect: ''
+              })
+            }
+          });
         }
       });
-    });
+    }
   });
 
+
+//Sending otp for email verifictaion while registering user
+function otp_send(req, Service_provider) {
+  console.log("Service provider Data :", Service_provider);
+
+  var now = new Date();
+  now.setMinutes(now.getMinutes() + 03); // timestamp
+  now = new Date(now); // Date object
+
+  var otp_expire = now
+  console.log("otp_expire time is", now);
+  var otp = generateOTP();
+  console.log(" Generated OTP is ", otp);
+
+  ServiceProviderSchema.updateOne({
+    'sps_email_id': Service_provider.sps_email_id
+  }, {
+    $set: {
+      sps_otp: otp,
+      sps_otp_expie_time: otp_expire
+    }
+  }, {
+    upsert: true
+  }, function (err) {
+    if (err) {
+      console.log("err is :", err);
+      // res.send({
+      //   message: 'Something went wrong.',
+      //   status: false
+      // })
+    } else {
+      var smtpTransport = nodemailer.createTransport({
+        // port: 25,
+        // host: 'localhost',
+        tls: {
+          rejectUnauthorized: false
+        },
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        service: 'Gmail',
+        auth: {
+          user: 'golearning4@gmail.com',
+          pass: 'Krishna#1997',
+        }
+      });
+      const mailOptions = {
+        to: Service_provider.sps_email_id,
+        from: 'golearning4@gmail.com',
+        subject: 'OTP verification from Relai',
+
+        text: 'Dear \n' + Service_provider.sps_fullname + '\n\n' + 'your OTP for email-validation is  \n' + otp + '\n\n' + 'We suggest you to please hit given url and submit otp:\n' + ' http://' + req.headers.host + '/otp?email=' + Service_provider.sps_email_id + '\n\n' +
+
+          'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+      };
+      smtpTransport.sendMail(mailOptions, function (err) {
+        if (err) {
+          //console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+          console.log("Something went wrong");
+
+        } else {
+          console.log("OTP send Successfully");
+          // return true;
+
+        }
+      });
+    }
+  }).catch(err => {
+    console.log(err)
+  })
+};
 
 /* -------------------------------------------------------------------------------------------------
 GET : Logout API  
@@ -628,7 +772,7 @@ function generateOTP() {
 }
 
 
-router.post('/resend-otp-link', function (req, res) {
+router.post('/resend-otp-link2', function (req, res) {
   console.log("Sending otp link to registered email-id", req.body.email);
   ServiceProviderSchema.find({
     'sps_email_id': req.body.email,
@@ -646,7 +790,7 @@ router.post('/resend-otp-link', function (req, res) {
     else {
 
       if (result != '' && result != null) {
-        console.log("Service Provider results is :", result[0].cus_otp);
+        console.log("Service Provider results is :", result[0].sps_otp);
         var now = new Date();
         now.setMinutes(now.getMinutes() + 03); // timestamp
         now = new Date(now); // Date object
@@ -775,7 +919,7 @@ function otp_verification(req, otp) {
 }
 
 /*********OTP Verification for ServiceProvider****************/
-router.post('/otp_verfication', function (req, res) {
+router.post('/otp_verfication2', function (req, res) {
   console.log("req.body is :", req.body);
   var otp1 = req.body.otp1;
   var otp2 = req.body.otp2;
@@ -849,5 +993,8 @@ router.post('/otp_verfication', function (req, res) {
   });
 
 });
+
+
+
 
 module.exports = router;

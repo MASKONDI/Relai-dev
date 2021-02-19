@@ -102,7 +102,7 @@ const ServiceProviderSchema = new Schema({
     type: String,
 
   },
-  sps_otp_expie_time: {
+  sps_otp_expire_time: {
     type: String,
   },
 });
