@@ -423,10 +423,10 @@ const upload = multer({
 }).fields(
   [
     {
-      name: 'propertiespic', maxCount: 3
+      name: 'propertiespic', maxCount: 10
     },
     {
-      name: 'planImage', maxCount: 3
+      name: 'planImage', maxCount: 10
     },
     {
       name: 'complaint_file', maxCount: 3
@@ -589,8 +589,9 @@ router.post("/add-new-property-image", isCustomer, async (req, res) => {
     if (req.body) {
       console.log("second form body:=", req.body);
       console.log("second form file:=", req.files);
+      
       let PropertyImageSaved = await PropertyHelper.add_new_property_image(req);
-      console.log('image saved========', PropertyImageSaved);
+     // console.log('image saved========', PropertyImageSaved);
       if (PropertyImageSaved) {
         return res.send({
           'message': ' Your Property image Saved plese add property plan image',

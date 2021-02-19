@@ -1112,13 +1112,16 @@ app.get('/professionals-hirenow', isCustomer, async (req, res) => {
 
 
     if (serviceProvider) {
+      let propertyObj = await PropertyProfessionalHelper.GetAllHiredProertyByUserId(SarviceProviderId, req.session.active_user_login, req.session.user_id);
+      console.log('propertyObj in hire now:=======================',propertyObj)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('professionals-hirenow', {
         err_msg, success_msg, layout: false,
         session: req.session,
         serviceProvider: serviceProvider,
-        property: PropertyList
+        property: PropertyList,
+        propertyObj:propertyObj
       });
     }
   } else {

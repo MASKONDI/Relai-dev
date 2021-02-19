@@ -95,14 +95,22 @@
                                                   <div class="col-6 col-sm-6 col-lg-3">
                                                     <div class="start-date">
                                                       <p>Start date<br><b>
+                                                        <%if(!startDate){%>
+                                                          NA
+                                                          <%}else{%>
                                                           <%=moment(startDate).format("Do MMM, YYYY"); %>
+                                                           <%}%>
                                                         </b></p>
                                                     </div>
                                                   </div>
                                                   <div class="col-6 col-sm-6 col-lg-3">
                                                     <div class="start-date">
                                                       <p>End date<br><b>
+                                                        <%if(!endDate){%>
+                                                          NA
+                                                          <%}else{%>
                                                           <%=moment(endDate).format("Do MMM, YYYY"); %>
+                                                           <%}%>
                                                         </b></p>
                                                     </div>
                                                   </div>

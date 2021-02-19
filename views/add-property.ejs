@@ -1651,7 +1651,7 @@
                     </div>
 
                     <div class="row">
-                      <div class="col-sm-12 col-lg-12">
+                      <div class="col-sm-12 col-lg-12 ">
                         <!-- <form></form> -->
                         <!-- <form action="/upload-properties-pic" class="form" method="post"enctype="multipart/form-data"> -->
                         <div class="property-box ">
@@ -1675,51 +1675,12 @@
                             </div>
                           </span>
                         </div>
-
-                        <div class="property-box  prop_2">
-
-                          <div class=property-inner-section>
-                            <img src="images/upload-icon.png" id="avtar2">
+                        <div class=" propimgAppendDiv"></div>
+                        <button class="portfolio-btn" name="addDom">
+                          <div class=portfolio-add-button>
+                            <img src="images/add-icon.png">
                           </div>
-                          <div class="driving-liences-portfolio ">
-                            <p CLASS="Picture_2"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 2</p>
-                          </div>
-                          <div class="property-upload">
-                            <!-- <a href="#">Upload</a> -->
-                            <button class="btn btn-upload">Upload</button>
-                          </div>
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file" name="propertiespic" class="propertiespic2 propertiespic"
-                                id="propertiespic2" value=""
-                                onchange="document.getElementById('avtar2').src = window.URL.createObjectURL(this.files[0])">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </div>
-                        <!-- </form> -->
-                        <!-- <form action="/upload-properties-pic" class="form" method="post"enctype="multipart/form-data"> -->
-                        <div class="property-box  prop_3">
-
-                          <div class=property-inner-section>
-                            <img src="images/upload-icon.png" id="avtar3">
-                          </div>
-                          <div class="driving-liences-portfolio ">
-                            <p CLASS="Picture_3"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 3</p>
-                          </div>
-                          <div class="property-upload">
-                            <!-- <a href="#">Upload</a> -->
-                            <button class="btn btn-upload">Upload</button>
-                          </div>
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file" name="propertiespic" value="" class="propertiespic3 propertiespic"
-                                id="propertiespic3"
-                                onchange="document.getElementById('avtar3').src = window.URL.createObjectURL(this.files[0])">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </div>
+                        </button>
                         <!-- </form> -->
                       </div>
                     </div>
@@ -1750,32 +1711,30 @@
 
                         <div class="col-sm-12 col-lg-12">
                           <%if(propertyImageObject.length>0){%>
-                            <!-- <form method="post" id="imge_form1" enctype="multipart/form-data"> -->
+                            <%propertyImageObject.forEach(function(row,i){%>
                             <div class="property-box ">
                               <input type="hidden" name="editPropertyImageId" class="editPropertyImageId"
-                                value="<%=propertyImageObject[0]._id%>">
+                                value="<%=row._id%>">
 
                               <div class=property-inner-section>
-                                <img src="/propimg/<%=propertyImageObject[0].pps_property_image_name%>"
-                                  id="avtar_<%=propertyImageObject[0]._id%>">
+                                <img src="/propimg/<%=row.pps_property_image_name%>"
+                                  id="addmoreAvtar<%=i%>">
                               </div>
                               <div class="driving-liences-portfolio ">
-                                <p class="Picture_0"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-                                  <%=propertyImageObject[0].pps_property_image_name%>
+                                <p class="Picture_<%=i%>"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                  <%=row.pps_property_image_name%>
                                 </p>
                               </div>
                               <div class="property-upload">
-                                <!-- <a href="#">Upload</a> -->
+                               
                                 <button class="btn btn-upload">Upload</button>
                               </div>
-                              <!-- <div>
-                                <button type="button"class="btn btn-info btn-upload abc">Edit This</button>
-                              </div> -->
+                             
                               <span>
                                 <div class="custom-file-input prop_0">
                                   <input type="file" name="propertiespic" class="propertiespic" id="PropertyImageOne"
                                     value=""
-                                    onchange="document.getElementById('avtar_<%=propertyImageObject[0]._id%>').src = window.URL.createObjectURL(this.files[0])">
+                                    onchange="previewFile(this,'<%=i%>','<%=row._id%>')">
                                   <input type="button">
                                 </div>
                               </span>
@@ -1787,10 +1746,10 @@
 
 
                             </div>
-                            <!-- </form> -->
+                            <%});%>
 
                             <%}else{%>
-                              <div class="property-box ">
+                              <!-- <div class="property-box ">
 
                                 <div class=property-inner-section>
                                   <img src="images/upload-icon.png" id="avtar1">
@@ -1799,7 +1758,7 @@
                                   <p class="Picture_1"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 1</p>
                                 </div>
                                 <div class="property-upload">
-                                  <!-- <a href="#">Upload</a> -->
+                                  
                                   <button class="btn btn-upload">Upload</button>
                                 </div>
                                 <span>
@@ -1811,127 +1770,9 @@
                                     <input type="button">
                                   </div>
                                 </span>
-                              </div>
+                              </div> -->
                               <%}%>
-                                <!--1  -->
-                                <%if(propertyImageObject.length>1){%>
-                                  <div class="property-box ">
-                                    <input type="hidden" name="editPropertyImageId" class="editPropertyImageId"
-                                      value="<%=propertyImageObject[1]._id%>">
-                                    <div class=property-inner-section>
-                                      <img src="/propimg/<%=propertyImageObject[1].pps_property_image_name%>"
-                                        id="avtar_<%=propertyImageObject[1]._id%>">
-                                    </div>
-                                    <div class="driving-liences-portfolio ">
-                                      <p class="Picture_1"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-                                        <%=propertyImageObject[1].pps_property_image_name%>
-                                      </p>
-                                    </div>
-                                    <div class="property-upload">
-                                      <!-- <a href="#">Upload</a> -->
-                                      <button class="btn btn-upload">Upload</button>
-                                    </div>
-                                    <span>
-                                      <div class="custom-file-input prop_1">
-                                        <input type="file" name="propertiespic" class="propertiespic"
-                                          id="PropertyImageTwo" value=""
-                                          onchange="document.getElementById('avtar_<%=propertyImageObject[1]._id%>').src = window.URL.createObjectURL(this.files[0])">
-                                        <input type="button">
-                                      </div>
-                                    </span>
-                                    <input type="hidden" id="image_two_id" name="old_prop_img_2_id"
-                                      value="<%=propertyImageObject[1]._id%>">
-                                    <input type="hidden" name="old_prop_img_2"
-                                      value="<%=propertyImageObject[1].pps_property_image_name%>">
-
-
-
-                                  </div>
-                                  <%}else{%>
-
-                                    <div class="property-box  prop_2">
-
-                                      <div class=property-inner-section>
-                                        <img src="images/upload-icon.png" id="avtar2">
-                                      </div>
-                                      <div class="driving-liences-portfolio ">
-                                        <p CLASS="Picture_2"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 2</p>
-                                      </div>
-                                      <div class="property-upload">
-                                        <!-- <a href="#">Upload</a> -->
-                                        <button class="btn btn-upload">Upload</button>
-                                      </div>
-                                      <span>
-                                        <div class="custom-file-input">
-                                          <input type="hidden" id="image_two_id" name="old_prop_img_2_id" value="">
-                                          <input type="file" name="propertiespic" class="propertiespic2"
-                                            id="PropertyImageTwo" value=""
-                                            onchange="document.getElementById('avtar2').src = window.URL.createObjectURL(this.files[0])">
-                                          <input type="button">
-                                        </div>
-                                      </span>
-                                    </div>
-                                    <%}%>
-                                      <!-- 2 -->
-                                      <%if(propertyImageObject.length>2){%>
-                                        <div class="property-box ">
-                                          <input type="hidden" name="editPropertyImageId" class="editPropertyImageId"
-                                            value="<%=propertyImageObject[2]._id%>">
-                                          <div class=property-inner-section>
-                                            <img src="/propimg/<%=propertyImageObject[2].pps_property_image_name%>"
-                                              id="avtar_<%=propertyImageObject[2]._id%>">
-                                          </div>
-                                          <div class="driving-liences-portfolio ">
-                                            <p class="Picture_2"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-                                              <%=propertyImageObject[2].pps_property_image_name%>
-                                            </p>
-                                          </div>
-                                          <div class="property-upload">
-                                            <!-- <a href="#">Upload</a> -->
-                                            <button class="btn btn-upload">Upload</button>
-                                          </div>
-                                          <span>
-                                            <div class="custom-file-input prop_2">
-                                              <input type="file" name="propertiespic" class="propertiespic"
-                                                id="PropertyImageThree" value=""
-                                                onchange="document.getElementById('avtar_<%=propertyImageObject[2]._id%>').src = window.URL.createObjectURL(this.files[0])">
-                                              <input type="button">
-                                            </div>
-                                          </span>
-                                          <input type="hidden" name="old_prop_img_3_id"
-                                            value="<%=propertyImageObject[2]._id%>" id="image_three_id">
-                                          <input type="hidden" name="old_prop_img_3"
-                                            value="<%=propertyImageObject[2].pps_property_image_name%>">
-
-
-
-                                        </div>
-
-                                        <%}else{%>
-                                          <div class="property-box  prop_3">
-
-                                            <div class=property-inner-section>
-                                              <img src="images/upload-icon.png" id="avtar3">
-                                            </div>
-                                            <div class="driving-liences-portfolio ">
-                                              <p CLASS="Picture_3"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 3</p>
-                                            </div>
-                                            <div class="property-upload">
-                                              <!-- <a href="#">Upload</a> -->
-                                              <button class="btn btn-upload">Upload</button>
-                                            </div>
-                                            <span>
-                                              <div class="custom-file-input">
-                                                <input type="hidden" name="old_prop_img_3_id" value=""
-                                                  id="image_three_id">
-                                                <input type="file" name="propertiespic" value="" class="propertiespic3"
-                                                  id="PropertyImageThree"
-                                                  onchange="document.getElementById('avtar3').src = window.URL.createObjectURL(this.files[0])">
-                                                <input type="button">
-                                              </div>
-                                            </span>
-                                          </div>
-                                          <%}%>
+                                
 
                                             <!---------------- work abouw ----------------->
                         </div>
@@ -1966,66 +1807,31 @@
                     <span class="message_data"></span>
                     <div class="row">
                       <div class="col-sm-12 col-lg-12">
-                        <!-- <form action="/upload-properties-plan-pic" class="form" method="post"enctype="multipart/form-data"> -->
-                        <div class="property-box  prop_4">
+                        <div class="property-box  ">
 
                           <div class=property-inner-section>
-                            <img src="images/upload-icon.png" id="avtar4">
+                            <img src="images/upload-icon.png" id="planavtar1">
                           </div>
                           <div class="driving-liences-portfolio ">
-                            <p CLASS="Picture_4"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 1</p>
+                            <p CLASS="plan_Picture_1"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 1</p>
                           </div>
-                          <div class="property-upload">
+                          <div class="property-upload ">
                             <button class="btn btn-upload">Upload</button>
                           </div>
                           <span>
-                            <div class="custom-file-input">
+                            <div class="custom-file-input prop_plan_1">
                               <input type="file" name="planImage" id="propertiesplanpic1" value="" required
-                                onchange="document.getElementById('avtar4').src = window.URL.createObjectURL(this.files[0])">
+                                onchange="document.getElementById('planavtar1').src = window.URL.createObjectURL(this.files[0])">
                               <input type="button">
                             </div>
                           </span>
                         </div>
-
-                        <div class="property-box  prop_5">
-                          <div class=property-inner-section>
-                            <img src="images/upload-icon.png" id="avtar5">
+                        <div class="prop_Plan_imgAppendDiv"></div>
+                        <button class="portfolio-btn" name="addPlanDom">
+                          <div class=portfolio-add-button>
+                            <img src="images/add-icon.png">
                           </div>
-                          <div class="driving-liences-portfolio ">
-                            <p CLASS="Picture_5"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 2</p>
-                          </div>
-                          <div class="property-upload">
-                            <!-- <a href="#">Upload</a> -->
-                            <button class="btn btn-upload">Upload</button>
-                          </div>
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file" name="planImage" id="propertiesplanpic2" value=""
-                                onchange="document.getElementById('avtar5').src = window.URL.createObjectURL(this.files[0])">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </div>
-                        <div class="property-box  prop_6">
-
-                          <div class=property-inner-section>
-                            <img src="images/upload-icon.png" id="avtar6">
-                          </div>
-                          <div class="driving-liences-portfolio ">
-                            <p CLASS="Picture_6"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 3</p>
-                          </div>
-                          <div class="property-upload">
-                            <!-- <a href="#">Upload</a> -->
-                            <button class="btn btn-upload">Upload</button>
-                          </div>
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file" name="planImage" id="propertiesplanpic3" value=""
-                                onchange="document.getElementById('avtar6').src = window.URL.createObjectURL(this.files[0])">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </div>
+                        </button>
                         <!-- </form> -->
                       </div>
                     </div>
@@ -2055,17 +1861,17 @@
                       <div class="row">
                         <div class="col-sm-12 col-lg-12">
                           <%if(propertyPlanImageObject.length>0){%>
-
+                            <%propertyPlanImageObject.forEach(function(row,i){%>
                             <div class="property-box  plan_prop_0">
                               <input type="hidden" name="editPropertyPlanImageId" class="editPropertyPlanImageId"
-                                value="<%=propertyPlanImageObject[0]._id%>">
+                                value="<%=row._id%>">
                               <div class=property-inner-section>
-                                <img src="/propplanimg/<%=propertyPlanImageObject[0].ppps_plan_image_name%>"
-                                  id="avtar_<%=propertyPlanImageObject[0]._id%>">
+                                <img src="/propplanimg/<%=row.ppps_plan_image_name%>"
+                                  id="addmorePlanAvtar<%=i%>">
                               </div>
                               <div class="driving-liences-portfolio ">
-                                <p CLASS="planPicture_0"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-                                  <%=propertyPlanImageObject[0].ppps_plan_image_name%>"
+                                <p CLASS="PlanPicture_<%=i%>"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                  <%=row.ppps_plan_image_name%>"
                                 </p>
                               </div>
                               <div class="property-upload">
@@ -2074,15 +1880,16 @@
                               <span>
                                 <div class="custom-file-input">
                                   <input type="file" name="planImage" id="PropertyPlanImageOne" value=""
-                                    onchange="document.getElementById('avtar_<%=propertyPlanImageObject[0]._id%>').src = window.URL.createObjectURL(this.files[0])">
+                                    onchange="previewPlanFile(this,'<%=i%>')">
                                   <input type="button">
                                   <input type="hidden" name="plan_image_one_id"
-                                    value="<%=propertyPlanImageObject[0]._id%>" id="plan_image_one_id">
+                                    value="<%=row._id%>" id="plan_image_one_id">
                                 </div>
                               </span>
                             </div>
+                            <%})%>
                             <%}else{%>
-                              <div class="property-box  prop_4">
+                              <!-- <div class="property-box  prop_4">
 
                                 <div class=property-inner-section>
                                   <img src="images/upload-icon.png" id="avtar4">
@@ -2101,109 +1908,9 @@
                                     <input type="hidden" name="plan_image_one_id" value="" id="plan_image_one_id">
                                   </div>
                                 </span>
-                              </div>
+                              </div> -->
                               <%}%>
-                                <%if(propertyPlanImageObject.length>1){%>
-                                  <div class="property-box  plan_prop_1">
-                                    <input type="hidden" name="editPropertyPlanImageId" class="editPropertyPlanImageId"
-                                      value="<%=propertyPlanImageObject[1]._id%>">
-                                    <div class=property-inner-section>
-                                      <img src="/propplanimg/<%=propertyPlanImageObject[1].ppps_plan_image_name%>"
-                                        id="avtar_<%=propertyPlanImageObject[1]._id%>">
-                                    </div>
-                                    <div class="driving-liences-portfolio ">
-                                      <p CLASS="planPicture_1"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-                                        <%=propertyPlanImageObject[1].ppps_plan_image_name%>"
-                                      </p>
-                                    </div>
-                                    <div class="property-upload">
-                                      <button class="btn btn-upload">Upload</button>
-                                    </div>
-                                    <span>
-                                      <div class="custom-file-input">
-                                        <input type="file" name="planImage" id="PropertyPlanImageTwo" value=""
-                                          onchange="document.getElementById('avtar_<%=propertyPlanImageObject[1]._id%>').src = window.URL.createObjectURL(this.files[0])">
-                                        <input type="button">
-                                        <input type="hidden" name="plan_image_two_id"
-                                          value="<%=propertyPlanImageObject[1]._id%>" id="plan_image_two_id">
-                                      </div>
-                                    </span>
-                                  </div>
-                                  <%}else{%>
-                                    <div class="property-box  prop_5">
-                                      <div class=property-inner-section>
-                                        <img src="images/upload-icon.png" id="avtar5">
-                                      </div>
-                                      <div class="driving-liences-portfolio ">
-                                        <p CLASS="Picture_5"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 2</p>
-                                      </div>
-                                      <div class="property-upload">
-                                        <!-- <a href="#">Upload</a> -->
-                                        <button class="btn btn-upload">Upload</button>
-                                      </div>
-                                      <span>
-                                        <div class="custom-file-input">
-                                          <input type="file" name="planImage" id="PropertyPlanImageTwo" value=""
-                                            onchange="document.getElementById('avtar5').src = window.URL.createObjectURL(this.files[0])">
-                                          <input type="button">
-                                          <input type="hidden" name="plan_image_two_id" value="" id="plan_image_two_id">
-                                        </div>
-                                      </span>
-                                    </div>
-
-
-                                    <%}%>
-                                      <%if(propertyPlanImageObject.length>2){%>
-                                        <div class="property-box  plan_prop_2">
-                                          <input type="hidden" name="editPropertyPlanImageId"
-                                            class="editPropertyPlanImageId" value="<%=propertyPlanImageObject[2]._id%>">
-                                          <div class=property-inner-section>
-                                            <img src="/propplanimg/<%=propertyPlanImageObject[2].ppps_plan_image_name%>"
-                                              id="avtar_<%=propertyPlanImageObject[2]._id%>">
-                                          </div>
-                                          <div class="driving-liences-portfolio ">
-                                            <p CLASS="planPicture_2"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-                                              <%=propertyPlanImageObject[2].ppps_plan_image_name%>"
-                                            </p>
-                                          </div>
-                                          <div class="property-upload">
-                                            <button class="btn btn-upload">Upload</button>
-                                          </div>
-                                          <span>
-                                            <div class="custom-file-input">
-                                              <input type="file" name="planImage" id="PropertyPlanImageThree" value=""
-                                                onchange="document.getElementById('avtar_<%=propertyPlanImageObject[2]._id%>').src = window.URL.createObjectURL(this.files[0])">
-                                              <input type="button">
-                                              <input type="hidden" name="plan_image_three_id"
-                                                value="<%=propertyPlanImageObject[2]._id%>" id="plan_image_three_id">
-                                            </div>
-                                          </span>
-                                        </div>
-                                        <%}else{%>
-                                          <div class="property-box  prop_6">
-
-                                            <div class=property-inner-section>
-                                              <img src="images/upload-icon.png" id="avtar6">
-                                            </div>
-                                            <div class="driving-liences-portfolio ">
-                                              <p CLASS="Picture_6"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture 3</p>
-                                            </div>
-                                            <div class="property-upload">
-                                              <!-- <a href="#">Upload</a> -->
-                                              <button class="btn btn-upload">Upload</button>
-                                            </div>
-                                            <span>
-                                              <div class="custom-file-input">
-                                                <input type="file" name="planImage" id="PropertyPlanImageThree" value=""
-                                                  onchange="document.getElementById('avtar6').src = window.URL.createObjectURL(this.files[0])">
-                                                <input type="button">
-                                                <input type="hidden" name="plan_image_three_id" value=""
-                                                  id="plan_image_three_id">
-                                              </div>
-                                            </span>
-                                          </div>
-
-                                          <%}%>
+                                
 
 
                         </div>
@@ -2337,39 +2044,17 @@
     </script>
     <script>
       $(document).ready(function () {
-        $('.prop_0 input[type="file"]').change(function (e) {
-
-          $(".Picture_0").html(e.target.files[0].name)
-        });
+        
         $('.prop_1 input[type="file"]').change(function (e) {
 
           $(".Picture_1").html(e.target.files[0].name)
         });
-        $('.prop_2 input[type="file"]').change(function (e) {
-          $(".Picture_2").html(e.target.files[0].name)
-        });
-        $('.prop_3 input[type="file"]').change(function (e) {
-          $(".Picture_3").html(e.target.files[0].name)
-        });
-        $('.prop_4 input[type="file"]').change(function (e) {
-          $(".Picture_4").html(e.target.files[0].name)
-        });
-        $('.prop_5 input[type="file"]').change(function (e) {
-          $(".Picture_5").html(e.target.files[0].name)
-        });
-        $('.prop_6 input[type="file"]').change(function (e) {
-          $(".Picture_6").html(e.target.files[0].name)
-        });
+        $('.prop_plan_1 input[type="file"]').change(function (e) {
 
-        $('.plan_prop_0 input[type="file"]').change(function (e) {
-          $(".planPicture_0").html(e.target.files[0].name)
+        $(".plan_Picture_1").html(e.target.files[0].name)
         });
-        $('.plan_prop_1 input[type="file"]').change(function (e) {
-          $(".planPicture_1").html(e.target.files[0].name)
-        });
-        $('.plan_prop_2 input[type="file"]').change(function (e) {
-          $(".planPicture_2").html(e.target.files[0].name)
-        });
+        
+       
 
       });
 
@@ -2406,6 +2091,9 @@
                 $(".img_property_id").val(property_id);
                 $('#propertyform2').on('submit', function (e) {
                   e.preventDefault();
+                  
+                  
+                 
                   $('.loader-box').attr('style','display:flex !important');
                   //var ext = $('.propertiespic').val().split('.').pop().toLowerCase();
                   //if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg', 'jfif']) == -1) {
@@ -2422,6 +2110,7 @@
                       var prop_Img_api_url = "/api/EditpropertyImage";
                     }
                     var formData1 = new FormData($('#propertyform2')[0]);
+                    console.log(formData1);
                     $.ajax({
                       type: "POST",
                       data: formData1,
@@ -2619,33 +2308,33 @@
     <script>
       $(document).ready(function () {
 
-        $("#PropertyImageOne").change(function (e) {
-          e.preventDefault();
-          var isnewPitcher = $("#image_one_id").val();
-          if (isnewPitcher == '') {
-            var urls = "/api/add-new-property-image";
+        // $("#PropertyImageOne").change(function (e) {
+        //   e.preventDefault();
+        //   var isnewPitcher = $("#image_one_id").val();
+        //   if (isnewPitcher == '') {
+        //     var urls = "/api/add-new-property-image";
 
-          } else {
-            //alert(isnewPitcher)
-            var urls = "/api/Edit_property_Image";
-          }
+        //   } else {
+        //     //alert(isnewPitcher)
+        //     var urls = "/api/Edit_property_Image";
+        //   }
 
-          var gfg = new FormData();
-          gfg.append('propertiespic', e.target.files[0]);
-          gfg.append('image_id', $("#image_one_id").val());
-          gfg.append('property_id', $(".img_property_id").val());
-          $.ajax({
-            type: "POST",
-            data: gfg,
-            url: urls,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (data) {
+        //   var gfg = new FormData();
+        //   gfg.append('propertiespic', e.target.files[0]);
+        //   gfg.append('image_id', $("#image_one_id").val());
+        //   gfg.append('property_id', $(".img_property_id").val());
+        //   $.ajax({
+        //     type: "POST",
+        //     data: gfg,
+        //     url: urls,
+        //     cache: false,
+        //     contentType: false,
+        //     processData: false,
+        //     success: function (data) {
 
-            }
-          })
-        });
+        //     }
+        //   })
+        // });
 
         $("#PropertyImageTwo").change(function (e) {
           //alert("2")
@@ -2855,7 +2544,95 @@
         }
       })
     </script>
-    <!-- in case of edit property chain property should no be show onw property in drop down -->
+     <script>
+    $(document).ready(function () {
+      
+      let c = 2;
+      $("button[name='addDom']").click(function (e) {
+        e.preventDefault();
+        var domElement = $('<div class="property-box "><div class=property-inner-section><img src="images/upload-icon.png" id="addmoreAvtar'+c+'"></div><div class="driving-liences-portfolio "><p class="Picture_'+c+'"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture '+c+'</p></div><div class="property-upload"><button class="btn btn-upload">Upload</button></div><span><div class="custom-file-input "><input type="file" name="propertiespic" class="propertiespic" value=""onchange="previewFile(this,'+c+');"><input type="button"></div></span></div>');
+        $('.propimgAppendDiv').append(domElement);
+       
+        c++;
+
+      });
+      let count =2;
+      $("button[name='addPlanDom']").click(function (e) {
+        e.preventDefault();
+        var domElement = $('<div class="property-box "><div class=property-inner-section><img src="images/upload-icon.png" id="addmorePlanAvtar'+count+'"></div><div class="driving-liences-portfolio "><p class="PlanPicture_'+count+'"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture '+count+'</p></div><div class="property-upload"><button class="btn btn-upload">Upload</button></div><span><div class="custom-file-input "><input type="file" name="planImage" class="" value=""onchange="previewPlanFile(this,'+count+');"><input type="button"></div></span></div>');
+        $('.prop_Plan_imgAppendDiv').append(domElement);
+       
+        count++;
+
+      });
+      $select = $('file.propertiespic');
+
+        $select.on('change', function(){
+          
+          var total = '';
+          
+          $select.each(function(e){
+            total = e.target.files[0]
+            //total += parseInt($(this).val()); // or parseInt(e.currentTarget.value)
+          })
+          
+         console.log('===========++++++++++++',total)
+        })
+      
+      
+    }); 
+    function previewFile(input,c,prop_img_id){
+          //alert(prop_img_id)
+          //alert($(".img_property_id").val())
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              console.log('filess:',e.target)
+              //console.log("ccccccc",c)
+               // $('.ddddd').attr('src', e.target.result);
+                //$('#upload-doc-view').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img src="'+e.target.result+'" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
+                $(".Picture_"+c).html(input.files[0].name);
+                $('#addmoreAvtar'+c).attr('src',e.target.result)
+              }
+            reader.readAsDataURL(input.files[0]);
+            if(prop_img_id!=''){
+            var urls = "/api/Edit_property_Image";
+            var gfg = new FormData();
+          gfg.append('propertiespic', input.files[0]);
+          gfg.append('image_id', prop_img_id);
+          gfg.append('property_id', $(".img_property_id").val());
+            $.ajax({
+            type: "POST",
+            data: gfg,
+            url: urls,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+            }
+          })
+        }
+        }
+    }
+    function previewPlanFile(input,count,prop_plan_img_id){
+      
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            console.log('filess:',e.target)
+            //console.log("ccccccc",c)
+             // $('.ddddd').attr('src', e.target.result);
+              //$('#upload-doc-view').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img src="'+e.target.result+'" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
+              $(".PlanPicture_"+count).html(input.files[0].name);
+              $('#addmorePlanAvtar'+count).attr('src',e.target.result)
+            }
+          reader.readAsDataURL(input.files[0]);
+          
+      }
+  }
+</script>
+     
     </body>
 
     </html>
