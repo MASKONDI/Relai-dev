@@ -304,15 +304,20 @@ app.get('/signin', (req, res) => {
 
 });
 
-app.get('/dashboard', isCustomer, (req, res) => {
+app.get('/dashboard', isCustomer, async (req, res) => {
   console.log("current user session is :", req.session);
+
+ const mapData = await PropertiesSchema.find({ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login });
+console.log('MapData:',mapData);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   req.session.pagename = 'dashboard';
   res.render('dashboard', {
     err_msg, success_msg, layout: false,
     session: req.session,
+    mapData:mapData
   });
+
 });
 
 
@@ -2436,6 +2441,7 @@ app.get('/take-action', isCustomer, async (req, res) => {
 
 
 })
+
 
 module.exports = app;
 
