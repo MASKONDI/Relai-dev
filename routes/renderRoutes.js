@@ -936,34 +936,34 @@ app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
 
         await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
           // await ServiceProviderSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async professional => {
-             if (professional) {
-               //console.log('professional:',professional.sps_fullname);
-               t.senderName = await professional.sps_fullname;
-               //console.log('providerData xxxx New:',t);
-             }
-   
-           });
-           const s = await t;
-          // console.log('providerData New:', s);
-   
-           //newData.push(s);
-           //var object_as_string1 = JSON.stringify(newData);
-          // const tt = JSON.parse(object_as_string1);
-           //console.log('tt--===:', tt);
-   
-           await CustomerSchema.findOne({ _id: s.sms_sender_id }).then(async customer => {
-           //await CustomerSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async customer => {
-             if (customer) {
-               //console.log('professional:',professional.sps_fullname);
-               s.senderName = await customer.cus_fullname;
-               s.sms_user_profile_img = await customer.cus_profile_image_name;
-               //console.log('providerData xxxx New:',t);
-             }
-   
-           });
-           const ss = await s;
-          // console.log('providerData Newssssss:', ss);
-           newData.push(ss);
+          if (professional) {
+            //console.log('professional:',professional.sps_fullname);
+            t.senderName = await professional.sps_fullname;
+            //console.log('providerData xxxx New:',t);
+          }
+
+        });
+        const s = await t;
+        // console.log('providerData New:', s);
+
+        //newData.push(s);
+        //var object_as_string1 = JSON.stringify(newData);
+        // const tt = JSON.parse(object_as_string1);
+        //console.log('tt--===:', tt);
+
+        await CustomerSchema.findOne({ _id: s.sms_sender_id }).then(async customer => {
+          //await CustomerSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async customer => {
+          if (customer) {
+            //console.log('professional:',professional.sps_fullname);
+            s.senderName = await customer.cus_fullname;
+            s.sms_user_profile_img = await customer.cus_profile_image_name;
+            //console.log('providerData xxxx New:',t);
+          }
+
+        });
+        const ss = await s;
+        // console.log('providerData Newssssss:', ss);
+        newData.push(ss);
 
       }
 
@@ -1036,34 +1036,34 @@ app.get('/professionals-detail-message', (req, res) => {
 
             await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
               // await ServiceProviderSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async professional => {
-                 if (professional) {
-                   //console.log('professional:',professional.sps_fullname);
-                   t.senderName = await professional.sps_fullname;
-                   //console.log('providerData xxxx New:',t);
-                 }
-       
-               });
-               const s = await t;
-              // console.log('providerData New:', s);
-       
-               //newData.push(s);
-               //var object_as_string1 = JSON.stringify(newData);
-              // const tt = JSON.parse(object_as_string1);
-               //console.log('tt--===:', tt);
-       
-               await CustomerSchema.findOne({ _id: s.sms_sender_id }).then(async customer => {
-               //await CustomerSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async customer => {
-                 if (customer) {
-                   //console.log('professional:',professional.sps_fullname);
-                   s.senderName = await customer.cus_fullname;
-                   s.sms_user_profile_img = await customer.cus_profile_image_name;
-                   //console.log('providerData xxxx New:',t);
-                 }
-       
-               });
-               const ss = await s;
-              // console.log('providerData Newssssss:', ss);
-               newData.push(ss);
+              if (professional) {
+                //console.log('professional:',professional.sps_fullname);
+                t.senderName = await professional.sps_fullname;
+                //console.log('providerData xxxx New:',t);
+              }
+
+            });
+            const s = await t;
+            // console.log('providerData New:', s);
+
+            //newData.push(s);
+            //var object_as_string1 = JSON.stringify(newData);
+            // const tt = JSON.parse(object_as_string1);
+            //console.log('tt--===:', tt);
+
+            await CustomerSchema.findOne({ _id: s.sms_sender_id }).then(async customer => {
+              //await CustomerSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async customer => {
+              if (customer) {
+                //console.log('professional:',professional.sps_fullname);
+                s.senderName = await customer.cus_fullname;
+                s.sms_user_profile_img = await customer.cus_profile_image_name;
+                //console.log('providerData xxxx New:',t);
+              }
+
+            });
+            const ss = await s;
+            // console.log('providerData Newssssss:', ss);
+            newData.push(ss);
 
           }
 
@@ -1229,6 +1229,180 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
 
 
 })
+
+
+app.get('/mydreamhome-details-phase-b', isCustomer, async (req, res) => {
+  console.log('req:', req.session.property_id);
+  var propertyData = await propertyDetail.GetPropertById(req.query.id, req.session.active_user_login);
+  var taskObject = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login)
+  console.log('taskObject', taskObject)
+  console.log("propertyData===", propertyData)
+  if (taskObject) {
+    // return res.send({
+    //   'status':true,
+    //   'data':taskObject,
+    //   'redairect':'/mydreamhome-details-phase-a'
+    // })
+    req.session.pagename = 'mydreamhome';
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('mydreamhome-details-phase-b', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      taskObject: taskObject,
+      propertyData: propertyData
+    });
+  }
+})
+
+
+app.get('/mydreamhome-details-phase-c', isCustomer, async (req, res) => {
+  console.log('req:', req.session.property_id);
+  var propertyData = await propertyDetail.GetPropertById(req.query.id, req.session.active_user_login);
+  var taskObject = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login)
+  console.log('taskObject', taskObject)
+  console.log("propertyData===", propertyData)
+  if (taskObject) {
+    // return res.send({
+    //   'status':true,
+    //   'data':taskObject,
+    //   'redairect':'/mydreamhome-details-phase-a'
+    // })
+    req.session.pagename = 'mydreamhome';
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('mydreamhome-details-phase-c', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      taskObject: taskObject,
+      propertyData: propertyData
+    });
+  }
+})
+
+app.get('/mydreamhome-details-phase-d', isCustomer, async (req, res) => {
+  console.log('req:', req.session.property_id);
+  var propertyData = await propertyDetail.GetPropertById(req.query.id, req.session.active_user_login);
+  var taskObject = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login)
+  console.log('taskObject', taskObject)
+  console.log("propertyData===", propertyData)
+  if (taskObject) {
+    // return res.send({
+    //   'status':true,
+    //   'data':taskObject,
+    //   'redairect':'/mydreamhome-details-phase-a'
+    // })
+    req.session.pagename = 'mydreamhome';
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('mydreamhome-details-phase-d', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      taskObject: taskObject,
+      propertyData: propertyData
+    });
+  }
+})
+
+app.get('/mydreamhome-details-phase-e', isCustomer, async (req, res) => {
+  console.log('req:', req.session.property_id);
+  var propertyData = await propertyDetail.GetPropertById(req.query.id, req.session.active_user_login);
+  var taskObject = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login)
+  console.log('taskObject', taskObject)
+  console.log("propertyData===", propertyData)
+  if (taskObject) {
+    // return res.send({
+    //   'status':true,
+    //   'data':taskObject,
+    //   'redairect':'/mydreamhome-details-phase-a'
+    // })
+    req.session.pagename = 'mydreamhome';
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('mydreamhome-details-phase-e', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      taskObject: taskObject,
+      propertyData: propertyData
+    });
+  }
+})
+
+app.get('/mydreamhome-details-phase-f', isCustomer, async (req, res) => {
+  console.log('req:', req.session.property_id);
+  var propertyData = await propertyDetail.GetPropertById(req.query.id, req.session.active_user_login);
+  var taskObject = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login)
+  console.log('taskObject', taskObject)
+  console.log("propertyData===", propertyData)
+  if (taskObject) {
+    // return res.send({
+    //   'status':true,
+    //   'data':taskObject,
+    //   'redairect':'/mydreamhome-details-phase-a'
+    // })
+    req.session.pagename = 'mydreamhome';
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('mydreamhome-details-phase-f', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      taskObject: taskObject,
+      propertyData: propertyData
+    });
+  }
+})
+
+
+
+app.get('/mydreamhome-details-phase-g', isCustomer, async (req, res) => {
+  console.log('req:', req.session.property_id);
+  var propertyData = await propertyDetail.GetPropertById(req.query.id, req.session.active_user_login);
+  var taskObject = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login)
+  console.log('taskObject', taskObject)
+  console.log("propertyData===", propertyData)
+  if (taskObject) {
+    // return res.send({
+    //   'status':true,
+    //   'data':taskObject,
+    //   'redairect':'/mydreamhome-details-phase-a'
+    // })
+    req.session.pagename = 'mydreamhome';
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('mydreamhome-details-phase-g', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      taskObject: taskObject,
+      propertyData: propertyData
+    });
+  }
+})
+
+
+app.get('/mydreamhome-details-phase-h', isCustomer, async (req, res) => {
+  console.log('req:', req.session.property_id);
+  var propertyData = await propertyDetail.GetPropertById(req.query.id, req.session.active_user_login);
+  var taskObject = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login)
+  console.log('taskObject', taskObject)
+  console.log("propertyData===", propertyData)
+  if (taskObject) {
+    // return res.send({
+    //   'status':true,
+    //   'data':taskObject,
+    //   'redairect':'/mydreamhome-details-phase-a'
+    // })
+    req.session.pagename = 'mydreamhome';
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('mydreamhome-details-phase-h', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      taskObject: taskObject,
+      propertyData: propertyData
+    });
+  }
+})
+
 // app.get('/mydreamhome', isCustomer, (req, res) => {
 //   err_msg = req.flash('err_msg');
 //   success_msg = req.flash('success_msg');
@@ -1354,7 +1528,7 @@ function timeDifference(data) {
     date.push(days);
 
     console.log("total date is :", days);
-    
+
   });
   var estimated_time = date.reduce((total, i) => total + i, 0);
   var message = "";
@@ -1375,11 +1549,11 @@ function timeDifference(data) {
     message += estimated_time + " days "
   }
   console.log("estimated_time :", message);
-  if(isNaN(estimated_time)){
-    console.log("aaa",estimated_time)
+  if (isNaN(estimated_time)) {
+    console.log("aaa", estimated_time)
     return 'NA';
-  }else{
-    console.log("bbb",estimated_time)
+  } else {
+    console.log("bbb", estimated_time)
     return message;
   }
 }
@@ -1473,7 +1647,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
         //console.log("Property Data is *************************", data[0].ps_phase_array);
         //var totaldiff = "";
         var message = timeDifference(data[0].ps_phase_array);
-        
+
         let arr = [];
         for (let img of data) {
           await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
@@ -1487,7 +1661,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
 
         }
 
-         //console.log("data=======================",data)
+        //console.log("data=======================",data)
 
         err_msg = req.flash('err_msg');
         success_msg = req.flash('success_msg');
@@ -1673,34 +1847,34 @@ app.get('/get-message', async (req, res) => {
 
         await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
           // await ServiceProviderSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async professional => {
-             if (professional) {
-               //console.log('professional:',professional.sps_fullname);
-               t.senderName = await professional.sps_fullname;
-               //console.log('providerData xxxx New:',t);
-             }
-   
-           });
-           const s = await t;
-          // console.log('providerData New:', s);
-   
-           //newData.push(s);
-           //var object_as_string1 = JSON.stringify(newData);
-          // const tt = JSON.parse(object_as_string1);
-           //console.log('tt--===:', tt);
-   
-           await CustomerSchema.findOne({ _id: s.sms_sender_id }).then(async customer => {
-           //await CustomerSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async customer => {
-             if (customer) {
-               //console.log('professional:',professional.sps_fullname);
-               s.senderName = await customer.cus_fullname;
-               s.sms_user_profile_img = await customer.cus_profile_image_name;
-               //console.log('providerData xxxx New:',t);
-             }
-   
-           });
-           const ss = await s;
-          // console.log('providerData Newssssss:', ss);
-           newData.push(ss);
+          if (professional) {
+            //console.log('professional:',professional.sps_fullname);
+            t.senderName = await professional.sps_fullname;
+            //console.log('providerData xxxx New:',t);
+          }
+
+        });
+        const s = await t;
+        // console.log('providerData New:', s);
+
+        //newData.push(s);
+        //var object_as_string1 = JSON.stringify(newData);
+        // const tt = JSON.parse(object_as_string1);
+        //console.log('tt--===:', tt);
+
+        await CustomerSchema.findOne({ _id: s.sms_sender_id }).then(async customer => {
+          //await CustomerSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async customer => {
+          if (customer) {
+            //console.log('professional:',professional.sps_fullname);
+            s.senderName = await customer.cus_fullname;
+            s.sms_user_profile_img = await customer.cus_profile_image_name;
+            //console.log('providerData xxxx New:',t);
+          }
+
+        });
+        const ss = await s;
+        // console.log('providerData Newssssss:', ss);
+        newData.push(ss);
 
 
       }

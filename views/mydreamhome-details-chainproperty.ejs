@@ -141,21 +141,43 @@
                                         <li class="progress-1"><a
                                             href="/mydreamhome-details-phase-a?id=<%=row._id%>"><img
                                               src="images/white-prgress=arrow.png"></a> <span>Phase A</span></li>
-                                        <li class="progress-2"><img src="images/white-prgress=arrow.png"> <span>Phase
+                                        <li class="progress-2"><a
+                                            href="/mydreamhome-details-phase-b?id=<%=row._id%>"><img
+                                              src="images/white-prgress=arrow.png"></a> <span>Phase
                                             B</span>
                                         </li>
-                                        <li class="progress-3"><img src="images/white-prgress=arrow.png"> <span>Phase
+                                        <li class="progress-3"><a
+                                            href="/mydreamhome-details-phase-c?id=<%=row._id%>"><img
+                                              src="images/white-prgress=arrow.png"> </a><span>Phase
                                             C</span>
                                         </li>
-                                        <li class="progress-4"><img src="images/white-prgress=arrow.png"> <span>Phase
+                                        <li class="progress-4"><a
+                                            href="/mydreamhome-details-phase-d?id=<%=row._id%>"><img
+                                              src="images/white-prgress=arrow.png"> </a><span>Phase
                                             D</span>
                                         </li>
-                                        <li class="progress-5"><img src="images/white-prgress=arrow.png"> <span>Phase
+                                        <li class="progress-5"><a
+                                            href="/mydreamhome-details-phase-e?id=<%=row._id%>"><img
+                                              src="images/white-prgress=arrow.png"></a> <span>Phase
                                             E</span>
                                         </li>
-                                        <li class="progress-6"><img src="images/white-prgress=arrow.png"> <span>Phase
+                                        <li class="progress-6"><a
+                                            href="/mydreamhome-details-phase-f?id=<%=row._id%>"><img
+                                              src="images/white-prgress=arrow.png"> </a><span>Phase
                                             F</span>
                                         </li>
+                                        <% if(session.active_user_login=='renovator' ) {%>
+                                          <li class="progress-6"><a
+                                              href="/mydreamhome-details-phase-g?id=<%=row._id%>"><img
+                                                src="images/white-prgress=arrow.png"> </a><span>Phase
+                                              G</span>
+                                          </li>
+                                          <li class="progress-6"><a
+                                              href="/mydreamhome-details-phase-h?id=<%=row._id%>"><img
+                                                src="images/white-prgress=arrow.png"> </a><span>Phase
+                                              H</span>
+                                          </li>
+                                          <%}%>
                                       </ul>
                                     </div>
                                     <div class="time-schedule2">
