@@ -1747,7 +1747,12 @@
 
                             </div>
                             <%});%>
-
+                            <div class=" propimgAppendDiv_edit"></div>
+                        <button class="portfolio-btn" name="addImge_During_Edit">
+                          <div class=portfolio-add-button>
+                            <img src="images/add-icon.png">
+                          </div>
+                        </button>
                             <%}else{%>
                               <!-- <div class="property-box ">
 
@@ -1888,6 +1893,12 @@
                               </span>
                             </div>
                             <%})%>
+                            <div class="prop_Plan_imgAppendDiv_edit"></div>
+                            <button class="portfolio-btn" name="add_plan_Imge_During_Edit">
+                              <div class=portfolio-add-button>
+                                <img src="images/add-icon.png">
+                              </div>
+                            </button>
                             <%}else{%>
                               <!-- <div class="property-box  prop_4">
 
@@ -2213,285 +2224,6 @@
         })
       });
     </script>
-
-    <script>
-        // $(document).ready(function () {
-        //   $('.firstFormDive').show();
-        //   $(".secondFormDiv").hide();
-        //   $(".thirdFormDiv").hide();
-        //   //$(".AllPropertyListingDiv").hide();
-        //   $('#propertyform1').on('submit', function (e) {
-        //     e.preventDefault();
-        //     var formData = new FormData($('#propertyform1')[0]);
-        //     $.ajax({
-        //       type: "POST",
-        //       data: formData,
-        //       url: "/api/add-new-property",
-        //       cache: false,
-        //       contentType: false,
-        //       processData: false,
-        //       success: function (data) {
-        //         console.log(data)
-        //         if (data.status == true) {
-        //           $('.firstFormDive').hide();
-        //           $(".secondFormDiv").show();
-        //           var property_id = data.property_id;
-        //           $(".img_property_id").val(property_id);
-        //           $('#propertyform2').on('submit', function (e) {
-        //             e.preventDefault();
-        //             var formData1 = new FormData($('#propertyform2')[0]);
-        //             $.ajax({
-        //               type: "POST",
-        //               data: formData1,
-        //               url: "/api/add-new-property-image",
-        //               cache: false,
-        //               contentType: false,
-        //               processData: false,
-        //               success: function (data) {
-        //                 if (data.status == true) {
-        //                   $(".plan_img_property_id").val(property_id);
-        //                   $('.firstFormDive').hide();
-        //                   $(".secondFormDiv").hide();
-        //                   $(".thirdFormDiv").show();
-        //                   $('.propertyPlanform').on('submit', function (e) {
-        //                     e.preventDefault();
-        //                     var formData2 = new FormData($('.propertyPlanform')[0]);
-        //                     $.ajax({
-        //                       type: "POST",
-        //                       data: formData2,
-        //                       url: "/api/add-new-property-plan-image",
-        //                       cache: false,
-        //                       contentType: false,
-        //                       processData: false,
-        //                       success: function (data) {
-        //                         if (data.status == true) {
-
-        //           Swal.fire({
-        //               icon: 'success',
-        //               title: data.message,
-        //               showDenyButton: true,
-        //               showCancelButton: false,
-        //               confirmButtonColor: '#005377',
-        //               denyButtonColor:'#005377',
-        //               cancelButtonColor: '#d33',
-        //               confirmButtonText: `Dream Home List`,
-        //               denyButtonText: `Add Property`,
-        //             }).then((result) => {
-        //               /* Read more about isConfirmed, isDenied below */
-        //               if (result.isConfirmed) {
-        //                 //Swal.fire('Saved!', '', 'success')
-        //                 window.location.href = '/mydreamhome';
-        //               } else if (result.isDenied) {
-        //                 //Swal.fire('Changes are not saved', '', 'info')
-        //                 window.location.href = '/add-property';
-        //               }
-        //             })
-
-        //                           //$('.message_data').show();
-        //                           //$('.message_data').html('<div class="isa_success"><i style="margin: 0px 7px !important;" class="fa fa-check"></i> ' + data.message + '</div>');
-        //                          // setTimeout(function () { $('.message_data').hide(); window.location.href = data.redirect; }, 3000);
-        //                         }
-        //                       }
-        //                     });
-        //                   })
-        //                 }
-        //               }
-        //             });
-        //           })
-        //         }
-        //       }
-
-        //     })
-        //   })
-        // })
-    </script>
-    <script>
-      $(document).ready(function () {
-
-        // $("#PropertyImageOne").change(function (e) {
-        //   e.preventDefault();
-        //   var isnewPitcher = $("#image_one_id").val();
-        //   if (isnewPitcher == '') {
-        //     var urls = "/api/add-new-property-image";
-
-        //   } else {
-        //     //alert(isnewPitcher)
-        //     var urls = "/api/Edit_property_Image";
-        //   }
-
-        //   var gfg = new FormData();
-        //   gfg.append('propertiespic', e.target.files[0]);
-        //   gfg.append('image_id', $("#image_one_id").val());
-        //   gfg.append('property_id', $(".img_property_id").val());
-        //   $.ajax({
-        //     type: "POST",
-        //     data: gfg,
-        //     url: urls,
-        //     cache: false,
-        //     contentType: false,
-        //     processData: false,
-        //     success: function (data) {
-
-        //     }
-        //   })
-        // });
-
-        $("#PropertyImageTwo").change(function (e) {
-          //alert("2")
-          e.preventDefault();
-          var isnewPitcher = $("#image_two_id").val();
-          if (isnewPitcher == '') {
-            var urls = "/api/add-new-property-image";
-
-          } else {
-            var urls = "/api/Edit_property_Image";
-          }
-
-          var gfg = new FormData();
-          gfg.append('propertiespic',
-            e.target.files[0]);
-          gfg.append('image_id',
-            $("#image_two_id").val());
-          gfg.append('property_id',
-            $(".img_property_id").val());
-          $.ajax({
-            type: "POST",
-            data: gfg,
-            url: urls,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-
-            }
-          })
-        });
-        $("#PropertyImageThree").change(function (e) {
-          //alert("3")
-          e.preventDefault();
-          var isnewPitcher = $("#image_three_id").val();
-          if (isnewPitcher == '') {
-            var urls = "/api/add-new-property-image";
-
-          } else {
-            var urls = "/api/Edit_property_Image";
-          }
-
-          var gfg = new FormData();
-          gfg.append('propertiespic',
-            e.target.files[0]);
-          gfg.append('image_id',
-            $("#image_three_id").val());
-          gfg.append('property_id',
-            $(".img_property_id").val());
-          $.ajax({
-            type: "POST",
-            data: gfg,
-            url: urls,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-
-            }
-          })
-        });
-        // $("#PropertyPlanImageOne").change(function (e) {
-        //   //alert("1")
-        //   e.preventDefault();
-        //   var isnewPitcher = $("#plan_image_one_id").val();
-        //   if (isnewPitcher == '') {
-        //     var urls = "/api/add-new-property-plan-image";
-
-        //   } else {
-        //     //alert(isnewPitcher)
-        //     var urls = "/api/Edit_property_Plan_Image";
-        //   }
-        //   var gfg = new FormData();
-        //   gfg.append('planImage',
-        //     e.target.files[0]);
-        //   gfg.append('image_id',
-        //     $("#plan_image_one_id").val());
-        //   gfg.append('property_id',
-        //     $(".img_property_id").val());
-        //   $.ajax({
-        //     type: "POST",
-        //     data: gfg,
-        //     url: urls,
-        //     cache: false,
-        //     contentType: false,
-        //     processData: false,
-        //     success: function (data) {
-
-        //     }
-        //   })
-        // });
-
-
-        $("#PropertyPlanImageTwo").change(function (e) {
-          //alert("2")
-          e.preventDefault();
-          var isnewPitcher = $("#plan_image_two_id").val();
-          if (isnewPitcher == '') {
-            var urls = "/api/add-new-property-plan-image";
-
-          } else {
-            //alert(isnewPitcher)
-            var urls = "/api/Edit_property_Plan_Image";
-          }
-          var gfg = new FormData();
-          gfg.append('planImage',
-            e.target.files[0]);
-          gfg.append('image_id',
-            $("#plan_image_two_id").val());
-          gfg.append('property_id',
-            $(".img_property_id").val());
-          $.ajax({
-            type: "POST",
-            data: gfg,
-            url: urls,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-
-            }
-          })
-        });
-        $("#PropertyPlanImageThree").change(function (e) {
-          //alert("3")
-          e.preventDefault();
-          var isnewPitcher = $("#plan_image_three_id").val();
-          if (isnewPitcher == '') {
-            var urls = "/api/add-new-property-plan-image";
-
-          } else {
-            //alert(isnewPitcher)
-            var urls = "/api/Edit_property_Plan_Image";
-          }
-          var gfg = new FormData();
-          gfg.append('planImage',
-            e.target.files[0]);
-          gfg.append('image_id',
-            $("#plan_image_three_id").val());
-          gfg.append('property_id',
-            $(".img_property_id").val());
-          $.ajax({
-            type: "POST",
-            data: gfg,
-            url: urls,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-
-
-            }
-          })
-        });
-      });
-    </script>
-    <!-- script for in case of edit property chain property should no be show onw property in drop down -->
     <script>
       $(document).ready(function () {
         $("#property_type_inEdit").change(function (e) {
@@ -2565,32 +2297,35 @@
         count++;
 
       });
-      $select = $('file.propertiespic');
+      var L = 10;
+      $("button[name='addImge_During_Edit']").click(function (e) {
+        e.preventDefault();
+        
+        var domElement = $('<div class="property-box "><div class=property-inner-section><img src="images/upload-icon.png" id="addmoreAvtar_edit'+L+'"></div><div class="driving-liences-portfolio "><p class="add_edit_Picture_'+L+'"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture </p></div><div class="property-upload"><button class="btn btn-upload">Upload</button></div><span><div class="custom-file-input "><input type="file" name="propertiespic" class="propertiespic" value=""onchange="edit_add_previewFile(this,'+L+');"><input type="button"></div></span></div>');
+        $('.propimgAppendDiv_edit').append(domElement);
+       
+        L++;
 
-        $select.on('change', function(){
-          
-          var total = '';
-          
-          $select.each(function(e){
-            total = e.target.files[0]
-            //total += parseInt($(this).val()); // or parseInt(e.currentTarget.value)
-          })
-          
-         console.log('===========++++++++++++',total)
-        })
+      });
+      let m =20;
+      $("button[name='add_plan_Imge_During_Edit']").click(function (e) {
+        e.preventDefault();
+        var domElement = $('<div class="property-box "><div class=property-inner-section><img src="images/upload-icon.png" id="addmorePlanAvtar_edit'+m+'"></div><div class="driving-liences-portfolio "><p class="add_edit_plan_Picture_'+m+'"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture '+m+'</p></div><div class="property-upload"><button class="btn btn-upload">Upload</button></div><span><div class="custom-file-input "><input type="file" name="planImage" class="" value=""onchange="edit_add_paln_previewFile(this,'+m+');"><input type="button"></div></span></div>');
+        $('.prop_Plan_imgAppendDiv_edit').append(domElement);
+       
+        m++;
+
+      });
       
       
     }); 
     function previewFile(input,c,prop_img_id){
-          //alert(prop_img_id)
-          //alert($(".img_property_id").val())
+          
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
               console.log('filess:',e.target)
-              //console.log("ccccccc",c)
-               // $('.ddddd').attr('src', e.target.result);
-                //$('#upload-doc-view').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img src="'+e.target.result+'" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
+              
                 $(".Picture_"+c).html(input.files[0].name);
                 $('#addmoreAvtar'+c).attr('src',e.target.result)
               }
@@ -2621,9 +2356,6 @@
           var reader = new FileReader();
           reader.onload = function (e) {
             console.log('filess:',e.target)
-            //console.log("ccccccc",c)
-             // $('.ddddd').attr('src', e.target.result);
-              //$('#upload-doc-view').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img src="'+e.target.result+'" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
               $(".PlanPicture_"+count).html(input.files[0].name);
               $('#addmorePlanAvtar'+count).attr('src',e.target.result)
             }
@@ -2651,17 +2383,73 @@
           }else{
 
           }
-          // if (isnewPitcher == '') {
-          //   var urls = "/api/add-new-property-plan-image";
-
-          // } else {
-          //   //alert(isnewPitcher)
-          //   var urls = "/api/Edit_property_Plan_Image";
-          // }
+         
          
           
       }
   }
+  function edit_add_previewFile(input,L){
+          
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              console.log('filess:',e.target)
+              
+                $(".add_edit_plan_Picture_"+L).html(input.files[0].name);
+                $('#addmoreAvtar_edit_plan'+L).attr('src',e.target.result)
+              }
+            reader.readAsDataURL(input.files[0]);
+        
+             var urls = "/api/add-new-property-image";
+             var gfg = new FormData();
+           gfg.append('propertiespic', input.files[0]);
+        
+           gfg.append('property_id', $(".img_property_id").val());
+            $.ajax({
+            type: "POST",
+            data: gfg,
+            url: urls,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+            }
+          })
+        
+        }
+    }
+    function edit_add_paln_previewFile(input,m){
+         
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              console.log('filess:',e.target)
+              
+                $(".add_edit_plan_Picture_"+m).html(input.files[0].name);
+                $('#addmorePlanAvtar_edit'+m).attr('src',e.target.result)
+              }
+            reader.readAsDataURL(input.files[0]);
+        
+             var urls = "/api/add-new-property-plan-image";
+             var gfg = new FormData();
+           gfg.append('planImage', input.files[0]);
+        
+           gfg.append('property_id', $(".img_property_id").val());
+            $.ajax({
+            type: "POST",
+            data: gfg,
+            url: urls,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+            }
+          })
+        
+        }
+    }
 </script>
      
     </body>
