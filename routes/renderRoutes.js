@@ -2269,6 +2269,60 @@ app.get('/take-action', isCustomer, async (req, res) => {
 })
 
 
+// All Professional Filter name surname qualification
+app.post('/global_search', (req, res) => {
+  console.log('Global filter:',req.body);
+  req.session.pagename = 'professionals';
+  let professionalIDs = [];
+  ServiceProviderSchema.find({ sps_fullname: new RegExp(req.body.global_search, 'i') }).then(service_provider_detail1 => {
+    ServiceProviderPersonalDetailsSchema.find({ spods_surname: new RegExp(req.body.global_search, 'i') }).then(service_provider_detail2 => {
+      ServiceProviderEducationSchema.find({ spes_qualification_obtained: new RegExp(req.body.global_search, 'i') }).then(service_provider_detail3 => {
+        if (service_provider_detail1 || service_provider_detail2 || service_provider_detail3) {
+          err_msg = req.flash('err_msg');
+          success_msg = req.flash('success_msg');
+          var service_provider_detail = service_provider_detail1.concat(service_provider_detail2, service_provider_detail3);
+          service_provider_detail.forEach(async function (providerData) {
+            if (("spes_service_provider_id" in providerData) == true) {
+              await professionalIDs.push(providerData.spes_service_provider_id.toString());
+            } else if (('spods_service_provider_id' in providerData) == true) {
+              await professionalIDs.push(providerData.spods_service_provider_id.toString());
+            } else {
+              await professionalIDs.push(providerData._id.toString());
+            }
+          });
+          let unique = [...new Set(professionalIDs)];
+          ServiceProviderSchema.find({ _id: { $in: unique } }).then(async service_provider_detail => {
+            let serviceProvArray = [];
+            for (var sp_id of service_provider_detail) {
+              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                if (otherDetails) {
+                  //console.log("other Details of customers", otherDetails);
+                  const spProvider = JSON.stringify(sp_id);
+                  const parseSpProvider = JSON.parse(spProvider);
+                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                  serviceProvArray.push(parseSpProvider);
+                  //console.log("service_provider Array list in loop:", serviceProvArray);
+                }
+              });
+            }
+            //res.redirect('global-search');
+           /* res.render('global-search',{
+              err_msg, success_msg, 
+              layout: false,
+              session: req.session,
+              filterData: serviceProvArray
+            })*/
+          });
+        }
+      });
+    });
+  }).catch((err) => {
+    console.log(err)
+  })
+});
+
+
+
 module.exports = app;
 
 

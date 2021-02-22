@@ -5,11 +5,14 @@ const PropertiesSchema = require("../../models/properties");
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { ClientCredentials, ResourceOwnerPassword, AuthorizationCode } = require('simple-oauth2');
+
 const keys = require('../../config/keys');
+const ThridPartKeys = require('../../config/thirdPartyApi');
 const auth = require("../../config/auth");
 const passport = require("passport");
 require("../../config/passport")(passport);
-
+var request = require('request');
 var nodemailer = require('nodemailer');
 const http = require('http');
 var crypto = require('crypto');
@@ -2296,6 +2299,124 @@ async function add_property_Image(propertyImage, propertyId) {
   });
 
 }
+
+
+
+router.post('/reapitApi-proprty', (req, res) => {
+console.log('session is ', req.session.email);
+console.log('ThridPartKeys:',ThridPartKeys.REAPIT_API.client_id)
+ var options1 = {
+    'method': 'POST',
+    'url': ThridPartKeys.REAPIT_API.url,
+    'headers': {
+      'Authorization': ThridPartKeys.REAPIT_API.Authorization,
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'XSRF-TOKEN=c9ed57ab-b617-4392-99f3-19aeff37a5f7'
+    },
+    form: {
+      'client_id': ThridPartKeys.REAPIT_API.client_id,
+      'grant_type': ThridPartKeys.REAPIT_API.grant_type
+    }
+  };
+  
+request(options1, function(error, response, body){
+   let tokenRes = JSON.parse(body);
+  var options = {
+    'method': 'GET',
+    'url': 'https://platform.reapit.cloud/properties/',
+    'headers': {
+      'api-version': '2020-01-31',
+      'reapit-customer': 'SBOX',
+      'Authorization': 'Bearer '+tokenRes.access_token,
+      'Content-Type': 'application/json'
+    },
+    body: ''
+  };
+  request(options, function (error, response) {
+    if (error) { 
+      throw new Error(error); 
+    }else{
+    let propertyJson = JSON.parse(response.body);
+    let propertyAddress = [];
+    let address='';
+    for (let property of propertyJson._embedded) { 
+        if(property.address.buildingName){
+          address +=property.address.buildingName+' ';
+        }
+        if(property.address.buildingNumber){
+          address +=property.address.buildingNumber+' ';
+        }
+        if(property.address.line1){
+          address +=property.address.line1+' ';
+        }
+        if(property.address.line2){
+          address +=property.address.line2+' ';
+        }
+        if(property.address.line3){
+          address +=property.address.line3+' ';
+        }
+        if(property.address.line4){
+          address +=property.address.line4+' ';
+        }
+        propertyAddress.push(address);
+        address='';
+    }
+    return res.send({
+      mydatadata:propertyAddress
+    });
+  }
+  });
+})
+});
+
+
+
+router.post('/reapitApi', (req, res) => {
+  let searchText = req.body.searchText;
+  console.log('TextVivek:',searchText);
+  var options1 = {
+    'method': 'POST',
+    'url': ThridPartKeys.REAPIT_API.url,
+    'headers': {
+      'Authorization': ThridPartKeys.REAPIT_API.Authorization,
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'XSRF-TOKEN=c9ed57ab-b617-4392-99f3-19aeff37a5f7'
+    },
+    form: {
+      'client_id': ThridPartKeys.REAPIT_API.client_id,
+      'grant_type': ThridPartKeys.REAPIT_API.grant_type
+    }
+  };
+request(options1, function(error, response, body){
+    console.log('accessToken:',body)
+   let tokenRes = JSON.parse(body);
+   console.log('tokenRes:',tokenRes)
+  var options = {
+    'method': 'GET',
+    'url': 'https://platform.reapit.cloud/properties/?address='+searchText,
+    'headers': {
+      'api-version': '2020-01-31',
+      'reapit-customer': 'SBOX',
+      'Authorization': 'Bearer '+tokenRes.access_token,
+      'Content-Type': 'application/json'
+    },
+    body: ''
+  };
+  request(options, function (error, response) {
+    if (error) throw new Error(error);
+    let ddd = JSON.parse(response.body);
+    return res.send({
+      propertyData:ddd._embedded
+    });
+  });
+  });
+});
+
+
+
+
+
+
 
 module.exports = router;
 

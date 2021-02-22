@@ -177,3 +177,20 @@ span#comment-error {
     border: 3px solid #ddd;
     }
 
+    ul#ui-id-1 {
+        background: #fff;
+        height: 200px;
+        overflow-y: auto;
+        margin-bottom: 0px;
+    }
+    .section_heading {
+        display: flex;
+        width: 100%;
+    }
+    .heading_section {
+        width: 50%;
+    }
+    .property_filter_section {
+        width: 50%;
+        float: right;
+    }
