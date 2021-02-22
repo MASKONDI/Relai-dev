@@ -60,3 +60,27 @@ module.exports.GetAllHiredProertyByUserId = function (pps_service_provider_id,pp
     })
     });
 };
+module.exports.Get_all_Professional_by_property = function (pps_property_id,pps_user_id,pps_is_active_user_flag) {
+    return new Promise( async function (resolve, reject) {
+       // console.log('hello',professional_id)
+       var data={$and:[{pps_property_id:pps_property_id,pps_is_active_user_flag:pps_is_active_user_flag,pps_user_id:pps_user_id}]}
+   await PropertyProfessionalSchema.find(data).then(async(resp)=>{
+       console.log("resp=:",resp)
+       if(resp){
+           var pushArray=[]
+          for(var k of resp){ 
+          var allhiredProp = await ServiceProviderSchema.findOne({_id:k.pps_service_provider_id})
+                //console.log("kkkkkkkkkkkkkkkkkk",allhiredProp)
+                pushArray.push(allhiredProp)
+          }
+           var tt=await pushArray;
+           // console.log("ppppppppppppppppp",allhiredProp)
+           resolve(tt)
+       }
+       
+       
+    }).catch((err)=>{
+        reject(err)
+    })
+    });
+};

@@ -2310,7 +2310,7 @@
       let m =20;
       $("button[name='add_plan_Imge_During_Edit']").click(function (e) {
         e.preventDefault();
-        var domElement = $('<div class="property-box "><div class=property-inner-section><img src="images/upload-icon.png" id="addmorePlanAvtar_edit'+m+'"></div><div class="driving-liences-portfolio "><p class="add_edit_plan_Picture_'+m+'"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture '+m+'</p></div><div class="property-upload"><button class="btn btn-upload">Upload</button></div><span><div class="custom-file-input "><input type="file" name="planImage" class="" value=""onchange="edit_add_paln_previewFile(this,'+m+');"><input type="button"></div></span></div>');
+        var domElement = $('<div class="property-box "><div class=property-inner-section><img src="images/upload-icon.png" id="addmorePlanAvtar_edit'+m+'"></div><div class="driving-liences-portfolio "><p class="add_edit_plan_Picture_'+m+'"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture</p></div><div class="property-upload"><button class="btn btn-upload">Upload</button></div><span><div class="custom-file-input "><input type="file" name="planImage" class="" value=""onchange="edit_add_paln_previewFile(this,'+m+');"><input type="button"></div></span></div>');
         $('.prop_Plan_imgAppendDiv_edit').append(domElement);
        
         m++;
@@ -2395,8 +2395,8 @@
             reader.onload = function (e) {
               console.log('filess:',e.target)
               
-                $(".add_edit_plan_Picture_"+L).html(input.files[0].name);
-                $('#addmoreAvtar_edit_plan'+L).attr('src',e.target.result)
+                $(".add_edit_Picture_"+L).html(input.files[0].name);
+                $('#addmoreAvtar_edit'+L).attr('src',e.target.result)
               }
             reader.readAsDataURL(input.files[0]);
         

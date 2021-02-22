@@ -2445,7 +2445,42 @@ app.get('/take-action', isCustomer, async (req, res) => {
 
 })
 
+app.get('/mydreamhome-details-phase', isCustomer, async (req, res) => {
 
+  console.log('from get take action url====', req.query)
+  var property_id = req.session.property_id;
+  var phase_name = req.query.phase;
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, req.session.active_user_login);
+  var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
+  console.log("taskObject by phase name take action", taskObject)
+
+
+  if (taskObject) {
+    // return res.send({
+    //   'status':true,
+    //   'data':taskObject,
+    //   'redairect':'/mydreamhome-details-phase-a'
+    // })
+    req.session.pagename = 'mydreamhome';
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('mydreamhome-details-phase', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      taskObject: taskObject,
+      propertyData: propertyData,
+      step:req.query.step,
+      phase:req.query.phase
+    });
+  } else {
+    return res.send({
+      'status': false,
+      'message': 'some thing wrong'
+    })
+  }
+
+
+})
 module.exports = app;
 
 
