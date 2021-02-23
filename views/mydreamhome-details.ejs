@@ -33,20 +33,22 @@
                   <%if(!propertyDetailData[0].ps_phase_array){%>
                     <option value="">Null</option>
                     <%}else{%>
-                  <%propertyDetailData[0].ps_phase_array.forEach(function(row,i){%>
-                <option value="<%=row.phase_name%>"><%=row.phase_name%></option>
-                <%});%>
-                <%}%>
-                <input type="hidden" name="property_id_add_task" value="<%=propertyDetailData[0]._id%>">
-                <%}else{%>
-                  <p>property data null</p>
-                  <%}%>
+                      <%propertyDetailData[0].ps_phase_array.forEach(function(row,i){%>
+                        <option value="<%=row.phase_name%>">
+                          <%=row.phase_name%>
+                        </option>
+                        <%});%>
+                          <%}%>
+                            <input type="hidden" name="property_id_add_task" value="<%=propertyDetailData[0]._id%>">
+                            <%}else{%>
+                              <p>property data null</p>
+                              <%}%>
               </select>
               <input type="text" class="form-control form-control-fix2" id="taskName" placeholder="Task Name"
                 name="task_name" required>
 
-              <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate" placeholder="Due on Date"
-                name="duedate" required >
+              <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate"
+                placeholder="Due on Date" name="duedate" required>
               <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
                 placeholder="Add Notes(If any)"></textarea>
 
@@ -289,22 +291,22 @@
                                                 <div class="col-6 col-sm-6 col-lg-3">
                                                   <div class="start-date">
                                                     <p>Start date<br><b>
-                                                      <%if(!startDate){%>
-                                                        NA
-                                                        <%}else{%>
-                                                        <%=moment(startDate).format("Do MMM, YYYY"); %>
-                                                        <%}%>
+                                                        <%if(!startDate){%>
+                                                          NA
+                                                          <%}else{%>
+                                                            <%=moment(startDate).format("Do MMM, YYYY"); %>
+                                                              <%}%>
                                                       </b></p>
                                                   </div>
                                                 </div>
                                                 <div class="col-6 col-sm-6 col-lg-3">
                                                   <div class="start-date 1 Dec, 2021">
                                                     <p>End date<br><b>
-                                                      <%if(!endDate){%>
-                                                        NA
-                                                        <%}else{%>
-                                                        <%=moment(endDate).format("Do MMM, YYYY"); %>
-                                                        <%}%>
+                                                        <%if(!endDate){%>
+                                                          NA
+                                                          <%}else{%>
+                                                            <%=moment(endDate).format("Do MMM, YYYY"); %>
+                                                              <%}%>
                                                       </b></p>
                                                   </div>
                                                 </div>
@@ -361,11 +363,29 @@
                         <li class="progress-1"><a
                             href="/mydreamhome-details-phase-a?id=<%=propertyDetailData[0]._id%>"><img
                               src="images/white-prgress=arrow.png"></a> <span>Phase A</span></li>
-                        <li class="progress-2"><img src="images/white-prgress=arrow.png"> <span>Phase B</span></li>
-                        <li class="progress-3"><img src="images/white-prgress=arrow.png"> <span>Phase C</span></li>
-                        <li class="progress-4"><img src="images/white-prgress=arrow.png"> <span>Phase D</span></li>
-                        <li class="progress-5"><img src="images/white-prgress=arrow.png"> <span>Phase E</span></li>
-                        <li class="progress-6"><img src="images/white-prgress=arrow.png"> <span>Phase F</span></li>
+                        <li class="progress-2"><a
+                            href="/mydreamhome-details-phase-b?id=<%=propertyDetailData[0]._id%>"><img
+                              src="images/white-prgress=arrow.png"> </a><span>Phase B</span></li>
+                        <li class="progress-3"><a
+                            href="/mydreamhome-details-phase-c?id=<%=propertyDetailData[0]._id%>"><img
+                              src="images/white-prgress=arrow.png"></a> <span>Phase C</span></li>
+                        <li class="progress-4"><a
+                            href="/mydreamhome-details-phase-d?id=<%=propertyDetailData[0]._id%>"><img
+                              src="images/white-prgress=arrow.png"></a><span>Phase D</span></li>
+                        <li class="progress-5"><a
+                            href="/mydreamhome-details-phase-e?id=<%=propertyDetailData[0]._id%>"><img
+                              src="images/white-prgress=arrow.png"></a> <span>Phase E</span></li>
+                        <li class="progress-6"><a
+                            href="/mydreamhome-details-phase-f?id=<%=propertyDetailData[0]._id%>"><img
+                              src="images/white-prgress=arrow.png"> </a><span>Phase F</span></li>
+                        <% if(session.active_user_login=='renovator' ) {%>
+                          <li class="progress-7"><a
+                              href="/mydreamhome-details-phase-g?id=<%=propertyDetailData[0]._id%>"><img
+                                src="images/white-prgress=arrow.png"></a> <span>Phase G</span></li>
+                          <li class="progress-8"><a
+                              href="/mydreamhome-details-phase-h?id=<%=propertyDetailData[0]._id%>"><img
+                                src="images/white-prgress=arrow.png"> </a><span>Phase H</span></li>
+                          <%}%>
                       </ul>
                     </div>
                     <div class="time-schedule2">
@@ -799,7 +819,7 @@
         $("#addTaskForm_mydreamhome_detial").on('submit', function (e) {
           e.preventDefault();
           var formData = $(this).serialize();
-          
+
           if (formData) {
             $.ajax({
               type: "POST",
@@ -808,7 +828,7 @@
               cache: false,
               success: function (data) {
                 if (data.status == false) {
-                  
+
                   Swal.fire({
                     // position: 'top-end',
                     icon: 'error',
@@ -820,9 +840,9 @@
 
 
                 } else {
-                  
+
                   console.log('meserrmessagesage:', data.success_msg)
-                  
+
 
                   Swal.fire({
                     // position: 'top-end',
@@ -834,13 +854,13 @@
                   })
                   location.reload();
                   $('#taskName,#notes,#duedate').val('');
-                  
+
 
                 }
 
               }
             });
-            
+
           } else {
             alert('some thing wrong')
           }

@@ -194,3 +194,7 @@ span#comment-error {
         width: 50%;
         float: right;
     }
+    div#filter_data .notfound_msg {
+        text-align: center;
+        width: 100%;
+    }

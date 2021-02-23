@@ -417,57 +417,6 @@ function previewFile(input){
     }
   });
 
-
-        $('#global_search').on('submit', function (e) {
-          e.preventDefault();
-         // $('.loader-box').attr('style','display:flex !important');
-          var formdata = $(this).serialize();
-          console.log('formdata:', formdata);
-          $.ajax({
-            type: "GET",
-            data: formdata,
-            url: "/global_search",
-            cache: false,
-            success: function (data) {
-              console.log('searchData:',data)
-              // if (data.status == false) {
-              //   $('.loader-box').attr('style','display:none !important');
-              //   Swal.fire({
-              //     icon: 'error',
-              //     title: data.err_msg,
-              //     showConfirmButton: true,
-              //     confirmButtonColor: '#005377'
-              //   })
-              // } else {
-              //   $('.loader-box').attr('style','display:none !important');
-              //   Swal.fire({
-              //     icon: 'success',
-              //     title: data.success_msg,
-              //     showDenyButton: true,
-              //     showCancelButton: false,
-              //     confirmButtonColor: '#005377',
-              //     denyButtonColor: '#005377',
-              //     cancelButtonColor: '#d33',
-              //     confirmButtonText: `Professional List`,
-              //     denyButtonText: `Hire Now`,
-              //     html: '<button type="button" data-target="#addTaskModal" role="button"data-toggle="modal" tabindex="0" class="addbtn btn btn-info SwalBtn1 customSwalBtn"onclick="swal.closeModal(); return false;">' + 'Add Task' + '</button>',
-              //   }).then((result) => {
-              //     console.log(result)
-              //     /* Read more about isConfirmed, isDenied below */
-              //     if (result.isConfirmed) {
-              //       //Swal.fire('Saved!', '', 'success')
-              //       window.location.href = '/professionals';
-              //     } else if (result.isDenied) {
-              //       //Swal.fire('Changes are not saved', '', 'info')
-              //       location.reload();
-              //     }
-              //   })
-              // }
-            }
-          });
-        })
-
-
     </script>
     </body>
 
