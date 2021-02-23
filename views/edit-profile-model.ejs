@@ -275,7 +275,7 @@
 <div class="modal fade permission-modal" id="addTask">
   <div class="modal-dialog">
     <div class="modal-content">
-
+      <form  method="POST" id='add_task_submit_form' name="add_task_submit_form" >
       <!-- Modal Header -->
       <div class="modal-header">
         <h2 class="modal-title text-center">Add Task</h2>
@@ -285,33 +285,34 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px" id="add_task_mydreamhome_detial_phase" name="ppts_assign_to"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
-              hired Professional 1
+              hired Professional 1 
             </option>
             <option value="">
               hired Professional 1
             </option>
           </select>
+          <input type="hidden" name="ppts_property_id" class="ppts_property_id"value="">
+          <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+          <input type="text" class="form-control  form-control-fix2 ppts_task_name" id="ppts_task_name" placeholder="Task Name"
+            name="ppts_task_name" required>
 
-          <input type="text" class="form-control  form-control-fix2" id="taskName" placeholder="Task Name"
-            name="taskName" required>
+          <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 ppts_due_date" id="ppts_due_date"
+            placeholder="Due on Date" name="ppts_due_date" required>
 
-          <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate"
-            placeholder="Due on Date" name="duedate" required>
-
-          <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
+          <textarea class="form-control  form-control-fix2 ppts_note" rows="2" name="ppts_note" id="ppts_note"
             placeholder="Add Notes(If any)"></textarea>
         </div>
       </div>
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-cancel" data-dismiss="modal">Submit</button>
+        <button type="button" class="btn btn-cancel cancel_task_btn" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-cancel submit_task_btn" data-dismiss="">Submit</button>
       </div>
-
+      </form>
     </div>
   </div>
 </div>
@@ -324,7 +325,7 @@
 <div class="modal fade permission-modal" id="buyerPhaseA">
   <div class="modal-dialog">
     <div class="modal-content">
-
+      <form action="" method="POST" id="Add_existing_task_form" name="Add_existing_task_form">
       <!-- Modal Header -->
       <div class="modal-header">
         <h2 class="modal-title text-center">Add Existing Task</h2>
@@ -334,7 +335,7 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px" id="" name="ppts_assign_to"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
@@ -355,7 +356,7 @@
             <tbody>
               <tr>
                 <td><label class="check-permission">Instruct Solicitor
-                    <input type="checkbox" checked="checked">
+                    <input type="checkbox"  checked="checked" name="task_element" value="Instruct Solicitor" class="task_element">
                     <span class="checkmark"></span>
                   </label>
                 </td>
@@ -363,48 +364,50 @@
               <tr>
                 <td>
                   <label class="check-permission">Instruct other professionals
-                    <input type="checkbox">
+                    <input type="checkbox" name="task_element" value="Instruct other professionals" class="task_element">
                     <span class="checkmark"></span>
                   </label>
                 </td>
               </tr>
               <tr>
                 <td><label class="check-permission">ID/Passport
-                    <input type="checkbox">
+                    <input type="checkbox" name="task_element" value="ID/Passport" class="task_element">
                     <span class="checkmark"></span>
                   </label>
                 </td>
               </tr>
               <tr>
                 <td><label class="check-permission">Proof of address
-                    <input type="checkbox">
+                    <input type="checkbox" name="task_element" value="Proof of address" class="task_element">
                     <span class="checkmark"></span>
                   </label>
                 </td>
               </tr>
               <tr>
                 <td><label class="check-permission">Proof of fund(cash buyers)/agreement in principle(mortgage)
-                    <input type="checkbox">
+                    <input type="checkbox" name="task_element" value="Proof of fund(cash buyers)/agreement in principle(mortgage)" class="task_element">
                     <span class="checkmark"></span>
                   </label>
                 </td>
               </tr>
               <tr>
                 <td> <label class="check-permission">Checks. Title/property/chains et al
-                    <input type="checkbox">
+                    <input type="checkbox" name="task_element" value="Checks. Title/property/chains et al" class="task_element"> 
                     <span class="checkmark"></span>
                   </label>
                 </td>
               </tr>
               <tr>
                 <td> <label class="check-permission">Memorandum of sales(received)
-                    <input type="checkbox">
+                    <input type="checkbox" name="task_element" value="Memorandum of sales(received)" class="task_element">
                     <span class="checkmark"></span>
                   </label>
                 </td>
               </tr>
             </tbody>
           </table>
+          <input type="hidden" name="ppts_property_id" class="ppts_property_id"value="">
+          <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
           <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate"
             placeholder="Due on Date" name="duedate" required>
           <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
@@ -413,10 +416,10 @@
       </div>
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-cancel" data-dismiss="modal">Submit</button>
+        <button type="button" class="btn btn-cancel cancel_existing_task_btn" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-cancel submit_existing_task_btn" data-dismiss="">Submit</button>
       </div>
-
+      </form>
     </div>
   </div>
 </div>
@@ -2811,3 +2814,57 @@
     </div>
   </div>
 </div>
+<script>
+  //  $(document).ready(function () {
+  // $("#add_task_submit_form").on('submit', function (e) {
+  //         alert()
+  //         e.preventDefault();
+  //         var formData = $(this).serialize();
+
+  //         if (formData) {
+  //           $.ajax({
+  //             type: "POST",
+  //             data: formData,
+  //             url: "/api/addTask_from_Dreamhome_detial_phase",
+  //             cache: false,
+  //             success: function (data) {
+  //               if (data.status == false) {
+
+  //                 Swal.fire({
+  //                   // position: 'top-end',
+  //                   icon: 'error',
+  //                   title: data.err_msg,
+  //                   showConfirmButton: true,
+  //                   confirmButtonColor: '#005377'
+  //                   //timer: 1500
+  //                 })
+
+
+  //               } else {
+
+  //                 console.log('meserrmessagesage:', data.success_msg)
+
+
+  //                 Swal.fire({
+  //                   // position: 'top-end',
+  //                   icon: 'success',
+  //                   title: data.success_msg,
+  //                   showConfirmButton: false,
+  //                   confirmButtonColor: '#005377',
+  //                   timer: 3000
+  //                 })
+  //                 location.reload();
+  //                 $('#taskName,#notes,#duedate').val('');
+
+
+  //               }
+
+  //             }
+  //           });
+
+  //         } else {
+  //           alert('some thing wrong')
+  //         }
+  //       })
+  //     })
+</script>

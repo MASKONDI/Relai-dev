@@ -592,9 +592,9 @@ router.post("/add-new-property-image", isCustomer, async (req, res) => {
     if (req.body) {
       console.log("second form body:=", req.body);
       console.log("second form file:=", req.files);
-      
+
       let PropertyImageSaved = await PropertyHelper.add_new_property_image(req);
-     // console.log('image saved========', PropertyImageSaved);
+      // console.log('image saved========', PropertyImageSaved);
       if (PropertyImageSaved) {
         return res.send({
           'message': ' Your Property image Saved plese add property plan image',
@@ -1227,7 +1227,94 @@ router.post("/hire-now", async (req, res) => {
 /* -------------------------------------------------------------------------------------------------
 POST : Add Task api is used for adding task(or Phase) details and sharing these details to hired professional.
 ------------------------------------------------------------------------------------------------- */
+router.get("/addTask", async (req, res) => {
+  var property_id = req.session.property_id;
+  var user_id = req.session.user_id;
+  var active_user = req.session.active_user_login;
+  var AllProfessional_property_wise = await propertyProfesshionalHelper.Get_all_Professional_by_property(property_id, user_id, active_user);
+  console.log("AllProfessional_property_wise", AllProfessional_property_wise)
 
+  return res.send({
+    'success_msg': 'professionals list',
+    'status': true,
+    'data': AllProfessional_property_wise,
+    'property_id': req.session.property_id
+  });
+});
+
+router.post("/addTask_from_Dreamhome_detial_phase", (req, res) => {
+  console.log('addTask_from_Dreamhome_detial_phase', req.body);
+  if (req.body.ppts_assign_to == '' || req.body.ppts_assign_to == undefined || req.body.ppts_phase_name == '') {
+    return res.send({
+      'err_msg': 'Please Select All Fild',
+      'status': false,
+      'redirect': '/professionals-hirenow'
+    });
+
+
+  } else {
+    console.log("addTask post:", req.body);
+    const newTask = new PropertyProfessinoalTaskSchema({
+      ppts_property_id: req.body.ppts_property_id,
+      ppts_user_id: req.session.user_id,
+      ppts_task_name: req.body.ppts_task_name,
+      ppts_assign_to: req.body.ppts_assign_to,
+      ppts_due_date: req.body.ppts_due_date,
+      ppts_phase_name: req.body.ppts_phase_name,
+      ppts_is_active_user_flag: req.session.active_user_login,
+      ppts_note: req.body.ppts_note
+    });
+    newTask
+      .save()
+      .then(addedTask => {
+        console.log("server response is addedTask :", addedTask);
+        //res.json({ status: 1, message: 'Task Add Successfully', data: addedTask });
+        if (addedTask) {
+
+          return res.send({
+            'success_msg': 'Task Add Successfully',
+            'status': true,
+
+          });
+          // res.redirect("/professionals-hirenow")
+        } else {
+          return res.send({
+            'err_msg': 'Please Add Task',
+            'status': false,
+
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        req.flash('err_msg', 'Something went wrong please try again later.');
+        res.redirect('/professionals-hirenow');
+      });
+  }
+})
+
+router.post("/Add_existing_task_from_Dreamhome_detial_phase", (req, res) => {
+  if (req.body.ppts_assign_to == '' || req.body.ppts_assign_to == undefined || req.body.ppts_phase_name == '') {
+    return res.send({
+      'err_msg': 'Please Select All Fild',
+      'status': false,
+      'redirect': '/professionals-hirenow'
+    });
+  } else {
+    var addedTask = addTaskHelper.add_existing_task(req);
+    if (addedTask) {
+      return res.send({
+        'success_msg': 'Task Add Successfully',
+        'status': true,
+      });
+    } else {
+      return res.send({
+        'err_msg': 'Please Add Task',
+        'status': false,
+      });
+    }
+  }
+})
 router.post("/addTask", (req, res) => {
   if (req.body.Phase == '' || req.body.Phase == undefined) {
     return res.send({

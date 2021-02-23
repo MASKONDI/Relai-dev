@@ -2445,84 +2445,78 @@ app.get('/take-action', isCustomer, async (req, res) => {
 
 })
 
+app.get('/mydreamhome-details-phase', isCustomer, async (req, res) => {
+
+  console.log('from get take action url====', req.query)
+  var property_id = req.session.property_id;
+  var phase_name = req.query.phase;
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, req.session.active_user_login);
+  var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
+  console.log("taskObject by phase name take action", taskObject)
+  if (taskObject) {
+    // return res.send({
+    //   'status':true,
+    //   'data':taskObject,
+    //   'redairect':'/mydreamhome-details-phase-a'
+    // })
+    req.session.pagename = 'mydreamhome';
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('mydreamhome-details-phase', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      taskObject: taskObject,
+      propertyData: propertyData,
+      step:req.query.step,
+      phase:req.query.phase
+    });
+  } else {
+    return res.send({
+      'status': false,
+      'message': 'some thing wrong'
+    })
+  }
+})
+
+
 
 // All Professional Filter name surname qualification
-app.get('/global-search', (req, res) => {
+app.get('/global-search', isCustomer, (req, res) => {
 
+  console.log("current session is", req.session);
+  PropertiesSchema.find({ ps_property_name: new RegExp(req.query.global_search, 'i'),  $or: [
+    { $and: [{ ps_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login },] },
+    { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login }] }
+  ] }).then(async (data) => {
+    if (data) {
+      let arr = [];
+      for (let img of data) {
+        await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
+          let temp = await result
+          arr.push(temp)
+        })
+      }
+      // console.log('++++++++',arr)
 
-  PropertiesSchema.find({ ps_property_name: new RegExp(req.query.global_search, 'i') }).then(propertyDetails => { 
-    console.log('propertyDetailspropertyDetails:',propertyDetails)
-    if(propertyDetails){
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+
       res.render('global-search', {
-        err_msg,
-        success_msg,
-        layout: false,
-       session: req.session,
-       propertySearchData:propertyDetails
-     });
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        propertyData: data,
+        propertyImage: arr
+
+      });
+
     }
+  }).catch((err) => {
+    console.log(err)
   })
 
-  // let professionalIDs = [];
-  // ServiceProviderSchema.find({ sps_fullname: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail1 => {
-  //   ServiceProviderPersonalDetailsSchema.find({ spods_surname: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail2 => {
-  //     ServiceProviderEducationSchema.find({ spes_qualification_obtained: new RegExp(req.query.searchKeyword, 'i') }).then(service_provider_detail3 => {
-  //       if (service_provider_detail1 || service_provider_detail2 || service_provider_detail3) {
-  //         err_msg = req.flash('err_msg');
-  //         success_msg = req.flash('success_msg');
-  //         var service_provider_detail = service_provider_detail1.concat(service_provider_detail2, service_provider_detail3);
-  //         service_provider_detail.forEach(async function (providerData) {
-  //           if (("spes_service_provider_id" in providerData) == true) {
-  //             await professionalIDs.push(providerData.spes_service_provider_id.toString());
-  //           } else if (('spods_service_provider_id' in providerData) == true) {
-  //             await professionalIDs.push(providerData.spods_service_provider_id.toString());
-  //           } else {
-  //             await professionalIDs.push(providerData._id.toString());
-  //           }
-  //         });
-  //         let unique = [...new Set(professionalIDs)];
-  //         ServiceProviderSchema.find({ _id: { $in: unique } }).then(async service_provider_detail => {
 
-  //           let serviceProvArray = [];
-  //           for (var sp_id of service_provider_detail) {
-  //             await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-  //               if (otherDetails) {
-  //                 //console.log("other Details of customers", otherDetails);
-  //                 const spProvider = JSON.stringify(sp_id);
-  //                 const parseSpProvider = JSON.parse(spProvider);
-  //                 parseSpProvider.professionalBody = otherDetails.spods_professional_body
-  //                 serviceProvArray.push(parseSpProvider);
-  //                 //console.log("service_provider Array list in loop:", serviceProvArray);
-  //               }
-  //             });
-  //           }
-
-
-  //           res.send({
-  //             err_msg, success_msg, layout: false,
-  //             session: req.session,
-  //             filterData: serviceProvArray
-  //           })
-  //         });
-  //       }
-  //     });
-  //   });
-  // }).catch((err) => {
-  //   console.log(err)
-  // })
-
-
- /* console.log('Global filter:',req.query);
-  res.render('global-search', {
-     err_msg,
-     success_msg,
-     layout: false,
-    session: req.session
-  });*/
-  //req.session.pagename = 'professionals';
 
 });
-
 
 
 module.exports = app;

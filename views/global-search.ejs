@@ -71,8 +71,80 @@
             <%- include('sidebar')-%>
           </div>
           <div class="col-sm-12 col-lg-10">
+            <div class="dashboard-inner">
+              <div class="docs-files-section">
+                <div class="row">
+                  <div class="col-sm-12 col-lg-12">
+                    <div class="docs-files">
+                      <div class="clearfix">
+                        <div class="heading-top float-left">
+                          <h2 class="">Search Results</h2><br/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12 col-lg-12">
+                    <div class="row">
+                      <% var i=0; if(propertyData.length>0){ propertyData.forEach(function(row){ %>
+                        <div class=" col-sm-12 col-md-4">
 
-                  Hello There...???
+                          <div class="home-section">
+
+
+                            <div class="my-dream-home-box">
+
+                              <div class="dream-home-img">
+
+                                <%if(propertyImage.length>0){%>
+                                  
+                                <%if(propertyImage[i].length>0){%>
+                                  <img src="propimg/<%=propertyImage[i][0].pps_property_image_name%>">
+                                <%}else{%>
+                                      <img src="images/nacary.png">
+                                <%}%>
+
+                                <%}%>
+                                      <% if(row.ps_property_type=='New' ){ %>
+                                        <a href="/mydreamhome-details?id=<%=row._id%>"
+                                          class="btn btn-new mydreamHomeDetail" value="<%=row._id%>">
+                                          <%=row.ps_property_type%>
+                                        </a>
+                                        <%} else {%>
+                                          <a href="/mydreamhome-details-chainproperty?id=<%=row._id%>"
+                                            class="btn btn-new mydreamHomeDetail" value="<%=row._id%>">
+                                            <%=row.ps_property_type%>
+                                          </a>
+                                          <%}%>
+
+                              </div>
+                              <div class="dream-home-description">
+                                <h3><a href="/mydreamhome-details?id=<%=row._id%>">
+                                    <%= row.ps_property_name%>
+                                  </a></h3>
+                                <div class="location-part"><a href="#"><img src="images/location.png">
+                                    <%=row.ps_property_address%>,<%=row.ps_property_country_id%>
+                                  </a></div>
+                                <div class="location-part"><a href="/mydreamhome-details?id=<%=row._id%>"><img
+                                      src="images/sq.ft.png">
+                                    <%=row.ps_property_area%> sq.ft.
+                                  </a></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <% i++;});%>
+                        <% }else{ %> 
+                          <p style="margin-top: 25px;text-align: center; width: 100%;">No data found !! </p>
+                        <%}%>
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -124,54 +196,21 @@
           });
      });
 
-    $('#global_search').on('submit', function (e) {
-          e.preventDefault();
-         // $('.loader-box').attr('style','display:flex !important');
-          var formdata = $(this).serialize();
-          console.log('formdata:', formdata);
-          $.ajax({
-            type: "GET",
-            data: formdata,
-            url: "/global-search",
-            cache: false,
-            success: function (data) {
-              console.log('searchData:',data)
-              // if (data.status == false) {
-              //   $('.loader-box').attr('style','display:none !important');
-              //   Swal.fire({
-              //     icon: 'error',
-              //     title: data.err_msg,
-              //     showConfirmButton: true,
-              //     confirmButtonColor: '#005377'
-              //   })
-              // } else {
-              //   $('.loader-box').attr('style','display:none !important');
-              //   Swal.fire({
-              //     icon: 'success',
-              //     title: data.success_msg,
-              //     showDenyButton: true,
-              //     showCancelButton: false,
-              //     confirmButtonColor: '#005377',
-              //     denyButtonColor: '#005377',
-              //     cancelButtonColor: '#d33',
-              //     confirmButtonText: `Professional List`,
-              //     denyButtonText: `Hire Now`,
-              //     html: '<button type="button" data-target="#addTaskModal" role="button"data-toggle="modal" tabindex="0" class="addbtn btn btn-info SwalBtn1 customSwalBtn"onclick="swal.closeModal(); return false;">' + 'Add Task' + '</button>',
-              //   }).then((result) => {
-              //     console.log(result)
-              //     /* Read more about isConfirmed, isDenied below */
-              //     if (result.isConfirmed) {
-              //       //Swal.fire('Saved!', '', 'success')
-              //       window.location.href = '/professionals';
-              //     } else if (result.isDenied) {
-              //       //Swal.fire('Changes are not saved', '', 'info')
-              //       location.reload();
-              //     }
-              //   })
-              // }
-            }
-          });
-        })
+    // $('#global_search').on('submit', function (e) {
+    //       e.preventDefault();
+    //      // $('.loader-box').attr('style','display:flex !important');
+    //       var formdata = $(this).serialize();
+    //       console.log('formdata:', formdata);
+    //       $.ajax({
+    //         type: "GET",
+    //         data: formdata,
+    //         url: "/global-search",
+    //         cache: false,
+    //         success: function (data) {
+    //           console.log('searchData:',data)
+    //         }
+    //       });
+    //     })
     </script>
 
     </html>
