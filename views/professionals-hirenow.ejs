@@ -233,6 +233,23 @@
                                 data-rule-required="true" data-msg-required="DeliveryDate is required!" required>
                             </div>
                           </div>
+                           <div class="col">
+
+                            <div class="heading-top hirenow-fix">
+                              <h6 class="">Already Hired Property</h6>
+                            </div>
+                            <div>
+                              <%if(!propertyObj.length){%>
+                                  <ul><li>NA</li></li></ul>
+                                <%}else{%>
+                                  <ul>
+                                    <%propertyObj.forEach(function(row,i){%>
+                                    <li><%=row.ps_property_name%></li>
+                                    <%});%>
+                                  </ul>
+                                  <%}%>
+                            </div>
+                          </div>
                           <!-- <div class="col">
 
                             <div class="heading-top hirenow-fix">
@@ -665,7 +682,7 @@
                   //$('.errmessage').html('<span class="error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
                   //setTimeout(function () { $('.errmessage').html(''); $('#taskName').val(''); $('#duedate').val(''); $('#notes').val('') }, 3000);
                   console.log('meserrmessagesage:', data.success_msg)
-                  //window.location.href = data.redirect;
+                  window.location.reload(true)
                   //swal(data.success_msg, "", "success");
 
                   Swal.fire({
