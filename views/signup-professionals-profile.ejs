@@ -140,8 +140,8 @@
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
                               <input type="text" class="form-control text-field-size " id="" placeholder="Surname"
-                                value="" name="spods_surname" required data-rule-required="true"
-                                data-msg-required="Surname is required">
+                                name="spods_surname" required data-rule-required="true"
+                                data-msg-required="Surname is required" value="<%= session.sps_lastname%>">
                               </input>
                             </div>
                           </div>
@@ -149,7 +149,7 @@
                             <div class="input-box-size-fix">
                               <input type="text" class="form-control text-field-size " id="" placeholder="Forename"
                                 name="spods_fornames" required data-rule-required="true"
-                                data-msg-required="Forename is required">
+                                data-msg-required="Forename is required" value="<%= session.sps_firstname%>">
                             </div>
                           </div>
                         </div>
@@ -171,7 +171,8 @@
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
                               <input type="text" class="form-control text-field-size " id=""
-                                placeholder="Former Surnames(if different from above)" name="spods_former_surnames">
+                                placeholder="Former Surnames(if different from above)" name="spods_former_surnames"
+                                value="<%= session.sps_lastname%>">
                             </div>
                           </div>
                         </div>
@@ -179,8 +180,8 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
-                              <input type="date" class="form-control text-field-size " id="" placeholder="Date of Birth"
-                                name="spods_dob" data-rule-required="true"
+                              <input type="text" class="form-control text-field-size " id="" placeholder="Date of Birth"
+                                onfocus="(this.type='date')" name="spods_dob" data-rule-required="true"
                                 data-msg-required="Date of birth is required">
                             </div>
                           </div>
@@ -197,7 +198,7 @@
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
                               <input type="text" class="form-control text-field-size " id="" placeholder="Address"
-                                name="spods_address">
+                                name="spods_address" value="<%= session.sps_address%>">
                             </div>
                           </div>
                           <div class="col-sm-12 col-lg-6">
@@ -237,8 +238,8 @@
                           </div>
                           <div class="col-sm-12 col-lg-4">
                             <div class="input-box-size-fix">
-                              <input type="text" class="form-control text-field-size " id="" placeholder=""
-                                name="start_working_time">
+                              <input type="text" onfocus="(this.type='date')" class="form-control text-field-size "
+                                id="" placeholder="Start Date" name="start_working_time">
                             </div>
                           </div>
                         </div>
@@ -250,8 +251,8 @@
                         <div class="row">
                           <div class="col-6 col-sm-6 col-lg-6">
                             <div class="prev-btn float-left">
-                              <a href="#" class="btn previous-btn" style="width: 164px; ">
-                                PREVIOUS</a>
+                              <!-- <a href="#" class="btn previous-btn" style="width: 164px; ">
+                                PREVIOUS</a> -->
                             </div>
                           </div>
 
@@ -324,12 +325,8 @@
       if ($("#selectBox2 option:selected").val() == '0') {
 
         // alert("Please select one option at least");
-
         $("#err_msg").html("Select At least one option");
-
       }
-
-
     });
   </script>
   </body>

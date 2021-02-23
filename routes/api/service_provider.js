@@ -139,6 +139,9 @@ router.post("/service_provider_register", (req, res) => {
                 // req.session._id = doc.user_id;
                 req.session.user_id = serviceProviders._id,
                 req.session.name = serviceProviders.sps_firstname + ' ' + serviceProviders.sps_lastname,
+                req.session.sps_firstname = serviceProviders.sps_firstname,
+                req.session.sps_lastname = serviceProviders.sps_lastname,
+                req.session.sps_address = serviceProviders.sps_address,
                 req.session.email = serviceProviders.sps_email_id,
                 req.session.role = serviceProviders.sps_role_name,
                 req.session.is_user_logged_in = true,
@@ -505,7 +508,10 @@ router.post("/service_provider_signin",
               req.session.success = true
               req.session.user_id = service_provider._id;
               req.session.name = service_provider.sps_firstname + '' + service_provider.sps_lastname;
-              req.session.email = service_provider.sps_email_id;
+              req.session.sps_firstname = service_provider.sps_firstname,
+                req.session.sps_lastname = service_provider.sps_lastname,
+                req.session.sps_address = service_provider.sps_address,
+                req.session.email = service_provider.sps_email_id;
               req.session.role = service_provider.sps_role_name;
               req.session.is_user_logged_in = true;
 
