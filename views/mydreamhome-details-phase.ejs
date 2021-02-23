@@ -95,12 +95,22 @@
                     <div class="float-left">
                       <p>Action Owners</p>
                     </div>
-                  
+                    <% if(session.active_user_login=='buyer' ){%>
                       <div class="float-right">
                         <a href="#" class="add-professionals" data-toggle="modal" data-target="#buyerPhaseA">Add
                           Existing Task</a>
                       </div>
-                      
+                      <%} else if(session.active_user_login=='seller' ){%>
+                        <div class="float-right">
+                          <a href="#" class="add-professionals" data-toggle="modal" data-target="#sellerPhaseA">Add
+                            Existing Task</a>
+                        </div>
+                        <%} else {%>
+                          <div class="float-right">
+                            <a href="#" class="add-professionals" data-toggle="modal" data-target="#renovatorPhaseA">Add
+                              Existing Task</a>
+                          </div>
+                          <%}%>
                             <div class="float-right">
                               <a href="#" class="add-professionals" data-toggle="modal" data-target="#addTask">Add
                                 Task</a>
@@ -561,140 +571,248 @@
         });
       });
     </script>
-    <script>
+ <script>
 
-      $(document).ready(function () {
-        $(".add-professionals").click(function (e) {
-          $.ajax({
-            type: "GET",
-            url: "/api/addTask",
-            cache: false,
-            success: function (data) {
-              console.log(data)
-              var htmlData = '';
-              $(".ppts_property_id").val(data.property_id);
-              var phasename=$('#phsename').val()
-              $('.ppts_phase_name').val(phasename)
-              htmlData += '<option value="">Select Hired professional</option>';
-              if (data.data.length > 0) {
-                $.each(data.data, function (i, data) {
-                  console.log('val:', data)
-                  htmlData += '<option value="' + data._id + '">' + data.sps_fullname + '</option>';
-                });
-              }
-              $('.add_task_mydreamhome_detial_phase').html(htmlData);
+  $(document).ready(function () {
+    $(".add-professionals").click(function (e) {
+      $.ajax({
+        type: "GET",
+        url: "/api/addTask",
+        cache: false,
+        success: function (data) {
+          console.log(data)
+          var htmlData = '';
+          $(".ppts_property_id").val(data.property_id);
+          var phasename=$('.phsename').val()
+          //alert(phasename)
+          $('.ppts_phase_name').val(phasename)
+          htmlData += '<option value="">Select Hired professional</option>';
+          if (data.data.length > 0) {
+            $.each(data.data, function (i, data) {
+              console.log('val:', data)
+              htmlData += '<option value="' + data._id + '">' + data.sps_fullname + '</option>';
+            });
+          }
+          $('.add_task_mydreamhome_detial_phase').html(htmlData);
+        }
+      });
+    })
+    $(".cancel_task_btn").click(function(e){
+      $('#ppts_task_name,#ppts_note,#ppts_due_date').val('');
+    })
+    $("#add_task_submit_form").on('submit', function (e) {
+     
+      e.preventDefault();
+      var formData = $("#add_task_submit_form").serialize();
+
+      if (formData) {
+        $.ajax({
+          type: "POST",
+          data: formData,
+          url: "/api/addTask_from_Dreamhome_detial_phase",
+          cache: false,
+          success: function (data) {
+            if (data.status == false) {
+
+              Swal.fire({
+                // position: 'top-end',
+                icon: 'error',
+                title: data.err_msg,
+                showConfirmButton: true,
+                confirmButtonColor: '#005377'
+                //timer: 1500
+              })
+
+
+            } else {
+
+              console.log('meserrmessagesage:', data.success_msg)
+
+
+              Swal.fire({
+                // position: 'top-end',
+                icon: 'success',
+                title: data.success_msg,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 3000
+              })
+              location.reload(true)
+              $('#ppts_task_name,#ppts_note,#ppts_due_date').val('');
+
+
             }
-          });
-        })
-        $(".cancel_task_btn").click(function(e){
-          $('#ppts_task_name,#ppts_note,#ppts_due_date').val('');
-        })
-        $("#add_task_submit_form").on('submit', function (e) {
-         
-          e.preventDefault();
-          var formData = $("#add_task_submit_form").serialize();
 
-          if (formData) {
-            $.ajax({
-              type: "POST",
-              data: formData,
-              url: "/api/addTask_from_Dreamhome_detial_phase",
-              cache: false,
-              success: function (data) {
-                if (data.status == false) {
-
-                  Swal.fire({
-                    // position: 'top-end',
-                    icon: 'error',
-                    title: data.err_msg,
-                    showConfirmButton: true,
-                    confirmButtonColor: '#005377'
-                    //timer: 1500
-                  })
-
-
-                } else {
-
-                  console.log('meserrmessagesage:', data.success_msg)
-
-
-                  Swal.fire({
-                    // position: 'top-end',
-                    icon: 'success',
-                    title: data.success_msg,
-                    showConfirmButton: false,
-                    confirmButtonColor: '#005377',
-                    timer: 3000
-                  })
-                  location.reload(true)
-                  $('#ppts_task_name,#ppts_note,#ppts_due_date').val('');
-
-
-                }
-
-              }
-            });
-
-          } else {
-            alert('some thing wrong')
           }
-        })
-        
-        $(".cancel_existing_task_btn").click(function(e){
-          $('#notes,#duedate').val('');
-        })
-        $("#Add_existing_task_form").on('submit', function (e) {
-          e.preventDefault()
-          //alert('1')
-          var formData = $("#Add_existing_task_form").serialize();
-          console.log(formData)
-          if (formData) {
-            $.ajax({
-              type: "POST",
-              data: formData,
-              url: "/api/Add_existing_task_from_Dreamhome_detial_phase",
-              cache: false,
-              success: function (data) {
-                if (data.status == false) {
+        });
 
-                  Swal.fire({
-                    // position: 'top-end',
-                    icon: 'error',
-                    title: data.err_msg,
-                    showConfirmButton: true,
-                    confirmButtonColor: '#005377'
-                    //timer: 1500
-                  })
+      } else {
+        alert('some thing wrong')
+      }
+    })
+    //buyer==================
+    $(".cancel_existing_task_btn").click(function(e){
+      $('#notes,#duedate').val('');
+    })
+    $("#Add_existing_task_form_buyerPhaseB").on('submit', function (e) {
+      e.preventDefault()
+      //alert('1')
+      var formData = $("#Add_existing_task_form_buyerPhaseB").serialize();
+      console.log(formData)
+      if (formData) {
+        $.ajax({
+          type: "POST",
+          data: formData,
+          url: "/api/Add_existing_task_from_Dreamhome_detial_phase",
+          cache: false,
+          success: function (data) {
+            if (data.status == false) {
 
-
-                } else {
-
-                  console.log('meserrmessagesage:', data.success_msg)
-
-
-                  Swal.fire({
-                    // position: 'top-end',
-                    icon: 'success',
-                    title: data.success_msg,
-                    showConfirmButton: false,
-                    confirmButtonColor: '#005377',
-                    timer: 3000
-                  })
-                  location.reload(true)
-                  $('#notes,#duedate').val('');
+              Swal.fire({
+                // position: 'top-end',
+                icon: 'error',
+                title: data.err_msg,
+                showConfirmButton: true,
+                confirmButtonColor: '#005377'
+                //timer: 1500
+              })
 
 
-                }
+            } else {
 
-              }
-            });
+              console.log('meserrmessagesage:', data.success_msg)
 
-          } else {
-            alert('some thing wrong')
+
+              Swal.fire({
+                // position: 'top-end',
+                icon: 'success',
+                title: data.success_msg,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 3000
+              })
+              location.reload(true)
+              $('#notes,#duedate').val('');
+
+
+            }
+
           }
-        })
-      })
-    </script>
+        });
+
+      } else {
+        alert('some thing wrong')
+      }
+    })
+    //buyer end===============
+    //seller existing ==========
+    $("#Add_existing_task_form_sellerPhaseB").on('submit', function (e) {
+      e.preventDefault()
+      //alert('seller A')
+      var formData = $("#Add_existing_task_form_sellerPhaseB").serialize();
+      console.log(formData)
+      //return;
+      if (formData) {
+        $.ajax({
+          type: "POST",
+          data: formData,
+          url: "/api/Add_existing_task_from_Dreamhome_detial_phase",
+          cache: false,
+          success: function (data) {
+            if (data.status == false) {
+
+              Swal.fire({
+                // position: 'top-end',
+                icon: 'error',
+                title: data.err_msg,
+                showConfirmButton: true,
+                confirmButtonColor: '#005377'
+                //timer: 1500
+              })
+
+
+            } else {
+
+              console.log('meserrmessagesage:', data.success_msg)
+
+
+              Swal.fire({
+                // position: 'top-end',
+                icon: 'success',
+                title: data.success_msg,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 3000
+              })
+              location.reload(true)
+              $('#notes,#duedate').val('');
+
+
+            }
+
+          }
+        });
+
+      } else {
+        alert('some thing wrong')
+      }
+    })
+    //seller existing end=============
+    //renoverot existing start=========
+    $("#Add_existing_task_form_renovatorPhaseB").on('submit', function (e) {
+      e.preventDefault()
+      alert('renovetor A')
+      var formData = $("#Add_existing_task_form_renovatorPhaseB").serialize();
+      console.log(formData)
+      //return;
+      if (formData) {
+        $.ajax({
+          type: "POST",
+          data: formData,
+          url: "/api/Add_existing_task_from_Dreamhome_detial_phase",
+          cache: false,
+          success: function (data) {
+            if (data.status == false) {
+
+              Swal.fire({
+                // position: 'top-end',
+                icon: 'error',
+                title: data.err_msg,
+                showConfirmButton: true,
+                confirmButtonColor: '#005377'
+                //timer: 1500
+              })
+
+
+            } else {
+
+              console.log('meserrmessagesage:', data.success_msg)
+
+
+              Swal.fire({
+                // position: 'top-end',
+                icon: 'success',
+                title: data.success_msg,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 3000
+              })
+              location.reload(true)
+              $('#notes,#duedate').val('');
+
+
+            }
+
+          }
+        });
+
+      } else {
+        alert('some thing wrong')
+      }
+    })
+    //renovetor end============
+  })
+</script>
 
     </body>
 
