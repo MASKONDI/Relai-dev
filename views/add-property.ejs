@@ -2469,40 +2469,71 @@
             success: function (data) {
                   console.log('Reapit Res:',data);
                   $(".autocomplete").autocomplete({
-                           source: data.mydatadata
-                  });
+                           source: data.mydatadata,
+                           select: function (event, ui) {
+                              
+                              //var label = ui.item.label;
+                             // var value = ui.item.value;
+                             // alert(value);
 
+                              $('.loader-box').attr('style','display:flex !important');
+                                var searchText =  ui.item.value;
+                                console.log('TextVivek:',searchText);
+                                    $.ajax({
+                                      type: "POST",
+                                      data:{
+                                        searchText:searchText
+                                      },
+                                      url: "/api/reapitApi",
+                                      cache: false,
+                                      success: function (data) {
+                                            console.log('Reapit Res:',data);
+                                            $('.loader-box').attr('style','display:none !important');
+                                            $('.property_detial').css('display','block');
+                                            $('.property_name').val(data.propertyData[0].address.buildingName);
+                                            $('#zipcode').val(data.propertyData[0].address.postcode);
+                                            $('.p_notes').val(data.propertyData[0].description);
+                                            $('.p_area').val(data.propertyData[0].internalArea.min+'x'+data.propertyData[0].internalArea.max+' '+data.propertyData[0].internalArea.type);
+                                            $('.p_address').val(data.propertyData[0].address.buildingNumber+' '+data.propertyData[0].address.line1+' '+data.propertyData[0].address.line2+' '+data.propertyData[0].address.line2+' '+data.propertyData[0].address.line3+' '+data.propertyData[0].address.line4);
+                                            $('#ps_existing_property option[value="Residential"]').attr("selected", "selected");
+                                            $('#bedroom option[value="'+data.propertyData[0].bedrooms+'"]').attr("selected", "selected");
+                                            $('#bedroom2 option[value="'+data.propertyData[0].bathrooms+'"]').attr("selected", "selected");
+                                      }
+                                    })
+
+                          }
+                  });
             }
           })
   });
 
      // $('.autocomplete').on('change', function (e) {
-      $( ".autocomplete" ).change(function() {
-        $('.loader-box').attr('style','display:flex !important');
-      var searchText =  $('.autocomplete').val();
-      console.log('TextVivek:',searchText);
-          $.ajax({
-            type: "POST",
-            data:{
-              searchText:searchText
-            },
-            url: "/api/reapitApi",
-            cache: false,
-            success: function (data) {
-                  console.log('Reapit Res:',data);
-                  $('.loader-box').attr('style','display:none !important');
-                  $('.property_detial').css('display','block');
-                  $('.property_name').val(data.propertyData[0].address.buildingName);
-                  $('#zipcode').val(data.propertyData[0].address.postcode);
-                  $('.p_notes').val(data.propertyData[0].description);
-                  $('.p_area').val(data.propertyData[0].internalArea.min+'x'+data.propertyData[0].internalArea.max+' '+data.propertyData[0].internalArea.type);
-                  $('.p_address').val(data.propertyData[0].address.buildingNumber+' '+data.propertyData[0].address.line1+' '+data.propertyData[0].address.line2+' '+data.propertyData[0].address.line2+' '+data.propertyData[0].address.line3+' '+data.propertyData[0].address.line4);
-                  $('#ps_existing_property option[value="Residential"]').attr("selected", "selected");
-                  $('#bedroom option[value="'+data.propertyData[0].bedrooms+'"]').attr("selected", "selected");
-                  $('#bedroom2 option[value="'+data.propertyData[0].bathrooms+'"]').attr("selected", "selected");
-            }
-          })
-        });
+      // $( ".autocomplete" ).change(function() {
+      //   $('.loader-box').attr('style','display:flex !important');
+      // var searchText =  $('.autocomplete').val();
+      // console.log('TextVivek:',searchText);
+      //     $.ajax({
+      //       type: "POST",
+      //       data:{
+      //         searchText:searchText
+      //       },
+      //       url: "/api/reapitApi",
+      //       cache: false,
+      //       success: function (data) {
+      //             console.log('Reapit Res:',data);
+      //             $('.loader-box').attr('style','display:none !important');
+      //             $('.property_detial').css('display','block');
+      //             $('.property_name').val(data.propertyData[0].address.buildingName);
+      //             $('#zipcode').val(data.propertyData[0].address.postcode);
+      //             $('.p_notes').val(data.propertyData[0].description);
+      //             $('.p_area').val(data.propertyData[0].internalArea.min+'x'+data.propertyData[0].internalArea.max+' '+data.propertyData[0].internalArea.type);
+      //             $('.p_address').val(data.propertyData[0].address.buildingNumber+' '+data.propertyData[0].address.line1+' '+data.propertyData[0].address.line2+' '+data.propertyData[0].address.line2+' '+data.propertyData[0].address.line3+' '+data.propertyData[0].address.line4);
+      //             $('#ps_existing_property option[value="Residential"]').attr("selected", "selected");
+      //             $('#bedroom option[value="'+data.propertyData[0].bedrooms+'"]').attr("selected", "selected");
+      //             $('#bedroom2 option[value="'+data.propertyData[0].bathrooms+'"]').attr("selected", "selected");
+      //       }
+      //     })
+      //   });
     </script>
 
 
