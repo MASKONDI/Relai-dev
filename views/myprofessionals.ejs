@@ -266,7 +266,7 @@
             </div>
 
             <div class="row professionals-card" id="filter_data">
-              <% data.forEach(function(row){ %>
+              <% if(data.length>0){ data.forEach(function(row){ %>
                 <div class="col-sm-4 col-md-4 col-lg-3">
                   <div class="card card-fix3">
                     <div class="row">
@@ -305,7 +305,10 @@
                     </div>
                   </div>
                 </div>
-                <% }); %>
+                <% }); }else{ %>  
+                  
+                  <p class="notfound_msg">My professional not found !! </p>
+                  <% } %>
                   <!-- <div class="col-sm-4 col-md-4 col-lg-3">
                 <div class="card card-fix3">
                   <div class="row">

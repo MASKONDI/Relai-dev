@@ -129,7 +129,8 @@
                           <div class="float-right">
                            
                           
-                              <a href="#" class="upload-any"><img src="images/upload.png"> <span>
+                            <a href="#" class="upload-any"><img src="images/upload.png">
+                               <span>
                                 <div class="custom-file-input">
                                   <input type="hidden" name="property_id" value='<%=property._id%>'
                                     id="hiddenPropertyId">
@@ -341,8 +342,18 @@
             var reader = new FileReader();
             reader.onload = function (e) {
               console.log('filess:',e.target)
-               // $('.ddddd').attr('src', e.target.result);
+              if(input.files[0].type == 'image/jpeg' || input.files[0].type == 'image/png' || input.files[0].type == 'image/gif'){
                 $('#upload-doc-view').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img src="'+e.target.result+'" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
+              }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'File type not supported !!',
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+                  })
+              }
+               
             }
             reader.readAsDataURL(input.files[0]);
         }

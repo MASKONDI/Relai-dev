@@ -2511,8 +2511,6 @@ app.get('/mydreamhome-details-phase', isCustomer, async (req, res) => {
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   console.log("taskObject by phase name take action", taskObject)
-
-
   if (taskObject) {
     req.session.pagename = 'mydreamhome';
     err_msg = req.flash('err_msg');
@@ -2531,9 +2529,49 @@ app.get('/mydreamhome-details-phase', isCustomer, async (req, res) => {
       'message': 'some thing wrong'
     })
   }
-
-
 })
+
+
+
+// All Professional Filter name surname qualification
+app.get('/global-search', isCustomer, (req, res) => {
+
+  console.log("current session is", req.session);
+  PropertiesSchema.find({ ps_property_name: new RegExp(req.query.global_search, 'i'),  $or: [
+    { $and: [{ ps_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login },] },
+    { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login }] }
+  ] }).then(async (data) => {
+    if (data) {
+      let arr = [];
+      for (let img of data) {
+        await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
+          let temp = await result
+          arr.push(temp)
+        })
+      }
+      // console.log('++++++++',arr)
+
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+
+      res.render('global-search', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        propertyData: data,
+        propertyImage: arr
+
+      });
+
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+
+
+
+});
+
+
 module.exports = app;
 
 
