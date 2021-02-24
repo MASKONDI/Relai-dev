@@ -151,6 +151,24 @@
                       <div class="col-sm-12 col-lg-4">
 
                       </div>
+
+                      <div class="col-sm-12 col-lg-6">
+                        <p>Do you hold a current UK driving licence?
+                        </p>
+                      </div>
+                      <div class="col-sm-12 col-lg-2">
+                        <label class="radio-inline">
+                          <input type="radio" name="spods_option_uk_driving_licence" value="yes" id="yes3" required>
+                          &nbsp;Yes&nbsp;&nbsp;
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="spods_option_uk_driving_licence" id="no3" value="no">
+                          &nbsp;No&nbsp;&nbsp;
+                        </label>
+                      </div>
+                      <div class="col-sm-12 col-lg-4">
+
+                      </div>
                       <div class="col-sm-12 col-lg-6">
                         <p>Do you have any criminal convictions?</p>
                       </div>
@@ -172,23 +190,6 @@
                         </div>
 
                       </div>
-                      <div class="col-sm-12 col-lg-6">
-                        <p>Do you hold a current UK driving licence?
-                        </p>
-                      </div>
-                      <div class="col-sm-12 col-lg-2">
-                        <label class="radio-inline">
-                          <input type="radio" name="spods_option_uk_driving_licence" value="yes" id="yes3" required>
-                          &nbsp;Yes&nbsp;&nbsp;
-                        </label>
-                        <label class="radio-inline">
-                          <input type="radio" name="spods_option_uk_driving_licence" id="no3" value="no">
-                          &nbsp;No&nbsp;&nbsp;
-                        </label>
-                      </div>
-                      <div class="col-sm-12 col-lg-4">
-
-                      </div>
                     </div>
                     <% if(typeof err_msg!='undefined' ){ %>
                       <span class="error_validate flash_msg" style="color: red; padding-bottom: 10px;">
@@ -200,7 +201,7 @@
                             <div class="input-box-size">
                               <input type="text" class="form-control text-field-size " id="criminal_convictions"
                                 name="spods_details_of_convictions"
-                                placeholder="Please give details of any point/convictions">
+                                placeholder="Please give details of any point/convictions" required>
                             </div>
 
                           </div>
@@ -209,7 +210,7 @@
                           <div class="col-sm-5 col-lg-6">
                             <div class="input-box-size-fix3">
                               <input type="text" class="form-control text-field-size " id=""
-                                placeholder="Professional Body" name="spods_professional_body">
+                                placeholder="Professional Body" name="spods_professional_body" required>
                             </div>
                           </div>
                           <div class="col-sm-5 col-lg-6">
@@ -316,6 +317,7 @@
     }
 
   </script>
+
   <script type="text/javascript">
 
     $('#form2').validate({
@@ -381,6 +383,7 @@
       }
     });
   </script>
+
   <script type="text/javascript">
     $(document).ready(function () {
       var flash_msg = $('.flash_msg').html();
