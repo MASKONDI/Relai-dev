@@ -273,6 +273,7 @@
       </div>
     </div>
   </div>
+
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
     crossorigin="anonymous"></script>
@@ -282,12 +283,13 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="../js/countrystatecity.js"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
     integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
     crossorigin="anonymous"></script>
-
-
   <script type="text/javascript">
     $('#form1').validate({
       onfocusout: function (element) {
@@ -310,7 +312,9 @@
           cache: false,
           success: function (data) {
             console.log(data);
+
             if (data.status == false) {
+
               $('.loader-box').attr('style', 'display:none !important');
               Swal.fire({
                 icon: 'error',
@@ -322,6 +326,7 @@
 
             } else {
               $('.loader-box').attr('style', 'display:none !important');
+
               Swal.fire({
                 icon: 'success',
                 title: data.message,
@@ -342,6 +347,21 @@
 
       }
     });
+  </script>
+  <script type="text/javascript">
+    window.onload = function () {
+      document.getElementById('ifYes').style.display = 'none';
+    }
+
+    function yesnoCheck() {
+      if (document.getElementById('yesCheck').checked) {
+        document.getElementById('ifYes').style.display = 'block';
+      }
+      else {
+        document.getElementById('ifYes').style.display = 'none';
+      }
+    }
+
   </script>
   <script type="text/javascript">
     $(document).ready(function () {

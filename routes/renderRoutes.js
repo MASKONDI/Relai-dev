@@ -307,15 +307,15 @@ app.get('/signin', (req, res) => {
 app.get('/dashboard', isCustomer, async (req, res) => {
   console.log("current user session is :", req.session);
 
- const mapData = await PropertiesSchema.find({ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login });
-console.log('MapData:',mapData);
+  const mapData = await PropertiesSchema.find({ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login });
+  console.log('MapData:', mapData);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   req.session.pagename = 'dashboard';
   res.render('dashboard', {
     err_msg, success_msg, layout: false,
     session: req.session,
-    mapData:mapData
+    mapData: mapData
   });
 
 });
@@ -1113,7 +1113,7 @@ app.get('/professionals-hirenow', isCustomer, async (req, res) => {
 
     if (serviceProvider) {
       let propertyObj = await PropertyProfessionalHelper.GetAllHiredProertyByUserId(SarviceProviderId, req.session.active_user_login, req.session.user_id);
-      console.log('propertyObj in hire now:=======================',propertyObj)
+      console.log('propertyObj in hire now:=======================', propertyObj)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('professionals-hirenow', {
@@ -1121,7 +1121,7 @@ app.get('/professionals-hirenow', isCustomer, async (req, res) => {
         session: req.session,
         serviceProvider: serviceProvider,
         property: PropertyList,
-        propertyObj:propertyObj
+        propertyObj: propertyObj
       });
     }
   } else {
@@ -1720,7 +1720,7 @@ app.get('/dashboard-professional', isServiceProvider, (req, res) => {
 app.get('/signup-professionals-profile', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-
+  console.log("Current session is : ", req.session);
   res.render('signup-professionals-profile', {
     err_msg, success_msg, layout: false,
     session: req.session
@@ -2467,8 +2467,8 @@ app.get('/mydreamhome-details-phase', isCustomer, async (req, res) => {
       session: req.session,
       taskObject: taskObject,
       propertyData: propertyData,
-      step:req.query.step,
-      phase:req.query.phase
+      step: req.query.step,
+      phase: req.query.phase
     });
   } else {
     return res.send({
@@ -2484,10 +2484,12 @@ app.get('/mydreamhome-details-phase', isCustomer, async (req, res) => {
 app.get('/global-search', isCustomer, (req, res) => {
 
   console.log("current session is", req.session);
-  PropertiesSchema.find({ ps_property_name: new RegExp(req.query.global_search, 'i'),  $or: [
-    { $and: [{ ps_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login },] },
-    { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login }] }
-  ] }).then(async (data) => {
+  PropertiesSchema.find({
+    ps_property_name: new RegExp(req.query.global_search, 'i'), $or: [
+      { $and: [{ ps_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login },] },
+      { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login }] }
+    ]
+  }).then(async (data) => {
     if (data) {
       let arr = [];
       for (let img of data) {

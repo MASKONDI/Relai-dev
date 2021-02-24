@@ -202,12 +202,21 @@ router.post("/service_provider_personal_details", (req, res) => {
     .save()
     .then(serviceProviders => {
       console.log("server res is : ", serviceProviders);
-      res.redirect("/signup-professionals-profile-2")
+      // res.redirect("/signup-professionals-profile-2")
+      res.send({
+        message: 'Personal-details sumitted successfully,please continue....',
+        status: true,
+      })
+
     })
     .catch(err => {
       console.log(err)
-      req.flash('err_msg', 'Something went wrong please try after some time!');
-      res.redirect('/signup-professionals-profile');
+      res.send({
+        message: 'Something went wrong please try after some time!',
+        status: false
+      })
+      //req.flash('err_msg', 'Something went wrong please try after some time!');
+      //res.redirect('/signup-professionals-profile');
     });
 });
 
@@ -223,8 +232,14 @@ router.post("/service_provider_other_details", (req, res) => {
   console.log("req.body is : ", req.body);
   console.log("req.session.user_id is ", req.session.user_id);
   if (req.body.spods_option_criminal_convictions == 'yes' && req.body.spods_details_of_convictions == "") {
-    req.flash('err_msg', 'if you have any criminal convictions Please enter details.');
-    return res.redirect('/signup-professionals-profile-2')
+    //req.flash('err_msg', '.');
+    //return res.redirect('/signup-professionals-profile-2')
+    res.send({
+      message: "Please enter criminal convictions details",
+      status: false,
+      redirectpage: false,
+      redirect: ''
+    })
   }
   else {
     const serviceProviderOtherDetails = new ServiceProviderOtherDetailsSchema({
@@ -243,12 +258,22 @@ router.post("/service_provider_other_details", (req, res) => {
       .save()
       .then(serviceProviders => {
         console.log("server response is ;", serviceProviders);
-        res.redirect("/signup-professionals-profile-3")
+        // res.redirect("/signup-professionals-profile-3")
+        res.send({
+          message: "Other-details submitted successfully, please continue...",
+          status: true
+        })
       })
       .catch(err => {
         console.log(err)
-        req.flash('err_msg', 'Something went wrong please try after some time');
-        res.redirect('/signup-professionals-profile-2');
+        //req.flash('err_msg', 'Something went wrong please try after some time');
+        //res.redirect('/signup-professionals-profile-2');
+        res.send({
+          message: "something went wrong please try after some time!",
+          status: false,
+          redirectpage: false,
+          redirect: ''
+        })
       });
   }
 });
@@ -360,12 +385,22 @@ router.post("/service_provider_reference", (req, res) => {
   serviceProviderReference
     .save()
     .then(serviceProviders => {
-      console.log("server response is:", serviceProviders); res.redirect("/signup-professionals-profile-6")
+      console.log("server response is:", serviceProviders);
+      //res.redirect("/signup-professionals-profile-6")
+      res.send({
+        message: "Reference-details submitted successfully, please continue...",
+        status: true
+      })
     })
     .catch(err => {
       console.log(err)
-      req.flash('err_msg', 'Something went wrong please try after some time.');
-      res.redirect('/signup-professionals-profile-5');
+      //req.flash('err_msg', 'Something went wrong please try after some time.');
+      //res.redirect('/signup-professionals-profile-5');
+      res.send({
+        err_msg: 'Something went wrong please try after some time',
+        status: false
+      });
+
     });
 });
 
@@ -382,9 +417,18 @@ router.post("/service_provider_indemnity_details", (req, res) => {
 
   console.log("req.body is : ", req.body);
   console.log("req.session.user_id is ", req.session.user_id);
-  if (req.body.spods_option_pl_claims == "yes" && req.body.spods_pl_claim_details == '') {
-    req.flash("err_msg", "Please Enter PI claim details!");
-    res.redirect('/signup-professionals-profile-6');
+  console.log("req.body.spods_option_pl_claims is ", req.body.spods_option_pl_claims);
+  console.log("req.body.spods_pl_claim_details is ", req.body.spods_pl_claim_details);
+  if (req.body.spods_option_pl_claims === "yes" && req.body.spods_pl_claim_details === '') {
+    //req.flash("err_msg", "Please Enter PI claim details!");
+    //res.redirect('/signup-professionals-profile-6');
+    console.log("req.body.spods_option_pl_claims is ", req.body.spods_option_pl_claims);
+    res.send({
+      message: "Please enter PI claim details",
+      status: false,
+      redirectpage: false,
+      redirect: ''
+    })
   } else {
     const serviceProviderIndemnityDetails = new ServiceProviderIndemnityDetailsSchema({
       spods_service_provider_id: req.session.user_id,
@@ -401,12 +445,20 @@ router.post("/service_provider_indemnity_details", (req, res) => {
       .save()
       .then(serviceProviders => {
         console.log("server response is:", serviceProviders);
-        res.redirect("/signup-professionals-profile-7")
+        res.send({
+          message: "Indemnity-Details submitted successfully.please continue...",
+          status: true,
+        })
+        //res.redirect("/signup-professionals-profile-7")
       })
       .catch(err => {
         console.log(err)
-        req.flash('err_msg', 'Something went wrong please try after some time');
-        res.redirect('/signup-professionals-profile-6');
+        res.send({
+          message: "Something went wrong please try after some time ",
+          status: false,
+        })
+        //req.flash('err_msg', 'Something went wrong please try after some time');
+        //res.redirect('/signup-professionals-profile-6');
       });
   }
 });
@@ -433,12 +485,21 @@ router.post("/service_provider_language", (req, res) => {
     .save()
     .then(serviceProviders => {
       console.log("server response is :", serviceProviders);
-      res.redirect("/portfolio")
+      //res.redirect("/portfolio")
+      res.send({
+        message: "language-details submitted successfully.please continue...",
+        status: true,
+      });
+
     })
     .catch(err => {
       console.log(err)
-      req.flash('err_msg', 'Something went wrong please try again later.');
-      res.redirect('/signup-professionals-profile-7');
+      //req.flash('err_msg', 'Something went wrong please try again later.');
+      //res.redirect('/signup-professionals-profile-7');
+      res.send({
+        message: "Something went wrong please try again later.",
+        status: false,
+      });
     });
 });
 
@@ -508,10 +569,10 @@ router.post("/service_provider_signin",
               req.session.success = true
               req.session.user_id = service_provider._id;
               req.session.name = service_provider.sps_firstname + '' + service_provider.sps_lastname;
-              req.session.sps_firstname = service_provider.sps_firstname,
-                req.session.sps_lastname = service_provider.sps_lastname,
-                req.session.sps_address = service_provider.sps_address,
-                req.session.email = service_provider.sps_email_id;
+              req.session.sps_firstname = service_provider.sps_firstname;
+              req.session.sps_lastname = service_provider.sps_lastname;
+              req.session.sps_address = service_provider.sps_address;
+              req.session.email = service_provider.sps_email_id;
               req.session.role = service_provider.sps_role_name;
               req.session.is_user_logged_in = true;
 
