@@ -94,11 +94,11 @@
                             years
                         </span>
                       </div>
-                      <div class="float-left icon-fix2">
+                      <!-- <div class="float-left icon-fix2">
                         <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>4.0
                           Rating</span>
 
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -240,11 +240,11 @@
                             </div>
                             <div>
                               <%if(!propertyObj.length){%>
-                                  <ul><li>NA</li></li></ul>
+                                  <ul><li style="list-style: none;">N/A</li></li></ul>
                                 <%}else{%>
                                   <ul>
                                     <%propertyObj.forEach(function(row,i){%>
-                                    <li><%=row.ps_property_name%></li>
+                                    <li  style="list-style: none;"><%=row.ps_property_name%></li>
                                     <%});%>
                                   </ul>
                                   <%}%>
@@ -510,7 +510,14 @@
               }
             });
           } else {
-            alert('something wrong')
+            //alert('something wrong')
+                $('.address').val('')
+                $('.city').val('')
+                $('.state').val('')
+                $('.country').val('')
+                $('#zipcode').val('')
+                $('.property_id').val('')
+
           }
         });
         $('#hirenowform').on('submit', function (e) {
@@ -566,8 +573,8 @@
                   denyButtonColor: '#005377',
                   cancelButtonColor: '#d33',
                   confirmButtonText: `Professional List`,
-                  denyButtonText: `Hire Now`,
-                  html: '<button type="button" data-target="#addTaskModal" role="button"data-toggle="modal" tabindex="0" class="addbtn btn btn-info SwalBtn1 customSwalBtn"onclick="swal.closeModal(); return false;">' + 'Add Task' + '</button>',
+                  denyButtonText: `Add Task`,
+                 // html: '<button type="button" data-target="#addTaskModal" role="button"data-toggle="modal" tabindex="0" class="addbtn btn btn-info SwalBtn1 customSwalBtn"onclick="swal.closeModal(); return false;">' + 'Add Task' + '</button>',
                 }).then((result) => {
                   console.log(result)
                   /* Read more about isConfirmed, isDenied below */
@@ -577,7 +584,8 @@
                     window.location.href = '/professionals';
                   } else if (result.isDenied) {
                     //Swal.fire('Changes are not saved', '', 'info')
-                    location.reload();
+                   // location.reload();
+                   $('#addTaskModal').modal('show');
                   }
                 })
               }
