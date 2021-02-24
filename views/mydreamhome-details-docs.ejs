@@ -1,7 +1,7 @@
 <%- include('dashboard_header')-%>
   <%- include('edit-profile-model')-%>
     <!-- The Modal -->
-    <div class="modal fade permission-modal" id="changePermisionModal">
+    <div class="modal fade permission-modal" data-backdrop="static" data-keyboard="false" id="changePermisionModal">
 
       <div class="modal-dialog">
         <div class="modal-content">
@@ -75,7 +75,7 @@
             <!-- Modal footer -->
             <div style="display: block;" class="modal-footer">
               <span class="message_data"></span>
-              <button type="button" class="btn btn-cancel" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-cancel btn-cancel-changepermision">Close</button>
               <!-- <button type="button" class="btn btn-cancel" id="change-permision-save-btn"
               data-dismiss="modal">Save</button> -->
             </div>
@@ -517,6 +517,12 @@
     }
     </script>
     <script>
+      $('.btn-cancel-changepermision').click(function (e) { 
+       // alert();
+        $('#changePermisionModal').modal('hide');
+        location.reload();
+      });
+
       var id_element = [];
       $(".changePermissionModal").click(function (e) {
         var docId = $(this).attr('value');
@@ -551,9 +557,10 @@
                 }
               });
             } else {
-
-              $('.per_checkbox').removeAttr('checked', 'checked');
+              $('#changePermisionModal .per_checkbox').removeAttr('checked', 'checked');
+              $('#changePermisionModal .check-permission input:checked ~ .checkmark').css('background-color', 'transparent');
               //$('.per_checkbox').removeAttr('checked','checked');
+              
             }
           }
         });

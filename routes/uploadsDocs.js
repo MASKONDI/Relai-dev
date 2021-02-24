@@ -268,15 +268,21 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
   console.log('Sizetest:',req.file.size);
   let size = req.file.size / 1024;
   let docs_size = "";
+  let docs_size_valid_mb = "";
+  let docs_size_valid_kb = "";
   if (size > 1024) {
     size = size / 1024;
     docs_size = size.toFixed(1) + " MB";
+    docs_size_valid_mb = size;
   } else {
     docs_size = size.toFixed(1) + " KB"
+    docs_size_valid_kb = size;
   }
   console.log('docs_size:',docs_size);
   console.log('docs_size sizweeee:',parseInt(size));
-  if(size <= parseInt(10)){
+  console.log('docs_size_valid_mb:',parseInt(docs_size_valid_mb));
+  console.log('docs_size_valid_kb:',parseInt(docs_size_valid_kb));
+  if(docs_size_valid_mb <= parseInt(10) || docs_size_valid_mb == 'NaN'){
   if (ext_type == 'image') {
     var baseExt = ext.replace(/\./g, "");
     var w_text = new Date().toUTCString()
