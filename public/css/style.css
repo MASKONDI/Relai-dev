@@ -2757,7 +2757,7 @@ ul.docs-list.last-doc li{
     color: #005377;
     width: 52px;
     padding: 12px 9px;
-    margin-top: 15px;
+    margin-top: 19px;
     margin-left: -10px;
     border-radius: 10px;
     border: 2px solid #005377;
@@ -3174,7 +3174,7 @@ button.portfolio-btn {
     position: relative;
 }
 .kyc-box-portfolio .custom-file-input {
-    height: 130px;
+    height: 100%;
     width: 100%;
     position: absolute;
     left: 0;
@@ -3226,7 +3226,7 @@ margin-top: 40px;;
     height: 40px;
     float: left;
     width: 100px;
-    padding: 0px 10px 10px 10px;
+    padding: 5px 10px 10px 10px;
     text-align: center;
     border-radius: 5px;
     margin-bottom: 11px;
