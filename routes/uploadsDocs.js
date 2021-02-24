@@ -246,9 +246,24 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
   //add conditions for type of file and set the type of file
   console.log(".........files.......", req.file.filename)
   var ext = path.extname(req.file.filename);
+  console.log('extextext:', ext)
   var basename = path.basename(req.file.filename, ext);
-  console.log('basename:', basename)
-  let ext_type = (ext == ".mp4") ? "video" : "image";
+  //console.log('basename:', basename)
+  let ext_type ='';
+
+  if(ext == ".mp4" || ext == ".wmv"){
+      ext_type='video';
+  }else if(ext == ".pdf"){
+       ext_type='pdf';
+  }else if(ext == ".docx"){
+      ext_type='doc';
+  }else if( ext == ".txt"){
+      ext_type='txt';
+  }else{
+      ext_type='image';
+  }
+  //let ext_type = (ext == ".mp4") ? "video" : "image";
+  console.log('Sizetest:',req.file.size);
   let size = req.file.size / 1024;
   let docs_size = "";
   if (size > 1024) {
@@ -257,7 +272,9 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
   } else {
     docs_size = size.toFixed(1) + " KB"
   }
-
+  console.log('docs_size:',docs_size);
+  console.log('docs_size sizweeee:',parseInt(size));
+  if(size <= parseInt(10)){
   if (ext_type == 'image') {
     var baseExt = ext.replace(/\./g, "");
     var w_text = new Date().toUTCString()
@@ -333,13 +350,14 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
   } else {
 
     obj = {
+      cuds_property_id: req.body.property_id,
       cuds_document_name: req.file.filename,
       cuds_customer_id: req.session.user_id,
       cuds_is_active_user_flag: req.session.active_user_login,
       cuds_document_type: ext_type,
       cuds_document_size: docs_size,
       cuds_document_file: {
-        data: fs.readFileSync(path.join(__dirname + '../../public/upload/' + req.file.filename)),
+        data: '',
         contentType: ext
       }
     }
@@ -348,17 +366,36 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
       if (err) {
         console.log(err); console.log(err);
         req.flash('err_msg', "Something went worng please try after some time");
-        res.redirect('/mydreamhome-details-docs');
+        //res.redirect('/mydreamhome-details-docs');
+        res.send({
+          'status':false,
+          'message':'Something Wrong',
+          'redirect':'/mydreamhome-details-docs'
+        })
       }
       else {
         item.save();
         console.log("file Submitted Successfully");
-        res.redirect('/mydreamhome-details-docs');
+        //res.redirect('/mydreamhome-details-docs');
+        res.send({
+          'status':true,
+          'message':'Document Upload Successfully',
+          'redirect':'/mydreamhome-details-docs'
+        })
+
       }
     });
 
 
   }
+}else{
+  console.log('File size not supported')
+  res.send({
+    'status':false,
+    'message':'Please upload file less than 10MB',
+    'redirect':'/mydreamhome-details-docs'
+  })
+}
 });
 app.post('/raise-a-complaint', upload.single('complaint_file'), (req, res, next) => {
   console.log('complaint data:', req.body)

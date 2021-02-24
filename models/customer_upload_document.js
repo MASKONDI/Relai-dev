@@ -28,7 +28,7 @@ const CustomerUploadDocsSchema = new Schema({
 
   cuds_document_type: {
     type: String,
-    enum: ['image', 'video']
+    enum: ['image', 'video', 'pdf', 'doc', 'txt']
   },
   cuds_verification_status: {
     type: String,

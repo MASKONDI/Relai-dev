@@ -198,3 +198,6 @@ span#comment-error {
         text-align: center;
         width: 100%;
     }
+    .Phases_section {
+        display: none;
+    }

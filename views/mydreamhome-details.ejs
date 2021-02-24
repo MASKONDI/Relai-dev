@@ -596,26 +596,56 @@
                       <ul class="docs-list">
                         <%if(allDocumentUploadByCustmer.length>0){%>
                           <%allDocumentUploadByCustmer.forEach(function(row,i){%>
-                            <%if(i<=2){%>
-                              <li><a href="/mydreamhome-details-docs" value="<%=propertyDetailData[0]._id%>"><img
-                                    src="/upload/<%=row.cuds_document_name%>" alt="" title=""><br><span
+                            <!-- <%if(i<=2){%> -->
+                              <!-- <li>
+                                <a href="/mydreamhome-details-docs" value="<%=propertyDetailData[0]._id%>">
+                                <img
+                                 src="/upload/<%=row.cuds_document_name%>" alt="" title=""><br>
+                                 <span
                                     style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                     <%=row.cuds_document_name%>
-                                  </span></a>
-                              </li>
+                                  </span>
+                                </a>
+                              </li> -->
+
+                              <%if(row.cuds_document_type=='image'){%>
+                                <li><a href="#"><img src="/upload/<%= row.cuds_document_name%>" alt="" title=""><br><span
+                                      style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                      <%= row.cuds_document_name%>
+                                    </span></a>
+                                </li>
+                              <%}else if(row.cuds_document_type=='pdf'){%> 
+                                <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/pdficon.png" alt="" title=""><br><span
+                                  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                  <%= row.cuds_document_name%>
+                                </span></a>
+                                </li>
+                              <%}else if(row.cuds_document_type=='doc'){%>
+                                <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/docicon.png" alt="" title=""><br><span
+                                  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                  <%= row.cuds_document_name%>
+                                </span></a>
+                                </li>
+                              <%}else if(row.cuds_document_type=='txt'){%>
+                                <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/txticon.png" alt="" title=""><br><span
+                                  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                  <%= row.cuds_document_name%>
+                                </span></a>
+                                </li>
+                              <%}else if(row.cuds_document_type=='video'){%> 
+                                <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/videoicon.png" alt="" title=""><br><span
+                                  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                  <%= row.cuds_document_name%>
+                                </span></a>
+                                </li>
                               <%}%>
-                                <%});%>
-                                  <%}else{%>
-                                    <h6>Docs&File Not Uploaded</h6>
-
-                                    <%}%>
+                              
+                            <!-- <%}%> -->
+                          <%});%>
+                        <%}else{%>
+                          <h6>Docs&File Not Uploaded</h6>
+                        <%}%>
                       </ul>
-
-                      <!-- <ul class="docs-list last-doc">
-                      <li><a href="/mydreamhome-details-docs"><img src="images/pdf.png" alt=""
-                            title=""><br><span>contract.pdf</span></a></li>
-                    </ul> -->
-
                     </div>
                   </div>
                   <div class="col-sm-6 col-lg-4">

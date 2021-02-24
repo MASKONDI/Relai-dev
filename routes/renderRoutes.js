@@ -327,7 +327,7 @@ app.get('/dashboard', isCustomer, async (req, res) => {
 app.get('/track-your-progress', isCustomer, async (req, res) => {
   console.log("current user session is :", req.session);
   req.session.pagename = 'track-your-progress';
-  let AllProperty = await PropertiesSchema.find({ $and: [{ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login }] })
+  let AllProperty = await PropertiesSchema.find({ $and: [{ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login }] }).sort({ _id: -1 })
   if (AllProperty) {
     err_msg = req.flash('err_msg');
     success_msg = req.flash('success_msg');
@@ -716,7 +716,7 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   let property = await PropertiesSchema.findOne({ _id: req.session.property_id, ps_is_active_user_flag: req.session.active_user_login });
-  const allDocument = await CustomerUploadDocsSchema.find({ $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.session.property_id, cuds_is_active_user_flag: req.session.active_user_login }] });
+  const allDocument = await CustomerUploadDocsSchema.find({ $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.session.property_id, cuds_is_active_user_flag: req.session.active_user_login }] }).sort({ _id: -1 });
   //const propertyDataObj = await PropertiesSchema.find();
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
   //console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
@@ -735,7 +735,8 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
     });
   }
 
-  console.log('permisionnnn faa:', serviceProvArray)
+  //console.log('permisionnnn faa:', serviceProvArray)
+  console.log('allDocument:', allDocument)
 
   res.render('mydreamhome-details-docs', {
     err_msg, success_msg, layout: false,
