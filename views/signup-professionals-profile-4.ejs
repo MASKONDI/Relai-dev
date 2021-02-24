@@ -197,7 +197,7 @@
                           <div class="employment-sec">
                             <p>Add your past work experience</p>
                             <h5>Build your credibility by showcasing the projects or jobs you h</h5>
-
+                            <div class="employment_list"></div>
                             <div class="emp-btn float-left">
                               <a href="#" class="btn add-edu-btn" data-toggle="modal" data-target="#myModal"><i
                                   class="fa fa-plus">&nbsp;&nbsp;&nbsp;</i>
@@ -218,7 +218,7 @@
 
                           <div class="col-6 col-sm-6 col-lg-6">
                             <div class="prev-btn float-right">
-                              <a href="/signup-professionals-profile-5" class="btn btn-next" id="next_btn_4" style="width: 164px;">
+                              <a href="/signup-professionals-profile-5" id="next_btn_4" class="btn btn-next"  style="width: 164px;">
                                 NEXT</a>
                             </div>
               </form>
@@ -296,7 +296,7 @@
   </script>
   <script>
     $(document).ready(function () {
-      $('#next_btn_4').prop('disabled', true);
+      //$('#next_btn_4').attr('disabled', true);
       $("#Employment_form_btn").click(function (e) {
         e.preventDefault();
         //alert(e.target)
@@ -310,10 +310,10 @@
           //dataType:'json',
           success: function (data) {
             console.log(data)
-            //var fromDateYear = new Date(data.educationDetail.spes_from_date).getFullYear();
-            //var toDateYear = new Date(data.educationDetail.spes_to_date).getFullYear();
+            var fromDateYear = new Date(data.educationDetail.spes_from_date).getFullYear();
+            var toDateYear = new Date(data.educationDetail.spes_to_date).getFullYear();
             //$('#myModal').modal('hide');
-            //$('.education_lists').append('<div class="row"><div class="col-sm-12 col-lg-9"><div class=""><p>' + data.educationDetail.spes_university_school_name + '</p><h6>' + data.educationDetail.spes_qualification_obtained + '</h6><h6>' + fromDateYear + '-' + toDateYear + '</h6></div></div><div class="col-sm-12 col-lg-3"><div class=""> <img style="width:19%" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;<img style="width:19%" src="images/delete-icon.png" alt=""></div></div></div>')
+            $('.employment_list').append('<div class="row"><div class="col-sm-12 col-lg-9"><div class=""><p>' + data.educationDetail + '</p><h6>' + data.educationDetail + '</h6><h6>' + fromDateYear + '-' + toDateYear + '</h6></div></div><div class="col-sm-12 col-lg-3"><div class=""> <img style="width:19%" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;<img style="width:19%" src="images/delete-icon.png" alt=""></div></div></div>')
           }
         })
       })
