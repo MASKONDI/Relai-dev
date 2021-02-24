@@ -1,7 +1,7 @@
 <%- include('dashboard_header')-%>
   <%- include('edit-profile-model')-%>
     <!-- The Modal -->
-    <div class="modal fade permission-modal" id="changePermisionModal">
+    <div class="modal fade permission-modal" data-backdrop="static" data-keyboard="false" id="changePermisionModal">
 
       <div class="modal-dialog">
         <div class="modal-content">
@@ -75,7 +75,7 @@
             <!-- Modal footer -->
             <div style="display: block;" class="modal-footer">
               <span class="message_data"></span>
-              <button type="button" class="btn btn-cancel" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-cancel btn-cancel-changepermision">Close</button>
               <!-- <button type="button" class="btn btn-cancel" id="change-permision-save-btn"
               data-dismiss="modal">Save</button> -->
             </div>
@@ -153,8 +153,32 @@
                                   <%= row.cuds_document_name%>
                                 </span></a>
                             </li>
-                            <%}%>
-                              <%});%>
+                          <%}else if(row.cuds_document_type=='pdf'){%> 
+                            <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/pdficon.png" alt="" title=""><br><span
+                              style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                              <%= row.cuds_document_name%>
+                            </span></a>
+                            </li>
+                          <%}else if(row.cuds_document_type=='doc'){%>
+                            <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/docicon.png" alt="" title=""><br><span
+                              style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                              <%= row.cuds_document_name%>
+                            </span></a>
+                            </li>
+                          <%}else if(row.cuds_document_type=='txt'){%>
+                            <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/txticon.png" alt="" title=""><br><span
+                              style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                              <%= row.cuds_document_name%>
+                            </span></a>
+                            </li>
+                          <%}else if(row.cuds_document_type=='video'){%> 
+                            <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/videoicon.png" alt="" title=""><br><span
+                              style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                              <%= row.cuds_document_name%>
+                            </span></a>
+                            </li>
+                          <%}%>
+                        <%});%>
                                 <!-- <li><a href="#"><img src="images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a></li>
                       <li><a href="#"><img src="images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a></li>
                       <li><a href="#"><img src="images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a></li>
@@ -184,12 +208,6 @@
                         <tr>
                           <td>
                             <img class="pdf-file" src="/upload/<%= row.cuds_document_name%>">
-                            <!-- <div class="image-fix overflow-hidden">
-                            <a href="upload/<%= row.cuds_document_name%>" data-lightbox="example-set"
-                              data-title=" <%= row.cuds_document_name%>">
-                              <img src="/upload/<%= row.cuds_document_name%>" alt="" class="example-image " />
-                            </a>
-                          </div> -->
                             <p><span>
                                 <%= row.cuds_document_name%>
                               </span>
@@ -220,13 +238,16 @@
                             </div>
                           </td>
                         </tr>
-                        <%}else{%>
+                        <%}else if(row.cuds_document_type=='pdf'){ %> 
+                          <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/pdficon.png" alt="" title=""><br><span
+                            style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                            <%= row.cuds_document_name%>
+                          </span></a>
+                          </li> -->
+
                           <tr>
                             <td>
-                              <video width="200" height="100" controls>
-                                <source src="/upload/<%= row.cuds_document_name%>" type="video/mp4">
-
-                              </video>
+                              <img class="pdf-file" src="images/pdficon.png">
                               <p><span>
                                   <%= row.cuds_document_name%>
                                 </span>
@@ -249,12 +270,138 @@
                               </span></td>
                             <td>
                               <div class="recent-img">
-                                <img src="images/recent-user-1.png"><img class="mr-10"
-                                  src="images/recent-user-2.png"><img class="mr-10" src="images/recent-user-3.png">
-                                <a href="#" data-toggle="modal" data-target="#myModal" value="<%=row._id%>"
-                                  class="getDocId">Change permission</a>
+                                <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
+                                  class="mr-10" src="images/recent-user-3.png">
+                                <!--data-toggle="modal" data-target="#changePermisionModal" -->
+                                <a href="javascript:void(0)" value="<%=row._id%>"
+                                  class="getDocId changePermissionModal">Change permission</a>
                               </div>
                             </td>
+                          </tr>
+
+                        <%}else if(row.cuds_document_type=='doc'){ %>
+                          <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/docicon.png" alt="" title=""><br><span
+                            style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                            <%= row.cuds_document_name%>
+                          </span></a>
+                          </li> -->
+                          <tr>
+                            <td>
+                              <img class="pdf-file" src="images/docicon.png">
+                              <p><span>
+                                  <%= row.cuds_document_name%>
+                                </span>
+                                <%= row.cuds_document_size%>
+                              </p>
+                            </td>
+                            <td><span class="professionals-view">
+                                <%=moment.unix( row.cuds_created_at/1000).format("D MMM YYYY") %>| Downloaded by<ul>
+                                    <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">2 professionals</a>
+                                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#"><img src="images/recent-user-3.png"> Alex
+                                          Jackson</a>
+                                        <a class="dropdown-item" href="#"><img src="images/recent-user-3.png"> Alex
+                                          Jackson</a>
+                                      </div>
+                                    </li>
+                                  </ul>
+                              </span></td>
+                            <td>
+                              <div class="recent-img">
+                                <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
+                                  class="mr-10" src="images/recent-user-3.png">
+                                <!--data-toggle="modal" data-target="#changePermisionModal" -->
+                                <a href="javascript:void(0)" value="<%=row._id%>"
+                                  class="getDocId changePermissionModal">Change permission</a>
+                              </div>
+                            </td>
+                          </tr>
+                        <%}else if(row.cuds_document_type=='txt'){ %>
+                          <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/txticon.png" alt="" title=""><br><span
+                            style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                            <%= row.cuds_document_name%>
+                          </span></a>
+                          </li> -->
+                          <tr>
+                            <td>
+                              <img class="pdf-file" src="images/txticon.png">
+                              <p><span>
+                                  <%= row.cuds_document_name%>
+                                </span>
+                                <%= row.cuds_document_size%>
+                              </p>
+                            </td>
+                            <td><span class="professionals-view">
+                                <%=moment.unix( row.cuds_created_at/1000).format("D MMM YYYY") %>| Downloaded by<ul>
+                                    <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">2 professionals</a>
+                                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#"><img src="images/recent-user-3.png"> Alex
+                                          Jackson</a>
+                                        <a class="dropdown-item" href="#"><img src="images/recent-user-3.png"> Alex
+                                          Jackson</a>
+                                      </div>
+                                    </li>
+                                  </ul>
+                              </span></td>
+                            <td>
+                              <div class="recent-img">
+                                <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
+                                  class="mr-10" src="images/recent-user-3.png">
+                                <!--data-toggle="modal" data-target="#changePermisionModal" -->
+                                <a href="javascript:void(0)" value="<%=row._id%>"
+                                  class="getDocId changePermissionModal">Change permission</a>
+                              </div>
+                            </td>
+                          </tr>
+
+                        <%}else{%>
+
+                          <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/videoicon.png" alt="" title=""><br><span
+                            style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                            <%= row.cuds_document_name%>
+                          </span></a>
+                          </li> -->
+
+                          <tr>
+                            <td>
+                              <!-- <video width="200" height="100" controls>
+                                <source src="/upload/<%= row.cuds_document_name%>" type="video/mp4">
+
+                              </video> -->
+                              <img class="pdf-file" src="images/videoicon.png">
+                              <p><span>
+                                  <%= row.cuds_document_name%>
+                                </span>
+                                <%= row.cuds_document_size%>
+                              </p>
+                            </td>
+                            <td><span class="professionals-view">
+                                <%=moment.unix( row.cuds_created_at/1000).format("D MMM YYYY") %>| Downloaded by<ul>
+                                    <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">2 professionals</a>
+                                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#"><img src="images/recent-user-3.png"> Alex
+                                          Jackson</a>
+                                        <a class="dropdown-item" href="#"><img src="images/recent-user-3.png"> Alex
+                                          Jackson</a>
+                                      </div>
+                                    </li>
+                                  </ul>
+                              </span></td>
+                              <td>
+                                <div class="recent-img">
+                                  <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
+                                    class="mr-10" src="images/recent-user-3.png">
+                                  <!--data-toggle="modal" data-target="#changePermisionModal" -->
+                                  <a href="javascript:void(0)" value="<%=row._id%>"
+                                    class="getDocId changePermissionModal">Change permission</a>
+                                </div>
+                              </td>
                           </tr>
                           <%}%>
                             <% });%>
@@ -341,9 +488,19 @@
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-              console.log('filess:',e.target)
+              console.log('filess:',input.files[0].type)
               if(input.files[0].type == 'image/jpeg' || input.files[0].type == 'image/png' || input.files[0].type == 'image/gif'){
-                $('#upload-doc-view').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img src="'+e.target.result+'" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
+                $('#upload-doc-view').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="javascript:void(0)" ><img src="'+e.target.result+'" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
+              }else if(input.files[0].type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || input.files[0].type == 'application/msword'){
+                $('#upload-doc-view').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="javascript:void(0)"><img src="images/docicon.png" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
+              }else if(input.files[0].type == 'application/pdf'){
+                //$('#uploaded_img').attr('src', 'images/pdficon.png');
+                $('#upload-doc-view').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="javascript:void(0)"><img src="images/pdficon.png" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
+              }else if(input.files[0].type == 'text/plain'){
+                $('#upload-doc-view').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="javascript:void(0)"><img src="images/txticon.png" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
+                //videoicon
+              }else if(input.files[0].type == 'video/x-ms-wmv'){
+                $('#upload-doc-view').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="javascript:void(0)"><img src="images/videoicon.png" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
               }else{
                 Swal.fire({
                     icon: 'error',
@@ -360,6 +517,12 @@
     }
     </script>
     <script>
+      $('.btn-cancel-changepermision').click(function (e) { 
+       // alert();
+        $('#changePermisionModal').modal('hide');
+        location.reload();
+      });
+
       var id_element = [];
       $(".changePermissionModal").click(function (e) {
         var docId = $(this).attr('value');
@@ -394,9 +557,10 @@
                 }
               });
             } else {
-
-              $('.per_checkbox').removeAttr('checked', 'checked');
+              $('#changePermisionModal .per_checkbox').removeAttr('checked', 'checked');
+              $('#changePermisionModal .check-permission input:checked ~ .checkmark').css('background-color', 'transparent');
               //$('.per_checkbox').removeAttr('checked','checked');
+              
             }
           }
         });
@@ -571,17 +735,24 @@
           success: function (data) {
             console.log('data====',data)
             if(data.status==true){
-            $('.loader-box').attr('style','display:none !important');
-            Swal.fire({
-              //position: 'top-end',
-              icon: 'success',
-              title: data.message,
-              showConfirmButton: false,
-              timer: 2000
-            })
-            window.location.reload(true);
+              $('.loader-box').attr('style','display:none !important');
+              Swal.fire({
+                //position: 'top-end',
+                icon: 'success',
+                title: data.message,
+                showConfirmButton: false,
+                timer: 2000
+              })
+              window.location.reload(true);
             }else{
-
+                $('.loader-box').attr('style','display:none !important');
+                Swal.fire({
+                  //position: 'top-end',
+                  icon: 'error',
+                  title: data.message,
+                  showConfirmButton: false,
+                  timer: 4000
+                })
             }
           } 
         })
