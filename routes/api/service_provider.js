@@ -265,35 +265,58 @@ router.post("/service_provider_education", (req, res) => {
 
   console.log("req.body is : ", req.body);
   console.log("req.session.user_id is ", req.session.user_id);
-  const serviceProviderEducation = new ServiceProviderEducationSchema({
-    //rs_service_provider_id /*Need to store same sp_id while registering */
-    spes_service_provider_id: req.session.user_id,
-    spes_university_school_name: req.body.spes_university_school_name,
-    spes_qualification_obtained: req.body.spes_qualification_obtained,
-    spes_from_date: req.body.spes_from_date,
-    spes_to_date: req.body.spes_to_date,
+  if(req.body.education_id){
 
-  });
-  serviceProviderEducation
-    .save()
-    .then(serviceProviders => {
-      console.log("server response is: ", serviceProviders);
-      //res.redirect("/signup-professionals-profile-4")
-      res.send({
-        educationDetail: serviceProviders,
-        status: true
-      });
+    ServiceProviderEducationSchema.updateOne({ 'spes_service_provider_id': req.session.user_id, '_id': req.body.education_id }, { $set: { spes_university_school_name: req.body.spes_university_school_name,
+      spes_qualification_obtained: req.body.spes_qualification_obtained,
+      spes_from_date: req.body.spes_from_date,
+      spes_to_date: req.body.spes_to_date, } }, { upsert: true }, function (err) {
+      if (err) {
+        res.send({
+          err_msg: 'Something went wrong please try after some time',
+          status: false
+        });
+      } else {
+        res.send({
+          status: true,
+          action:'update',
+          success_msg:'Education updated successfully'
+        });
+      }
     })
-    .catch(err => {
-      console.log(err)
-      //req.flash('err_msg', 'Something went wrong please try after some time');
-      //res.redirect('/signup-professionals-profile-3');
-      res.send({
-        err_msg: 'Something went wrong please try after some time',
-        status: false
-      });
 
-    });
+
+  }else{
+
+      const serviceProviderEducation = new ServiceProviderEducationSchema({
+        spes_service_provider_id: req.session.user_id,
+        spes_university_school_name: req.body.spes_university_school_name,
+        spes_qualification_obtained: req.body.spes_qualification_obtained,
+        spes_from_date: req.body.spes_from_date,
+        spes_to_date: req.body.spes_to_date,
+      });
+      serviceProviderEducation
+        .save()
+        .then(serviceProviders => {
+          console.log("server response is: ", serviceProviders);
+          res.send({
+            educationDetail: serviceProviders,
+            status: true,
+            success_msg:'Education added successfully',
+            action:'add'
+          });
+        })
+        .catch(err => {
+          console.log(err)
+          res.send({
+            err_msg: 'Something went wrong please try after some time',
+            status: false
+          });
+
+        });
+
+  }
+
 });
 
 
@@ -763,6 +786,39 @@ router.post("/delete-professional-basic-details", async (req, res) => {
   }
 
 });
+
+/* -------------------------------------------------------------------------------------------------
+POST : service_provider_edit_action post api
+------------------------------------------------------------------------------------------------- */
+
+router.post("/edit-professional-basic-details", async (req, res) => {
+  var err_msg = null;
+  var success_msg = null;
+  //TODO:need to add condition is session is expired
+  let data = '';
+  console.log("req.body is : ", req.body);
+  console.log("req.session.user_id is ", req.session.user_id);
+  if (req.body.action == 'education-edit') {
+    data = await ServiceProviderEducationSchema.findOne({ _id: req.body.eduId });
+  }
+  if (data) {
+    console.log("server response is success: ", data);
+    res.send({
+      data: data,
+      message: 'Deleted Successfully !!',
+      status: true
+    });
+  } else {
+    console.log("server response is error: ", data);
+    res.send({
+      data: data,
+      message: 'Something going wrong please try again !!',
+      status: false
+    });
+  }
+
+});
+
 
 
 function generateOTP() {

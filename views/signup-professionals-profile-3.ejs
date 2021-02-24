@@ -1,6 +1,6 @@
 <%- include('head')-%>
   <!-- The Modal -->
-  <div class="modal permission-modal fade " id="myModal">
+  <div class="modal permission-modal fade " data-backdrop="static" data-keyboard="false" id="myModal">
     <div class="modal-dialog">
       <div class="modal-content">
         <form class="form" action="#" method="POST" id="educationForm">
@@ -30,11 +30,11 @@
                   name="spes_to_date" data-rule-required="true" data-msg-required="To Date is required!">
               </div>
             </div>
-
+           <input type="hidden" name="education_id" value="" class="edit_education_id">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-          <button name="submit" type="submit" class="btn btn-cancel">Save</button>
+          <button name="submit" type="submit" class="btn btn-cancel education_submit">Save</button>
         </div>
 
         </form>
@@ -200,7 +200,7 @@
                             </div>
                             <div class="col-sm-12 col-lg-3">
                               <div class="">
-                                <img style="width:19%" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;
+                                <img onclick="editEducation('<%= row._id %>')" style="width:19%" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;
                                 <img onclick="deleteEducation('<%= row._id %>')" style="width:19%" src="images/delete-icon.png" alt="">
                               </div>
                             </div>
@@ -209,7 +209,7 @@
                          </div>
                           <div class="row">
                             <div class="edu-btn float-left">
-                              <a href="#" class="btn add-edu-btn" data-toggle="modal" data-target="#myModal"><i
+                              <a href="#" class="btn add-edu-btn" ><i
                                   class="fa fa-plus"></i>&nbsp;&nbsp;
                                 AddEducation</a>
                             </div>
@@ -274,6 +274,16 @@
     crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
   <script type="text/javascript">
+
+  $(".add-edu-btn").click(function (e) {
+      $('#educationForm')[0].reset();
+      $('#myModal').modal('show');
+      $('.education_submit').text('Save');
+      $('#educationForm .edit_education_id').val();
+      $('#educationForm h2.modal-title.w-100').text('Add Education');               
+  });
+
+
     $('#educationForm').validate({
       onfocusout: function (element) {
         this.element(element);
@@ -286,22 +296,91 @@
       submitHandler: function (form) {
         var formdata = $('#educationForm').serialize();
           console.log('formdata:', formdata);
-          $.ajax({
-            type: "POST",
-            data: formdata,
-            url: "/api/service_provider_education",  
-            cache: false,
-            dataType:'json',
-            success: function (data) {
-              console.log(data)
-              var fromDateYear = new Date(data.educationDetail.spes_from_date).getFullYear();
-              var toDateYear = new Date(data.educationDetail.spes_to_date).getFullYear();
-              $('#myModal').modal('hide');
-              $('.education_lists').append('<div class="row"><div class="col-sm-12 col-lg-9"><div class=""><p>'+data.educationDetail.spes_university_school_name+'</p><h6>'+data.educationDetail.spes_qualification_obtained+'</h6><h6>'+fromDateYear+'-'+toDateYear+'</h6></div></div><div class="col-sm-12 col-lg-3"><div class=""> <img style="width:19%" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;<img style="width:19%" src="images/delete-icon.png" alt=""></div></div></div>')
-            }
-          });
+            $.ajax({
+              type: "POST",
+              data: formdata,
+              url: "/api/service_provider_education",  
+              cache: false,
+              dataType:'json',
+              success: function (data) {
+                console.log(data)
+                if(data.status == true){
+                  $('#educationForm')[0].reset();
+                         if(data.action == 'add'){
+                            var fromDateYear = new Date(data.educationDetail.spes_from_date).getFullYear();
+                            var toDateYear = new Date(data.educationDetail.spes_to_date).getFullYear();
+                            $('#myModal').modal('hide');
+                            $('.education_lists').append('<div class="row"><div class="col-sm-12 col-lg-9"><div class=""><p><b>'+data.educationDetail.spes_university_school_name+'</b></p><h6>'+data.educationDetail.spes_qualification_obtained+'</h6><h6>'+fromDateYear+'-'+toDateYear+'</h6></div></div><div class="col-sm-12 col-lg-3"><div class=""> <img style="width:19%" onclick="editEducation('+"'"+data.educationDetail._id+"'"+')" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;<img style="width:19%" onclick="deleteEducation('+data.educationDetail._id+')" src="images/delete-icon.png" alt=""></div></div></div>')
+                         }else{
+                            Swal.fire({
+                              icon: 'success',
+                              title: data.success_msg,
+                              showConfirmButton: false,
+                              confirmButtonColor: '#005377',
+                              timer: 3000
+                            })
+                            setTimeout(function(){ 
+                              location.reload(true);
+                            }, 3000);
+                         }
+                }else{
+
+                  Swal.fire({
+                          icon: 'error',
+                          title: data.err_msg,
+                          showConfirmButton: false,
+                          confirmButtonColor: '#005377',
+                          timer: 3000
+                        })
+                        setTimeout(function(){ 
+                          location.reload(true);
+                        }, 3000);
+
+
+                }
+              }
+            });
       }
     });
+
+
+    function editEducation(id){
+        var eduId = id;
+        $.ajax({
+                  type: "POST",
+                  data: {
+                    eduId:eduId,
+                    action:'education-edit'
+                  },
+                  url: "/api/edit-professional-basic-details", 
+                  cache:false,           
+                  success: function (data) {
+                    console.log(data);
+                    $('#myModal').modal('show');
+                    if(data.status == true){
+                      $('.edit_education_id').val(data.data._id);
+                      $('#schoolName').val(data.data.spes_university_school_name);
+                      $('#QualificationObtained').val(data.data.spes_qualification_obtained);
+                      $('#FromDate').val(data.data.spes_from_date);
+                      $('#toDate').val(data.data.spes_to_date);
+                      $('.education_submit').text('Update');
+                      $('#educationForm h2.modal-title.w-100').text('Update Education');
+                      
+                    }else{
+                      Swal.fire({
+                          icon: 'error',
+                          title: data.message,
+                          showConfirmButton: false,
+                          confirmButtonColor: '#005377',
+                          timer: 3000
+                        })
+                        setTimeout(function(){ 
+                          location.reload(true);
+                        }, 3000);
+                    }
+                  }
+            });
+    }
 
 
     function deleteEducation(id){
