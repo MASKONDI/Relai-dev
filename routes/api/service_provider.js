@@ -290,12 +290,16 @@ router.post("/service_provider_education", (req, res) => {
 
   console.log("req.body is : ", req.body);
   console.log("req.session.user_id is ", req.session.user_id);
-  if(req.body.education_id){
+  if (req.body.education_id) {
 
-    ServiceProviderEducationSchema.updateOne({ 'spes_service_provider_id': req.session.user_id, '_id': req.body.education_id }, { $set: { spes_university_school_name: req.body.spes_university_school_name,
-      spes_qualification_obtained: req.body.spes_qualification_obtained,
-      spes_from_date: req.body.spes_from_date,
-      spes_to_date: req.body.spes_to_date, } }, { upsert: true }, function (err) {
+    ServiceProviderEducationSchema.updateOne({ 'spes_service_provider_id': req.session.user_id, '_id': req.body.education_id }, {
+      $set: {
+        spes_university_school_name: req.body.spes_university_school_name,
+        spes_qualification_obtained: req.body.spes_qualification_obtained,
+        spes_from_date: req.body.spes_from_date,
+        spes_to_date: req.body.spes_to_date,
+      }
+    }, { upsert: true }, function (err) {
       if (err) {
         res.send({
           err_msg: 'Something went wrong please try after some time',
@@ -304,41 +308,41 @@ router.post("/service_provider_education", (req, res) => {
       } else {
         res.send({
           status: true,
-          action:'update',
-          success_msg:'Education updated successfully'
+          action: 'update',
+          success_msg: 'Education updated successfully'
         });
       }
     })
 
 
-  }else{
+  } else {
 
-      const serviceProviderEducation = new ServiceProviderEducationSchema({
-        spes_service_provider_id: req.session.user_id,
-        spes_university_school_name: req.body.spes_university_school_name,
-        spes_qualification_obtained: req.body.spes_qualification_obtained,
-        spes_from_date: req.body.spes_from_date,
-        spes_to_date: req.body.spes_to_date,
-      });
-      serviceProviderEducation
-        .save()
-        .then(serviceProviders => {
-          console.log("server response is: ", serviceProviders);
-          res.send({
-            educationDetail: serviceProviders,
-            status: true,
-            success_msg:'Education added successfully',
-            action:'add'
-          });
-        })
-        .catch(err => {
-          console.log(err)
-          res.send({
-            err_msg: 'Something went wrong please try after some time',
-            status: false
-          });
-
+    const serviceProviderEducation = new ServiceProviderEducationSchema({
+      spes_service_provider_id: req.session.user_id,
+      spes_university_school_name: req.body.spes_university_school_name,
+      spes_qualification_obtained: req.body.spes_qualification_obtained,
+      spes_from_date: req.body.spes_from_date,
+      spes_to_date: req.body.spes_to_date,
+    });
+    serviceProviderEducation
+      .save()
+      .then(serviceProviders => {
+        console.log("server response is: ", serviceProviders);
+        res.send({
+          educationDetail: serviceProviders,
+          status: true,
+          success_msg: 'Education added successfully',
+          action: 'add'
         });
+      })
+      .catch(err => {
+        console.log(err)
+        res.send({
+          err_msg: 'Something went wrong please try after some time',
+          status: false
+        });
+
+      });
 
   }
 
@@ -356,7 +360,7 @@ router.post("/service_provider_employment_history1", (req, res) => {
 
   console.log("req.body is : ", req.body);
   console.log("req.session.user_id is ", req.session.user_id);
- 
+
   const serviceProviderEmploymentHistory = new ServiceProviderEmploymentHistorySchema({
     //rs_service_provider_id /*Need to store same sp_id while registering */
     spehs_service_provider_id: req.session.user_id,
@@ -504,35 +508,45 @@ router.post("/service_provider_language", (req, res) => {
   var err_msg = null;
   var success_msg = null;
   //TODO:need to add condition is session is expired
-
+  var flag = true;
   console.log("req.body is : ", req.body);
   console.log("req.session.user_id is ", req.session.user_id);
-  const serviceProviderLanguage = new ServiceProviderLanguageSchema({
-    //spls_service_provider_id /*Need to store same sp_id while registering */
-    spls_service_provider_id: req.session.user_id,
-    spls_language: req.body.spls_language,
-    spls_language_proficiency_level: req.body.spls_language_proficiency_level
-  });
-  serviceProviderLanguage
-    .save()
-    .then(serviceProviders => {
-      console.log("server response is :", serviceProviders);
-      //res.redirect("/portfolio")
-      res.send({
-        message: "language-details submitted successfully.please continue...",
-        status: true,
-      });
-
-    })
-    .catch(err => {
-      console.log(err)
-      //req.flash('err_msg', 'Something went wrong please try again later.');
-      //res.redirect('/signup-professionals-profile-7');
-      res.send({
-        message: "Something went wrong please try again later.",
-        status: false,
-      });
+  for (var i in req.body.spls_language) {
+    const serviceProviderLanguage = new ServiceProviderLanguageSchema({
+      //spls_service_provider_id /*Need to store same sp_id while registering */
+      spls_service_provider_id: req.session.user_id,
+      spls_language: req.body.spls_language[i],
+      spls_language_proficiency_level: req.body.spls_language_proficiency_level[i]
     });
+    console.log("input request is:", i, serviceProviderLanguage);
+    serviceProviderLanguage
+      .save()
+      .then(serviceProviders => {
+        console.log("server response is :", serviceProviders);
+        flag = true;
+        //res.redirect("/portfolio")
+        // res.send({
+        //   message: "language-details submitted successfully.please continue...",
+        //   status: true,
+        // });
+
+      })
+      .catch(err => {
+        console.log(err)
+        //req.flash('err_msg', 'Something went wrong please try again later.');
+        //res.redirect('/signup-professionals-profile-7');
+        res.send({
+          message: "Something went wrong please try again later.",
+          status: false,
+        });
+      });
+  }
+  if (flag == true) {
+    res.send({
+      message: "language-details submitted successfully.please continue...",
+      status: true,
+    });
+  }
 });
 
 /* -------------------------------------------------------------------------------------------------

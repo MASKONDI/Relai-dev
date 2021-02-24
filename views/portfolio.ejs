@@ -22,9 +22,9 @@
                 <%= success_msg %>
               </span>
               <% }%>
-              <form action="/upload" method="post" enctype="multipart/form-data" id="uploadForm ">
-                <div class="row">
-                  
+                <form action="/upload" method="post" enctype="multipart/form-data" id="uploadForm ">
+                  <div class="row">
+
 
                     <div class="kyc-box-portfolio">
 
@@ -40,14 +40,15 @@
                       </div>
                       <span>
                         <div class="custom-file-input">
-                          <input type="file" id="image" name="portfolio-docs" value="" required onchange="document.getElementsByClassName('avtar')[0].src = window.URL.createObjectURL(this.files[0])">
+                          <input type="file" id="image" name="portfolio-docs" value="" required
+                            onchange="document.getElementsByClassName('avtar')[0].src = window.URL.createObjectURL(this.files[0])">
                           <input type="button">
                         </div>
                       </span>
 
                     </div>
-                  <!-- </form> -->
-                  <!-- <form action="/upload" method="post" enctype="multipart/form-data"> -->
+                    <!-- </form> -->
+                    <!-- <form action="/upload" method="post" enctype="multipart/form-data"> -->
 
                     <div class="kyc-box-portfolio">
 
@@ -63,15 +64,16 @@
                       </div>
                       <span>
                         <div class="custom-file-input">
-                          <input type="file" id="image" name="portfolio-docs" value="" required onchange="document.getElementsByClassName('avtar')[1].src = window.URL.createObjectURL(this.files[0])" >
+                          <input type="file" id="image" name="portfolio-docs" value="" required
+                            onchange="document.getElementsByClassName('avtar')[1].src = window.URL.createObjectURL(this.files[0])">
                           <input type="button">
                         </div>
                       </span>
 
                     </div>
-                  <!-- </form> -->
+                    <!-- </form> -->
 
-                  <!-- <form action="/upload" method="post" enctype="multipart/form-data"> -->
+                    <!-- <form action="/upload" method="post" enctype="multipart/form-data"> -->
                     <div class="kyc-box-portfolio">
 
                       <div class=kyc-section-portfolio>
@@ -86,26 +88,27 @@
                       </div>
                       <span>
                         <div class="custom-file-input">
-                          <input type="file" id="image" name="portfolio-docs" value="" required onchange="document.getElementsByClassName('avtar')[2].src = window.URL.createObjectURL(this.files[0])">
+                          <input type="file" id="image" name="portfolio-docs" value="" required
+                            onchange="document.getElementsByClassName('avtar')[2].src = window.URL.createObjectURL(this.files[0])">
                           <input type="button">
                         </div>
                       </span>
 
                     </div>
-                  
-                  <button class="portfolio-btn" name="addDom">
-                    <div class=portfolio-add-button>
-                      <img src="images/add-icon.png">
-                    </div>
-                  </button>
-                </div>
-                <div class="portfolio-submit">
-                  <button type="submit" class="btn portfolio-submit-btn" name="uploadbtn" >Upload</button>
-                  
-                  <!-- <a href="/kyc-professional" class="btn portfolio-submit-btn">Next</a> -->
 
-                </div>
-              </form>
+                    <button class="portfolio-btn" name="addDom">
+                      <div class=portfolio-add-button>
+                        <img src="images/add-icon.png">
+                      </div>
+                    </button>
+                  </div>
+                  <div class="portfolio-submit">
+                    <button type="submit" class="btn portfolio-submit-btn" name="uploadbtn">Upload</button>
+
+                    <!-- <a href="/kyc-professional" class="btn portfolio-submit-btn">Next</a> -->
+
+                  </div>
+                </form>
 
       </div>
       <div class="col-lg-4">
@@ -152,7 +155,7 @@
     $(document).ready(function () {
       let c = 4;
       $("button[name='addDom']").click(function () {
-        var domElement = $('<div class="kyc-box-portfolio"> <div class=kyc-section-portfolio> <img src="images/upload-icon.png" class="avtar"> </div> <div class="driving-liences-portfolio"> <p>Picture/Video '+c +' </p> </div> <div class="upload-portfolio"> <a href="javascript:void(0)">Upload</a> </div> <span> <div class="custom-file-input"> <input type="file" name="portfolio-docs" id="image" value="" required> <input type="button"> </div> </span> </div>');
+        var domElement = $('<div class="kyc-box-portfolio"> <div class=kyc-section-portfolio> <img src="images/upload-icon.png" class="avtar"> </div> <div class="driving-liences-portfolio"> <p>Picture/Video ' + c + ' </p> </div> <div class="upload-portfolio"> <a href="javascript:void(0)">Upload</a> </div> <span> <div class="custom-file-input"> <input type="file" name="portfolio-docs" id="image" value="" required> <input type="button"> </div> </span> </div>');
         $(this).after(domElement);
         c++;
       });
