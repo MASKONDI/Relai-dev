@@ -3,44 +3,44 @@
   <div class="modal permission-modal fade " id="myModal">
     <div class="modal-dialog">
       <div class="modal-content">
+        <form class="form" method="post" id="employment_form">
+          <!-- Modal Header -->
+          <div class="modal-header text-center">
+            <h2 class="modal-title w-100">Add Employment</h2>
+          </div>
 
-        <!-- Modal Header -->
-        <div class="modal-header text-center">
-          <h2 class="modal-title w-100">Add Employment</h2>
-        </div>
+          <!-- Modal body -->
+          <div class="modal-body">
 
-        <!-- Modal body -->
-        <div class="modal-body">
-          <form class="form" action="/api/service_provider_employment_history" method="post" id="form4">
 
             <input type="text" class="form-control form-control-fix2" id="subject" placeholder=" Name of Employer"
-              name="spehs_name_of_employer" data-rule-required="true" data-msg-required="Employer name is required!">
+              name="spehs_name_of_employer" data-rule-required="true" data-msg-required="Employer name is required!" required>
 
             <input type="text" class="form-control form-control-fix2" id="subject" placeholder=" Job Title"
-              name="spehs_job_title" data-rule-required="true" data-msg-required="Job Title is required">
+              name="spehs_job_title" data-rule-required="true" data-msg-required="Job Title is required" required>
 
             <input type="text" class="form-control form-control-fix2" id="subject" placeholder="Job Description"
-              name="spehs_job_description" data-rule-required="true" data-msg-required="Job Description is required!">
+              name="spehs_job_description" data-rule-required="true" data-msg-required="Job Description is required!" required>
 
             <input type="text" class="form-control form-control-fix2" id="subject" placeholder=" Reason for Leaving"
-              name="spehs_reason_for_leaving">
+              name="spehs_reason_for_leaving" required>
 
             <div class="row">
               <div class="col-sm-12 col-lg-6">
-                <input type="date" class="form-control  form-control-fix2" id="subject" placeholder="from Date"
-                  name="spehs_from_date" data-rule-required="true" data-msg-required="From Date is required!">
+                <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="subject" placeholder="from Date"
+                  name="spehs_from_date" data-rule-required="true" data-msg-required="From Date is required!" required>
               </div>
               <div class="col-sm-12 col-lg-6">
-                <input type="date" class="form-control  form-control-fix2" id="subject" placeholder="toDate"
-                  name="spehs_to_date" data-rule-required="true" data-msg-required="To Date is required!">
+                <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="subject" placeholder="toDate"
+                  name="spehs_to_date" data-rule-required="true" data-msg-required="To Date is required!" required>
               </div>
             </div>
 
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-          <button type="submit" name="submit" class="btn btn-cancel">Save</button>
-        </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            <button name="submit" type="submit" id="Employment_form_btn" class="btn btn-cancel">Save</button>
+          </div>
         </form>
       </div>
     </div>
@@ -218,7 +218,7 @@
 
                           <div class="col-6 col-sm-6 col-lg-6">
                             <div class="prev-btn float-right">
-                              <a href="/signup-professionals-profile-5" class="btn btn-next" style="width: 164px;">
+                              <a href="/signup-professionals-profile-5" class="btn btn-next" id="next_btn_4" style="width: 164px;">
                                 NEXT</a>
                             </div>
               </form>
@@ -255,13 +255,14 @@
       });
     });
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
     integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
     crossorigin="anonymous"></script>
-
-
   <script type="text/javascript">
-    $('#form4').validate({
+    $('#employment_form').validate({
       onfocusout: function (element) {
         this.element(element);
       },
@@ -272,7 +273,8 @@
       },
       submitHandler: function (form) {
         $('#submit').attr('disabled', true);
-        form.submit();
+        //form.submit();
+
       }
     });
   </script>
@@ -292,7 +294,31 @@
       }
     });  
   </script>
-
+  <script>
+    $(document).ready(function () {
+      $('#next_btn_4').prop('disabled', true);
+      $("#Employment_form_btn").click(function (e) {
+        e.preventDefault();
+        //alert(e.target)
+        var formdata = $("#employment_form").serialize();
+        console.log('formdata:', formdata);
+        $.ajax({
+          type: "POST",
+          data: formdata,
+          url: "/api/service_provider_employment_history1",
+          cache: false,
+          //dataType:'json',
+          success: function (data) {
+            console.log(data)
+            //var fromDateYear = new Date(data.educationDetail.spes_from_date).getFullYear();
+            //var toDateYear = new Date(data.educationDetail.spes_to_date).getFullYear();
+            //$('#myModal').modal('hide');
+            //$('.education_lists').append('<div class="row"><div class="col-sm-12 col-lg-9"><div class=""><p>' + data.educationDetail.spes_university_school_name + '</p><h6>' + data.educationDetail.spes_qualification_obtained + '</h6><h6>' + fromDateYear + '-' + toDateYear + '</h6></div></div><div class="col-sm-12 col-lg-3"><div class=""> <img style="width:19%" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;<img style="width:19%" src="images/delete-icon.png" alt=""></div></div></div>')
+          }
+        })
+      })
+    });  
+  </script>
 
 
 

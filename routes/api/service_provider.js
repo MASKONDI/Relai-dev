@@ -349,13 +349,14 @@ router.post("/service_provider_education", (req, res) => {
 POST : service_provider_employment_history post api is responsible for submitting signup-professionals-profile-4 from data 
 ------------------------------------------------------------------------------------------------- */
 
-router.post("/service_provider_employment_history", (req, res) => {
+router.post("/service_provider_employment_history1", (req, res) => {
   var err_msg = null;
   var success_msg = null;
   //TODO:need to add condition is session is expired
 
   console.log("req.body is : ", req.body);
   console.log("req.session.user_id is ", req.session.user_id);
+ 
   const serviceProviderEmploymentHistory = new ServiceProviderEmploymentHistorySchema({
     //rs_service_provider_id /*Need to store same sp_id while registering */
     spehs_service_provider_id: req.session.user_id,
@@ -370,12 +371,20 @@ router.post("/service_provider_employment_history", (req, res) => {
     .save()
     .then(serviceProviders => {
       console.log("server response is", serviceProviders);
-      res.redirect("/signup-professionals-profile-5")
+      //res.redirect("/signup-professionals-profile-5")
+      res.send({
+        educationDetail: serviceProviders,
+        status: true
+      });
     })
     .catch(err => {
       console.log(err)
       req.flash('err_msg', 'Something went wrong please try after some time');
-      res.redirect('/signup-professionals-profile-4');
+      //res.redirect('/signup-professionals-profile-4');
+      res.send({
+        err_msg: 'Something went wrong please try after some time',
+        status: false
+      });
     });
 });
 
