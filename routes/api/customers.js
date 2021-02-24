@@ -1246,7 +1246,7 @@ router.post("/addTask_from_Dreamhome_detial_phase", (req, res) => {
   console.log('addTask_from_Dreamhome_detial_phase', req.body);
   if (req.body.ppts_assign_to == '' || req.body.ppts_assign_to == undefined || req.body.ppts_phase_name == '') {
     return res.send({
-      'err_msg': 'Please Select All Fild',
+      'err_msg': 'All Fileds Required !!',
       'status': false,
       'redirect': '/professionals-hirenow'
     });
