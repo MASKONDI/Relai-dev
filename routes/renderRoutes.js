@@ -1478,7 +1478,7 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
       { $and: [{ ps_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login },] },
       { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login }] }
     ]
-  }).then(async (data) => {
+  }).sort({ _id: -1 }).then(async (data) => {
     if (data) {
       let arr = [];
 
@@ -1609,7 +1609,7 @@ function timeDifference(data) {
   console.log("estimated_time :", message);
   if (isNaN(estimated_time)) {
     console.log("aaa", estimated_time)
-    return 'NA';
+    return 'N/A';
   } else {
     console.log("bbb", estimated_time)
     return message;

@@ -98,7 +98,7 @@
                                 </span>
                             </label></td>
                           <td>
-                            <a href="" class="deleteProfesshional" id="<%=row._id%>"><img
+                            <a href="javascript:void(0)" class="deleteProfesshional" id="<%=row._id%>"><img
                                 src="images/delete-icon.png"></a>
                           </td>
                         </tr>
@@ -111,7 +111,7 @@
           <!-- Modal footer -->
           <div class="modal-footer">
             <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-cancel" data-dismiss="modal">Refresh</button>
+            <!-- <button type="button" class="btn btn-cancel" data-dismiss="modal">Refresh</button> -->
           </div>
         </div>
       </div>
@@ -242,7 +242,7 @@
                                   </a></div>
                               </div>
                               <div class="img-fix3 float-right">
-                                <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>"
+                                <a href="javascript:void(0)"
                                   data-toggle="tooltip" data-placement="top" title="Message"><img
                                     src="images/chat.png"></a>
                                 <!-- #ComplaintModal -->
@@ -292,7 +292,7 @@
                                                   <div class="start-date">
                                                     <p>Start date<br><b>
                                                         <%if(!startDate){%>
-                                                          NA
+                                                          N/A
                                                           <%}else{%>
                                                             <%=moment(startDate).format("Do MMM, YYYY"); %>
                                                               <%}%>
@@ -303,7 +303,7 @@
                                                   <div class="start-date 1 Dec, 2021">
                                                     <p>End date<br><b>
                                                         <%if(!endDate){%>
-                                                          NA
+                                                          N/A
                                                           <%}else{%>
                                                             <%=moment(endDate).format("Do MMM, YYYY"); %>
                                                               <%}%>
@@ -837,14 +837,34 @@
             cache: false,
             success: function (data) {
               if (data.status == false) {
-                $('.message').html('<span class="alert alert-danger error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
-                setTimeout(function () { $('.message').html(''); }, 3000);
+                //$('.message').html('<span class="alert alert-danger error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
+                //setTimeout(function () { $('.message').html(''); }, 3000);
+
+                Swal.fire({
+                    // position: 'top-end',
+                    icon: 'error',
+                    title: data.err_msg,
+                    showConfirmButton: true,
+                    confirmButtonColor: '#005377'
+                    //timer: 1500
+                  })
+
+
               } else {
                 console.log($(".propf_row_" + data.id));
                 //$(".propf_row_"+data.id).css("display", "none");
                 //$('#removeProfessionalModal').modal('hide');
-                $('.message').html('<span class="alert alert-success error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
-                setTimeout(function () { $('.message').html(''); window.location.reload(true) }, 3000);
+                //$('.message').html('<span class="alert alert-success error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
+                //setTimeout(function () { $('.message').html(''); window.location.reload(true) }, 3000);
+                Swal.fire({
+                    // position: 'top-end',
+                    icon: 'success',
+                    title: data.success_msg,
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+                  })
+
                 $tr.find('td').fadeOut(1000, function () {
                   $tr.remove();
                 });

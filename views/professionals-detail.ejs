@@ -196,36 +196,6 @@
                       <div class="float-right">
                         <p>0 Videos &bull; <%=portpolioImage.length%> Photos</p>
                       </div>
-                      <!-- <div id="demo" class="carousel slide " data-ride="carousel">
-                       
-                        <div class="carousel-inner">
-                          <%if(portpolioImage.length>0){%>
-                              <% var c=0 ; portpolioImage.forEach(function(row){ %>
-                                  <%if(c==0){%>
-                                    <div class="carousel-item active">
-                                      <img class="image-size-fix" src="upload/<%=row.spps_filename%>" alt="">
-                                    </div>
-                                  <%}else{%>
-                                      <div class="carousel-item ">
-                                        <img class="image-size-fix" src="upload/<%=row.spps_filename%>" alt="">
-                                      </div>
-                                  <%}%>
-                              <% c++; });%>
-                            <%}else{%>
-                              <h6>Portfolio Image Not Uploaded<h6>
-                            <%}%>
-
-                        </div>
-                        
-                        <a class="carousel-control-prev" href="#demo" data-slide="prev">
-
-                          <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        </a>
-                        <a class="carousel-control-next" href="#demo" data-slide="next">
-                          <i class="fa fa-angle-right" aria-hidden="true"></i>
-                        </a>
-                      </div> -->
-
                       <div id="demo" class="carousel slide " data-ride="carousel">
                         <%if(portpolioImage.length>0){%>
                           <!-- The slideshow -->
@@ -241,6 +211,7 @@
                               <%}%>
 
                                 <% c++; });%>
+                              </div>
                             </div>
                             <!-- Left and right controls -->
                             <a class="carousel-control-prev" href="#demo" data-slide="prev">
