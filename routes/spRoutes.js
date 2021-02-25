@@ -25,7 +25,7 @@ app.get('/otp-professional', function (req, res) {
 });
 app.get('/track-your-progress-professionals', function (req, res) {
   console.log("");
-
+  req.session.pagename = 'track-your-progress-professionals';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('track-your-progress-professionals', {
@@ -35,7 +35,7 @@ app.get('/track-your-progress-professionals', function (req, res) {
 });
 app.get('/property', function (req, res) {
   console.log("");
-
+  req.session.pagename = 'property';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('property', {
@@ -45,7 +45,7 @@ app.get('/property', function (req, res) {
 });
 app.get('/professionals-to-do-list', function (req, res) {
   console.log("");
-
+  req.session.pagename = '';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('professionals-to-do-list', {
@@ -55,8 +55,8 @@ app.get('/professionals-to-do-list', function (req, res) {
 });
 
 app.get('/myproperties', function (req, res) {
-  console.log("");
-
+  console.log("", req.session);
+  req.session.pagename = 'property';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('myproperties', {
@@ -67,6 +67,7 @@ app.get('/myproperties', function (req, res) {
 
 app.get('/property-detail', function (req, res) {
   console.log("");
+  req.session.pagename = 'property';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('property-detail', {
@@ -78,6 +79,7 @@ app.get('/property-detail', function (req, res) {
 
 app.get('/professionals-detail-message', function (req, res) {
   console.log("");
+  req.session.pagename = 'property';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('professionals-detail-message', {
@@ -85,21 +87,11 @@ app.get('/professionals-detail-message', function (req, res) {
     session: req.session
   });
 });
-
-app.get('/professionals-detail-message', function (req, res) {
-  console.log("");
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('professionals-detail-message', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
-
 
 app.get('/property-detail-submit-proposal', function (req, res) {
   console.log("");
   err_msg = req.flash('err_msg');
+  req.session.pagename = 'property';
   success_msg = req.flash('success_msg');
   res.render('property-detail-submit-proposal', {
     err_msg, success_msg, layout: false,
