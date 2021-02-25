@@ -126,28 +126,27 @@ app.post('/upload-profile-pic', upload.single('profile-pic'), (req, res, next) =
 
 
 
-
+var signup_helper = require('./api/service_provider_helper/signup_helper')
 
 // Uploading the image
 app.post('/upload', upload.array('portfolio-docs', 10), async (req, res, next) => {
 
-  console.log("req is ===:", req.files);
-  console.log("req.session.user_id is :", req.session.user_id);
-  var c = 0;
-  if (req.files.length != 0) {
-    await req.files.forEach(element => {
-      console.log('filename====', element.filename)
-  
+  var responce =  await signup_helper.savePortpofolio(req);
+  console.log("responce",responce)
+  if(responce){
+    return res.send({
+      'status':true,
+      'message': 'Portfolio-docs Uploaded Successfully',
+      
 
     })
-   
+  }else{
+    return res.send({
+      'status':false,
+      'message': 'Something Wrong !!',
+      
 
-
-  } else {
-  return res.send({
-     status:false,
-     err_msg:'Please Upload Atlist 3 Document',
-   })
+    })
   }
 });
 
