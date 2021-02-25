@@ -1296,7 +1296,7 @@ router.post("/addTask_from_Dreamhome_detial_phase", (req, res) => {
 router.post("/Add_existing_task_from_Dreamhome_detial_phase", (req, res) => {
   if (req.body.ppts_assign_to == '' || req.body.ppts_assign_to == undefined || req.body.ppts_phase_name == '') {
     return res.send({
-      'err_msg': 'Please Select All Fild',
+      'err_msg': 'All fields are required !!',
       'status': false,
       'redirect': '/professionals-hirenow'
     });
@@ -1318,7 +1318,7 @@ router.post("/Add_existing_task_from_Dreamhome_detial_phase", (req, res) => {
 router.post("/addTask", (req, res) => {
   if (req.body.Phase == '' || req.body.Phase == undefined) {
     return res.send({
-      'err_msg': 'Please Select All Fild',
+      'err_msg': 'All fields are required !!',
       'status': false,
       'redirect': '/professionals-hirenow'
     });
@@ -2187,7 +2187,7 @@ router.post("/addTask_from_Dreamhome_detial", (req, res) => {
   console.log("addTask_fromDreamgome=========", req.body)
   if (req.body.Phase == '' || req.body.Phase == undefined || req.body.service_provider_id == '') {
     return res.send({
-      'err_msg': 'Please Select All Fild',
+      'err_msg': 'All fields are required !!',
       'status': false,
       'redirect': '/professionals-hirenow'
     });

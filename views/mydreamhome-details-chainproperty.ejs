@@ -96,7 +96,7 @@
                                                     <div class="start-date">
                                                       <p>Start date<br><b>
                                                         <%if(!startDate){%>
-                                                          NA
+                                                          N/A
                                                           <%}else{%>
                                                           <%=moment(startDate).format("Do MMM, YYYY"); %>
                                                            <%}%>
@@ -107,7 +107,7 @@
                                                     <div class="start-date">
                                                       <p>End date<br><b>
                                                         <%if(!endDate){%>
-                                                          NA
+                                                          N/A
                                                           <%}else{%>
                                                           <%=moment(endDate).format("Do MMM, YYYY"); %>
                                                            <%}%>
@@ -117,7 +117,7 @@
                                                   <div class="col-6 col-sm-6 col-lg-3">
                                                     <div class="start-date">
                                                       <p>Area<br><b>
-                                                          <%=row.ps_property_area%>
+                                                          <%=row.ps_property_area%> sq.ft
                                                         </b></p>
                                                     </div>
                                                   </div>
@@ -275,69 +275,4 @@
         </div>
       </div>
     </div>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"></script>
-    <script>
-      $(document).ready(function () {
-        $(".sidenav ul li").click(function () {
-          $(".sidenav ul li").removeClass("active");
-          $(this).addClass("active");
-        });
-      });
-      $(document).ready(function () {
-        $(".right-navbar li").click(function () {
-          $("right-navbar li").removeClass("active");
-          $(this).addClass("active");
-        });
-      });
-    </script>
-
-    <script>
-      $(document).ready(function () {
-        $(".buyertab").click(function (e) {
-          $.ajax({
-            type: "GET",
-            url: "/buyer",
-            cache: false,
-            success: function (html) {
-            }
-          });
-          location.reload(true);
-        });
-        $(".sellertab").click(function (e) {
-          $.ajax({
-            type: "GET",
-            url: "/seller",
-            cache: false,
-            success: function (html) {
-            }
-          });
-          location.reload(true);
-        });
-        $(".renovatortab").click(function (e) {
-          $.ajax({
-            type: "GET",
-            url: "/renovator",
-            cache: false,
-            success: function (html) {
-            }
-          });
-          location.reload(true);
-        });
-      });
-    </script>
-
-    </body>
-
-    </html>
+    <%- include('dashboard_footer')-%>
