@@ -1,5 +1,5 @@
-
-    <!-- The Modal -->
+<%- include('dashboard_header_professional')-%>
+  <!-- The Modal -->
   <div class="modal permission-modal fade " id="myModal">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -29,124 +29,129 @@
       </div>
     </div>
   </div>
-    <div class="dashboard-wpr">
-      <div class="container-fluid">
-        <div class="row content">
-          <div class="col-sm-2 sidenav hidden-xs-down">
-            <div class="user-login text-center">
-              <div class="user-profile">
-                <img src="images/user-3.png" alt="" title="">
-              </div>
-              <div class="user-name">
-                <h6>John Doe,<span><i>
-                      Architect</i>
-                  </span></h6>
-
-                <a href="#"><i>johndoe12@gmail.com</i></a>
-              </div>
+  <div class="dashboard-wpr">
+    <div class="container-fluid">
+      <div class="row content">
+        <div class="col-sm-2 sidenav hidden-xs-down">
+          <div class="user-login text-center">
+            <div class="user-profile">
+              <img src="images/user-3.png" alt="" title="">
             </div>
-            <%- include('sidebar')-%>
+            <div class="user-name">
+              <h6>
+                <%= session.name%>,<span><i>
+                      <%= session.role %>
+                    </i>
+                  </span>
+              </h6>
+
+              <a href="#"><i>
+                  <%= session.email%>
+                    <%- include('edit-profile-professional-icon')-%>
+                </i></a>
+            </div>
           </div>
-          <div class="col-sm-12 col-lg-10">
+          <%- include('sidebar')-%>
+        </div>
+        <div class="col-sm-12 col-lg-10">
 
-            <div class="row complaints-sec">
-              <div class="col-sm-12 col-lg-6">
-                <div class="complaints">
-                  <h2>To do list</h2>
-                </div>
+          <div class="row complaints-sec">
+            <div class="col-sm-12 col-lg-6">
+              <div class="complaints">
+                <h2>To do list</h2>
               </div>
-
-
             </div>
 
-            <div class=" dashboard-inner">
-              <div class="todo-list-table">
-                <table class="table table-responsive  table-phase-fix1">
-                  <thead>
-                    <tr>
-                      <th>To-dos</th>
-                      <th>Property</th>
-                      <th>Status</th>
-                      <th>Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td> <label class="todos check-todos">
-                          <p>Instruct solicitor</p>
-                          <input type="checkbox">
-                          <span class="checkmark"></span>
-                        </label></td>
-                      <td>Nacary Apartment</td>
-                      <td><a class="btn btn-pending">Pending</a></td>
-                      <td><span>16 Nov, 2020 <a href="myproperties-detail-phaseA.html">Take Action</a></span></td>
 
-                    </tr>
-                    <tr>
-                      <td><label class="todos check-todos">
-                          <p>Instruct other professionals</p>
-                          <input type="checkbox">
-                          <span class="checkmark"></span>
-                        </label></td>
-                      <td>Nacary Apartment</td>
-                      <td><a class="btn btn-pending">Pending</a></td>
-                      <td><span>16 Nov, 2020 <a href="#">Take Action</a></span></td>
-                    </tr>
-                    <tr>
-                      <td><label class="todos check-todos">
-                          <p>ID/Passport</p>
-                          <input type="checkbox" checked="checked">
-                          <span class="checkmark"></span>
-                        </label></td>
-                      <td>Nacary Apartment</td>
-                      <td><a class="btn btn-complete">Complete</a></td>
-                      <td><span>16 Nov, 2020 <a href="#">Take Action</a></span></td>
-                    </tr>
-                    <tr>
-                      <td><label class="todos check-todos">
-                          <p>Proof of address</p>
-                          <input type="checkbox">
-                          <span class="checkmark"></span>
-                        </label></td>
-                      <td>Nacary Apartment</td>
-                      <td><a class="btn btn-pending">Pending</a></td>
-                      <td><span>16 Nov, 2020 <a href="#">Take Action</a></span></td>
-                    </tr>
-                    <tr>
-                      <td><label class="todos check-todos">
-                          <p>Proof of fund (cash buyers)/agreement in principle (mortgage)</p>
-                          <input type="checkbox" checked="checked">
-                          <span class="checkmark"></span>
-                        </label></td>
-                      <td>Nacary Apartment</td>
-                      <td><a class="btn btn-complete">Complete</a></td>
-                      <td><span>16 Nov, 2020 <a href="#">Take Action</a></span></td>
-                    </tr>
-                    <tr>
-                      <td><label class="todos check-todos">
-                          <p>Checks. Title/property/chains et al</p>
-                          <input type="checkbox">
-                          <span class="checkmark"></span>
-                        </label></td>
-                      <td>Nacary Apartment</td>
-                      <td><a class="btn btn-pending">Pending</a></td>
-                      <td><span>16 Nov, 2020 <a href="#">Take Action</a></span></td>
-                    </tr>
-                    <tr>
-                      <td><label class="todos check-todos">
-                          <p>Memorandum of sales</p>
-                          <input type="checkbox">
-                          <span class="checkmark"></span>
-                        </label></td>
-                      <td>Nacary Apartment</td>
-                      <td><a class="btn btn-pending">Pending</a></td>
-                      <td><span>16 Nov, 2020 <a href="#">Take Action</a></span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+          </div>
 
+          <div class=" dashboard-inner">
+            <div class="todo-list-table">
+              <table class="table table-responsive  table-phase-fix1">
+                <thead>
+                  <tr>
+                    <th>To-dos</th>
+                    <th>Property</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td> <label class="todos check-todos">
+                        <p>Instruct solicitor</p>
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                      </label></td>
+                    <td>Nacary Apartment</td>
+                    <td><a class="btn btn-pending">Pending</a></td>
+                    <td><span>16 Nov, 2020 <a href="myproperties-detail-phaseA.html">Take Action</a></span></td>
+
+                  </tr>
+                  <tr>
+                    <td><label class="todos check-todos">
+                        <p>Instruct other professionals</p>
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                      </label></td>
+                    <td>Nacary Apartment</td>
+                    <td><a class="btn btn-pending">Pending</a></td>
+                    <td><span>16 Nov, 2020 <a href="#">Take Action</a></span></td>
+                  </tr>
+                  <tr>
+                    <td><label class="todos check-todos">
+                        <p>ID/Passport</p>
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                      </label></td>
+                    <td>Nacary Apartment</td>
+                    <td><a class="btn btn-complete">Complete</a></td>
+                    <td><span>16 Nov, 2020 <a href="#">Take Action</a></span></td>
+                  </tr>
+                  <tr>
+                    <td><label class="todos check-todos">
+                        <p>Proof of address</p>
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                      </label></td>
+                    <td>Nacary Apartment</td>
+                    <td><a class="btn btn-pending">Pending</a></td>
+                    <td><span>16 Nov, 2020 <a href="#">Take Action</a></span></td>
+                  </tr>
+                  <tr>
+                    <td><label class="todos check-todos">
+                        <p>Proof of fund (cash buyers)/agreement in principle (mortgage)</p>
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                      </label></td>
+                    <td>Nacary Apartment</td>
+                    <td><a class="btn btn-complete">Complete</a></td>
+                    <td><span>16 Nov, 2020 <a href="#">Take Action</a></span></td>
+                  </tr>
+                  <tr>
+                    <td><label class="todos check-todos">
+                        <p>Checks. Title/property/chains et al</p>
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                      </label></td>
+                    <td>Nacary Apartment</td>
+                    <td><a class="btn btn-pending">Pending</a></td>
+                    <td><span>16 Nov, 2020 <a href="#">Take Action</a></span></td>
+                  </tr>
+                  <tr>
+                    <td><label class="todos check-todos">
+                        <p>Memorandum of sales</p>
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                      </label></td>
+                    <td>Nacary Apartment</td>
+                    <td><a class="btn btn-pending">Pending</a></td>
+                    <td><span>16 Nov, 2020 <a href="#">Take Action</a></span></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+
           </div>
         </div>
       </div>
@@ -154,4 +159,3 @@
   </div>
   </div>
   <%- include('dashboard_footer')-%>
-  

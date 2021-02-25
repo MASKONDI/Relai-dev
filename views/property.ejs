@@ -1,4 +1,4 @@
-<%- include('dashboard_header')-%>
+<%- include('dashboard_header_professional')-%>
   <div class="dashboard-wpr">
     <div class="container-fluid">
       <div class="row content">
@@ -8,14 +8,20 @@
               <img src="images/user-3.png" alt="" title="">
             </div>
             <div class="user-name">
-              <h6>John Doe,<span><i>
-                    Architect</i>
-                </span></h6>
+              <h6>
+                <%= session.name%>,<span><i>
+                      <%= session.role %>
+                    </i>
+                  </span>
+              </h6>
 
-              <a href="#"><i>johndoe12@gmail.com</i></a>
+              <a href="#"><i>
+                  <%= session.email%>
+                    <%- include('edit-profile-professional-icon')-%>
+                </i></a>
             </div>
           </div>
-          <%- include('sidebar')-%>
+          <%- include('sidebar-professional')-%>
         </div>
         <div class="col-sm-12 col-lg-10">
 
