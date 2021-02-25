@@ -12,6 +12,18 @@ var multer = require('multer');
 
 var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
+var signUpHelper = require('./api/service_provider_helper/signup_helper')
+
+
+// app.get('/dashboard-professional', isServiceProvider, (req, res) => {
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   req.session.pagename = "dashboard-professional"
+//   res.render('dashboard-professional', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session
+//   });
+// });
 
 app.get('/otp-professional', function (req, res) {
   console.log("");
@@ -98,6 +110,17 @@ app.get('/property-detail-submit-proposal', function (req, res) {
     session: req.session
   });
 });
-
+app.get('/signup-professionals-profile-4', async (req, res) => {
+  var service_provider_id = req.session.user_id;
+  var all_employe_history = await signUpHelper.getAllEmployeHistory(service_provider_id);
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signup-professionals-profile-4', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    moment: moment,
+    all_employe_history: all_employe_history
+  });
+});
 module.exports = app;
 

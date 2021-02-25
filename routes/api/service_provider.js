@@ -353,14 +353,37 @@ router.post("/service_provider_education", (req, res) => {
 POST : service_provider_employment_history post api is responsible for submitting signup-professionals-profile-4 from data 
 ------------------------------------------------------------------------------------------------- */
 
-router.post("/service_provider_employment_history1", (req, res) => {
+router.post("/service_provider_employment_history", (req, res) => {
   var err_msg = null;
   var success_msg = null;
   //TODO:need to add condition is session is expired
 
   console.log("req.body is : ", req.body);
   console.log("req.session.user_id is ", req.session.user_id);
-
+  var obj={
+    spehs_name_of_employer: req.body.spehs_name_of_employer,
+    spehs_job_title: req.body.spehs_job_title,
+    spehs_job_description: req.body.spehs_job_description,
+    spehs_reason_for_leaving: req.body.spehs_reason_for_leaving,
+    spehs_from_date: req.body.spehs_from_date,
+    spehs_to_date: req.body.spehs_to_date 
+  }
+  if(req.body.employment_id){
+    ServiceProviderEmploymentHistorySchema.updateOne({ 'spehs_service_provider_id': req.session.user_id, '_id': req.body.employment_id }, { $set: obj }, { upsert: true }, function (err) {
+      if (err) {
+        res.send({
+          err_msg: 'Something went wrong please try after some time',
+          status: false
+        });
+      } else {
+        res.send({
+          status: true,
+          action:'update',
+          success_msg:'Employment History updated successfully'
+        });
+      }
+    })
+  }else{
   const serviceProviderEmploymentHistory = new ServiceProviderEmploymentHistorySchema({
     //rs_service_provider_id /*Need to store same sp_id while registering */
     spehs_service_provider_id: req.session.user_id,
@@ -376,22 +399,82 @@ router.post("/service_provider_employment_history1", (req, res) => {
     .then(serviceProviders => {
       console.log("server response is", serviceProviders);
       //res.redirect("/signup-professionals-profile-5")
+      // res.send({
+      //   employmentDetail: serviceProviders,
+      //   status: true
+      // });
       res.send({
-        educationDetail: serviceProviders,
-        status: true
+        employmentDetail: serviceProviders,
+        status: true,
+        success_msg:'Employment History added successfully',
+        action:'add'
       });
     })
     .catch(err => {
       console.log(err)
-      req.flash('err_msg', 'Something went wrong please try after some time');
+     // req.flash('err_msg', 'Something went wrong please try after some time');
       //res.redirect('/signup-professionals-profile-4');
       res.send({
         err_msg: 'Something went wrong please try after some time',
         status: false
       });
     });
+  }
 });
+router.post("/edit-service_provider_employment_history", async (req, res) => {
+  var err_msg = null;
+  var success_msg = null;
+  //TODO:need to add condition is session is expired
+  let data = '';
+  console.log("req.body is : ", req.body);
+  console.log("req.session.user_id is ", req.session.user_id);
+  if (req.body.action == 'employment-edit') {
+    data = await ServiceProviderEmploymentHistorySchema.findOne({ _id: req.body.emp_historyId });
+  }
+  if (data) {
+    console.log("server response is success: ", data);
+    res.send({
+      data: data,
+      message: 'Update Successfully !!',
+      status: true
+    });
+  } else {
+    console.log("server response is error: ", data);
+    res.send({
+      data: data,
+      message: 'Something going wrong please try again !!',
+      status: false
+    });
+  }
 
+});
+router.post("/delete-service_provider_employment_history", async (req, res) => {
+  var err_msg = null;
+  var success_msg = null;
+  //TODO:need to add condition is session is expired
+  let deleteData = '';
+  console.log("req.body is : ", req.body);
+  console.log("req.session.user_id is ", req.session.user_id);
+  if (req.body.action == 'employment-delete') {
+    deleteData = await ServiceProviderEmploymentHistorySchema.deleteOne({ _id: req.body.emp_historyId });
+  }
+  if (deleteData) {
+    console.log("server response is success: ", deleteData);
+    res.send({
+      deleteData: deleteData,
+      message: 'Deleted Successfully !!',
+      status: true
+    });
+  } else {
+    console.log("server response is error: ", deleteData);
+    res.send({
+      deleteData: deleteData,
+      message: 'Something going wrong please try again !!',
+      status: false
+    });
+  }
+
+});
 /* -------------------------------------------------------------------------------------------------
 POST : service_provider_reference post api is responsible for submitting signup-professionals-profile-5 from data 
 ------------------------------------------------------------------------------------------------- */
@@ -889,7 +972,7 @@ router.post("/edit-professional-basic-details", async (req, res) => {
     console.log("server response is success: ", data);
     res.send({
       data: data,
-      message: 'Deleted Successfully !!',
+      message: 'Update Successfully !!',
       status: true
     });
   } else {

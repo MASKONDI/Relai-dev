@@ -535,7 +535,31 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
             const spProvider = JSON.stringify(sp_id);
             const parseSpProvider = JSON.parse(spProvider);
             parseSpProvider.professionalBody = otherDetails.spods_professional_body
-            serviceProvArray.push(parseSpProvider);
+            let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+            console.log('professionalRating:', professionalRating)
+            var sumRating = 0;
+            for (var RatingData of professionalRating) {
+              sumRating += parseInt(RatingData.sprs_rating);
+            }
+            let avgRating = Math.round(sumRating / professionalRating.length);
+            if (!isNaN(avgRating)) {
+              avgRating = avgRating.toFixed(1);
+            } else {
+              avgRating = 0;
+            }
+            console.log('avgRating:', avgRating)
+    
+    
+            let temps = await parseSpProvider
+    
+            const spProvider1 = JSON.stringify(temps);
+            const parseSpProvider1 = JSON.parse(spProvider1);
+            parseSpProvider1.avgRating = avgRating
+
+
+            serviceProvArray.push(parseSpProvider1);
+            
+           // serviceProvArray.push(parseSpProvider);
             //console.log("service_provider Array list in loop:", serviceProvArray);
           }
         });
@@ -589,7 +613,31 @@ app.get('/professionals-searchbar', (req, res) => {
                   const spProvider = JSON.stringify(sp_id);
                   const parseSpProvider = JSON.parse(spProvider);
                   parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  serviceProvArray.push(parseSpProvider);
+
+
+                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                  console.log('professionalRating:', professionalRating)
+                  var sumRating = 0;
+                  for (var RatingData of professionalRating) {
+                    sumRating += parseInt(RatingData.sprs_rating);
+                  }
+                  let avgRating = Math.round(sumRating / professionalRating.length);
+                  if (!isNaN(avgRating)) {
+                    avgRating = avgRating.toFixed(1);
+                  } else {
+                    avgRating = 0;
+                  }
+                  console.log('avgRating:', avgRating)
+          
+          
+                  let temps = await parseSpProvider
+          
+                  const spProvider1 = JSON.stringify(temps);
+                  const parseSpProvider1 = JSON.parse(spProvider1);
+                  parseSpProvider1.avgRating = avgRating
+
+
+                  serviceProvArray.push(parseSpProvider1);
                   //console.log("service_provider Array list in loop:", serviceProvArray);
                 }
               });
@@ -619,8 +667,32 @@ app.get('/my-professionals-filter', isCustomer, async (req, res) => {
   for (var k of AllhiredProfeshnoal) {
     await ServiceProviderSchema.find({ $and: [{ _id: k.pps_service_provider_id, sps_role_name: req.query.role }] }).then(async (allProfeshnoals) => {
       for (let i of allProfeshnoals) {
+
+
+        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: i._id })
+        console.log('professionalRating:', professionalRating)
+        var sumRating = 0;
+        for (var RatingData of professionalRating) {
+          sumRating += parseInt(RatingData.sprs_rating);
+        }
+        let avgRating = Math.round(sumRating / professionalRating.length);
+        if (!isNaN(avgRating)) {
+          avgRating = avgRating.toFixed(1);
+        } else {
+          avgRating = 0;
+        }
+        console.log('avgRating:', avgRating)
+
+
         let temps = await i
-        serviceProvArray.push(temps)
+
+        const spProvider = JSON.stringify(temps);
+        const parseSpProvider = JSON.parse(spProvider);
+        parseSpProvider.avgRating = avgRating
+
+        serviceProvArray.push(parseSpProvider)
+        //let temps = await i
+       // serviceProvArray.push(temps)
       }
     });
   }
@@ -682,7 +754,33 @@ app.get('/my-professionals-searchbar', async (req, res) => {
                   const spProvider = JSON.stringify(sp_id);
                   const parseSpProvider = JSON.parse(spProvider);
                   parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  serviceProvArray.push(parseSpProvider);
+
+
+
+        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+        console.log('professionalRating:', professionalRating)
+        var sumRating = 0;
+        for (var RatingData of professionalRating) {
+          sumRating += parseInt(RatingData.sprs_rating);
+        }
+        let avgRating = Math.round(sumRating / professionalRating.length);
+        if (!isNaN(avgRating)) {
+          avgRating = avgRating.toFixed(1);
+        } else {
+          avgRating = 0;
+        }
+        console.log('avgRating:', avgRating)
+
+
+        let temps = await parseSpProvider
+
+        const spProvider1 = JSON.stringify(temps);
+        const parseSpProvider1 = JSON.parse(spProvider1);
+        parseSpProvider1.avgRating = avgRating
+
+
+
+                  serviceProvArray.push(parseSpProvider1);
                   //console.log("service_provider Array list in loop:", serviceProvArray);
                 }
               });
@@ -1808,14 +1906,14 @@ app.get('/signup-professionals-profile-3', isServiceProvider, (req, res) => {
   })
 
 });
-app.get('/signup-professionals-profile-4', isServiceProvider, (req, res) => {
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile-4', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
+// app.get('/signup-professionals-profile-4', isServiceProvider, (req, res) => {
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   res.render('signup-professionals-profile-4', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session
+//   });
+// });
 app.get('/signup-professionals-profile-5', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
