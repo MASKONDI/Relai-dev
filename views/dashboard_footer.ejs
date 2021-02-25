@@ -133,7 +133,7 @@
       })
 
 
-function previewFile(input){
+function previewFile_profile(input){
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
@@ -2865,62 +2865,62 @@ $('#deliveryDate').attr('min', maxDate);
 
     $("#msgg").hide();
     $("#error").hide();
-    $("#addTaskForm").on('submit', function (e) {
-      e.preventDefault();
-      var formData = $(this).serialize();
-      if (formData) {
-        $.ajax({
-          type: "POST",
-          data: formData,
-          url: "/api/addTask",
-          cache: false,
-          success: function (data) {
-            if (data.status == false) {
-              //$('#addTaskModal').modal('hide');
-              //$('#message').show();
-              // $('.errmessage').html('<span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
-              //setTimeout(function () { $('.errmessage').html(''); }, 3000);
-              //$('#msg').html(data.message).delay(5000).fadeOut('success');
+    // $("#addTaskForm").on('submit', function (e) {
+    //   e.preventDefault();
+    //   var formData = $(this).serialize();
+    //   if (formData) {
+    //     $.ajax({
+    //       type: "POST",
+    //       data: formData,
+    //       url: "/api/addTask",
+    //       cache: false,
+    //       success: function (data) {
+    //         if (data.status == false) {
+    //           //$('#addTaskModal').modal('hide');
+    //           //$('#message').show();
+    //           // $('.errmessage').html('<span class="error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
+    //           //setTimeout(function () { $('.errmessage').html(''); }, 3000);
+    //           //$('#msg').html(data.message).delay(5000).fadeOut('success');
 
-              Swal.fire({
-                // position: 'top-end',
-                icon: 'error',
-                title: data.err_msg,
-                showConfirmButton: true,
-                confirmButtonColor: '#005377'
-                //timer: 1500
-              })
+    //           Swal.fire({
+    //             // position: 'top-end',
+    //             icon: 'error',
+    //             title: data.err_msg,
+    //             showConfirmButton: true,
+    //             confirmButtonColor: '#005377'
+    //             //timer: 1500
+    //           })
 
 
-            } else {
-              //$('#addTaskModal').modal('hide');
-              //$('.errmessage').html('<span class="error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
-              //setTimeout(function () { $('.errmessage').html(''); $('#taskName').val(''); $('#duedate').val(''); $('#notes').val('') }, 3000);
-              console.log('meserrmessagesage:', data.success_msg)
-              window.location.reload(true)
-              //swal(data.success_msg, "", "success");
+    //         } else {
+    //           //$('#addTaskModal').modal('hide');
+    //           //$('.errmessage').html('<span class="error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
+    //           //setTimeout(function () { $('.errmessage').html(''); $('#taskName').val(''); $('#duedate').val(''); $('#notes').val('') }, 3000);
+    //           console.log('meserrmessagesage:', data.success_msg)
+    //           window.location.reload(true)
+    //           //swal(data.success_msg, "", "success");
 
-              Swal.fire({
-                // position: 'top-end',
-                icon: 'success',
-                title: data.success_msg,
-                showConfirmButton: false,
-                confirmButtonColor: '#005377',
-                timer: 3000
-              })
+    //           Swal.fire({
+    //             // position: 'top-end',
+    //             icon: 'success',
+    //             title: data.success_msg,
+    //             showConfirmButton: false,
+    //             confirmButtonColor: '#005377',
+    //             timer: 3000
+    //           })
 
-              $('#taskName,#notes,#duedate').val('');
-              //$('#notes').val('');
+    //           $('#taskName,#notes,#duedate').val('');
+    //           //$('#notes').val('');
 
-            }
+    //         }
 
-          }
-        });
-        // location.reload(true);
-      } else {
-        alert('some thing wrong')
-      }
-    })
+    //       }
+    //     });
+    //     // location.reload(true);
+    //   } else {
+    //     alert('some thing wrong')
+    //   }
+    // })
   });
 </script>
 

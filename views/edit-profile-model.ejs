@@ -124,7 +124,7 @@
               <a href="#" class="upload-profile-pic">
                 <img src="images/img_avatar.png" alt="" id="blah" class="profile-photo" style="margin-left:10%"> <span>
                   <div class="custom-file-input">
-                    <input type="file" id="image" name="profile-pic" value="" onchange="previewFile(this)" required>
+                    <input type="file" id="image" name="profile-pic" value="" onchange="previewFile_profile(this)" required>
                     <input type="button">
                   </div>
                 </span>
@@ -133,7 +133,7 @@
                 <a href="#" class="upload-profile-pic">
                   <img src="/upload/<%= session.imagename%>" alt="" id="blah" class="profile-photo"> <span>
                     <div class="custom-file-input">
-                      <input type="file" id="image" name="profile-pic" value="" required onchange="previewFile(this)">
+                      <input type="file" id="image" name="profile-pic" value="" required onchange="previewFile_profile(this)">
                       <input type="button">
                     </div>
                   </span>
