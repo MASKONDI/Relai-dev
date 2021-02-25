@@ -130,9 +130,6 @@ app.post('/upload-profile-pic', upload.single('profile-pic'), (req, res, next) =
 
 // Uploading the image
 app.post('/upload', upload.array('portfolio-docs', 10), async (req, res, next) => {
-  var err_msg = null;
-  var success_msg = null;
-  //need to add conditions if session is expired
 
   console.log("req is ===:", req.files);
   console.log("req.session.user_id is :", req.session.user_id);
@@ -140,41 +137,17 @@ app.post('/upload', upload.array('portfolio-docs', 10), async (req, res, next) =
   if (req.files.length != 0) {
     await req.files.forEach(element => {
       console.log('filename====', element.filename)
-      var obj = {
-        spps_filename: element.filename,
-        spps_service_provider_id: req.session.user_id,
-        //spps_type: req.file.fieldname,
-        spps_file: {
-          data: fs.readFileSync(path.join(__dirname + '../../public/portfolioImage/' + element.filename)),
-          contentType: 'image/png'
-        }
-      }
-      ServiceProviderPortfolioSchema.create(obj, (err, item) => {
-        if (err) {
-          console.log(err);
-          req.flash('err_msg', "Something went worng please try aftersome time");
-          res.redirect('/portfolio');
-        }
-        else {
-          item.save();
-          console.log("file Submitted Successfully");
-          req.flash('success_msg', "Portfolio-docs Uploaded Successfully");
-          res.redirect('/kyc-professional');
-
-        }
-        c++;
-        if (c == req.files.length) {
-          console.log('A')
-          res.redirect('/portfolio');
-        }
-      });
+  
 
     })
-    //console.log(c,req.files.length)
+   
 
 
   } else {
-    req.flash('err_msg', "Something went worng please try aftersome time");
+  return res.send({
+     status:false,
+     err_msg:'Please Upload Atlist 3 Document',
+   })
   }
 });
 
