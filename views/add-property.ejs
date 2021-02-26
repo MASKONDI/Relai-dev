@@ -295,37 +295,61 @@
                                   <select name="ps_other_property_type" class=" form-control selectBox5"
                                     id="ps_other_property_type" style="height: 48px;" data-rule-required="false"
                                     data-msg-required="Other property Type is required!">
-                                    <option value="">Select Other Property Type</option>
-                                    <option value="Buyer">Buyer</option>
-                                    <option value="Seller">Seller</option>
-                                    <option value="Renovator">Renovator</option>
-                                    <option value="State Agents">State Agents</option>
+                                    <option value="">Select User Type</option>
+                                    <%if(session.active_user_login=='buyer'){%>
+                                      <option value="seller">Seller</option>
+                                      <option value="renovator">Renovator</option>
+                                      <option value="stateagents">State Agents</option>
+                                      <%}else if(session.active_user_login=='seller'){%>
+                                        <option value="buyer">Buyer</option>
+                                        <option value="renovator">Renovator</option>
+                                        <option value="stateagents">State Agents</option>
+                                        <%}else if(session.active_user_login=='renovator'){%>
+                                        <option value="buyer">Buyer</option>
+                                        <option value="seller">Seller</option>
+                                        <option value="renovator">Renovator</option>
+                                        <option value="stateagents">State Agents</option>
+                                        <%}%>
+                                    
                                   </select>
                                   <%}else{%>
                                     <select name="ps_other_property_type" class=" form-control selectBox5"
                                       id="ps_other_property_type" style="height: 48px;" data-rule-required="false"
                                       data-msg-required="Other property Type is required!">
                                       <option value="<%=propertyObj.ps_other_property_type%>">
-                                        <%=propertyObj.ps_other_property_type%>
+                                        <%=propertyObj.ps_other_property_type.replace(/\w/, c => c.toUpperCase())%>
                                       </option>
-                                      <%if(propertyObj.ps_other_property_type=='Buyer'){%>
-                                        <option value="Seller">Seller</option>
-                                        <option value="Renovator">Renovator</option>
-                                        <option value="State Agents">State Agents</option>
-                                        <%}else if(propertyObj.ps_other_property_type=='Seller' ){%>
-                                          <option value="Buyer">Buyer</option>
-                                          <option value="Renovator">Renovator</option>
-                                          <option value="State Agents">State Agents</option>
-                                          <%}else if(propertyObj.ps_other_property_type=='Renovator' ){%>
-                                            <option value="Buyer">Buyer</option>
-                                            <option value="Seller">Seller</option>
-                                            <option value="State Agents">State Agents</option>
+                                      <%if(session.active_user_login=='buyer'){%>
+                                        <option value="seller">Seller</option>
+                                        <option value="renovator">Renovator</option>
+                                        <option value="stateagents">State Agents</option>
+                                        <%}else if(session.active_user_login=='seller'){%>
+                                          <option value="buyer">Buyer</option>
+                                          <option value="renovator">Renovator</option>
+                                          <option value="stateagents">State Agents</option>
+                                          <%} else if(session.active_user_login=='renovator'){%>
+                                            <option value="buyer">Buyer</option>
+                                            <option value="seller">Seller</option>
+                                            <option value="stateagents">State Agents</option>
+                                            <%}%>
+                                      <!-- <%if(propertyObj.ps_other_property_type=='buyer'){%>
+                                        <option value="seller">Seller</option>
+                                        <option value="renovator">Renovator</option>
+                                        <option value="stateagents">State Agents</option>
+                                        <%}else if(propertyObj.ps_other_property_type=='seller' ){%>
+                                          <option value="buyer">Buyer</option>
+                                          <option value="renovator">Renovator</option>
+                                          <option value="stateagents">State Agents</option>
+                                          <%}else if(propertyObj.ps_other_property_type=='renovator' ){%>
+                                            <option value="buyer">Buyer</option>
+                                            <option value="seller">Seller</option>
+                                            <option value="stateagents">State Agents</option>
                                             <%}else{%>
-                                              <option value="Buyer">Buyer</option>
-                                              <option value="Seller">Seller</option>
-                                              <option value="Renovator">Renovator</option>
+                                              <option value="buyer">Buyer</option>
+                                              <option value="seller">Seller</option>
+                                              <option value="renovator">Renovator</option>
 
-                                              <%}%>
+                                              <%}%> -->
 
                                     </select>
                                     <%}%>
@@ -1201,6 +1225,67 @@
                                 </div>
                               </div>
                             </div>
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-12">
+                                <div class="home-section">
+                                  <div class="row">
+                                    <div class="col-sm-12 col-lg-4">
+                                      <div class="property-input-box">
+                                        <div class="property-text-fix">
+                                          <label>Phase9</label>
+                                          <input type="read-only" class="form-control form-control-size-fix "
+                                            id="Phase9" style="border-radius:10px; width:85%" placeholder="Other"
+                                            name="Phase[]" value="other" readonly>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-4">
+                                      <div class="property-input-box">
+                                        <div class="proprty-text-fix">
+                                          <label>Start Date</label>
+                                          <%if(propertyObj=='null'){%>
+                                            <input type="date" class="form-control form-control-size-fix "
+                                              id="startDate1" style="border-radius:10px; width:85%"
+                                              placeholder="Start Date" name="startDate[]">
+                                            <%}else{%>
+                                              <input type="date" class="form-control form-control-size-fix "
+                                                id="startDate1" style="border-radius:10px; width:85%"
+                                                placeholder="Start Date" name="startDate[]"
+                                                value="<%=propertyObj.ps_phase_array[8].start_date%>">
+                                              <%}%>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-4">
+                                      <div class="property-input-box">
+                                        <div class="property-text-fix">
+                                          <label>End Date</label>
+                                          <%if(propertyObj=='null'){%>
+                                            <input type="date" class="form-control form-control-size-fix " id="endDate1"
+                                              style="border-radius:10px; width: 85%;" placeholder="End Date"
+                                              name="endDate[]">
+                                            <%}else{%>
+                                              <input type="date" class="form-control form-control-size-fix "
+                                                id="endDate1" style="border-radius:10px; width: 85%;"
+                                                placeholder="End Date" name="endDate[]"
+                                                value="<%=propertyObj.ps_phase_array[8].end_date%>">
+                                              <%}%>
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!-- <div class="">
+                                  <div class="">
+
+                                    <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                      Phase</a>
+                                  </div>
+                                </div> -->
+                                  </div>
+                                  <div class="row divv"></div>
+                                </div>
+                              </div>
+                            </div>
 
                             <%} else { %>
                               <div class="row">
@@ -1562,7 +1647,69 @@
                                                 <input type="date" class="form-control form-control-size-fix "
                                                   id="endDate1" style="border-radius:10px; width: 85%;"
                                                   placeholder="End Date" name="endDate[]"
-                                                  value="<%=propertyObj.ps_phase_array[4].end_date%>">
+                                                  value="<%=propertyObj.ps_phase_array[5].end_date%>">
+                                                <%}%>
+
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- <div class="">
+                                    <div class="">
+  
+                                      <a href="javascript:void(0)" name="addMorePhase" class="btn btn-add-task-fix">Add
+                                        Phase</a>
+                                    </div>
+                                  </div> -->
+                                    </div>
+                                    <div class="row divv"></div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-sm-12 col-lg-12">
+                                  <div class="home-section">
+                                    <div class="row">
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="property-text-fix">
+                                            <label>Phase7</label>
+                                            <input type="read-only" class="form-control form-control-size-fix "
+                                              id="Phase7" style="border-radius:10px; width:85%"
+                                              placeholder="Other" name="Phase[]" value="other"
+                                              readonly>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="proprty-text-fix">
+                                            <label>Start Date</label>
+                                            <%if(propertyObj=='null'){%>
+                                              <input type="date" class="form-control form-control-size-fix "
+                                                id="startDate1" style="border-radius:10px; width:85%"
+                                                placeholder="Start Date" name="startDate[]">
+                                              <%}else{%>
+                                                <input type="date" class="form-control form-control-size-fix "
+                                                  id="startDate1" style="border-radius:10px; width:85%"
+                                                  placeholder="Start Date" name="startDate[]"
+                                                  value="<%=propertyObj.ps_phase_array[6].start_date%>">
+                                                <%}%>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-12 col-lg-4">
+                                        <div class="property-input-box">
+                                          <div class="property-text-fix">
+                                            <label>End Date</label>
+                                            <%if(propertyObj=='null'){%>
+                                              <input type="date" class="form-control form-control-size-fix "
+                                                id="endDate1" style="border-radius:10px; width: 85%;"
+                                                placeholder="End Date" name="endDate[]">
+                                              <%}else{%>
+                                                <input type="date" class="form-control form-control-size-fix "
+                                                  id="endDate1" style="border-radius:10px; width: 85%;"
+                                                  placeholder="End Date" name="endDate[]"
+                                                  value="<%=propertyObj.ps_phase_array[6].end_date%>">
                                                 <%}%>
 
                                           </div>

@@ -163,9 +163,10 @@
                           var htmlData = '<table class="table table-responsive"><thead><tr><th>To-dos</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody>';
                           if (data.data.ps_phase_array.length > 0) {
                             var element=''
-                            var datasession='<%=session.user_id%>'
-                            //alert(datasession)
+                            var active_user_login='<%=session.active_user_login%>'
+                            //alert(datasession) active_user_login
                               $.each(data.data.ps_phase_array, function (i, data) {
+                               if(active_user_login=='renovator'){
                                 if(i==0){
                                   element='a'
                                 }else if(i==1){
@@ -182,7 +183,27 @@
                                   element='g'
                                 }else if(i==7){
                                   element='h'
+                                }else if(i==8){
+                                  element='o'
                                 }
+                               }else{
+                                if(i==0){
+                                  element='a'
+                                }else if(i==1){
+                                  element='b'
+                                }else if(i==2){
+                                  element='c'
+                                }else if(i==3){
+                                  element='d'
+                                }else if(i==4){
+                                  element='e'
+                                }else if(i==5){
+                                  element='f'
+                                }else if(i==6){
+                                  element='o'
+                                }
+                               }
+                                
                                 
                                   console.log('val:', data)
                                   if(data.phase_status=='pending'){

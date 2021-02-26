@@ -114,7 +114,7 @@ const PropertiesSchema = new Schema({
   },
   ps_other_property_type: {
     type: String,
-    enum: ['Buyer', 'Seller', 'Renovator', 'State Agents'],
+    enum: ['buyer', 'seller', 'renovator', 'stateagents'],
   },
   ps_tagged_user_id: {
     type: Schema.Types.ObjectId,
