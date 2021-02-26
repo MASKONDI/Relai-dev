@@ -1341,7 +1341,7 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
 
 app.get('/mydreamhome-details-phase-b', isCustomer, async (req, res) => {
   console.log('from get take action url====', req.query)
-  var property_id = req.session.property_id;
+  var property_id = req.query.id;
   var phase_name = req.query.phase;
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
@@ -1373,7 +1373,7 @@ app.get('/mydreamhome-details-phase-b', isCustomer, async (req, res) => {
 
 app.get('/mydreamhome-details-phase-c', isCustomer, async (req, res) => {
   console.log('from get take action url====', req.query)
-  var property_id = req.session.property_id;
+  var property_id = req.query.id;
   var phase_name = req.query.phase;
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
@@ -1404,7 +1404,7 @@ app.get('/mydreamhome-details-phase-c', isCustomer, async (req, res) => {
 
 app.get('/mydreamhome-details-phase-d', isCustomer, async (req, res) => {
   console.log('from get take action url====', req.query)
-  var property_id = req.session.property_id;
+  var property_id = req.query.id;
   var phase_name = req.query.phase;
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
@@ -1435,7 +1435,7 @@ app.get('/mydreamhome-details-phase-d', isCustomer, async (req, res) => {
 
 app.get('/mydreamhome-details-phase-e', isCustomer, async (req, res) => {
   console.log('from get take action url====', req.query)
-  var property_id = req.session.property_id;
+  var property_id = req.query.id;
   var phase_name = req.query.phase;
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
@@ -1466,7 +1466,7 @@ app.get('/mydreamhome-details-phase-e', isCustomer, async (req, res) => {
 
 app.get('/mydreamhome-details-phase-f', isCustomer, async (req, res) => {
   console.log('from get take action url====', req.query)
-  var property_id = req.session.property_id;
+  var property_id = req.query.id;
   var phase_name = req.query.phase;
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
@@ -1499,7 +1499,7 @@ app.get('/mydreamhome-details-phase-f', isCustomer, async (req, res) => {
 
 app.get('/mydreamhome-details-phase-g', isCustomer, async (req, res) => {
   console.log('from get take action url====', req.query)
-  var property_id = req.session.property_id;
+  var property_id = req.query.id;
   var phase_name = req.query.phase;
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
@@ -1531,7 +1531,7 @@ app.get('/mydreamhome-details-phase-g', isCustomer, async (req, res) => {
 
 app.get('/mydreamhome-details-phase-h', isCustomer, async (req, res) => {
   console.log('from get take action url====', req.query)
-  var property_id = req.session.property_id;
+  var property_id = req.query.id;
   var phase_name = req.query.phase;
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);

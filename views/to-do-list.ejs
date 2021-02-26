@@ -145,45 +145,96 @@
   </script>
 <script>
  
-$(document).ready(function () {
-$("#propertyDropDown").change(function(e){
-   var property_id=$(this).val();
-   if(property_id){
-        $.ajax({
-                type: "POST",
-                data:{property_id:property_id},
-                url: "/get_property_by_id",
-                cache: false,
-                success: function (data) {
-                    console.log(data);
-                    if(data.status==true){
-                        $('#propertyName').html(data.data.ps_property_name);
-                        var property_id=data.data._id;
-                        // <table class="table table-responsive"><thead><tr><th>To-dos</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody><tr><td></td></tr></tbody></table>
-                        var htmlData = '<table class="table table-responsive"><thead><tr><th>To-dos</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody>';
-                        if (data.data.ps_phase_array.length > 0) {
-                            $.each(data.data.ps_phase_array, function (i, data) {
-                                console.log('val:', data)
-                                htmlData +='<tr><td> <label class="check-todos"><p>'+data.phase_name+'</p><input type="checkbox"><span class="checkmark"></span></label></td><td><a class="btn btn-pending">'+data.phase_status+'</a></td><td><span>'+data.end_date+'</span></td><td><a class="take-action" href="/take-action?prop='+property_id+'&phase='+data.phase_name+'" id="">Take Action</a></td></tr>';
-                            });
-                            htmlData+='</tbody></table>';
-                        }else{
-                            htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
-                        }  
-                        $('.phaselistDiv').html(htmlData);
-                      
-                    // ============
-                    }
-                
-                
-                }
-        });
-   }else{
-       alert("property not found")
-   }
-})
-}) ;    
-</script>
+  $(document).ready(function () {
+  $("#propertyDropDown").change(function(e){
+     var property_id=$(this).val();
+     if(property_id){
+          $.ajax({
+                  type: "POST",
+                  data:{property_id:property_id},
+                  url: "/get_property_by_id",
+                  cache: false,
+                  success: function (data) {
+                      console.log(data);
+                      if(data.status==true){
+                          $('#propertyName').html(data.data.ps_property_name);
+                          var property_id=data.data._id;
+                          // <table class="table table-responsive"><thead><tr><th>To-dos</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody><tr><td></td></tr></tbody></table>
+                          var htmlData = '<table class="table table-responsive"><thead><tr><th>To-dos</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody>';
+                          if (data.data.ps_phase_array.length > 0) {
+                            var element=''
+                            var active_user_login='<%=session.active_user_login%>'
+                            //alert(datasession) active_user_login
+                              $.each(data.data.ps_phase_array, function (i, data) {
+                               if(active_user_login=='renovator'){
+                                if(i==0){
+                                  element='a'
+                                }else if(i==1){
+                                  element='b'
+                                }else if(i==2){
+                                  element='c'
+                                }else if(i==3){
+                                  element='d'
+                                }else if(i==4){
+                                  element='e'
+                                }else if(i==5){
+                                  element='f'
+                                }else if(i==6){
+                                  element='g'
+                                }else if(i==7){
+                                  element='h'
+                                }else if(i==8){
+                                  element='o'
+                                }
+                               }else{
+                                if(i==0){
+                                  element='a'
+                                }else if(i==1){
+                                  element='b'
+                                }else if(i==2){
+                                  element='c'
+                                }else if(i==3){
+                                  element='d'
+                                }else if(i==4){
+                                  element='e'
+                                }else if(i==5){
+                                  element='f'
+                                }else if(i==6){
+                                  element='o'
+                                }
+                               }
+                                
+                                
+                                  console.log('val:', data)
+                                  if(data.phase_status=='pending'){
+                            
+                            //$( "a" ).removeClass( "btn-pending" ).addClass( "btn-complete" );
+
+                            htmlData +='<tr><td> <label class="check-todos"><p>'+data.phase_name+'</p><input type="checkbox"><span class="checkmark"></span></label></td><td><a class="btn btn-pending status">'+data.phase_status+'</a></td><td><span>'+data.end_date+'</span></td><td><a class="take-action" href="/mydreamhome-details-phase-'+element+'?id='+property_id+'&phase='+data.phase_name+'&step='+element.toUpperCase()+'" id="">Take Action</a></td></tr>';
+                          }else{
+                            htmlData +='<tr><td> <label class="check-todos"><p>'+data.phase_name+'</p><input type="checkbox"><span class="checkmark"></span></label></td><td><a class="btn btn-complete status">'+data.phase_status+'</a></td><td><span>'+data.end_date+'</span></td><td><a class="take-action" href="/mydreamhome-details-phase-'+element+'?id='+property_id+'&phase='+data.phase_name+'&step='+element.toUpperCase()+'" id="">Take Action</a></td></tr>';
+                            
+                            
+                          }
+                              });
+                              htmlData+='</tbody></table>';
+                          }else{
+                              htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
+                          }  
+                          $('.phaselistDiv').html(htmlData);
+                        
+                      // ============
+                      }
+                  
+                  
+                  }
+          });
+     }else{
+         //alert("property not found")
+     }
+  })
+  }) ;    
+  </script>
     </body>
 
     </html>
