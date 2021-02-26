@@ -548,18 +548,18 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
               avgRating = 0;
             }
             console.log('avgRating:', avgRating)
-    
-    
+
+
             let temps = await parseSpProvider
-    
+
             const spProvider1 = JSON.stringify(temps);
             const parseSpProvider1 = JSON.parse(spProvider1);
             parseSpProvider1.avgRating = avgRating
 
 
             serviceProvArray.push(parseSpProvider1);
-            
-           // serviceProvArray.push(parseSpProvider);
+
+            // serviceProvArray.push(parseSpProvider);
             //console.log("service_provider Array list in loop:", serviceProvArray);
           }
         });
@@ -628,10 +628,10 @@ app.get('/professionals-searchbar', (req, res) => {
                     avgRating = 0;
                   }
                   console.log('avgRating:', avgRating)
-          
-          
+
+
                   let temps = await parseSpProvider
-          
+
                   const spProvider1 = JSON.stringify(temps);
                   const parseSpProvider1 = JSON.parse(spProvider1);
                   parseSpProvider1.avgRating = avgRating
@@ -692,7 +692,7 @@ app.get('/my-professionals-filter', isCustomer, async (req, res) => {
 
         serviceProvArray.push(parseSpProvider)
         //let temps = await i
-       // serviceProvArray.push(temps)
+        // serviceProvArray.push(temps)
       }
     });
   }
@@ -757,26 +757,26 @@ app.get('/my-professionals-searchbar', async (req, res) => {
 
 
 
-        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-        console.log('professionalRating:', professionalRating)
-        var sumRating = 0;
-        for (var RatingData of professionalRating) {
-          sumRating += parseInt(RatingData.sprs_rating);
-        }
-        let avgRating = Math.round(sumRating / professionalRating.length);
-        if (!isNaN(avgRating)) {
-          avgRating = avgRating.toFixed(1);
-        } else {
-          avgRating = 0;
-        }
-        console.log('avgRating:', avgRating)
+                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                  console.log('professionalRating:', professionalRating)
+                  var sumRating = 0;
+                  for (var RatingData of professionalRating) {
+                    sumRating += parseInt(RatingData.sprs_rating);
+                  }
+                  let avgRating = Math.round(sumRating / professionalRating.length);
+                  if (!isNaN(avgRating)) {
+                    avgRating = avgRating.toFixed(1);
+                  } else {
+                    avgRating = 0;
+                  }
+                  console.log('avgRating:', avgRating)
 
 
-        let temps = await parseSpProvider
+                  let temps = await parseSpProvider
 
-        const spProvider1 = JSON.stringify(temps);
-        const parseSpProvider1 = JSON.parse(spProvider1);
-        parseSpProvider1.avgRating = avgRating
+                  const spProvider1 = JSON.stringify(temps);
+                  const parseSpProvider1 = JSON.parse(spProvider1);
+                  parseSpProvider1.avgRating = avgRating
 
 
 
@@ -1311,7 +1311,7 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  console.log("AllProfessional_property_wise", AllProfessional_property_wise)                                     
+  console.log("AllProfessional_property_wise", AllProfessional_property_wise)
   console.log("taskObject by phase name take action", taskObject)
 
 
@@ -1324,9 +1324,9 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
       session: req.session,
       taskObject: taskObject,
       propertyData: propertyData,
-      step:req.query.step,
-      phase:req.query.phase,
-      hiredProfessional_list:AllProfessional_property_wise
+      step: req.query.step,
+      phase: req.query.phase,
+      hiredProfessional_list: AllProfessional_property_wise
     });
   } else {
     return res.send({
@@ -1347,7 +1347,7 @@ app.get('/mydreamhome-details-phase-b', isCustomer, async (req, res) => {
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   console.log("taskObject by phase name take action", taskObject)
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  console.log("AllProfessional_property_wise", AllProfessional_property_wise) 
+  console.log("AllProfessional_property_wise", AllProfessional_property_wise)
 
   if (taskObject) {
     req.session.pagename = 'mydreamhome';
@@ -1358,9 +1358,9 @@ app.get('/mydreamhome-details-phase-b', isCustomer, async (req, res) => {
       session: req.session,
       taskObject: taskObject,
       propertyData: propertyData,
-      step:req.query.step,
-      phase:req.query.phase,
-      hiredProfessional_list:AllProfessional_property_wise
+      step: req.query.step,
+      phase: req.query.phase,
+      hiredProfessional_list: AllProfessional_property_wise
     });
   } else {
     return res.send({
@@ -1379,7 +1379,7 @@ app.get('/mydreamhome-details-phase-c', isCustomer, async (req, res) => {
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   console.log("taskObject by phase name take action", taskObject)
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  console.log("AllProfessional_property_wise", AllProfessional_property_wise) 
+  console.log("AllProfessional_property_wise", AllProfessional_property_wise)
 
   if (taskObject) {
     req.session.pagename = 'mydreamhome';
@@ -1390,9 +1390,9 @@ app.get('/mydreamhome-details-phase-c', isCustomer, async (req, res) => {
       session: req.session,
       taskObject: taskObject,
       propertyData: propertyData,
-      step:req.query.step,
-      phase:req.query.phase,
-      hiredProfessional_list:AllProfessional_property_wise
+      step: req.query.step,
+      phase: req.query.phase,
+      hiredProfessional_list: AllProfessional_property_wise
     });
   } else {
     return res.send({
@@ -1410,7 +1410,7 @@ app.get('/mydreamhome-details-phase-d', isCustomer, async (req, res) => {
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   console.log("taskObject by phase name take action", taskObject)
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  console.log("AllProfessional_property_wise", AllProfessional_property_wise) 
+  console.log("AllProfessional_property_wise", AllProfessional_property_wise)
 
   if (taskObject) {
     req.session.pagename = 'mydreamhome';
@@ -1421,9 +1421,9 @@ app.get('/mydreamhome-details-phase-d', isCustomer, async (req, res) => {
       session: req.session,
       taskObject: taskObject,
       propertyData: propertyData,
-      step:req.query.step,
-      phase:req.query.phase,
-      hiredProfessional_list:AllProfessional_property_wise
+      step: req.query.step,
+      phase: req.query.phase,
+      hiredProfessional_list: AllProfessional_property_wise
     });
   } else {
     return res.send({
@@ -1441,7 +1441,7 @@ app.get('/mydreamhome-details-phase-e', isCustomer, async (req, res) => {
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   console.log("taskObject by phase name take action", taskObject)
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  console.log("AllProfessional_property_wise", AllProfessional_property_wise) 
+  console.log("AllProfessional_property_wise", AllProfessional_property_wise)
 
   if (taskObject) {
     req.session.pagename = 'mydreamhome';
@@ -1452,9 +1452,9 @@ app.get('/mydreamhome-details-phase-e', isCustomer, async (req, res) => {
       session: req.session,
       taskObject: taskObject,
       propertyData: propertyData,
-      step:req.query.step,
-      phase:req.query.phase,
-      hiredProfessional_list:AllProfessional_property_wise
+      step: req.query.step,
+      phase: req.query.phase,
+      hiredProfessional_list: AllProfessional_property_wise
     });
   } else {
     return res.send({
@@ -1472,7 +1472,7 @@ app.get('/mydreamhome-details-phase-f', isCustomer, async (req, res) => {
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   console.log("taskObject by phase name take action", taskObject)
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  console.log("AllProfessional_property_wise", AllProfessional_property_wise) 
+  console.log("AllProfessional_property_wise", AllProfessional_property_wise)
 
   if (taskObject) {
     req.session.pagename = 'mydreamhome';
@@ -1483,9 +1483,9 @@ app.get('/mydreamhome-details-phase-f', isCustomer, async (req, res) => {
       session: req.session,
       taskObject: taskObject,
       propertyData: propertyData,
-      step:req.query.step,
-      phase:req.query.phase,
-      hiredProfessional_list:AllProfessional_property_wise
+      step: req.query.step,
+      phase: req.query.phase,
+      hiredProfessional_list: AllProfessional_property_wise
     });
   } else {
     return res.send({
@@ -1505,7 +1505,7 @@ app.get('/mydreamhome-details-phase-g', isCustomer, async (req, res) => {
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   console.log("taskObject by phase name take action", taskObject)
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  console.log("AllProfessional_property_wise", AllProfessional_property_wise) 
+  console.log("AllProfessional_property_wise", AllProfessional_property_wise)
 
   if (taskObject) {
     req.session.pagename = 'mydreamhome';
@@ -1516,9 +1516,9 @@ app.get('/mydreamhome-details-phase-g', isCustomer, async (req, res) => {
       session: req.session,
       taskObject: taskObject,
       propertyData: propertyData,
-      step:req.query.step,
-      phase:req.query.phase,
-      hiredProfessional_list:AllProfessional_property_wise
+      step: req.query.step,
+      phase: req.query.phase,
+      hiredProfessional_list: AllProfessional_property_wise
     });
   } else {
     return res.send({
@@ -1537,7 +1537,7 @@ app.get('/mydreamhome-details-phase-h', isCustomer, async (req, res) => {
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   console.log("taskObject by phase name take action", taskObject)
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  console.log("AllProfessional_property_wise", AllProfessional_property_wise) 
+  console.log("AllProfessional_property_wise", AllProfessional_property_wise)
 
   if (taskObject) {
     req.session.pagename = 'mydreamhome';
@@ -1548,9 +1548,9 @@ app.get('/mydreamhome-details-phase-h', isCustomer, async (req, res) => {
       session: req.session,
       taskObject: taskObject,
       propertyData: propertyData,
-      step:req.query.step,
-      phase:req.query.phase,
-      hiredProfessional_list:AllProfessional_property_wise
+      step: req.query.step,
+      phase: req.query.phase,
+      hiredProfessional_list: AllProfessional_property_wise
     });
   } else {
     return res.send({
@@ -1866,14 +1866,14 @@ app.get('/signin-professional', (req, res) => {
 });
 
 
-app.get('/dashboard-professional', isServiceProvider, (req, res) => {
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('dashboard-professional', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
+// app.get('/dashboard-professional', isServiceProvider, (req, res) => {
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   res.render('dashboard-professional', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session
+//   });
+// });
 app.get('/signup-professionals-profile', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
