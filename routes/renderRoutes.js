@@ -1559,7 +1559,36 @@ app.get('/mydreamhome-details-phase-h', isCustomer, async (req, res) => {
     })
   }
 })
+app.get('/mydreamhome-details-phase-o', isCustomer, async (req, res) => {
+  console.log('from get take action url====', req.query)
+  var property_id = req.query.id;
+  var phase_name = req.query.phase;
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, req.session.active_user_login);
+  var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
+  console.log("taskObject by phase name take action", taskObject)
+  var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
+  console.log("AllProfessional_property_wise", AllProfessional_property_wise)
 
+  if (taskObject) {
+    req.session.pagename = 'mydreamhome';
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('mydreamhome-details-phase-o', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      taskObject: taskObject,
+      propertyData: propertyData,
+      step: req.query.step,
+      phase: req.query.phase,
+      hiredProfessional_list: AllProfessional_property_wise
+    });
+  } else {
+    return res.send({
+      'status': false,
+      'message': 'some thing wrong'
+    })
+  }
+})
 // app.get('/mydreamhome', isCustomer, (req, res) => {
 //   err_msg = req.flash('err_msg');
 //   success_msg = req.flash('success_msg');
