@@ -1110,26 +1110,31 @@ Swal.fire({
     });
   </script>
 
-  <script>
-    $(document).ready(function () {
-      $('.deleteProfesshional').click(function (e) {
-        e.preventDefault();
-        var professhional_id = $(this).attr('id');
-        //alert(professhional_id)
-        var $tr = $(this).closest('tr');
-        $.ajax({
-          type: "POST",
-          url: "/api/removeProfesshional",
-          data: {
-            professhional_id: professhional_id
-          },
-          cache: false,
-          success: function (data) {
-            if (data.status == false) {
-              //$('.message').html('<span class="alert alert-danger error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
-              //setTimeout(function () { $('.message').html(''); }, 3000);
+<script>
+  $(document).ready(function () {
+    $('.deleteProfesshional').click(function (e) {
+      e.preventDefault();
 
-              Swal.fire({
+      var professhional_id = $(this).attr('id');
+      //alert(professhional_id)
+      Swal.fire({
+        title: 'Are you sure want to remove?',
+        showCancelButton: true,
+        confirmButtonText: `Yes`,
+        confirmButtonColor: '#005377',
+      }).then((result) => {
+        if (result.isConfirmed) {
+         // var $tr = $(this).closest('tr');
+          $.ajax({
+            type: "POST",
+            url: "/api/removeProfesshional",
+            data: {
+              professhional_id: professhional_id
+            },
+            cache: false,
+            success: function (data) {
+              if (data.status == false) {
+                Swal.fire({
                   // position: 'top-end',
                   icon: 'error',
                   title: data.err_msg,
@@ -1138,14 +1143,9 @@ Swal.fire({
                   //timer: 1500
                 })
 
-
-            } else {
-              console.log($(".propf_row_" + data.id));
-              //$(".propf_row_"+data.id).css("display", "none");
-              //$('#removeProfessionalModal').modal('hide');
-              //$('.message').html('<span class="alert alert-success error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
-              //setTimeout(function () { $('.message').html(''); window.location.reload(true) }, 3000);
-              Swal.fire({
+              } else {
+                //console.log($(".propf_row_" + data.id));
+                Swal.fire({
                   // position: 'top-end',
                   icon: 'success',
                   title: data.success_msg,
@@ -1153,17 +1153,19 @@ Swal.fire({
                   confirmButtonColor: '#005377',
                   timer: 3000
                 })
-
-              $tr.find('td').fadeOut(1000, function () {
-                $tr.remove();
-              });
+                location.reload(true)
+                // $tr.find('td').fadeOut(1000, function () {
+                //   $tr.remove();
+                // });
+              }
             }
-          }
-        });
-      });
+          });
+        }
+      })
+    });
 
-    })
-  </script>
+  })
+</script>
   <script>
     $(document).ready(function () {
       $("#cancel_addtask2_btn").click(function (e) {
