@@ -1575,7 +1575,7 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
   PropertiesSchema.find({
     $or: [
       { $and: [{ ps_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login },] },
-      { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login }] }
+      { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_other_property_type: req.session.active_user_login }] }
     ]
   }).sort({ _id: -1 }).then(async (data) => {
     if (data) {
