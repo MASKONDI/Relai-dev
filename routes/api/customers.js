@@ -307,19 +307,19 @@ router.post("/cust_signin", async (req, res) => {
         })
       }
 
-      else if (customers.cus_email_verification_status == 'no') {
+      // else if (customers.cus_email_verification_status == 'no') {
 
-        console.log("Sending Otp if user email not verified");
-        otp_send(req, customers);
-        res.send({
-          message: "Please verify  OTP first",
-          status: false,
-          redirectpage: true,
-          redirect: "/otp?email=" + cus_email_id
-          //redirect to OTP
-        })
-        //}
-      } else {
+      //   console.log("Sending Otp if user email not verified");
+      //   otp_send(req, customers);
+      //   res.send({
+      //     message: "Please verify  OTP first",
+      //     status: false,
+      //     redirectpage: true,
+      //     redirect: "/otp?email=" + cus_email_id
+      //     //redirect to OTP
+      //   })
+      //}}
+      else {
         console.log("console BBBBB");
         // Check Password
         bcrypt.compare(cus_password, customers.cus_password).then(isMatch => {
@@ -1324,13 +1324,13 @@ router.post("/addTask", (req, res) => {
     });
   } else {
     console.log("addTask post:", req.body);
-    let taskName='';
-    if(req.body.task_name){
+    let taskName = '';
+    if (req.body.task_name) {
       taskName = req.body.task_name;
-    }else{
+    } else {
       taskName = req.body.phase_task_list;
     }
-    console.log('taskNametaskNametaskName:',taskName)
+    console.log('taskNametaskNametaskName:', taskName)
     const newTask = new PropertyProfessinoalTaskSchema({
       ppts_property_id: req.body.property_id,
       ppts_user_id: req.session.user_id,
@@ -2200,10 +2200,10 @@ router.post("/addTask_from_Dreamhome_detial", (req, res) => {
 
   } else {
     console.log("addTask post:", req.body);
-    let taskName='';
-    if(req.body.task_name){
+    let taskName = '';
+    if (req.body.task_name) {
       taskName = req.body.task_name;
-    }else{
+    } else {
       taskName = req.body.phase_task_list;
     }
     const newTask = new PropertyProfessinoalTaskSchema({
@@ -2515,36 +2515,128 @@ router.post('/reapitApi', (req, res) => {
 router.post('/edit_task_submit_form', (req, res) => {
 
   console.log("edit task req is:", req.body);
+
+  console.log("Session  is:", req.session);
+  console.log("req.query is :", req.query);
+
   let newServiceProviderID = req.body.ppts_new_assign_to;
   console.log("new Assign property is", newServiceProviderID);
-  // if (newServiceProviderID != null || newServiceProviderID != '') {
-  //   console.log("Id is there");
 
-  PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_is_active_user_flag: req.body.ppts_is_active_user_flag, ppts_task_name: req.body.ppts_task_name }, { $set: { ppts_assign_to: newServiceProviderID } }, { upsert: true }, function (err) {
+  PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_task_name: req.body.ppts_task_name }, { $set: { ppts_assign_to: newServiceProviderID, ppts_due_date: req.body.ppts_due_date, ppts_note: req.body.ppts_note } }, { upsert: true }, function (err) {
     if (err) {
-      res.json(err);
-      //res.send({ status: false, message: 'Something going wrong please check again !!' })
+      // res.json(err);
+      res.send({ status: false, message: 'Something going wrong please check again !!' })
     } else {
-      // res.send({ status: true, message: 'Task update successfully !!' })
+      res.send({ status: true, message: 'Task update successfully !!' })
       console.log("Task update successfully");
-      res.json("Task Updated successfully");
+      //res.json("Task Updated successfully");
     }
   });
-  // }
-  // else {
-  //   console.log("New service_provider id is not there");
-  //   PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_is_active_user_flag: req.body.ppts_is_active_user_flag, ppts_task_name: req.body.ppts_task_name }, { $set: { ppts_assign_to: '' } }, { upsert: true }, function (err, result) {
-  //     if (err) {
-  //       res.json(err);
-  //       //res.send({ status: false, message: 'Something going wrong please check again !!' })
-  //     } else {
-  //       console.log("Task update successfully");
 
-  //       // res.send({ status: true, message: 'Task update successfully !!' })
-  //     }
-  //   });
-  // }
 });
+
+
+router.get('/gethiredProfessionalist', async (req, res) => {
+  console.log("fetching hired professional list for particular task", req.body);
+
+  var taskData = await PropertyProfessinoalTaskSchema.find({ ppts_property_id: req.query.ppts_property_id, ppts_phase_name: req.query.ppts_phase_name, ppts_task_name: req.query.ppts_task_name });
+  console.log("taskData", taskData);
+  if (taskData != null) {
+    console.log("taskData", taskData);
+    console.log("taskData", taskData.length);
+    var professionalArray = [];
+    for (let professionalId of taskData) {
+      var professionalData = await ServiceProviderSchema.findOne({ _id: professionalId.ppts_assign_to });
+      console.log('professionalData:', professionalData);
+      if (professionalData != null) {
+        console.log('Professional Data is coming')
+        professionalArray.push(professionalData);
+      }
+    }
+    console.log('professionalArray Arr:', professionalArray);
+    // res.json(professionalArray);
+    res.send({
+      data: professionalArray,
+      status: true
+    })
+  } else {
+    res.send({
+      message: 'Professional Data not found',
+      status: false
+    })
+  }
+});
+
+
+
+router.get('/getunhiredProfessionalist', async (req, res) => {
+  console.log("fetching unhired professional list for particular task", req.body);
+
+  var taskData = await PropertyProfessinoalTaskSchema.find({ ppts_property_id: req.query.ppts_property_id, ppts_phase_name: req.query.ppts_phase_name, ppts_task_name: req.query.ppts_task_name });
+
+  var professionalIDArray = [];
+  for (let professionalId of taskData) {
+    professionalIDArray.push(professionalId.ppts_assign_to);
+  }
+  console.log("property hired professional data", professionalIDArray);
+  console.log();
+  console.log(); console.log(); console.log();
+
+  //Now fetching Hired Professional Data for property
+  var allhiredProfessionalData = await PropertyProfessionalSchema.find({ pps_property_id: req.query.ppts_property_id, pps_is_active_user_flag: 'buyer' });
+  var allhiredProfessionalIDlist = [];
+  for (let professionalId of allhiredProfessionalData) {
+    allhiredProfessionalIDlist.push(professionalId.pps_service_provider_id.toString());
+  }
+  console.log('All hired professional for that property', allhiredProfessionalIDlist);
+  console.log();
+  console.log();
+
+  // console.log("");
+  var unHiredProfessionalList = await compare(allhiredProfessionalIDlist, professionalIDArray);
+  console.log('final Array is', unHiredProfessionalList);
+  console.log();
+  console.log();
+
+
+  //fetching Professional Data
+  var unhiredProfessionalHiredData = [];
+  for (let professionalId of unHiredProfessionalList) {
+    console.log(professionalId);
+    var professionalData = await ServiceProviderSchema.findOne({ _id: professionalId });
+    console.log('professionalData:', professionalData);
+    if (professionalData != null) {
+      console.log('Professional Data is coming')
+      unhiredProfessionalHiredData.push(professionalData);
+    }
+  }
+  console.log("Professional DATA", unhiredProfessionalHiredData);
+  // res.json(unhiredProfessionalHiredData);
+  if (unhiredProfessionalHiredData) {
+    res.send({
+      data: unhiredProfessionalHiredData,
+      status: true
+    })
+  } else {
+    res.send({
+      message: 'professional not found',
+      status: false
+    })
+  }
+
+});
+
+
+function compare(allhiredProfessionalIDlist, professionalIDArray) {
+  const finalArray = [];
+  allhiredProfessionalIDlist.forEach((e1) => professionalIDArray.forEach((e2) => {
+    if (e1 != e2) {
+      finalArray.push(e1);
+    }
+  }));
+
+  return finalArray;
+}
 
 
 
