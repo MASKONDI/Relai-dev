@@ -308,40 +308,7 @@ function previewFile_profile(input){
     <script>
 
     </Script>
-    <script>
-      $(document).ready(function () {
-        $(".buyertab").click(function (e) {
-          $.ajax({
-            type: "GET",
-            url: "/buyer",
-            cache: false,
-            success: function (html) {
-            }
-          });
-          location.reload(true);
-        });
-        $(".sellertab").click(function (e) {
-          $.ajax({
-            type: "GET",
-            url: "/seller",
-            cache: false,
-            success: function (html) {
-            }
-          });
-          location.reload(true);
-        });
-        $(".renovatortab").click(function (e) {
-          $.ajax({
-            type: "GET",
-            url: "/renovator",
-            cache: false,
-            success: function (html) {
-            }
-          });
-          location.reload(true);
-        });
-      });
-    </script>
+  
     <script>
       $(document).ready(function () {
         
@@ -974,41 +941,6 @@ Swal.fire({
 
   <script>
     $(document).ready(function () {
-      $(".buyertab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/buyer",
-          cache: false,
-          success: function (html) {
-          }
-        });
-        location.reload(true);
-      });
-      $(".sellertab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/seller",
-          cache: false,
-          success: function (html) {
-          }
-        });
-        location.reload(true);
-      });
-      $(".renovatortab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/renovator",
-          cache: false,
-          success: function (html) {
-          }
-        });
-        location.reload(true);
-      });
-    });
-  </script>
-
-  <script>
-    $(document).ready(function () {
 
       $('form#complent_form').submit(function (e) {
         e.preventDefault();
@@ -1110,26 +1042,31 @@ Swal.fire({
     });
   </script>
 
-  <script>
-    $(document).ready(function () {
-      $('.deleteProfesshional').click(function (e) {
-        e.preventDefault();
-        var professhional_id = $(this).attr('id');
-        //alert(professhional_id)
-        var $tr = $(this).closest('tr');
-        $.ajax({
-          type: "POST",
-          url: "/api/removeProfesshional",
-          data: {
-            professhional_id: professhional_id
-          },
-          cache: false,
-          success: function (data) {
-            if (data.status == false) {
-              //$('.message').html('<span class="alert alert-danger error_validate flash_msg" style="color: red; margin-bottom: 10px;">' + data.err_msg + '</span>');
-              //setTimeout(function () { $('.message').html(''); }, 3000);
+<script>
+  $(document).ready(function () {
+    $('.deleteProfesshional').click(function (e) {
+      e.preventDefault();
 
-              Swal.fire({
+      var professhional_id = $(this).attr('id');
+      //alert(professhional_id)
+      Swal.fire({
+        title: 'Are you sure want to remove?',
+        showCancelButton: true,
+        confirmButtonText: `Yes`,
+        confirmButtonColor: '#005377',
+      }).then((result) => {
+        if (result.isConfirmed) {
+         // var $tr = $(this).closest('tr');
+          $.ajax({
+            type: "POST",
+            url: "/api/removeProfesshional",
+            data: {
+              professhional_id: professhional_id
+            },
+            cache: false,
+            success: function (data) {
+              if (data.status == false) {
+                Swal.fire({
                   // position: 'top-end',
                   icon: 'error',
                   title: data.err_msg,
@@ -1138,14 +1075,9 @@ Swal.fire({
                   //timer: 1500
                 })
 
-
-            } else {
-              console.log($(".propf_row_" + data.id));
-              //$(".propf_row_"+data.id).css("display", "none");
-              //$('#removeProfessionalModal').modal('hide');
-              //$('.message').html('<span class="alert alert-success error_validate flash_msg" style="color: green; margin-bottom: 10px;">' + data.success_msg + '</span>');
-              //setTimeout(function () { $('.message').html(''); window.location.reload(true) }, 3000);
-              Swal.fire({
+              } else {
+                //console.log($(".propf_row_" + data.id));
+                Swal.fire({
                   // position: 'top-end',
                   icon: 'success',
                   title: data.success_msg,
@@ -1153,17 +1085,19 @@ Swal.fire({
                   confirmButtonColor: '#005377',
                   timer: 3000
                 })
-
-              $tr.find('td').fadeOut(1000, function () {
-                $tr.remove();
-              });
+                location.reload(true)
+                // $tr.find('td').fadeOut(1000, function () {
+                //   $tr.remove();
+                // });
+              }
             }
-          }
-        });
-      });
+          });
+        }
+      })
+    });
 
-    })
-  </script>
+  })
+</script>
   <script>
     $(document).ready(function () {
       $("#cancel_addtask2_btn").click(function (e) {
@@ -1279,40 +1213,6 @@ mydreamhome-details-chainproperty
     });
   </script> -->
 
-  <script>
-    $(document).ready(function () {
-      $(".buyertab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/buyer",
-          cache: false,
-          success: function (html) {
-          }
-        });
-        location.reload(true);
-      });
-      $(".sellertab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/seller",
-          cache: false,
-          success: function (html) {
-          }
-        });
-        location.reload(true);
-      });
-      $(".renovatortab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/renovator",
-          cache: false,
-          success: function (html) {
-          }
-        });
-        location.reload(true);
-      });
-    });
-  </script>
 
  <!-- ===============================
  Mydreamhome-details-doc
@@ -1558,40 +1458,7 @@ function previewFile(input){
 </script>
 
 <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
-<script>
-  $(document).ready(function () {
-    $(".buyertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/buyer",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".sellertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/seller",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".renovatortab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/renovator",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-  });
-</script>
+
 <script>
 $(document).ready(function(){
 $("#newDocumentform").on("submit", function(e){
@@ -1691,40 +1558,6 @@ myDREAMHOME-DETAILS-MESSAGE
             }
           });
         </script>
-        <script>
-          $(document).ready(function () {
-            $(".buyertab").click(function (e) {
-              $.ajax({
-                type: "GET",
-                url: "/buyer",
-                cache: false,
-                success: function (html) {
-                }
-              });
-              location.reload(true);
-            });
-            $(".sellertab").click(function (e) {
-              $.ajax({
-                type: "GET",
-                url: "/seller",
-                cache: false,
-                success: function (html) {
-                }
-              });
-              location.reload(true);
-            });
-            $(".renovatortab").click(function (e) {
-              $.ajax({
-                type: "GET",
-                url: "/renovator",
-                cache: false,
-                success: function (html) {
-                }
-              });
-              location.reload(true);
-            });
-          });
-        </script>
 
 <!-- ===============================
 MYDREAM-HOME-DETAILS-PAHSE-A 
@@ -1784,40 +1617,6 @@ MYDREAM-HOME-DETAILS-PAHSE-A
     var scrt_var = val; 
   </script>
 
-  <script>
-    $(document).ready(function () {
-      $(".buyertab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/buyer",
-          cache: false,
-          success: function (html) {
-          }
-        });
-        location.reload(true);
-      });
-      $(".sellertab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/seller",
-          cache: false,
-          success: function (html) {
-          }
-        });
-        location.reload(true);
-      });
-      $(".renovatortab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/renovator",
-          cache: false,
-          success: function (html) {
-          }
-        });
-        location.reload(true);
-      });
-    });
-  </script>
  <script>
 
   $(document).ready(function () {
@@ -2083,40 +1882,7 @@ MYDREAMHOME-DETAILS-TO-DOC
       });
     });
   </script> -->
-  <script>
-    $(document).ready(function () {
-      $(".buyertab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/buyer",
-          cache: false,
-          success: function (html) {
-          }
-        });
-        location.reload(true);
-      });
-      $(".sellertab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/seller",
-          cache: false,
-          success: function (html) {
-          }
-        });
-        location.reload(true);
-      });
-      $(".renovatortab").click(function (e) {
-        $.ajax({
-          type: "GET",
-          url: "/renovator",
-          cache: false,
-          success: function (html) {
-          }
-        });
-        location.reload(true);
-      });
-    });
-  </script>
+  
 
 
 <!-- =================================
@@ -2138,40 +1904,6 @@ Mydreamhome
   });
 </script> -->
 
-<script>
-  $(document).ready(function () {
-    $(".buyertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/buyer",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".sellertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/seller",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".renovatortab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/renovator",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-  });
-</script>
 <script>
 
   $('#refresh').click(function (e) {
@@ -2308,40 +2040,6 @@ Myprofessional
 
 </script>
 
-<script>
-  $(document).ready(function () {
-    $(".buyertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/buyer",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".sellertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/seller",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".renovatortab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/renovator",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-  });
-</script>
 
 
 <!-- ==================================
@@ -2399,40 +2097,7 @@ Prefessional details message
           }
         });
       </script>
-      <script>
-        $(document).ready(function () {
-          $(".buyertab").click(function (e) {
-            $.ajax({
-              type: "GET",
-              url: "/buyer",
-              cache: false,
-              success: function (html) {
-              }
-            });
-            location.reload(true);
-          });
-          $(".sellertab").click(function (e) {
-            $.ajax({
-              type: "GET",
-              url: "/seller",
-              cache: false,
-              success: function (html) {
-              }
-            });
-            location.reload(true);
-          });
-          $(".renovatortab").click(function (e) {
-            $.ajax({
-              type: "GET",
-              url: "/renovator",
-              cache: false,
-              success: function (html) {
-              }
-            });
-            location.reload(true);
-          });
-        });
-      </script>
+   
 
 <!-- ================================================
 Professional Details 
@@ -2461,38 +2126,7 @@ Professional Details
   // });
 </script>
 <script>
-  $(document).ready(function () {
-    $(".buyertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/buyer",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".sellertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/seller",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".renovatortab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/renovator",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-  });
+  
 
 
   $('#feedbackForm').validate({
@@ -2812,41 +2446,7 @@ $('#deliveryDate').attr('min', maxDate);
     })
   });
 </script>
-<script>
-  $(document).ready(function () {
-    $(".buyertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/buyer",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".sellertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/seller",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".renovatortab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/renovator",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
 
-  });
-</script>
 <script>
   $(document).ready(function () {
     var count = 2;
@@ -3017,40 +2617,7 @@ Professional
 
 
 </script>
-<script>
-  $(document).ready(function () {
-    $(".buyertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/buyer",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".sellertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/seller",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".renovatortab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/renovator",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-  });
-</script>
+
 <!-- 
 ===========================
 Track your progess 
@@ -3070,40 +2637,7 @@ Track your progess
   //   });
   // });
 </script>
-<script>
-  $(document).ready(function () {
-    $(".buyertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/buyer",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".sellertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/seller",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".renovatortab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/renovator",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-  });
-</script>
+
 
 
 <!-- =============================
@@ -3125,74 +2659,7 @@ Phase-B
   var scrt_var = val; 
 </script>
 
-<script>
-  $(document).ready(function () {
-    $(".buyertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/buyer",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".sellertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/seller",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".renovatortab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/renovator",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-  });
-</script>
-<script>
-$(document).ready(function () {
-  $(".buyertab").click(function (e) {
-    $.ajax({
-      type: "GET",
-      url: "/buyer",
-      cache: false,
-      success: function (html) {
-      }
-    });
-    location.reload(true);
-  });
-  $(".sellertab").click(function (e) {
-    $.ajax({
-      type: "GET",
-      url: "/seller",
-      cache: false,
-      success: function (html) {
-      }
-    });
-    location.reload(true);
-  });
-  $(".renovatortab").click(function (e) {
-    $.ajax({
-      type: "GET",
-      url: "/renovator",
-      cache: false,
-      success: function (html) {
-      }
-    });
-    location.reload(true);
-  });
-});
-</script>
+
 <script>
 
 $(document).ready(function () {
@@ -3456,74 +2923,8 @@ Phase-C
   var scrt_var = val; 
 </script>
 
-<script>
-  $(document).ready(function () {
-    $(".buyertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/buyer",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".sellertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/seller",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".renovatortab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/renovator",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-  });
-</script>
-<script>
-$(document).ready(function () {
-$(".buyertab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/buyer",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-$(".sellertab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/seller",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-$(".renovatortab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/renovator",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-});
-</script>
+
+
 <script>
 
 $(document).ready(function () {
@@ -3788,74 +3189,6 @@ Pahse-D
 </script>
 
 <script>
-  $(document).ready(function () {
-    $(".buyertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/buyer",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".sellertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/seller",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".renovatortab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/renovator",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-  });
-</script>
-<script>
-$(document).ready(function () {
-$(".buyertab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/buyer",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-$(".sellertab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/seller",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-$(".renovatortab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/renovator",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-});
-</script>
-<script>
 
 $(document).ready(function () {
 // $(".add-professionals").click(function (e) {
@@ -4119,74 +3452,6 @@ Phase-E
 </script>
 
 <script>
-  $(document).ready(function () {
-    $(".buyertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/buyer",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".sellertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/seller",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".renovatortab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/renovator",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-  });
-</script>
-<script>
-$(document).ready(function () {
-$(".buyertab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/buyer",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-$(".sellertab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/seller",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-$(".renovatortab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/renovator",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-});
-</script>
-<script>
 
 $(document).ready(function () {
 // $(".add-professionals").click(function (e) {
@@ -4448,74 +3713,6 @@ Phase-F
   var scrt_var = val; 
 </script>
 
-<script>
-  $(document).ready(function () {
-    $(".buyertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/buyer",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".sellertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/seller",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".renovatortab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/renovator",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-  });
-</script>
-<script>
-$(document).ready(function () {
-$(".buyertab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/buyer",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-$(".sellertab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/seller",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-$(".renovatortab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/renovator",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-});
-</script>
 <script>
 
 $(document).ready(function () {
@@ -4779,74 +3976,8 @@ Phase-G
   var scrt_var = val; 
 </script>
 
-<script>
-  $(document).ready(function () {
-    $(".buyertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/buyer",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".sellertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/seller",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".renovatortab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/renovator",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-  });
-</script>
-<script>
-$(document).ready(function () {
-$(".buyertab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/buyer",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-$(".sellertab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/seller",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-$(".renovatortab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/renovator",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-});
-</script>
+
+
 <script>
 
 $(document).ready(function () {
@@ -5110,74 +4241,7 @@ Phase-H
   var scrt_var = val; 
 </script>
 
-<script>
-  $(document).ready(function () {
-    $(".buyertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/buyer",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".sellertab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/seller",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-    $(".renovatortab").click(function (e) {
-      $.ajax({
-        type: "GET",
-        url: "/renovator",
-        cache: false,
-        success: function (html) {
-        }
-      });
-      location.reload(true);
-    });
-  });
-</script>
-<script>
-$(document).ready(function () {
-$(".buyertab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/buyer",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-$(".sellertab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/seller",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-$(".renovatortab").click(function (e) {
-  $.ajax({
-    type: "GET",
-    url: "/renovator",
-    cache: false,
-    success: function (html) {
-    }
-  });
-  location.reload(true);
-});
-});
-</script>
+
 <script>
 
 $(document).ready(function () {
