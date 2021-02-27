@@ -46,8 +46,8 @@
 
               <% if(session.active_user_login == "buyer"){ %>
                 <div class="buyer_phase_task_list">
-                                  <select onchange="SelectedTaskList(this)" class="form-control selectBox2 phase_task_list" id="phase_task_list_buyer" name="phase_task_list" style="height: 48px;">
-                                    <option value="">Existing Task</option>
+                                  <select multiple onchange="SelectedTaskList(this)" class="form-control selectBox2 phase_task_list" id="phase_task_list_buyer" name="phase_task_list" style="height: 48px;">
+                                    <!-- <option value="">Existing Task</option> -->
                                     
                                       <option class="phase_task_list_0 task_option" value="Instruct Solicitor">Instruct Solicitor</option>
                                       <option class="phase_task_list_0 task_option" value="Instruct other professionals">Instruct other professionals</option>
@@ -87,8 +87,8 @@
                 </div>
                 <% }else if(session.active_user_login == "seller"){ %>
                 <div class="seller_phase_task_list">
-                              <select onchange="SelectedTaskList(this)" class="form-control selectBox2 phase_task_list" id="phase_task_list_seller" name="phase_task_list" style="height: 48px;">
-                                <option value="">Existing Task</option>
+                              <select multiple onchange="SelectedTaskList(this)" class="form-control selectBox2 phase_task_list" id="phase_task_list_seller" name="phase_task_list" style="height: 48px;">
+                                <!-- <option value="">Existing Task</option> -->
                                 <option class="phase_task_list_0 task_option" value="Instruct Solicitor">Instruct Solicitor</option>
                                 <option class="phase_task_list_0 task_option" value="Instruct other professionals">Instruct other professionals</option>
                                 <option class="phase_task_list_0 task_option" value="Bank details for reservation">Bank details for reservation</option>
@@ -122,8 +122,8 @@
                 </div>
                 <% }else if(session.active_user_login == "renovator"){%> 
                   <div class="renovator_phase_task_list">
-                    <select onchange="SelectedTaskList(this)" class="form-control selectBox2  phase_task_list" id="phase_task_list_renovator" name="phase_task_list" style="height: 48px;">
-                      <option class="phase_task_list_0 task_option" value="">Existing Task</option>
+                    <select multiple onchange="SelectedTaskList(this)" class="form-control selectBox2  phase_task_list" id="phase_task_list_renovator" name="phase_task_list" style="height: 48px;">
+                      <!-- <option class="phase_task_list_0 task_option" value="">Existing Task</option> -->
                       <option class="phase_task_list_0 task_option" value="Instruct professionals and/or developers">Instruct professionals and/or developers</option>
                       <option class="phase_task_list_0 task_option" value="ID/Passport">ID/Passport</option>
                       <option class="phase_task_list_0 task_option" value="Checks. Title/property">Checks. Title/property</option>
@@ -161,6 +161,7 @@
 
               <input type="text" class="form-control form-control-fix2" id="taskName" placeholder="Task Name"
                 name="task_name" required>
+                <input type="hidden" class="form-control form-control-fix2" id="ppts_phase_flag" name="ppts_phase_flag" required>
 
               <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate"
                 placeholder="Due on Date" name="duedate" required>
