@@ -570,12 +570,14 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
 
 
       console.log('service_provider_detail:', serviceProvArray)
+      var uniqueArray = removeDuplicates(serviceProvArray, "_id");
+
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.send({
         err_msg, success_msg, layout: false,
         session: req.session,
-        filterData: serviceProvArray
+        filterData: uniqueArray
       })
     }
   }).catch((err) => {
@@ -668,8 +670,6 @@ app.get('/my-professionals-filter', isCustomer, async (req, res) => {
   for (var k of AllhiredProfeshnoal) {
     await ServiceProviderSchema.find({ $and: [{ _id: k.pps_service_provider_id, sps_role_name: req.query.role }] }).then(async (allProfeshnoals) => {
       for (let i of allProfeshnoals) {
-
-
         let professionalRating = await RatingSchema.find({ sprs_service_provider_id: i._id })
         console.log('professionalRating:', professionalRating)
         var sumRating = 0;
@@ -683,27 +683,32 @@ app.get('/my-professionals-filter', isCustomer, async (req, res) => {
           avgRating = 0;
         }
         console.log('avgRating:', avgRating)
-
-
         let temps = await i
-
         const spProvider = JSON.stringify(temps);
         const parseSpProvider = JSON.parse(spProvider);
         parseSpProvider.avgRating = avgRating
-
         serviceProvArray.push(parseSpProvider)
         //let temps = await i
         // serviceProvArray.push(temps)
       }
     });
   }
+
+
+
+var uniqueArray = removeDuplicates(serviceProvArray, "_id");
+//console.log("uniqueArray is: " + JSON.stringify(uniqueArray));
   res.send({
     err_msg, success_msg, layout: false,
     session: req.session,
-    data: serviceProvArray
+    data: uniqueArray
   });
 
 });
+
+
+
+
 
 
 // My Professional Filter name surname qualification
@@ -2727,6 +2732,21 @@ app.get('/get_phase_task_list', isCustomer, async (req, res) => {
   }
 })
 })
+
+function removeDuplicates(originalArray, prop) {
+  var newArray = [];
+  var lookupObject  = {};
+
+  for(var i in originalArray) {
+     lookupObject[originalArray[i][prop]] = originalArray[i];
+  }
+
+  for(i in lookupObject) {
+      newArray.push(lookupObject[i]);
+  }
+   return newArray;
+}
+
 module.exports = app;
 
 
