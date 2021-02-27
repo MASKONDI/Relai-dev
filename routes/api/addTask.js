@@ -54,25 +54,39 @@ module.exports.add_existing_task = function (req) {
     return new Promise( async function (resolve, reject) {
         var newTask={};
         if (typeof (req.body.task_element) == 'object') {
-            req.body.task_element.forEach(async function(row ,i){
-             newTask ={
-              ppts_property_id: req.body.ppts_property_id,
-              ppts_user_id: req.session.user_id,
-              ppts_task_name: row,
-              ppts_assign_to: req.body.ppts_assign_to,
-              ppts_due_date: req.body.duedate,
-              ppts_phase_name: req.body.ppts_phase_name,
-              ppts_is_active_user_flag: req.session.active_user_login,
-              ppts_note: req.body.notes
-            }
-            const allobj = await  new PropertyProfessinoalTaskSchema(newTask);
-            allobj.save().then(async function(resp){
-                let responce = await resp
-                resolve(responce)
-            }).catch((err)=>{
-                reject(err)
-            });
-        })
+                req.body.task_element.forEach(async function(row ,i){
+
+
+                    PropertyProfessinoalTaskSchema.findOne({ppts_property_id: req.body.ppts_property_id,ppts_user_id:req.session.user_id,ppts_task_name:row,ppts_assign_to:req.body.ppts_assign_to,ppts_phase_name:req.body.ppts_phase_name,ppts_is_active_user_flag:req.session.active_user_login }).then(async (data) => {
+                          console.log('Already task in table:',data)
+                        if (!data) {
+                          
+                            newTask ={
+                            ppts_property_id: req.body.ppts_property_id,
+                            ppts_user_id: req.session.user_id,
+                            ppts_task_name: row,
+                            ppts_assign_to: req.body.ppts_assign_to,
+                            ppts_due_date: req.body.duedate,
+                            ppts_phase_name: req.body.ppts_phase_name,
+                            ppts_is_active_user_flag: req.session.active_user_login,
+                            ppts_note: req.body.notes,
+                            ppts_phase_flag:req.body.ppts_phase_flag
+                            }
+                            console.log('Newdata',newTask)
+                            const allobj = await  new PropertyProfessinoalTaskSchema(newTask);
+                            allobj.save().then(async function(resp){
+                                let responce = await resp
+                                resolve(responce)
+                            }).catch((err)=>{
+                                reject(err)
+                            });
+                        }
+                    }).catch((err) => {
+                        reject(err)
+                    })
+
+
+                })
       
           } else {
             console.log("addTask post:", req.body);
@@ -84,7 +98,8 @@ module.exports.add_existing_task = function (req) {
                 ppts_due_date: req.body.duedate,
                 ppts_phase_name: req.body.ppts_phase_name,
                 ppts_is_active_user_flag: req.session.active_user_login,
-                ppts_note: req.body.notes
+                ppts_note: req.body.notes,
+                ppts_phase_flag:req.body.ppts_phase_flag
             }
             const allobj = await  new PropertyProfessinoalTaskSchema(newTask);
             allobj.save().then(async function(resp){

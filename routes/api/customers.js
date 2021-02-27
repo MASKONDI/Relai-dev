@@ -1322,14 +1322,19 @@ router.post("/addTask", (req, res) => {
       'status': false,
       'redirect': '/professionals-hirenow'
     });
-
-
   } else {
     console.log("addTask post:", req.body);
+    let taskName='';
+    if(req.body.task_name){
+      taskName = req.body.task_name;
+    }else{
+      taskName = req.body.phase_task_list;
+    }
+    console.log('taskNametaskNametaskName:',taskName)
     const newTask = new PropertyProfessinoalTaskSchema({
       ppts_property_id: req.body.property_id,
       ppts_user_id: req.session.user_id,
-      ppts_task_name: req.body.task_name,
+      ppts_task_name: taskName,
       ppts_assign_to: req.body.professionalId,
       ppts_due_date: req.body.duedate,
       //ppts_phase_id: req.body.Phase,
@@ -2195,10 +2200,16 @@ router.post("/addTask_from_Dreamhome_detial", (req, res) => {
 
   } else {
     console.log("addTask post:", req.body);
+    let taskName='';
+    if(req.body.task_name){
+      taskName = req.body.task_name;
+    }else{
+      taskName = req.body.phase_task_list;
+    }
     const newTask = new PropertyProfessinoalTaskSchema({
       ppts_property_id: req.body.property_id_add_task,
       ppts_user_id: req.session.user_id,
-      ppts_task_name: req.body.task_name,
+      ppts_task_name: taskName,
       ppts_assign_to: req.body.service_provider_id,
       ppts_due_date: req.body.duedate,
       //ppts_phase_id: req.body.Phase,
