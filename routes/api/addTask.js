@@ -57,7 +57,7 @@ module.exports.add_existing_task = function (req) {
                 req.body.task_element.forEach(async function(row ,i){
 
 
-                    PropertyProfessinoalTaskSchema.findOne({ppts_property_id: req.body.ppts_property_id,ppts_user_id:req.session.user_id,ppts_task_name:row,ppts_assign_to:req.body.ppts_assign_to,ppts_phase_name:req.body.ppts_phase_name,ppts_is_active_user_flag:req.session.active_user_login }).then(async (data) => {
+                    PropertyProfessinoalTaskSchema.findOne({ppts_property_id: req.body.ppts_property_id,ppts_user_id:req.session.user_id,ppts_task_name:row,ppts_assign_to:req.body.ppts_assign_to,ppts_phase_name:req.body.ppts_phase_name,ppts_is_active_user_flag:req.session.active_user_login,ppts_phase_flag:req.body.ppts_phase_flag }).then(async (data) => {
                           console.log('Already task in table:',data)
                         if (!data) {
                           
@@ -133,7 +133,7 @@ module.exports.add_existing_task_from_btn = function (req) {
         if (typeof (taskName) == 'object') {
             taskName.forEach(async function(row ,i){
 
-                    PropertyProfessinoalTaskSchema.findOne({ppts_property_id: req.body.ppts_property_id,ppts_user_id:req.session.user_id,ppts_task_name:row,ppts_assign_to:req.body.ppts_assign_to,ppts_phase_name:req.body.ppts_phase_name,ppts_is_active_user_flag:req.session.active_user_login }).then(async (data) => {
+                    PropertyProfessinoalTaskSchema.findOne({ppts_property_id: req.body.property_id,ppts_user_id:req.session.user_id,ppts_task_name:row,ppts_assign_to:req.body.professionalId,ppts_phase_name:req.body.Phase,ppts_is_active_user_flag:req.session.active_user_login,ppts_phase_flag:req.body.ppts_phase_flag }).then(async (data) => {
                           console.log('Already task in table:',data)
                         if (!data) {
                           
@@ -208,7 +208,7 @@ module.exports.add_existing_task_from_btn_dramhome_details = function (req) {
         if (typeof (taskName) == 'object') {
             taskName.forEach(async function(row ,i){
 
-                    PropertyProfessinoalTaskSchema.findOne({ppts_property_id: req.body.ppts_property_id,ppts_user_id:req.session.user_id,ppts_task_name:row,ppts_assign_to:req.body.ppts_assign_to,ppts_phase_name:req.body.ppts_phase_name,ppts_is_active_user_flag:req.session.active_user_login }).then(async (data) => {
+                    PropertyProfessinoalTaskSchema.findOne({ppts_property_id: req.body.property_id_add_task,ppts_user_id:req.session.user_id,ppts_task_name:row,ppts_assign_to:req.body.service_provider_id,ppts_phase_name:req.body.Phase,ppts_is_active_user_flag:req.session.active_user_login,ppts_phase_flag:req.body.ppts_phase_flag }).then(async (data) => {
                           console.log('Already task in table:',data)
                         if (!data) {
                           

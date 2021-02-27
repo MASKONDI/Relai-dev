@@ -1072,12 +1072,15 @@ Swal.fire({
         e.preventDefault();
         var formData = $(this).serialize();
         if (formData) {
+        $('.loader-box').attr('style','display:flex !important');
           $.ajax({
             type: "POST",
             data: formData,
             url: "/api/addTask_from_Dreamhome_detial",
             cache: false,
             success: function (data) {
+            $('.loader-box').attr('style','display:none !important');
+
               if (data.status == false) {
                 Swal.fire({
                   // position: 'top-end',
@@ -2169,12 +2172,15 @@ jQuery(document).ready(function(){
     var formData = $(this).serialize();
     console.log('formDataformData:',formData);
     if (formData) {
+      $('.loader-box').attr('style', 'display:flex !important');
       $.ajax({
         type: "POST",
         data: formData,
         url: "/api/addTask",
         cache: false,
         success: function (data) {
+          $('.loader-box').attr('style', 'display:none !important');
+
           console.log('data:', data)
           if (data.status == false) {
             Swal.fire({
@@ -3245,45 +3251,45 @@ $("#Add_existing_task_form_buyerPhaseD").on('submit', function (e) {
   var formData = $("#Add_existing_task_form_buyerPhaseD").serialize();
   console.log(formData)
   if (formData) {
-    $.ajax({
-      type: "POST",
-      data: formData,
-      url: "/api/Add_existing_task_from_Dreamhome_detial_phase",
-      cache: false,
-      success: function (data) {
-        if (data.status == false) {
+    // $.ajax({
+    //   type: "POST",
+    //   data: formData,
+    //   url: "/api/Add_existing_task_from_Dreamhome_detial_phase",
+    //   cache: false,
+    //   success: function (data) {
+    //     if (data.status == false) {
 
-          Swal.fire({
-            // position: 'top-end',
-            icon: 'error',
-            title: data.err_msg,
-            showConfirmButton: true,
-            confirmButtonColor: '#005377'
-            //timer: 1500
-          })
-
-
-        } else {
-
-          console.log('meserrmessagesage:', data.success_msg)
+    //       Swal.fire({
+    //         // position: 'top-end',
+    //         icon: 'error',
+    //         title: data.err_msg,
+    //         showConfirmButton: true,
+    //         confirmButtonColor: '#005377'
+    //         //timer: 1500
+    //       })
 
 
-          Swal.fire({
-            // position: 'top-end',
-            icon: 'success',
-            title: data.success_msg,
-            showConfirmButton: false,
-            confirmButtonColor: '#005377',
-            timer: 3000
-          })
-          location.reload(true)
-          $('#notes,#duedate').val('');
+    //     } else {
+
+    //       console.log('meserrmessagesage:', data.success_msg)
 
 
-        }
+    //       Swal.fire({
+    //         // position: 'top-end',
+    //         icon: 'success',
+    //         title: data.success_msg,
+    //         showConfirmButton: false,
+    //         confirmButtonColor: '#005377',
+    //         timer: 3000
+    //       })
+    //       location.reload(true)
+    //       $('#notes,#duedate').val('');
 
-      }
-    });
+
+    //     }
+
+    //   }
+    // });
 
   } else {
     alert('some thing wrong')
@@ -4456,34 +4462,43 @@ $("#Add_existing_task_form_renovatorPhaseH").on('submit', function (e) {
 <script>
 function phaseTaskList(data,active_user_login){
 console.log('muuuu:',data.value);
-var opt = data.options[data.selectedIndex];
-  var phaseId = parseInt(opt.dataset.phase);
-console.log('phaseId:',phaseId);
-$('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group,.task_option').css('display','none');
-$('input#taskName').css('display','block');
-if(isNaN(phaseId)){
-  $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display','none');
-}else{
-   var ppts_phase_flag='';
-   if(phaseId == 0){ ppts_phase_flag='A'; }else if(phaseId == 1){ ppts_phase_flag='B'; }else if(phaseId == 2){ ppts_phase_flag='C'; }else if(phaseId == 3){ ppts_phase_flag='D'; }else if(phaseId == 4){ ppts_phase_flag='E'; }else if(phaseId == 5){ ppts_phase_flag='F'; }else if(phaseId == 6){ ppts_phase_flag='G'; }else if(phaseId == 7){ ppts_phase_flag='H'; }else if(phaseId == 8){ ppts_phase_flag='I'; }else if(phaseId == 9){ ppts_phase_flag='J'; }
-  $('#addTaskForm #ppts_phase_flag,#addTaskForm_mydreamhome_detial #ppts_phase_flag').val(ppts_phase_flag);
-  if(active_user_login == 'buyer'){
-      $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display','block');
-      $('.buyer_phase_task_list .phase_task_list_'+phaseId).css('display','block');
-    }else if(active_user_login == 'seller'){
-      $('.seller_phase_task_list .phase_task_list_'+phaseId).css('display','block');
-      $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display','block');
-    }else if(active_user_login == 'renovator'){
-      $('.renovator_phase_task_list .phase_task_list_'+phaseId).css('display','block');
-      $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display','block');
-    }else{
-      $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display','none');
-    }
-}
+
+$('.phase_task_list').multiselect('refresh');
+$(".phase_task_list").selectedIndex = -1;           
+$('.phase_task_list').multiselect('deselectAll', false);
+$('.phase_task_list').multiselect('updateButtonText');
+
+  if( data.value !='other'){
+      var opt = data.options[data.selectedIndex];
+        var phaseId = parseInt(opt.dataset.phase);
+      console.log('phaseId:',phaseId);
+      $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group,.task_option').css('display','none');
+      $('input#taskName').css('display','block');
+      if(isNaN(phaseId)){
+        $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display','none');
+      }else{
+        var ppts_phase_flag='';
+        if(phaseId == 0){ ppts_phase_flag='A'; }else if(phaseId == 1){ ppts_phase_flag='B'; }else if(phaseId == 2){ ppts_phase_flag='C'; }else if(phaseId == 3){ ppts_phase_flag='D'; }else if(phaseId == 4){ ppts_phase_flag='E'; }else if(phaseId == 5){ ppts_phase_flag='F'; }else if(phaseId == 6){ ppts_phase_flag='G'; }else if(phaseId == 7){ ppts_phase_flag='H'; }else if(phaseId == 8){ ppts_phase_flag='I'; }else if(phaseId == 9){ ppts_phase_flag='J'; }
+        $('#addTaskForm #ppts_phase_flag,#addTaskForm_mydreamhome_detial #ppts_phase_flag').val(ppts_phase_flag);
+        if(active_user_login == 'buyer'){
+            $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display','block');
+            $('.buyer_phase_task_list .phase_task_list_'+phaseId).css('display','block');
+          }else if(active_user_login == 'seller'){
+            $('.seller_phase_task_list .phase_task_list_'+phaseId).css('display','block');
+            $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display','block');
+          }else if(active_user_login == 'renovator'){
+            $('.renovator_phase_task_list .phase_task_list_'+phaseId).css('display','block');
+            $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display','block');
+          }else{
+            $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display','none');
+          }
+      }
+  }
 }
 
 function SelectedTaskList(data){
   if(data.value){
+      
       $('input#taskName').css('display','none');
       $('input#taskName').removeAttr('required','required');
   }else{
