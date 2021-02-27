@@ -102,6 +102,7 @@ app.get("/mydreamhome-details-chainproperty", isCustomer, async (req, res) => {
 
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
+  req.session.property_id=req.query.id
   req.session.pagename = 'mydreamhome-details-chainproperty';
   console.log("customer session id is", req.session.user_id);
   console.log(" req issssssssssssssssss", req.query.id);
@@ -1809,10 +1810,15 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
     let TaskDetailObj = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login);
 
     //console.log("TaskDetailObj===================================================",TaskDetailObj)
-
+    var phase_page_name='';
     for (var ph of TaskDetailObj) {
       const PhaseObject = JSON.stringify(ph);
       const to_do_data = JSON.parse(PhaseObject);
+      
+       phase_page_name = await getPhase(to_do_data.ppts_phase_flag);
+      to_do_data.phase_page_name=phase_page_name
+      //to_do_data.step=to_do_data.ppts_phase_flag
+      console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',to_do_data)
       //console.log("to do deta ",to_do_data.ppts_assign_to)
       let professionalObj = await PropertyProfessionalHelper.GetProfessionalById(to_do_data.ppts_assign_to);
       if (professionalObj) {
@@ -1880,6 +1886,30 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
 })
 
 
+
+function getPhase(phase) {
+  if (phase == 'A') { 
+    return 'mydreamhome-details-phase-a'; 
+  } else if (phase == 'B') { 
+    return 'mydreamhome-details-phase-b'; 
+  } else if(phase == 'C'){
+    return 'mydreamhome-details-phase-c'; 
+  }else if(phase == 'D'){
+    return 'mydreamhome-details-phase-d'; 
+  }else if(phase == 'E'){
+    return 'mydreamhome-details-phase-e'; 
+  }else if(phase == 'F'){
+    return 'mydreamhome-details-phase-f'; 
+  }else if(phase == 'G'){
+    return 'mydreamhome-details-phase-g'; 
+  }else if(phase == 'H'){
+    return 'mydreamhome-details-phase-h'; 
+  }else if(phase == 'o'){
+    return 'mydreamhome-details-phase-o'; 
+  }
+
+ 
+}
 //*******Service Provider and signup and profiles routes */
 app.get('/signup-service-provider', (req, res) => {
   err_msg = req.flash('err_msg');
