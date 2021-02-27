@@ -1810,15 +1810,15 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
     let TaskDetailObj = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login);
 
     //console.log("TaskDetailObj===================================================",TaskDetailObj)
-    //var phase_page_name='';
+    var phase_page_name='';
     for (var ph of TaskDetailObj) {
       const PhaseObject = JSON.stringify(ph);
       const to_do_data = JSON.parse(PhaseObject);
       
-       //phase_page_name = await getPhase(to_do_data.ppts_phase_flag);
-      //to_do_data.phase_page_name=phase_page_name
+       phase_page_name = await getPhase(to_do_data.ppts_phase_flag);
+      to_do_data.phase_page_name=phase_page_name
       //to_do_data.step=to_do_data.ppts_phase_flag
-      //console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',to_do_data)
+      console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',to_do_data)
       //console.log("to do deta ",to_do_data.ppts_assign_to)
       let professionalObj = await PropertyProfessionalHelper.GetProfessionalById(to_do_data.ppts_assign_to);
       if (professionalObj) {
