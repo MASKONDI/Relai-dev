@@ -2512,7 +2512,39 @@ router.post('/reapitApi', (req, res) => {
 });
 
 
+router.post('/edit_task_submit_form', (req, res) => {
 
+  console.log("edit task req is:", req.body);
+  let newServiceProviderID = req.body.ppts_new_assign_to;
+  console.log("new Assign property is", newServiceProviderID);
+  // if (newServiceProviderID != null || newServiceProviderID != '') {
+  //   console.log("Id is there");
+
+  PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_is_active_user_flag: req.body.ppts_is_active_user_flag, ppts_task_name: req.body.ppts_task_name }, { $set: { ppts_assign_to: newServiceProviderID } }, { upsert: true }, function (err) {
+    if (err) {
+      res.json(err);
+      //res.send({ status: false, message: 'Something going wrong please check again !!' })
+    } else {
+      // res.send({ status: true, message: 'Task update successfully !!' })
+      console.log("Task update successfully");
+      res.json("Task Updated successfully");
+    }
+  });
+  // }
+  // else {
+  //   console.log("New service_provider id is not there");
+  //   PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_is_active_user_flag: req.body.ppts_is_active_user_flag, ppts_task_name: req.body.ppts_task_name }, { $set: { ppts_assign_to: '' } }, { upsert: true }, function (err, result) {
+  //     if (err) {
+  //       res.json(err);
+  //       //res.send({ status: false, message: 'Something going wrong please check again !!' })
+  //     } else {
+  //       console.log("Task update successfully");
+
+  //       // res.send({ status: true, message: 'Task update successfully !!' })
+  //     }
+  //   });
+  // }
+});
 
 
 
