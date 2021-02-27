@@ -1821,15 +1821,17 @@ MYDREAM-HOME-DETAILS-PAHSE-A
  <script>
 
   $(document).ready(function () {
-    $(".add-professionals").click(function (e) {
+    $(".existingTaskListModal").click(function (e) {
       $.ajax({
         type: "GET",
         url: "/api/addTask",
         cache: false,
         success: function (data) {
+          var thisPointer = $(".existingTaskListModal");
           console.log(data)
           var htmlData = '';
           $(".ppts_property_id").val(data.property_id);
+          $('.ppts_assign_to').attr('data-ppts_property_id',data.property_id);
           var phasename=$('.phsename').val()
           //alert(phasename)
           $('.ppts_phase_name').val(phasename)
@@ -1844,6 +1846,8 @@ MYDREAM-HOME-DETAILS-PAHSE-A
         }
       });
     })
+
+
     $(".cancel_task_btn").click(function(e){
       $('#ppts_task_name,#ppts_note,#ppts_due_date').val('');
     })
@@ -1905,7 +1909,7 @@ MYDREAM-HOME-DETAILS-PAHSE-A
       e.preventDefault()
       //alert('1')
       var formData = $("#Add_existing_task_form").serialize();
-      console.log(formData)
+      console.log('dfdfdf:',formData)
       if (formData) {
         $.ajax({
           type: "POST",
@@ -2561,6 +2565,7 @@ Professional Details
   $("#addTaskForm").on('submit', function (e) {
     e.preventDefault();
     var formData = $(this).serialize();
+    console.log('formDataformData:',formData);
     if (formData) {
       $.ajax({
         type: "POST",
@@ -2613,7 +2618,7 @@ Professional Details
           if (data.data.ps_phase_array.length > 0) {
             $.each(data.data.ps_phase_array, function (i, data) {
               console.log('val:', data)
-              htmlData += '<option value="' + data.phase_name + '">' + data.phase_name + '</option>';
+              htmlData += '<option data-phase="'+i+'" value="' + data.phase_name + '">' + data.phase_name + '</option>';
             });
           }
           $('.phase_list').html(htmlData);
@@ -5416,6 +5421,186 @@ $("#Add_existing_task_form_renovatorPhaseH").on('submit', function (e) {
 })
 </script>
 
+<script>
+function phaseTaskList(data,active_user_login){
+console.log('muuuu:',data.value);
+var opt = data.options[data.selectedIndex];
+  var phaseId = parseInt(opt.dataset.phase);
+console.log('phaseId:',phaseId);
+$('.phase_task_list,.task_option').css('display','none');
+$('input#taskName').css('display','block');
+if(isNaN(phaseId)){
+  $('.phase_task_list').css('display','none');
+}else{
+  if(active_user_login == 'buyer'){
+      $('.buyer_phase_task_list .phase_task_list_'+phaseId).css('display','block');
+      $('.phase_task_list').css('display','block');
+    }else if(active_user_login == 'seller'){
+      $('.seller_phase_task_list .phase_task_list_'+phaseId).css('display','block');
+      $('.phase_task_list').css('display','block');
+    }else if(active_user_login == 'renovator'){
+      $('.renovator_phase_task_list .phase_task_list_'+phaseId).css('display','block');
+      $('.phase_task_list').css('display','block');
+    }else{
+      $('.phase_task_list').css('display','none');
+    }
+}
+}
 
+function SelectedTaskList(data){
+  if(data.value){
+      $('input#taskName').css('display','none');
+      $('input#taskName').removeAttr('required','required');
+  }else{
+      $('input#taskName').css('display','block');
+      $('input#taskName').attr('required','required');
+  }
+}
+
+
+function get_selected_phase_existingTask(ppts_phase_flag,active_user_login,data){
+          console.log('PhaseName:',ppts_phase_flag);    
+          console.log('active_user_login:',active_user_login);    
+          var ppts_property_id = $(data).data('ppts_property_id');
+          console.log('ppts_property_id:',ppts_property_id);    
+          if(active_user_login == 'buyer'){
+           // var opt = data.options[data.selectedIndex];
+            //var ppts_property_id = opt.dataset.ppts_property_id;
+            //professionalPhaseH
+            //renovatorPhaseH
+            //sellerPhaseF
+            console.log('Inside Buyer');
+            $.ajax({
+              type: "GET",
+              data: {
+                ppts_phase_flag:ppts_phase_flag,
+                ppts_property_id:ppts_property_id,
+                ppts_assign_to:data.value,
+                ppts_is_active_user_flag:active_user_login
+              },
+              url: "/get_phase_task_list",
+              cache: false,
+              success: function (data) {
+                 var ExistingTasks =[];
+                $("#buyerPhase"+ppts_phase_flag+" .check-permission .task_element").each(function(){
+                       ExistingTasks.push($(this).val());
+                });
+                console.log('ExistingTasks list:',ExistingTasks);
+                     console.log('Getphasetask list:',data);
+                     var taskList= data.taskObject;
+                     if(taskList.length > 0){
+                        $('#buyerPhase'+ppts_phase_flag+' .check-permission .task_element').prop('checked', false);
+                        $('#buyerPhase'+ppts_phase_flag+' .check-permission .task_element').removeAttr('onclick');
+                        $('#buyerPhase'+ppts_phase_flag+' .check-permission .task_element').removeAttr('onkeydown');
+                            for(var i=0; i<taskList.length; i++ ){
+                              console.log('loop list:',taskList[i]);
+                              console.log('loop list:',taskList[i].ppts_task_name);
+                              const isInArray = ExistingTasks.includes(taskList[i].ppts_task_name);
+                              console.log('isInArray:',isInArray);
+                              if(isInArray){
+                                     $('#buyerPhase'+taskList[i].ppts_phase_flag+' input[value="' + taskList[i].ppts_task_name + '"]').prop('checked', true);
+                                     $('#buyerPhase'+taskList[i].ppts_phase_flag+' input[value="' + taskList[i].ppts_task_name + '"]').attr('onclick','return false');
+                                     $('#buyerPhase'+taskList[i].ppts_phase_flag+' input[value="' + taskList[i].ppts_task_name + '"]').attr('onkeydown','return false');
+                              }
+                            }
+                     }else{
+                        $('#buyerPhase'+ppts_phase_flag+' .check-permission .task_element').prop('checked', false);
+                        $('#buyerPhase'+ppts_phase_flag+' .check-permission .task_element').removeAttr('onclick');
+                        $('#buyerPhase'+ppts_phase_flag+' .check-permission .task_element').removeAttr('onkeydown');
+                     }
+              }
+            });
+          }else if(active_user_login == 'seller'){
+console.log('Inside Seller');
+            $.ajax({
+              type: "GET",
+              data: {
+                ppts_phase_flag:ppts_phase_flag,
+                ppts_property_id:ppts_property_id,
+                ppts_assign_to:data.value,
+                ppts_is_active_user_flag:active_user_login
+              },
+              url: "/get_phase_task_list",
+              cache: false,
+              success: function (data) {
+                console.log('ddfdfdfddd:',"#sellerPhase"+ppts_phase_flag+" .check-permission .task_element");
+                 var ExistingTasks =[];
+                $("#sellerPhase"+ppts_phase_flag+" .check-permission .task_element").each(function(){
+                       ExistingTasks.push($(this).val());
+                });
+                console.log('ExistingTasks list:',ExistingTasks);
+                     console.log('Getphasetask list:',data);
+                     var taskList= data.taskObject;
+                     if(taskList.length > 0){
+                        $('#sellerPhase'+ppts_phase_flag+' .check-permission .task_element').prop('checked', false);
+                        $('#sellerPhase'+ppts_phase_flag+' .check-permission .task_element').removeAttr('onclick');
+                        $('#sellerPhase'+ppts_phase_flag+' .check-permission .task_element').removeAttr('onkeydown');
+                            for(var i=0; i<taskList.length; i++ ){
+                              console.log('loop list:',taskList[i]);
+                              console.log('loop list:',taskList[i].ppts_task_name);
+                              const isInArray = ExistingTasks.includes(taskList[i].ppts_task_name);
+                              console.log('isInArray:',isInArray);
+                              if(isInArray){
+                                     $('#sellerPhase'+taskList[i].ppts_phase_flag+' input[value="' + taskList[i].ppts_task_name + '"]').prop('checked', true);
+                                     $('#sellerPhase'+taskList[i].ppts_phase_flag+' input[value="' + taskList[i].ppts_task_name + '"]').attr('onclick','return false');
+                                     $('#sellerPhase'+taskList[i].ppts_phase_flag+' input[value="' + taskList[i].ppts_task_name + '"]').attr('onkeydown','return false');
+                              }
+                            }
+                     }else{
+                        $('#sellerPhase'+ppts_phase_flag+' .check-permission .task_element').prop('checked', false);
+                        $('#sellerPhase'+ppts_phase_flag+' .check-permission .task_element').removeAttr('onclick');
+                        $('#sellerPhase'+ppts_phase_flag+' .check-permission .task_element').removeAttr('onkeydown');
+                     }
+              }
+            });
+
+          }else if(active_user_login == 'renovator'){
+            console.log('Inside renovator');
+            $.ajax({
+              type: "GET",
+              data: {
+                ppts_phase_flag:ppts_phase_flag,
+                ppts_property_id:ppts_property_id,
+                ppts_assign_to:data.value,
+                ppts_is_active_user_flag:active_user_login
+              },
+              url: "/get_phase_task_list",
+              cache: false,
+              success: function (data) {
+                 var ExistingTasks =[];
+                $("#renovatorPhase"+ppts_phase_flag+" .check-permission .task_element").each(function(){
+                       ExistingTasks.push($(this).val());
+                });
+                console.log('ExistingTasks list:',ExistingTasks);
+                     console.log('Getphasetask list:',data);
+                     var taskList= data.taskObject;
+                     if(taskList.length > 0){
+                        $('#renovatorPhase'+ppts_phase_flag+' .check-permission .task_element').prop('checked', false);
+                        $('#renovatorPhase'+ppts_phase_flag+' .check-permission .task_element').removeAttr('onclick');
+                        $('#renovatorPhase'+ppts_phase_flag+' .check-permission .task_element').removeAttr('onkeydown');
+                            for(var i=0; i<taskList.length; i++ ){
+                              console.log('loop list:',taskList[i]);
+                              console.log('loop list:',taskList[i].ppts_task_name);
+                              const isInArray = ExistingTasks.includes(taskList[i].ppts_task_name);
+                              console.log('isInArray:',isInArray);
+                              if(isInArray){
+                                     $('#renovatorPhase'+taskList[i].ppts_phase_flag+' input[value="' + taskList[i].ppts_task_name + '"]').prop('checked', true);
+                                     $('#renovatorPhase'+taskList[i].ppts_phase_flag+' input[value="' + taskList[i].ppts_task_name + '"]').attr('onclick','return false');
+                                     $('#renovatorPhase'+taskList[i].ppts_phase_flag+' input[value="' + taskList[i].ppts_task_name + '"]').attr('onkeydown','return false');
+                              }
+                            }
+                     }else{
+                        $('#renovatorPhase'+ppts_phase_flag+' .check-permission .task_element').prop('checked', false);
+                        $('#renovatorPhase'+ppts_phase_flag+' .check-permission .task_element').removeAttr('onclick');
+                        $('#renovatorPhase'+ppts_phase_flag+' .check-permission .task_element').removeAttr('onkeydown');
+                     }
+              }
+            });
+
+          }else{
+                    console.log('Nothig selected in task and usert type')
+          }
+}
+</script>
 </body>
 </html>

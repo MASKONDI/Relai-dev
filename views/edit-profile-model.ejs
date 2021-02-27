@@ -336,7 +336,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
+            <select  onchange="get_selected_phase_existingTask('A','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
               id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
@@ -413,6 +413,7 @@
               </tbody>
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="A">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id="duedate"
               placeholder="Due on Date" name="duedate" required>
@@ -444,7 +445,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
+            <select onchange="get_selected_phase_existingTask('A','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
               id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
@@ -465,7 +466,7 @@
               <tbody>
                 <tr>
                   <td><label class="check-permission">Instruct Solicitor
-                      <input type="checkbox"  name="task_element" value="Instruct Solicitor">
+                      <input type="checkbox"  class="task_element" name="task_element" value="Instruct Solicitor">
                       <span class="checkmark"></span>
                     </label>
                   </td>
@@ -473,42 +474,42 @@
                 <tr>
                   <td>
                     <label class="check-permission">Instruct other professionals
-                      <input type="checkbox" name="task_element" value="Instruct other professionals">
+                      <input type="checkbox" class="task_element"  name="task_element" value="Instruct other professionals">
                       <span class="checkmark"></span>
                     </label>
                   </td>
                 </tr>
                 <tr>
                   <td><label class="check-permission">Bank details for reservation
-                      <input type="checkbox" name="task_element" value="Bank details for reservation">
+                      <input type="checkbox"  class="task_element" name="task_element" value="Bank details for reservation">
                       <span class="checkmark"></span>
                     </label>
                   </td>
                 </tr>
                 <tr>
                   <td><label class="check-permission">Reservation form
-                      <input type="checkbox" name="task_element" value="Reservation form">
+                      <input type="checkbox"  class="task_element" name="task_element" value="Reservation form">
                       <span class="checkmark"></span>
                     </label>
                   </td>
                 </tr>
                 <tr>
                   <td><label class="check-permission">Reservation fees Payment
-                      <input type="checkbox" name="task_element" value="Reservation fees Payment">
+                      <input type="checkbox"  class="task_element" name="task_element" value="Reservation fees Payment">
                       <span class="checkmark"></span>
                     </label>
                   </td>
                 </tr>
                 <tr>
                   <td> <label class="check-permission">Checks. Title/property/chains et al
-                      <input type="checkbox" name="task_element" value="Checks. Title/property/chains et al">
+                      <input type="checkbox"  class="task_element" name="task_element" value="Checks. Title/property/chains et al">
                       <span class="checkmark"></span>
                     </label>
                   </td>
                 </tr>
                 <tr>
                   <td> <label class="check-permission">Memorandum of sales(sent0)
-                      <input type="checkbox" name="task_element" value="Memorandum of sales(sent0)">
+                      <input type="checkbox"  class="task_element" name="task_element" value="Memorandum of sales(sent0)">
                       <span class="checkmark"></span>
                     </label>
                   </td>
@@ -517,6 +518,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="A">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -548,7 +551,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
+            <select onchange="get_selected_phase_existingTask('B','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
               id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
@@ -569,7 +572,7 @@
               <tbody>
                 <tr>
                   <td><label class="check-permission">Draft Contract(received)
-                      <input type="checkbox"  name="task_element" value="Instruct Solicitor"
+                      <input type="checkbox"  name="task_element" value="Draft Contract(received)"
                         class="task_element">
                       <span class="checkmark"></span>
                     </label>
@@ -624,6 +627,7 @@
               </tbody>
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="B">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
@@ -656,7 +660,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
+            <select onchange="get_selected_phase_existingTask('B','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
               id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
@@ -703,6 +707,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="B">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -734,7 +740,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
+            <select onchange="get_selected_phase_existingTask('C','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
               id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
@@ -790,6 +796,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="C">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -821,7 +829,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
+            <select onchange="get_selected_phase_existingTask('C','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
               id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
@@ -869,6 +877,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="C">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -901,7 +911,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
+            <select onchange="get_selected_phase_existingTask('D','<%=session.active_user_login%>',this)" class="form-control selectBox2ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
               id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
@@ -952,6 +962,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="D">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -983,7 +995,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
+            <select onchange="get_selected_phase_existingTask('D','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
               id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
@@ -1031,6 +1043,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="D">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -1063,7 +1077,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
+            <select onchange="get_selected_phase_existingTask('E','<%=session.active_user_login%>',this)" class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
               style="height:48px" id="" name="ppts_assign_to" data-rule-required="true"
               data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
@@ -1116,6 +1130,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="E">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -1147,7 +1163,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
+            <select onchange="get_selected_phase_existingTask('E','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
               id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
@@ -1217,6 +1233,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="E">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -1247,7 +1265,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
+            <select onchange="get_selected_phase_existingTask('F','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
               id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
@@ -1294,6 +1312,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="F">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -1326,7 +1346,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
+            <select onchange="get_selected_phase_existingTask('F','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
               id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
@@ -1365,6 +1385,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="F">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -1399,7 +1421,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
+            <select onchange="get_selected_phase_existingTask('A','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
               id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
@@ -1468,6 +1490,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="A">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -1501,7 +1525,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
+            <select onchange="get_selected_phase_existingTask('B','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
               id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
@@ -1559,6 +1583,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="B">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -1591,7 +1617,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
+            <select onchange="get_selected_phase_existingTask('C','<%=session.active_user_login%>',this)" class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
               style="height:48px" id="" name="ppts_assign_to" data-rule-required="true"
               data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
@@ -1640,6 +1666,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="C">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -1672,7 +1700,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
+            <select onchange="get_selected_phase_existingTask('D','<%=session.active_user_login%>',this)" class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
               style="height:48px" id="" name="ppts_assign_to" data-rule-required="true"
               data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
@@ -1716,6 +1744,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="D">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -1748,7 +1778,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
+            <select onchange="get_selected_phase_existingTask('E','<%=session.active_user_login%>',this)" class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
               style="height:48px" id="" name="ppts_assign_to" data-rule-required="true"
               data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
@@ -1789,6 +1819,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="E">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -1821,7 +1853,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
+            <select onchange="get_selected_phase_existingTask('F','<%=session.active_user_login%>',this)" class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
               style="height:48px" id="" name="ppts_assign_to" data-rule-required="true"
               data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
@@ -1862,6 +1894,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="F">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -1893,7 +1927,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
+            <select onchange="get_selected_phase_existingTask('G','<%=session.active_user_login%>',this)" class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
               style="height:48px" id="" name="ppts_assign_to" data-rule-required="true"
               data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
@@ -1934,6 +1968,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="G">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -1968,7 +2004,7 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
+            <select onchange="get_selected_phase_existingTask('G','<%=session.active_user_login%>',this)" class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
               style="height:48px" id="" name="ppts_assign_to" data-rule-required="true"
               data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
@@ -2009,6 +2045,8 @@
             </table>
             <input type="hidden" name="ppts_property_id" class="ppts_property_id" value="">
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
+            <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="H">
+
             <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id=""
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
@@ -2041,7 +2079,7 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select onchange="get_selected_phase_existingTask('A','<%=session.active_user_login%>',this)" class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
@@ -2147,7 +2185,7 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select onchange="get_selected_phase_existingTask('B','<%=session.active_user_login%>',this)" class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
@@ -2277,7 +2315,7 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select onchange="get_selected_phase_existingTask('C','<%=session.active_user_login%>',this)" class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
@@ -2390,7 +2428,7 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select onchange="get_selected_phase_existingTask('D','<%=session.active_user_login%>',this)" class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
@@ -2514,7 +2552,7 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select onchange="get_selected_phase_existingTask('E','<%=session.active_user_login%>',this)" class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
@@ -2624,7 +2662,7 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select onchange="get_selected_phase_existingTask('F','<%=session.active_user_login%>',this)" class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
@@ -2736,7 +2774,7 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select onchange="get_selected_phase_existingTask('G','<%=session.active_user_login%>',this)" class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
@@ -2841,7 +2879,7 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select onchange="get_selected_phase_existingTask('H','<%=session.active_user_login%>',this)" class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
