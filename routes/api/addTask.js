@@ -3,7 +3,11 @@ const PropertiesPhaseSchema = require("../../models/property_phase_schema");
 module.exports.GetTaskById = function (ppts_property_id,ppts_is_active_user_flag) {
     return new Promise( async function (resolve, reject) {
        if(ppts_property_id!=null){
-        var data={$and:[{ppts_property_id: ppts_property_id,ppts_is_active_user_flag:ppts_is_active_user_flag}]}
+        var data={
+            ppts_property_id: ppts_property_id
+
+           
+        }
         PropertyProfessinoalTaskSchema.find(data).then(async(resp)=>{
             console.log('resp:====',resp)
             let responce = await resp
@@ -18,7 +22,10 @@ module.exports.GetTaskById = function (ppts_property_id,ppts_is_active_user_flag
 module.exports.GetTaskByPhaseName = function (ppts_property_id,ppts_phase_name,ppts_is_active_user_flag) {
     return new Promise( async function (resolve, reject) {
        if(ppts_property_id!=null){
-        var data={$and:[{ppts_property_id: ppts_property_id,ppts_phase_name:ppts_phase_name,ppts_is_active_user_flag:ppts_is_active_user_flag}]}
+        var data={$and:[{
+            //ppts_property_id: ppts_property_id,ppts_phase_name:ppts_phase_name,ppts_is_active_user_flag:ppts_is_active_user_flag
+            ppts_property_id: ppts_property_id,ppts_phase_name:ppts_phase_name
+        }]}
         PropertyProfessinoalTaskSchema.find(data).then(async(resp)=>{
             console.log('resp:====',resp)
             let responce = await resp

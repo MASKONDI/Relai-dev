@@ -1448,7 +1448,7 @@ POST : Raise a complaints api is used for raising a complaints to particular ser
 POST : message api is used for sending message to service_provider or vice-versa.
 ------------------------------------------------------------------------------------------------- */
 router.post('/message', (req, res) => {
-  console.log("Getting data from client is :", req);
+  console.log("Send Message data from client is :", req.body);
   const newMessage = new MessageSchema({
     sms_property_id: req.body.sms_property_id,// storing property_id if its not null
     sms_sender_id: req.body.sms_sender_id,//check if msg comes from customer portal than store customer_Id

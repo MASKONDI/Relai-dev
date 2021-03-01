@@ -57,12 +57,17 @@
                           <% }); %>
                       </div>
                       <div class="text-message-box clearfix">
+                        <% var userid=''; if(session.active_user_login == property.ps_is_active_user_flag){ %> 
+                            <%userid = property.ps_user_id%>
+                        <% }else{%>  
+                           <%userid = property.ps_tagged_user_id%>
+                        <% } %> 
                         <form method="POST" id="chat_form">
                           <div class="text-box">
                             <input type="hidden" name="professional_id" data-val="<%=professional_id%>"
                               value="<%=professional_id%>" id="professional_id">
                             <input type="hidden" name="property_id" value="<%=property._id%>" id="property_id">
-                            <input type="hidden" name="customer_id" value="<%=property.ps_user_id%>" id="customer_id">
+                            <input type="hidden" name="customer_id" value="<%=userid%>" id="customer_id">
                             <textarea name="chat_input" class="form-control"
                               style="min-width: 80%; margin-bottom: 10px; " rows="3" id="comment"></textarea>
                             <button id="chat_submit" type="button" class="btn btn-next"

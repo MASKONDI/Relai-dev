@@ -820,10 +820,20 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
   //req.session.property_id=req.query.id
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  let property = await PropertiesSchema.findOne({ _id: req.session.property_id, ps_is_active_user_flag: req.session.active_user_login });
-  const allDocument = await CustomerUploadDocsSchema.find({ $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.session.property_id, cuds_is_active_user_flag: req.session.active_user_login }] }).sort({ _id: -1 });
+  let property = await PropertiesSchema.findOne({ 
+    //_id: req.session.property_id, ps_is_active_user_flag: req.session.active_user_login 
+    _id: req.session.property_id
+  });
+  const allDocument = await CustomerUploadDocsSchema.find({ 
+    cuds_property_id: req.session.property_id
+   // $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.session.property_id, cuds_is_active_user_flag: req.session.active_user_login }] 
+  }).sort({ _id: -1 });
   //const propertyDataObj = await PropertiesSchema.find();
-  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
+  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ 
+    //pps_user_id: req.session.user_id, 
+   // pps_is_active_user_flag: req.session.active_user_login
+   pps_property_id: req.session.property_id
+   });
   //console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
   let serviceProvArray = [];
   for (var k of AllhiredProfeshnoal) {
@@ -969,7 +979,13 @@ app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
   console.log(' property id  :', req.session.property_id);
   console.log('helooooo', req.query.pid);
   req.session.professional_id = req.query.pid;
-  let property = await PropertiesSchema.findOne({ _id: req.session.property_id, ps_is_active_user_flag: req.session.active_user_login });
+  let property = await PropertiesSchema.findOne({ 
+    $or: [
+      { $and: [{ _id: req.session.property_id }, { ps_is_active_user_flag: req.session.active_user_login }] },
+      { $and: [{ _id: req.session.property_id }, { ps_other_property_type: req.session.active_user_login }] }
+    ]
+     // _id: req.session.property_id, ps_is_active_user_flag: req.session.active_user_login
+   });
 
   // let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({pps_user_id:req.session.user_id});
   // let serviceProvArray = [];
@@ -1005,8 +1021,8 @@ app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
 
   await MessageSchema.find({
     $or: [
-      { $and: [{ sms_sender_id: property.ps_user_id }, { sms_receiver_id: req.query.pid }, { sms_property_id: req.session.property_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
-      { $and: [{ sms_sender_id: req.query.pid }, { sms_receiver_id: property.ps_user_id }, { sms_property_id: req.session.property_id }] }
+      { $and: [{ sms_sender_id: property.ps_user_id }, { sms_receiver_id: req.query.pid }, { sms_property_id: req.session.property_id },{ sms_sender_id: req.session.user_id }] },
+      { $and: [{ sms_sender_id: req.query.pid }, { sms_receiver_id: property.ps_user_id }, { sms_property_id: req.session.property_id },{ sms_receiver_id: req.session.user_id }] }
     ]
   }).then(async (data) => {
     if (data) {
@@ -1202,7 +1218,14 @@ app.get('/professionals-hirenow', isCustomer, async (req, res) => {
   var SarviceProviderId = req.session.currentSarviceProviderId
   if (SarviceProviderId) {
     // if(req.session.user_id)
-    var property = await PropertiesSchema.find({ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login });
+    var property = await PropertiesSchema.find({ 
+      //ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login
+      $or: [
+        { $and: [{ _id: req.session.property_id }, { ps_is_active_user_flag: req.session.active_user_login }] },
+        { $and: [{ _id: req.session.property_id }, { ps_other_property_type: req.session.active_user_login }] }
+      ]
+
+     });
     console.log('property====', property)
     var serviceProvider = await ServiceProviderSchema.findOne({ _id: SarviceProviderId });
     //console.log('service_provider=+++',serviceProvider)
@@ -1320,7 +1343,7 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
   console.log("AllProfessional_property_wise", AllProfessional_property_wise)
-  console.log("taskObject by phase name take action", taskObject)
+  //console.log("taskObject by phase name take action", taskObject)
 
 
   if (taskObject) {
@@ -1627,7 +1650,7 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
       let arr = [];
 
       for (let img of data) {
-        await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
+        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
 
           let temp = await result
           //for(let image of result){
@@ -1767,97 +1790,19 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
   req.session.pagename = 'mydreamhome';
   if (req.query.id) {
     req.session.property_id = req.query.id
-    let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ $and: [{ pps_user_id: req.session.user_id, pps_property_id: req.query.id, pps_is_active_user_flag: req.session.active_user_login }] });
-    let allDocumentUploadByCustmer = await CustomerUploadDocsSchema.find({ $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.query.id, cuds_is_active_user_flag: req.session.active_user_login }] });
-    console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
-    let serviceProvArray = [];
-    let totalcostArray = [];
-    var cost = 0;
-    var to = [1, 2, 3]
-    //var sumof = tallyVotes(to)
-    var sumof = tallyVotes(AllhiredProfeshnoal)
-    console.log("sumofsumofsumofsumofsumof", sumof)
-    for (var k of AllhiredProfeshnoal) {
-      var costs = parseInt(k.pps_pofessional_budget);
-
-      cost = await parseInt(cost + costs);
-
-      totalcostArray.push(cost)
-      await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
-        //console.log('allProfeshnoals:', allProfeshnoals)
-        await MessageSchema.find({
-          $or: [
-            { $and: [{ sms_sender_id: req.session.user_id }, { sms_receiver_id: k.pps_service_provider_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
-            { $and: [{ sms_sender_id: k.pps_service_provider_id }, { sms_receiver_id: req.session.user_id }] }
-          ]
-        }).then(async (msgdata) => {
-          //console.log('msgdata=', msgdata)
-          for (let i of allProfeshnoals) {
-            if (msgdata.length > 0) {
-              var object_as_string = JSON.stringify(i);
-              const t = JSON.parse(object_as_string);
-              // console.log('lastIndex:', msgdata.slice(-1)[0]);
-              let msgData = msgdata.slice(-1)[0];
-              t.sms_message = msgData.sms_message;
-              //let temps = await i
-              serviceProvArray.push(t)
-            } else {
-              var object_as_string = JSON.stringify(i);
-              const t = JSON.parse(object_as_string);
-              t.sms_message = '...';
-              //let temps = await i
-
-
-              serviceProvArray.push(t)
-            }
-          }
-        })
-      });
-    }
-    let todoArray = [];
-    var c = 0;
-    let TaskDetailObj = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login);
-
-    //console.log("TaskDetailObj===================================================",TaskDetailObj)
-    var phase_page_name='';
-    for (var ph of TaskDetailObj) {
-      const PhaseObject = JSON.stringify(ph);
-      const to_do_data = JSON.parse(PhaseObject);
-      
-       phase_page_name = await getPhase(to_do_data.ppts_phase_flag);
-      to_do_data.phase_page_name=phase_page_name
-      //to_do_data.step=to_do_data.ppts_phase_flag
-      //console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',to_do_data)
-      //console.log("to do deta ",to_do_data.ppts_assign_to)
-      let professionalObj = await PropertyProfessionalHelper.GetProfessionalById(to_do_data.ppts_assign_to);
-      if (professionalObj) {
-        for (var Prof_fullname of professionalObj) {
-          to_do_data.professionalName = Prof_fullname.sps_fullname
-
-
-          todoArray.push(to_do_data);
-
-        }
-
-      }
-
-
-
-
-    }
-    //console.log("todoArray=======================",todoArray);
-
     //console.log("todoArray", todoArray);
-    PropertiesSchema.find({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
+    PropertiesSchema.find({
+      $or: [
+        { $and: [{ ps_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login },{_id:req.query.id}] },
+        { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_other_property_type: req.session.active_user_login },{_id:req.query.id}] }
+      ]
+       //_id: req.query.id, ps_is_active_user_flag: req.session.active_user_login
+       }).then(async (data) => {
       if (data) {
-
-        //console.log("Property Data is *************************", data[0].ps_phase_array);
-        //var totaldiff = "";
         var message = timeDifference(data[0].ps_phase_array);
-
         let arr = [];
         for (let img of data) {
-          await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
+          await PropertiesPictureSchema.find({ pps_property_id: img._id}).then(async (result) => {
             //let temp = await result
             for (let image of result) {
               let temp = await image
@@ -1867,6 +1812,117 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
           })
 
         }
+
+
+
+        let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({pps_property_id: req.query.id
+
+         /* $or: [
+            { $and: [{ pps_user_id: req.session.user_id, pps_property_id: req.query.id, pps_is_active_user_flag: req.session.active_user_login }] },
+            { $and: [{ ps_tagged_user_id: req.session.user_id , pps_property_id: req.query.id, ps_other_property_type: req.session.active_user_login }] }
+          ]*/
+         // $and: [{ pps_user_id: req.session.user_id, pps_property_id: req.query.id, pps_is_active_user_flag: req.session.active_user_login }] 
+        });
+        let allDocumentUploadByCustmer = await CustomerUploadDocsSchema.find({  cuds_property_id: req.query.id,
+         // $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.query.id, cuds_is_active_user_flag: req.session.active_user_login }]
+         });
+        console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
+        let serviceProvArray = [];
+        let totalcostArray = [];
+        var cost = 0;
+        var to = [1, 2, 3]
+        //var sumof = tallyVotes(to)
+        var sumof = tallyVotes(AllhiredProfeshnoal)
+        console.log("sumofsumofsumofsumofsumof", sumof)
+        for (var k of AllhiredProfeshnoal) {
+          var costs = parseInt(k.pps_pofessional_budget);
+    
+          cost = await parseInt(cost + costs);
+    
+          totalcostArray.push(cost)
+          await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
+            //console.log('allProfeshnoals:', allProfeshnoals)
+            await MessageSchema.find({
+              $or: [
+                { $and: [{ sms_sender_id: req.session.user_id }, { sms_receiver_id: k.pps_service_provider_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
+                { $and: [{ sms_sender_id: k.pps_service_provider_id }, { sms_receiver_id: req.session.user_id }] }
+              ]
+            }).then(async (msgdata) => {
+              //console.log('msgdata=', msgdata)
+              for (let i of allProfeshnoals) {
+                if (msgdata.length > 0) {
+                  var object_as_string = JSON.stringify(i);
+                  const t = JSON.parse(object_as_string);
+                  // console.log('lastIndex:', msgdata.slice(-1)[0]);
+                  let msgData = msgdata.slice(-1)[0];
+                  t.sms_message = msgData.sms_message;
+                  //let temps = await i
+                  serviceProvArray.push(t)
+                } else {
+                  var object_as_string = JSON.stringify(i);
+                  const t = JSON.parse(object_as_string);
+                  t.sms_message = '...';
+                  //let temps = await i
+    
+    
+                  serviceProvArray.push(t)
+                }
+              }
+            })
+          });
+        }
+        let todoArray = [];
+        var c = 0;
+        let TaskDetailObj = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login);
+    
+        //console.log("TaskDetailObj===================================================",TaskDetailObj)
+        var phase_page_name='';
+        for (var ph of TaskDetailObj) {
+          const PhaseObject = JSON.stringify(ph);
+          const to_do_data = JSON.parse(PhaseObject);
+          
+           phase_page_name = await getPhase(to_do_data.ppts_phase_flag);
+          to_do_data.phase_page_name=phase_page_name
+          //to_do_data.step=to_do_data.ppts_phase_flag
+          //console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',to_do_data)
+          //console.log("to do deta ",to_do_data.ppts_assign_to)
+          let professionalObj = await PropertyProfessionalHelper.GetProfessionalById(to_do_data.ppts_assign_to);
+          if (professionalObj) {
+            for (var Prof_fullname of professionalObj) {
+              to_do_data.professionalName = Prof_fullname.sps_fullname
+    
+    
+              todoArray.push(to_do_data);
+    
+            }
+    
+          }
+    
+    
+    
+    
+        }
+        //console.log("todoArray=======================",todoArray);
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         //console.log("data=======================",data)
 
