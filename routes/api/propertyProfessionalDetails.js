@@ -117,7 +117,7 @@ module.exports.Get_all_Professional_by_property = function (pps_property_id,pps_
                var allhiredProp = await ServiceProviderSchema.findOne({_id:k.pps_service_provider_id})
                 pushArray.push(allhiredProp)
           }
-
+ 
           array1 = await pushArray;
             const array3 = [...array1, ...array2];
            console.log("TTTTppppppppppppppppp",array3)
