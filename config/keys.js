@@ -6,7 +6,6 @@ module.exports = {
   secretOrKey: "secret"
 };
 
-
 //Database for developer
 
 // module.exports = {
