@@ -2951,36 +2951,36 @@ $("#Add_existing_task_form_buyerPhaseD").on('submit', function (e) {
   var formData = $("#Add_existing_task_form_buyerPhaseD").serialize();
   console.log(formData)
   if (formData) {
-    // $.ajax({
-    //   type: "POST",
-    //   data: formData,
-    //   url: "/api/Add_existing_task_from_Dreamhome_detial_phase",
-    //   cache: false,
-    //   success: function (data) {
-    //     if (data.status == false) {
-    //       Swal.fire({
-    //         // position: 'top-end',
-    //         icon: 'error',
-    //         title: data.err_msg,
-    //         showConfirmButton: true,
-    //         confirmButtonColor: '#005377'
-    //         //timer: 1500
-    //       })
-    //     } else {
-    //       console.log('meserrmessagesage:', data.success_msg)
-    //       Swal.fire({
-    //         // position: 'top-end',
-    //         icon: 'success',
-    //         title: data.success_msg,
-    //         showConfirmButton: false,
-    //         confirmButtonColor: '#005377',
-    //         timer: 3000
-    //       })
-    //       location.reload(true)
-    //       $('#notes,#duedate').val('');
-    //     }
-    //   }
-    // });
+    $.ajax({
+      type: "POST",
+      data: formData,
+      url: "/api/Add_existing_task_from_Dreamhome_detial_phase",
+      cache: false,
+      success: function (data) {
+        if (data.status == false) {
+          Swal.fire({
+            // position: 'top-end',
+            icon: 'error',
+            title: data.err_msg,
+            showConfirmButton: true,
+            confirmButtonColor: '#005377'
+            //timer: 1500
+          })
+        } else {
+          console.log('meserrmessagesage:', data.success_msg)
+          Swal.fire({
+            // position: 'top-end',
+            icon: 'success',
+            title: data.success_msg,
+            showConfirmButton: false,
+            confirmButtonColor: '#005377',
+            timer: 3000
+          })
+          location.reload(true)
+          $('#notes,#duedate').val('');
+        }
+      }
+    });
   } else {
     alert('some thing wrong')
   }
@@ -3993,6 +3993,8 @@ $('.phase_task_list').multiselect('updateButtonText');
             $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display','none');
           }
       }
+  }else{
+    $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display','none');
   }
 }
 function SelectedTaskList(data){
