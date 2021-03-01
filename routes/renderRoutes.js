@@ -2806,19 +2806,53 @@ app.get('/get_phase_task_list', isCustomer, async (req, res) => {
   console.log('from get take action url====', req.query)
   console.log('from get take action url+++++', req.body)
   console.log('req.session.user_id', req.session.user_id)
-  
+  var pushArray='';
   //var propertyData = await PropertyProfessinoalTaskSchema.GetPropertById(property_id, req.session.active_user_login);
-  await PropertyProfessinoalTaskSchema.find({ ppts_assign_to: req.query.ppts_assign_to, ppts_phase_flag: req.query.ppts_phase_flag, ppts_property_id:req.query.ppts_property_id, ppts_user_id:req.session.user_id, ppts_is_active_user_flag:req.query.ppts_is_active_user_flag }).sort({ _id: -1 }).then(async (taskObject) => {
+  await PropertyProfessinoalTaskSchema.find({
+     ppts_assign_to: req.query.ppts_assign_to, ppts_phase_flag: req.query.ppts_phase_flag, ppts_property_id:req.query.ppts_property_id, ppts_user_id:req.session.user_id}).sort({ _id: -1 }).then(async (taskObject) => {
     console.log("taskObject by phase name take action", taskObject)
     if (taskObject) {
+
+      await  PropertiesSchema.findOne({_id:req.query.ppts_property_id}).then(async(propertyData)=>{ 
+        if('ps_tagged_user_id' in propertyData){
+            console.log('here..1');
+             if(propertyData.ps_tagged_user_id == req.session.user_id){
+            console.log('here..2');
+            await PropertyProfessinoalTaskSchema.find({
+              ppts_assign_to: req.query.ppts_assign_to, ppts_phase_flag: req.query.ppts_phase_flag, ppts_property_id:req.query.ppts_property_id, ppts_user_id:propertyData.ps_user_id}).sort({ _id: -1 }).then(async (taskObject1) => {
+                if (taskObject1) {
+                    pushArray=taskObject1;
+                }
+              });
+                 }else{
+                     console.log('here..111');
+                      
+                     await PropertyProfessinoalTaskSchema.find({
+                      ppts_assign_to: req.query.ppts_assign_to, ppts_phase_flag: req.query.ppts_phase_flag, ppts_property_id:req.query.ppts_property_id, ppts_user_id:propertyData.ps_tagged_user_id}).sort({ _id: -1 }).then(async (taskObject1) => {
+                        if (taskObject1) {
+                            pushArray=taskObject1;
+                        }
+                      });
+                 }
+             }
+        });
+
+
+console.log('taskTag:',pushArray)
+console.log('taskObject:',taskObject)
+const array3 = [...taskObject, ...pushArray];
+console.log('taskTagarray3:',array3)
+
     req.session.pagename = 'mydreamhome';
     err_msg = req.flash('err_msg');
     success_msg = req.flash('success_msg');
     res.send({
       err_msg, success_msg, layout: false,
       session: req.session,
-      taskObject: taskObject,
+      taskObject: array3,
     });
+
+
   } else {
     return res.send({
       'status': false,
