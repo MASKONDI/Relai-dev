@@ -32,8 +32,9 @@ const PropertyProfessinoalTaskSchema = new Schema({
     required:true
   },
   ppts_assign_to: {
-    type: String,
-    required:true
+    type: Schema.Types.ObjectId,
+    ref: "service_provider"
+   
   },
   ppts_assign_user_type: {
     type: String,

@@ -4152,9 +4152,9 @@ console.log('Inside Seller');
 
   })
 
-  function editTask(ppts_property_id, ppts_phase_name, ppts_task_name, ppts_note, ppts_due_date) {
+  function editTask(ppts_property_id, ppts_phase_name, ppts_task_name, ppts_note, ppts_due_date,task_id) {
 
-
+alert(task_id)
     // /var ppts_property_id = $(".propertyId").val()
     // var ppts_phase_name = $(".propertyPhaseName").val()
     // var ppts_task_name = $(".PropertyTaskName").val()
@@ -4169,11 +4169,11 @@ console.log('Inside Seller');
     $(".hiddenppts_phase_name").val(ppts_phase_name)
     $(".hiddenppts_due_date").val(ppts_due_date)
     $(".hiddenppts_note").val(ppts_note)
-
+    $(".hiddenppts_task_id").val(task_id)
     $('#ppts_due_date')
     $.ajax({
       type: "GET",
-      data: { ppts_property_id: ppts_property_id, ppts_phase_name: ppts_phase_name, ppts_task_name: ppts_task_name },
+      data: { ppts_property_id: ppts_property_id, ppts_phase_name: ppts_phase_name, ppts_task_name: ppts_task_name,task_id:task_id },
       url: "/api/gethiredProfessionalist",
       cache: false,
       success: function (data) {
@@ -4193,7 +4193,7 @@ console.log('Inside Seller');
     });
     $.ajax({
       type: "GET",
-      data: { ppts_property_id: ppts_property_id, ppts_phase_name: ppts_phase_name, ppts_task_name: ppts_task_name },
+      data: { ppts_property_id: ppts_property_id, ppts_phase_name: ppts_phase_name, ppts_task_name: ppts_task_name,task_id:task_id },
       url: "/api/getunhiredProfessionalist",
       cache: false,
       success: function (data) {

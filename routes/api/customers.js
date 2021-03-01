@@ -1228,6 +1228,7 @@ router.post("/hire-now", async (req, res) => {
 POST : Add Task api is used for adding task(or Phase) details and sharing these details to hired professional.
 ------------------------------------------------------------------------------------------------- */
 router.get("/addTask", async (req, res) => {
+  
   var property_id = req.session.property_id;
   var user_id = req.session.user_id;
   var active_user = req.session.active_user_login;
@@ -2579,7 +2580,7 @@ router.post('/edit_task_submit_form', (req, res) => {
   let newServiceProviderID = req.body.ppts_new_assign_to;
   console.log("new Assign property is", newServiceProviderID);
 
-  PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_task_name: req.body.ppts_task_name }, { $set: { ppts_assign_to: newServiceProviderID, ppts_due_date: req.body.ppts_due_date, ppts_note: req.body.ppts_note } }, { upsert: true }, function (err) {
+  PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_task_name: req.body.ppts_task_name,_id:req.body.task_id }, { $set: { ppts_assign_to: newServiceProviderID, ppts_due_date: req.body.ppts_due_date, ppts_note: req.body.ppts_note } }, { upsert: true }, function (err) {
     if (err) {
       // res.json(err);
       res.send({ status: false, message: 'Something going wrong please check again !!' })
@@ -2594,9 +2595,9 @@ router.post('/edit_task_submit_form', (req, res) => {
 
 
 router.get('/gethiredProfessionalist', async (req, res) => {
-  console.log("fetching hired professional list for particular task", req.body);
+  console.log("fetching hired professional list for particular task", req.query);
 
-  var taskData = await PropertyProfessinoalTaskSchema.find({ ppts_property_id: req.query.ppts_property_id, ppts_phase_name: req.query.ppts_phase_name, ppts_task_name: req.query.ppts_task_name });
+  var taskData = await PropertyProfessinoalTaskSchema.find({ _id:req.query.task_id,ppts_property_id: req.query.ppts_property_id, ppts_phase_name: req.query.ppts_phase_name, ppts_task_name: req.query.ppts_task_name });
   console.log("taskData", taskData);
   if (taskData != null) {
     console.log("taskData", taskData);
@@ -2627,13 +2628,14 @@ router.get('/gethiredProfessionalist', async (req, res) => {
 
 
 router.get('/getunhiredProfessionalist', async (req, res) => {
-  console.log("fetching unhired professional list for particular task", req.body);
+  console.log("fetching unhired professional list for particular task", req.query);
 
-  var taskData = await PropertyProfessinoalTaskSchema.find({ ppts_property_id: req.query.ppts_property_id, ppts_phase_name: req.query.ppts_phase_name, ppts_task_name: req.query.ppts_task_name });
-
+  var taskData = await PropertyProfessinoalTaskSchema.find({_id:req.query.task_id, ppts_property_id: req.query.ppts_property_id, ppts_phase_name: req.query.ppts_phase_name, ppts_task_name: req.query.ppts_task_name });
+  
   var professionalIDArray = [];
   for (let professionalId of taskData) {
     professionalIDArray.push(professionalId.ppts_assign_to);
+    
   }
   console.log("property hired professional data", professionalIDArray);
   console.log();
@@ -2643,7 +2645,7 @@ router.get('/getunhiredProfessionalist', async (req, res) => {
   var allhiredProfessionalData = await PropertyProfessionalSchema.find({ pps_property_id: req.query.ppts_property_id, pps_is_active_user_flag: 'buyer' });
   var allhiredProfessionalIDlist = [];
   for (let professionalId of allhiredProfessionalData) {
-    allhiredProfessionalIDlist.push(professionalId.pps_service_provider_id.toString());
+    allhiredProfessionalIDlist.push(professionalId.pps_service_provider_id);
   }
   console.log('All hired professional for that property', allhiredProfessionalIDlist);
   console.log();
@@ -2685,9 +2687,13 @@ router.get('/getunhiredProfessionalist', async (req, res) => {
 
 
 function compare(allhiredProfessionalIDlist, professionalIDArray) {
+  
   const finalArray = [];
   allhiredProfessionalIDlist.forEach((e1) => professionalIDArray.forEach((e2) => {
-    if (e1 != e2) {
+    
+    if (e1.equals(e2)) {
+     
+    }else{
       finalArray.push(e1);
     }
   }));
