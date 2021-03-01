@@ -2951,36 +2951,36 @@ $("#Add_existing_task_form_buyerPhaseD").on('submit', function (e) {
   var formData = $("#Add_existing_task_form_buyerPhaseD").serialize();
   console.log(formData)
   if (formData) {
-    // $.ajax({
-    //   type: "POST",
-    //   data: formData,
-    //   url: "/api/Add_existing_task_from_Dreamhome_detial_phase",
-    //   cache: false,
-    //   success: function (data) {
-    //     if (data.status == false) {
-    //       Swal.fire({
-    //         // position: 'top-end',
-    //         icon: 'error',
-    //         title: data.err_msg,
-    //         showConfirmButton: true,
-    //         confirmButtonColor: '#005377'
-    //         //timer: 1500
-    //       })
-    //     } else {
-    //       console.log('meserrmessagesage:', data.success_msg)
-    //       Swal.fire({
-    //         // position: 'top-end',
-    //         icon: 'success',
-    //         title: data.success_msg,
-    //         showConfirmButton: false,
-    //         confirmButtonColor: '#005377',
-    //         timer: 3000
-    //       })
-    //       location.reload(true)
-    //       $('#notes,#duedate').val('');
-    //     }
-    //   }
-    // });
+    $.ajax({
+      type: "POST",
+      data: formData,
+      url: "/api/Add_existing_task_from_Dreamhome_detial_phase",
+      cache: false,
+      success: function (data) {
+        if (data.status == false) {
+          Swal.fire({
+            // position: 'top-end',
+            icon: 'error',
+            title: data.err_msg,
+            showConfirmButton: true,
+            confirmButtonColor: '#005377'
+            //timer: 1500
+          })
+        } else {
+          console.log('meserrmessagesage:', data.success_msg)
+          Swal.fire({
+            // position: 'top-end',
+            icon: 'success',
+            title: data.success_msg,
+            showConfirmButton: false,
+            confirmButtonColor: '#005377',
+            timer: 3000
+          })
+          location.reload(true)
+          $('#notes,#duedate').val('');
+        }
+      }
+    });
   } else {
     alert('some thing wrong')
   }
@@ -4154,7 +4154,7 @@ console.log('Inside Seller');
 
   function editTask(ppts_property_id, ppts_phase_name, ppts_task_name, ppts_note, ppts_due_date,task_id) {
 
-alert(task_id)
+//alert(task_id)
     // /var ppts_property_id = $(".propertyId").val()
     // var ppts_phase_name = $(".propertyPhaseName").val()
     // var ppts_task_name = $(".PropertyTaskName").val()
@@ -4217,7 +4217,7 @@ alert(task_id)
 </script>
 
 <script>
-  $(document).ready(function () { })
+  $(document).ready(function () { 
   $("#edit_Task_form").on('submit', function (e) {
     var formData = $("#edit_Task_form").serialize();
     console.log(formData)
@@ -4265,8 +4265,58 @@ alert(task_id)
     } else {
       alert('some thing wrong')
     }
-  })
+  });
+  //===========
+  $("#edit_Task_form2").on('submit', function (e) {
+    e.preventDefault()
+    var formData = $("#edit_Task_form2").serialize();
+    console.log(formData)
+    //return;
+    // alert(formData);
+    if (formData) {
+      $.ajax({
+        type: "POST",
+        data: formData,
+        url: "/api/remove_task_submit_form",
+        cache: false,
+        success: function (data) {
+          if (data.status == false) {
 
+            Swal.fire({
+              // position: 'top-end',
+              icon: 'error',
+              title: data.message,
+              showConfirmButton: true,
+              confirmButtonColor: '#005377'
+              //timer: 1500
+            })
+
+
+          } else {
+
+            console.log('meserrmessagesage:', data.message)
+
+
+            Swal.fire({
+              // position: 'top-end',
+              icon: 'success',
+              title: data.message,
+              showConfirmButton: false,
+              confirmButtonColor: '#005377',
+              timer: 3000
+            })
+            location.reload(true)
+            $('#notes,#duedate').val('')
+          }
+
+        }
+      });
+
+    } else {
+      alert('some thing wrong')
+    }
+  })
+})
 </script>
 </body>
 </html>

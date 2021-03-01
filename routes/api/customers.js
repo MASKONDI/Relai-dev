@@ -2583,6 +2583,30 @@ router.post('/edit_task_submit_form', (req, res) => {
   PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_task_name: req.body.ppts_task_name,_id:req.body.task_id }, { $set: { ppts_assign_to: newServiceProviderID, ppts_due_date: req.body.ppts_due_date, ppts_note: req.body.ppts_note } }, { upsert: true }, function (err) {
     if (err) {
       // res.json(err);
+      console.log(err)
+      res.send({ status: false, message: 'Something going wrong please check again !!' })
+    } else {
+      res.send({ status: true, message: 'Task update successfully !!' })
+      console.log("Task update successfully");
+      //res.json("Task Updated successfully");
+    }
+  });
+
+});
+router.post('/remove_task_submit_form', (req, res) => {
+
+  console.log("edit task req is:", req.body);
+
+  console.log("Session  is:", req.session);
+  //console.log("req.query is :", req.query);
+
+  //let newServiceProviderID = req.body.ppts_new_assign_to;
+  //console.log("new Assign property is", newServiceProviderID);
+
+  PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_task_name: req.body.ppts_task_name,_id:req.body.task_id }, { $set: {ppts_is_remove_task:'yes', ppts_due_date: req.body.ppts_due_date, ppts_note: req.body.ppts_note } }, { upsert: true }, function (err) {
+    if (err) {
+      // res.json(err);
+      console.log(err)
       res.send({ status: false, message: 'Something going wrong please check again !!' })
     } else {
       res.send({ status: true, message: 'Task update successfully !!' })
@@ -2604,11 +2628,14 @@ router.get('/gethiredProfessionalist', async (req, res) => {
     console.log("taskData", taskData.length);
     var professionalArray = [];
     for (let professionalId of taskData) {
-      var professionalData = await ServiceProviderSchema.findOne({ _id: professionalId.ppts_assign_to });
-      console.log('professionalData:', professionalData);
-      if (professionalData != null) {
-        console.log('Professional Data is coming')
-        professionalArray.push(professionalData);
+      if(professionalId.ppts_is_remove_task=='no'){
+
+        var professionalData = await ServiceProviderSchema.findOne({ _id: professionalId.ppts_assign_to });
+        console.log('professionalData:', professionalData);
+        if (professionalData != null) {
+          console.log('Professional Data is coming')
+          professionalArray.push(professionalData);
+        }
       }
     }
     console.log('professionalArray Arr:', professionalArray);
@@ -2634,7 +2661,9 @@ router.get('/getunhiredProfessionalist', async (req, res) => {
   
   var professionalIDArray = [];
   for (let professionalId of taskData) {
+   // if(professionalId.ppts_is_remove_task=='no'){
     professionalIDArray.push(professionalId.ppts_assign_to);
+   // }
     
   }
   console.log("property hired professional data", professionalIDArray);
