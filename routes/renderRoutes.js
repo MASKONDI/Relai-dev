@@ -102,6 +102,7 @@ app.get("/mydreamhome-details-chainproperty", isCustomer, async (req, res) => {
 
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
+  req.session.property_id=req.query.id
   req.session.pagename = 'mydreamhome-details-chainproperty';
   console.log("customer session id is", req.session.user_id);
   console.log(" req issssssssssssssssss", req.query.id);
@@ -570,12 +571,14 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
 
 
       console.log('service_provider_detail:', serviceProvArray)
+      var uniqueArray = removeDuplicates(serviceProvArray, "_id");
+
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.send({
         err_msg, success_msg, layout: false,
         session: req.session,
-        filterData: serviceProvArray
+        filterData: uniqueArray
       })
     }
   }).catch((err) => {
@@ -668,8 +671,6 @@ app.get('/my-professionals-filter', isCustomer, async (req, res) => {
   for (var k of AllhiredProfeshnoal) {
     await ServiceProviderSchema.find({ $and: [{ _id: k.pps_service_provider_id, sps_role_name: req.query.role }] }).then(async (allProfeshnoals) => {
       for (let i of allProfeshnoals) {
-
-
         let professionalRating = await RatingSchema.find({ sprs_service_provider_id: i._id })
         console.log('professionalRating:', professionalRating)
         var sumRating = 0;
@@ -683,27 +684,32 @@ app.get('/my-professionals-filter', isCustomer, async (req, res) => {
           avgRating = 0;
         }
         console.log('avgRating:', avgRating)
-
-
         let temps = await i
-
         const spProvider = JSON.stringify(temps);
         const parseSpProvider = JSON.parse(spProvider);
         parseSpProvider.avgRating = avgRating
-
         serviceProvArray.push(parseSpProvider)
         //let temps = await i
         // serviceProvArray.push(temps)
       }
     });
   }
+
+
+
+var uniqueArray = removeDuplicates(serviceProvArray, "_id");
+//console.log("uniqueArray is: " + JSON.stringify(uniqueArray));
   res.send({
     err_msg, success_msg, layout: false,
     session: req.session,
-    data: serviceProvArray
+    data: uniqueArray
   });
 
 });
+
+
+
+
 
 
 // My Professional Filter name surname qualification
@@ -1804,10 +1810,15 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
     let TaskDetailObj = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login);
 
     //console.log("TaskDetailObj===================================================",TaskDetailObj)
-
+    var phase_page_name='';
     for (var ph of TaskDetailObj) {
       const PhaseObject = JSON.stringify(ph);
       const to_do_data = JSON.parse(PhaseObject);
+      
+       phase_page_name = await getPhase(to_do_data.ppts_phase_flag);
+      to_do_data.phase_page_name=phase_page_name
+      //to_do_data.step=to_do_data.ppts_phase_flag
+      console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',to_do_data)
       //console.log("to do deta ",to_do_data.ppts_assign_to)
       let professionalObj = await PropertyProfessionalHelper.GetProfessionalById(to_do_data.ppts_assign_to);
       if (professionalObj) {
@@ -1875,6 +1886,30 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
 })
 
 
+
+function getPhase(phase) {
+  if (phase == 'A') { 
+    return 'mydreamhome-details-phase-a'; 
+  } else if (phase == 'B') { 
+    return 'mydreamhome-details-phase-b'; 
+  } else if(phase == 'C'){
+    return 'mydreamhome-details-phase-c'; 
+  }else if(phase == 'D'){
+    return 'mydreamhome-details-phase-d'; 
+  }else if(phase == 'E'){
+    return 'mydreamhome-details-phase-e'; 
+  }else if(phase == 'F'){
+    return 'mydreamhome-details-phase-f'; 
+  }else if(phase == 'G'){
+    return 'mydreamhome-details-phase-g'; 
+  }else if(phase == 'H'){
+    return 'mydreamhome-details-phase-h'; 
+  }else if(phase == 'o'){
+    return 'mydreamhome-details-phase-o'; 
+  }
+
+ 
+}
 //*******Service Provider and signup and profiles routes */
 app.get('/signup-service-provider', (req, res) => {
   err_msg = req.flash('err_msg');
@@ -2727,6 +2762,21 @@ app.get('/get_phase_task_list', isCustomer, async (req, res) => {
   }
 })
 })
+
+function removeDuplicates(originalArray, prop) {
+  var newArray = [];
+  var lookupObject  = {};
+
+  for(var i in originalArray) {
+     lookupObject[originalArray[i][prop]] = originalArray[i];
+  }
+
+  for(i in lookupObject) {
+      newArray.push(lookupObject[i]);
+  }
+   return newArray;
+}
+
 module.exports = app;
 
 

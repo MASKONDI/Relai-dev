@@ -1324,50 +1324,86 @@ router.post("/addTask", (req, res) => {
     });
   } else {
     console.log("addTask post:", req.body);
-    let taskName = '';
-    if (req.body.task_name) {
-      taskName = req.body.task_name;
-    } else {
-      taskName = req.body.phase_task_list;
-    }
-    console.log('taskNametaskNametaskName:', taskName)
-    const newTask = new PropertyProfessinoalTaskSchema({
-      ppts_property_id: req.body.property_id,
-      ppts_user_id: req.session.user_id,
-      ppts_task_name: taskName,
-      ppts_assign_to: req.body.professionalId,
-      ppts_due_date: req.body.duedate,
-      //ppts_phase_id: req.body.Phase,
-      ppts_phase_name: req.body.Phase,
-      ppts_is_active_user_flag: req.session.active_user_login,
-      ppts_note: req.body.notes
-    });
-    newTask
-      .save()
-      .then(addedTask => {
-        console.log("server response is addedTask :", addedTask);
-        //res.json({ status: 1, message: 'Task Add Successfully', data: addedTask });
-        if (addedTask) {
+    // <<<<<<< HEAD
+    //     let taskName = '';
+    //     if (req.body.task_name) {
+    //       taskName = req.body.task_name;
+    //     } else {
+    //       taskName = req.body.phase_task_list;
+    //     }
+    //     console.log('taskNametaskNametaskName:', taskName)
+    //     const newTask = new PropertyProfessinoalTaskSchema({
+    //       ppts_property_id: req.body.property_id,
+    //       ppts_user_id: req.session.user_id,
+    //       ppts_task_name: taskName,
+    //       ppts_assign_to: req.body.professionalId,
+    //       ppts_due_date: req.body.duedate,
+    //       //ppts_phase_id: req.body.Phase,
+    //       ppts_phase_name: req.body.Phase,
+    //       ppts_is_active_user_flag: req.session.active_user_login,
+    //       ppts_note: req.body.notes
+    //     });
+    //     newTask
+    //       .save()
+    //       .then(addedTask => {
+    //         console.log("server response is addedTask :", addedTask);
+    //         //res.json({ status: 1, message: 'Task Add Successfully', data: addedTask });
+    //         if (addedTask) {
 
-          return res.send({
-            'success_msg': 'Task Add Successfully',
-            'status': true,
-            'redirect': '/professionals-hirenow'
-          });
-          // res.redirect("/professionals-hirenow")
-        } else {
-          return res.send({
-            'err_msg': 'Please Add Task',
-            'status': false,
-            'redirect': '/professionals-hirenow'
-          });
-        }
-      })
-      .catch(err => {
-        console.log(err)
-        req.flash('err_msg', 'Something went wrong please try again later.');
-        res.redirect('/professionals-hirenow');
+    //console.log('vartype:',typeof(taskName))
+    //console.log('taskNametaskNametaskName:',taskName)
+
+
+    var addedTask = addTaskHelper.add_existing_task_from_btn(req);
+    if (addedTask) {
+      return res.send({
+        'success_msg': 'Task Add Successfully',
+        'status': true,
       });
+    } else {
+      return res.send({
+        'err_msg': 'Please Add Task',
+        'status': false,
+      });
+    }
+
+    // const newTask = new PropertyProfessinoalTaskSchema({
+    //   ppts_property_id: req.body.property_id,
+    //   ppts_user_id: req.session.user_id,
+    //   ppts_task_name: taskName,
+    //   ppts_assign_to: req.body.professionalId,
+    //   ppts_due_date: req.body.duedate,
+    //   //ppts_phase_id: req.body.Phase,
+    //   ppts_phase_name: req.body.Phase,
+    //   ppts_is_active_user_flag: req.session.active_user_login,
+    //   ppts_note: req.body.notes
+    // });
+    // newTask
+    //   .save()
+    //   .then(addedTask => {
+    //     console.log("server response is addedTask :", addedTask);
+    //     //res.json({ status: 1, message: 'Task Add Successfully', data: addedTask });
+    //     if (addedTask) {
+
+    //       return res.send({
+    //         'success_msg': 'Task Add Successfully',
+    //         'status': true,
+    //         'redirect': '/professionals-hirenow'
+    //       });
+    //       // res.redirect("/professionals-hirenow")
+    //     } else {
+    //       return res.send({
+    //         'err_msg': 'Please Add Task',
+    //         'status': false,
+    //         'redirect': '/professionals-hirenow'
+    //       });
+    //     }
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //     req.flash('err_msg', 'Something went wrong please try again later.');
+    //     res.redirect('/professionals-hirenow');
+    //   });
   }
 })
 
@@ -2200,49 +2236,70 @@ router.post("/addTask_from_Dreamhome_detial", (req, res) => {
 
   } else {
     console.log("addTask post:", req.body);
-    let taskName = '';
-    if (req.body.task_name) {
-      taskName = req.body.task_name;
-    } else {
-      taskName = req.body.phase_task_list;
-    }
-    const newTask = new PropertyProfessinoalTaskSchema({
-      ppts_property_id: req.body.property_id_add_task,
-      ppts_user_id: req.session.user_id,
-      ppts_task_name: taskName,
-      ppts_assign_to: req.body.service_provider_id,
-      ppts_due_date: req.body.duedate,
-      //ppts_phase_id: req.body.Phase,
-      ppts_phase_name: req.body.Phase,
-      ppts_is_active_user_flag: req.session.active_user_login,
-      ppts_note: req.body.notes
-    });
-    newTask
-      .save()
-      .then(addedTask => {
-        console.log("server response is addedTask :", addedTask);
-        //res.json({ status: 1, message: 'Task Add Successfully', data: addedTask });
-        if (addedTask) {
-
-          return res.send({
-            'success_msg': 'Task Add Successfully',
-            'status': true,
-            //'redirect': '/professionals-hirenow'
-          });
-          // res.redirect("/professionals-hirenow")
-        } else {
-          return res.send({
-            'err_msg': 'Please Add Task',
-            'status': false,
-            //'redirect': '/professionals-hirenow'
-          });
-        }
-      })
-      .catch(err => {
-        console.log(err)
-        req.flash('err_msg', 'Something went wrong please try again later.');
-        res.redirect('/mydreamhome');
+    // <<<<<<< HEAD
+    //     let taskName = '';
+    //     if (req.body.task_name) {
+    //       taskName = req.body.task_name;
+    //     } else {
+    //       taskName = req.body.phase_task_list;
+    // =======
+    var addedTask = addTaskHelper.add_existing_task_from_btn_dramhome_details(req);
+    if (addedTask) {
+      return res.send({
+        'success_msg': 'Task Add Successfully',
+        'status': true,
       });
+    } else {
+      return res.send({
+        'err_msg': 'Please Add Task',
+        'status': false,
+      });
+    }
+
+    // console.log("addTask post:", req.body);
+    // let taskName='';
+    // if(req.body.task_name){
+    //   taskName = req.body.task_name;
+    // }else{
+    //   taskName = req.body.phase_task_list;
+    // }
+    // const newTask = new PropertyProfessinoalTaskSchema({
+    //   ppts_property_id: req.body.property_id_add_task,
+    //   ppts_user_id: req.session.user_id,
+    //   ppts_task_name: taskName,
+    //   ppts_assign_to: req.body.service_provider_id,
+    //   ppts_due_date: req.body.duedate,
+    //   //ppts_phase_id: req.body.Phase,
+    //   ppts_phase_name: req.body.Phase,
+    //   ppts_is_active_user_flag: req.session.active_user_login,
+    //   ppts_note: req.body.notes
+    // });
+    // newTask
+    //   .save()
+    //   .then(addedTask => {
+    //     console.log("server response is addedTask :", addedTask);
+    //     //res.json({ status: 1, message: 'Task Add Successfully', data: addedTask });
+    //     if (addedTask) {
+
+    //       return res.send({
+    //         'success_msg': 'Task Add Successfully',
+    //         'status': true,
+    //         //'redirect': '/professionals-hirenow'
+    //       });
+    //       // res.redirect("/professionals-hirenow")
+    //     } else {
+    //       return res.send({
+    //         'err_msg': 'Please Add Task',
+    //         'status': false,
+    //         //'redirect': '/professionals-hirenow'
+    //       });
+    //     }
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //     req.flash('err_msg', 'Something went wrong please try again later.');
+    //     res.redirect('/mydreamhome');
+    //   });
   }
 })
 

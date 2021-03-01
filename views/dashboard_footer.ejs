@@ -1,11 +1,15 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script> -->
+integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+crossorigin="anonymous"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
   integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
   integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.css"
   integrity="sha512-SZgE3m1he0aEF3tIxxnz/3mXu/u/wlMNxQSnE0Cni9j/O8Gs+TjM9tm1NX34nRQ7GiLwUEzwuE3Wv2FLz2667w=="
@@ -29,9 +33,9 @@
 
 <!-- ADD PROPERTY CND -->
 <!-- <script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"></script> -->
-<!-- <script src="https://code.jquery.com/ui/jquery-ui-git.js"></script> -->
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+  crossorigin="anonymous"></script> -->
+
 <script type="text/javascript" src="../js/countrystatecity.js"></script>
 
 
@@ -80,20 +84,25 @@
   }
 </script>
 <script>
-      // $(document).ready(function () {
-      //   $(".sidenav ul li").dblclick(function () {
-      //     $(".sidenav ul li").removeClass("active");
-      //     $(this).addClass("active");
-      //   });
-      // });
-      // $('.right-navbar li').dblclick(function () {
-      //   $('.right-navbar li').each(function () {
-      //     $(this).removeClass('active');
-      //   });
+  // $(document).ready(function () {
+  //   $(".sidenav ul li").dblclick(function () {
+  //     $(".sidenav ul li").removeClass("active");
+  //     $(this).addClass("active");
+  //   });
+  // });
+  // $('.right-navbar li').dblclick(function () {
+  //   $('.right-navbar li').each(function () {
+  //     $(this).removeClass('active');
+  //   });
 
-      //   $(this).addClass('active');
+  //   $(this).addClass('active');
 
-      // })
+  // })
+
+  $('.phase_task_list').multiselect({
+    nonSelectedText: 'Existing Task'
+  });
+
 </script>
 <script>
   $(document).ready(function () {
@@ -253,22 +262,22 @@
 
 
 <!-- =======================
-  ADD PROPERTY SCRIPT
-  ================== -->
+ADD PROPERTY SCRIPT
+================== -->
 <!-- <script>
-      $(document).ready(function () {
-        $(".sidenav ul li").click(function () {
-          $(".sidenav ul li").removeClass("active");
-          $(this).addClass("active");
-        });
-      });
-      $(document).ready(function () {
-        $(".right-navbar li").click(function () {
-          $("right-navbar li").removeClass("active");
-          $(this).addClass("active");
-        });
-      });
-    </script> -->
+  $(document).ready(function () {
+    $(".sidenav ul li").click(function () {
+      $(".sidenav ul li").removeClass("active");
+      $(this).addClass("active");
+    });
+  });
+  $(document).ready(function () {
+    $(".right-navbar li").click(function () {
+      $("right-navbar li").removeClass("active");
+      $(this).addClass("active");
+    });
+  });
+</script> -->
 
 <script type="text/javascript">
   $('#propertyform').validate({
@@ -708,53 +717,6 @@
       $(".AllPropertyListingDiv").hide()
     }
   }
-
-  //     $(function() {
-  //        $.ajax({
-  //           type: "POST",
-  //           data:'',
-  //           url: "/api/reapitApi-proprty",
-  //           cache: false,
-  //           success: function (data) {
-  //                 console.log('Reapit Res:',data);
-  //                 $(".autocomplete").autocomplete({
-  //                          source: data.mydatadata,
-  //                          select: function (event, ui) {
-
-  //                             //var label = ui.item.label;
-  //                            // var value = ui.item.value;
-  //                            // alert(value);
-
-  //                             $('.loader-box').attr('style','display:flex !important');
-  //                               var searchText =  ui.item.value;
-  //                               console.log('TextVivek:',searchText);
-  //                                   $.ajax({
-  //                                     type: "POST",
-  //                                     data:{
-  //                                       searchText:searchText
-  //                                     },
-  //                                     url: "/api/reapitApi",
-  //                                     cache: false,
-  //                                     success: function (data) {
-  //                                           console.log('Reapit Res:',data);
-  //                                           $('.loader-box').attr('style','display:none !important');
-  //                                           $('.property_detial').css('display','block');
-  //                                           $('.property_name').val(data.propertyData[0].address.buildingName);
-  //                                           $('#zipcode').val(data.propertyData[0].address.postcode);
-  //                                           $('.p_notes').val(data.propertyData[0].description);
-  //                                           $('.p_area').val(data.propertyData[0].internalArea.min+'x'+data.propertyData[0].internalArea.max+' '+data.propertyData[0].internalArea.type);
-  //                                           $('.p_address').val(data.propertyData[0].address.buildingNumber+' '+data.propertyData[0].address.line1+' '+data.propertyData[0].address.line2+' '+data.propertyData[0].address.line2+' '+data.propertyData[0].address.line3+' '+data.propertyData[0].address.line4);
-  //                                           $('#ps_existing_property option[value="Residential"]').attr("selected", "selected");
-  //                                           $('#bedroom option[value="'+data.propertyData[0].bedrooms+'"]').attr("selected", "selected");
-  //                                           $('#bedroom2 option[value="'+data.propertyData[0].bathrooms+'"]').attr("selected", "selected");
-  //                                     }
-  //                                   })
-
-  //                         }
-  //                 });
-  //           }
-  //         })
-  // });
 </script>
 
 
@@ -916,24 +878,24 @@ Complaint Details
 </script>
 
 <!-- ==============================
-    Mydreamhome-details 
+Mydreamhome-details 
 ============================== -->
 
 
 <!-- <script>
-    $(document).ready(function () {
-      $(".sidenav ul li").click(function () {
-        $(".sidenav ul li").removeClass("active");
-        $(this).addClass("active");
-      });
-    });
-    $(document).ready(function () {
-      $(".right-navbar li").click(function () {
-        $("right-navbar li").removeClass("active");
-        $(this).addClass("active");
-      });
-    });
-  </script> -->
+$(document).ready(function () {
+  $(".sidenav ul li").click(function () {
+    $(".sidenav ul li").removeClass("active");
+    $(this).addClass("active");
+  });
+});
+$(document).ready(function () {
+  $(".right-navbar li").click(function () {
+    $("right-navbar li").removeClass("active");
+    $(this).addClass("active");
+  });
+});
+</script> -->
 
 <script>
   $(document).ready(function () {
@@ -1149,7 +1111,7 @@ Complaint Details
 
 
 <!-- ========================
-        COMPLAINT 
+    COMPLAINT 
 ======================== -->
 
 <%- include('my-script') -%>
@@ -1195,24 +1157,24 @@ mydreamhome-details-chainproperty
 
   <!-- 
 <script>
-    $(document).ready(function () {
-      $(".sidenav ul li").click(function () {
-        $(".sidenav ul li").removeClass("active");
-        $(this).addClass("active");
-      });
-    });
-    $(document).ready(function () {
-      $(".right-navbar li").click(function () {
-        $("right-navbar li").removeClass("active");
-        $(this).addClass("active");
-      });
-    });
-  </script> -->
+$(document).ready(function () {
+  $(".sidenav ul li").click(function () {
+    $(".sidenav ul li").removeClass("active");
+    $(this).addClass("active");
+  });
+});
+$(document).ready(function () {
+  $(".right-navbar li").click(function () {
+    $("right-navbar li").removeClass("active");
+    $(this).addClass("active");
+  });
+});
+</script> -->
 
 
   <!-- ===============================
- Mydreamhome-details-doc
- ===============================  -->
+Mydreamhome-details-doc
+===============================  -->
 
   <script>$(document).ready(function () {
       lightbox.option({
@@ -1223,18 +1185,18 @@ mydreamhome-details-chainproperty
     });</script>
 
   <!-- <script>
-  $(document).ready(function () {
-    $(".sidenav ul li").click(function () {
-      $(".sidenav ul li").removeClass("active");
-      $(this).addClass("active");
-    });
-  });
-  $(document).ready(function () {
-    $(".right-navbar li").click(function () {
-      $("right-navbar li").removeClass("active");
-      $(this).addClass("active");
-    });
-  });
+$(document).ready(function () {
+$(".sidenav ul li").click(function () {
+  $(".sidenav ul li").removeClass("active");
+  $(this).addClass("active");
+});
+});
+$(document).ready(function () {
+$(".right-navbar li").click(function () {
+  $("right-navbar li").removeClass("active");
+  $(this).addClass("active");
+});
+});
 </script> -->
   <script>
     $(document).ready(function () {
@@ -1279,6 +1241,7 @@ mydreamhome-details-chainproperty
               confirmButtonColor: '#005377',
               timer: 3000
             })
+            $('#newDocumentform')[0].reset();
           }
 
         }
@@ -1560,19 +1523,19 @@ MYDREAM-HOME-DETAILS-PAHSE-A
 =============================== -->
 
   <!-- <script>
-    $(document).ready(function () {
-      $(".sidenav ul li").click(function () {
-        $(".sidenav ul li").removeClass("active");
-        $(this).addClass("active");
-      });
-    });
-    $(document).ready(function () {
-      $(".right-navbar li").click(function () {
-        $("right-navbar li").removeClass("active");
-        $(this).addClass("active");
-      });
-    });
-  </script> -->
+$(document).ready(function () {
+  $(".sidenav ul li").click(function () {
+    $(".sidenav ul li").removeClass("active");
+    $(this).addClass("active");
+  });
+});
+$(document).ready(function () {
+  $(".right-navbar li").click(function () {
+    $("right-navbar li").removeClass("active");
+    $(this).addClass("active");
+  });
+});
+</script> -->
   <script>
 
     $(document).ready(function () {
@@ -1865,19 +1828,19 @@ MYDREAMHOME-DETAILS-TO-DOC
 
 
   <!-- <script>
-    $(document).ready(function () {
-      $(".sidenav ul li").click(function () {
-        $(".sidenav ul li").removeClass("active");
-        $(this).addClass("active");
-      });
-    });
-    $(document).ready(function () {
-      $(".right-navbar li").click(function () {
-        $("right-navbar li").removeClass("active");
-        $(this).addClass("active");
-      });
-    });
-  </script> -->
+$(document).ready(function () {
+  $(".sidenav ul li").click(function () {
+    $(".sidenav ul li").removeClass("active");
+    $(this).addClass("active");
+  });
+});
+$(document).ready(function () {
+  $(".right-navbar li").click(function () {
+    $("right-navbar li").removeClass("active");
+    $(this).addClass("active");
+  });
+});
+</script> -->
 
 
 
@@ -1886,18 +1849,18 @@ Mydreamhome
 ================================= -->
 
   <!-- <script>
-  $(document).ready(function () {
-    $(".sidenav ul li").click(function () {
-      $(".sidenav ul li").removeClass("active");
-      $(this).addClass("active");
-    });
-  });
-  $(document).ready(function () {
-    $(".right-navbar li").click(function () {
-      $("right-navbar li").removeClass("active");
-      $(this).addClass("active");
-    });
-  });
+$(document).ready(function () {
+$(".sidenav ul li").click(function () {
+  $(".sidenav ul li").removeClass("active");
+  $(this).addClass("active");
+});
+});
+$(document).ready(function () {
+$(".right-navbar li").click(function () {
+  $("right-navbar li").removeClass("active");
+  $(this).addClass("active");
+});
+});
 </script> -->
 
   <script>
@@ -2108,18 +2071,24 @@ Professional Details
         $('#professional').val(sps_fullname);
         $('#professionalId').val(sps_id);
       }, 5000);
-
-      // $(".sidenav ul li").click(function () {
-      //   $(".sidenav ul li").removeClass("active");
-      //   $(this).addClass("active");
-      // });
     });
-  // $(document).ready(function () {
-  //   $(".right-navbar li").click(function () {
-  //     $("right-navbar li").removeClass("active");
-  //     $(this).addClass("active");
-  //   });
-  // });
+
+
+    jQuery(document).ready(function () {
+      var $this = $('.reviews_rating_sec');
+      if ($this.find('div').length > 6) {
+        $('.reviews_rating_sec').append('<div><a href="javascript:;" class="showMore"></a></div>');
+      }
+      // If more than 2 Education items, hide the remaining
+      $('.reviews_rating_sec .side-feedback-sec').slice(0, 6).addClass('shown');
+      $('.reviews_rating_sec .side-feedback-sec').not('.shown').hide();
+      $('.reviews_rating_sec .showMore').on('click', function () {
+        $('.reviews_rating_sec .side-feedback-sec').not('.shown').toggle(300);
+        $(this).toggleClass('showLess');
+      });
+    });
+
+
   </script>
   <script>
 
@@ -2344,7 +2313,7 @@ Professional Hirenow
               if (data.data.ps_phase_array.length > 0) {
                 $.each(data.data.ps_phase_array, function (i, data) {
                   console.log('val:', data)
-                  htmlData += '<option value="' + data.phase_name + '">' + data.phase_name + '</option>';
+                  htmlData += '<option data-phase="' + i + '" value="' + data.phase_name + '">' + data.phase_name + '</option>';
                 });
               }
               $('.phase_list').html(htmlData);
@@ -2620,18 +2589,18 @@ Track your progess
 =========================== -->
 
   <script>
-  // $(document).ready(function () {
-  //   $(".sidenav ul li").click(function () {
-  //     $(".sidenav ul li").removeClass("active");
-  //     $(this).addClass("active");
-  //   });
-  // });
-  // $(document).ready(function () {
-  //   $(".right-navbar li").click(function () {
-  //     $("right-navbar li").removeClass("active");
-  //     $(this).addClass("active");
-  //   });
-  // });
+// $(document).ready(function () {
+//   $(".sidenav ul li").click(function () {
+//     $(".sidenav ul li").removeClass("active");
+//     $(this).addClass("active");
+//   });
+// });
+// $(document).ready(function () {
+//   $(".right-navbar li").click(function () {
+//     $("right-navbar li").removeClass("active");
+//     $(this).addClass("active");
+//   });
+// });
   </script>
 
 
@@ -4487,22 +4456,25 @@ Phase-H
       var opt = data.options[data.selectedIndex];
       var phaseId = parseInt(opt.dataset.phase);
       console.log('phaseId:', phaseId);
-      $('.phase_task_list,.task_option').css('display', 'none');
+      $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group,.task_option').css('display', 'none');
       $('input#taskName').css('display', 'block');
       if (isNaN(phaseId)) {
-        $('.phase_task_list').css('display', 'none');
+        $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display', 'none');
       } else {
+        var ppts_phase_flag = '';
+        if (phaseId == 0) { ppts_phase_flag = 'A'; } else if (phaseId == 1) { ppts_phase_flag = 'B'; } else if (phaseId == 2) { ppts_phase_flag = 'C'; } else if (phaseId == 3) { ppts_phase_flag = 'D'; } else if (phaseId == 4) { ppts_phase_flag = 'E'; } else if (phaseId == 5) { ppts_phase_flag = 'F'; } else if (phaseId == 6) { ppts_phase_flag = 'G'; } else if (phaseId == 7) { ppts_phase_flag = 'H'; } else if (phaseId == 8) { ppts_phase_flag = 'I'; } else if (phaseId == 9) { ppts_phase_flag = 'J'; }
+        $('#addTaskForm #ppts_phase_flag,#addTaskForm_mydreamhome_detial #ppts_phase_flag').val(ppts_phase_flag);
         if (active_user_login == 'buyer') {
+          $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display', 'block');
           $('.buyer_phase_task_list .phase_task_list_' + phaseId).css('display', 'block');
-          $('.phase_task_list').css('display', 'block');
         } else if (active_user_login == 'seller') {
           $('.seller_phase_task_list .phase_task_list_' + phaseId).css('display', 'block');
-          $('.phase_task_list').css('display', 'block');
+          $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display', 'block');
         } else if (active_user_login == 'renovator') {
           $('.renovator_phase_task_list .phase_task_list_' + phaseId).css('display', 'block');
-          $('.phase_task_list').css('display', 'block');
+          $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display', 'block');
         } else {
-          $('.phase_task_list').css('display', 'none');
+          $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display', 'none');
         }
       }
     }
@@ -4662,8 +4634,6 @@ Phase-H
       }
     }
   </script>
-
-
   <script>
     $(document).ready(function () {
 
@@ -4739,7 +4709,7 @@ Phase-H
       var formData = $("#edit_Task_form").serialize();
       console.log(formData)
       //return;
-     // alert(formData);
+      // alert(formData);
       if (formData) {
         $.ajax({
           type: "POST",
@@ -4785,7 +4755,6 @@ Phase-H
     })
 
   </script>
-
 
   </body>
 

@@ -36,10 +36,11 @@
                       <option value="">Select Phase</option>
                       <option value=""></option>
                     </select>
+
 <% if(session.active_user_login == "buyer"){ %>
 <div class="buyer_phase_task_list">
-                  <select onchange="SelectedTaskList(this)" class="form-control selectBox2 phase_task_list" id="phase_task_list_buyer" name="phase_task_list" style="height: 48px;">
-                    <option value="">Existing Task</option>
+                  <select multiple onchange="SelectedTaskList(this)" class="form-control selectBox2 phase_task_list" id="phase_task_list_buyer" name="phase_task_list" style="height: 48px;">
+                    <!-- <option value="">Existing Task</option> -->
                     
                       <option class="phase_task_list_0 task_option" value="Instruct Solicitor">Instruct Solicitor</option>
                       <option class="phase_task_list_0 task_option" value="Instruct other professionals">Instruct other professionals</option>
@@ -59,7 +60,7 @@
                     
 
                       <option class="phase_task_list_2 task_option" value="Agree a completion date">Agree a completion date</option>
-                      <option class="phase_task_list_2 task_option" value="check availability of balance of completion monies">check availability of balance of completion monies</option>
+                      <option class="phase_task_list_2 task_option" value="Check availability of balance of completion monies">check availability of balance of completion monies</option>
                       <option class="phase_task_list_2 task_option" value="Fund available">Fund available</option>
                       <option class="phase_task_list_2 task_option" value="Contract signed">Contract signed</option>
 
@@ -79,8 +80,8 @@
 </div>
 <% }else if(session.active_user_login == "seller"){ %>
 <div class="seller_phase_task_list">
-              <select onchange="SelectedTaskList(this)" class="form-control selectBox2 phase_task_list" id="phase_task_list_seller" name="phase_task_list" style="height: 48px;">
-                <option value="">Existing Task</option>
+              <select multiple onchange="SelectedTaskList(this)" class="form-control selectBox2 phase_task_list" id="phase_task_list_seller" name="phase_task_list" style="height: 48px;">
+                <!-- <option value="">Existing Task</option> -->
                 <option class="phase_task_list_0 task_option" value="Instruct Solicitor">Instruct Solicitor</option>
                 <option class="phase_task_list_0 task_option" value="Instruct other professionals">Instruct other professionals</option>
                 <option class="phase_task_list_0 task_option" value="Bank details for reservation">Bank details for reservation</option>
@@ -114,8 +115,8 @@
 </div>
 <% }else if(session.active_user_login == "renovator"){%> 
   <div class="renovator_phase_task_list">
-    <select onchange="SelectedTaskList(this)" class="form-control selectBox2  phase_task_list" id="phase_task_list_renovator" name="phase_task_list" style="height: 48px;">
-      <option class="phase_task_list_0 task_option" value="">Existing Task</option>
+    <select multiple onchange="SelectedTaskList(this)" class="form-control selectBox2  phase_task_list" id="phase_task_list_renovator" name="phase_task_list" style="height: 48px;">
+      <!-- <option class="phase_task_list_0 task_option" value="">Existing Task</option> -->
       <option class="phase_task_list_0 task_option" value="Instruct professionals and/or developers">Instruct professionals and/or developers</option>
       <option class="phase_task_list_0 task_option" value="ID/Passport">ID/Passport</option>
       <option class="phase_task_list_0 task_option" value="Checks. Title/property">Checks. Title/property</option>
@@ -150,8 +151,8 @@
 
   </div>  
 <% } %>
-                    <input type="text" class="form-control form-control-fix2" id="taskName" placeholder="Task Name"
-                      name="task_name" required>
+<input type="text" class="form-control form-control-fix2" id="taskName" placeholder="Task Name" name="task_name" required>
+<input type="hidden" class="form-control form-control-fix2" id="ppts_phase_flag" name="ppts_phase_flag" required>
 
                     <input type="text" class="form-control form-control-fix2" id="professional" placeholder=""
                       name="professionalName" value="" readonly>
@@ -369,7 +370,7 @@
 
                         <div class="about-section">
                           <div class="row">
-                            <div style="order: 2;" class="col col-lg-6">
+                            <div style="order: 2;" class="col col-lg-6 reviews_rating_sec">
                               <% var plantRateSum=0; %>
                                 <% var c=1 ; var total=professionalRating.length;
                                   professionalRating.forEach(function(prat){ %>
