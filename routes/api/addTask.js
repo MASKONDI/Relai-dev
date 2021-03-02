@@ -1,5 +1,6 @@
 const PropertyProfessinoalTaskSchema = require("../../models/property_professional_tasks_Schema");
 const PropertiesPhaseSchema = require("../../models/property_phase_schema");
+const PropertiesSchema = require("../../models/properties");
 module.exports.GetTaskById = function (ppts_property_id,ppts_is_active_user_flag) {
     return new Promise( async function (resolve, reject) {
        if(ppts_property_id!=null){
@@ -19,24 +20,97 @@ module.exports.GetTaskById = function (ppts_property_id,ppts_is_active_user_flag
     });
 };
 
-module.exports.GetTaskByPhaseName = function (ppts_property_id,ppts_phase_name,ppts_is_active_user_flag) {
+module.exports.GetTaskByPhaseName = function (ppts_property_id,ppts_phase_name,ppts_user_id,ppts_is_active_user_flag) {
     return new Promise( async function (resolve, reject) {
+      var pps_property_id=ppts_property_id;
        if(ppts_property_id!=null){
-        var data={$and:[{
-            //ppts_property_id: ppts_property_id,ppts_phase_name:ppts_phase_name,ppts_is_active_user_flag:ppts_is_active_user_flag
-            ppts_property_id: ppts_property_id,ppts_phase_name:ppts_phase_name
-        }]}
-        PropertyProfessinoalTaskSchema.find(data).then(async(resp)=>{
-            console.log('resp:====',resp)
-            let responce = await resp
-             resolve(responce)
-         }).catch((err)=>{
-             reject(err)
-         })
-       }
+        await  PropertiesSchema.findOne({_id:pps_property_id}).then(async(propertyData)=>{
+          if('ps_tagged_user_id' in propertyData){
+               console.log('here..1');
+               console.log('here..gg:',propertyData.ps_tagged_user_id);
+               console.log('here..ppts_user_id:',ppts_user_id);
+               if(propertyData.ps_tagged_user_id == ppts_user_id){
+                console.log('here..2');
+                var data={$and:[{
+                  //ppts_property_id: ppts_property_id,ppts_phase_name:ppts_phase_name,ppts_is_active_user_flag:ppts_is_active_user_flag
+                  ppts_property_id: ppts_property_id,ppts_phase_name:ppts_phase_name,ppts_user_id:ppts_user_id
+              }]}
+              PropertyProfessinoalTaskSchema.find(data).then(async(resp)=>{
+                  console.log('resp:====',resp)
+                  let responce = await resp
+                  resolve(responce)
+              }).catch((err)=>{
+                  reject(err)
+              })
+               
+              }else{
+                var data={$and:[{
+                  //ppts_property_id: ppts_property_id,ppts_phase_name:ppts_phase_name,ppts_is_active_user_flag:ppts_is_active_user_flag
+                  ppts_property_id: ppts_property_id,ppts_phase_name:ppts_phase_name,ppts_user_id:ppts_user_id
+              }]}
+              PropertyProfessinoalTaskSchema.find(data).then(async(resp)=>{
+                  console.log('resp:====',resp)
+                  let responce = await resp
+                  resolve(responce)
+              }).catch((err)=>{
+                  reject(err)
+              })
+              }
+
+          }
+        })
+       
+        }
     });
 };
 
+module.exports.GetGestTaskByPhaseName = function (ppts_property_id, ppts_phase_name, ppts_user_id, ppts_is_active_user_flag) {
+  return new Promise(async function (resolve, reject) {
+    var pps_property_id = ppts_property_id;
+    if (ppts_property_id != null) {
+      await PropertiesSchema.findOne({ _id: pps_property_id }).then(async (propertyData) => {
+        if ('ps_tagged_user_id' in propertyData) {
+          console.log('here..1');
+          console.log('here..gg:', propertyData.ps_tagged_user_id);
+          console.log('here..ppts_user_id:', ppts_user_id);
+          if (propertyData.ps_tagged_user_id == ppts_user_id) {
+            //console.log('here..2');
+            var data = {
+              $and: [{
+                //ppts_property_id: ppts_property_id,ppts_phase_name:ppts_phase_name,ppts_is_active_user_flag:ppts_is_active_user_flag
+                ppts_property_id: ppts_property_id, ppts_phase_name: ppts_phase_name, ppts_user_id:propertyData.ps_user_id.toString()
+              }]
+            }
+            PropertyProfessinoalTaskSchema.find(data).then(async (resp) => {
+              console.log('resp:====', resp)
+              let responce = await resp
+              resolve(responce)
+            }).catch((err) => {
+              reject(err)
+            })
+
+          }else{
+            var data = {
+              $and: [{
+                //ppts_property_id: ppts_property_id,ppts_phase_name:ppts_phase_name,ppts_is_active_user_flag:ppts_is_active_user_flag
+                ppts_property_id: ppts_property_id, ppts_phase_name: ppts_phase_name, ppts_user_id:propertyData.ps_tagged_user_id.toString()
+              }]
+            }
+            PropertyProfessinoalTaskSchema.find(data).then(async (resp) => {
+              console.log('resp:====', resp)
+              let responce = await resp
+              resolve(responce)
+            }).catch((err) => {
+              reject(err)
+            })
+          }
+
+        }
+      })
+
+    }
+  });
+};
 module.exports.save_addPhase = function (pps_property_id,pps_phase_name,pps_phase_start_date,pps_phase_end_date,pps_is_active_user_flag) {
     return new Promise( async function (resolve, reject) {
         var data={pps_property_id:pps_property_id,
