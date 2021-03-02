@@ -209,7 +209,7 @@ span#comment-error {
         text-align: left;
         background-color: #fff;
         background-clip: padding-box;
-        
+        color:gray;
     }
     ul.multiselect-container.dropdown-menu{
         filter: initial !important;
