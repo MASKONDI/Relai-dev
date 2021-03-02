@@ -548,8 +548,15 @@
                             <label class="check-todos">
                               <p>
                                 <!-- mydreamhome-details-to-dos -->
-                                <%=row.ppts_task_name%><a href="/<%=row.phase_page_name%>?id=<%=row.ppts_property_id%>&phase=<%=row.ppts_phase_name%>&step=<%=row.ppts_phase_flag%>"><img
-                                      src="images/recent-user-1.png"></a><em>
+                                <%=row.ppts_task_name%>
+                                <%if(row.ppts_phase_name=='other'){%>
+                                  <a href="/<%=row.phase_page_name%>?id=<%=row.ppts_property_id%>&phase=<%=row.ppts_phase_name%>&step=O"><img
+                                    src="images/recent-user-1.png"></a>
+                                  <%}else{%>
+                                <a href="/<%=row.phase_page_name%>?id=<%=row.ppts_property_id%>&phase=<%=row.ppts_phase_name%>&step=<%=row.ppts_phase_flag%>"><img
+                                      src="images/recent-user-1.png"></a>
+                                      <%}%>
+                                      <em>
                                     <%=row.professionalName%>
                                   </em>
                               </p>
