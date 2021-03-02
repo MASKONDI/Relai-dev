@@ -56,31 +56,33 @@
                               <div class="dream-home-img">
 
                                 <%if(propertyImage.length>0){%>
-                                    <%if(propertyImage[i].length>0){%>
-                                  <img src="propimg/<%=propertyImage[i][0].pps_property_image_name%>">
-                                  <a href="/add-property?property_id=<%=row._id%>" class="editProperty"
-                                    id="<%=row._id%>"><i class="fa fa-edit dream-home-edit-icon "></i></a>
-                                    <%}else{%>
-                                      <img src="images/nacary.png">
+                                  <%if(propertyImage[i].length>0){%>
+                                    <img src="propimg/<%=propertyImage[i][0].pps_property_image_name%>">
+                                    <%if(row.ps_user_id== session.user_id){%>
                                       <a href="/add-property?property_id=<%=row._id%>" class="editProperty"
                                         id="<%=row._id%>"><i class="fa fa-edit dream-home-edit-icon "></i></a>
                                       <%}%>
-                                  <%}else{%>
-                                    <img src="images/nacary.png">
-                                    <a href="javascript:void(0)" class=""> <i
-                                        class="fa fa-edit dream-home-edit-icon "></i></a>
-                                    <%}%>
-                                      <% if(row.ps_property_type=='New' ){ %>
-                                        <a href="/mydreamhome-details?id=<%=row._id%>"
-                                          class="btn btn-new mydreamHomeDetail" value="<%=row._id%>">
-                                          <%=row.ps_property_type%>
-                                        </a>
-                                        <%} else {%>
-                                          <a href="/mydreamhome-details-chainproperty?id=<%=row._id%>"
-                                            class="btn btn-new mydreamHomeDetail" value="<%=row._id%>">
-                                            <%=row.ps_property_type%>
-                                          </a>
+                                        <%}else{%>
+                                          <img src="images/nacary.png">
+                                          <a href="/add-property?property_id=<%=row._id%>" class="editProperty"
+                                            id="<%=row._id%>"><i class="fa fa-edit dream-home-edit-icon "></i></a>
                                           <%}%>
+                                            <%}else{%>
+                                              <img src="images/nacary.png">
+                                              <a href="javascript:void(0)" class=""> <i
+                                                  class="fa fa-edit dream-home-edit-icon "></i></a>
+                                              <%}%>
+                                                <% if(row.ps_property_type=='New' ){ %>
+                                                  <a href="/mydreamhome-details?id=<%=row._id%>"
+                                                    class="btn btn-new mydreamHomeDetail" value="<%=row._id%>">
+                                                    <%=row.ps_property_type%>
+                                                  </a>
+                                                  <%} else {%>
+                                                    <a href="/mydreamhome-details-chainproperty?id=<%=row._id%>"
+                                                      class="btn btn-new mydreamHomeDetail" value="<%=row._id%>">
+                                                      <%=row.ps_property_type%>
+                                                    </a>
+                                                    <%}%>
 
                               </div>
                               <div class="dream-home-description">
