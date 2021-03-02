@@ -181,7 +181,7 @@
                             </td> -->
                             <%if(hiredProfessional_list.length>0){%>
                               <%hiredProfessional_list.forEach(function(hp,i){%>
-                                <%if(row.ppts_assign_to.equals(hp._id)&&(row.ppts_is_remove_task=='no')){%>
+                                <%if(row.ppts_assign_to.includes(hp._id)){%>
 
                                 <td><a href="#" class="upload-any"><img src="images/upload.png">
                                     <span>

@@ -88,6 +88,7 @@
                     <li><a href="javascript:void(0)">25%</a></li>
                   </ul>
                 </div>
+                <div><h4><%=session.active_user_login%></h4></div>
                 <div class="action-owner">
                   <div class="clearfix">
                     <div class="float-left">
@@ -158,7 +159,7 @@
                           <tr>
                             <td> <label class="check-todos">
                                 <p>
-                                  <%=row.ppts_task_name%>
+                                  <%=row.ppts_task_name%>, <%=row._id%>
                                 </p>
 
                                 <input type="checkbox">
@@ -166,8 +167,27 @@
                               </label></td>
 
                         
-                            <!-- ppts_assign_to -->
-                        
+                            <!-- ppts_assign_to  fruits.includes("Mango");-->
+                            <%if(hiredProfessional_list.length>0){%>
+                              <%hiredProfessional_list.forEach(function(hp,k){%>
+                                  <%if(row.ppts_assign_to.includes(hp._id)){%>
+                                <td><a href="#" class="upload-any"><img src="images/upload.png">
+                                    <span>
+                                      <div class="custom-file-input">
+                                        <input type="file">
+                                        <input type="button">
+                                      </div>
+                                    </span>
+                                  </a>
+                                  <a href="/professionals-detail-message"><img src="images/chat.png"></a>
+                                </td>
+                              <%}else{%>
+                                <td>
+                                <p>...</p>
+                              </td>
+                                <%}%>
+                                <%});%>
+                                  <%}%>
                                  
                                     <td><a class="btn help-btn" href="#" data-toggle="modal"
                                         data-target="#myModal">Help</a>
@@ -338,7 +358,7 @@
                                             <div class="modal-body">
                                               <p>
                                                 <%=row.ppts_note%>
-                                                  <%=row.ppts_task_name%>
+                                                  
                                               </p>
                                             </div>
                                             <div class="modal-footer">
@@ -349,262 +369,10 @@
 
                                         </div>
                                       </div>
-                                      <!-- <div id="todoNotesModal<%=row._id%>" class="modal fade" role="dialog">
-                                <div class="modal-dialog">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-                                    </div>
-                                    <div class="modal-body">
-                                      <p>
-                                        <%=row.ppts_note%>
-                                      </p>
-                                    </div>
-                                    <div class="modal-footer">
-                                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                      
-                                    </div>
-                                  </div>
-
-                                </div>
-                              </div> -->
                                     </td>
                           </tr>
                           <%});%>
                             <%}%>
-                              <!-- <tr>
-                      <td><label class="check-todos">
-                          <p>Instruct other professionals</p>
-                          <input type="checkbox">
-                          <span class="checkmark"></span>
-                        </label></td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a class="btn help-btn" href="#" data-toggle="modal" data-target="#myModal">Help</a></td>
-                    </tr>
-                    <tr>
-                      <td><label class="check-todos">
-                          <p>ID/Passport</p>
-                          <input type="checkbox">
-                          <span class="checkmark"></span>
-                        </label></td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a class="btn help-btn" href="#" data-toggle="modal" data-target="#myModal">Help</a></td>
-                    </tr>
-                    <tr>
-                      <td><label class="check-todos">
-                          <p>Proof of address</p>
-                          <input type="checkbox">
-                          <span class="checkmark"></span>
-                        </label></td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a class="btn help-btn" href="#" data-toggle="modal" data-target="#myModal">Help</a></td>
-                    </tr>
-                    <tr>
-                      <td><label class="check-todos">
-                          <p>Proof of fund (cash buyers)/agreement in principle (mortgage)</p>
-                          <input type="checkbox">
-                          <span class="checkmark"></span>
-                        </label></td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a href="#" class="upload-any"><img src="images/upload.png">
-                          <span>
-                            <div class="custom-file-input">
-                              <input type="file">
-                              <input type="button">
-                            </div>
-                          </span>
-                        </a>
-                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                      </td>
-                      <td><a class="btn help-btn" href="#" data-toggle="modal" data-target="#myModal">Help</a></td>
-                    </tr> -->
                   </tbody>
                 </table>
               </div>
