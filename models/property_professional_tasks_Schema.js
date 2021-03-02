@@ -13,7 +13,8 @@ const PropertyProfessinoalTaskSchema = new Schema({
     ref: "properties"
   },
   ppts_user_id: {
-    type: Schema.Types.ObjectId,
+    //type: Schema.Types.ObjectId,
+    type: Array,
     required:true,
     ref: "customers"
   },
@@ -32,7 +33,8 @@ const PropertyProfessinoalTaskSchema = new Schema({
     required:true
   },
   ppts_assign_to: {
-    type: Schema.Types.ObjectId,
+    //type: Schema.Types.ObjectId,
+    type: Array,
     ref: "service_provider"
    
   },
@@ -43,11 +45,13 @@ const PropertyProfessinoalTaskSchema = new Schema({
     
   },
   ppts_due_date: {
-    type: String,
+    //type: String,
+    type: Array,
     required:true
   },
   ppts_note:{
-   type:String
+   type: Array,
+   //type:String
   },
   ppts_phase_flag:{
     type:String

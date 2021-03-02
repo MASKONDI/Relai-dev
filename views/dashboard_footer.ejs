@@ -1537,6 +1537,7 @@ MYDREAM-HOME-DETAILS-PAHSE-A
                 //timer: 1500
               })
             } else {
+              $('#add_task_submit_form')[0].reset();
               console.log('meserrmessagesage:', data.success_msg)
               Swal.fire({
                 // position: 'top-end',
@@ -1582,13 +1583,15 @@ MYDREAM-HOME-DETAILS-PAHSE-A
               })
             } else {
               console.log('meserrmessagesage:', data.success_msg)
+              $('#Add_existing_task_form')[0].reset();
+
               Swal.fire({
                 // position: 'top-end',
                 icon: 'success',
                 title: data.success_msg,
                 showConfirmButton: false,
                 confirmButtonColor: '#005377',
-                timer: 3000
+               // timer: 3000
               })
               location.reload(true)
               $('#notes,#duedate').val('');
@@ -1625,6 +1628,8 @@ MYDREAM-HOME-DETAILS-PAHSE-A
               })
             } else {
               console.log('meserrmessagesage:', data.success_msg)
+              $('#Add_existing_task_form_sellerPhaseA')[0].reset();
+
               Swal.fire({
                 // position: 'top-end',
                 icon: 'success',
@@ -1668,6 +1673,8 @@ MYDREAM-HOME-DETAILS-PAHSE-A
               })
             } else {
               console.log('meserrmessagesage:', data.success_msg)
+              $('#Add_existing_task_form_renovatorPhaseA')[0].reset();
+
               Swal.fire({
                 // position: 'top-end',
                 icon: 'success',
@@ -2023,6 +2030,8 @@ jQuery(document).ready(function(){
               //timer: 1500
             })
           } else {
+            $('#addTaskForm')[0].reset();
+
             Swal.fire({
               icon: 'success',
               title: data.success_msg,
