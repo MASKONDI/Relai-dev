@@ -329,7 +329,14 @@ app.get('/dashboard', isCustomer, async (req, res) => {
 app.get('/track-your-progress', isCustomer, async (req, res) => {
   console.log("current user session is :", req.session);
   req.session.pagename = 'track-your-progress';
-  let AllProperty = await PropertiesSchema.find({ $and: [{ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login }] }).sort({ _id: -1 })
+  let AllProperty = await PropertiesSchema.find({ $and: [{
+    $or: [
+      { $and: [{ ps_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login }] },
+      { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_other_property_type: req.session.active_user_login }] }
+    ]
+    
+     //ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login
+     }] }).sort({ _id: -1 })
   if (AllProperty) {
     err_msg = req.flash('err_msg');
     success_msg = req.flash('success_msg');
@@ -2529,7 +2536,17 @@ app.get('/add-task-prfessional-property-phase', isCustomer, async function (req,
 app.get('/property-related-enquiry-proprty-list', isCustomer, async (req, res) => {
   req.session.pagename = 'mydreamhome';
   console.log("current session is", req.session);
-  PropertiesSchema.find({ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
+  console.log("req.session.user_id", req.session.user_id);
+  console.log(" req.session.active_user_login:",  req.session.active_user_login);
+
+  PropertiesSchema.find({ 
+    $or: [
+      { $and: [{ ps_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login }] },
+      { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_other_property_type: req.session.active_user_login }] }
+    ]
+   // ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login
+   }).then(async (data) => {
+  console.log("Complaint property session is:", data);
     if (data) {
       let arr = [];
       err_msg = req.flash('err_msg');
