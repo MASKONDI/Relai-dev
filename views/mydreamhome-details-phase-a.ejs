@@ -189,13 +189,13 @@
                             <%if(hiredProfessional_list.length>0){%>
                               <%hiredProfessional_list.forEach(function(hp,i){%>
                                 <%if(row.ppts_assign_to.equals(hp._id)&&(row.ppts_is_remove_task=='no')){%>
-                                <td><a href="#" class="upload-any"><img src="images/upload.png">
-                                    <span>
+                                <td><a href="/task-details-docs" class="upload-any"><img src="images/upload.png">
+                                    <!-- <span>
                                       <div class="custom-file-input">
                                         <input type="file">
                                         <input type="button">
                                       </div>
-                                    </span>
+                                    </span> -->
                                   </a>
                                   <a href="/professionals-detail-message"><img src="images/chat.png"></a>
                                 </td>

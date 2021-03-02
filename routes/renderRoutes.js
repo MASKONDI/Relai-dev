@@ -1969,7 +1969,7 @@ function getPhase(phase) {
     return 'mydreamhome-details-phase-g'; 
   }else if(phase == 'H'){
     return 'mydreamhome-details-phase-h'; 
-  }else if(phase == 'o'){
+  }else{
     return 'mydreamhome-details-phase-o'; 
   }
 
@@ -2875,7 +2875,50 @@ function removeDuplicates(originalArray, prop) {
   }
    return newArray;
 }
+app.get('/task-details-docs', isCustomer, async (req, res) => {
+  req.session.pagename = 'mydreamhome';
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  let property = await PropertiesSchema.findOne({ 
+    _id: req.session.property_id
+  });
+  const allDocument = await CustomerUploadDocsSchema.find({ 
+    cuds_property_id: req.session.property_id
+  }).sort({ _id: -1 });
+  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ 
+   pps_property_id: req.session.property_id
+   });
+  let serviceProvArray = [];
+  for (var k of AllhiredProfeshnoal) {
+    await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
+      for (let i of allProfeshnoals) {
+        var object_as_string = JSON.stringify(i);
+        const t = JSON.parse(object_as_string);
+        t.pps_property_id = k.pps_property_id;
+        let temps = await t
+        temps.pps_user_id = k.pps_user_id;
+        let tempsData = await temps
+        serviceProvArray.push(temps)
+      }
+    });
+  }
 
+  
+  //console.log('allDocument:', allDocument)
+
+  res.render('task-details-docs', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    data: serviceProvArray,
+    allDocument: allDocument,
+    property: property,
+    moment: moment
+  });
+
+
+
+  
+});
 module.exports = app;
 
 
