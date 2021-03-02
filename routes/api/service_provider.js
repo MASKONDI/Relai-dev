@@ -134,7 +134,7 @@ router.post("/service_provider_register", (req, res) => {
             .then(serviceProviders => {
               console.log("service_provider is", serviceProviders);
               //calling Otp verfication
-              otp_verification(req, otp);
+              // otp_verification(req, otp);
               req.session.success = true,
                 // req.session._id = doc.user_id;
                 req.session.user_id = serviceProviders._id,
@@ -149,7 +149,7 @@ router.post("/service_provider_register", (req, res) => {
                 // res.redirect("/signup-professionals-profile")
                 res.send({
                   serviceProviders: serviceProviders,
-                  message: "You have registered sucessfully, please check your email to verify your account.",
+                  message: "You have registered sucessfully.",
                   status: true,
 
                 })
@@ -360,15 +360,15 @@ router.post("/service_provider_employment_history", (req, res) => {
 
   console.log("req.body is : ", req.body);
   console.log("req.session.user_id is ", req.session.user_id);
-  var obj={
+  var obj = {
     spehs_name_of_employer: req.body.spehs_name_of_employer,
     spehs_job_title: req.body.spehs_job_title,
     spehs_job_description: req.body.spehs_job_description,
     spehs_reason_for_leaving: req.body.spehs_reason_for_leaving,
     spehs_from_date: req.body.spehs_from_date,
-    spehs_to_date: req.body.spehs_to_date 
+    spehs_to_date: req.body.spehs_to_date
   }
-  if(req.body.employment_id){
+  if (req.body.employment_id) {
     ServiceProviderEmploymentHistorySchema.updateOne({ 'spehs_service_provider_id': req.session.user_id, '_id': req.body.employment_id }, { $set: obj }, { upsert: true }, function (err) {
       if (err) {
         res.send({
@@ -378,47 +378,47 @@ router.post("/service_provider_employment_history", (req, res) => {
       } else {
         res.send({
           status: true,
-          action:'update',
-          success_msg:'Employment History updated successfully'
+          action: 'update',
+          success_msg: 'Employment History updated successfully'
         });
       }
     })
-  }else{
-  const serviceProviderEmploymentHistory = new ServiceProviderEmploymentHistorySchema({
-    //rs_service_provider_id /*Need to store same sp_id while registering */
-    spehs_service_provider_id: req.session.user_id,
-    spehs_name_of_employer: req.body.spehs_name_of_employer,
-    spehs_job_title: req.body.spehs_job_title,
-    spehs_job_description: req.body.spehs_job_description,
-    spehs_reason_for_leaving: req.body.spehs_reason_for_leaving,
-    spehs_from_date: req.body.spehs_from_date,
-    spehs_to_date: req.body.spehs_to_date
-  });
-  serviceProviderEmploymentHistory
-    .save()
-    .then(serviceProviders => {
-      console.log("server response is", serviceProviders);
-      //res.redirect("/signup-professionals-profile-5")
-      // res.send({
-      //   employmentDetail: serviceProviders,
-      //   status: true
-      // });
-      res.send({
-        employmentDetail: serviceProviders,
-        status: true,
-        success_msg:'Employment History added successfully',
-        action:'add'
-      });
-    })
-    .catch(err => {
-      console.log(err)
-     // req.flash('err_msg', 'Something went wrong please try after some time');
-      //res.redirect('/signup-professionals-profile-4');
-      res.send({
-        err_msg: 'Something went wrong please try after some time',
-        status: false
-      });
+  } else {
+    const serviceProviderEmploymentHistory = new ServiceProviderEmploymentHistorySchema({
+      //rs_service_provider_id /*Need to store same sp_id while registering */
+      spehs_service_provider_id: req.session.user_id,
+      spehs_name_of_employer: req.body.spehs_name_of_employer,
+      spehs_job_title: req.body.spehs_job_title,
+      spehs_job_description: req.body.spehs_job_description,
+      spehs_reason_for_leaving: req.body.spehs_reason_for_leaving,
+      spehs_from_date: req.body.spehs_from_date,
+      spehs_to_date: req.body.spehs_to_date
     });
+    serviceProviderEmploymentHistory
+      .save()
+      .then(serviceProviders => {
+        console.log("server response is", serviceProviders);
+        //res.redirect("/signup-professionals-profile-5")
+        // res.send({
+        //   employmentDetail: serviceProviders,
+        //   status: true
+        // });
+        res.send({
+          employmentDetail: serviceProviders,
+          status: true,
+          success_msg: 'Employment History added successfully',
+          action: 'add'
+        });
+      })
+      .catch(err => {
+        console.log(err)
+        // req.flash('err_msg', 'Something went wrong please try after some time');
+        //res.redirect('/signup-professionals-profile-4');
+        res.send({
+          err_msg: 'Something went wrong please try after some time',
+          status: false
+        });
+      });
   }
 });
 router.post("/edit-service_provider_employment_history", async (req, res) => {
@@ -677,19 +677,19 @@ router.post("/service_provider_signin",
             redirect: ''
           })
         }
-        else if (service_provider.sps_email_verification_status == 'no') {
+        // else if (service_provider.sps_email_verification_status == 'no') {
 
-          console.log("Sending Otp if user email not verified");
-          otp_send(req, service_provider);
-          res.send({
-            message: "Please verify  OTP first",
-            status: false,
-            redirectpage: true,
-            redirect: "/otp-professional?email=" + sps_email_id
-            //redirect to OTP
-          })
-          //}
-        } else {
+        //   console.log("Sending Otp if user email not verified");
+        //   otp_send(req, service_provider);
+        //   res.send({
+        //     message: "Please verify  OTP first",
+        //     status: false,
+        //     redirectpage: true,
+        //     redirect: "/otp-professional?email=" + sps_email_id
+        //     //redirect to OTP
+        //   })
+        //}}
+        else {
           // Check Password
           bcrypt.compare(sps_password, service_provider.sps_password).then(isMatch => {
             if (isMatch) {
