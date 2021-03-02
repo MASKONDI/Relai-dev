@@ -914,13 +914,13 @@ router.post('/forget-password', function (req, res) {
                   secure: true,
                   service: 'Gmail',
                   auth: {
-                    user: 'golearning4@gmail.com',
-                    pass: 'Krishna#1997',
+                    user: keys.user1,
+                    pass: keys.pass1,
                   }
                 });
                 const mailOptions = {
                   to: req.body.cus_email_id,
-                  from: 'golearning4@gmail.com',
+                  from: keys.user1,
                   subject: 'Relai Forget Password',
 
                   text: 'Dear Customer,' + '\n\n' + 'New Password from Relai.\n\n' +
@@ -1501,13 +1501,13 @@ function invite_function(req, saved_property) {
         secure: true,
         service: 'Gmail',
         auth: {
-          user: 'golearning4@gmail.com',
-          pass: 'Krishna#1997',
+          user: keys.user1,
+          pass: keys.pass1,
         }
       });
       const mailOptions = {
         to: req.body.ps_other_party_emailid,
-        from: 'golearning4@gmail.com',
+        from: keys.user1,
         subject: 'Invitaion letter from Relai',
 
         text: 'Dear \n' + req.body.ps_other_party_fullname + '\n\n' + 'you are invited in Relai plateform.\n\n' +
@@ -1546,13 +1546,13 @@ function customer_invitation(req, saved_property) {
     secure: true,
     service: 'Gmail',
     auth: {
-      user: 'golearning4@gmail.com',
-      pass: 'Krishna#1997',
+      user: keys.user1,
+      pass: keys.pass1,
     }
   });
   const mailOptions = {
     to: req.session.email,
-    from: 'golearning4@gmail.com',
+    from: keys.user1,
     subject: 'Invitaion letter from Relai',
 
     text: 'Dear \n' + req.session.name + '\n\n' + 'you have send successfully invitation to\n' + req.body.ps_other_party_fullname + ' for ' + saved_property.ps_property_name + ' via Relai plateform.\n\n' +
@@ -1587,13 +1587,13 @@ function otp_verification(req, otp) {
     secure: true,
     service: 'Gmail',
     auth: {
-      user: 'golearning4@gmail.com',
-      pass: 'Krishna#1997',
+      user: keys.user1,
+      pass: keys.pass1,
     }
   });
   const mailOptions = {
     to: req.body.cus_email_id,
-    from: 'golearning4@gmail.com',
+    from: keys.user1,
     subject: 'OTP verification from Relai',
 
     text: 'Dear \n' + req.body.cus_firstname + ' ' + req.body.cus_lastname + '\n\n' + 'your OTP for email-validation is  \n' + otp + '\n\n' + 'We suggest you to please hit given url and submit otp:\n' + ' http://' + req.headers.host + '/otp?email=' + req.body.cus_email_id + '\n\n' +
@@ -1652,13 +1652,13 @@ function otp_send(req, customer) {
         secure: true,
         service: 'Gmail',
         auth: {
-          user: 'golearning4@gmail.com',
-          pass: 'Krishna#1997',
+          user: keys.user1,
+          pass: keys.pass1,
         }
       });
       const mailOptions = {
         to: customer.cus_email_id,
-        from: 'golearning4@gmail.com',
+        from: keys.user1,
         subject: 'OTP verification from Relai',
 
         text: 'Dear \n' + customer.cus_fullname + '\n\n' + 'your OTP for email-validation is  \n' + otp + '\n\n' + 'We suggest you to please hit given url and submit otp:\n' + ' http://' + req.headers.host + '/otp?email=' + customer.cus_email_id + '\n\n' +
@@ -1745,13 +1745,13 @@ router.post('/resend-otp-link', function (req, res) {
               secure: true,
               service: 'Gmail',
               auth: {
-                user: 'golearning4@gmail.com',
-                pass: 'Krishna#1997',
+                user: keys.user1,
+                pass: keys.pass1,
               }
             });
             const mailOptions = {
               to: req.body.email,
-              from: 'golearning4@gmail.com',
+              from: keys.user1,
               subject: 'OTP verification from Relai',
 
               text: 'Dear \n' + result[0].cus_fullname + '\n\n' + 'your OTP for email-validation is  \n' + otp + '\n\n' + 'We suggest you to please hit given url and submit otp:\n' + ' http://' + req.headers.host + '/otp?email=' + req.body.email + '\n\n' +
