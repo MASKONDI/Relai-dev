@@ -213,7 +213,7 @@ router.post("/cust_register", (req, res) => {
             .save()
             .then(customers => {
               //sending OTP for email verification
-              otp_verification(req, otp);
+              //otp_verification(req, otp);
               //req.flash('success_msg', 'You have register sucessfully.')
               //res.redirect("/signin")
               //Calling Submit token function for assign/createing invite property Object 
@@ -224,7 +224,8 @@ router.post("/cust_register", (req, res) => {
               console.log("registered customers data is ", customers);
               res.send({
                 customers: customers,
-                message: "You have registered sucessfully, please check your email to verify your account.",
+                // message: "You have registered sucessfully, please check your email to verify your account.",
+                message: "You have registered sucessfully.",
                 status: true
               })
 
@@ -1228,7 +1229,7 @@ router.post("/hire-now", async (req, res) => {
 POST : Add Task api is used for adding task(or Phase) details and sharing these details to hired professional.
 ------------------------------------------------------------------------------------------------- */
 router.get("/addTask", async (req, res) => {
-  
+
   var property_id = req.session.property_id;
   var user_id = req.session.user_id;
   var active_user = req.session.active_user_login;
@@ -2580,7 +2581,7 @@ router.post('/edit_task_submit_form', (req, res) => {
   let newServiceProviderID = req.body.ppts_new_assign_to;
   console.log("new Assign property is", newServiceProviderID);
 
-  PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_task_name: req.body.ppts_task_name,_id:req.body.task_id }, { $set: { ppts_assign_to: newServiceProviderID, ppts_due_date: req.body.ppts_due_date, ppts_note: req.body.ppts_note } }, { upsert: true }, function (err) {
+  PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_task_name: req.body.ppts_task_name, _id: req.body.task_id }, { $set: { ppts_assign_to: newServiceProviderID, ppts_due_date: req.body.ppts_due_date, ppts_note: req.body.ppts_note } }, { upsert: true }, function (err) {
     if (err) {
       // res.json(err);
       console.log(err)
@@ -2603,7 +2604,7 @@ router.post('/remove_task_submit_form', (req, res) => {
   //let newServiceProviderID = req.body.ppts_new_assign_to;
   //console.log("new Assign property is", newServiceProviderID);
 
-  PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_task_name: req.body.ppts_task_name,_id:req.body.task_id }, { $set: {ppts_is_remove_task:'yes', ppts_due_date: req.body.ppts_due_date, ppts_note: req.body.ppts_note } }, { upsert: true }, function (err) {
+  PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_task_name: req.body.ppts_task_name, _id: req.body.task_id }, { $set: { ppts_is_remove_task: 'yes', ppts_due_date: req.body.ppts_due_date, ppts_note: req.body.ppts_note } }, { upsert: true }, function (err) {
     if (err) {
       // res.json(err);
       console.log(err)
@@ -2621,14 +2622,14 @@ router.post('/remove_task_submit_form', (req, res) => {
 router.get('/gethiredProfessionalist', async (req, res) => {
   console.log("fetching hired professional list for particular task", req.query);
 
-  var taskData = await PropertyProfessinoalTaskSchema.find({ _id:req.query.task_id,ppts_property_id: req.query.ppts_property_id, ppts_phase_name: req.query.ppts_phase_name, ppts_task_name: req.query.ppts_task_name });
+  var taskData = await PropertyProfessinoalTaskSchema.find({ _id: req.query.task_id, ppts_property_id: req.query.ppts_property_id, ppts_phase_name: req.query.ppts_phase_name, ppts_task_name: req.query.ppts_task_name });
   console.log("taskData", taskData);
   if (taskData != null) {
     console.log("taskData", taskData);
     console.log("taskData", taskData.length);
     var professionalArray = [];
     for (let professionalId of taskData) {
-      if(professionalId.ppts_is_remove_task=='no'){
+      if (professionalId.ppts_is_remove_task == 'no') {
 
         var professionalData = await ServiceProviderSchema.findOne({ _id: professionalId.ppts_assign_to });
         console.log('professionalData:', professionalData);
@@ -2657,14 +2658,14 @@ router.get('/gethiredProfessionalist', async (req, res) => {
 router.get('/getunhiredProfessionalist', async (req, res) => {
   console.log("fetching unhired professional list for particular task", req.query);
 
-  var taskData = await PropertyProfessinoalTaskSchema.find({_id:req.query.task_id, ppts_property_id: req.query.ppts_property_id, ppts_phase_name: req.query.ppts_phase_name, ppts_task_name: req.query.ppts_task_name });
-  
+  var taskData = await PropertyProfessinoalTaskSchema.find({ _id: req.query.task_id, ppts_property_id: req.query.ppts_property_id, ppts_phase_name: req.query.ppts_phase_name, ppts_task_name: req.query.ppts_task_name });
+
   var professionalIDArray = [];
   for (let professionalId of taskData) {
-   // if(professionalId.ppts_is_remove_task=='no'){
+    // if(professionalId.ppts_is_remove_task=='no'){
     professionalIDArray.push(professionalId.ppts_assign_to);
-   // }
-    
+    // }
+
   }
   console.log("property hired professional data", professionalIDArray);
   console.log();
@@ -2716,13 +2717,13 @@ router.get('/getunhiredProfessionalist', async (req, res) => {
 
 
 function compare(allhiredProfessionalIDlist, professionalIDArray) {
-  
+
   const finalArray = [];
   allhiredProfessionalIDlist.forEach((e1) => professionalIDArray.forEach((e2) => {
-    
+
     if (e1.equals(e2)) {
-     
-    }else{
+
+    } else {
       finalArray.push(e1);
     }
   }));
