@@ -2608,7 +2608,7 @@ router.post('/edit_task_submit_form', async (req, res) => {
     }
   });
 
-// });
+});
 // router.post('/remove_task_submit_form', (req, res) => {
 
 //   console.log("edit task req is:", req.body);
