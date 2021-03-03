@@ -71,8 +71,24 @@ module.exports.GetGestTaskByPhaseName = function (ppts_property_id, ppts_phase_n
       await PropertiesSchema.findOne({ _id: pps_property_id }).then(async (propertyData) => {
         if ('ps_tagged_user_id' in propertyData) {
           console.log('here..1');
-          console.log('here..gg:', propertyData.ps_tagged_user_id);
+          console.log('here..gg:GetGestTaskByPhaseName', propertyData.ps_tagged_user_id);
           console.log('here..ppts_user_id:', ppts_user_id);
+          if(propertyData.ps_tagged_user_id==undefined){
+            resolve([])
+            // var data = {
+            //   $and: [{
+            //     //ppts_property_id: ppts_property_id,ppts_phase_name:ppts_phase_name,ppts_is_active_user_flag:ppts_is_active_user_flag
+            //     ppts_property_id: ppts_property_id, ppts_phase_name: ppts_phase_name
+            //   }]
+            // }
+            // PropertyProfessinoalTaskSchema.find(data).then(async (resp) => {
+            //   console.log('resp:====', resp)
+            //   let responce = await resp
+            //   resolve(responce)
+            // }).catch((err) => {
+            //   reject(err)
+            // })
+          }else{
           if (propertyData.ps_tagged_user_id == ppts_user_id) {
             //console.log('here..2');
             var data = {
@@ -104,7 +120,7 @@ module.exports.GetGestTaskByPhaseName = function (ppts_property_id, ppts_phase_n
               reject(err)
             })
           }
-
+        }
         }
       })
 
