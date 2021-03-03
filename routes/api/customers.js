@@ -2572,29 +2572,31 @@ router.post('/reapitApi', (req, res) => {
 
 
 
-router.post('/edit_task_submit_form', async (req, res) => {
+router.post('/edit_task_submit_form', isCustomer , async (req, res) => {
 
   console.log("edit task req is:", req.body);
 
   console.log("Session  is:", req.session);
-  // console.log("req.query is :", req.query);
+
   var taskDetails = await PropertyProfessinoalTaskSchema.find({ ppts_property_id: req.body.ppts_property_id, ppts_task_name: req.body.ppts_task_name, _id: req.body.task_id, ppts_phase_flag: req.body.ppts_phase_flag });
 
   console.log("task Details is ", taskDetails);
   console.log("task Details is ", taskDetails[0].ppts_assign_to);
   console.log("req.body.ppts_new_assign_to :", req.body.ppts_new_assign_to);
   console.log("req.body.ppts_assign_to", req.body.ppts_assign_to);
-  // var updatedProfessionalList = [];
-  //fetching updated array in updatedProfessionalList
-  var updatedProfessionalList = await taskDetails[0].ppts_assign_to.forEach(function (item, i) { if (item == req.body.ppts_assign_to) taskDetails[0].ppts_assign_to[i] = req.body.ppts_new_assign_to; });
+var t =  taskDetails[0].ppts_assign_to;
 
-  //console.log("t is ", taskDetails[0].ppts_assign_to);
-  console.log("updatedProfessionalList ", updatedProfessionalList);
+  const index = t.indexOf(req.body.ppts_assign_to);
+  if (index > -1) {
+    t.splice(index, 1);
+  }
+console.log('index:',index);
+  t.insert(index, req.body.ppts_new_assign_to);
 
-  // let newServiceProviderID = req.body.ppts_new_assign_to;
-  //console.log("new Assign property is", taskDetails.ppts_assign_to);
-  // need to update ppts_assign_to array
-  PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_task_name: req.body.ppts_task_name, _id: req.body.task_id }, { $set: { ppts_assign_to: '', ppts_due_date: req.body.ppts_due_date, ppts_note: req.body.ppts_note } }, { upsert: true }, function (err) {
+  //t.push(req.body.ppts_new_assign_to);
+  console.log("task Details is after remove", t);
+//ppts_due_date: req.body.ppts_due_date,ppts_note: req.body.ppts_note
+   PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_task_name: req.body.ppts_task_name, _id: req.body.task_id }, { $set: { ppts_assign_to: t } }, { upsert: true }, function (err) {
 
 
     if (err) {
@@ -2604,35 +2606,14 @@ router.post('/edit_task_submit_form', async (req, res) => {
     } else {
       res.send({ status: true, message: 'Task update successfully !!' })
       console.log("Task update successfully");
-      //res.json("Task Updated successfully");
     }
   });
 
 });
-// router.post('/remove_task_submit_form', (req, res) => {
 
-//   console.log("edit task req is:", req.body);
-
-//   console.log("Session  is:", req.session);
-//   //console.log("req.query is :", req.query);
-
-//   //let newServiceProviderID = req.body.ppts_new_assign_to;
-//   //console.log("new Assign property is", newServiceProviderID);
-
-//   PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_task_name: req.body.ppts_task_name, _id: req.body.task_id }, { $set: { ppts_is_remove_task: 'yes', ppts_due_date: req.body.ppts_due_date, ppts_note: req.body.ppts_note } }, { upsert: true }, function (err) {
-//     if (err) {
-//       // res.json(err);
-//       console.log(err)
-//       res.send({ status: false, message: 'Something going wrong please check again !!' })
-//     } else {
-//       res.send({ status: true, message: 'Task update successfully !!' })
-//       console.log("Task update successfully");
-//       //res.json("Task Updated successfully");
-//     }
-//   });
-
-// });
-
+Array.prototype.insert = function ( index, item ) {
+  this.splice( index, 0, item );
+};
 
 router.get('/gethiredProfessionalist', async (req, res) => {
   console.log("fetching hired professional list for particular task", req.query);
@@ -2734,23 +2715,6 @@ router.get('/getunhiredProfessionalist', async (req, res) => {
   }
 
 });
-
-
-function compare(allhiredProfessionalIDlist, professionalIDArray) {
-
-  const finalArray = [];
-  allhiredProfessionalIDlist.forEach((e1) => professionalIDArray.forEach((e2) => {
-    // if (e1.equals(e2)) {
-    if (e1 != e2) {
-      finalArray.push(e1);
-    } else {
-
-    }
-  }));
-
-  return finalArray;
-}
-
 
 
 
