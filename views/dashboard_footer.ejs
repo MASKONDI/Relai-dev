@@ -4004,6 +4004,7 @@ $('.phase_task_list').multiselect('updateButtonText');
       }
   }else{
     $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display','none');
+    $('input#taskName').css('display','block');
   }
 }
 function SelectedTaskList(data){
@@ -4159,175 +4160,178 @@ console.log('Inside Seller');
 }
 </script>
 <script>
-  $(document).ready(function () {
+    $(document).ready(function () {
 
-  })
+    })
 
-  function editTask(ppts_property_id, ppts_phase_name, ppts_task_name, ppts_note, ppts_due_date,task_id) {
+    function editTask(ppts_property_id, ppts_phase_name, ppts_task_name, ppts_note, ppts_due_date, task_id, ppts_phase_flag) {
 
-//alert(task_id)
-    // /var ppts_property_id = $(".propertyId").val()
-    // var ppts_phase_name = $(".propertyPhaseName").val()
-    // var ppts_task_name = $(".PropertyTaskName").val()
-    // alert(ppts_property_id);
-    // alert(ppts_phase_name);
-    // alert(ppts_task_name);
-    // alert(ppts_due_date);
-    // alert(ppts_note);
-    // ppts_due_date
-    $(".hiddenclass").val(ppts_task_name)
-    $(".hiddnepropertyId").val(ppts_property_id)
-    $(".hiddenppts_phase_name").val(ppts_phase_name)
-    $(".hiddenppts_due_date").val(ppts_due_date)
-    $(".hiddenppts_note").val(ppts_note)
-    $(".hiddenppts_task_id").val(task_id)
-    $('#ppts_due_date')
-    $.ajax({
-      type: "GET",
-      data: { ppts_property_id: ppts_property_id, ppts_phase_name: ppts_phase_name, ppts_task_name: ppts_task_name,task_id:task_id },
-      url: "/api/gethiredProfessionalist",
-      cache: false,
-      success: function (data) {
-        console.log(data)
-        var htmlData = '';
-        // $(".").show();
-        htmlData += '<option value="">Select Existing professional</option>';
-        if (data.data.length > 0) {
-          $.each(data.data, function (i, data) {
-            console.log('val:', data)
-            htmlData += '<option value="' + data._id + '">' + data.sps_fullname + '</option>';
-          });
-        }
-        $('.display-old-professional').html(htmlData);
+      //alert(task_id)
+      // /var ppts_property_id = $(".propertyId").val()
+      // var ppts_phase_name = $(".propertyPhaseName").val()
+      // var ppts_task_name = $(".PropertyTaskName").val()
+      // alert(ppts_property_id);
+      // alert(ppts_phase_name);
+      // alert(ppts_task_name);
+      // alert(ppts_due_date);
+      // alert(ppts_note);
+      // ppts_due_date
+      $(".hiddenclass").val(ppts_task_name)
+      $(".hiddnepropertyId").val(ppts_property_id)
+      $(".hiddenppts_phase_name").val(ppts_phase_name)
+      $(".hiddenppts_due_date").val(ppts_due_date)
+      $(".hiddenppts_note").val(ppts_note)
+      $(".hiddenppts_task_id").val(task_id)
+      $(".hiddenppts_phase_flag").val(ppts_phase_flag)
 
-      }
-    });
-    $.ajax({
-      type: "GET",
-      data: { ppts_property_id: ppts_property_id, ppts_phase_name: ppts_phase_name, ppts_task_name: ppts_task_name,task_id:task_id },
-      url: "/api/getunhiredProfessionalist",
-      cache: false,
-      success: function (data) {
-        console.log(data)
-        var htmlData = '';
-        // $(".").show();
-        htmlData += '<option value="">Select new professional</option>';
-        if (data.data.length > 0) {
-          $.each(data.data, function (i, data) {
-            console.log('val:', data)
-            htmlData += '<option value="' + data._id + '">' + data.sps_fullname + '</option>';
-          });
-        }
-        $('.display-new-professional').html(htmlData);
-
-      }
-    });
-
-  }
-
-</script>
-
-<script>
-  $(document).ready(function () { 
-  $("#edit_Task_form").on('submit', function (e) {
-    var formData = $("#edit_Task_form").serialize();
-    console.log(formData)
-    //return;
-    // alert(formData);
-    if (formData) {
+      ppts_phase_flag
+      $('#ppts_due_date')
       $.ajax({
-        type: "POST",
-        data: formData,
-        url: "/api/edit_task_submit_form",
+        type: "GET",
+        data: { ppts_property_id: ppts_property_id, ppts_phase_name: ppts_phase_name, ppts_task_name: ppts_task_name, task_id: task_id, ppts_phase_flag: ppts_phase_flag },
+        url: "/api/gethiredProfessionalist",
         cache: false,
         success: function (data) {
-          if (data.status == false) {
-
-            Swal.fire({
-              // position: 'top-end',
-              icon: 'error',
-              title: data.message,
-              showConfirmButton: true,
-              confirmButtonColor: '#005377'
-              //timer: 1500
-            })
-
-
-          } else {
-
-            console.log('meserrmessagesage:', data.message)
-
-
-            Swal.fire({
-              // position: 'top-end',
-              icon: 'success',
-              title: data.message,
-              showConfirmButton: false,
-              confirmButtonColor: '#005377',
-              timer: 3000
-            })
-            location.reload(true)
-            $('#notes,#duedate').val('')
+          console.log(data)
+          var htmlData = '';
+          // $(".").show();
+          htmlData += '<option value="">Select Existing professional</option>';
+          if (data.data.length > 0) {
+            $.each(data.data, function (i, data) {
+              console.log('val:', data)
+              htmlData += '<option value="' + data._id + '">' + data.sps_fullname + '</option>';
+            });
           }
+          $('.display-old-professional').html(htmlData);
+
+        }
+      });
+      $.ajax({
+        type: "GET",
+        data: { ppts_property_id: ppts_property_id, ppts_phase_name: ppts_phase_name, ppts_task_name: ppts_task_name, task_id: task_id, ppts_phase_flag: ppts_phase_flag },
+        url: "/api/getunhiredProfessionalist",
+        cache: false,
+        success: function (data) {
+          console.log(data)
+          var htmlData = '';
+          // $(".").show();
+          htmlData += '<option value="">Select new professional</option>';
+          if (data.data.length > 0) {
+            $.each(data.data, function (i, data) {
+              console.log('val:', data)
+              htmlData += '<option value="' + data._id + '">' + data.sps_fullname + '</option>';
+            });
+          }
+          $('.display-new-professional').html(htmlData);
 
         }
       });
 
-    } else {
-      alert('some thing wrong')
     }
-  });
-  //===========
-  $("#edit_Task_form2").on('submit', function (e) {
-    e.preventDefault()
-    var formData = $("#edit_Task_form2").serialize();
-    console.log(formData)
-    //return;
-    // alert(formData);
-    if (formData) {
-      $.ajax({
-        type: "POST",
-        data: formData,
-        url: "/api/remove_task_submit_form",
-        cache: false,
-        success: function (data) {
-          if (data.status == false) {
 
-            Swal.fire({
-              // position: 'top-end',
-              icon: 'error',
-              title: data.message,
-              showConfirmButton: true,
-              confirmButtonColor: '#005377'
-              //timer: 1500
-            })
+  </script>
 
+  <script>
+    $(document).ready(function () {
+      $("#edit_Task_form").on('submit', function (e) {
+        var formData = $("#edit_Task_form").serialize();
+        console.log(formData)
+        //return;
+        // alert(formData);
+        if (formData) {
+          $.ajax({
+            type: "POST",
+            data: formData,
+            url: "/api/edit_task_submit_form",
+            cache: false,
+            success: function (data) {
+              if (data.status == false) {
 
-          } else {
-
-            console.log('meserrmessagesage:', data.message)
+                Swal.fire({
+                  // position: 'top-end',
+                  icon: 'error',
+                  title: data.message,
+                  showConfirmButton: true,
+                  confirmButtonColor: '#005377'
+                  //timer: 1500
+                })
 
 
-            Swal.fire({
-              // position: 'top-end',
-              icon: 'success',
-              title: data.message,
-              showConfirmButton: false,
-              confirmButtonColor: '#005377',
-              timer: 3000
-            })
-            location.reload(true)
-            $('#notes,#duedate').val('')
-          }
+              } else {
 
+                console.log('meserrmessagesage:', data.message)
+
+
+                Swal.fire({
+                  // position: 'top-end',
+                  icon: 'success',
+                  title: data.message,
+                  showConfirmButton: false,
+                  confirmButtonColor: '#005377',
+                  timer: 3000
+                })
+                location.reload(true)
+                $('#notes,#duedate').val('')
+              }
+
+            }
+          });
+
+        } else {
+          alert('some thing wrong')
         }
       });
+      //===========
+      $("#edit_Task_form2").on('submit', function (e) {
+        e.preventDefault()
+        var formData = $("#edit_Task_form2").serialize();
+        console.log(formData)
+        //return;
+        // alert(formData);
+        if (formData) {
+          $.ajax({
+            type: "POST",
+            data: formData,
+            url: "/api/remove_task_submit_form",
+            cache: false,
+            success: function (data) {
+              if (data.status == false) {
 
-    } else {
-      alert('some thing wrong')
-    }
-  })
-})
-</script>
-</body>
+                Swal.fire({
+                  // position: 'top-end',
+                  icon: 'error',
+                  title: data.message,
+                  showConfirmButton: true,
+                  confirmButtonColor: '#005377'
+                  //timer: 1500
+                })
+
+
+              } else {
+
+                console.log('meserrmessagesage:', data.message)
+
+
+                Swal.fire({
+                  // position: 'top-end',
+                  icon: 'success',
+                  title: data.message,
+                  showConfirmButton: false,
+                  confirmButtonColor: '#005377',
+                  timer: 3000
+                })
+                location.reload(true)
+                $('#notes,#duedate').val('')
+              }
+
+            }
+          });
+
+        } else {
+          alert('some thing wrong')
+        }
+      })
+    })
+  </script>
+  </body>
 </html>
