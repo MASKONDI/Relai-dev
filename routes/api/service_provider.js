@@ -780,21 +780,21 @@ function otp_send(req, Service_provider) {
       var smtpTransport = nodemailer.createTransport({
         // port: 25,
         // host: 'localhost',
-        tls: {
-          rejectUnauthorized: false
-        },
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
+        // tls: {
+        //   rejectUnauthorized: false
+        // },
+        // host: 'smtp.gmail.com',
+        // port: 465,
+        // secure: true,
         service: 'Gmail',
         auth: {
-          user: 'golearning4@gmail.com',
-          pass: 'Krishna#1997',
+          user: keys.user4,
+          pass: keys.pass4,
         }
       });
       const mailOptions = {
         to: Service_provider.sps_email_id,
-        from: 'golearning4@gmail.com',
+        from: keys.user4,
         subject: 'OTP verification from Relai',
 
         text: 'Dear \n' + Service_provider.sps_fullname + '\n\n' + 'your OTP for email-validation is  \n' + otp + '\n\n' + 'We suggest you to please hit given url and submit otp:\n' + ' http://' + req.headers.host + '/otp?email=' + Service_provider.sps_email_id + '\n\n' +
@@ -877,21 +877,21 @@ router.post('/forget-password-professional', function (req, res) {
                 var smtpTransport = nodemailer.createTransport({
                   // port: 25,
                   // host: 'localhost',
-                  tls: {
-                    rejectUnauthorized: false
-                  },
-                  host: 'smtp.gmail.com',
-                  port: 465,
-                  secure: true,
+                  // tls: {
+                  //   rejectUnauthorized: false
+                  // },
+                  // host: 'smtp.gmail.com',
+                  // port: 465,
+                  // secure: true,
                   service: 'Gmail',
                   auth: {
-                    user: 'golearning4@gmail.com',
-                    pass: 'Krishna#1997',
+                    user: keys.user4,
+                    pass: keys.pass4,
                   }
                 });
                 const mailOptions = {
                   to: req.body.sps_email_id,
-                  from: 'golearning4@gmail.com',
+                  from: keys.user4,
                   subject: 'Relai Forget Password',
 
                   text: 'Dear Customer,' + '\n\n' + 'New Password from Relai.\n\n' +
@@ -1051,21 +1051,21 @@ router.post('/resend-otp-link2', function (req, res) {
             var smtpTransport = nodemailer.createTransport({
               // port: 25,
               // host: 'localhost',
-              tls: {
-                rejectUnauthorized: false
-              },
-              host: 'smtp.gmail.com',
-              port: 465,
-              secure: true,
+              // tls: {
+              //   rejectUnauthorized: false
+              // },
+              // host: 'smtp.gmail.com',
+              // port: 465,
+              // secure: true,
               service: 'Gmail',
               auth: {
-                user: 'golearning4@gmail.com',
-                pass: 'Krishna#1997',
+                user: keys.user4,
+                pass: keys.pass4,
               }
             });
             const mailOptions = {
               to: req.body.email,
-              from: 'golearning4@gmail.com',
+              from: keys.user4,
               subject: 'OTP verification from Relai',
 
               text: 'Dear \n' + result[0].sps_firstname + result[0].sps_lastname + '\n\n' + 'your OTP for email-validation is  \n' + otp + '\n\n' + 'We suggest you to please hit given url and submit otp:\n' + ' http://' + req.headers.host + '/otp?email=' + req.body.email + '\n\n' +
@@ -1115,21 +1115,21 @@ function otp_verification(req, otp) {
   var smtpTransport = nodemailer.createTransport({
     // port: 25,
     // host: 'localhost',
-    tls: {
-      rejectUnauthorized: false
-    },
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
+    // tls: {
+    //   rejectUnauthorized: false
+    // },
+    // host: 'smtp.gmail.com',
+    // port: 465,
+    // secure: true,
     service: 'Gmail',
     auth: {
-      user: 'golearning4@gmail.com',
-      pass: 'Krishna#1997',
+      user: keys.user4,
+      pass: keys.pass4,
     }
   });
   const mailOptions = {
     to: req.body.sps_email_id,
-    from: 'golearning4@gmail.com',
+    from: keys.user4,
     subject: 'OTP verification from Relai',
 
     text: 'Dear \n' + req.body.sps_firstname + ' ' + req.body.sps_lastname + '\n\n' + 'your OTP for email-validation is  \n' + otp + '\n\n' + 'We suggest you to please hit given url and submit otp:\n' + ' http://' + req.headers.host + '/otp?email=' + req.body.sps_email_id + '\n\n' +
