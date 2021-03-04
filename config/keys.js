@@ -12,7 +12,7 @@ module.exports = {
 };
 
 // //Database for developer
-// module.exports = {
+//  module.exports = {
 //   mongoURI: "mongodb+srv://Krishna:Krishna123@cluster0.iiahv.mongodb.net/test?retryWrites=true&w=majority",
 //   secretOrKey: "secret",
 //   user1: "goLearning006@gmail.com",
