@@ -33,6 +33,8 @@ var Storage = multer.diskStorage({
       callback(null, "./public/complaintFile");
     } else if (file.fieldname === 'portfolio-docs') {
       callback(null, "./public/portfolioImage");
+    }else if(file.fieldname === 'task-document'){
+      callback(null, "./public/taskdocument");
     } else {
       callback(null, "./public/upload");
     }
@@ -211,17 +213,16 @@ app.post('/upload-properties-pic', upload.single('properties-pic'), (req, res, n
 });
 
 // Uploading the image
-app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, next) => {
+app.post('/upload-new-document', upload.single('task-document'), async (req, res, next) => {
   var err_msg = null;
   var success_msg = null;
   var obj = {};
-  console.log("req is :", req.file);
-  console.log("in upload property id=", req.body.property_id);
-
+  //console.log("req is :", req.file);
+  console.log("body of document=", req.body);
   //add conditions for type of file and set the type of file
-  console.log(".........files.......", req.file.filename)
+  //console.log(".........files.......", req.file.filename)
   var ext = path.extname(req.file.filename);
-  console.log('extextext:', ext)
+  //console.log('extextext:', ext)
   var basename = path.basename(req.file.filename, ext);
   //console.log('basename:', basename)
   let ext_type = '';
@@ -251,15 +252,15 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
     docs_size = size.toFixed(1) + " KB"
     docs_size_valid_kb = size;
   }
-  console.log('docs_size:', docs_size);
-  console.log('docs_size sizweeee:', parseInt(size));
-  console.log('docs_size_valid_mb:', parseInt(docs_size_valid_mb));
-  console.log('docs_size_valid_kb:', parseInt(docs_size_valid_kb));
+  //console.log('docs_size:', docs_size);
+  //console.log('docs_size sizweeee:', parseInt(size));
+  //console.log('docs_size_valid_mb:', parseInt(docs_size_valid_mb));
+  //console.log('docs_size_valid_kb:', parseInt(docs_size_valid_kb));
   if (docs_size_valid_mb <= parseInt(10) || docs_size_valid_mb == 'NaN') {
     if (ext_type == 'image') {
       var baseExt = ext.replace(/\./g, "");
       var w_text = new Date().toUTCString()
-      var file_hash = path.join(__dirname + '../../public/upload/' + req.file.filename);
+      var file_hash = path.join(__dirname + '../../public/taskdocument/' + req.file.filename);
       var icon_images = path.join(__dirname + '../../public/images/logo-2.png');
       let icon_image = await Jimp.read(icon_images)
       await Jimp.read(file_hash, async function (err, image) {
@@ -283,23 +284,49 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
           // nova_new.composite(image, 0, 0);
           var d = await image.getBase64Async(Jimp.MIME_PNG)
           var base64Str = d;
-          var path = __dirname + '../../public/upload/';
+          var path = __dirname + '../../public/taskdocument/';
           var optionalObj = { 'fileName': basename, 'type': baseExt };
           base64ToImage(base64Str, path, optionalObj);
 
           console.log("file extension is", { ext_type, ext })
-          obj = {
+          
+          if(req.body.tuds_task_id){
+            console.log('A')
+            obj={
+            cuds_phase_flag:req.body.cuds_phase_flag,
+            cuds_task_id:req.body.tuds_task_id,
+            cuds_phase_name: req.body.tuds_phase_name,
+            cuds_task_name: req.body.tuds_task_name,
+            cuds_service_provider_id:req.body.tuds_service_provider_id,
             cuds_property_id: req.body.property_id,
-            cuds_document_name: req.file.filename,
-            cuds_customer_id: req.session.user_id,
-            cuds_is_active_user_flag: req.session.active_user_login,
-            cuds_document_type: ext_type,
-            cuds_document_size: docs_size,
-            cuds_document_file: {
-              data: d,
-              contentType: ext
+              cuds_document_name: req.file.filename,
+              cuds_customer_id: req.session.user_id,
+              cuds_is_active_user_flag: req.session.active_user_login,
+              cuds_document_type: ext_type,
+              cuds_document_size: docs_size,
+              cuds_document_file: {
+                data: d,
+                contentType: ext
+              }
+            }
+            
+          }else{
+            console.log('B')
+            obj = {
+              cuds_property_id: req.body.property_id,
+              cuds_document_name: req.file.filename,
+              cuds_customer_id: req.session.user_id,
+              cuds_is_active_user_flag: req.session.active_user_login,
+              cuds_document_type: ext_type,
+              cuds_document_size: docs_size,
+              cuds_document_file: {
+                data: d,
+                contentType: ext
+              }
             }
           }
+          //console.log('obj==============',obj)
+         
 
           CustomerUploadDocsSchema.create(obj, (err, item) => {
             if (err) {
@@ -329,8 +356,13 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
 
       });
     } else {
-
-      obj = {
+      if(req.body.tuds_task_id){
+        obj={
+        cuds_phase_flag:req.body.cuds_phase_flag,
+        cuds_task_id:req.body.tuds_task_id,
+        cuds_phase_name: req.body.tuds_phase_name,
+        cuds_task_name: req.body.tuds_task_name,
+        cuds_service_provider_id:req.body.tuds_service_provider_id,  
         cuds_property_id: req.body.property_id,
         cuds_document_name: req.file.filename,
         cuds_customer_id: req.session.user_id,
@@ -341,7 +373,23 @@ app.post('/upload-new-document', upload.single('new_Docs'), async (req, res, nex
           data: '',
           contentType: ext
         }
+        }
+      }else{
+        obj = {
+          cuds_property_id: req.body.property_id,
+          cuds_document_name: req.file.filename,
+          cuds_customer_id: req.session.user_id,
+          cuds_is_active_user_flag: req.session.active_user_login,
+          cuds_document_type: ext_type,
+          cuds_document_size: docs_size,
+          cuds_document_file: {
+            data: '',
+            contentType: ext
+          }
+        }
       }
+      
+      
 
       CustomerUploadDocsSchema.create(obj, (err, item) => {
         if (err) {
@@ -417,16 +465,17 @@ app.post('/raise-a-complaint', upload.single('complaint_file'), (req, res, next)
 
 
 })
-// Uploading the image
-app.post('/upload-task-document', upload.single('new_Docs'), async (req, res, next) => {
+// Uploading the image task-document
+app.post('/upload-task-document', upload.single('task-document'), async (req, res, next) => {
   var err_msg = null;
   var success_msg = null;
   var obj = {};
   console.log("req is :", req.file);
-  console.log("in upload Task id=", req.body.task_id);
+  console.log('req body:',req.body)
+  console.log("in upload Task id=", req.body.tuds_task_id);
 
   console.log("in upload property id=", req.body.property_id);
-
+    
   //add conditions for type of file and set the type of file
   console.log(".........files.......", req.file.filename)
   var ext = path.extname(req.file.filename);
@@ -468,7 +517,7 @@ app.post('/upload-task-document', upload.single('new_Docs'), async (req, res, ne
     if (ext_type == 'image') {
       var baseExt = ext.replace(/\./g, "");
       var w_text = new Date().toUTCString()
-      var file_hash = path.join(__dirname + '../../public/upload/' + req.file.filename);
+      var file_hash = path.join(__dirname + '../../public/taskdocument/' + req.file.filename);
       var icon_images = path.join(__dirname + '../../public/images/logo-2.png');
       let icon_image = await Jimp.read(icon_images)
       await Jimp.read(file_hash, async function (err, image) {
@@ -492,7 +541,7 @@ app.post('/upload-task-document', upload.single('new_Docs'), async (req, res, ne
           // nova_new.composite(image, 0, 0);
           var d = await image.getBase64Async(Jimp.MIME_PNG)
           var base64Str = d;
-          var path = __dirname + '../../public/upload/';
+          var path = __dirname + '../../public/taskdocument/';
           var optionalObj = { 'fileName': basename, 'type': baseExt };
           base64ToImage(base64Str, path, optionalObj);
 
@@ -514,7 +563,7 @@ app.post('/upload-task-document', upload.single('new_Docs'), async (req, res, ne
               contentType: ext
             }
           }
-
+          
           TaskUploadDocsSchema.create(obj, (err, item) => {
             if (err) {
               console.log(err); console.log(err);
@@ -522,7 +571,7 @@ app.post('/upload-task-document', upload.single('new_Docs'), async (req, res, ne
               res.send({
                 'status': false,
                 'message': 'Something Wrong',
-                'redirect': '/task-details-docs'
+                //'redirect': '/task-details-docs'
               })
               // res.redirect('/mydreamhome-details-docs');
             }
@@ -533,7 +582,7 @@ app.post('/upload-task-document', upload.single('new_Docs'), async (req, res, ne
               res.send({
                 'status': true,
                 'message': 'Document Upload Successfully',
-                'redirect': '/task-details-docs'
+                //'redirect': '/task-details-docs'
               })
               //res.redirect('/mydreamhome-details-docs');
             }

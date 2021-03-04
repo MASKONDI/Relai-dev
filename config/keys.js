@@ -19,7 +19,7 @@
   pass1: "Maskondi#1997",
   user2: "golearning4@gmail.com",
   pass2: "Krishna#1997"
-}; 
+};
  
 //Database for developer
 // module.exports = {

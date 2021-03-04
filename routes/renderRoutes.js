@@ -823,6 +823,8 @@ app.get('/my-professionals-searchbar', async (req, res) => {
 
 app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
   req.session.pagename = 'mydreamhome';
+  var normalDocArray=[];
+  var taskDocArray=[];
   //console.log('property id is :', req.session.property_id);
   //req.session.property_id=req.query.id
   err_msg = req.flash('err_msg');
@@ -831,10 +833,23 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
     //_id: req.session.property_id, ps_is_active_user_flag: req.session.active_user_login 
     _id: req.session.property_id
   });
-  const allDocument = await CustomerUploadDocsSchema.find({ 
+   await CustomerUploadDocsSchema.find({ 
     cuds_property_id: req.session.property_id
    // $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.session.property_id, cuds_is_active_user_flag: req.session.active_user_login }] 
-  }).sort({ _id: -1 });
+  }).sort({ _id: -1 }).then(async(resp)=>{
+    for(var key of resp){
+      let temps = await key
+      const d = JSON.stringify(temps);
+      const datas = JSON.parse(d)
+     
+      if(key.cuds_task_id){
+  
+        taskDocArray.push(datas);
+      }else{
+         normalDocArray.push(datas);
+      }
+    }
+  });
   //const propertyDataObj = await PropertiesSchema.find();
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ 
     //pps_user_id: req.session.user_id, 
@@ -856,15 +871,17 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
       }
     });
   }
-
+  
   //console.log('permisionnnn faa:', serviceProvArray)
-  console.log('allDocument:', allDocument)
-
+ console.log('normalarray==========',normalDocArray)
+ console.log('taskdocarray==========',taskDocArray)
+  
   res.render('mydreamhome-details-docs', {
     err_msg, success_msg, layout: false,
     session: req.session,
     data: serviceProvArray,
-    allDocument: allDocument,//need to show property wise document still showing all uploaded
+    allDocument: normalDocArray,//need to show property wise document still showing all uploaded
+    taskDocument:taskDocArray,
     property: property,
     moment: moment
   });
@@ -1568,16 +1585,19 @@ app.get('/mydreamhome-details-phase-f', isCustomer, async (req, res) => {
 
 
 app.get('/mydreamhome-details-phase-g', isCustomer, async (req, res) => {
-  console.log('from get take action url====', req.query)
+  //console.log('from get take action url====', req.query)
+  var user_id=req.session.user_id;
   var property_id = req.query.id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
-  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, req.session.active_user_login);
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id,req.session.active_user_login);
+  var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id,req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
-  console.log("taskObject by phase name take action", taskObject)
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  console.log("AllProfessional_property_wise", AllProfessional_property_wise)
-
+ //console.log("hiredProfessional_list", AllProfessional_property_wise)
+  console.log("taskObject mydreamhome-details-phase-g", taskObject)
+  console.log("gest_taskObject", gest_taskObject)
+ 
   if (taskObject) {
     req.session.pagename = 'mydreamhome';
     err_msg = req.flash('err_msg');
@@ -1589,7 +1609,8 @@ app.get('/mydreamhome-details-phase-g', isCustomer, async (req, res) => {
       propertyData: propertyData,
       step: req.query.step,
       phase: req.query.phase,
-      hiredProfessional_list: AllProfessional_property_wise
+      hiredProfessional_list: AllProfessional_property_wise,
+      gest_taskObject:gest_taskObject
     });
   } else {
     return res.send({
@@ -1601,35 +1622,39 @@ app.get('/mydreamhome-details-phase-g', isCustomer, async (req, res) => {
 
 
 app.get('/mydreamhome-details-phase-h', isCustomer, async (req, res) => {
-  console.log('from get take action url====', req.query)
-  var property_id = req.query.id;
-  req.session.property_id = req.query.id
-  var phase_name = req.query.phase;
-  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, req.session.active_user_login);
-  var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
-  console.log("taskObject by phase name take action", taskObject)
-  var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  console.log("AllProfessional_property_wise", AllProfessional_property_wise)
+   //console.log('from get take action url====', req.query)
+ var user_id=req.session.user_id;
+ var property_id = req.query.id;
+ req.session.property_id = req.query.id
+ var phase_name = req.query.phase;
+ var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id,req.session.active_user_login);
+ var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id,req.session.active_user_login);
+ var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
+ var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
+//console.log("hiredProfessional_list", AllProfessional_property_wise)
+ console.log("taskObject mydreamhome-details-phase-h", taskObject)
+ console.log("gest_taskObject", gest_taskObject)
 
-  if (taskObject) {
-    req.session.pagename = 'mydreamhome';
-    err_msg = req.flash('err_msg');
-    success_msg = req.flash('success_msg');
-    res.render('mydreamhome-details-phase-h', {
-      err_msg, success_msg, layout: false,
-      session: req.session,
-      taskObject: taskObject,
-      propertyData: propertyData,
-      step: req.query.step,
-      phase: req.query.phase,
-      hiredProfessional_list: AllProfessional_property_wise
-    });
-  } else {
-    return res.send({
-      'status': false,
-      'message': 'some thing wrong'
-    })
-  }
+ if (taskObject) {
+   req.session.pagename = 'mydreamhome';
+   err_msg = req.flash('err_msg');
+   success_msg = req.flash('success_msg');
+   res.render('mydreamhome-details-phase-h', {
+     err_msg, success_msg, layout: false,
+     session: req.session,
+     taskObject: taskObject,
+     propertyData: propertyData,
+     step: req.query.step,
+     phase: req.query.phase,
+     hiredProfessional_list: AllProfessional_property_wise,
+     gest_taskObject:gest_taskObject
+   });
+ } else {
+   return res.send({
+     'status': false,
+     'message': 'some thing wrong'
+   })
+ }
 })
 app.get('/mydreamhome-details-phase-o', isCustomer, async (req, res) => {
   console.log('from get take action url====', req.query)
