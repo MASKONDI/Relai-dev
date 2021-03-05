@@ -259,7 +259,8 @@ module.exports.Add_New_Propert = function (req) {
         var phaseArray = [];
         var chainPropertyIdArray=[];
         var chainPropertyNameArray=[];
-        for (var i in req.body.Phase) {
+        req.body.Phase.forEach(function(row,i){
+        //for (var i in req.body.Phase) {
             var phaseObj = {
                 phase_name: '',
                 start_date: '',
@@ -270,8 +271,8 @@ module.exports.Add_New_Propert = function (req) {
             phaseObj.start_date = req.body.startDate[i];
             phaseObj.end_date = req.body.endDate[i];
             phaseArray.push(phaseObj);
-        }
-        
+        //}
+        })
         var PropertyBoject = {
             ps_unique_code: "prop-" + Math.random().toString(36).slice(-6),
             ps_user_id: req.session.user_id, //storing customer_ID

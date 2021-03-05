@@ -40,7 +40,7 @@ const { resolve } = require("path");
 //router.post("/cust_register", cust_register);
 //router.post("/cust_signin", cust_signin);
 
-
+const CustomerUploadDocsSchema = require("../../models/customer_upload_document");
 const ComplaintsSchema = require("../../models/Complaints");
 const ComplaintDetailsSchema = require("../../models/complaint_details_model");
 const RatingSchema = require("../../models/service_provider_rating_Schema");
@@ -906,21 +906,21 @@ router.post('/forget-password', function (req, res) {
                 var smtpTransport = nodemailer.createTransport({
                   // port: 25,
                   // host: 'localhost',
-                  tls: {
-                    rejectUnauthorized: false
-                  },
-                  host: 'smtp.gmail.com',
-                  port: 465,
-                  secure: true,
+                  // tls: {
+                  //   rejectUnauthorized: false
+                  // },
+                  //host: 'smtp.gmail.com',
+                  //port: 465,
+                  //secure: true,
                   service: 'Gmail',
                   auth: {
-                    user: keys.user1,
-                    pass: keys.pass1,
+                    user: keys.user4,
+                    pass: keys.pass4,
                   }
                 });
                 const mailOptions = {
                   to: req.body.cus_email_id,
-                  from: keys.user1,
+                  from: keys.user4,
                   subject: 'Relai Forget Password',
 
                   text: 'Dear Customer,' + '\n\n' + 'New Password from Relai.\n\n' +
@@ -931,7 +931,13 @@ router.post('/forget-password', function (req, res) {
 
                 };
                 smtpTransport.sendMail(mailOptions, function (err) {
-                  if (err) { console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong.please connect support team'); res.redirect('/forget-password') } else {
+                  if (err) {
+                    console.log('err_msg is :', err);
+                    res.send({
+                      message: 'Something went wrong please contact to support team..',
+                      status: false
+                    })
+                  } else {
                     // req.flash('success_msg', 'Password has been sent successfully to your registered email, please check your mail...');
                     //res.redirect('/forget-password')
                     res.send({
@@ -1493,21 +1499,21 @@ function invite_function(req, saved_property) {
       var smtpTransport = nodemailer.createTransport({
         // port: 25,
         // host: 'localhost',
-        tls: {
-          rejectUnauthorized: false
-        },
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
+        // tls: {
+        //   rejectUnauthorized: false
+        // },
+        // host: 'smtp.gmail.com',
+        // port: 465,
+        // secure: true,
         service: 'Gmail',
         auth: {
-          user: keys.user1,
-          pass: keys.pass1,
+          user: keys.user4,
+          pass: keys.pass4,
         }
       });
       const mailOptions = {
         to: req.body.ps_other_party_emailid,
-        from: keys.user1,
+        from: keys.user4,
         subject: 'Invitaion letter from Relai',
 
         text: 'Dear \n' + req.body.ps_other_party_fullname + '\n\n' + 'you are invited in Relai plateform.\n\n' +
@@ -1538,21 +1544,21 @@ function customer_invitation(req, saved_property) {
   var smtpTransport = nodemailer.createTransport({
     // port: 25,
     // host: 'localhost',
-    tls: {
-      rejectUnauthorized: false
-    },
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
+    // tls: {
+    //   rejectUnauthorized: false
+    // },
+    // host: 'smtp.gmail.com',
+    // port: 465,
+    // secure: true,
     service: 'Gmail',
     auth: {
-      user: keys.user1,
-      pass: keys.pass1,
+      user: keys.user4,
+      pass: keys.pass4,
     }
   });
   const mailOptions = {
     to: req.session.email,
-    from: keys.user1,
+    from: keys.user4,
     subject: 'Invitaion letter from Relai',
 
     text: 'Dear \n' + req.session.name + '\n\n' + 'you have send successfully invitation to\n' + req.body.ps_other_party_fullname + ' for ' + saved_property.ps_property_name + ' via Relai plateform.\n\n' +
@@ -1579,21 +1585,21 @@ function otp_verification(req, otp) {
   var smtpTransport = nodemailer.createTransport({
     // port: 25,
     // host: 'localhost',
-    tls: {
-      rejectUnauthorized: false
-    },
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
+    // tls: {
+    //   rejectUnauthorized: false
+    // },
+    // host: 'smtp.gmail.com',
+    // port: 465,
+    // secure: true,
     service: 'Gmail',
     auth: {
-      user: keys.user1,
-      pass: keys.pass1,
+      user: keys.user4,
+      pass: keys.pass4,
     }
   });
   const mailOptions = {
     to: req.body.cus_email_id,
-    from: keys.user1,
+    from: keys.user4,
     subject: 'OTP verification from Relai',
 
     text: 'Dear \n' + req.body.cus_firstname + ' ' + req.body.cus_lastname + '\n\n' + 'your OTP for email-validation is  \n' + otp + '\n\n' + 'We suggest you to please hit given url and submit otp:\n' + ' http://' + req.headers.host + '/otp?email=' + req.body.cus_email_id + '\n\n' +
@@ -1644,21 +1650,21 @@ function otp_send(req, customer) {
       var smtpTransport = nodemailer.createTransport({
         // port: 25,
         // host: 'localhost',
-        tls: {
-          rejectUnauthorized: false
-        },
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
+        // tls: {
+        //   rejectUnauthorized: false
+        // },
+        // host: 'smtp.gmail.com',
+        // port: 465,
+        // secure: true,
         service: 'Gmail',
         auth: {
-          user: keys.user1,
-          pass: keys.pass1,
+          user: keys.user4,
+          pass: keys.pass4,
         }
       });
       const mailOptions = {
         to: customer.cus_email_id,
-        from: keys.user1,
+        from: keys.user4,
         subject: 'OTP verification from Relai',
 
         text: 'Dear \n' + customer.cus_fullname + '\n\n' + 'your OTP for email-validation is  \n' + otp + '\n\n' + 'We suggest you to please hit given url and submit otp:\n' + ' http://' + req.headers.host + '/otp?email=' + customer.cus_email_id + '\n\n' +
@@ -1737,21 +1743,21 @@ router.post('/resend-otp-link', function (req, res) {
             var smtpTransport = nodemailer.createTransport({
               // port: 25,
               // host: 'localhost',
-              tls: {
-                rejectUnauthorized: false
-              },
-              host: 'smtp.gmail.com',
-              port: 465,
-              secure: true,
+              // tls: {
+              //   rejectUnauthorized: false
+              // },
+              // host: 'smtp.gmail.com',
+              // port: 465,
+              // secure: true,
               service: 'Gmail',
               auth: {
-                user: keys.user1,
-                pass: keys.pass1,
+                user: keys.user4,
+                pass: keys.pass4,
               }
             });
             const mailOptions = {
               to: req.body.email,
-              from: keys.user1,
+              from: keys.user4,
               subject: 'OTP verification from Relai',
 
               text: 'Dear \n' + result[0].cus_fullname + '\n\n' + 'your OTP for email-validation is  \n' + otp + '\n\n' + 'We suggest you to please hit given url and submit otp:\n' + ' http://' + req.headers.host + '/otp?email=' + req.body.email + '\n\n' +
@@ -2572,7 +2578,7 @@ router.post('/reapitApi', (req, res) => {
 
 
 
-router.post('/edit_task_submit_form', isCustomer , async (req, res) => {
+router.post('/edit_task_submit_form', isCustomer, async (req, res) => {
 
   console.log("edit task req is:", req.body);
 
@@ -2584,19 +2590,19 @@ router.post('/edit_task_submit_form', isCustomer , async (req, res) => {
   console.log("task Details is ", taskDetails[0].ppts_assign_to);
   console.log("req.body.ppts_new_assign_to :", req.body.ppts_new_assign_to);
   console.log("req.body.ppts_assign_to", req.body.ppts_assign_to);
-var t =  taskDetails[0].ppts_assign_to;
+  var t = taskDetails[0].ppts_assign_to;
 
   const index = t.indexOf(req.body.ppts_assign_to);
   if (index > -1) {
     t.splice(index, 1);
   }
-console.log('index:',index);
+  console.log('index:', index);
   t.insert(index, req.body.ppts_new_assign_to);
 
   //t.push(req.body.ppts_new_assign_to);
   console.log("task Details is after remove", t);
-//ppts_due_date: req.body.ppts_due_date,ppts_note: req.body.ppts_note
-   PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_task_name: req.body.ppts_task_name, _id: req.body.task_id }, { $set: { ppts_assign_to: t } }, { upsert: true }, function (err) {
+  //ppts_due_date: req.body.ppts_due_date,ppts_note: req.body.ppts_note
+  PropertyProfessinoalTaskSchema.updateOne({ ppts_property_id: req.body.ppts_property_id, ppts_task_name: req.body.ppts_task_name, _id: req.body.task_id }, { $set: { ppts_assign_to: t } }, { upsert: true }, function (err) {
 
 
     if (err) {
@@ -2611,8 +2617,8 @@ console.log('index:',index);
 
 });
 
-Array.prototype.insert = function ( index, item ) {
-  this.splice( index, 0, item );
+Array.prototype.insert = function (index, item) {
+  this.splice(index, 0, item);
 };
 
 router.get('/gethiredProfessionalist', async (req, res) => {
@@ -2716,7 +2722,26 @@ router.get('/getunhiredProfessionalist', async (req, res) => {
 
 });
 
-
+router.post('/remove_uploaded_document', async(req, res) => {
+console.log('remove_uploaded_document api req',req.body);
+//CustomerUploadDocsSchema
+//DocumentPermissionSchema
+if(req.body.document_id!=''&&req.body.document_id!=undefined){
+  await DocumentPermissionSchema.findOneAndRemove({dps_document_id:req.body.document_id});
+ var is_delete= await CustomerUploadDocsSchema.findOneAndRemove({_id:req.body.document_id});
+  if(is_delete){
+    return res.send({
+      'status':true,
+      'message':'Document Remove Successfully..'
+    })
+  }
+}else{
+  return res.send({
+    'status':false,
+    'message':'Something Wrong...'
+  })
+}
+})
 
 module.exports = router;
 

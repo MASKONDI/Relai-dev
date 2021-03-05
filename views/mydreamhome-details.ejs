@@ -619,31 +619,31 @@
                               </li> -->
 
                               <%if(row.cuds_document_type=='image'){%>
-                                <li><a href="#"><img src="/upload/<%= row.cuds_document_name%>" alt="" title=""><br><span
+                                <li><a href="#"><img src="/taskdocument/<%= row.cuds_document_name%>" alt="" title=""><br><span
                                       style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                       <%= row.cuds_document_name%>
                                     </span></a>
                                 </li>
                               <%}else if(row.cuds_document_type=='pdf'){%> 
-                                <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/pdficon.png" alt="" title=""><br><span
+                                <li><a download href="/taskdocument/<%= row.cuds_document_name%>"><img src="images/pdficon.png" alt="" title=""><br><span
                                   style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                   <%= row.cuds_document_name%>
                                 </span></a>
                                 </li>
                               <%}else if(row.cuds_document_type=='doc'){%>
-                                <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/docicon.png" alt="" title=""><br><span
+                                <li><a download href="/taskdocument/<%= row.cuds_document_name%>"><img src="images/docicon.png" alt="" title=""><br><span
                                   style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                   <%= row.cuds_document_name%>
                                 </span></a>
                                 </li>
                               <%}else if(row.cuds_document_type=='txt'){%>
-                                <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/txticon.png" alt="" title=""><br><span
+                                <li><a download href="/taskdocument/<%= row.cuds_document_name%>"><img src="images/txticon.png" alt="" title=""><br><span
                                   style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                   <%= row.cuds_document_name%>
                                 </span></a>
                                 </li>
                               <%}else if(row.cuds_document_type=='video'){%> 
-                                <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/videoicon.png" alt="" title=""><br><span
+                                <li><a download href="/taskdocument/<%= row.cuds_document_name%>"><img src="images/videoicon.png" alt="" title=""><br><span
                                   style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                   <%= row.cuds_document_name%>
                                 </span></a>
