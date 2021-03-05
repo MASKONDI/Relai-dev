@@ -22,7 +22,7 @@
                 <%= success_msg %>
               </span>
               <% }%>
-                <form id="uploadForm" method="POST" enctype="multipart/form-data" >
+                <form id="uploadForm" method="POST" enctype="multipart/form-data">
                   <div class="row">
 
 
@@ -109,10 +109,14 @@
                     </button> -->
                   </div>
                   <div class="portfolio-submit">
-                    <button type="submit" class="btn portfolio-submit-btn" name="submit">Upload</button>
-
-                    <a href="/kyc-professional" class="btn portfolio-submit-btn">Next</a>
-
+                    <div class="row">
+                      <div class="col-sm-6 col-lg-6">
+                        <button type="submit" class="btn portfolio-submit-btn" name="submit">Upload</button>
+                      </div>
+                      <div class="col-sm-6 col-lg-6">
+                        <a href="/kyc-professional" class="btn portfolio-submit-btn">Next</a>
+                      </div>
+                    </div>
                   </div>
                 </form>
 
@@ -135,7 +139,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
   <script>
     $(document).ready(function () {
       $(".sidenav ul li").click(function () {
@@ -180,7 +184,7 @@
       });
 
     });
-   
+
   </script>
 
 
@@ -223,10 +227,10 @@
   </script>
   <script>
     $(document).ready(function () {
-      $("#uploadForm").submit( function (e) {
+      $("#uploadForm").submit(function (e) {
         e.preventDefault()
-        var formData= new FormData($('#uploadForm')[0]);
-        console.log('============',formData)
+        var formData = new FormData($('#uploadForm')[0]);
+        console.log('============', formData)
         $.ajax({
           type: "POST",
           data: formData,
@@ -236,51 +240,51 @@
           processData: false,
           success: function (data) {
             console.log(data)
-            if(data.status==true){
+            if (data.status == true) {
               Swal.fire({
-                    icon: 'success',
-                    title: data.message,
-                    showConfirmButton: false,
-                    confirmButtonColor: '#005377',
-                    timer: 3000
-                  }).then((result) => {
-              location.reload(true)
-            })
-            }else{
+                icon: 'success',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 3000
+              }).then((result) => {
+                location.reload(true)
+              })
+            } else {
               Swal.fire({
-              icon: 'error',
-              title: data.message,
-              showConfirmButton: false,
-              confirmButtonColor: '#005377',
-              timer: 3000
-            }).then((result) => {
-              location.reload(true)
-            })
+                icon: 'error',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 3000
+              }).then((result) => {
+                location.reload(true)
+              })
             }
           }
         })
-       
+
       })
-    });  
+    });
     function port_previewFile(input, c, prop_img_id) {
       //alert(c)
       if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
-         // console.log('filess:', e.target)
-          console.log('filess:',input.files[0].type)
-          if(input.files[0].type == 'image/jpeg' || input.files[0].type == 'image/png' || input.files[0].type == 'image/gif'){
+          // console.log('filess:', e.target)
+          console.log('filess:', input.files[0].type)
+          if (input.files[0].type == 'image/jpeg' || input.files[0].type == 'image/png' || input.files[0].type == 'image/gif') {
             $(".img_name" + c).html(input.files[0].name);
             $('.avtar' + c).attr('src', e.target.result)
             $(".port_Picture_" + c).html(input.files[0].name);
-          $('#port_addmoreAvtar' + c).attr('src', e.target.result)
-          }else if(input.files[0].type == 'video/x-ms-wmv'||input.files[0].type == 'video/mp4'){
+            $('#port_addmoreAvtar' + c).attr('src', e.target.result)
+          } else if (input.files[0].type == 'video/x-ms-wmv' || input.files[0].type == 'video/mp4') {
             $(".img_name" + c).html(input.files[0].name);
             $('.avtar' + c).attr('src', e.target.result)
             $(".port_Picture_" + c).html(input.files[0].name);
-          $('#port_addmoreAvtar' + c).attr('src', e.target.result)
-          }else{
-           
+            $('#port_addmoreAvtar' + c).attr('src', e.target.result)
+          } else {
+
             Swal.fire({
               icon: 'error',
               title: 'File type not supported !!',
@@ -291,9 +295,9 @@
               location.reload(true)
             })
           }
-         
-         // $('.avtar' + c).attr('src', e.target.result)
-         // $(".img_name" + c).html(input.files[0].name);
+
+          // $('.avtar' + c).attr('src', e.target.result)
+          // $(".img_name" + c).html(input.files[0].name);
         }
         reader.readAsDataURL(input.files[0]);
 
