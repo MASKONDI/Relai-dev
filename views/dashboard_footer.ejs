@@ -1535,6 +1535,8 @@ MYDREAM-HOME-DETAILS-PAHSE-A
                 showConfirmButton: true,
                 confirmButtonColor: '#005377'
                 //timer: 1500
+              }).then((result)=>{
+                window.location.href = window.location.href;
               })
             } else {
               $('#add_task_submit_form')[0].reset();
@@ -1546,8 +1548,11 @@ MYDREAM-HOME-DETAILS-PAHSE-A
                 showConfirmButton: false,
                 confirmButtonColor: '#005377',
                 timer: 3000
+              }).then((result)=>{
+                window.location.href = window.location.href;
               })
-              location.reload(true)
+              //window.location.reload(true)
+             // history.go(0);
               $('#ppts_task_name,#ppts_note,#ppts_due_date').val('');
             }
           }
@@ -1580,6 +1585,8 @@ MYDREAM-HOME-DETAILS-PAHSE-A
                 showConfirmButton: true,
                 confirmButtonColor: '#005377'
                 //timer: 1500
+              }).then((result)=>{
+                window.location.href = window.location.href;
               })
             } else {
               console.log('meserrmessagesage:', data.success_msg)
@@ -1592,8 +1599,10 @@ MYDREAM-HOME-DETAILS-PAHSE-A
                 showConfirmButton: false,
                 confirmButtonColor: '#005377',
                // timer: 3000
+              }).then((result)=>{
+                window.location.href = window.location.href;
               })
-              location.reload(true)
+              //location.reload(true)
               $('#notes,#duedate').val('');
             }
           }
@@ -1625,6 +1634,8 @@ MYDREAM-HOME-DETAILS-PAHSE-A
                 showConfirmButton: true,
                 confirmButtonColor: '#005377'
                 //timer: 1500
+              }).then((result)=>{
+                window.location.href = window.location.href;
               })
             } else {
               console.log('meserrmessagesage:', data.success_msg)
@@ -1637,8 +1648,10 @@ MYDREAM-HOME-DETAILS-PAHSE-A
                 showConfirmButton: false,
                 confirmButtonColor: '#005377',
                 timer: 3000
+              }).then((result)=>{
+                window.location.href = window.location.href;
               })
-              location.reload(true)
+              //location.reload(true)
               $('#notes,#duedate').val('');
             }
           }
@@ -1670,6 +1683,8 @@ MYDREAM-HOME-DETAILS-PAHSE-A
                 showConfirmButton: true,
                 confirmButtonColor: '#005377'
                 //timer: 1500
+              }).then((result)=>{
+                window.location.href = window.location.href;
               })
             } else {
               console.log('meserrmessagesage:', data.success_msg)
@@ -1682,8 +1697,10 @@ MYDREAM-HOME-DETAILS-PAHSE-A
                 showConfirmButton: false,
                 confirmButtonColor: '#005377',
                 timer: 3000
+              }).then((result)=>{
+                window.location.href = window.location.href;
               })
-              location.reload(true)
+              //location.reload(true)
               $('#notes,#duedate').val('');
             }
           }
@@ -2530,7 +2547,9 @@ $("#Add_existing_task_form_buyerPhaseB").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -2540,8 +2559,10 @@ $("#Add_existing_task_form_buyerPhaseB").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -2573,7 +2594,9 @@ $("#Add_existing_task_form_sellerPhaseB").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -2583,8 +2606,10 @@ $("#Add_existing_task_form_sellerPhaseB").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -2616,7 +2641,9 @@ $("#Add_existing_task_form_renovatorPhaseB").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -2626,8 +2653,10 @@ $("#Add_existing_task_form_renovatorPhaseB").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -2753,7 +2782,9 @@ $("#Add_existing_task_form_buyerPhaseC").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -2763,8 +2794,10 @@ $("#Add_existing_task_form_buyerPhaseC").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -2796,7 +2829,9 @@ $("#Add_existing_task_form_sellerPhaseC").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -2806,8 +2841,10 @@ $("#Add_existing_task_form_sellerPhaseC").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+         // location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -2839,7 +2876,9 @@ $("#Add_existing_task_form_renovatorPhaseC").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -2849,8 +2888,10 @@ $("#Add_existing_task_form_renovatorPhaseC").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+         // location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -2974,7 +3015,9 @@ $("#Add_existing_task_form_buyerPhaseD").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -2984,8 +3027,10 @@ $("#Add_existing_task_form_buyerPhaseD").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -3017,7 +3062,9 @@ $("#Add_existing_task_form_sellerPhaseD").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -3027,8 +3074,10 @@ $("#Add_existing_task_form_sellerPhaseD").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -3060,7 +3109,9 @@ $("#Add_existing_task_form_renovatorPhaseD").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -3070,8 +3121,10 @@ $("#Add_existing_task_form_renovatorPhaseD").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -3195,7 +3248,9 @@ $("#Add_existing_task_form_buyerPhaseE").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -3205,8 +3260,10 @@ $("#Add_existing_task_form_buyerPhaseE").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -3238,7 +3295,9 @@ $("#Add_existing_task_form_sellerPhaseE").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -3248,8 +3307,10 @@ $("#Add_existing_task_form_sellerPhaseE").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -3281,7 +3342,9 @@ $("#Add_existing_task_form_renovatorPhaseE").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -3291,8 +3354,10 @@ $("#Add_existing_task_form_renovatorPhaseE").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -3415,7 +3480,9 @@ $("#Add_existing_task_form_buyerPhaseF").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -3425,8 +3492,10 @@ $("#Add_existing_task_form_buyerPhaseF").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -3458,7 +3527,9 @@ $("#Add_existing_task_form_sellerPhaseF").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -3468,8 +3539,10 @@ $("#Add_existing_task_form_sellerPhaseF").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+         // location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -3501,7 +3574,9 @@ $("#Add_existing_task_form_renovatorPhaseF").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -3511,8 +3586,10 @@ $("#Add_existing_task_form_renovatorPhaseF").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -3638,7 +3715,9 @@ $("#Add_existing_task_form_buyerPhaseG").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -3648,8 +3727,10 @@ $("#Add_existing_task_form_buyerPhaseG").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -3681,7 +3762,9 @@ $("#Add_existing_task_form_sellerPhaseG").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -3691,8 +3774,10 @@ $("#Add_existing_task_form_sellerPhaseG").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -3724,7 +3809,9 @@ $("#Add_existing_task_form_renovatorPhaseG").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -3734,8 +3821,10 @@ $("#Add_existing_task_form_renovatorPhaseG").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -3860,7 +3949,9 @@ $("#Add_existing_task_form_buyerPhaseH").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -3870,8 +3961,10 @@ $("#Add_existing_task_form_buyerPhaseH").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -3903,7 +3996,9 @@ $("#Add_existing_task_form_sellerPhaseH").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -3913,8 +4008,10 @@ $("#Add_existing_task_form_sellerPhaseH").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -3946,7 +4043,9 @@ $("#Add_existing_task_form_renovatorPhaseH").on('submit', function (e) {
             showConfirmButton: true,
             confirmButtonColor: '#005377'
             //timer: 1500
-          })
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
         } else {
           console.log('meserrmessagesage:', data.success_msg)
           Swal.fire({
@@ -3956,8 +4055,10 @@ $("#Add_existing_task_form_renovatorPhaseH").on('submit', function (e) {
             showConfirmButton: false,
             confirmButtonColor: '#005377',
             timer: 3000
-          })
-          location.reload(true)
+          }).then((result)=>{
+                window.location.href = window.location.href;
+              })
+          //location.reload(true)
           $('#notes,#duedate').val('');
         }
       }
@@ -3987,7 +4088,7 @@ $('.phase_task_list').multiselect('updateButtonText');
         $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display','none');
       }else{
         var ppts_phase_flag='';
-        if(phaseId == 0){ ppts_phase_flag='A'; }else if(phaseId == 1){ ppts_phase_flag='B'; }else if(phaseId == 2){ ppts_phase_flag='C'; }else if(phaseId == 3){ ppts_phase_flag='D'; }else if(phaseId == 4){ ppts_phase_flag='E'; }else if(phaseId == 5){ ppts_phase_flag='F'; }else if(phaseId == 6){ ppts_phase_flag='G'; }else if(phaseId == 7){ ppts_phase_flag='H'; }else if(phaseId == 8){ ppts_phase_flag='I'; }else if(phaseId == 9){ ppts_phase_flag='J'; }
+        if(phaseId == 0){ ppts_phase_flag='A'; }else if(phaseId == 1){ ppts_phase_flag='B'; }else if(phaseId == 2){ ppts_phase_flag='C'; }else if(phaseId == 3){ ppts_phase_flag='D'; }else if(phaseId == 4){ ppts_phase_flag='E'; }else if(phaseId == 5){ ppts_phase_flag='F'; }else if(phaseId == 6){ ppts_phase_flag='G'; }else if(phaseId == 7){ ppts_phase_flag='H'; }else if(phaseId == 8){ ppts_phase_flag='O'; }else if(phaseId == 9){ ppts_phase_flag='J'; }
         $('#addTaskForm #ppts_phase_flag,#addTaskForm_mydreamhome_detial #ppts_phase_flag').val(ppts_phase_flag);
         if(active_user_login == 'buyer'){
             $('#addTaskForm .btn-group,#addTaskForm_mydreamhome_detial .btn-group').css('display','block');
@@ -4335,6 +4436,7 @@ console.log('Inside Seller');
   </script>
   <script>
     function previewFile_upload_task_document(input, task_id, service_provider_id, phase_name, task_name, property_id,flage) {
+      
       Swal.fire({
         title: 'Are you sure want to Upload Document?',
         showCancelButton: true,
@@ -4342,17 +4444,13 @@ console.log('Inside Seller');
         confirmButtonColor: '#005377',
       }).then((result) => {
         if (result.isConfirmed) {
-          $('.loader-box').attr('style','display:flex !important');
-  
+          
           if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            // reader.onload = function (e) {
-            //   console.log('filess:', e.target)
-  
-            //   $(".add_edit_Picture_" + L).html(input.files[0].name);
-            //   $('#addmoreAvtar_edit' + L).attr('src', e.target.result)
-            // }
-            reader.readAsDataURL(input.files[0]);
+            var reader = new FileReader(); 
+            if(input.files[0].type == 'image/jpeg' || input.files[0].type == 'image/png' || input.files[0].type == 'image/gif'||input.files[0].type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || input.files[0].type == 'application/msword'||input.files[0].type == 'application/pdf'||input.files[0].type == 'text/plain'||input.files[0].type == 'video/x-ms-wmv'){
+              $('.loader-box').attr('style','display:flex !important');
+             // alert(1)
+              reader.readAsDataURL(input.files[0]);
             var obj = {
               file: input.files[0],
               task_id: task_id,
@@ -4405,7 +4503,19 @@ console.log('Inside Seller');
                 }
               }
             })
-  
+            }else{
+              $('.loader-box').attr('style','display:none !important');
+            Swal.fire({
+                icon: 'error',
+                title: 'File type not supported !!',
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 3000
+              })
+              
+          }
+         
+         
           }
         }
       })

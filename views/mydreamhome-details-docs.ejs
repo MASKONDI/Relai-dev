@@ -219,8 +219,8 @@
                             <tr>
                               <td>
                                 <img class="pdf-file" src="/taskdocument/<%= row.cuds_document_name%>">
-                                <p ><span >
-                                    <%= row.cuds_document_name%>
+                                <p ><span class='doc_name'>
+                                  <%= row.cuds_document_name%>
                                   </span>
                                   <%= row.cuds_document_size%>
                                 </p>
@@ -264,8 +264,8 @@
                               <tr>
                                 <td>
                                   <img class="pdf-file" src="images/pdficon.png">
-                                  <p><span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-                                      <%= row.cuds_document_name%>
+                                  <p><span >
+                                      <li class='doc_name'><%= row.cuds_document_name%></li>
                                     </span>
                                     <%= row.cuds_document_size%>
                                   </p>
@@ -309,7 +309,7 @@
                                 <tr>
                                   <td>
                                     <img class="pdf-file" src="images/docicon.png">
-                                    <p><span>
+                                    <p><span class='doc_name'>
                                         <%= row.cuds_document_name%>
                                       </span>
                                       <%= row.cuds_document_size%>
@@ -357,7 +357,7 @@
                                   <tr>
                                     <td>
                                       <img class="pdf-file" src="images/txticon.png">
-                                      <p><span>
+                                      <p><span class='doc_name'>
                                           <%= row.cuds_document_name%>
                                         </span>
                                         <%= row.cuds_document_size%>
@@ -412,7 +412,7 @@
 
                               </video> -->
                                         <img class="pdf-file" src="images/videoicon.png">
-                                        <p><span>
+                                        <p><span class='doc_name'>
                                             <%= row.cuds_document_name%>
                                           </span>
                                           <%= row.cuds_document_size%>
@@ -466,6 +466,7 @@
                       <th>Document Name</th>
                       <th>Date</th>
                       <th>Permissions</th>
+                      <th>Phase</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -482,7 +483,7 @@
                             <tr>
                               <td>
                                 <img class="pdf-file" src="/taskdocument/<%= row.cuds_document_name%>">
-                                <p><span >
+                                <p ><span class='doc_name'>
                                     <%= row.cuds_document_name%>
                                   </span>
                                   <%= row.cuds_document_size%>
@@ -511,6 +512,7 @@
                                     class="getDocId changePermissionModal">Change permission</a>
                                 </div>
                               </td>
+                              <td><%=row.cuds_phase_flag%></td>
                               <td>
                                 <a href="javascript:void(0)" class="remove_doc"
                                   onclick="remove_document('<%=row._id%>');" id="<%=row._id%>"><img
@@ -527,7 +529,7 @@
                               <tr>
                                 <td>
                                   <img class="pdf-file" src="images/pdficon.png">
-                                  <p><span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                  <p><span class='doc_name'>
                                       <%= row.cuds_document_name%>
                                     </span>
                                     <%= row.cuds_document_size%>
@@ -556,6 +558,7 @@
                                       class="getDocId changePermissionModal">Change permission</a>
                                   </div>
                                 </td>
+                                <td><%=row.cuds_phase_flag%></td>
                                 <td>
                                   <a href="javascript:void(0)" class="remove_doc"
                                     onclick="remove_document('<%=row._id%>');" id="<%=row._id%>"><img
@@ -572,7 +575,7 @@
                                 <tr>
                                   <td>
                                     <img class="pdf-file" src="images/docicon.png">
-                                    <p><span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                    <p><span class='doc_name'>
                                         <%= row.cuds_document_name%>
                                       </span>
                                       <%= row.cuds_document_size%>
@@ -605,6 +608,7 @@
                                         class="getDocId changePermissionModal">Change permission</a>
                                     </div>
                                   </td>
+                                  <td><%=row.cuds_phase_flag%></td>
                                   <td>
                                     <a href="javascript:void(0)" class="remove_doc"
                                       onclick="remove_document('<%=row._id%>');" id="<%=row._id%>"><img
@@ -620,7 +624,7 @@
                                   <tr>
                                     <td>
                                       <img class="pdf-file" src="images/txticon.png">
-                                      <p><span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                      <p><span class='doc_name'>
                                           <%= row.cuds_document_name%>
                                         </span>
                                         <%= row.cuds_document_size%>
@@ -653,6 +657,7 @@
                                           class="getDocId changePermissionModal">Change permission</a>
                                       </div>
                                     </td>
+                                    <td><%=row.cuds_phase_flag%></td>
                                     <td>
                                       <a href="javascript:void(0)" class="remove_doc"
                                         onclick="remove_document('<%=row._id%>');" id="<%=row._id%>"><img
@@ -675,10 +680,10 @@
 
                               </video> -->
                                         <img class="pdf-file" src="images/videoicon.png">
-                                        <p><span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-                                            <%= row.cuds_document_name%>
+                                        <p><span class='doc_name'>
+                                            <%=row.cuds_document_name%>
                                           </span>
-                                          <%= row.cuds_document_size%>
+                                          <%=row.cuds_document_size%>
                                         </p>
                                       </td>
                                       <td><span class="professionals-view">
@@ -708,6 +713,7 @@
                                             class="getDocId changePermissionModal">Change permission</a>
                                         </div>
                                       </td>
+                                      <td><%=row.cuds_phase_flag%></td>
                                       <td>
                                         <a href="javascript:void(0)" class="remove_doc"
                                           onclick="remove_document('<%=row._id%>');" id="<%=row._id%>"><img
