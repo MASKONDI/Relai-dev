@@ -425,7 +425,7 @@ app.get('/professionals', isCustomer, async (req, res) => {
         err_msg, success_msg, layout: false,
         session: req.session,
         data: serviceProvArray,
-        uniqueExperience:uniqueExperience.sort(),
+        uniqueExperience:uniqueExperience.sort(function(a, b){return a - b}),
         uniqueCategory:uniqueCategory.sort(),
         uniqueCity:uniqueCity.sort(),
         uniqueLanguageLevel:uniqueLanguageLevel.sort(),
@@ -610,9 +610,18 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
 
 
 
-
+      var uniqueArray ='';
       console.log('service_provider_detail:', serviceProvArray)
-      var uniqueArray = removeDuplicates(serviceProvArray, "_id");
+      if(serviceProvArray != ''){
+        console.log('hereeee..');
+        uniqueArray = removeDuplicates(serviceProvArray, "_id");
+      }else{
+        console.log('not hereeee..');
+
+        uniqueArray = serviceProvArray;
+      }
+    
+      console.log('uniqueArray:', uniqueArray)
 
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
@@ -737,8 +746,17 @@ app.get('/my-professionals-filter', isCustomer, async (req, res) => {
   }
 
 
+  var uniqueArray ='';
+  console.log('service_provider_detail:', serviceProvArray)
+  if(serviceProvArray != ''){
+    console.log('hereeee..');
+    uniqueArray = removeDuplicates(serviceProvArray, "_id");
+  }else{
+    console.log('not hereeee..');
 
-var uniqueArray = removeDuplicates(serviceProvArray, "_id");
+    uniqueArray = serviceProvArray;
+  }
+//var uniqueArray = removeDuplicates(serviceProvArray, "_id");
 //console.log("uniqueArray is: " + JSON.stringify(uniqueArray));
   res.send({
     err_msg, success_msg, layout: false,
