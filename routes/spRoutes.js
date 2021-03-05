@@ -15,18 +15,18 @@ var isServiceProvider = auth.isServiceProvider;
 var signUpHelper = require('./api/service_provider_helper/signup_helper')
 
 
-app.get('/dashboard-professional', isServiceProvider, (req, res) => {
+app.get('/service-provider/dashboard-professional', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  req.session.pagename = "dashboard-professional"
-  res.render('dashboard-professional', {
+  req.session.pagename = "service-provider/dashboard-professional"
+  res.render('service-provider/dashboard-professional', {
     err_msg, success_msg, layout: false,
     session: req.session
   });
 });
 
 app.get('/otp-professional', function (req, res) {
-  console.log("");
+  console.log("current session is :", req.session);
 
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -35,111 +35,134 @@ app.get('/otp-professional', function (req, res) {
     session: req.session
   });
 });
-app.get('/track-your-progress-professionals', isServiceProvider, function (req, res) {
-  console.log("");
-  req.session.pagename = 'track-your-progress-professionals';
+app.get('/service-provider/track-your-progress-professionals', isServiceProvider, function (req, res) {
+  console.log("current session is :", req.session);
+  req.session.pagename = 'service-provider/track-your-progress-professionals';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('track-your-progress-professionals', {
+  res.render('service-provider/track-your-progress-professionals', {
     err_msg, success_msg, layout: false,
     session: req.session
   });
 });
-app.get('/property', isServiceProvider, function (req, res) {
-  console.log("");
-  req.session.pagename = 'property';
+app.get('/service-provider/property', isServiceProvider, function (req, res) {
+  console.log("current session is :", req.session);
+  req.session.pagename = 'service-provider/property';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('property', {
+  res.render('service-provider/property', {
     err_msg, success_msg, layout: false,
     session: req.session
   });
 });
-app.get('/professionals-to-do-list', isServiceProvider, function (req, res) {
-  console.log("");
-  req.session.pagename = 'professionals-to-do-list';
+app.get('/service-provider/professionals-to-do-list', isServiceProvider, function (req, res) {
+  console.log("current session is :", req.session);
+  req.session.pagename = 'service-provider/professionals-to-do-list';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('professionals-to-do-list', {
+  res.render('service-provider/professionals-to-do-list', {
     err_msg, success_msg, layout: false,
     session: req.session
   });
 });
 
-app.get('/myproperties', isServiceProvider, function (req, res) {
+app.get('/service-provider/myproperties', isServiceProvider, function (req, res) {
   console.log("", req.session);
-  req.session.pagename = 'property';
+  req.session.pagename = 'service-provider/property';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('myproperties', {
+  res.render('service-provider/myproperties', {
     err_msg, success_msg, layout: false,
     session: req.session
   });
 });
 
-app.get('/property-detail', isServiceProvider, function (req, res) {
-  console.log("");
-  req.session.pagename = 'property';
+app.get('/service-provider/myproperties-detail', isServiceProvider, function (req, res) {
+  console.log("", req.session);
+  req.session.pagename = 'service-provider/property';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('property-detail', {
+  res.render('service-provider/myproperties-detail', {
     err_msg, success_msg, layout: false,
     session: req.session
   });
 });
 
-
-app.get('/professionals-detail-message', isServiceProvider, function (req, res) {
-  console.log("");
-  req.session.pagename = 'property';
+app.get('/service-provider/property-detail', isServiceProvider, function (req, res) {
+  console.log("current session is :", req.session);
+  req.session.pagename = 'service-provider/property';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('professionals-detail-message', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
-
-app.get('/complaints-professional-details', isServiceProvider, function (req, res) {
-  console.log("");
-  req.session.pagename = 'complaints-professional';
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('complaints-professional-details', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
-
-app.get('/complaints-professional', isServiceProvider, function (req, res) {
-  console.log("");
-  req.session.pagename = 'complaints-professional';
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('complaints-professional', {
+  res.render('service-provider/property-detail', {
     err_msg, success_msg, layout: false,
     session: req.session
   });
 });
 
 
-app.get('/professionals-detail-message', isServiceProvider, function (req, res) {
-  console.log("");
-  req.session.pagename = 'property';
+app.get('/service-provider/professionals-detail-message', isServiceProvider, function (req, res) {
+  console.log("current session is :", req.session);
+  req.session.pagename = 'service-provider/property';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('professionals-detail-message', {
+  res.render('service-provider/professionals-detail-message', {
     err_msg, success_msg, layout: false,
     session: req.session
   });
 });
 
-app.get('/property-detail-submit-proposal', isServiceProvider, function (req, res) {
-  console.log("");
+app.get('/service-provider/complaints-professional-detail', isServiceProvider, function (req, res) {
+  console.log("current session is :", req.session);
+  req.session.pagename = 'service-provider/complaints-professional';
   err_msg = req.flash('err_msg');
-  req.session.pagename = 'property';
   success_msg = req.flash('success_msg');
-  res.render('property-detail-submit-proposal', {
+  res.render('service-provider/complaints-professional-detail', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+
+app.get('/service-provider/complaints-professional', isServiceProvider, function (req, res) {
+  console.log("current session is :", req.session);
+  req.session.pagename = 'service-provider/complaints-professional';
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('service-provider/complaints-professional', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+
+
+app.get('/service-provider/complaints-professional-detail', isServiceProvider, function (req, res) {
+  console.log("current session is :", req.session);
+  req.session.pagename = 'service-provider/complaints-professional-detail';
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('service-provider/complaints-professional-detail', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+
+
+app.get('/service-provider/professionals-detail-message', isServiceProvider, function (req, res) {
+  console.log("current session is :", req.session);
+  req.session.pagename = 'service-provider/property';
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('/service-provider/professionals-detail-message', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+
+app.get('/service-provider/property-detail-submit-proposal', isServiceProvider, function (req, res) {
+  console.log("current session is :", req.session);
+  err_msg = req.flash('err_msg');
+  req.session.pagename = 'service-provider/property';
+  success_msg = req.flash('success_msg');
+  res.render('service-provider/property-detail-submit-proposal', {
     err_msg, success_msg, layout: false,
     session: req.session
   });
@@ -149,6 +172,7 @@ app.get('/signup-professionals-profile-4', isServiceProvider, async (req, res) =
   var all_employe_history = await signUpHelper.getAllEmployeHistory(service_provider_id);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
+  req.session.pagename = 'signup-professionals-profile-4';
   res.render('signup-professionals-profile-4', {
     err_msg, success_msg, layout: false,
     session: req.session,
@@ -157,16 +181,28 @@ app.get('/signup-professionals-profile-4', isServiceProvider, async (req, res) =
   });
 });
 
-app.get('/myproperties-detail-phaseA', isServiceProvider, function (req, res) {
-  console.log("");
+app.get('/service-provider/myproperties-detail-phaseA', isServiceProvider, function (req, res) {
+  console.log("current session is :", req.session);
   err_msg = req.flash('err_msg');
-  req.session.pagename = 'property';
+  req.session.pagename = 'service-provider/property';
   success_msg = req.flash('success_msg');
-  res.render('myproperties-detail-phaseA', {
+  res.render('service-provider/myproperties-detail-phaseA', {
     err_msg, success_msg, layout: false,
     session: req.session
   });
 });
+
+app.get('/service-provider/professional-detail-message', isServiceProvider, function (req, res) {
+  console.log("current session is :", req.session);
+  err_msg = req.flash('err_msg');
+  req.session.pagename = 'service-provider/property';
+  success_msg = req.flash('success_msg');
+  res.render('service-provider/professional-detail-message', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+
 
 
 module.exports = app;
