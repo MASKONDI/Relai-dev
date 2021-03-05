@@ -13,7 +13,7 @@ var multer = require('multer');
 var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
 var signUpHelper = require('./api/service_provider_helper/signup_helper')
-
+var trackYourProgress= require('./api/service_provider_helper/trackYourProgress')
 
 app.get('/service-provider/dashboard-professional', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
@@ -35,14 +35,17 @@ app.get('/otp-professional', function (req, res) {
     session: req.session
   });
 });
-app.get('/service-provider/track-your-progress-professionals', isServiceProvider, function (req, res) {
-  console.log("current session is :", req.session);
+app.get('/service-provider/track-your-progress-professionals', isServiceProvider, async function (req, res) {
+  let data = await trackYourProgress.getAllPropertyByUserId(req.session.user_id)
+  console.log('data=======',data)
+  //console.log("current session is :", req.session);
   req.session.pagename = 'service-provider/track-your-progress-professionals';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('service-provider/track-your-progress-professionals', {
     err_msg, success_msg, layout: false,
-    session: req.session
+    session: req.session,
+    propertyData:data
   });
 });
 app.get('/service-provider/property', isServiceProvider, function (req, res) {
@@ -77,8 +80,11 @@ app.get('/service-provider/myproperties', isServiceProvider, function (req, res)
   });
 });
 
-app.get('/service-provider/myproperties-detail', isServiceProvider, function (req, res) {
-  console.log("", req.session);
+app.get('/service-provider/myproperties-detail', isServiceProvider, async function (req, res) {
+ 
+  
+ console.log("", req.session);
+ //console.log('data===========',data)
   req.session.pagename = 'service-provider/property';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
