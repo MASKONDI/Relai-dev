@@ -40,7 +40,7 @@ const { resolve } = require("path");
 //router.post("/cust_register", cust_register);
 //router.post("/cust_signin", cust_signin);
 
-
+const CustomerUploadDocsSchema = require("../../models/customer_upload_document");
 const ComplaintsSchema = require("../../models/Complaints");
 const ComplaintDetailsSchema = require("../../models/complaint_details_model");
 const RatingSchema = require("../../models/service_provider_rating_Schema");
@@ -2722,7 +2722,26 @@ router.get('/getunhiredProfessionalist', async (req, res) => {
 
 });
 
-
+router.post('/remove_uploaded_document', async(req, res) => {
+console.log('remove_uploaded_document api req',req.body);
+//CustomerUploadDocsSchema
+//DocumentPermissionSchema
+if(req.body.document_id!=''&&req.body.document_id!=undefined){
+  await DocumentPermissionSchema.findOneAndRemove({dps_document_id:req.body.document_id});
+ var is_delete= await CustomerUploadDocsSchema.findOneAndRemove({_id:req.body.document_id});
+  if(is_delete){
+    return res.send({
+      'status':true,
+      'message':'Document Remove Successfully..'
+    })
+  }
+}else{
+  return res.send({
+    'status':false,
+    'message':'Something Wrong...'
+  })
+}
+})
 
 module.exports = router;
 

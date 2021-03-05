@@ -298,17 +298,17 @@
                                     <option value="">Select User Type</option>
                                     <%if(session.active_user_login=='buyer'){%>
                                       <option value="seller">Seller</option>
-                                      <option value="renovator">Renovator</option>
-                                      <option value="stateagents">State Agents</option>
+                                      <!-- <option value="renovator">Renovator</option>
+                                      <option value="stateagents">State Agents</option> -->
                                       <%}else if(session.active_user_login=='seller'){%>
                                         <option value="buyer">Buyer</option>
-                                        <option value="renovator">Renovator</option>
-                                        <option value="stateagents">State Agents</option>
+                                        <!-- <option value="renovator">Renovator</option>
+                                        <option value="stateagents">State Agents</option> -->
                                         <%}else if(session.active_user_login=='renovator'){%>
-                                        <option value="buyer">Buyer</option>
-                                        <option value="seller">Seller</option>
+                                        <!-- <option value="buyer">Buyer</option>
+                                        <option value="seller">Seller</option> -->
                                         <option value="renovator">Renovator</option>
-                                        <option value="stateagents">State Agents</option>
+                                        <!-- <option value="stateagents">State Agents</option> -->
                                         <%}%>
                                     
                                   </select>
@@ -320,17 +320,17 @@
                                         <%=propertyObj.ps_other_property_type.replace(/\w/, c => c.toUpperCase())%>
                                       </option>
                                       <%if(session.active_user_login=='buyer'){%>
-                                        <option value="seller">Seller</option>
-                                        <option value="renovator">Renovator</option>
-                                        <option value="stateagents">State Agents</option>
+                                        <!-- <option value="seller">Seller</option> -->
+                                        <!-- <option value="renovator">Renovator</option>
+                                        <option value="stateagents">State Agents</option> -->
                                         <%}else if(session.active_user_login=='seller'){%>
-                                          <option value="buyer">Buyer</option>
-                                          <option value="renovator">Renovator</option>
-                                          <option value="stateagents">State Agents</option>
+                                          <!-- <option value="buyer">Buyer</option> -->
+                                          <!-- <option value="renovator">Renovator</option>
+                                          <option value="stateagents">State Agents</option> -->
                                           <%} else if(session.active_user_login=='renovator'){%>
-                                            <option value="buyer">Buyer</option>
+                                            <!-- <option value="buyer">Buyer</option>
                                             <option value="seller">Seller</option>
-                                            <option value="stateagents">State Agents</option>
+                                            <option value="stateagents">State Agents</option> -->
                                             <%}%>
                                       <!-- <%if(propertyObj.ps_other_property_type=='buyer'){%>
                                         <option value="seller">Seller</option>

@@ -79,14 +79,16 @@
                     <div class="total-time"><a href="#">TOTAL COST<br><span>100,000 ￡</span></a></div>
                   </div>
                 </div>
-                <div class="phase-progress">
-                  <ul>
-                    <li><a href="javascript:void(0)">25%</a></li>
-                    <li><a href="javascript:void(0)">25%</a></li>
-                    <li><a href="javascript:void(0)">25%</a></li>
-                    <li><a href="javascript:void(0)">25%</a></li>
-                  </ul>
-                </div>
+                <%if(session.active_user_login=='renovator'){%>
+                  <div class="phase-progress">
+                    <ul>
+                      <li><a href="javascript:void(0)">25%</a></li>
+                      <li><a href="javascript:void(0)">25%</a></li>
+                      <li><a href="javascript:void(0)">25%</a></li>
+                      <li><a href="javascript:void(0)">25%</a></li>
+                    </ul>
+                  </div>
+                  <%}%>
                 <div class="action-owner">
                   <div class="clearfix">
                     <div class="float-left">
@@ -124,7 +126,7 @@
                 </div>
                 <%if(session.active_user_login=='renovator'){%>
                   <div>
-                    <h4>Renovator Section</h4>
+                    <h4>Renovator Task</h4>
                   </div>
                   <table class="table  table-phase-fix-2">
                     <thead>
@@ -150,7 +152,7 @@
                     <tbody>
                       <%if(taskObject.length==0){%>
                         <tr>
-                          <td>Result Not Found</td>
+                          <td style='text-align: right;'>Task Not Found</td>
                         </tr>
                         <%}else{%>
                           <%taskObject.forEach(function(row,i){%>
@@ -167,7 +169,7 @@
                               <!-- <td><a href="#" class="upload-any"><img src="images/upload.png">
                                 <span>
                                   <div class="custom-file-input">
-                                    <input type="file">
+                                     <input type="file" name="task-document" >
                                     <input type="button">
                                   </div>
                                 </span>
@@ -177,7 +179,7 @@
                             <td><a href="#" class="upload-any"><img src="images/upload.png">
                                 <span>
                                   <div class="custom-file-input">
-                                    <input type="file">
+                                     <input type="file" name="task-document" >
                                     <input type="button">
                                   </div>
                                 </span>
@@ -191,12 +193,12 @@
                                     <td><a href="#" class="upload-any"><img src="images/upload.png">
                                         <span>
                                           <div class="custom-file-input">
-                                            <input type="file">
+                                             <input type="file" name="task-document" onchange="previewFile_upload_task_document(this,'<%=row._id%>','<%=hp._id%>','<%=row.ppts_phase_name%>','<%=row.ppts_task_name%>','<%=row.ppts_property_id%>','E')">
                                             <input type="button">
                                           </div>
                                         </span>
                                       </a>
-                                      <a href="/professionals-detail-message"><img src="images/chat.png"></a>
+                                      <a href="/mydreamhome-details-message?id=<%=row.ppts_property_id%>&pid=<%=hp._id%>"><img src="images/chat.png"></a>
                                     </td>
                                     <%}else{%>
                                       <td>
@@ -205,36 +207,7 @@
                                       <%}%>
                                         <%});%>
                                           <%}%>
-                                            <!-- <td><a href="#" class="upload-any"><img src="images/upload.png">
-                                <span>
-                                  <div class="custom-file-input">
-                                    <input type="file">
-                                    <input type="button">
-                                  </div>
-                                </span>
-                              </a>
-                              <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                            </td>
-                            <td><a href="#" class="upload-any"><img src="images/upload.png">
-                                <span>
-                                  <div class="custom-file-input">
-                                    <input type="file">
-                                    <input type="button">
-                                  </div>
-                                </span>
-                              </a>
-                              <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                            </td>
-                            <td><a href="#" class="upload-any"><img src="images/upload.png">
-                                <span>
-                                  <div class="custom-file-input">
-                                    <input type="file">
-                                    <input type="button">
-                                  </div>
-                                </span>
-                              </a>
-                              <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                            </td> -->
+                                            
                                             <td><a class="btn help-btn" href="#" data-toggle="modal"
                                                 data-target="#myModal">Help</a>
                                             </td>
@@ -435,7 +408,7 @@
                   </table>
                 <%}else if(session.active_user_login=='buyer'){%>
                   <div>
-                    <h4>Buyer Section</h4>
+                    <h4>Buyer Task</h4>
                   </div>
                   <!-- ================================== -->
                   <table class="table  table-phase-fix-2">
@@ -462,7 +435,7 @@
                     <tbody>
                       <%if(taskObject.length==0){%>
                         <tr>
-                          <td>Result Not Found</td>
+                          <td style='text-align: right;'>Task Not Found</td>
                         </tr>
                         <%}else{%>
                           <%taskObject.forEach(function(row,i){%>
@@ -479,7 +452,7 @@
                               <!-- <td><a href="#" class="upload-any"><img src="images/upload.png">
                                 <span>
                                   <div class="custom-file-input">
-                                    <input type="file">
+                                     <input type="file" name="task-document" >
                                     <input type="button">
                                   </div>
                                 </span>
@@ -489,7 +462,7 @@
                             <td><a href="#" class="upload-any"><img src="images/upload.png">
                                 <span>
                                   <div class="custom-file-input">
-                                    <input type="file">
+                                     <input type="file" name="task-document" >
                                     <input type="button">
                                   </div>
                                 </span>
@@ -503,12 +476,12 @@
                                     <td><a href="#" class="upload-any"><img src="images/upload.png">
                                         <span>
                                           <div class="custom-file-input">
-                                            <input type="file">
+                                             <input type="file" name="task-document" onchange="previewFile_upload_task_document(this,'<%=row._id%>','<%=hp._id%>','<%=row.ppts_phase_name%>','<%=row.ppts_task_name%>','<%=row.ppts_property_id%>','E')">
                                             <input type="button">
                                           </div>
                                         </span>
                                       </a>
-                                      <a href="/professionals-detail-message"><img src="images/chat.png"></a>
+                                      <a href="/mydreamhome-details-message?id=<%=row.ppts_property_id%>&pid=<%=hp._id%>"><img src="images/chat.png"></a>
                                     </td>
                                     <%}else{%>
                                       <td>
@@ -517,36 +490,7 @@
                                       <%}%>
                                         <%});%>
                                           <%}%>
-                                            <!-- <td><a href="#" class="upload-any"><img src="images/upload.png">
-                                <span>
-                                  <div class="custom-file-input">
-                                    <input type="file">
-                                    <input type="button">
-                                  </div>
-                                </span>
-                              </a>
-                              <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                            </td>
-                            <td><a href="#" class="upload-any"><img src="images/upload.png">
-                                <span>
-                                  <div class="custom-file-input">
-                                    <input type="file">
-                                    <input type="button">
-                                  </div>
-                                </span>
-                              </a>
-                              <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                            </td>
-                            <td><a href="#" class="upload-any"><img src="images/upload.png">
-                                <span>
-                                  <div class="custom-file-input">
-                                    <input type="file">
-                                    <input type="button">
-                                  </div>
-                                </span>
-                              </a>
-                              <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                            </td> -->
+                                            
                                             <td><a class="btn help-btn" href="#" data-toggle="modal"
                                                 data-target="#myModal">Help</a>
                                             </td>
@@ -745,9 +689,17 @@
 
                     </tbody>
                   </table>
+                  <div class="phase-progress">
+                    <ul>
+                      <li><a href="javascript:void(0)">25%</a></li>
+                      <li><a href="javascript:void(0)">25%</a></li>
+                      <li><a href="javascript:void(0)">25%</a></li>
+                      <li><a href="javascript:void(0)">25%</a></li>
+                    </ul>
+                  </div>
                   <!-- ================================== -->
                   <div>
-                    <h4>Seller Section</h4>
+                    <h4>Seller Task</h4>
                   </div>
                   <!-- ================================== -->
                   <table class="table  table-phase-fix-2">
@@ -774,7 +726,7 @@
                     <tbody>
                       <%if(gest_taskObject.length==0){%>
                         <tr>
-                          <td>Result Not Found</td>
+                          <td style='text-align: right;'>Task Not Found</td>
                         </tr>
                         <%}else{%>
                           <%gest_taskObject.forEach(function(row,i){%>
@@ -791,7 +743,7 @@
                               <!-- <td><a href="#" class="upload-any"><img src="images/upload.png">
                                 <span>
                                   <div class="custom-file-input">
-                                    <input type="file">
+                                     <input type="file" name="task-document" >
                                     <input type="button">
                                   </div>
                                 </span>
@@ -801,7 +753,7 @@
                             <td><a href="#" class="upload-any"><img src="images/upload.png">
                                 <span>
                                   <div class="custom-file-input">
-                                    <input type="file">
+                                     <input type="file" name="task-document" >
                                     <input type="button">
                                   </div>
                                 </span>
@@ -815,12 +767,12 @@
                                     <td><a href="#" class="upload-any"><img src="images/upload.png">
                                         <span>
                                           <div class="custom-file-input">
-                                            <input type="file">
+                                             <input type="file" name="task-document" onchange="previewFile_upload_task_document(this,'<%=row._id%>','<%=hp._id%>','<%=row.ppts_phase_name%>','<%=row.ppts_task_name%>','<%=row.ppts_property_id%>','E')">
                                             <input type="button">
                                           </div>
                                         </span>
                                       </a>
-                                      <a href="/professionals-detail-message"><img src="images/chat.png"></a>
+                                      <a href="/mydreamhome-details-message?id=<%=row.ppts_property_id%>&pid=<%=hp._id%>"><img src="images/chat.png"></a>
                                     </td>
                                     <%}else{%>
                                       <td>
@@ -829,36 +781,7 @@
                                       <%}%>
                                         <%});%>
                                           <%}%>
-                                            <!-- <td><a href="#" class="upload-any"><img src="images/upload.png">
-                                <span>
-                                  <div class="custom-file-input">
-                                    <input type="file">
-                                    <input type="button">
-                                  </div>
-                                </span>
-                              </a>
-                              <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                            </td>
-                            <td><a href="#" class="upload-any"><img src="images/upload.png">
-                                <span>
-                                  <div class="custom-file-input">
-                                    <input type="file">
-                                    <input type="button">
-                                  </div>
-                                </span>
-                              </a>
-                              <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                            </td>
-                            <td><a href="#" class="upload-any"><img src="images/upload.png">
-                                <span>
-                                  <div class="custom-file-input">
-                                    <input type="file">
-                                    <input type="button">
-                                  </div>
-                                </span>
-                              </a>
-                              <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                            </td> -->
+                                            
                                             <td><a class="btn help-btn" href="#" data-toggle="modal"
                                                 data-target="#myModal">Help</a>
                                             </td>
@@ -1060,7 +983,7 @@
                   <!-- ================================== -->
                   <%}else{%>
                     <div>
-                      <h4>Seller Section</h4>
+                      <h4>Seller Task</h4>
                     </div>
                     <!-- ================================== -->
                     <table class="table  table-phase-fix-2">
@@ -1087,7 +1010,7 @@
                       <tbody>
                         <%if(taskObject.length==0){%>
                           <tr>
-                            <td>Result Not Found</td>
+                            <td style='text-align: right;'>Task Not Found</td>
                           </tr>
                           <%}else{%>
                             <%taskObject.forEach(function(row,i){%>
@@ -1104,7 +1027,7 @@
                                 <!-- <td><a href="#" class="upload-any"><img src="images/upload.png">
                                   <span>
                                     <div class="custom-file-input">
-                                      <input type="file">
+                                       <input type="file" name="task-document">
                                       <input type="button">
                                     </div>
                                   </span>
@@ -1114,7 +1037,7 @@
                               <td><a href="#" class="upload-any"><img src="images/upload.png">
                                   <span>
                                     <div class="custom-file-input">
-                                      <input type="file">
+                                       <input type="file" name="task-document">
                                       <input type="button">
                                     </div>
                                   </span>
@@ -1128,12 +1051,12 @@
                                       <td><a href="#" class="upload-any"><img src="images/upload.png">
                                           <span>
                                             <div class="custom-file-input">
-                                              <input type="file">
+                                               <input type="file" name="task-document" onchange="previewFile_upload_task_document(this,'<%=row._id%>','<%=hp._id%>','<%=row.ppts_phase_name%>','<%=row.ppts_task_name%>','<%=row.ppts_property_id%>','E')">
                                               <input type="button">
                                             </div>
                                           </span>
                                         </a>
-                                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
+                                        <a href="/mydreamhome-details-message?id=<%=row.ppts_property_id%>&pid=<%=hp._id%>"><img src="images/chat.png"></a>
                                       </td>
                                       <%}else{%>
                                         <td>
@@ -1142,36 +1065,7 @@
                                         <%}%>
                                           <%});%>
                                             <%}%>
-                                              <!-- <td><a href="#" class="upload-any"><img src="images/upload.png">
-                                  <span>
-                                    <div class="custom-file-input">
-                                      <input type="file">
-                                      <input type="button">
-                                    </div>
-                                  </span>
-                                </a>
-                                <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                              </td>
-                              <td><a href="#" class="upload-any"><img src="images/upload.png">
-                                  <span>
-                                    <div class="custom-file-input">
-                                      <input type="file">
-                                      <input type="button">
-                                    </div>
-                                  </span>
-                                </a>
-                                <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                              </td>
-                              <td><a href="#" class="upload-any"><img src="images/upload.png">
-                                  <span>
-                                    <div class="custom-file-input">
-                                      <input type="file">
-                                      <input type="button">
-                                    </div>
-                                  </span>
-                                </a>
-                                <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                              </td> -->
+                                              
                                               <td><a class="btn help-btn" href="#" data-toggle="modal"
                                                   data-target="#myModal">Help</a>
                                               </td>
@@ -1372,9 +1266,17 @@
 
                       </tbody>
                     </table>
+                    <div class="phase-progress">
+                      <ul>
+                        <li><a href="javascript:void(0)">25%</a></li>
+                        <li><a href="javascript:void(0)">25%</a></li>
+                        <li><a href="javascript:void(0)">25%</a></li>
+                        <li><a href="javascript:void(0)">25%</a></li>
+                      </ul>
+                    </div>
                     <!-- ================================== -->
                     <div>
-                      <h4>Buyer Section</h4>
+                      <h4>Buyer Task</h4>
                     </div>
                     <!-- ================================== -->
                     <table class="table  table-phase-fix-2">
@@ -1401,7 +1303,7 @@
                       <tbody>
                         <%if(gest_taskObject.length==0){%>
                           <tr>
-                            <td>Result Not Found</td>
+                            <td style='text-align: right;'>Task Not Found</td>
                           </tr>
                           <%}else{%>
                             <%gest_taskObject.forEach(function(row,i){%>
@@ -1418,7 +1320,7 @@
                                 <!-- <td><a href="#" class="upload-any"><img src="images/upload.png">
                                   <span>
                                     <div class="custom-file-input">
-                                      <input type="file">
+                                       <input type="file" name="task-document" >
                                       <input type="button">
                                     </div>
                                   </span>
@@ -1428,7 +1330,7 @@
                               <td><a href="#" class="upload-any"><img src="images/upload.png">
                                   <span>
                                     <div class="custom-file-input">
-                                      <input type="file">
+                                       <input type="file" name="task-document" >
                                       <input type="button">
                                     </div>
                                   </span>
@@ -1442,12 +1344,12 @@
                                       <td><a href="#" class="upload-any"><img src="images/upload.png">
                                           <span>
                                             <div class="custom-file-input">
-                                              <input type="file">
+                                               <input type="file" name="task-document" onchange="previewFile_upload_task_document(this,'<%=row._id%>','<%=hp._id%>','<%=row.ppts_phase_name%>','<%=row.ppts_task_name%>','<%=row.ppts_property_id%>','E')">
                                               <input type="button">
                                             </div>
                                           </span>
                                         </a>
-                                        <a href="/professionals-detail-message"><img src="images/chat.png"></a>
+                                        <a href="/mydreamhome-details-message?id=<%=row.ppts_property_id%>&pid=<%=hp._id%>"><img src="images/chat.png"></a>
                                       </td>
                                       <%}else{%>
                                         <td>
@@ -1456,36 +1358,7 @@
                                         <%}%>
                                           <%});%>
                                             <%}%>
-                                              <!-- <td><a href="#" class="upload-any"><img src="images/upload.png">
-                                  <span>
-                                    <div class="custom-file-input">
-                                      <input type="file">
-                                      <input type="button">
-                                    </div>
-                                  </span>
-                                </a>
-                                <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                              </td>
-                              <td><a href="#" class="upload-any"><img src="images/upload.png">
-                                  <span>
-                                    <div class="custom-file-input">
-                                      <input type="file">
-                                      <input type="button">
-                                    </div>
-                                  </span>
-                                </a>
-                                <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                              </td>
-                              <td><a href="#" class="upload-any"><img src="images/upload.png">
-                                  <span>
-                                    <div class="custom-file-input">
-                                      <input type="file">
-                                      <input type="button">
-                                    </div>
-                                  </span>
-                                </a>
-                                <a href="/professionals-detail-message"><img src="images/chat.png"></a>
-                              </td> -->
+                                              
                                               <td><a class="btn help-btn" href="#" data-toggle="modal"
                                                   data-target="#myModal">Help</a>
                                               </td>

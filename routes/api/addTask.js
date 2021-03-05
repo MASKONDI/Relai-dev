@@ -28,7 +28,7 @@ module.exports.GetTaskByPhaseName = function (ppts_property_id,ppts_phase_name,p
           if('ps_tagged_user_id' in propertyData){
                console.log('here..1');
                console.log('here..gg:',propertyData.ps_tagged_user_id);
-               console.log('here..ppts_user_id:',ppts_user_id);
+               console.log('here..ppts_user_id:+++++++++++++',ppts_user_id);
                if(propertyData.ps_tagged_user_id == ppts_user_id){
                 console.log('here..2');
                 var data={$and:[{
