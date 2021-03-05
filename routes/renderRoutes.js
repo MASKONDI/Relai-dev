@@ -21,6 +21,7 @@ const PropertyProfessionalSchema = require("../models/property_professional_Sche
 const MessageSchema = require("../models/message");
 const CustomerSchema = require("../models/customers");
 const ServiceProviderOtherDetailsSchema = require("../models/service_providers_other_details");
+const ServiceProviderLanguageSchema = require("../models/service_provider_languages");
 const PropertiesPhaseSchema = require("../models/property_phase_schema");
 const phaseDetail = require("./api/phaseDetail");
 const propertyDetail = require("./api/propertyDetail");
@@ -364,7 +365,15 @@ app.get('/professionals', isCustomer, async (req, res) => {
     }
     else {
       let serviceProvArray = [];
+      let Experience = [];
+      let Category = [];
+      let City= [];
+      let Language= [];
+      let LanguageLevel= [];
       for (var sp_id of service_provider) {
+        Experience.push(sp_id.sps_experience);
+        Category.push(sp_id.sps_role_name);
+        City.push(sp_id.sps_city);
         await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
           if (otherDetails) {
             console.log('spp id:', sp_id._id)
@@ -390,12 +399,37 @@ app.get('/professionals', isCustomer, async (req, res) => {
             //console.log("service_provider Array list in loop:", serviceProvArray);
           }
         });
+          
+        await ServiceProviderLanguageSchema.findOne({ spls_service_provider_id: sp_id._id }).then(async languageDetails => {
+          if (languageDetails) {
+            Language.push(languageDetails.spls_language);
+            LanguageLevel.push(languageDetails.spls_language_proficiency_level)
+          }
+        })
+
       }
-      // console.log("service_provider Array list is:", serviceProvArray);
+      
+      let uniqueExperience = [...new Set(Experience)];
+      let uniqueCategory = [...new Set(Category)];
+      let uniqueCity = [...new Set(City)];
+      let uniqueLanguage = [...new Set(Language)];
+      let uniqueLanguageLevel = [...new Set(LanguageLevel)];
+
+
+      console.log("uniqueExperience:", uniqueExperience);
+      console.log("uniqueCategory:", uniqueCategory);
+      console.log("uniqueCity:", uniqueCity);
+      console.log("uniqueLanguage:", uniqueLanguage);
+      console.log("uniqueLanguageLevel:", uniqueLanguageLevel);
       res.render('professionals', {
         err_msg, success_msg, layout: false,
         session: req.session,
-        data: serviceProvArray
+        data: serviceProvArray,
+        uniqueExperience:uniqueExperience.sort(function(a, b){return a - b}),
+        uniqueCategory:uniqueCategory.sort(),
+        uniqueCity:uniqueCity.sort(),
+        uniqueLanguageLevel:uniqueLanguageLevel.sort(),
+        uniqueLanguage:uniqueLanguage.sort()
       });
     }
   })
@@ -576,9 +610,18 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
 
 
 
-
+      var uniqueArray ='';
       console.log('service_provider_detail:', serviceProvArray)
-      var uniqueArray = removeDuplicates(serviceProvArray, "_id");
+      if(serviceProvArray != ''){
+        console.log('hereeee..');
+        uniqueArray = removeDuplicates(serviceProvArray, "_id");
+      }else{
+        console.log('not hereeee..');
+
+        uniqueArray = serviceProvArray;
+      }
+    
+      console.log('uniqueArray:', uniqueArray)
 
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
@@ -703,8 +746,17 @@ app.get('/my-professionals-filter', isCustomer, async (req, res) => {
   }
 
 
+  var uniqueArray ='';
+  console.log('service_provider_detail:', serviceProvArray)
+  if(serviceProvArray != ''){
+    console.log('hereeee..');
+    uniqueArray = removeDuplicates(serviceProvArray, "_id");
+  }else{
+    console.log('not hereeee..');
 
-var uniqueArray = removeDuplicates(serviceProvArray, "_id");
+    uniqueArray = serviceProvArray;
+  }
+//var uniqueArray = removeDuplicates(serviceProvArray, "_id");
 //console.log("uniqueArray is: " + JSON.stringify(uniqueArray));
   res.send({
     err_msg, success_msg, layout: false,
@@ -1254,13 +1306,19 @@ app.get('/professionals-hirenow', isCustomer, async (req, res) => {
       ]
 
      });
-    console.log('property====', property)
+    //console.log('property====', property)
     var serviceProvider = await ServiceProviderSchema.findOne({ _id: SarviceProviderId });
     //console.log('service_provider=+++',serviceProvider)
 
     for (let propertyData of property) {
-      var propertyExist = await PropertyProfessionalSchema.findOne({ pps_user_id: propertyData.ps_user_id, pps_property_id: propertyData._id, pps_service_provider_id: SarviceProviderId });
-      console.log('propertyExist:', propertyExist);
+      var propertyExist = await PropertyProfessionalSchema.findOne({ 
+        pps_user_id: propertyData.ps_user_id, pps_property_id: propertyData._id, pps_service_provider_id: SarviceProviderId 
+       /* $or: [
+          { $and: [{ ps_user_id: propertyData.ps_user_id }, { pps_property_id: propertyData._id },{ pps_service_provider_id: SarviceProviderId }] },
+          { $and: [{ ps_user_id: propertyData.ps_tagged_user_id }, { pps_property_id: propertyData._id },{ pps_service_provider_id: SarviceProviderId }] },
+        ]*/
+      });
+      //console.log('propertyExist:', propertyExist);
       if (propertyExist == null) {
         console.log('Hello coming..')
         PropertyList.push(propertyData);
@@ -1271,7 +1329,7 @@ app.get('/professionals-hirenow', isCustomer, async (req, res) => {
 
     if (serviceProvider) {
       let propertyObj = await PropertyProfessionalHelper.GetAllHiredProertyByUserId(SarviceProviderId, req.session.active_user_login, req.session.user_id);
-      console.log('propertyObj in hire now:=======================', propertyObj)
+      //console.log('propertyObj in hire now:=======================', propertyObj)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('professionals-hirenow', {
@@ -1903,8 +1961,8 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
             //console.log('allProfeshnoals:', allProfeshnoals)
             await MessageSchema.find({
               $or: [
-                { $and: [{ sms_sender_id: req.session.user_id }, { sms_receiver_id: k.pps_service_provider_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
-                { $and: [{ sms_sender_id: k.pps_service_provider_id }, { sms_receiver_id: req.session.user_id }] }
+                { $and: [{ sms_sender_id: req.session.user_id }, { sms_receiver_id: k.pps_service_provider_id }, { sms_is_active_user_flag: req.session.active_user_login }, { sms_property_id: req.session.property_id }] },
+                { $and: [{ sms_sender_id: k.pps_service_provider_id }, { sms_receiver_id: req.session.user_id }, { sms_property_id: req.session.property_id }] }
               ]
             }).then(async (msgdata) => {
               //console.log('msgdata=', msgdata)
@@ -1922,8 +1980,6 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
                   const t = JSON.parse(object_as_string);
                   t.sms_message = '...';
                   //let temps = await i
-    
-    
                   serviceProvArray.push(t)
                 }
               }
@@ -2988,6 +3044,625 @@ app.get('/task-details-docs', isCustomer, async (req, res) => {
 
   
 });
+
+
+
+// My Professional Filter name surname qualification
+app.post('/professionals-multifilter', async (req, res) => {
+  req.session.pagename = 'professionals';
+  console.log('multifilterData:',req.body)
+  let QuerySyntex='';
+  let categoryKeyword='';
+  let experienceKeyword='';
+  let cityKeyword='';
+  let languageKeyword='';
+  let categoryServiceProvIdArray = [], categoryServiceProvData = [];
+  let experienceServiceProvIdArray = [], experienceServiceProvData = [];
+  let cityServiceProvIdArray = [], cityServiceProvData = [];
+  let languageServiceProvIdArray = [], languageServiceProvData = [];
+  let catExpServiceProvIdArray = [];
+if(Object.keys(req.body).length === 0 && req.body.constructor === Object){ 
+  console.log('notingngngngngn');
+  res.send({
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    filterData: ''
+  })
+
+}else{
+
+if(req.body.category !=undefined){ 
+  if (typeof (req.body.category) == 'object') {
+    categoryKeyword = req.body.category;
+  }else{
+    var arr = [];
+    arr.push(req.body.category);
+    categoryKeyword = arr;
+  }
+}
+ 
+if(req.body.experience !=undefined){ 
+  if (typeof (req.body.experience) == 'object') {
+    experienceKeyword = req.body.experience;
+  }else{
+    var arr = [];
+    arr.push(req.body.experience);
+    experienceKeyword = arr;
+  }
+}
+
+if(req.body.location_city !=undefined){ 
+  if (typeof (req.body.location_city) == 'object') {
+    cityKeyword = req.body.location_city;
+  }else{
+    var arr = [];
+    arr.push(req.body.location_city);
+    cityKeyword = arr;
+  }
+}
+
+if(req.body.language !=undefined){ 
+  if (typeof (req.body.language) == 'object') {
+    languageKeyword = req.body.language;
+  }else{
+    var arr = [];
+    arr.push(req.body.language);
+    languageKeyword = arr;
+  }
+}
+
+
+  console.log('categoryKeyword:',categoryKeyword)
+  console.log('experienceKeyword:',experienceKeyword)
+  console.log('cityKeyword:',cityKeyword)
+  console.log('languageKeyword:',languageKeyword)
+
+  /*== Category==*/
+if(categoryKeyword){ 
+ console.log('categoryKeyword11:',categoryKeyword)
+  for (var categoryWord of categoryKeyword) {
+    QuerySyntex = { sps_role_name:categoryWord};
+    await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+      if (service_provider_detail) {
+          for (var sp_id of service_provider_detail) {
+            //let temp = await sp_id._id;
+
+            await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+              if (otherDetails) {
+                const spProvider = JSON.stringify(sp_id);
+                const parseSpProvider = JSON.parse(spProvider);
+                parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                console.log('professionalRating:', professionalRating)
+                var sumRating = 0;
+                for (var RatingData of professionalRating) {
+                  sumRating += parseInt(RatingData.sprs_rating);
+                }
+                let avgRating = Math.round(sumRating / professionalRating.length);
+                if (!isNaN(avgRating)) {
+                  avgRating = avgRating.toFixed(1);
+                } else {
+                  avgRating = 0;
+                }
+                console.log('avgRating:', avgRating)
+                let temps = await parseSpProvider
+                const spProvider1 = JSON.stringify(temps);
+                const parseSpProvider1 = JSON.parse(spProvider1);
+                parseSpProvider1.avgRating = avgRating
+                categoryServiceProvData.push(parseSpProvider1);
+              }
+            });
+            let temp = await sp_id._id.toString();
+            await categoryServiceProvIdArray.push(temp);
+          }
+      }
+    })
+  }
+  //if(experienceKeyword == '' && ){
+  if(experienceKeyword == '' && cityKeyword == '' && languageKeyword ==''){
+    res.send({
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      filterData: categoryServiceProvData
+    })
+  }
+}
+
+
+/*=== Expirence ==*/
+
+if(experienceKeyword){
+  for (var experienceWord of experienceKeyword) {
+    QuerySyntex = { sps_experience:experienceWord };
+    await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+      if (service_provider_detail) {
+          for (var sp_id of service_provider_detail) {
+
+            await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+              if (otherDetails) {
+                const spProvider = JSON.stringify(sp_id);
+                const parseSpProvider = JSON.parse(spProvider);
+                parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                console.log('professionalRating:', professionalRating)
+                var sumRating = 0;
+                for (var RatingData of professionalRating) {
+                  sumRating += parseInt(RatingData.sprs_rating);
+                }
+                let avgRating = Math.round(sumRating / professionalRating.length);
+                if (!isNaN(avgRating)) {
+                  avgRating = avgRating.toFixed(1);
+                } else {
+                  avgRating = 0;
+                }
+                console.log('avgRating:', avgRating)
+                let temps = await parseSpProvider
+                const spProvider1 = JSON.stringify(temps);
+                const parseSpProvider1 = JSON.parse(spProvider1);
+                parseSpProvider1.avgRating = avgRating
+                experienceServiceProvData.push(parseSpProvider1);
+              }
+            });
+
+
+            //await experienceServiceProvData.push(sp_id);
+            let temp = await sp_id._id.toString();
+            await experienceServiceProvIdArray.push(temp);
+          }
+      }
+    })
+  }
+  if(categoryKeyword == '' && cityKeyword =='' && languageKeyword ==''){
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: experienceServiceProvData
+      })
+  }
+}
+
+/*== Location === */
+if(cityKeyword){ 
+  console.log('cityKeyword11:',cityKeyword)
+   for (var cityWord of cityKeyword) {
+     QuerySyntex = { sps_city:cityWord };
+     await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+       if (service_provider_detail) {
+           for (var sp_id of service_provider_detail) {
+             //let temp = await sp_id._id;
+ 
+             await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+               if (otherDetails) {
+                 const spProvider = JSON.stringify(sp_id);
+                 const parseSpProvider = JSON.parse(spProvider);
+                 parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                 let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                 console.log('professionalRating:', professionalRating)
+                 var sumRating = 0;
+                 for (var RatingData of professionalRating) {
+                   sumRating += parseInt(RatingData.sprs_rating);
+                 }
+                 let avgRating = Math.round(sumRating / professionalRating.length);
+                 if (!isNaN(avgRating)) {
+                   avgRating = avgRating.toFixed(1);
+                 } else {
+                   avgRating = 0;
+                 }
+                 console.log('avgRating:', avgRating)
+                 let temps = await parseSpProvider
+                 const spProvider1 = JSON.stringify(temps);
+                 const parseSpProvider1 = JSON.parse(spProvider1);
+                 parseSpProvider1.avgRating = avgRating
+                 cityServiceProvData.push(parseSpProvider1);
+               }
+             });
+             let temp = await sp_id._id.toString();
+             await cityServiceProvIdArray.push(temp);
+           }
+       }
+     })
+   }
+   if(experienceKeyword == '' && categoryKeyword == '' && languageKeyword == ''){
+     res.send({
+       err_msg, success_msg, layout: false,
+       session: req.session,
+       filterData: cityServiceProvData
+     })
+   }
+ }
+
+ /*===Language=== */
+
+ if(languageKeyword){ 
+  console.log('cityKeyword11:',languageKeyword)
+   for (var languageWord of languageKeyword) {
+     QuerySyntex = { spls_language:languageWord };
+     await ServiceProviderLanguageSchema.find(QuerySyntex).then(async service_provider_detail_lang => {
+       if (service_provider_detail_lang) {
+           for (var lang_sp_id of service_provider_detail_lang) {
+             //let temp = await sp_id._id;
+             await ServiceProviderSchema.find({_id:lang_sp_id.spls_service_provider_id}).then(async service_provider_detail => { 
+              for (var sp_id of service_provider_detail) {
+                      await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                          if (otherDetails) {
+                            const spProvider = JSON.stringify(sp_id);
+                            const parseSpProvider = JSON.parse(spProvider);
+                            parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                            let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                            console.log('professionalRating:', professionalRating)
+                            var sumRating = 0;
+                            for (var RatingData of professionalRating) {
+                              sumRating += parseInt(RatingData.sprs_rating);
+                            }
+                            let avgRating = Math.round(sumRating / professionalRating.length);
+                            if (!isNaN(avgRating)) {
+                              avgRating = avgRating.toFixed(1);
+                            } else {
+                              avgRating = 0;
+                            }
+                            console.log('avgRating:', avgRating)
+                            let temps = await parseSpProvider
+                            const spProvider1 = JSON.stringify(temps);
+                            const parseSpProvider1 = JSON.parse(spProvider1);
+                            parseSpProvider1.avgRating = avgRating
+                            languageServiceProvData.push(parseSpProvider1);
+                          }
+                        });
+              }
+
+             })
+            
+             let temp = await lang_sp_id.spls_service_provider_id.toString();
+             await languageServiceProvIdArray.push(temp);
+           }
+       }
+     })
+   }
+   if(experienceKeyword == '' && categoryKeyword == '' && cityKeyword == ''){
+     res.send({
+       err_msg, success_msg, layout: false,
+       session: req.session,
+       filterData: languageServiceProvData
+     })
+   }
+ }
+
+
+ /*==  Category and Expirence  ==*/
+if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !=''){
+  console.log('insideee')
+   let ttt = await getMatch(experienceServiceProvIdArray, categoryServiceProvIdArray); 
+   console.log('ttt:', ttt)
+   if(ttt){
+     for (var t of ttt) {
+          if(t){
+            QuerySyntex = { _id:t };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
+
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                      }
+                    });
+
+
+                    //let temp = await sp_id;
+                   // await catExpServiceProvIdArray.push(temp);
+                  }
+              }
+            })
+        }
+      }
+
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: catExpServiceProvIdArray
+      })
+
+    }else{
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: ''
+      })
+    }
+}
+
+
+ /*== Category and City ==*/
+
+ if(cityServiceProvIdArray !='' && categoryServiceProvIdArray !=''){
+  console.log('insideee')
+   let ttt = await getMatch(cityServiceProvIdArray, categoryServiceProvIdArray); 
+   console.log('ttt:', ttt)
+   if(ttt){
+     for (var t of ttt) {
+          if(t){
+            QuerySyntex = { _id:t };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
+
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                      }
+                    });
+                  }
+              }
+            })
+        }
+      }
+
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: catExpServiceProvIdArray
+      })
+
+    }else{
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: ''
+      })
+    }
+}
+
+
+/*== Category And Language == */
+
+if(languageServiceProvIdArray !='' && categoryServiceProvIdArray !=''){
+  console.log('insideee Category And Language')
+   let ttt = await getMatch(languageServiceProvIdArray, categoryServiceProvIdArray); 
+   console.log('ttt:', ttt)
+   if(ttt){
+     for (var t of ttt) {
+          if(t){
+            QuerySyntex = { _id:t };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
+
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                      }
+                    });
+                  }
+              }
+            })
+        }
+      }
+
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: catExpServiceProvIdArray
+      })
+
+    }else{
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: ''
+      })
+    }
+}
+
+
+
+ /*== Expirence and City ==*/
+
+ if(cityServiceProvIdArray !='' && experienceServiceProvIdArray !=''){
+  console.log('insideee')
+   let ttt = await getMatch(cityServiceProvIdArray, experienceServiceProvIdArray); 
+   console.log('ttt:', ttt)
+   if(ttt){
+     for (var t of ttt) {
+          if(t){
+            QuerySyntex = { _id:t };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
+
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                      }
+                    });
+                  }
+              }
+            })
+        }
+      }
+
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: catExpServiceProvIdArray
+      })
+
+    }else{
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: ''
+      })
+    }
+}
+
+/* == City And Language ==*/
+
+if(languageServiceProvIdArray !='' && cityServiceProvIdArray !=''){
+  console.log('insideee Category And Language')
+   let ttt = await getMatch(languageServiceProvIdArray, cityServiceProvIdArray); 
+   console.log('ttt:', ttt)
+   if(ttt){
+     for (var t of ttt) {
+          if(t){
+            QuerySyntex = { _id:t };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
+
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                      }
+                    });
+                  }
+              }
+            })
+        }
+      }
+
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: catExpServiceProvIdArray
+      })
+
+    }else{
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: ''
+      })
+    }
+}
+
+console.log('experienceServiceProvIdArray:', experienceServiceProvIdArray)
+console.log('categoryServiceProvIdArray:', categoryServiceProvIdArray)
+console.log('catExpServiceProvIdArray:', catExpServiceProvIdArray)
+console.log('cityServiceProvIdArray:', cityServiceProvIdArray)
+console.log('languageServiceProvIdArray:', languageServiceProvIdArray)
+
+}
+
+});
+
+
+function getMatch(a, b) {
+  var matches = [];
+  console.log('aaaaaaaa:',a)
+  console.log('bbbbbb:',b)
+  for ( var i = 0; i < a.length; i++ ) {
+      for ( var e = 0; e < b.length; e++ ) {
+          if ( a[i] === b[e] ) matches.push( a[i] );
+      }
+  }
+  return matches;
+}
+
 module.exports = app;
 
 

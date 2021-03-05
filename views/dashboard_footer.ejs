@@ -1829,7 +1829,9 @@ Myprofessional
         if (html.data.length > 0) {
           $.each(html.data, function (i, data) {
             console.log('val:', data)
-            htmlData += '<div class="col-sm-4 col-md-4 col-lg-3"><div class="card card-fix3"><div class="row"><div class="float-left card-header-fix"><div class="semi-circle"> <img class="card-img-top" src="images/recent-user-2.png" alt=""></div></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span> '+ data.avgRating +' Rating</span></div></div><div class="card-body"> <button type="button" class="btn btn-cancel" style="margin-top: 30px; margin-bottom: 0px;"><a style="color:#fff;" href="/professionals-detail?id='+ data._id +'">View</a></button></div></div></div>';
+            if(data != null){
+             htmlData += '<div class="col-sm-4 col-md-4 col-lg-3"><div class="card card-fix3"><div class="row"><div class="float-left card-header-fix"><div class="semi-circle"> <img class="card-img-top" src="images/recent-user-2.png" alt=""></div></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span> '+ data.avgRating +' Rating</span></div></div><div class="card-body"> <button type="button" class="btn btn-cancel" style="margin-top: 30px; margin-bottom: 0px;"><a style="color:#fff;" href="/professionals-detail?id='+ data._id +'">View</a></button></div></div></div>';
+            }
           });
         } else {
           htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
@@ -1838,7 +1840,7 @@ Myprofessional
       }
     });
   });
-  $('#professional-search-form').on('submit', function (e) {
+  $('.my-professional-search-form').on('submit', function (e) {
       e.preventDefault();
  // $("#professional-search-btn").click(function (e) {
    $('.loader-box').attr('style','display:flex !important');
@@ -1858,7 +1860,9 @@ Myprofessional
         if (html.filterData.length > 0) {
           $.each(html.filterData, function (i, data) {
             console.log('val:', data)
-            htmlData += '<div class="col-sm-4 col-md-4 col-lg-3"><div class="card card-fix3"><div class="row"><div class="float-left card-header-fix"><div class="semi-circle"> <img class="card-img-top" src="images/recent-user-2.png" alt=""></div></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span>'+ data.avgRating +' Rating</span></div></div><div class="card-body"> <button type="button" class="btn btn-cancel" style="margin-top: 30px; margin-bottom: 0px;"><a style="color:#fff;" href="/professionals-detail?id='+ data._id +'">View</a></button></div></div></div>';
+            if(data != null){
+             htmlData += '<div class="col-sm-4 col-md-4 col-lg-3"><div class="card card-fix3"><div class="row"><div class="float-left card-header-fix"><div class="semi-circle"> <img class="card-img-top" src="images/recent-user-2.png" alt=""></div></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span>'+ data.avgRating +' Rating</span></div></div><div class="card-body"> <button type="button" class="btn btn-cancel" style="margin-top: 30px; margin-bottom: 0px;"><a style="color:#fff;" href="/professionals-detail?id='+ data._id +'">View</a></button></div></div></div>';
+            }
           });
         } else {
           htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
@@ -2375,7 +2379,9 @@ Professional
         if (html.filterData.length > 0) {
           $.each(html.filterData, function (i, data) {
             console.log('val:', data)
+            if(data != null){
             htmlData += '<div class="col-lg-3"><div class="card card-fix2"><div class="row"><div class="float-left card-header-fix"> <a href="/professionals-detail?id=' + data._id + '"> <img class="card-img-top" src="images/recent-user-2.png" alt="Card image cap"> </a></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>' + data.avgRating + ' Rating</span></div></div><div class="card-body"><p class="card-text">' + data.professionalBody + '</p></div></div></div>';
+            }
           });
         } else {
           htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
@@ -2403,7 +2409,9 @@ Professional
         if (html.filterData.length > 0) {
           $.each(html.filterData, function (i, data) {
             console.log('val:', data)
-            htmlData += '<div class="col-lg-3"><div class="card card-fix2"><div class="row"><div class="float-left card-header-fix"> <a href="/professionals-detail?id=' + data._id + '"> <img class="card-img-top" src="images/recent-user-2.png" alt="Card image cap"> </a></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>' + data.avgRating + ' Rating</span></div></div><div class="card-body"><p class="card-text">' + data.professionalBody + '</p></div></div></div>';
+            if(data != null){
+             htmlData += '<div class="col-lg-3"><div class="card card-fix2"><div class="row"><div class="float-left card-header-fix"> <a href="/professionals-detail?id=' + data._id + '"> <img class="card-img-top" src="images/recent-user-2.png" alt="Card image cap"> </a></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>' + data.avgRating + ' Rating</span></div></div><div class="card-body"><p class="card-text">' + data.professionalBody + '</p></div></div></div>';
+            }
           });
         } else {
           htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
@@ -4433,6 +4441,34 @@ console.log('Inside Seller');
         }
       })
     })
+
+    function multifilter(){
+      $('.loader-box').attr('style','display:flex !important');
+      var formData = $("#multifilterForm").serialize();
+      console.log(formData)
+      $.ajax({
+      type: "POST",
+      data: formData,
+      url: "/professionals-multifilter",
+      cache: false,
+      success: function (html) {
+        $('.loader-box').attr('style','display:none !important');
+        console.log('result:', html.filterData)
+        var htmlData = '';
+        if (html.filterData.length > 0) {
+         $.each(html.filterData, function (i, data) {
+            console.log('val:', data)
+            htmlData += '<div class="col-lg-3"><div class="card card-fix2"><div class="row"><div class="float-left card-header-fix"> <a href="/professionals-detail?id=' + data._id + '"> <img class="card-img-top" src="images/recent-user-2.png" alt="Card image cap"> </a></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>' + data.avgRating + ' Rating</span></div></div><div class="card-body"><p class="card-text">' + data.professionalBody + '</p></div></div></div>';
+
+            //htmlData += '<div class="col-sm-4 col-md-4 col-lg-3"><div class="card card-fix3"><div class="row"><div class="float-left card-header-fix"><div class="semi-circle"> <img class="card-img-top" src="images/recent-user-2.png" alt=""></div></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span>'+ data.avgRating +' Rating</span></div></div><div class="card-body"> <button type="button" class="btn btn-cancel" style="margin-top: 30px; margin-bottom: 0px;"><a style="color:#fff;" href="/professionals-detail?id='+ data._id +'">View</a></button></div></div></div>';
+          });
+        } else {
+          htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
+        }
+        $('#filter_data').html(htmlData);
+      }
+    });
+    }
   </script>
   <script>
     function previewFile_upload_task_document(input, task_id, service_provider_id, phase_name, task_name, property_id,flage) {

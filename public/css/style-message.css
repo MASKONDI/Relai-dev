@@ -268,3 +268,7 @@ span#comment-error {
       a.showMore.showLess::after {
         content: "- VIEW LESS";
       }
+      .inner-box-qualification {
+        height: 209px;
+        overflow: auto;
+    }
