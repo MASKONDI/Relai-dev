@@ -12,6 +12,7 @@ const ServiceProviderRolesSchema = require("../../models/service_provider_roles"
 const PlanSchema = require("../../models/plan");
 const ServiceProviderPersonalDetailsSchema = require("../../models/service_provider_personal_details");
 const ServiceProviderIndemnityDetailsSchema = require("../../models/service_provider_indemnity_details");
+const validateProfChangePasswordInput = require('../../Validation/change-password-professional');
 
 
 const isEmpty = require('../../Validation/is-empty');
@@ -845,9 +846,13 @@ router.post('/forget-password-professional', function (req, res) {
     //'cus_email_verification_status': 'yes'
   }, function (err, result) {
     if (err) {
-      console.log('err', err);
-      req.flash('err_msg', 'Please enter registered Email address.');
-      res.redirect('/forget-password-professional');
+      // console.log('err', err);
+      // req.flash('err_msg', 'Please enter registered Email address.');
+      // res.redirect('/forget-password-professional');
+      res.send({
+        message: 'Please enter registered Email address.',
+        status: false
+      })
     } else {
 
       if (result != '' && result != null) {
@@ -869,9 +874,14 @@ router.post('/forget-password-professional', function (req, res) {
               upsert: true
             }, function (err) {
               if (err) {
-                console.log("err is :", err);
-                req.flash('err_msg', 'Something went wrong.');
-                res.redirect('/forget-password-professional')
+                // console.log("err is :", err);
+                // req.flash('err_msg', 'Something went wrong.');
+                // res.redirect('/forget-password-professional')
+                console.log('Error is :', err);
+                res.send({
+                  message: 'Something went wrong please contact to support team..',
+                  status: false
+                })
               } else {
 
                 var smtpTransport = nodemailer.createTransport({
@@ -894,17 +904,28 @@ router.post('/forget-password-professional', function (req, res) {
                   from: keys.user4,
                   subject: 'Relai Forget Password',
 
-                  text: 'Dear Customer,' + '\n\n' + 'New Password from Relai.\n\n' +
+                  text: 'Dear ServiceProvider,' + '\n\n' + 'New Password from Relai.\n\n' +
                     'Password: ' + new_pass + '\n\n' +
 
-                    'We suggest you to please change your password after successfully logging in on the portal using the above password :\n' + 'Here is the change password link: http://' + req.headers.host + '/Change-password' + '\n\n' +
+                    'We suggest you to please change your password after successfully logging in on the portal using the above password :\n' + 'Here is the change password link: http://' + req.headers.host + '/signin-professional' + '\n\n' +
                     'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
 
                 };
                 smtpTransport.sendMail(mailOptions, function (err) {
-                  if (err) { console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong.please connect support team'); res.redirect('/forget-password-professional') } else {
-                    req.flash('success_msg', 'Password has been sent successfully to your registered email, please check your mail...');
-                    res.redirect('/forget-password-professional')
+                  if (err) {
+                    console.log('email sending failed and error is :', err);
+                    res.send({
+                      message: 'Something went wrong please contact to support team..',
+                      status: false
+                    })
+                    //  console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong.please connect support team'); res.redirect('/forget-password-professional') 
+                  } else {
+                    // req.flash('success_msg', 'Password has been sent successfully to your registered email, please check your mail...');
+                    // res.redirect('/signin-professional')
+                    res.send({
+                      message: 'Password has been sent successfully to your registered email, please check your mail...',
+                      status: true
+                    })
                   }
                 });
               }
@@ -912,8 +933,12 @@ router.post('/forget-password-professional', function (req, res) {
           });
         });
       } else {
-        req.flash('err_msg', 'Please enter registered Email address.');
-        res.redirect('/forget-password-professional');
+        // req.flash('err_msg', 'Please enter registered Email address.');
+        // res.redirect('/forget-password-professional');
+        res.send({
+          message: 'Please enter registered Email address.',
+          status: false
+        })
       }
 
     }
@@ -1220,6 +1245,87 @@ router.post('/otp_verfication2', function (req, res) {
       }
     }
   });
+});
+
+//***************** post changes password **************//
+router.post('/professional-change-password', function (req, res) {
+  console.log("calling change password API", req.body);
+  var user_id = req.session.user_id;
+  const { errors, isValid } = validateProfChangePasswordInput(req.body);
+
+  // Check Validation
+  if (!isValid) {
+    console.log("error is ", errors);
+    //req.flash('err_msg', errors.confirmPassword);
+    if (errors.confirmPassword) {
+      res.send({
+        message: errors.confirmPassword,
+        status: false,
+        validationType: 'length'
+      })
+    } else {
+      res.send({
+        message: errors.sps_password,
+        status: false,
+        validationType: 'length'
+      })
+    }
+    //return; // res.redirect('/change-Password');
+  } else {
+    // Find Customer by 
+    ServiceProviderSchema.findOne({ _id: req.session.user_id }).then(sp => {
+      bcrypt.compare(req.body.oldPassword, sp.sps_password).then(isMatch => {
+        if (isMatch) {
+          //enableing session variable
+          var hashPassword = "";
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(req.body.sps_password, salt, (err, hash) => {
+              if (err) throw err;
+              hashPassword = hash;
+              ServiceProviderSchema.updateOne({
+                '_id': req.session.user_id
+              }, {
+                $set: {
+                  sps_password: hashPassword
+                }
+              }, {
+                upsert: true
+              }, function (err) {
+                if (err) {
+                  res.send({
+                    message: 'Something went wrong please try again.',
+                    status: false,
+                    validationType: 'server'
+                  })
+
+                  //console.log("err is :", err);
+                  //req.flash('err_msg', 'Something went wrong.');
+                  // return;
+                } else {
+                  //console.log("Password change successfully");
+                  //req.flash('success_msg', 'password change successfully');
+                  res.send({
+                    message: 'Password change successfully.',
+                    status: true,
+                    validationType: ''
+                  })
+
+                }
+              });
+            });
+          });
+          req.session.success = true;
+        } else {
+          //console.log('not matched')
+          res.send({
+            message: 'Old password wrong please check again.',
+            status: false,
+            validationType: 'matched'
+          })
+        }
+      });
+    });
+  }
 
 });
 

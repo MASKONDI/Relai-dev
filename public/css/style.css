@@ -4241,7 +4241,7 @@ span.float-right u {
     background: #005377;
     /* margin: 0 auto; */
     display: block;
-    margin-left: 50px;
+    /* margin-left: 50px; */
     margin-bottom: 30px;
 }
 .kyc-submit-btn {
