@@ -14,6 +14,11 @@ var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
 var signUpHelper = require('./api/service_provider_helper/signup_helper')
 var trackYourProgress = require('./api/service_provider_helper/trackYourProgress')
+
+var propertyProfessinoal = require('./api/service_provider_helper/propertyProfessionalHelper')
+var propertyHelper = require('./api/service_provider_helper/sp_propertydetial');
+var customerHelper = require('./api/service_provider_helper/customerHelper')
+
 const PropertiesPictureSchema = require("../models/properties_picture");
 //const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
 const PropertiesSchema = require("../models/properties");
@@ -27,6 +32,7 @@ const ServiceProviderLanguageSchema = require("../models/service_provider_langua
 const ServiceProviderEmploymentHistorySchema = require('../models/service_provider_employment_history');
 const ServiceProviderReferenceSchema = require("../models/service_provider_reference");
 const ServiceProviderIndemnityDetailsSchema = require("../models/service_provider_indemnity_details");
+
 
 app.get('/service-provider/dashboard-professional', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
@@ -65,68 +71,26 @@ app.get('/service-provider/track-your-progress-professionals', isServiceProvider
 app.get('/service-provider/property', isServiceProvider, async function (req, res) {
   console.log("current session is  from sp end:", req.session);
   req.session.pagename = 'service-provider/property';
+  let propertyArray=[]
+  let AllhiredProfeshnoal=await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id);
+  for(let key of AllhiredProfeshnoal){
+    let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
+    let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
+    propertyData.property_image = await propertyImageData.pps_property_image_name;
+    let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
+    let customerProfile = await customerHelper.getCustomerImageByID(key.pps_user_id);
+    propertyData.customer_name = await customerName
+    propertyData.customer_profile = await customerProfile
+    propertyArray.push(propertyData)
 
-
-  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_service_provider_id: req.session.user_id });
-
-  console.log("professional hired on particuler list", AllhiredProfeshnoal);
-
-  var propertyIdArray = [];
-  var customerIdArray = [];
-  var propertyData = [];
-  var propertyImageData = [];
-
-  for (let hiredProff of AllhiredProfeshnoal) {
-    propertyIdArray.push(hiredProff.pps_property_id);
-    customerIdArray.push(hiredProff.pps_user_id);
-    //Need to fetch customer data
-
-    await PropertiesSchema.find({
-      _id: hiredProff.pps_property_id
-    }).sort({ _id: -1 }).then(async (data) => {
-      if (data) {
-        //console.log("property Data is", data);
-        let arr = [];
-        await propertyData.push(data);
-        console.log("property Data is", propertyData);
-        for (let img of data) {
-          await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
-
-            let temp = await result
-            //for(let image of result){
-            //  let temp = await image
-            arr.push(temp)
-            // }
-          })
-
-        }
-
-        await propertyImageData.push(arr);
-        // console.log('++++++++',arr)
-      }
-      err_msg = req.flash('err_msg');
-      success_msg = req.flash('success_msg');
-
-
-
-    }).catch((err) => {
-      console.log(err)
-    })
   }
-  console.log("Property Data is :", propertyData[0]);
-  console.log();
-  console.log();
-  console.log();
-
-  console.log("propertyImageData is :", propertyImageData[0]);
-
+  console.log("propertyIdArray", propertyArray);
   res.render('service-provider/property', {
     err_msg, success_msg, layout: false,
     session: req.session,
-    propertyData: propertyData,
-    propertyImage: propertyImageData
+    propertyData: propertyArray,
+    
   })
-
 });
 app.get('/service-provider/professionals-to-do-list', isServiceProvider, function (req, res) {
   console.log("current session is :", req.session);
