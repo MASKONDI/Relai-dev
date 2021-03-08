@@ -14,6 +14,10 @@ var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
 var signUpHelper = require('./api/service_provider_helper/signup_helper')
 var trackYourProgress = require('./api/service_provider_helper/trackYourProgress')
+const PropertiesPictureSchema = require("../models/properties_picture");
+//const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
+const PropertiesSchema = require("../models/properties");
+const PropertyProfessionalSchema = require("../models/property_professional_Schema");
 
 app.get('/service-provider/dashboard-professional', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
@@ -48,6 +52,7 @@ app.get('/service-provider/track-your-progress-professionals', isServiceProvider
     propertyData: data
   });
 });
+
 app.get('/service-provider/property', isServiceProvider, async function (req, res) {
   console.log("current session is  from sp end:", req.session);
   req.session.pagename = 'service-provider/property';
@@ -59,18 +64,21 @@ app.get('/service-provider/property', isServiceProvider, async function (req, re
 
   var propertyIdArray = [];
   var customerIdArray = [];
+  var propertyData = [];
+  var propertyImageData = [];
+
   for (let hiredProff of AllhiredProfeshnoal) {
-    propertyIdArray.push(sp_id.pps_property_id);
-    customerIdArray.push(sp_id.pps_user_id);
+    propertyIdArray.push(hiredProff.pps_property_id);
+    customerIdArray.push(hiredProff.pps_user_id);
     //Need to fetch customer data
 
     await PropertiesSchema.find({
-      _id: sp_id.pps_property_id
+      _id: hiredProff.pps_property_id
     }).sort({ _id: -1 }).then(async (data) => {
       if (data) {
         //console.log("property Data is", data);
         let arr = [];
-        //await propertyData.push(data);
+        await propertyData.push(data);
         console.log("property Data is", propertyData);
         for (let img of data) {
           await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
