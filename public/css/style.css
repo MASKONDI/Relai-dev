@@ -5796,3 +5796,8 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
     }       
+.doc_name{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
