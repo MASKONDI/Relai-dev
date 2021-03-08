@@ -307,6 +307,17 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <%-include('professional-footer')-%>
+    <script>
+      //$(document).ready(function () {
+        $(window).scroll(function() {
+         
+            if($(window).scrollTop() == $(document).height() - $(window).height()) {
+                  // ajax call get data from server and append to the div
+                  alert('1')
+            }
+        });
+      //});
+    </script>
       </body>
 
       </html>
