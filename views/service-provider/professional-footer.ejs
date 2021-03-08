@@ -115,4 +115,85 @@
 
     }
   });
+
+  function editProfile(user_id) {
+
+    $.ajax({
+      type: "GET",
+      data: { user_id },
+      url: "/getPersonalProfile",
+      cache: false,
+      success: function (data) {
+        console.log(data)
+        var htmlData = '';
+
+      }
+    });
+    $.ajax({
+      type: "GET",
+      data: { user_id },
+      url: "/getOtherProfile",
+      cache: false,
+      success: function (data) {
+        console.log(data)
+        var htmlData = '';
+      }
+    });
+    $.ajax({
+      type: "GET",
+      data: { user_id },
+      url: "/getEducationdetails",
+      cache: false,
+      success: function (data) {
+        console.log(data)
+        var htmlData = '';
+      }
+    });
+    $.ajax({
+      type: "GET",
+      data: { user_id },
+      url: "/getEmploymenthistorydetails",
+      cache: false,
+      success: function (data) {
+        console.log(data)
+        var htmlData = '';
+      }
+    });
+    $.ajax({
+      type: "GET",
+      data: { user_id },
+      url: "/getReferencedetails",
+      cache: false,
+      success: function (data) {
+        console.log(data)
+        var htmlData = '';
+      }
+    });
+    $.ajax({
+      type: "GET",
+      data: { user_id },
+      url: "/getIdentimitydetails",
+      cache: false,
+      success: function (data) {
+        console.log(data)
+        var htmlData = '';
+      }
+    });
+    $.ajax({
+      type: "GET",
+      data: { user_id },
+      url: "/getLanguagedetails",
+      cache: false,
+      success: function (data) {
+        console.log(data)
+        var htmlData = '';
+      }
+    });
+  }
+</script>
+
+<script>
+  $(document).ready(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
 </script>

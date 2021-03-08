@@ -5604,6 +5604,19 @@ a .clip-icon{
     text-transform: capitalize;
     background-color: #005377
   }
+  .edit-profile-icon{
+    /* position: absolute; */
+    right: 20px;
+    top: 10px;
+    padding: 5px 10px;
+    color: #fff;
+    border-radius: 15px;
+    text-transform: capitalize;
+    background-color: #005377
+  }
+  .font-color-fix{
+    color: #005377;
+  }
   .btn-next-info {
     color: #fff;
     background-color: #005377;
@@ -5796,3 +5809,8 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
     }       
+.doc_name{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
