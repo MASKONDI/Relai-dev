@@ -47,7 +47,7 @@ app.get('/otp-professional', function (req, res) {
 });
 app.get('/service-provider/track-your-progress-professionals', isServiceProvider, async function (req, res) {
   let data = await trackYourProgress.getAllPropertyByUserId(req.session.user_id)
-  console.log('data=======', data)
+  console.log('data=======', data);
   //console.log("current session is :", req.session);
   req.session.pagename = 'service-provider/track-your-progress-professionals';
   err_msg = req.flash('err_msg');
@@ -58,7 +58,16 @@ app.get('/service-provider/track-your-progress-professionals', isServiceProvider
     propertyData: data
   });
 });
-
+// app.post('/service-provider/track-your-progress-professionals', isServiceProvider, async function (req, res) {
+//   console.log(req.body);
+//   var start=req.body.start
+//   var limit=req.body.limit
+//   let data = await trackYourProgress.getAllPropertyByUserId1(req.session.user_id,start,limit)
+//   console.log('data===========',data)
+//   res.send({
+//     'data':data
+//   })
+// })
 app.get('/service-provider/property', isServiceProvider, async function (req, res) {
   console.log("current session is  from sp end:", req.session);
   req.session.pagename = 'service-provider/property';
