@@ -14,9 +14,17 @@ var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
 var signUpHelper = require('./api/service_provider_helper/signup_helper')
 var trackYourProgress = require('./api/service_provider_helper/trackYourProgress')
+
 var propertyProfessinoal = require('./api/service_provider_helper/propertyProfessionalHelper')
 var propertyHelper = require('./api/service_provider_helper/sp_propertydetial');
 var customerHelper = require('./api/service_provider_helper/customerHelper')
+
+const PropertiesPictureSchema = require("../models/properties_picture");
+//const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
+const PropertiesSchema = require("../models/properties");
+const PropertyProfessionalSchema = require("../models/property_professional_Schema");
+
+
 app.get('/service-provider/dashboard-professional', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -50,6 +58,7 @@ app.get('/service-provider/track-your-progress-professionals', isServiceProvider
     propertyData: data
   });
 });
+
 app.get('/service-provider/property', isServiceProvider, async function (req, res) {
   console.log("current session is  from sp end:", req.session);
   req.session.pagename = 'service-provider/property';
@@ -64,6 +73,7 @@ app.get('/service-provider/property', isServiceProvider, async function (req, re
     propertyData.customer_name = await customerName
     propertyData.customer_profile = await customerProfile
     propertyArray.push(propertyData)
+
   }
   console.log("propertyIdArray", propertyArray);
   res.render('service-provider/property', {
