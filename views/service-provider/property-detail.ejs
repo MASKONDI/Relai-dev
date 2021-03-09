@@ -45,15 +45,17 @@
                           <div id="demo" class="carousel slide" data-ride="carousel">
                             <!-- The slideshow -->
                             <div class="carousel-inner">
-                              <div class="carousel-item active">
-                                <img src="../images/nacary.png" alt="">
-                              </div>
-                              <div class="carousel-item">
-                                <img src="../images/nacary.png" alt="">
-                              </div>
-                              <div class="carousel-item">
-                                <img src="../images/nacary.png" alt="">
-                              </div>
+                              <% var c=0; propertyImage.forEach(function(rows){%>
+                                <%if(c==0){%>
+                                  <div class="carousel-item-fix carousel-item active">
+                                    <img src="../propimg/<%=rows.pps_property_image_name%>" alt="">
+                                  </div>
+                                  <%}else{%>
+                                    <div class="carousel-item-fix carousel-item ">
+                                      <img src="../propimg/<%=rows.pps_property_image_name%>" alt="">
+                                    </div>
+                                    <%}%>
+                                      <% c++;});%>
                             </div>
                             <!-- Left and right controls -->
                             <a class="carousel-control-prev" href="#demo" data-slide="prev">
@@ -68,19 +70,32 @@
                           <div class="apartment-details">
                             <div class="clearfix">
                               <div class="float-left">
-                                <h3 class="apartment-name"><a href="#"> Hilton Avenue</a></h3>
+                                <h3 class="apartment-name"><a href="#">
+                                    <%=propertyDetailData[0].ps_property_name%><span>(
+                                        <%=propertyDetailData[0].ps_unique_code%> )
+                                      </span>
+                                  </a></h3>
                                 <div class="row">
                                   <div class="col-sm-6 col-lg-6">
-                                    <div class="location-part"><a href="#"><img src="../images/location.png"> Sudirman,
-                                        Central
-                                        Jakarta</a></div>
+                                    <div class="location-part"><a href="#"><img src="../images/location.png">
+                                        <%=propertyDetailData[0].ps_property_address%>,
+                                          <%=propertyDetailData[0].ps_property_country_id%>
+                                      </a></div>
                                   </div>
 
                                   <div class="col-sm-6 col-lg-6">
+
                                     <div class="recent-img img-fix float-right ">
-                                      <img src="../images/user-1.png"><span>
-                                        by Robin Janson
-                                      </span>
+                                      <% if(customerName=='undefined' || customerProfile=='undefined' ){%>
+                                        <img src="../images/user-1.png">
+                                        <span style="font-size: 13px;">by
+                                          N/A</span>
+                                        <%} else {%>
+                                          <img src="../upload/<%=customerProfile%>"
+                                            style="border-radius: 50%; height: 16px;margin-right: 1px;"><span>
+                                            by <%=customerName%>
+                                          </span>
+                                          <%}%>
                                     </div>
                                   </div>
                                 </div>
@@ -90,17 +105,23 @@
                               <div class="row">
                                 <div class="col-4 col-sm-4 col-lg-4">
                                   <div class="start-date">
-                                    <p>Area<br><b>2,400 sq.ft.</b></p>
+                                    <p>Area<br><b>
+                                        <%=propertyDetailData[0].ps_property_area%> sq.ft.
+                                      </b></p>
                                   </div>
                                 </div>
                                 <div class="col-4 col-sm-4 col-lg-4">
                                   <div class="start-date">
-                                    <p>Bedrooms<br><b>3</b></p>
+                                    <p>Bedrooms<br><b>
+                                        <%=propertyDetailData[0].ps_property_bedroom%>
+                                      </b></p>
                                   </div>
                                 </div>
                                 <div class="col-4 col-sm-4 col-lg-4">
                                   <div class="start-date">
-                                    <p>Bathrooms<br><b>2</b></p>
+                                    <p>Bathrooms<br><b>
+                                        <%=propertyDetailData[0].ps_property_bathroom%>
+                                      </b></p>
                                   </div>
                                 </div>
 
@@ -136,12 +157,8 @@
               <div class="professional-files-section">
                 <div class="about-section">
                   <h6> <b>About the property</b></h6>
-                  <p>I perform all phases of architectural work including planning, I perform all phases of
-                    architectural work including planning, I perform all phases of architectural work including
-                    planning, I perform all phases of architectural work including planning, I perform all phases of
-                    architectural work including planning, I perform all phases of architectural work including
-                    planning, I perform all phases of architectural work including planning, I perform all phases of
-                    architectural work including planning, I perform all phases of architectural work including
+                  <p>
+                    <%=propertyDetailData[0].ps_additional_note%>
                   </p>
                 </div>
 
