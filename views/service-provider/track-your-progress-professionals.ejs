@@ -31,92 +31,102 @@
             </div>
             <div class="dashboard-inner loadmore">
               <%if(propertyData.length>0){%>
-              <%propertyData.forEach(function(row,i){%>
-              <div class="docs-files-section progress-box">
-                <div class="row aa">
-                  <div class="col-md-3">
-                    <div class="left-side-content-progress">
-                      <h3><%=row.ps_property_name%></h3>
-                      <p><img src="../images/dreamhome.png"><%=row.ps_property_address%>, <%=row.ps_property_country_id%></p>
-                      <ul>
-                        <%if(row.user_image==undefined){%>
-                          <li><img src="../images/recent-user-2.png">
-                          <%}else{%>
-                        <li><img src="../upload/<%=row.user_image%> " style="border-radius: 50%;"></li>
-                        <%}%>
-                        <!-- <li><img src="../images/recent-user-2.png"></li>
+                <%propertyData.forEach(function(row,i){%>
+                  <div class="docs-files-section progress-box">
+                    <div class="row">
+                      <div class="col-md-3">
+                        <div class="left-side-content-progress">
+                          <h3>
+                            <%=row.ps_property_name%>
+                          </h3>
+                          <p><img src="../images/dreamhome.png">
+                            <%=row.ps_property_address%>, <%=row.ps_property_country_id%>
+                          </p>
+                          <ul>
+                            <%if(row.user_image==undefined){%>
+                              <li><img src="../images/recent-user-2.png">
+                                <%}else{%>
+                              <li><a href="#" data-toggle="tooltip" data-placement="top" title="<%=row.user_name%>"><img
+                                    src="../upload/<%=row.user_image%> " style="border-radius: 50%;"></a></li>
+                              <%}%>
+                                <!-- <li><img src="../images/recent-user-2.png"></li>
                         <li><img src="../images/recent-user-3.png"></li> -->
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="col-md-9">
-                    <div class="progress-line">
-                      <ul>
-                        <li class="progress-1"><a href="/service-provider/myproperties-detail-phaseA"><img
-                              src="../images/white-prgress=arrow.png"></a>
-                          <span>Phase
-                            A</span>
-                        </li>
-                        <li class="progress-2"><img src="../images/white-prgress=arrow.png"> <span>Phase B</span></li>
-                        <li class="progress-3"><img src="../images/white-prgress=arrow.png"> <span>Phase C</span></li>
-                        <li class="progress-4"><img src="../images/white-prgress=arrow.png"> <span>Phase D</span></li>
-                        <li class=""><img src="../images/white-prgress=arrow.png"> <span>Phase E</span></li>
-                        <li class=""><img src="../images/white-prgress=arrow.png"> <span>Phase F</span></li>
-                      </ul>
-                    </div>
-                    <div class="time-schedule">
-                      <ul>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            2 weeks
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            2 weeks
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            2 weeks
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            2 weeks
-                          </div>
-                        </li>
-                      </ul>
-                      <ul>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            5,000 $
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            5,000 $
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            5,000 $
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            5,000 $
-                          </div>
-                        </li>
-                      </ul>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="col-md-9">
+                        <div class="progress-line">
+                          <ul>
+                            <li class="progress-1"><a href="/service-provider/myproperties-detail-phaseA"><img
+                                  src="../images/white-prgress=arrow.png"></a>
+                              <span>Phase
+                                A</span>
+                            </li>
+                            <li class="progress-2"><img src="../images/white-prgress=arrow.png"> <span>Phase B</span>
+                            </li>
+                            <li class="progress-3"><img src="../images/white-prgress=arrow.png"> <span>Phase C</span>
+                            </li>
+                            <li class="progress-4"><img src="../images/white-prgress=arrow.png"> <span>Phase D</span>
+                            </li>
+                            <li class=""><img src="../images/white-prgress=arrow.png"> <span>Phase E</span></li>
+                            <li class=""><img src="../images/white-prgress=arrow.png"> <span>Phase F</span></li>
+                          </ul>
+                        </div>
+                        <div class="time-schedule">
+                          <ul>
+                            <li>
+                              <div>
+                                <img src="../images/track-active.png">
+                                2 weeks
+                              </div>
+                            </li>
+                            <li>
+                              <div>
+                                <img src="../images/track-active.png">
+                                2 weeks
+                              </div>
+                            </li>
+                            <li>
+                              <div>
+                                <img src="../images/track-active.png">
+                                2 weeks
+                              </div>
+                            </li>
+                            <li>
+                              <div>
+                                <img src="../images/track-active.png">
+                                2 weeks
+                              </div>
+                            </li>
+                          </ul>
+                          <ul>
+                            <li>
+                              <div>
+                                <img src="../images/track-active.png">
+                                5,000 $
+                              </div>
+                            </li>
+                            <li>
+                              <div>
+                                <img src="../images/track-active.png">
+                                5,000 $
+                              </div>
+                            </li>
+                            <li>
+                              <div>
+                                <img src="../images/track-active.png">
+                                5,000 $
+                              </div>
+                            </li>
+                            <li>
+                              <div>
+                                <img src="../images/track-active.png">
+                                5,000 $
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -346,6 +356,7 @@
       });
       }
     </script> -->
+
       </body>
 
       </html>

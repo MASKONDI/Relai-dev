@@ -7,21 +7,23 @@ module.exports.getAllPropertyByUserId = function (user_id) {
             data = {
                 pps_service_provider_id: user_id
             }
-           await PropertyProfessionalSchema.find(data).sort({ _id: -1 }).limit(3).then(async (resp) => {
-                if(resp){
 
-                    var dataarray=[];
-                    for(var k of resp){
-                        await PropertiesSchema.findOne({_id:k.pps_property_id}).then(async(responce)=>{
-                            if(responce){
+            await PropertyProfessionalSchema.find(data).sort({ _id: -1 }).then(async (resp) => {
+                if (resp) {
+                    var dataarray = [];
+                    for (var k of resp) {
+                        await PropertiesSchema.findOne({ _id: k.pps_property_id }).then(async (responce) => {
+                            if (responce) {
                                 let customerImage = await customerHelper.getCustomerImageByID(k.pps_user_id)
+                                let customerName = await customerHelper.getCustomerNameByID(k.pps_user_id);
                                 var object_as_string = JSON.stringify(responce);
                                 const t = JSON.parse(object_as_string);
-                                t.user_image =customerImage
+                                t.user_image = customerImage
+                                t.user_name = customerName
                                 let temps = await t
                                 let tempsData = await temps
                                 dataarray.push(temps)
-                              
+
                             }
                         })
 
@@ -29,7 +31,7 @@ module.exports.getAllPropertyByUserId = function (user_id) {
 
                     resolve(dataarray)
                 }
-                
+
             }).catch((err) => {
                 reject(err)
             })
