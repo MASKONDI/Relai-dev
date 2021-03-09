@@ -1,5 +1,6 @@
 const ServiceProviderEmploymentHistorySchema = require("../../../models/service_provider_employment_history");
 const ServiceProviderPortfolioSchema = require("../../../models/service_provider_portfolio");
+const ServiceProviderReferenceSchema = require("../../../models/service_provider_reference");
 module.exports.getAllEmployeHistory = function (service_provider_id) {
     return new Promise(async function (resolve, reject) {
         if (service_provider_id != null) {
@@ -70,4 +71,22 @@ module.exports.savePortpofolio = function (req) {
         }
 
     }).catch((error) => { console.log(error) });
+};
+
+module.exports.getReferenceDetailById = function (id) {
+    return new Promise(async function (resolve, reject) {
+        if (id != null) {
+            data = {
+                rs_service_provider_id: id
+            }
+            ServiceProviderReferenceSchema.findOne(data).sort({ _id: -1 }).then(async (resp) => {
+                let responce = await resp
+                resolve(responce)
+            }).catch((err) => {
+                reject(err)
+            })
+        } else {
+            reject({ status: 0 })
+        }
+    }).catch((error) => { });
 };

@@ -2163,14 +2163,14 @@ app.get('/signup-professionals-profile-3', isServiceProvider, (req, res) => {
 //     session: req.session
 //   });
 // });
-app.get('/signup-professionals-profile-5', (req, res) => {
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile-5', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
+// app.get('/signup-professionals-profile-5', (req, res) => {
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   res.render('signup-professionals-profile-5', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session
+//   });
+// });
 app.get('/signup-professionals-profile-6', (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');

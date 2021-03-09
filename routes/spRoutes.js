@@ -33,7 +33,43 @@ const ServiceProviderEmploymentHistorySchema = require('../models/service_provid
 const ServiceProviderReferenceSchema = require("../models/service_provider_reference");
 const ServiceProviderIndemnityDetailsSchema = require("../models/service_provider_indemnity_details");
 
-
+app.get('/signup-professionals-profile-5', async(req, res) => {
+  console.log('55555555555',req.query)
+  if(req.query.editid){
+   let refrenceData= await signUpHelper.getReferenceDetailById(req.query.editid);
+   console.log(refrenceData)
+   if(refrenceData){
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('signup-professionals-profile-5', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      refrenceData:refrenceData
+    });
+   }else{
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('signup-professionals-profile-5', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      refrenceData:null
+    });
+   }
+  }else{
+    err_msg = req.flash('err_msg');
+   success_msg = req.flash('success_msg');
+    res.render('signup-professionals-profile-5', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      refrenceData:null
+    });
+  }
+   
+  // res.render('signup-professionals-profile-5', {
+  //   err_msg, success_msg, layout: false,
+  //   session: req.session
+  // });
+});
 app.get('/service-provider/dashboard-professional', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -138,6 +174,7 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
 });
 
 app.get('/service-provider/property-detail', isServiceProvider, function (req, res) {
+  
   console.log("current session is :", req.session);
   req.session.pagename = 'service-provider/property';
   err_msg = req.flash('err_msg');
