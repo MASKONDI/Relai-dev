@@ -3694,6 +3694,71 @@ if(languageServiceProvIdArray !='' && categoryServiceProvIdArray !='' && citySer
       }
     }
 
+
+   /*== Expirence and Language ==*/
+
+ if(languageServiceProvIdArray !='' && experienceServiceProvIdArray !='' && categoryServiceProvIdArray=='' && cityServiceProvIdArray==''){
+  console.log('insideee Expirence and City')
+   let ttt = await getMatch(languageServiceProvIdArray, experienceServiceProvIdArray); 
+   console.log('ttt:', ttt)
+   if(ttt){
+     for (var t of ttt) {
+          if(t){
+            QuerySyntex = { _id:t };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
+
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                    }
+                  });
+                }
+              }
+            })
+          }
+        }
+
+        res.send({
+          err_msg, success_msg, layout: false,
+          session: req.session,
+          filterData: catExpServiceProvIdArray
+        })
+
+      } else {
+        res.send({
+          err_msg, success_msg, layout: false,
+          session: req.session,
+          filterData: ''
+        })
+      }
+    }
+
+
+
+
     /* == City And Language ==*/
 
 if(languageServiceProvIdArray !='' && cityServiceProvIdArray !='' && experienceServiceProvIdArray=='' && categoryServiceProvIdArray==''){
