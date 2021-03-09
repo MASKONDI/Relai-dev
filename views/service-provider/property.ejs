@@ -96,6 +96,7 @@
             <div class="row">
               <div class="col-sm-12 col-lg-12">
                 <div class="dashboard-inner">
+
                   <div class="row">
 
 
@@ -105,16 +106,24 @@
                           <div class="home-section">
                             <div class="my-dream-home-box">
                               <div class="dream-home-img">
-                                <img src="../propimg/<%=row.property_image%>">
-                                <a href="/service-provider/property-detail" class="btn btn-new">
-                                  <%=row.ps_property_type%>
-                                </a>
+                                <%if(propertyImage.length>0){%>
+                                  <%if(propertyImage[i].length>0){%>
+                                    <img src="../propimg/<%=propertyImage[i][0].pps_property_image_name%>">
+                                    <a href="/service-provider/property-detail?id=<%=row._id%>" class="btn btn-new">
+                                      <%=row.ps_property_type%>
+                                    </a>
+                                    <%}else{%>
+                                      <img src="../images/nacary.png">
+
+                                      <%}%>
+                                        <%}%>
                               </div>
                               <div class="dream-home-description">
-                                <h3><a href="/service-provider/property-detail">
+                                <h3><a href="/service-provider/property-detail?id=<%=row._id%>">
                                     <%=row.ps_property_name%>
                                   </a></h3>
-                                <div class="location-part"><a href="/service-provider/property-detail"><img
+                                <div class="location-part"><a
+                                    href="/service-provider/property-detail?id=<%=row._id%>"><img
                                       src="../images/location.png">
                                     <%=row.ps_property_address%>, <%=row.ps_property_country_id%>
                                   </a></div>
@@ -124,30 +133,37 @@
                                     <%=row.ps_property_area%> sq.
                                       ft.
                                   </a>&nbsp;<span>
-                                    <%if(row.customer_profile==undefined){%>
-                                      <img src="../images/user-1.png">
-                                      <span style="font-size: 13px;">by
-                                        N/A</span>
+                                    <%if(propertyImage.length>0){%>
+                                      <%if(propertyImage[i].length>0){%>
+                                        <%if(propertyImage[i].customer_profile==undefined){%>
+                                          <img src="../images/user-1.png">
+                                          <span style="font-size: 13px;">by
+                                            N/A</span>
                                   </span>
                                   <%}else{%>
-                                    <img src="../upload/<%=row.customer_profile%>"
+                                    <img src="../upload/<%=propertyImage[i].customer_profile%>"
                                       style="border-radius: 50%; height: 16px;margin-right: 1px;">
                                     <span style="font-size: 13px; margin-left: 0px">by
-                                      <%=row.customer_name%>
+                                      <%=propertyImage[i].customer_name%>
                                     </span></span>
                                     <%}%>
+                                      <%}%>
+                                        <%}%>
 
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
+
                         <%})%>
                           <%}else{%>
                             <p style="font-size: 20px; text-align: center;">Property Not Found !!</p>
                             <%}%>
 
                   </div>
+
+
                 </div>
               </div>
             </div>
