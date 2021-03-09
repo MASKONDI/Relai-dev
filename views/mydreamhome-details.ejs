@@ -24,7 +24,8 @@
                   <%});%>
               </select>
 
-              <select onchange="phaseTaskList(this,'<%= session.active_user_login%>')" class="form-control selectBox2 phase_list" id="Phase" name="Phase" style="height: 48px;"
+              <select onchange="phaseTaskList(this,'<%= session.active_user_login%>')"
+                class="form-control selectBox2 phase_list" id="Phase" name="Phase" style="height: 48px;"
                 data-rule-required="true" data-msg-required="phase  is required" required>
                 <option value="">Select Phase</option>
                 <%if(propertyDetailData.length>0){%>
@@ -46,14 +47,15 @@
               <%- include('existing-task-select')-%>
 
 
-              <input type="text" class="form-control form-control-fix2" id="taskName" placeholder="Task Name"
-                name="task_name" required>
-                <input type="hidden" class="form-control form-control-fix2" id="ppts_phase_flag" name="ppts_phase_flag" required>
+                <input type="text" class="form-control form-control-fix2" id="taskName" placeholder="Task Name"
+                  name="task_name" required>
+                <input type="hidden" class="form-control form-control-fix2" id="ppts_phase_flag" name="ppts_phase_flag"
+                  required>
 
-              <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate"
-                placeholder="Due on Date" name="duedate" required>
-              <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
-                placeholder="Add Notes(If any)"></textarea>
+                <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate"
+                  placeholder="Due on Date" name="duedate" required>
+                <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
+                  placeholder="Add Notes(If any)"></textarea>
 
             </div>
 
@@ -245,9 +247,8 @@
                                   </a></div>
                               </div>
                               <div class="img-fix3 float-right">
-                                <a href="javascript:void(0)"
-                                  data-toggle="tooltip" data-placement="top" title="Message"><img
-                                    src="images/chat.png"></a>
+                                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top"
+                                  title="Message"><img src="images/chat.png"></a>
                                 <!-- #ComplaintModal -->
                                 <!-- data-toggle="modal" data-target="#MyComplaintModal" -->
                                 <a href="javascript:void(0)" data-property_id="<%=propertyDetailData[0]._id%>"
@@ -365,23 +366,23 @@
                       <ul>
                         <% if(session.active_user_login=='renovator' ) {%>
                           <li class="progress-1"><a
-                            href="/mydreamhome-details-phase-a?id=<%=propertyDetailData[0]._id%>&phase=Strategic definition&step=A"><img
-                              src="images/white-prgress=arrow.png"></a> <span>Phase A</span></li>
-                        <li class="progress-2"><a
-                            href="/mydreamhome-details-phase-b?id=<%=propertyDetailData[0]._id%>&phase=Preparation and Briefing&step=B"><img
-                              src="images/white-prgress=arrow.png"> </a><span>Phase B</span></li>
-                        <li class="progress-3"><a
-                            href="/mydreamhome-details-phase-c?id=<%=propertyDetailData[0]._id%>&phase=Spatial coordination&step=C"><img
-                              src="images/white-prgress=arrow.png"></a> <span>Phase C</span></li>
-                        <li class="progress-4"><a
-                            href="/mydreamhome-details-phase-d?id=<%=propertyDetailData[0]._id%>&phase=Technical Design&step=D"><img
-                              src="images/white-prgress=arrow.png"></a><span>Phase D</span></li>
-                        <li class="progress-5"><a
-                            href="/mydreamhome-details-phase-e?id=<%=propertyDetailData[0]._id%>&phase=Manifacturing and Construction&step=E"><img
-                              src="images/white-prgress=arrow.png"></a> <span>Phase E</span></li>
-                        <li class="progress-6"><a
-                            href="/mydreamhome-details-phase-f?id=<%=propertyDetailData[0]._id%>&phase=Concept Design&step=F"><img
-                              src="images/white-prgress=arrow.png"> </a><span>Phase F</span></li>
+                              href="/mydreamhome-details-phase-a?id=<%=propertyDetailData[0]._id%>&phase=Strategic definition&step=A"><img
+                                src="images/white-prgress=arrow.png"></a> <span>Phase A</span></li>
+                          <li class="progress-2"><a
+                              href="/mydreamhome-details-phase-b?id=<%=propertyDetailData[0]._id%>&phase=Preparation and Briefing&step=B"><img
+                                src="images/white-prgress=arrow.png"> </a><span>Phase B</span></li>
+                          <li class="progress-3"><a
+                              href="/mydreamhome-details-phase-c?id=<%=propertyDetailData[0]._id%>&phase=Spatial coordination&step=C"><img
+                                src="images/white-prgress=arrow.png"></a> <span>Phase C</span></li>
+                          <li class="progress-4"><a
+                              href="/mydreamhome-details-phase-d?id=<%=propertyDetailData[0]._id%>&phase=Technical Design&step=D"><img
+                                src="images/white-prgress=arrow.png"></a><span>Phase D</span></li>
+                          <li class="progress-5"><a
+                              href="/mydreamhome-details-phase-e?id=<%=propertyDetailData[0]._id%>&phase=Manifacturing and Construction&step=E"><img
+                                src="images/white-prgress=arrow.png"></a> <span>Phase E</span></li>
+                          <li class="progress-6"><a
+                              href="/mydreamhome-details-phase-f?id=<%=propertyDetailData[0]._id%>&phase=Concept Design&step=F"><img
+                                src="images/white-prgress=arrow.png"> </a><span>Phase F</span></li>
                           <li class="progress-7"><a
                               href="/mydreamhome-details-phase-g?id=<%=propertyDetailData[0]._id%>&phase=Handover&step=G"><img
                                 src="images/white-prgress=arrow.png"></a> <span>Phase G</span></li>
@@ -390,23 +391,23 @@
                                 src="images/white-prgress=arrow.png"> </a><span>Phase H</span></li>
                           <%}else{%>
                             <li class="progress-1"><a
-                              href="/mydreamhome-details-phase-a?id=<%=propertyDetailData[0]._id%>&phase=Instruction&step=A"><img
-                                src="images/white-prgress=arrow.png"></a> <span>Phase A</span></li>
-                          <li class="progress-2"><a
-                              href="/mydreamhome-details-phase-b?id=<%=propertyDetailData[0]._id%>&phase=Pre-exchange Submitting the contract&step=B"><img
-                                src="images/white-prgress=arrow.png"> </a><span>Phase B</span></li>
-                          <li class="progress-3"><a
-                              href="/mydreamhome-details-phase-c?id=<%=propertyDetailData[0]._id%>&phase=Prior to exchange of contracts&step=C"><img
-                                src="images/white-prgress=arrow.png"></a> <span>Phase C</span></li>
-                          <li class="progress-4"><a
-                              href="/mydreamhome-details-phase-d?id=<%=propertyDetailData[0]._id%>&phase=Exchange of contracts&step=D"><img
-                                src="images/white-prgress=arrow.png"></a><span>Phase D</span></li>
-                          <li class="progress-5"><a
-                              href="/mydreamhome-details-phase-e?id=<%=propertyDetailData[0]._id%>&phase=Completion&step=E"><img
-                                src="images/white-prgress=arrow.png"></a> <span>Phase E</span></li>
-                          <li class="progress-6"><a
-                              href="/mydreamhome-details-phase-f?id=<%=propertyDetailData[0]._id%>&phase=Post-Completion&step=F"><img
-                                src="images/white-prgress=arrow.png"> </a><span>Phase F</span></li>
+                                href="/mydreamhome-details-phase-a?id=<%=propertyDetailData[0]._id%>&phase=Instruction&step=A"><img
+                                  src="images/white-prgress=arrow.png"></a> <span>Phase A</span></li>
+                            <li class="progress-2"><a
+                                href="/mydreamhome-details-phase-b?id=<%=propertyDetailData[0]._id%>&phase=Pre-exchange Submitting the contract&step=B"><img
+                                  src="images/white-prgress=arrow.png"> </a><span>Phase B</span></li>
+                            <li class="progress-3"><a
+                                href="/mydreamhome-details-phase-c?id=<%=propertyDetailData[0]._id%>&phase=Prior to exchange of contracts&step=C"><img
+                                  src="images/white-prgress=arrow.png"></a> <span>Phase C</span></li>
+                            <li class="progress-4"><a
+                                href="/mydreamhome-details-phase-d?id=<%=propertyDetailData[0]._id%>&phase=Exchange of contracts&step=D"><img
+                                  src="images/white-prgress=arrow.png"></a><span>Phase D</span></li>
+                            <li class="progress-5"><a
+                                href="/mydreamhome-details-phase-e?id=<%=propertyDetailData[0]._id%>&phase=Completion&step=E"><img
+                                  src="images/white-prgress=arrow.png"></a> <span>Phase E</span></li>
+                            <li class="progress-6"><a
+                                href="/mydreamhome-details-phase-f?id=<%=propertyDetailData[0]._id%>&phase=Post-Completion&step=F"><img
+                                  src="images/white-prgress=arrow.png"> </a><span>Phase F</span></li>
                             <%}%>
                       </ul>
                       <!-- <ul>
@@ -549,16 +550,18 @@
                               <p>
                                 <!-- mydreamhome-details-to-dos -->
                                 <%=row.ppts_task_name%>
-                                <%if(row.ppts_phase_name=='other'){%>
-                                  <a href="/<%=row.phase_page_name%>?id=<%=row.ppts_property_id%>&phase=<%=row.ppts_phase_name%>&step=O"><img
-                                    src="images/recent-user-1.png"></a>
-                                  <%}else{%>
-                                <a href="/<%=row.phase_page_name%>?id=<%=row.ppts_property_id%>&phase=<%=row.ppts_phase_name%>&step=<%=row.ppts_phase_flag%>"><img
-                                      src="images/recent-user-1.png"></a>
+                                  <%if(row.ppts_phase_name=='other'){%>
+                                    <a
+                                      href="/<%=row.phase_page_name%>?id=<%=row.ppts_property_id%>&phase=<%=row.ppts_phase_name%>&step=O"><img
+                                        src="images/recent-user-1.png"></a>
+                                    <%}else{%>
+                                      <a
+                                        href="/<%=row.phase_page_name%>?id=<%=row.ppts_property_id%>&phase=<%=row.ppts_phase_name%>&step=<%=row.ppts_phase_flag%>"><img
+                                          src="images/recent-user-1.png"></a>
                                       <%}%>
-                                      <em>
-                                    <%=row.professionalName%>
-                                  </em>
+                                        <em>
+                                          <%=row.professionalName%>
+                                        </em>
                               </p>
                               <input type="checkbox">
                               <span class="checkmark"></span>
@@ -607,7 +610,7 @@
                         <%if(allDocumentUploadByCustmer.length>0){%>
                           <%allDocumentUploadByCustmer.forEach(function(row,i){%>
                             <!-- <%if(i<=2){%> -->
-                              <!-- <li>
+                            <!-- <li>
                                 <a href="/mydreamhome-details-docs" value="<%=propertyDetailData[0]._id%>">
                                 <img
                                  src="/upload/<%=row.cuds_document_name%>" alt="" title=""><br>
@@ -618,43 +621,48 @@
                                 </a>
                               </li> -->
 
-                              <%if(row.cuds_document_type=='image'){%>
-                                <li><a href="#"><img src="/taskdocument/<%= row.cuds_document_name%>" alt="" title=""><br><span
+                            <%if(row.cuds_document_type=='image'){%>
+                              <li><a href="#"><img src="/taskdocument/<%= row.cuds_document_name%>" alt=""
+                                    title=""><br><span
+                                    style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                    <%= row.cuds_document_name%>
+                                  </span></a>
+                              </li>
+                              <%}else if(row.cuds_document_type=='pdf' ){%>
+                                <li><a download href="/taskdocument/<%= row.cuds_document_name%>"><img
+                                      src="images/pdficon.png" alt="" title=""><br><span
                                       style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                       <%= row.cuds_document_name%>
                                     </span></a>
                                 </li>
-                              <%}else if(row.cuds_document_type=='pdf'){%> 
-                                <li><a download href="/taskdocument/<%= row.cuds_document_name%>"><img src="images/pdficon.png" alt="" title=""><br><span
-                                  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-                                  <%= row.cuds_document_name%>
-                                </span></a>
-                                </li>
-                              <%}else if(row.cuds_document_type=='doc'){%>
-                                <li><a download href="/taskdocument/<%= row.cuds_document_name%>"><img src="images/docicon.png" alt="" title=""><br><span
-                                  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-                                  <%= row.cuds_document_name%>
-                                </span></a>
-                                </li>
-                              <%}else if(row.cuds_document_type=='txt'){%>
-                                <li><a download href="/taskdocument/<%= row.cuds_document_name%>"><img src="images/txticon.png" alt="" title=""><br><span
-                                  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-                                  <%= row.cuds_document_name%>
-                                </span></a>
-                                </li>
-                              <%}else if(row.cuds_document_type=='video'){%> 
-                                <li><a download href="/taskdocument/<%= row.cuds_document_name%>"><img src="images/videoicon.png" alt="" title=""><br><span
-                                  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-                                  <%= row.cuds_document_name%>
-                                </span></a>
-                                </li>
-                              <%}%>
-                              
-                            <!-- <%}%> -->
-                          <%});%>
-                        <%}else{%>
-                          <h6>Docs&File Not Uploaded</h6>
-                        <%}%>
+                                <%}else if(row.cuds_document_type=='doc' ){%>
+                                  <li><a download href="/taskdocument/<%= row.cuds_document_name%>"><img
+                                        src="images/docicon.png" alt="" title=""><br><span
+                                        style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                        <%= row.cuds_document_name%>
+                                      </span></a>
+                                  </li>
+                                  <%}else if(row.cuds_document_type=='txt' ){%>
+                                    <li><a download href="/taskdocument/<%= row.cuds_document_name%>"><img
+                                          src="images/txticon.png" alt="" title=""><br><span
+                                          style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                          <%= row.cuds_document_name%>
+                                        </span></a>
+                                    </li>
+                                    <%}else if(row.cuds_document_type=='video' ){%>
+                                      <li><a download href="/taskdocument/<%= row.cuds_document_name%>"><img
+                                            src="images/videoicon.png" alt="" title=""><br><span
+                                            style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                            <%= row.cuds_document_name%>
+                                          </span></a>
+                                      </li>
+                                      <%}%>
+
+                                        <!-- <%}%> -->
+                                        <%});%>
+                                          <%}else{%>
+                                            <h6>Docs&File Not Uploaded</h6>
+                                            <%}%>
                       </ul>
                     </div>
                   </div>
