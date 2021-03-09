@@ -9,7 +9,7 @@ module.exports = {
   pass2: "Krishna#1997",
   user4: "questtestmail@gmail.com",
   pass4: "gywxlnfysvuqabom",
-};  
+};
 
 // //Database for developer
 //  module.exports = {
