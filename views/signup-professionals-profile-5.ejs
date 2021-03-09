@@ -144,11 +144,11 @@
                         <%= success_msg %>
                       </span>
                       <% }%>
-
+                      <%if(refrenceData==null){%>
                         <div class="row">
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix3">
-                              <input type="text" class="form-control text-field-size " id="" placeholder="Full name"
+                              <input type="text" class="form-control text-field-size " id="rs_reference_fullname" placeholder="Full name"
                                 name="rs_reference_fullname">
                             </div>
                           </div>
@@ -250,6 +250,99 @@
                               <button type="submit" class="btn btn-next" style="width: 164px;">
                                 NEXT</button>
                             </div>
+                            <%}else{%>
+                              <div class="row">
+                                <div class="col-sm-12 col-lg-6">
+                                  <div class="input-box-size-fix3">
+                                    <input type="text" class="form-control text-field-size " id="" placeholder="Full name"
+                                      name="rs_reference_fullname" value="<%=refrenceData.rs_reference_fullname%>">
+                                  </div>
+                                </div>
+                                <div class="col-sm-12 col-lg-6">
+                                  <div class="input-box-size-fix3">
+                                    <input type="text" class="form-control text-field-size " id="" placeholder="Job Title"
+                                      name="rs_reference_job_title" value="<%=refrenceData.rs_reference_job_title%>">
+                                  </div>
+                                </div>
+                              </div>
+      
+      
+                              <div class="row">
+                                <div class="col-sm-12 col-lg-6">
+                                  <div class="input-box-size-fix3">
+                                    <input type="text" class="form-control text-field-size " id="" placeholder="Organisation"
+                                      name="rs_reference_organisation" value="<%=refrenceData.rs_reference_organisation%>">
+                                  </div>
+                                </div>
+                                <div class="col-sm-12 col-lg-6">
+                                  <div class="input-box-size-fix3">
+                                    <input type="text" class="form-control text-field-size " id="" placeholder="Post Code"
+                                      name="rs_reference_postal_code" value="<%=refrenceData.rs_reference_postal_code%>">
+                                  </div>
+                                </div>
+                              </div>
+      
+                              <div class="row">
+                                <div class="col-sm-12 col-lg-12">
+                                  <div class="">
+                                    <input type="text" class="form-control text-field" id="" placeholder="Address"
+                                      name="rs_reference_address" value="<%=refrenceData.rs_reference_address%>">
+                                  </div>
+                                </div>
+                              </div>
+      
+                              <div class="row">
+                                <div class="col-sm-12 col-lg-6">
+                                  <div class="input-box-size-fix3">
+                                    <input type="text" class="form-control text-field-size " id="" placeholder="Telephone No."
+                                      name="rs_reference_telephonenumber" value="<%=refrenceData.rs_reference_telephonenumber%>">
+                                  </div>
+                                </div>
+                                <div class="col-sm-12 col-lg-6">
+                                  <div class="input-box-size-fix3">
+                                    <input type="email" class="form-control text-field-size " id="" placeholder="Email ID"
+                                      name="rs_reference_emailid" value="<%=refrenceData.rs_reference_emailid%>">
+                                  </div>
+                                </div>
+                              </div>
+      
+      
+                              <div class="row">
+                                <div class="col-sm-12 col-lg-4">
+                                  <div class="profile-notes">
+                                    <p>May we obtain this reference now?
+                                    </p>
+                                  </div>
+                                </div>
+      
+                                <div class="col-sm-12 col-lg-2">
+                                  <div class="profile-radio">
+                                    <label class="radio-inline">
+                                      <input type="radio" name="rs_option_obtain_reference" onclick="javascript:yesnoCheck();"
+                                        id="yesCheck" value="yes">
+                                      &nbsp;Yes&nbsp;&nbsp;
+                                    </label>
+                                    <label class="radio-inline">
+                                      <input type="radio" name="rs_option_obtain_reference" value="no"
+                                        onclick="javascript:yesnoCheck();" id="noCheck">
+                                      &nbsp;No&nbsp;&nbsp;
+                                    </label>
+                                  </div>
+                                </div>
+      
+                                <div class="col-sm-12 col-lg-6" id="ifYes">
+                                  <div class="input-box-size-fix3">
+                                    <input type="text" class="form-control text-field-size " id=""
+                                      placeholder="Relationship(One must be work related)" name="rs_reference_relationship">
+                                  </div>
+                                </div>
+                              </div>
+                              <div>
+                                <input type="hidden" name="ref_id" value="<%=refrenceData._id%>">
+                              <button type="submit" class="btn btn-next" style="width: 164px;">
+                                Update</button>
+                                </div>
+                              <%}%>
               </form>
             </div>
           </div>
@@ -291,7 +384,7 @@
       submitHandler: function (form) {
         $('.loader-box').attr('style', 'display:flex !important');
         var formData = $('#form5').serialize();
-
+       
         console.log('formData:', formData)
         $.ajax({
           type: "POST",
@@ -321,11 +414,18 @@
                 confirmButtonColor: '#005377',
                 timer: 4000
               })
-
-              setTimeout(function () {
+              if(data.action=='edit'){
+                setTimeout(function () {
+                //location.reload(true);
+                window.location.href = data.redirect;
+              }, 4000);
+              }else{
+                setTimeout(function () {
                 //location.reload(true);
                 window.location.href = "/signup-professionals-profile-6";
               }, 4000);
+              }
+             
 
             }
           }

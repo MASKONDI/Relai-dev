@@ -33,7 +33,43 @@ const ServiceProviderEmploymentHistorySchema = require('../models/service_provid
 const ServiceProviderReferenceSchema = require("../models/service_provider_reference");
 const ServiceProviderIndemnityDetailsSchema = require("../models/service_provider_indemnity_details");
 
-
+app.get('/signup-professionals-profile-5', async(req, res) => {
+  console.log('55555555555',req.query)
+  if(req.query.editid){
+   let refrenceData= await signUpHelper.getReferenceDetailById(req.query.editid);
+   console.log(refrenceData)
+   if(refrenceData){
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('signup-professionals-profile-5', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      refrenceData:refrenceData
+    });
+   }else{
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('signup-professionals-profile-5', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      refrenceData:null
+    });
+   }
+  }else{
+    err_msg = req.flash('err_msg');
+   success_msg = req.flash('success_msg');
+    res.render('signup-professionals-profile-5', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      refrenceData:null
+    });
+  }
+   
+  // res.render('signup-professionals-profile-5', {
+  //   err_msg, success_msg, layout: false,
+  //   session: req.session
+  // });
+});
 app.get('/service-provider/dashboard-professional', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -56,7 +92,7 @@ app.get('/otp-professional', function (req, res) {
 });
 app.get('/service-provider/track-your-progress-professionals', isServiceProvider, async function (req, res) {
   let data = await trackYourProgress.getAllPropertyByUserId(req.session.user_id)
-  console.log('data=======', data)
+  console.log('data=======', data);
   //console.log("current session is :", req.session);
   req.session.pagename = 'service-provider/track-your-progress-professionals';
   err_msg = req.flash('err_msg');
@@ -67,7 +103,16 @@ app.get('/service-provider/track-your-progress-professionals', isServiceProvider
     propertyData: data
   });
 });
-
+// app.post('/service-provider/track-your-progress-professionals', isServiceProvider, async function (req, res) {
+//   console.log(req.body);
+//   var start=req.body.start
+//   var limit=req.body.limit
+//   let data = await trackYourProgress.getAllPropertyByUserId1(req.session.user_id,start,limit)
+//   console.log('data===========',data)
+//   res.send({
+//     'data':data
+//   })
+// })
 app.get('/service-provider/property', isServiceProvider, async function (req, res) {
   console.log("current session is  from sp end:", req.session);
   req.session.pagename = 'service-provider/property';
@@ -129,6 +174,7 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
 });
 
 app.get('/service-provider/property-detail', isServiceProvider, function (req, res) {
+  
   console.log("current session is :", req.session);
   req.session.pagename = 'service-provider/property';
   err_msg = req.flash('err_msg');

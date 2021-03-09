@@ -32,6 +32,7 @@ var dateTime = require('node-datetime');
 // Load Input Validation
 const validateServiceProviderRegisterInput = require('../../Validation/service_provider_signup');
 const validateServiceProviderSigninInput = require('../../Validation/service_provider_signin');
+const { where } = require("../../models/service_provider_employment_history");
 
 
 ////const { service_provider_register, service_provider_signin, service_provider_personal_details, service_provider_other_details, service_provider_Indemnity_details, service_provider_Roles, service_provider_education, service_provider_employment_history, service_provider_language, service_provider_plan, service_provider_portfolio, service_provider_reference, pricing_plan } = require("../../controllers/service_providers");
@@ -487,7 +488,9 @@ router.post("/service_provider_reference", (req, res) => {
 
   console.log("req.body is : ", req.body);
   console.log("req.session.user_id is ", req.session.user_id);
-  const serviceProviderReference = new ServiceProviderReferenceSchema({
+  if(req.body.ref_id){
+   console.log('edit able')
+   const serviceProviderReference = {
     //rs_service_provider_id //TODO:*Need to store same sp_id while registering */
     rs_service_provider_id: req.session.user_id,
     rs_reference_type: req.body.rs_reference_type,
@@ -500,28 +503,70 @@ router.post("/service_provider_reference", (req, res) => {
     rs_option_obtain_reference: req.body.rs_option_obtain_reference,
     rs_reference_relationship: req.body.rs_reference_relationship,
     rs_reference_fullname: req.body.rs_reference_fullname
-  });
-
-  serviceProviderReference
-    .save()
-    .then(serviceProviders => {
-      console.log("server response is:", serviceProviders);
-      //res.redirect("/signup-professionals-profile-6")
-      res.send({
-        message: "Reference-details submitted successfully, please continue...",
-        status: true
+  }
+  ServiceProviderReferenceSchema
+      .updateOne(serviceProviderReference).where({_id:req.body.ref_id})
+      .then(serviceProviders => {
+        
+        console.log("server response is:", serviceProviders);
+        
+        res.send({
+          message: "Reference-details Update successfully",
+          status: true,
+          redirect :'/service-provider/dashboard-professional',
+          action:'edit'
+        })
       })
-    })
-    .catch(err => {
-      console.log(err)
-      //req.flash('err_msg', 'Something went wrong please try after some time.');
-      //res.redirect('/signup-professionals-profile-5');
-      res.send({
-        err_msg: 'Something went wrong please try after some time',
-        status: false
+      .catch(err => {
+        console.log(err)
+        
+        res.send({
+          err_msg: 'Something went wrong please try after some time',
+          status: false
+        });
+  
       });
-
+  }else{
+    console.log('add able');
+    
+    const serviceProviderReference = new ServiceProviderReferenceSchema({
+      //rs_service_provider_id //TODO:*Need to store same sp_id while registering */
+      rs_service_provider_id: req.session.user_id,
+      rs_reference_type: req.body.rs_reference_type,
+      rs_reference_job_title: req.body.rs_reference_job_title,
+      rs_reference_organisation: req.body.rs_reference_organisation,
+      rs_reference_postal_code: req.body.rs_reference_postal_code,
+      rs_reference_address: req.body.rs_reference_address,
+      rs_reference_telephonenumber: req.body.rs_reference_telephonenumber,
+      rs_reference_emailid: req.body.rs_reference_emailid,
+      rs_option_obtain_reference: req.body.rs_option_obtain_reference,
+      rs_reference_relationship: req.body.rs_reference_relationship,
+      rs_reference_fullname: req.body.rs_reference_fullname
     });
+  
+    serviceProviderReference
+      .save()
+      .then(serviceProviders => {
+        
+        console.log("server response is:", serviceProviders);
+        
+        res.send({
+          message: "Reference-details submitted successfully, please continue...",
+          status: true,
+          action:'add'
+        })
+      })
+      .catch(err => {
+        console.log(err)
+        
+        res.send({
+          err_msg: 'Something went wrong please try after some time',
+          status: false
+        });
+  
+      });
+  }
+  
 });
 
 
