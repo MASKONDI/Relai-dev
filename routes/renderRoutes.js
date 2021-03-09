@@ -2095,7 +2095,7 @@ function getPhase(phase) {
 
 }
 //*******Service Provider and signup and profiles routes */
-app.get('/signup-service-provider', isServiceProvider, (req, res) => {
+app.get('/signup-service-provider', (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   service_provider = req.flash('service_provider');

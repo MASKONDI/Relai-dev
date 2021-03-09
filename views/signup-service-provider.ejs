@@ -15,7 +15,7 @@
                 </a>
               </div>
             </div>
-            <p>START FOR FREE</p>
+            <!-- <p>START FOR FREE</p> -->
             <h1>Service Provider Registration</h1>
             <form id="registerform" class="form" method="post" action="/api/service_provider_register">
 
@@ -30,6 +30,22 @@
                     </span>
                     <% }%>
                       <div class="row">
+                        <div class="upload-image">
+
+
+
+                          <a href="#" class="upload-profile-pic">
+                            <img src="images/img_avatar.png" alt="" id="blah" class="profile-photo"
+                              style="margin-left:10%"> <span>
+                              <div class="custom-file-input">
+                                <input type="file" id="image" name="profile-pic" value=""
+                                  onchange="previewFile_profile(this)" required>
+                                <input type="button">
+                              </div>
+                            </span>
+                          </a>
+                        </div>
+
                         <div class="col-md-6">
                           <div class="form-group">
                             <input type="text" class="form-control form-control-size " id="forename"
@@ -86,7 +102,7 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group ">
-                            <input type="text" class="form-control form-control-size" id="text"
+                            <input type="number" class="form-control form-control-size" id="text"
                               placeholder="Experience in years" name="sps_experience" required data-rule-required="true"
                               data-msg-required="Experience is required!">
                           </div>
@@ -357,7 +373,12 @@
       if (succ_flash_msg != "" && succ_flash_msg != undefined) {
         setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
       }
-    });  
+    });
+    $(document).ready(function () {
+      $('.custom-file-input input[type="file"]').change(function (e) {
+        $(this).siblings('input[type="text"]').val(e.target.files[0].name);
+      });
+    });
   </script>
   <script>function getParameterByName(name, url = window.location.href) {
       name = name.replace(/[\[\]]/g, '\\$&');
