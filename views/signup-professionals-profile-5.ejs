@@ -148,14 +148,14 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix3">
-                              <input type="text" class="form-control text-field-size " id="rs_reference_fullname" placeholder="Full name"
-                                name="rs_reference_fullname">
+                              <input type="text" class="form-control text-field-size rs_reference_fullname" id="rs_reference_fullname" placeholder="Full name"
+                                name="rs_reference_fullname" required value="">
                             </div>
                           </div>
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix3">
-                              <input type="text" class="form-control text-field-size " id="" placeholder="Job Title"
-                                name="rs_reference_job_title">
+                              <input type="text" class="form-control text-field-size rs_reference_job_title" id="" placeholder="Job Title"
+                                name="rs_reference_job_title" required value="">
                             </div>
                           </div>
                         </div>
@@ -164,14 +164,14 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix3">
-                              <input type="text" class="form-control text-field-size " id="" placeholder="Organisation"
-                                name="rs_reference_organisation">
+                              <input type="text" class="form-control text-field-size rs_reference_organisation" id="" placeholder="Organisation"
+                                name="rs_reference_organisation" required value="">
                             </div>
                           </div>
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix3">
-                              <input type="text" class="form-control text-field-size " id="" placeholder="Post Code"
-                                name="rs_reference_postal_code">
+                              <input type="text" class="form-control text-field-size rs_reference_postal_code" id="" placeholder="Post Code"
+                                name="rs_reference_postal_code" required value="">
                             </div>
                           </div>
                         </div>
@@ -179,8 +179,8 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-12">
                             <div class="">
-                              <input type="text" class="form-control text-field" id="" placeholder="Address"
-                                name="rs_reference_address">
+                              <input type="text" class="form-control text-field rs_reference_address" id="" placeholder="Address"
+                                name="rs_reference_address" required value="">
                             </div>
                           </div>
                         </div>
@@ -188,14 +188,14 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix3">
-                              <input type="text" class="form-control text-field-size " id="" placeholder="Telephone No."
-                                name="rs_reference_telephonenumber">
+                              <input type="text" class="form-control text-field-size rs_reference_telePhoneNumber" id="" placeholder="Telephone No."
+                                name="rs_reference_telePhoneNumber" required value="">
                             </div>
                           </div>
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix3">
-                              <input type="email" class="form-control text-field-size " id="" placeholder="Email ID"
-                                name="rs_reference_emailid">
+                              <input type="email" class="form-control text-field-size rs_reference_emailid" id="" placeholder="Email ID"
+                                name="rs_reference_emailid" required value="">
                             </div>
                           </div>
                         </div>
@@ -213,7 +213,7 @@
                             <div class="profile-radio">
                               <label class="radio-inline">
                                 <input type="radio" name="rs_option_obtain_reference" onclick="javascript:yesnoCheck();"
-                                  id="yesCheck" value="yes">
+                                  id="yesCheck" value="yes"     >
                                 &nbsp;Yes&nbsp;&nbsp;
                               </label>
                               <label class="radio-inline">
@@ -226,8 +226,8 @@
 
                           <div class="col-sm-12 col-lg-6" id="ifYes">
                             <div class="input-box-size-fix3">
-                              <input type="text" class="form-control text-field-size " id=""
-                                placeholder="Relationship(One must be work related)" name="rs_reference_relationship">
+                              <input type="text" class="form-control text-field-size rs_reference_relationship" id=""
+                                placeholder="Relationship(One must be work related)" name="rs_reference_relationship" required value="">
                             </div>
                           </div>
                         </div>
@@ -246,7 +246,7 @@
                             <div class="prev-btn float-right">
                               <!-- <a href="/signup-professionals-profile-6" class="btn btn-next" style="width: 164px;">
                         NEXT</a> -->
-
+                        <input type="hidden" name="ref_id" value="" class="ref_id">
                               <button type="submit" class="btn btn-next" style="width: 164px;">
                                 NEXT</button>
                             </div>
@@ -295,7 +295,7 @@
                                 <div class="col-sm-12 col-lg-6">
                                   <div class="input-box-size-fix3">
                                     <input type="text" class="form-control text-field-size " id="" placeholder="Telephone No."
-                                      name="rs_reference_telephonenumber" value="<%=refrenceData.rs_reference_telephonenumber%>">
+                                      name="rs_reference_telePhoneNumber" value="<%=refrenceData.rs_reference_telePhoneNumber%>">
                                   </div>
                                 </div>
                                 <div class="col-sm-12 col-lg-6">
@@ -417,7 +417,8 @@
               if(data.action=='edit'){
                 setTimeout(function () {
                 //location.reload(true);
-                window.location.href = data.redirect;
+                //window.location.href = data.redirect;
+                window.location.href = "/signup-professionals-profile-6";
               }, 4000);
               }else{
                 setTimeout(function () {
@@ -463,6 +464,46 @@
       if (succ_flash_msg != "" && succ_flash_msg != undefined) {
         setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
       }
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      var data = {
+        user_id:'<%= session.user_id%>'
+      }
+     // alert("<%= session.user_id%>")
+      $.ajax({
+          type: "GET",
+          data: data,
+          url: "/api/get_service_provider_reference",
+          cache: false,
+          success: function (data) {
+            console.log(data);
+            if (data.status == true) {
+              $('.rs_reference_fullname').val(data.data.rs_reference_fullname);
+              $('.rs_reference_job_title').val(data.data.rs_reference_job_title);
+              $('.rs_reference_organisation').val(data.data.rs_reference_organisation);
+              $('.rs_reference_postal_code').val(data.data.rs_reference_postal_code);
+              $('.rs_reference_address').val(data.data.rs_reference_address);
+              $('.rs_reference_telePhoneNumber').val(data.data.rs_reference_telePhoneNumber);
+              $('.rs_reference_emailid').val(data.data.rs_reference_emailid);
+              $('.ref_id').val(data.data._id);
+              if(data.data.rs_option_obtain_reference=='yes'){
+                $('.rs_reference_relationship').val(data.data.rs_reference_relationship)
+                $("#yesCheck").attr('checked', 'checked');
+                document.getElementById('ifYes').style.display = 'block';
+               
+              }else{
+                $('.rs_reference_relationship').val('')
+                $("#noCheck").attr('checked', 'checked');
+                document.getElementById('ifYes').style.display = 'none';
+              }
+           
+
+          }
+        }
+      })
+
     });
   </script>
 

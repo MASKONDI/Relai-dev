@@ -138,7 +138,7 @@
                         <%= success_msg %>
                       </span>
                       <% }%>
-                        <div class="row">
+                        <div class="row lang_div">
                           <div class="col-sm-12 col-lg-5">
                             <div class="input-box-size-fix3">
                               <select class="form-control " class="text-field-size" id="selectBox" name="spls_language">
@@ -317,6 +317,49 @@
         $(".divv").before(domElement);
 
       });
+
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      var data = {
+        user_id:'<%= session.user_id%>'
+      }
+     // alert("<%= session.user_id%>")
+      $.ajax({
+          type: "GET",
+          data: data,
+          url: "/api/service_provider_language",
+          cache: false,
+          success: function (resp) {
+            console.log(resp);
+            if (resp.status == true) {
+              var htmlData = '';
+            //htmlData += '<option value="">Select Professional</option>';
+            if (resp.data.length > 0) {
+              var element='';
+              $.each(resp.data, function (i, data) {
+                console.log('val:', resp.data[0])
+                if(data.spls_language_proficiency_level=='level1'){
+                  element='Level 1 - Elementary Proficiency'
+                }else if(data.spls_language_proficiency_level=='level2'){
+                  element='Level 2 - Limited Working Proficiency'
+                }else if(data.spls_language_proficiency_level=='level3'){
+                  element='Level 3 - Professional Working Proficiency'
+                }else if(data.spls_language_proficiency_level=='level4'){
+                  element='Level 4 - Full Professional Proficiency'
+                }else if(data.spls_language_proficiency_level=='level5'){
+                  element='Level 5 - Native / Bilingual Proficiency'
+                }
+                htmlData += ' <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3"><select class="form-control " class="text-field-size" id="selectBox" name="spls_language"><option value="'+data.spls_language.replace(/\w/, c => c.toUpperCase())+'">'+data.spls_language.replace(/\w/, c => c.toUpperCase())+'</option>           <option value="english">English</option> <option value="german">German</option>           <option value="french">French</option> <option value="spanish">Spanish</option> </select>  </div> </div> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3">     <select class="form-control " class="text-field-size" id="selectBox"              name="spls_language_proficiency_level"> <option value="'+data.spls_language_proficiency_level+'">'+element+'</option><option value="level1">Level 1 - Elementary Proficiency</option>           <option value="level2">Level 2 - Limited Working Proficiency</option><option value="level3">Level 3 - Professional Working Proficiency</option> <option value="level4">Level 4 - Full Professional Proficiency </option> <option value="level5">Level 5 - Native / Bilingual Proficiency </option>  </select> </div> </div>';
+              });
+            }
+            $('.lang_div').html(htmlData);
+           
+
+          }
+        }
+      })
 
     });
   </script>

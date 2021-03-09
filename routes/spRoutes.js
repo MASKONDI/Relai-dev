@@ -32,9 +32,26 @@ const ServiceProviderLanguageSchema = require("../models/service_provider_langua
 const ServiceProviderEmploymentHistorySchema = require('../models/service_provider_employment_history');
 const ServiceProviderReferenceSchema = require("../models/service_provider_reference");
 const ServiceProviderIndemnityDetailsSchema = require("../models/service_provider_indemnity_details");
+app.get('/signup-professionals-profile', isServiceProvider, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  console.log("Current session is : ", req.session);
+  res.render('signup-professionals-profile', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+app.get('/signup-professionals-profile-2', isServiceProvider, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signup-professionals-profile-2', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
 
 app.get('/signup-professionals-profile-5', async(req, res) => {
-  console.log('55555555555',req.query)
+  console.log('5',req.query)
   if(req.query.editid){
    let refrenceData= await signUpHelper.getReferenceDetailById(req.query.editid);
    console.log(refrenceData)
@@ -79,7 +96,30 @@ app.get('/service-provider/dashboard-professional', isServiceProvider, (req, res
     session: req.session
   });
 });
-
+app.get('/signup-professionals-profile-6', (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signup-professionals-profile-6', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+app.get('/signup-professionals-profile-7', isServiceProvider, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signup-professionals-profile-7', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+app.get('/portfolio', isServiceProvider, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('portfolio', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
 app.get('/otp-professional', function (req, res) {
   console.log("current session is :", req.session);
 

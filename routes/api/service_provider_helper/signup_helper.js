@@ -1,6 +1,12 @@
 const ServiceProviderEmploymentHistorySchema = require("../../../models/service_provider_employment_history");
 const ServiceProviderPortfolioSchema = require("../../../models/service_provider_portfolio");
 const ServiceProviderReferenceSchema = require("../../../models/service_provider_reference");
+const ServiceProviderPersonalDetailsSchema = require("../../../models/service_provider_personal_details");
+const ServiceProviderOtherDetailsSchema = require("../../../models/service_providers_other_details");
+const ServiceProviderIndemnityDetailsSchema = require("../../../models/service_provider_indemnity_details");
+const ServiceProviderLanguageSchema = require("../../../models/service_provider_languages");
+
+
 module.exports.getAllEmployeHistory = function (service_provider_id) {
     return new Promise(async function (resolve, reject) {
         if (service_provider_id != null) {
@@ -80,6 +86,79 @@ module.exports.getReferenceDetailById = function (id) {
                 rs_service_provider_id: id
             }
             ServiceProviderReferenceSchema.findOne(data).sort({ _id: -1 }).then(async (resp) => {
+                let responce = await resp
+                resolve(responce)
+            }).catch((err) => {
+                reject(err)
+            })
+        } else {
+            reject({ status: 0 })
+        }
+    }).catch((error) => { });
+};
+
+module.exports.getPersonalDetialByID = function (id) {
+    return new Promise(async function (resolve, reject) {
+        if (id != null) {
+            data = {
+                spods_service_provider_id: id
+            }
+            ServiceProviderPersonalDetailsSchema.findOne(data).sort({ _id: -1 }).then(async (resp) => {
+                let responce = await resp
+                resolve(responce)
+            }).catch((err) => {
+                reject(err)
+            })
+        } else {
+            reject({ status: 0 })
+        }
+    }).catch((error) => { });
+};
+
+module.exports.getOtherDetialByID = function (id) {
+    return new Promise(async function (resolve, reject) {
+        if (id != null) {
+            data = {
+                spods_service_provider_id: id
+            }
+            ServiceProviderOtherDetailsSchema.findOne(data).sort({ _id: -1 }).then(async (resp) => {
+                let responce = await resp
+                resolve(responce)
+            }).catch((err) => {
+                reject(err)
+            })
+        } else {
+            reject({ status: 0 })
+        }
+    }).catch((error) => { });
+};
+
+
+module.exports.getIndemnityDetailsById = function (id) {
+    return new Promise(async function (resolve, reject) {
+        if (id != null) {
+            data = {
+                spods_service_provider_id: id
+            }
+            ServiceProviderIndemnityDetailsSchema.findOne(data).sort({ _id: -1 }).then(async (resp) => {
+                let responce = await resp
+                resolve(responce)
+            }).catch((err) => {
+                reject(err)
+            })
+        } else {
+            reject({ status: 0 })
+        }
+    }).catch((error) => { });
+};
+
+module.exports.getIndemnityLanguageById = function (id) {
+    return new Promise(async function (resolve, reject) {
+        if (id != null) {
+            data = {
+                spls_service_provider_id: id
+            }
+            await ServiceProviderLanguageSchema.find(data).then(async (resp) => {
                 let responce = await resp
                 resolve(responce)
             }).catch((err) => {
