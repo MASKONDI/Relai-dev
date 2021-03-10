@@ -158,7 +158,7 @@ app.get('/service-provider/property', isServiceProvider, async function (req, re
   console.log("current session is  from sp end:", req.session);
   req.session.pagename = 'service-provider/property';
   let propertyArray = []
-  PropertiesSchema.find().sort({ _id: -1 }).then(async (data) => {
+  PropertiesSchema.find().sort({ _id: -1 }).limit(12).then(async (data) => {
     if (data) {
       let arr = [];
       //console.log("Property Data is", data);
