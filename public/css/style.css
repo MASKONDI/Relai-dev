@@ -5814,3 +5814,13 @@ input::-webkit-inner-spin-button {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.signup-professional7-add-btn_addmore{
+    color: #005377;
+    width: 52px;
+    padding: 12px 9px;
+    margin-top: 19px;
+    margin-left: -10px;
+    border-radius: 10px;
+    border: 2px solid #005377;
+    background-color: #ffffff;
+    height: 52px;}

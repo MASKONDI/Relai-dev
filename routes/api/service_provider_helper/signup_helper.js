@@ -5,6 +5,7 @@ const ServiceProviderPersonalDetailsSchema = require("../../../models/service_pr
 const ServiceProviderOtherDetailsSchema = require("../../../models/service_providers_other_details");
 const ServiceProviderIndemnityDetailsSchema = require("../../../models/service_provider_indemnity_details");
 const ServiceProviderLanguageSchema = require("../../../models/service_provider_languages");
+const { where } = require("../../../models/service_providers_other_details");
 
 
 module.exports.getAllEmployeHistory = function (service_provider_id) {
@@ -169,3 +170,112 @@ module.exports.getIndemnityLanguageById = function (id) {
         }
     }).catch((error) => { });
 };
+
+module.exports.saveOneLang = function (req) {
+    return new Promise(async function (resolve, reject) {
+        const serviceProviderLanguage = new ServiceProviderLanguageSchema({
+            spls_service_provider_id: req.session.user_id,
+            spls_language: req.body.spls_language,
+            spls_language_proficiency_level: req.body.spls_language_proficiency_level
+          });
+          serviceProviderLanguage
+          .save().then((resp)=>{
+            if(resp){
+                resolve({
+                    message: "language-details submitted successfully.please continue...",
+                    status: true,
+                  })
+            }
+          }).catch((err)=>{
+              console.log(err)
+              resolve({
+                message: "saveOneLang ",
+                status: false,
+              })
+          })
+    }).catch((error) => { });
+};
+
+module.exports.editOneLang = function (req) {
+    return new Promise(async function (resolve, reject) {
+        const serviceProviderLanguage ={
+            spls_service_provider_id: req.session.user_id,
+            spls_language: req.body.spls_language,
+            spls_language_proficiency_level: req.body.spls_language_proficiency_level
+          }
+          ServiceProviderLanguageSchema
+          .updateOne(serviceProviderLanguage).where({_id:req.body.lang_id}).then((resp)=>{
+            console.log(resp)
+            if(resp){
+                resolve({
+                    message: "language-details Update successfully",
+                    status: true,
+                  })
+            }
+          }).catch((err)=>{
+              console.log(err)
+              resolve({
+                message: "editOneLang ",
+                status: false,
+              })
+          })
+    }).catch((error) => { });
+};
+module.exports.saveMultipleLang = function (req) {
+    return new Promise(async function (resolve, reject) {
+        req.body.spls_language.forEach(async function(row,i){
+        var data={
+            spls_service_provider_id: req.session.user_id,
+            spls_language: req.body.spls_language[i],
+            spls_language_proficiency_level: req.body.spls_language_proficiency_level[i]
+          }
+          console.log('deepak',data)
+          const serviceProviderLanguage = new ServiceProviderLanguageSchema(data)
+          await serviceProviderLanguage
+          .save().then((resp)=>{
+            if(resp){
+                resolve({
+                    message: "language-details submitted successfully.please continue...",
+                    status: true,
+                  })
+            }
+          }).catch((err)=>{
+              console.log(err._message)
+              resolve({
+                'message': "saveMultipleLang",
+                status: false,
+              })
+          })
+        })
+    }).catch((error) => { });
+};
+ 
+module.exports.editMultipleLang = function (req) {
+    return new Promise(async function (resolve, reject) {
+        req.body.spls_language.forEach(async function(row,i){
+        var data={
+            spls_service_provider_id: req.session.user_id,
+            spls_language: req.body.spls_language[i],
+            spls_language_proficiency_level: req.body.spls_language_proficiency_level[i]
+          }
+          console.log('deepak',data)
+         
+          await ServiceProviderLanguageSchema
+          .updateMany(data).where({_id:req.body.lang_id[i]}).then((resp)=>{
+            if(resp){
+                resolve({
+                    message: "language-details update successfully.",
+                    status: true,
+                  })
+            }
+          }).catch((err)=>{
+              console.log(err._message)
+              resolve({
+                'message': "editMultipleLang",
+                status: false,
+              })
+          })
+        })
+    }).catch((error) => { });
+};
+  

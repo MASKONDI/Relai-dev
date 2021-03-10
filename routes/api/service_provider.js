@@ -854,7 +854,7 @@ router.get("/service_provider_language", async(req, res) => {
   if(req.query.user_id){
    var data = await signUpHelper.getIndemnityLanguageById(req.query.user_id);
    console.log('language',data)
-   if(data){
+   if(data.length>0){
     return res.send({
       'status':true,
       'data':data
@@ -872,49 +872,58 @@ router.get("/service_provider_language", async(req, res) => {
     })
   }
 })
-router.post("/service_provider_language", (req, res) => {
+router.post("/service_provider_language",async (req, res) => {
   var err_msg = null;
   var success_msg = null;
   //TODO:need to add condition is session is expired
   var flag = true;
-  console.log("req.body is : ", req.body);
-  console.log("req.session.user_id is ", req.session.user_id);
-  for (var i in req.body.spls_language) {
-    const serviceProviderLanguage = new ServiceProviderLanguageSchema({
-      //spls_service_provider_id /*Need to store same sp_id while registering */
-      spls_service_provider_id: req.session.user_id,
-      spls_language: req.body.spls_language[i],
-      spls_language_proficiency_level: req.body.spls_language_proficiency_level[i]
-    });
-    console.log("input request is:", i, serviceProviderLanguage);
-    serviceProviderLanguage
-      .save()
-      .then(serviceProviders => {
-        console.log("server response is :", serviceProviders);
-        flag = true;
-        //res.redirect("/portfolio")
-        // res.send({
-        //   message: "language-details submitted successfully.please continue...",
-        //   status: true,
-        // });
+  console.log("req.body is lang: ", req.body.spls_language);
+ // console.log("req.body is lang: ", req.body);
+  if(req.body.spls_language!=''){
+    if(typeof(req.body.spls_language)=='object'){
+      if(req.body.spls_language.length==0||req.body.spls_language_proficiency_level.length==0){
+       res.send(
+         {
+           'status':0,
+           'message':'something went wrong....'
+         }
+       )
+      }else{
+        if(req.body.lang_id){
+          console.log('edit multiple lang',req.body.lang_id)
+          var responce= await signUpHelper.editMultipleLang(req)
+         res.send(responce)
+        }else{
+          console.log('add multiple lang')
+          var responce= await signUpHelper.saveMultipleLang(req)
+          res.send(responce)
+        }
+      }
+      //console.log('bbbbbbbbbbbbbbbb')
+      
+      //res.send(responce)
+    }else if(typeof(req.body.spls_language)=='string'){
+      if(req.body.lang_id){
+        console.log('edit one lang',req.body.lang_id)
+        var responce = await signUpHelper.editOneLang(req)
+        res.send(responce)
+      }else{
+        console.log('add one lang')
+        var responce = await signUpHelper.saveOneLang(req)
+        res.send(responce)
+      }
+      
+      //console.log('aaaaaaaaaaaaaaaaaa')
+     
+    }
+  }else{
+  res.send({
+    status:false,
+    'message':'please select filds'
+  })
+  }
 
-      })
-      .catch(err => {
-        console.log(err)
-        //req.flash('err_msg', 'Something went wrong please try again later.');
-        //res.redirect('/signup-professionals-profile-7');
-        res.send({
-          message: "Something went wrong please try again later.",
-          status: false,
-        });
-      });
-  }
-  if (flag == true) {
-    res.send({
-      message: "language-details submitted successfully.please continue...",
-      status: true,
-    });
-  }
+
 });
 
 /* -------------------------------------------------------------------------------------------------
