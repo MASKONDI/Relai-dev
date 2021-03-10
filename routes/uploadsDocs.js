@@ -24,6 +24,7 @@ const RatingSchema = require("../models/service_provider_rating_Schema");
 const CustomerSchema = require("../models/customers");
 const DateTime = require('node-datetime/src/datetime');
 const TaskUploadDocsSchema = require("../models/task_upload_document");
+const SubmitProposalSchema = require("../models/submit_proposal_schema");
 //** Upload Document Start */
 
 var Storage = multer.diskStorage({
@@ -33,7 +34,7 @@ var Storage = multer.diskStorage({
       callback(null, "./public/complaintFile");
     } else if (file.fieldname === 'portfolio-docs') {
       callback(null, "./public/portfolioImage");
-    }else if(file.fieldname === 'task-document'){
+    } else if (file.fieldname === 'task-document') {
       callback(null, "./public/taskdocument");
     } else {
       callback(null, "./public/upload");
@@ -289,16 +290,16 @@ app.post('/upload-new-document', upload.single('task-document'), async (req, res
           base64ToImage(base64Str, path, optionalObj);
 
           console.log("file extension is", { ext_type, ext })
-          
-          if(req.body.tuds_task_id){
+
+          if (req.body.tuds_task_id) {
             console.log('A')
-            obj={
-            cuds_phase_flag:req.body.cuds_phase_flag,
-            cuds_task_id:req.body.tuds_task_id,
-            cuds_phase_name: req.body.tuds_phase_name,
-            cuds_task_name: req.body.tuds_task_name,
-            cuds_service_provider_id:req.body.tuds_service_provider_id,
-            cuds_property_id: req.body.property_id,
+            obj = {
+              cuds_phase_flag: req.body.cuds_phase_flag,
+              cuds_task_id: req.body.tuds_task_id,
+              cuds_phase_name: req.body.tuds_phase_name,
+              cuds_task_name: req.body.tuds_task_name,
+              cuds_service_provider_id: req.body.tuds_service_provider_id,
+              cuds_property_id: req.body.property_id,
               cuds_document_name: req.file.filename,
               cuds_customer_id: req.session.user_id,
               cuds_is_active_user_flag: req.session.active_user_login,
@@ -309,8 +310,8 @@ app.post('/upload-new-document', upload.single('task-document'), async (req, res
                 contentType: ext
               }
             }
-            
-          }else{
+
+          } else {
             console.log('B')
             obj = {
               cuds_property_id: req.body.property_id,
@@ -326,7 +327,7 @@ app.post('/upload-new-document', upload.single('task-document'), async (req, res
             }
           }
           //console.log('obj==============',obj)
-         
+
 
           CustomerUploadDocsSchema.create(obj, (err, item) => {
             if (err) {
@@ -356,25 +357,25 @@ app.post('/upload-new-document', upload.single('task-document'), async (req, res
 
       });
     } else {
-      if(req.body.tuds_task_id){
-        obj={
-        cuds_phase_flag:req.body.cuds_phase_flag,
-        cuds_task_id:req.body.tuds_task_id,
-        cuds_phase_name: req.body.tuds_phase_name,
-        cuds_task_name: req.body.tuds_task_name,
-        cuds_service_provider_id:req.body.tuds_service_provider_id,  
-        cuds_property_id: req.body.property_id,
-        cuds_document_name: req.file.filename,
-        cuds_customer_id: req.session.user_id,
-        cuds_is_active_user_flag: req.session.active_user_login,
-        cuds_document_type: ext_type,
-        cuds_document_size: docs_size,
-        cuds_document_file: {
-          data: '',
-          contentType: ext
+      if (req.body.tuds_task_id) {
+        obj = {
+          cuds_phase_flag: req.body.cuds_phase_flag,
+          cuds_task_id: req.body.tuds_task_id,
+          cuds_phase_name: req.body.tuds_phase_name,
+          cuds_task_name: req.body.tuds_task_name,
+          cuds_service_provider_id: req.body.tuds_service_provider_id,
+          cuds_property_id: req.body.property_id,
+          cuds_document_name: req.file.filename,
+          cuds_customer_id: req.session.user_id,
+          cuds_is_active_user_flag: req.session.active_user_login,
+          cuds_document_type: ext_type,
+          cuds_document_size: docs_size,
+          cuds_document_file: {
+            data: '',
+            contentType: ext
+          }
         }
-        }
-      }else{
+      } else {
         obj = {
           cuds_property_id: req.body.property_id,
           cuds_document_name: req.file.filename,
@@ -388,8 +389,8 @@ app.post('/upload-new-document', upload.single('task-document'), async (req, res
           }
         }
       }
-      
-      
+
+
 
       CustomerUploadDocsSchema.create(obj, (err, item) => {
         if (err) {
@@ -471,11 +472,11 @@ app.post('/upload-task-document', upload.single('task-document'), async (req, re
   var success_msg = null;
   var obj = {};
   console.log("req is :", req.file);
-  console.log('req body:',req.body)
+  console.log('req body:', req.body)
   console.log("in upload Task id=", req.body.tuds_task_id);
 
   console.log("in upload property id=", req.body.property_id);
-    
+
   //add conditions for type of file and set the type of file
   console.log(".........files.......", req.file.filename)
   var ext = path.extname(req.file.filename);
@@ -563,7 +564,7 @@ app.post('/upload-task-document', upload.single('task-document'), async (req, re
               contentType: ext
             }
           }
-          
+
           TaskUploadDocsSchema.create(obj, (err, item) => {
             if (err) {
               console.log(err); console.log(err);
@@ -646,5 +647,49 @@ app.post('/upload-task-document', upload.single('task-document'), async (req, re
     })
   }
 });
+
+
+// Uploading the image
+app.post('/submit-proposal', upload.single('proposal-docs'), (req, res, next) => {
+  var err_msg = null;
+  var success_msg = null;
+  console.log("req is :", req.file);
+  console.log('req.body is :', req.body);
+  console.log("req.session.id is", req.session.user_id);
+  var obj = {
+    sps_filename: req.file.filename,
+    sps_customer_id: req.body.sps_customer_id,
+    sps_service_provider_id: req.body.sps_service_provider_id,
+    sps_property_id: req.body.sps_property_id,
+    sps_start_date: req.body.sps_start_date,
+    sps_end_date: req.body.sps_end_date,
+    sps_payment_mode: req.body.sps_payment_mode,
+    sps_extra_notes: req.body.sps_extra_note
+  }
+
+  SubmitProposalSchema.create(obj, (err, item) => {
+    if (err) {
+      console.log(err);
+      //req.flash('err_msg', "Something went worng please try after some time");
+      res.send({
+        message: 'Something went wrong please try after some time',
+        status: false
+
+      });
+    }
+    else {
+      item.save();
+      console.log("Submit proposal form Submitted Successfully");
+      res.send({
+        message: 'Submit proposal form Submitted Successfully',
+        status: true
+      });
+      //req.flash('success_msg', "KYC-docs Uploaded Successfully");
+      // res.redirect('/kyc-professional');
+    }
+  });
+});
+
+
 
 module.exports = app;
