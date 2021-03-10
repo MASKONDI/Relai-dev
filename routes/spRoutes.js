@@ -20,6 +20,7 @@ var propertyHelper = require('./api/service_provider_helper/sp_propertydetial');
 var customerHelper = require('./api/service_provider_helper/customerHelper')
 
 const PropertiesPictureSchema = require("../models/properties_picture");
+const CustomerSchema = require("../models/customers");
 //const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
 const PropertiesSchema = require("../models/properties");
 const PropertyProfessionalSchema = require("../models/property_professional_Schema");
@@ -117,13 +118,13 @@ app.get('/service-provider/property', isServiceProvider, async function (req, re
   console.log("current session is  from sp end:", req.session);
   req.session.pagename = 'service-provider/property';
   let propertyArray = []
-  PropertiesSchema.find().sort({ _id: -1 }).then(async (data) => {
+  PropertiesSchema.find().sort({ _id: -1 }).limit(12).then(async (data) => {
     if (data) {
       let arr = [];
       //console.log("Property Data is", data);
       for (let img of data) {
 
-        propertyArray.push(data)
+        //propertyArray.push(data)
         await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
 
           let temp = await result
@@ -216,8 +217,6 @@ app.get('/service-provider/myproperties', isServiceProvider, async function (req
 });
 
 app.get('/service-provider/myproperties-detail', isServiceProvider, async function (req, res) {
-
-
   console.log("", req.session);
   //console.log('data===========',data)
   req.session.pagename = 'service-provider/property';
@@ -250,6 +249,7 @@ app.get('/service-provider/property-detail', isServiceProvider, function (req, r
 
         })
       }
+      req.session.property_id = data[0]._id;
       //console.log("Data Array is ", data);
       //console.log("customerName ...", customerName)
       // console.log("customerProfile is ......", customerProfile);
@@ -344,14 +344,48 @@ app.get('/service-provider/professionals-detail-message', isServiceProvider, fun
 
 app.get('/service-provider/property-detail-submit-proposal', isServiceProvider, function (req, res) {
   console.log("current session is :", req.session);
-  err_msg = req.flash('err_msg');
+  console.log("req.query is :", req.query);
   req.session.pagename = 'service-provider/property';
-  success_msg = req.flash('success_msg');
-  res.render('service-provider/property-detail-submit-proposal', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
+  PropertiesSchema.find({ _id: req.query.id }).then(async (data) => {
+    if (data) {
+      // let customerName = await customerHelper.getCustomerNameByID(data[0].ps_user_id);
+      // let customerProfile = await customerHelper.getCustomerImageByID(data[0].ps_user_id);
+      let custData = await CustomerSchema.findOne({ _id: data[0].ps_user_id });
+      let arr = [];
+      for (let img of data) {
+        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
+          //let temp = await result
+          for (let image of result) {
+            let temp = await image
+            arr.push(temp)
+          }
+
+        })
+      }
+
+      console.log("Data Array is ", data);
+      //console.log("customerName ...", customerName)
+      // console.log("customerProfile is ......", customerProfile);
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.render('service-provider/property-detail-submit-proposal', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        propertyDetailData: data,
+        propertyImage: arr,
+        customer: custData
+      });
+
+      //console.log(serviceProvArray)
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+
+
+})
+
+
 app.get('/signup-professionals-profile-4', isServiceProvider, async (req, res) => {
   var service_provider_id = req.session.user_id;
   var all_employe_history = await signUpHelper.getAllEmployeHistory(service_provider_id);

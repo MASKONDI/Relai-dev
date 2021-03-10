@@ -86,7 +86,7 @@
                                   <div class="col-sm-6 col-lg-6">
 
                                     <div class="recent-img img-fix float-right ">
-                                      <% if(customerName=='undefined' || customerProfile=='undefined' ){%>
+                                      <% if(customerName==undefined || customerProfile==undefined ){%>
                                         <img src="../images/user-1.png">
                                         <span style="font-size: 13px;">by
                                           N/A</span>
@@ -129,7 +129,7 @@
                               <div class="row">
                                 <div class="col-6 col-sm-4 col-lg-4">
                                   <div class="submit-proposal-fix">
-                                    <a href="/service-provider/professional-detail-message"
+                                    <a href="/service-provider/professional-detail-message?id=<%=propertyDetailData[0]._id%>"
                                       class="btn submit-proposal-btn">Drop a
                                       Message
                                     </a>
@@ -137,7 +137,7 @@
                                 </div>
                                 <div class="col-6 col-sm-4 col-lg-4 ">
                                   <div class="submit-proposal-fix">
-                                    <a href="/service-provider/property-detail-submit-proposal"
+                                    <a href="/service-provider/property-detail-submit-proposal?id=<%=propertyDetailData[0]._id%>"
                                       class="btn submit-proposal-btn" data-dismiss="modal">Submit a
                                       Proposal</a>
                                   </div>
