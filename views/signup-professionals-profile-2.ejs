@@ -140,11 +140,11 @@
                       </div>
                       <div class="col-sm-12 col-lg-2">
                         <label class="radio-inline">
-                          <input type="radio" name="spods_option_work_permit_for_uk" id="yes1" value="yes" required>
+                          <input type="radio" name="spods_option_work_permit_for_uk" class="spods_option_work_permit_for_uk" id="yes1" value="yes" required>
                           &nbsp;Yes&nbsp;&nbsp;
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="spods_option_work_permit_for_uk" id="no1"
+                          <input type="radio" name="spods_option_work_permit_for_uk" class="spods_option_work_permit_for_uk" id="no1"
                             value="no">&nbsp;No&nbsp;&nbsp;
                         </label>
                       </div>
@@ -174,7 +174,7 @@
                       </div>
                       <div class="col-sm-12 col-lg-2">
                         <label class="radio-inline">
-                          <input type="radio" name="spods_option_criminal_convictions" value="yes"
+                          <input type="radio" name="spods_option_criminal_convictions" class="" value="yes"
                             onclick="javascript:yesnoCheck();" id="yesCheck" required>
                           &nbsp;Yes&nbsp;&nbsp;
                         </label>
@@ -199,9 +199,9 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-12" id="ifYes">
                             <div class="input-box-size">
-                              <input type="text" class="form-control text-field-size " id="criminal_convictions"
+                              <input type="text" class="form-control text-field-size spods_details_of_convictions" id="criminal_convictions"
                                 name="spods_details_of_convictions"
-                                placeholder="Please give details of any point/convictions" required>
+                                placeholder="Please give details of any point/convictions" required value="">
                             </div>
 
                           </div>
@@ -209,13 +209,13 @@
                         <div class="row">
                           <div class="col-sm-5 col-lg-6">
                             <div class="input-box-size-fix3">
-                              <input type="text" class="form-control text-field-size " id=""
+                              <input type="text" class="form-control text-field-size spods_professional_body" id=""
                                 placeholder="Professional Body" name="spods_professional_body" required>
                             </div>
                           </div>
                           <div class="col-sm-5 col-lg-6">
                             <div class="input-box-size-fix3">
-                              <input type="text" class="form-control text-field-size " id=""
+                              <input type="text" class="form-control text-field-size spods_membership_number" id=""
                                 placeholder="Professional Body Membership No." name="spods_membership_number">
                             </div>
                           </div>
@@ -254,7 +254,7 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix3">
-                              <input type="text" class="form-control text-field-size" id=""
+                              <input type="text" class="form-control text-field-size spods_other_relevant_qualification" value="" id=""
                                 placeholder="Other Relevant Qualifications" name="spods_other_relevant_qualification">
                             </div>
                           </div>
@@ -273,7 +273,8 @@
                             <div class="prev-btn float-right">
                               <!-- <a href="signup-professionals-profile-3" class="btn btn-next" style="width: 164px; ">
                         NEXT</a> -->
-                              <button type="submit" name="submit" class="btn btn-next" style="width: 164px; ">
+                        <input type="hidden" name="other_detail_id" class="other_detail_id" value="">
+                              <button type="submit" name="submit" class="btn btn-next profile2next" style="width: 164px; ">
                                 NEXT</button>
                             </div>
               </form>
@@ -301,6 +302,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
     integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
     crossorigin="anonymous"></script>
+     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
   <script type="text/javascript">
     window.onload = function () {
@@ -330,7 +332,89 @@
         $(element).removeClass(errorClass);
       },
       submitHandler: function (form) {
-        $('.loader-box').attr('style', 'display:flex !important');
+   
+
+
+      }
+    });
+  </script>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var flash_msg = $('.flash_msg').html();
+      if (flash_msg != "" && flash_msg != undefined) {
+        setTimeout(function () { $('.flash_msg').html(''); }, 4000);
+      }
+    });
+
+    $(document).ready(function () {
+      var succ_flash_msg = $('.succ_flash_msg').html();
+      if (succ_flash_msg != "" && succ_flash_msg != undefined) {
+        setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
+      }
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      var data = {
+        user_id:'<%= session.user_id%>'
+      }
+      $.ajax({
+          type: "GET",
+          data: data,
+          url: "/api/service_provider_other_details",
+          cache: false,
+          success: function (data) {
+            console.log(data);
+            if (data.status == true) {
+              // $('.spods_surname').val(data.data.spods_surname);
+               $('.spods_date_registered').val(data.data.spods_date_registered);
+               $('.spods_details_of_convictions').val(data.data.spods_details_of_convictions);
+              $('.spods_former_surnames').val(data.data.spods_former_surnames);
+               $('.spods_membership_no_date_registered').val(data.data.spods_membership_no_date_registered);
+               $('.spods_option_criminal_convictions').val(data.data.spods_option_criminal_convictions);
+               $('.spods_option_uk_driving_licence').val(data.data.spods_option_uk_driving_licence);
+               //$('.spods_option_work_permit_for_uk').val(data.data.spods_option_work_permit_for_uk);
+               $('.spods_other_relevant_qualification').val(data.data.spods_other_relevant_qualification);
+               $('.spods_professional_body').val(data.data.spods_professional_body);
+               $('.spods_membership_number').val(data.data.spods_membership_number);
+              $('.other_detail_id').val(data.data._id);
+//yesnoCheck
+              if(data.data.spods_option_work_permit_for_uk=='yes'){
+                //document.getElementById('yes1').checked
+                $("#yes1").attr('checked', 'checked');
+              }else{
+                //document.getElementById('no1').checked
+                $("#no1").attr('checked', 'checked');
+              }
+              //
+              if(data.data.spods_option_uk_driving_licence=='yes'){
+                //document.getElementById('yes1').checked
+                $("#yes3").attr('checked', 'checked');
+              }else{
+                //document.getElementById('no1').checked
+                $("#no3").attr('checked', 'checked');
+              }
+              if(data.data.spods_option_criminal_convictions=='yes'){
+                //alert()
+                $("#yesCheck").attr('checked', 'checked');
+                //document.getElementById('yesCheck').checked
+                document.getElementById('ifYes').style.display = 'block';
+              }else{
+                $('.spods_details_of_convictions').val('')
+                $("#noCheck").attr('checked', 'checked');
+               // document.getElementById('noCheck').checked
+                document.getElementById('ifYes').style.display = 'none';
+              }
+            }else{
+
+            }
+
+          }
+        });
+     $('#form2').submit(function(e){
+      e.preventDefault();
+      $('.loader-box').attr('style', 'display:flex !important');
         var formData = $('#form2').serialize();
 
         console.log('formData:', formData)
@@ -378,29 +462,11 @@
             }
           }
         });
+     })
 
-
-      }
     });
   </script>
-
-  <script type="text/javascript">
-    $(document).ready(function () {
-      var flash_msg = $('.flash_msg').html();
-      if (flash_msg != "" && flash_msg != undefined) {
-        setTimeout(function () { $('.flash_msg').html(''); }, 4000);
-      }
-    });
-
-    $(document).ready(function () {
-      var succ_flash_msg = $('.succ_flash_msg').html();
-      if (succ_flash_msg != "" && succ_flash_msg != undefined) {
-        setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
-      }
-    });
-  </script>
-
-
+ 
 
 
 
