@@ -79,7 +79,26 @@ module.exports.savePortpofolio = function (req) {
 
     }).catch((error) => { console.log(error) });
 };
+module.exports.editPortpofolio = function (req) {
 
+}
+module.exports.getPortpofolio = function (id) {
+return new Promise(async function (resolve, reject) {
+    if (id != null) {
+        data = {
+            spps_service_provider_id: id
+        }
+        await ServiceProviderPortfolioSchema.find(data).then(async (resp) => {
+            let responce = await resp
+            resolve(responce)
+        }).catch((err) => {
+            reject(err)
+        })
+    } else {
+        reject({ status: 0 })
+    }
+}).catch((error) => { });
+}
 module.exports.getReferenceDetailById = function (id) {
     return new Promise(async function (resolve, reject) {
         if (id != null) {

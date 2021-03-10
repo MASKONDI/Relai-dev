@@ -925,7 +925,32 @@ router.post("/service_provider_language",async (req, res) => {
 
 
 });
-
+/* -------------------------------------------------------------------------------------------------
+Get : portpolio post api is responsible for geting portpolio form data 
+------------------------------------------------------------------------------------------------- */
+router.get("/portpolio", async(req, res) => {
+  console.log('req',req.query);
+  if(req.query.user_id){
+   var data = await signUpHelper.getPortpofolio(req.query.user_id);
+   console.log('language',data)
+   if(data.length>0){
+    return res.send({
+      'status':true,
+      'data':data
+    })
+   }else{
+    return res.send({
+      'status':false,
+      
+    })
+   }
+  }else{
+    return res.send({
+      'status':false,
+      
+    })
+  }
+})
 /* -------------------------------------------------------------------------------------------------
 POST : service_provider_sign post api is used for login service_provider account 
 ------------------------------------------------------------------------------------------------- */
