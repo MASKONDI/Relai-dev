@@ -30,9 +30,9 @@
               <div class="row back-to-home">
                 <div class="breadcumb">
                   <ul>
-                    <li><a href="/service-provider/property-detail"><i class="fa fa-long-arrow-left"
-                          aria-hidden="true"></i> Back to
-                        Hilton Avenue
+                    <li><a href="/service-provider/property-detail?id=<%=propertyDetailData[0]._id%>"><i
+                          class="fa fa-long-arrow-left" aria-hidden="true"></i> Back to
+                        <%=propertyDetailData[0].ps_property_name%>
                       </a></li>
                   </ul>
                 </div>
@@ -40,26 +40,39 @@
               <div class="row">
                 <div class="col-sm-12 col-lg-6">
                   <div class="submit-proposal-header">
-                    <h3>Submit a proposal for Hilton Avenue</h3>
-                    <p><img src="../images/location.png">Sudirman, Central Jakarta</p>
+                    <h3>Submit a proposal for <%=propertyDetailData[0].ps_property_name%>
+                    </h3>
+                    <p><img src="../images/location.png">
+                      <%=propertyDetailData[0].ps_property_address%>,
+                        <%=propertyDetailData[0].ps_property_country_id%>
+                    </p>
                   </div>
                 </div>
                 <div class="col-sm-12 col-lg-6">
-                  <span><img src="../images/user-1.png"><span style="font-size: 16px;">by
-                      Robin Janson</span></span>
+                  <% if(customer==undefined || customer==undefined ){%>
+                    <img src="../images/user-1.png">
+                    <span style="font-size: 13px;">by
+                      N/A</span>
+                    <%} else {%>
+                      <img src="../upload/<%=customer.cus_profile_image_name%>"
+                        style="border-radius: 50%; height: 16px;margin-right: 1px;"><span>
+                        by <%=customer.cus_fullname%>
+                      </span>
+                      <%}%>
                 </div>
               </div>
               <div class="proposal-about-section">
                 <h6>About the property</h6>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed dLorem ipsum dolor sit amet,
-                  consectetur adipisicing elit, sed dLorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  dLorem ipsum dolor sit amet, consectetur adipisicing elit, sed dLorem ipsum dolor sit amet,
-                  consectetur adipisicing elit, sed dLorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  dLorem ipsum dolor sit amet, consectetur adipisicing elit, sed dLorem ipsum dolor sit amet,
-                  consectetur adipisicing elit, sed dLorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  dLorem ipsum dolor sit amet, consectetur adipisicing elit, sed d</p>
+                <p>
+                  <%=propertyDetailData[0].ps_additional_note%>
+                </p>
               </div>
-              <form class="form" action="#">
+              <form class="form" id="submit_proposal_form" action="/submit-proposal" method="POST"
+                enctype="multipart/form-data">
+                <input type="hidden" name="sps_service_provider_id" id="" value="<%=session.user_id%>">
+                <input type="hidden" name="sps_property_id" id="" value="<%=propertyDetailData[0]._id%>">
+                <input type="hidden" name="sps_customer_id" id="" value="<%=customer._id%>">
+
                 <div class="step-1">
                   <p>STEP 1</p>
                   <h4>Tell us the estimated time required</h4>
@@ -67,13 +80,13 @@
 
 
                     <div class="input-box-size-fix2">
-                      <input type="date" class="form-control property-input-size-fix " id="address"
-                        placeholder="Start date" name="address">
+                      <input type="text" onfocus="(this.type='date')" class="form-control property-input-size-fix "
+                        id="sps_start_date" placeholder="Start date" name="sps_start_date">
                     </div>
 
                     <div class="input-box-size-fix2">
-                      <input type="date" class="form-control property-input-size-fix " id="address"
-                        placeholder="End date" name="address">
+                      <input type="text" onfocus="(this.type='date')" class="form-control property-input-size-fix "
+                        id="sps_end_date" placeholder="End date" name="sps_end_date">
                     </div>
 
                   </div>
@@ -111,39 +124,31 @@
                       </div>
                     </div>
                     <div class="row">
-
                       <div class="input-box-size-fix2">
                         <input type="text" class="form-control property-input-size-fix " id="address"
-                          placeholder="MileStone 1" name="address">
+                          placeholder="MileStone 1" name="milestone">
                       </div>
-
-
-
                       <div class="input-box-size-fix2">
-                        <input type="date" class="form-control property-input-size-fix " id="address" placeholder="Date"
-                          name="address">
+                        <input type="text" onfocus="(this.type='date')" class="form-control property-input-size-fix "
+                          id="milestoneDate" placeholder="Date" name="milestonedate">
                       </div>
-
                     </div>
                     <div class="row">
-
-                      <div class="input-box-size-fix2">
-                        <input type="text" class="form-control property-input-size-fix " id="address"
-                          placeholder="MileStone 2" name="address">
-
+                      <div class="row">
+                        <div class="input-box-size-fix2">
+                          <input type="text" class="form-control property-input-size-fix " id="address"
+                            placeholder="MileStone 2" name="address">
+                        </div>
+                        <div class="input-box-size-fix2">
+                          <input type="text" onfocus="(this.type='date')" class="form-control property-input-size-fix "
+                            id="Date" placeholder="Date" name="Date">
+                        </div>
                       </div>
-
-
-                      <div class="input-box-size-fix2">
-                        <input type="date" class="form-control property-input-size-fix " id="address" placeholder="Date"
-                          name="address">
-
-                      </div>
-
                       <div class="">
-                        <a href="#" class="btn property-add-btn"><i class="fa fa-plus"></i></a>
+                        <!-- <a href="#" class="btn property-add-btn" id="addPlusbtn"><i class="fa fa-plus"></i></a> -->
+                        <button class="btn  property-add-btn" name="addPlusbtn"><i class="fa fa-plus"></i></button>
                       </div>
-
+                      <div class="divv"></div>
                     </div>
                   </div>
 
@@ -153,25 +158,21 @@
                       <h4>Add extra notes/attachments if any</h4>
 
                       <div class="input-box-size-fix2">
-                        <input type="text" class="form-control property-input-size-fix" id="notes"
-                          placeholder="Notes(if any)" name="notes">
+                        <input type="text" class="form-control property-input-size-fix" id="sps_extra_notes"
+                          placeholder="Notes(if any)" name="sps_extra_notes">
                       </div>
 
 
                       <div class="input-box-size-fix2">
                         <div class=" property-attchment-box-fix">
-                          <p>Add attachments if any <span class="float-right"><a href="#"><u>upload</u></a></span></p>
+                          <p>Add attachments if any </p><span class=""> <a id="button"></a>
+                            <input id="file-input" type="file" id="proposal-docs" name="proposal-docs" /></span>
 
                         </div>
                       </div>
-
-
                     </div>
                   </div>
                 </div>
-
-
-
                 <div class="submit-sec">
                   <button type="submit" class="btn btn-next" style="width: 164px; border-radius: 10px;">
                     Submit a Proposal</button>
@@ -185,6 +186,7 @@
       </div>
     </div>
     </div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <%-include('professional-footer')-%>
