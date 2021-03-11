@@ -44,17 +44,11 @@
 
                   <div class="col-sm-12 col-lg-12">
                     <div class="row">
-
                       <% var i=0; propertyData.forEach(function(row){ %>
                         <div class=" col-sm-12 col-md-4">
-
                           <div class="home-section">
-
-
                             <div class="my-dream-home-box">
-
                               <div class="dream-home-img">
-
                                 <%if(propertyImage.length>0){%>
                                   <%if(propertyImage[i].length>0){%>
                                     <img src="propimg/<%=propertyImage[i][0].pps_property_image_name%>">
@@ -83,7 +77,6 @@
                                                       <%=row.ps_property_type%>
                                                     </a>
                                                     <%}%>
-
                               </div>
                               <div class="dream-home-description">
                                 <h3><a href="/mydreamhome-details?id=<%=row._id%>">
@@ -101,9 +94,35 @@
                           </div>
                         </div>
                         <% i++;});%>
-
                     </div>
 
+                    <div class="pagination-section">
+                      <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                          <li class="page-item">
+                            <% if(currentPage > 1){ var currentPage1 = currentPage-1; %>
+                            <a class="page-link" href="/professionals?page=<%=currentPage1%>" aria-label="Previous">
+                              <span aria-hidden="true">&laquo;</span>
+                              <span class="sr-only">Previous</span>
+                            </a>
+                            <% } %>
+                          </li>
+                          <%  for(var i=1; i<=totalPages; i++) { var tClass=''; if(i == currentPage){ tClass='active'; } %>
+                          <li class="page-item <%=tClass%>"><a class="page-link" href="/professionals?page=<%=i%>"><%=i%></a></li>
+                          <% } %>
+                          <% if(currentPage < totalPages){ var currentPage1 = currentPage+1; %>
+                          <li class="page-item">
+                            <a class="page-link" href="/professionals?page=<%=currentPage1%>" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                              <span class="sr-only">Next</span>
+                            </a>
+                          </li>
+                          <% } %>
+                        </ul>
+                      </nav>
+                    </div>
+
+                    
                   </div>
                 </div>
               </div>

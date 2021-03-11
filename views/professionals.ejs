@@ -330,7 +330,35 @@
                   </div>
                   <% }); %>
               </div>
-
+<div class="professional-pagination-section">
+ 
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <% if(totalPages > 1){ %>
+      <li class="page-item">
+        <% if(currentPage > 1){ var currentPage1 = currentPage-1; %>
+        <a class="page-link" href="/professionals?page=<%=currentPage1%>" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <% } %>
+      </li>
+      <%  for(var i=1; i<=totalPages; i++) { var tClass=''; if(i == currentPage){ tClass='active'; } %>
+      <li class="page-item <%=tClass%>"><a class="page-link" href="/professionals?page=<%=i%>"><%=i%></a></li>
+      <% } %>
+      <% if(currentPage < totalPages){ var currentPage1 = parseInt(currentPage)+parseInt(1); %>
+      <li class="page-item">
+        <a class="page-link" href="/professionals?page=<%=currentPage1%>" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+          <span class="sr-only">Next</span>
+        </a>
+      </li>
+      <% } %>
+      <% } %>
+    </ul>
+  </nav>
+ 
+</div>
             </div>
           </div>
         </div>
