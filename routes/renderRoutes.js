@@ -357,7 +357,7 @@ app.get('/professionals', isCustomer, async (req, res) => {
   req.session.pagename = 'professionals';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  const { page = 1, limit = 12 } = req.query;
+  const { page = 1, limit = 2 } = req.query;
   console.log('pageQuery:',page);
 
   await ServiceProviderSchema.find({ sps_status: 'active' }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider => {
@@ -454,7 +454,7 @@ app.get('/myprofessionals', isCustomer, async (req, res) => {
   console.log("current user session is :", req.session);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  const { page = 1, limit = 12 } = req.query;
+  const { page = 1, limit = 2 } = req.query;
   console.log('mypageQuery:',page);
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit);
   console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
@@ -598,7 +598,7 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
   req.session.pagename = 'professionals';
   console.log('role data:', req.query.role);
 
-  const { page = 1, limit = 12 } = req.query;
+  const { page = 1, limit = 2 } = req.query;
   console.log('pageQuery:',page);
 
   ServiceProviderSchema.find({ sps_role_name: req.query.role,sps_status: 'active' }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
@@ -696,7 +696,7 @@ app.get('/professionals-searchbar', (req, res) => {
             }
           });
           let unique = [...new Set(professionalIDs)];
-          const { page = 1, limit = 12 } = req.query;
+          const { page = 1, limit = 2 } = req.query;
           console.log('pageQuery:',page);
           ServiceProviderSchema.find({ _id: { $in: unique } }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
 
@@ -765,7 +765,7 @@ app.get('/professionals-searchbar', (req, res) => {
 // My professional filter role
 app.get('/my-professionals-filter', isCustomer, async (req, res) => {
   req.session.pagename = 'professionals';
-  const { page = 1, limit = 12 } = req.query;
+  const { page = 1, limit = 2 } = req.query;
   console.log('pageQuery:',req.query);
 
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
@@ -855,7 +855,7 @@ app.get('/my-professionals-filter', isCustomer, async (req, res) => {
 // My Professional Filter name surname qualification
 app.get('/my-professionals-searchbar', async (req, res) => {
   req.session.pagename = 'professionals';
-  const { page = 1, limit = 12 } = req.query;
+  const { page = 1, limit = 2 } = req.query;
   console.log('pageQuery:',req.query);
   let professionalIDs = [];
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
@@ -1846,7 +1846,7 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
   req.session.pagename = 'mydreamhome';
   console.log("current session is", req.session);
 
-  const { page = 1, limit = 9 } = req.query;
+  const { page = 1, limit = 2 } = req.query;
   console.log('pageQuery:',page);
 
   PropertiesSchema.find({
@@ -3224,7 +3224,7 @@ app.post('/professionals-multifilter', async (req, res) => {
     console.log('cityKeyword:', cityKeyword)
     console.log('languageKeyword:', languageKeyword)
 
-    const { page = 1, limit = 4 } = req.body;
+    const { page = 1, limit = 2 } = req.body;
     let count = 0;
     console.log('pageQuery:',page);
     console.log('req.query:',req.body);
