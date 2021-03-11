@@ -30,7 +30,7 @@ const ServiceProviderIndemnityDetailsSchema = new Schema({
     type: String,
 
   },
-  spods_boker_details: {
+  spods_broker_details: {
     type: String,
 
   },

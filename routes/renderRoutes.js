@@ -2223,23 +2223,23 @@ app.get('/signin-professional', (req, res) => {
 //     session: req.session
 //   });
 // });
-app.get('/signup-professionals-profile', isServiceProvider, (req, res) => {
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  console.log("Current session is : ", req.session);
-  res.render('signup-professionals-profile', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
-app.get('/signup-professionals-profile-2', isServiceProvider, (req, res) => {
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile-2', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
+// app.get('/signup-professionals-profile', isServiceProvider, (req, res) => {
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   console.log("Current session is : ", req.session);
+//   res.render('signup-professionals-profile', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session
+//   });
+// });
+// app.get('/signup-professionals-profile-2', isServiceProvider, (req, res) => {
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   res.render('signup-professionals-profile-2', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session
+//   });
+// });
 app.get('/signup-professionals-profile-3', isServiceProvider, (req, res) => {
   ServiceProviderEducationSchema.find({ spes_service_provider_id: req.session.user_id }).then((AllEducation) => {
     console.log('AllEducation', AllEducation)
@@ -2263,38 +2263,38 @@ app.get('/signup-professionals-profile-3', isServiceProvider, (req, res) => {
 //     session: req.session
 //   });
 // });
-app.get('/signup-professionals-profile-5', (req, res) => {
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile-5', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
-app.get('/signup-professionals-profile-6', (req, res) => {
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile-6', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
-app.get('/signup-professionals-profile-7', isServiceProvider, (req, res) => {
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile-7', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
-app.get('/portfolio', isServiceProvider, (req, res) => {
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('portfolio', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
+// app.get('/signup-professionals-profile-5', (req, res) => {
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   res.render('signup-professionals-profile-5', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session
+//   });
+// });
+// app.get('/signup-professionals-profile-6', (req, res) => {
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   res.render('signup-professionals-profile-6', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session
+//   });
+// });
+// app.get('/signup-professionals-profile-7', isServiceProvider, (req, res) => {
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   res.render('signup-professionals-profile-7', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session
+//   });
+// });
+// app.get('/portfolio', isServiceProvider, (req, res) => {
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   res.render('portfolio', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session
+//   });
+// });
 
 
 app.get('/index', (req, res) => res.render('index'));

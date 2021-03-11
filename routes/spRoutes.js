@@ -20,6 +20,7 @@ var propertyHelper = require('./api/service_provider_helper/sp_propertydetial');
 var customerHelper = require('./api/service_provider_helper/customerHelper')
 
 const PropertiesPictureSchema = require("../models/properties_picture");
+const CustomerSchema = require("../models/customers");
 //const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
 const PropertiesSchema = require("../models/properties");
 const PropertyProfessionalSchema = require("../models/property_professional_Schema");
@@ -32,8 +33,62 @@ const ServiceProviderLanguageSchema = require("../models/service_provider_langua
 const ServiceProviderEmploymentHistorySchema = require('../models/service_provider_employment_history');
 const ServiceProviderReferenceSchema = require("../models/service_provider_reference");
 const ServiceProviderIndemnityDetailsSchema = require("../models/service_provider_indemnity_details");
+app.get('/signup-professionals-profile', isServiceProvider, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  console.log("Current session is : ", req.session);
+  res.render('signup-professionals-profile', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+app.get('/signup-professionals-profile-2', isServiceProvider, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signup-professionals-profile-2', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
 
 
+app.get('/signup-professionals-profile-5', async (req, res) => {
+  console.log('55555555555', req.query)
+  if (req.query.editid) {
+    let refrenceData = await signUpHelper.getReferenceDetailById(req.query.editid);
+    console.log(refrenceData)
+    if (refrenceData) {
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.render('signup-professionals-profile-5', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        refrenceData: refrenceData
+      });
+    } else {
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.render('signup-professionals-profile-5', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        refrenceData: null
+      });
+    }
+  } else {
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('signup-professionals-profile-5', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      refrenceData: null
+    });
+  }
+
+  // res.render('signup-professionals-profile-5', {
+  //   err_msg, success_msg, layout: false,
+  //   session: req.session
+  // });
+});
 app.get('/service-provider/dashboard-professional', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -43,7 +98,30 @@ app.get('/service-provider/dashboard-professional', isServiceProvider, (req, res
     session: req.session
   });
 });
-
+app.get('/signup-professionals-profile-6', (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signup-professionals-profile-6', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+app.get('/signup-professionals-profile-7', isServiceProvider, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('signup-professionals-profile-7', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+app.get('/portfolio', isServiceProvider, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('portfolio', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
 app.get('/otp-professional', function (req, res) {
   console.log("current session is :", req.session);
 
@@ -56,7 +134,7 @@ app.get('/otp-professional', function (req, res) {
 });
 app.get('/service-provider/track-your-progress-professionals', isServiceProvider, async function (req, res) {
   let data = await trackYourProgress.getAllPropertyByUserId(req.session.user_id)
-  console.log('data=======', data)
+  console.log('data=======', data);
   //console.log("current session is :", req.session);
   req.session.pagename = 'service-provider/track-your-progress-professionals';
   err_msg = req.flash('err_msg');
@@ -67,31 +145,82 @@ app.get('/service-provider/track-your-progress-professionals', isServiceProvider
     propertyData: data
   });
 });
-
+// app.post('/service-provider/track-your-progress-professionals', isServiceProvider, async function (req, res) {
+//   console.log(req.body);
+//   var start=req.body.start
+//   var limit=req.body.limit
+//   let data = await trackYourProgress.getAllPropertyByUserId1(req.session.user_id,start,limit)
+//   console.log('data===========',data)
+//   res.send({
+//     'data':data
+//   })
+// })
 app.get('/service-provider/property', isServiceProvider, async function (req, res) {
   console.log("current session is  from sp end:", req.session);
   req.session.pagename = 'service-provider/property';
-  let propertyArray=[]
-  let AllhiredProfeshnoal=await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id);
-  for(let key of AllhiredProfeshnoal){
-    let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
-    let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
-    propertyData.property_image = await propertyImageData.pps_property_image_name;
-    let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
-    let customerProfile = await customerHelper.getCustomerImageByID(key.pps_user_id);
-    propertyData.customer_name = await customerName
-    propertyData.customer_profile = await customerProfile
-    propertyArray.push(propertyData)
+  let propertyArray = []
+  PropertiesSchema.find().sort({ _id: -1 }).limit(12).then(async (data) => {
+    if (data) {
+      let arr = [];
+      //console.log("Property Data is", data);
+      for (let img of data) {
 
-  }
-  console.log("propertyIdArray", propertyArray);
-  res.render('service-provider/property', {
-    err_msg, success_msg, layout: false,
-    session: req.session,
-    propertyData: propertyArray,
-    
+        //propertyArray.push(data)
+        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
+
+          let temp = await result
+          //for(let image of result){
+          //  let temp = await image
+          let customerName = await customerHelper.getCustomerNameByID(img.ps_user_id);
+          let customerProfile = await customerHelper.getCustomerImageByID(img.ps_user_id);
+          temp.customer_name = await customerName
+          temp.customer_profile = await customerProfile
+          arr.push(temp)
+          // }
+          console.log("arr is", arr);
+        })
+      }
+
+      //data.add(t);
+      // console.log("customer_name is ", arr[0].customer_name);
+      // console.log('++++++++',arr)
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+
+      res.render('service-provider/property', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        propertyData: data,
+        propertyImage: arr
+      });
+
+    }
+  }).catch((err) => {
+    console.log(err)
   })
-});
+
+})
+// let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id);
+// for (let key of AllhiredProfeshnoal) {
+//   let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
+//   let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
+//   propertyData.property_image = await propertyImageData.pps_property_image_name;
+//   let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
+//   let customerProfile = await customerHelper.getCustomerImageByID(key.pps_user_id);
+//   propertyData.customer_name = await customerName
+//   propertyData.customer_profile = await customerProfile
+//   propertyArray.push(propertyData)
+
+// }
+
+//   console.log("propertyIdArray", propertyArray);
+//   res.render('service-provider/property', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session,
+//     propertyData: propertyArray,
+
+//   })
+// });
 app.get('/service-provider/professionals-to-do-list', isServiceProvider, function (req, res) {
   console.log("current session is :", req.session);
   req.session.pagename = 'service-provider/professionals-to-do-list';
@@ -103,20 +232,32 @@ app.get('/service-provider/professionals-to-do-list', isServiceProvider, functio
   });
 });
 
-app.get('/service-provider/myproperties', isServiceProvider, function (req, res) {
+app.get('/service-provider/myproperties', isServiceProvider, async function (req, res) {
   console.log("", req.session);
   req.session.pagename = 'service-provider/property';
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
+  let propertyArray = []
+  let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id);
+  for (let key of AllhiredProfeshnoal) {
+    let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
+    let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
+    propertyData.property_image = await propertyImageData.pps_property_image_name;
+    let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
+    let customerProfile = await customerHelper.getCustomerImageByID(key.pps_user_id);
+    propertyData.customer_name = await customerName
+    propertyData.customer_profile = await customerProfile
+    propertyArray.push(propertyData)
+
+  }
+  console.log("propertyIdArray", propertyArray);
   res.render('service-provider/myproperties', {
     err_msg, success_msg, layout: false,
-    session: req.session
-  });
+    session: req.session,
+    propertyData: propertyArray,
+
+  })
 });
 
 app.get('/service-provider/myproperties-detail', isServiceProvider, async function (req, res) {
-
-
   console.log("", req.session);
   //console.log('data===========',data)
   req.session.pagename = 'service-provider/property';
@@ -129,15 +270,60 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
 });
 
 app.get('/service-provider/property-detail', isServiceProvider, function (req, res) {
+
   console.log("current session is :", req.session);
+  console.log("req.query is :", req.query);
   req.session.pagename = 'service-provider/property';
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('service-provider/property-detail', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
+  PropertiesSchema.find({ _id: req.query.id }).then(async (data) => {
+    if (data) {
+      let customerName = await customerHelper.getCustomerNameByID(data[0].ps_user_id);
+      let customerProfile = await customerHelper.getCustomerImageByID(data[0].ps_user_id);
+
+      let arr = [];
+      for (let img of data) {
+        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
+          //let temp = await result
+          for (let image of result) {
+            let temp = await image
+            arr.push(temp)
+          }
+
+        })
+      }
+      req.session.property_id = data[0]._id;
+      //console.log("Data Array is ", data);
+      //console.log("customerName ...", customerName)
+      // console.log("customerProfile is ......", customerProfile);
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.render('service-provider/property-detail', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        propertyDetailData: data,
+        propertyImage: arr,
+        customerName: customerName,
+        customerProfile: customerProfile
+      });
+
+      //console.log(serviceProvArray)
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+
+
+})
+
+
+
+
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   res.render('service-provider/property-detail', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session
+//   });
+// });
 
 
 app.get('/service-provider/professionals-detail-message', isServiceProvider, function (req, res) {
@@ -199,14 +385,48 @@ app.get('/service-provider/professionals-detail-message', isServiceProvider, fun
 
 app.get('/service-provider/property-detail-submit-proposal', isServiceProvider, function (req, res) {
   console.log("current session is :", req.session);
-  err_msg = req.flash('err_msg');
+  console.log("req.query is :", req.query);
   req.session.pagename = 'service-provider/property';
-  success_msg = req.flash('success_msg');
-  res.render('service-provider/property-detail-submit-proposal', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
+  PropertiesSchema.find({ _id: req.query.id }).then(async (data) => {
+    if (data) {
+      // let customerName = await customerHelper.getCustomerNameByID(data[0].ps_user_id);
+      // let customerProfile = await customerHelper.getCustomerImageByID(data[0].ps_user_id);
+      let custData = await CustomerSchema.findOne({ _id: data[0].ps_user_id });
+      let arr = [];
+      for (let img of data) {
+        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
+          //let temp = await result
+          for (let image of result) {
+            let temp = await image
+            arr.push(temp)
+          }
+
+        })
+      }
+
+      console.log("Data Array is ", data);
+      //console.log("customerName ...", customerName)
+      // console.log("customerProfile is ......", customerProfile);
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.render('service-provider/property-detail-submit-proposal', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        propertyDetailData: data,
+        propertyImage: arr,
+        customer: custData
+      });
+
+      //console.log(serviceProvArray)
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+
+
+})
+
+
 app.get('/signup-professionals-profile-4', isServiceProvider, async (req, res) => {
   var service_provider_id = req.session.user_id;
   var all_employe_history = await signUpHelper.getAllEmployeHistory(service_provider_id);

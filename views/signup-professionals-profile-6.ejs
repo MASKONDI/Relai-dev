@@ -118,7 +118,7 @@
               <div class="row">
                 <div class="col-sm-12 col-lg-9">
                   <div class="signup-header">
-                    <p>START FOR FREE</p>
+                    <!-- <p>START FOR FREE</p> -->
                   </div>
                 </div>
               </div>
@@ -130,7 +130,7 @@
                 </div>
                 <div class="col-sm-12 col-lg-3">
                   <div class="page-count">
-                    <p> 6 of 6</p>
+                    <p> 6 of 7</p>
                   </div>
                 </div>
               </div>
@@ -153,12 +153,12 @@
                         <div class="profile-radio">
                           <label class="radio-inline">
                             <input type="radio" name="spods_option_pl_claims" value="yes"
-                              onclick="javascript:yesnoCheck();" id="yesCheck" required>
+                              onclick="javascript:yesnoCheck();" id="yesCheck_p6" required>
                             &nbsp;Yes&nbsp;&nbsp;
                           </label>
                           <label class="radio-inline">
                             <input type="radio" name="spods_option_pl_claims" value="no"
-                              onclick="javascript:yesnoCheck();" id="noCheck"> &nbsp;No&nbsp;&nbsp;
+                              onclick="javascript:yesnoCheck();" id="noCheck_p6"> &nbsp;No&nbsp;&nbsp;
                           </label>
                         </div>
                       </div>
@@ -177,8 +177,8 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-12" id="ifYes">
                             <div class="">
-                              <input type=" text" class="form-control text-field" id=""
-                                placeholder="*Please enter PI claim Details" name="spods_pl_claim_details">
+                              <input type=" text" class="form-control text-field spods_pl_claim_details" id=""
+                                placeholder="*Please enter PI claim Details" name="spods_pl_claim_details" value="">
                             </div>
                           </div>
                         </div>
@@ -195,12 +195,12 @@
                             <div class="profile-radio">
                               <label class="radio-inline">
                                 <input type="radio" name="spods_option_pl_cover" value="yes"
-                                  onclick="javascript:yesnoCheck2();" id="yesCheck2" required>
+                                  onclick="javascript:yesnoCheck2();" id="yesCheck2_p6" required>
                                 &nbsp;Yes&nbsp;&nbsp;
                               </label>
                               <label class="radio-inline">
                                 <input type="radio" name="spods_option_pl_cover" value="no"
-                                  onclick="javascript:yesnoCheck2();" id="noCheck2"> &nbsp;No&nbsp;&nbsp;
+                                  onclick="javascript:yesnoCheck2();" id="noCheck2_p6"> &nbsp;No&nbsp;&nbsp;
                               </label>
                             </div>
                           </div>
@@ -211,14 +211,14 @@
                           <div class="row">
                             <div class="col-sm-12 col-lg-6">
                               <div class="input-box-size-fix3">
-                                <input type="text" class="form-control text-field-size " id=""
+                                <input type="text" class="form-control text-field-size spods_name_insurer" id=""
                                   placeholder="Name of Insurer" name="spods_name_insurer">
                               </div>
                             </div>
                             <div class="col-sm-12 col-lg-6">
                               <div class="input-box-size-fix3">
-                                <input type="text" class="form-control text-field-size " id=""
-                                  placeholder="Broker Details(if applicable)" name="spods_broker_details">
+                                <input type="text" name="spods_broker_details" value="" class="form-control text-field-size spods_broker_details" id=""
+                                  placeholder="Broker Details(if applicable)" >
                               </div>
                             </div>
                           </div>
@@ -227,14 +227,14 @@
                           <div class="row">
                             <div class="col-sm-12 col-lg-6">
                               <div class="input-box-size-fix3">
-                                <input type="text" class="form-control text-field-size " id=""
-                                  placeholder="Level of cover" name="spods_level_of_cover">
+                                <input type="text" class="form-control text-field-size spods_level_of_cover" id=""
+                                  placeholder="Level of cover" name="spods_level_of_cover" value="">
                               </div>
                             </div>
                             <div class="col-sm-12 col-lg-6">
                               <div class="input-box-size-fix3">
-                                <input type="text" onfocus="(this.type='date')" class="form-control text-field-size "
-                                  id="" placeholder="Renewal Date" name="spods_renewal_date">
+                                <input type="text" onfocus="(this.type='date')" class="form-control text-field-size spods_renewal_date"
+                                  id="" placeholder="Renewal Date" name="spods_renewal_date" value="">
                               </div>
                             </div>
                           </div>
@@ -253,6 +253,7 @@
                             <div class="prev-btn-fix float-right">
                               <!-- <a href="/signup-professionals-profile-7" class="btn btn-next" style="width: 164px;">
                         NEXT</a> -->
+                        <input type="hidden" name="indemnity_detail_id" class="indemnity_detail_id">
                               <button type="submit" name="submit" class="btn btn-next" style="width: 164px;">
                                 NEXT</button>
                             </div>
@@ -351,13 +352,13 @@
     });
   </script>
   <script type="text/javascript">
-     document.getElementById('ifYes').style.display = 'none';
+    document.getElementById('ifYes').style.display = 'none';
     window.onload = function () {
-     
+
     }
 
     function yesnoCheck() {
-      if (document.getElementById('yesCheck').checked) {
+      if (document.getElementById('yesCheck_p6').checked) {
         document.getElementById('ifYes').style.display = 'block';
       }
       else {
@@ -372,7 +373,7 @@
     }
 
     function yesnoCheck2() {
-      if (document.getElementById('yesCheck2').checked) {
+      if (document.getElementById('yesCheck2_p6').checked) {
         document.getElementById('ifYes2').style.display = 'block';
       }
       else {
@@ -394,7 +395,64 @@
       if (succ_flash_msg != "" && succ_flash_msg != undefined) {
         setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
       }
-    });  
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var data = {
+        user_id:'<%= session.user_id%>'
+      }
+     // alert("<%= session.user_id%>")
+      $.ajax({
+          type: "GET",
+          data: data,
+          url: "/api/service_provider_indemnity_details",
+          cache: false,
+          success: function (data) {
+            console.log(data);
+            if (data.status == true) {
+              $('.indemnity_detail_id').val(data.data._id);
+
+// spods_created_at: "2021-03-09T11:58:12.086Z"
+// spods_level_of_cover: "dd"
+// spods_name_insurer: "123"
+// spods_option_pl_claims: "yes"
+// spods_option_pl_cover: "yes"
+// spods_pl_claim_details: "abcd"
+// spods_renewal_date: "2021-03-19T00:00:00.000Z"
+// spods_service_provider_id: "6034d24278df4a1240758383"
+              if(data.data.spods_option_pl_claims=='yes'){
+                $('.spods_pl_claim_details').val(data.data.spods_pl_claim_details)
+                $("#yesCheck_p6").attr('checked', 'checked');
+                document.getElementById('ifYes').style.display = 'block';
+               
+              }else{
+                $('.spods_pl_claim_details').val('')
+                $("#noCheck_p6").attr('checked', 'checked');
+                document.getElementById('ifYes').style.display = 'none';
+              }
+              if(data.data.spods_option_pl_cover=='yes'){
+                $('.spods_name_insurer').val(data.data.spods_name_insurer)
+                $('.spods_broker_details').val(data.data.spods_broker_details)
+                $('.spods_level_of_cover').val(data.data.spods_level_of_cover)
+                $('.spods_renewal_date').val(data.data.spods_renewal_date)
+                $("#yesCheck2_p6").attr('checked', 'checked');
+                document.getElementById('ifYes2').style.display = 'block';
+               
+              }else{
+                $('.spods_name_insurer').val('')
+                $('.spods_broker_details').val('')
+                $('.spods_level_of_cover').val('')
+                $('.spods_renewal_date').val('')
+                $("#noCheck2_p6").attr('checked', 'checked');
+                document.getElementById('ifYes2').style.display = 'none';
+              }
+
+          }
+        }
+      })
+    });
+
   </script>
   </body>
 

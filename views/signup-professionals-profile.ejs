@@ -139,15 +139,16 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
-                              <input type="text" class="form-control text-field-size " id="" placeholder="Surname"
+                              <input type="text" class="form-control text-field-size spods_surname " id="" placeholder="Surname"
                                 name="spods_surname" required data-rule-required="true"
                                 data-msg-required="Surname is required" value="<%= session.sps_lastname%>">
                               </input>
+                              
                             </div>
                           </div>
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
-                              <input type="text" class="form-control text-field-size " id="" placeholder="Forename"
+                              <input type="text" class="form-control text-field-size spods_fornames " id="" placeholder="Forename"
                                 name="spods_fornames" required data-rule-required="true"
                                 data-msg-required="Forename is required" value="<%= session.sps_firstname%>">
                             </div>
@@ -158,7 +159,7 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
-                              <select class="form-control required" id="selectBox2" name="spods_preferred_title"
+                              <select class="form-control required spods_preferred_title" id="selectBox2" name="spods_preferred_title"
                                 data-rule-required="true" data-msg-required="Preferred Title is required">
                                 <option value="">Preferred Title</option>
                                 <option value="mr">Mr</option>
@@ -170,7 +171,7 @@
                           </div>
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
-                              <input type="text" class="form-control text-field-size " id=""
+                              <input type="text" class="form-control text-field-size spods_former_surnames" id=""
                                 placeholder="Former Surnames(if different from above)" name="spods_former_surnames"
                                 value="<%= session.sps_lastname%>">
                             </div>
@@ -180,14 +181,14 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
-                              <input type="text" class="form-control text-field-size " id="" placeholder="Date of Birth"
+                              <input type="text" class="form-control text-field-size spods_dob " id="" placeholder="Date of Birth"
                                 onfocus="(this.type='date')" name="spods_dob" data-rule-required="true"
                                 data-msg-required="Date of birth is required">
                             </div>
                           </div>
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
-                              <input type="text" class="form-control text-field-size " id="" placeholder="Nationality"
+                              <input type="text" class="form-control text-field-size spods_nationality" id="" placeholder="Nationality"
                                 name="spods_nationality">
                             </div>
                           </div>
@@ -197,13 +198,13 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
-                              <input type="text" class="form-control text-field-size " id="" placeholder="Address"
+                              <input type="text" class="form-control text-field-size spods_address" id="" placeholder="Address"
                                 name="spods_address" value="<%= session.sps_address%>">
                             </div>
                           </div>
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
-                              <input type="text" class="form-control text-field-size " id="" placeholder="Post code"
+                              <input type="text" class="form-control text-field-size spods_postcode" id="" placeholder="Post code"
                                 name="spods_postcode">
                             </div>
                           </div>
@@ -213,13 +214,13 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
-                              <input type="text" class="form-control text-field-size " id=""
+                              <input type="text" class="form-control text-field-size spods_home_telephone_number" id=""
                                 placeholder="Home Telephone Number" name="spods_home_telephone_number">
                             </div>
                           </div>
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
-                              <select class="form-control" id="selectBox2" name="spods_postcode_covered">
+                              <select class="form-control spods_postcode_covered" id="selectBox2" name="spods_postcode_covered">
                                 <option value="0">Post codes covered</option>
                                 <option value=""></option>
                               </select>
@@ -238,7 +239,7 @@
                           </div>
                           <div class="col-sm-12 col-lg-4">
                             <div class="input-box-size-fix">
-                              <input type="text" onfocus="(this.type='date')" class="form-control text-field-size "
+                              <input type="text" onfocus="(this.type='date')" class="form-control text-field-size start_working_time"
                                 id="" placeholder="Start Date" name="start_working_time">
                             </div>
                           </div>
@@ -261,6 +262,7 @@
                             <div class="prev-btn float-right">
                               <!-- <a href="/signup-professionals-profile-2" class="btn btn-next" style="width: 164px;">
                         NEXT</a> -->
+                               <input type="hidden" name="personal_detail_id"class="personal_detail_id" value="">
                               <button id="clickme" type="submit" name="submit" class="btn btn-next"
                                 style="width: 164px;">
                                 NEXT</button>
@@ -286,10 +288,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript" src="../js/countrystatecity.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
-    integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
-    crossorigin="anonymous"></script>
+  integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+  crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
   <script type="text/javascript">
     $('#form1').validate({
       onfocusout: function (element) {
@@ -301,48 +304,7 @@
         $(element).removeClass(errorClass);
       },
       submitHandler: function (form) {
-        $('.loader-box').attr('style', 'display:flex !important');
-        var formData = $('#form1').serialize();
-        console.log('formData:', formData)
-
-        $.ajax({
-          type: "POST",
-          data: formData,
-          url: "/api/service_provider_personal_details",
-          cache: false,
-          success: function (data) {
-            console.log(data);
-
-            if (data.status == false) {
-
-              $('.loader-box').attr('style', 'display:none !important');
-              Swal.fire({
-                icon: 'error',
-                title: data.message,
-                showConfirmButton: false,
-                confirmButtonColor: '#005377',
-                timer: 4000
-              })
-
-            } else {
-              $('.loader-box').attr('style', 'display:none !important');
-
-              Swal.fire({
-                icon: 'success',
-                title: data.message,
-                showConfirmButton: false,
-                confirmButtonColor: '#005377',
-                timer: 4000
-              })
-
-              setTimeout(function () {
-                //location.reload(true);
-                window.location.href = "/signup-professionals-profile-2";
-              }, 4000);
-
-            }
-          }
-        });
+       
 
 
       }
@@ -386,6 +348,85 @@
         // alert("Please select one option at least");
         $("#err_msg").html("Select At least one option");
       }
+    });
+  </script>
+   <script>
+    $(document).ready(function () {
+      var data = {
+        user_id:'<%= session.user_id%>'
+      }
+      $.ajax({
+          type: "GET",
+          data: data,
+          url: "/api/service_provider_personal_details",
+          cache: false,
+          success: function (data) {
+            console.log(data);
+            if (data.status == true) {
+              $('.spods_surname').val(data.data.spods_surname);
+              $('.spods_fornames').val(data.data.spods_fornames);
+              $('.spods_preferred_title').val(data.data.spods_preferred_title);
+              $('.spods_former_surnames').val(data.data.spods_former_surnames);
+              $('.spods_dob').val(data.data.spods_dob);
+              $('.spods_nationality').val(data.data.spods_nationality);
+              $('.spods_address').val(data.data.spods_address);
+              $('.spods_postcode').val(data.data.spods_postcode);
+              $('.spods_home_telephone_number').val(data.data.spods_home_telephone_number);
+              $('.spods_postcode_covered').val(data.data.spods_postcode_covered);
+              $('.start_working_time').val(data.data.start_working_time);
+              $('.personal_detail_id').val(data.data._id);
+
+            }else{
+
+            }
+
+          }
+        });
+        $('#form1').submit(function(e){
+          e.preventDefault()
+          $('.loader-box').attr('style', 'display:flex !important');
+        var formData = $('#form1').serialize();
+        console.log('formData:', formData)
+
+        $.ajax({
+          type: "POST",
+          data: formData,
+          url: "/api/service_provider_personal_details",
+          cache: false,
+          success: function (data) {
+            console.log(data);
+
+            if (data.status == false) {
+
+              $('.loader-box').attr('style', 'display:none !important');
+              Swal.fire({
+                icon: 'error',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 4000
+              })
+
+            } else {
+              $('.loader-box').attr('style', 'display:none !important');
+
+              Swal.fire({
+                icon: 'success',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 4000
+              })
+
+              setTimeout(function () {
+                //location.reload(true);
+                window.location.href = "/signup-professionals-profile-2";
+              }, 4000);
+
+            }
+          }
+        });
+        })
     });
   </script>
   </body>

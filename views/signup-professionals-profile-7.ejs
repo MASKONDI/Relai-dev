@@ -109,7 +109,7 @@
               <div class="row">
                 <div class="col-sm-12 col-lg-9">
                   <div class="signup-header">
-                    <p>START FOR FREE</p>
+                    <!-- <p>START FOR FREE</p> -->
 
                   </div>
                 </div>
@@ -126,7 +126,7 @@
                   </div>
                 </div>
               </div>
-              <form action="/api/service_provider_language" method="post" class="form form-section" id="form7">
+              <form  class="form form-section" id="form7">
 
                 <% if(typeof err_msg!='undefined' ){ %>
                   <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
@@ -138,11 +138,11 @@
                         <%= success_msg %>
                       </span>
                       <% }%>
-                        <div class="row">
+                        <div class="row lang_div">
                           <div class="col-sm-12 col-lg-5">
                             <div class="input-box-size-fix3">
                               <select class="form-control " class="text-field-size" id="selectBox" name="spls_language">
-                                <option value="0">Select Language</option>
+                                <option value="">Select Language</option>
                                 <option value="english">English</option>
                                 <option value="german">German</option>
                                 <option value="french">French</option>
@@ -155,7 +155,7 @@
 
                               <select class="form-control " class="text-field-size" id="selectBox"
                                 name="spls_language_proficiency_level">
-                                <option value="0">Select Language Proficiency Level</option>
+                                <option value="">Select Language Proficiency Level</option>
                                 <option value="level1">Level 1 - Elementary Proficiency</option>
                                 <option value="level2">Level 2 - Limited Working Proficiency
                                 </option>
@@ -224,7 +224,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
     integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
     crossorigin="anonymous"></script>
-
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script type="text/javascript">
     $('#form7').validate({
       onfocusout: function (element) {
@@ -236,7 +236,97 @@
         $(element).removeClass(errorClass);
       },
       submitHandler: function (form) {
-        $('.loader-box').attr('style', 'display:flex !important');
+       
+
+      }
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var flash_msg = $('.flash_msg').html();
+      if (flash_msg != "" && flash_msg != undefined) {
+        setTimeout(function () { $('.flash_msg').html(''); }, 4000);
+      }
+    });
+
+    $(document).ready(function () {
+      var succ_flash_msg = $('.succ_flash_msg').html();
+      if (succ_flash_msg != "" && succ_flash_msg != undefined) {
+        setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
+      }
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      var c = 2;
+      $("button[name='addPlusbtn']").click(function (e) {
+        e.preventDefault();
+
+        var domElement = $('<div class="row"> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3"><select class="form-control " class="text-field-size" id="selectBox" name="spls_language"><option value="">Select Language</option>           <option value="english">English</option> <option value="german">German</option>           <option value="french">French</option> <option value="spanish">Spanish</option> </select>  </div> </div> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3">     <select class="form-control " class="text-field-size" id="selectBox"              name="spls_language_proficiency_level"> <option value="">Select Language Proficiency Level</option><option value="level1">Level 1 - Elementary Proficiency</option>           <option value="level2">Level 2 - Limited Working Proficiency</option><option value="level3">Level 3 - Professional Working Proficiency</option> <option value="level4">Level 4 - Full Professional Proficiency </option> <option value="level5">Level 5 - Native / Bilingual Proficiency </option>  </select> </div> </div></div>' + c++);
+
+        if (c == 5) {
+
+          $("button[name='addPlusbtn']").attr('disabled', true);
+        }
+        $(".divv").append(domElement);
+
+      });
+
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      var data = {
+        user_id:'<%= session.user_id%>'
+      }
+     // alert("<%= session.user_id%>")
+      $.ajax({
+          type: "GET",
+          data: data,
+          url: "/api/service_provider_language",
+          cache: false,
+          success: function (resp) {
+            console.log(resp);
+            if (resp.status == true) {
+              var htmlData = '';
+            //htmlData += '<option value="">Select Professional</option>';
+            if (resp.data.length > 0) {
+              var element='';
+              $.each(resp.data, function (i, data) {
+                console.log('val:', resp.data[0])
+                if(data.spls_language_proficiency_level=='level1'){
+                  element='Level 1 - Elementary Proficiency'
+                }else if(data.spls_language_proficiency_level=='level2'){
+                  element='Level 2 - Limited Working Proficiency'
+                }else if(data.spls_language_proficiency_level=='level3'){
+                  element='Level 3 - Professional Working Proficiency'
+                }else if(data.spls_language_proficiency_level=='level4'){
+                  element='Level 4 - Full Professional Proficiency'
+                }else if(data.spls_language_proficiency_level=='level5'){
+                  element='Level 5 - Native / Bilingual Proficiency'
+                }
+                htmlData += ' <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3"><select class="form-control " class="text-field-size" id="selectBox" name="spls_language"><option value="'+data.spls_language.replace(/\w/, c => c.toUpperCase())+'">'+data.spls_language.replace(/\w/, c => c.toUpperCase())+'</option>           <option value="english">English</option> <option value="german">German</option>           <option value="french">French</option> <option value="spanish">Spanish</option> </select>  </div> </div> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3">     <select class="form-control " class="text-field-size" id="selectBox"              name="spls_language_proficiency_level"> <option value="'+data.spls_language_proficiency_level+'">'+element+'</option><option value="level1">Level 1 - Elementary Proficiency</option>           <option value="level2">Level 2 - Limited Working Proficiency</option><option value="level3">Level 3 - Professional Working Proficiency</option> <option value="level4">Level 4 - Full Professional Proficiency </option> <option value="level5">Level 5 - Native / Bilingual Proficiency </option>  </select> </div> </div><input type="hidden" name="lang_id" value="'+data._id+'"> ';
+              });
+              // htmlData +='<div class="add-btn"><a href="javascript:void(0)" onclick="test(this,'+resp.data.length+')"class="btn signup-professional7-add-btn_addmore" name="addPlusbtn1"><i class="fa fa-plus"></i></a></div>'
+              if(resp.data.length<4){
+                //$("button[name='addPlusbtn1']").attr('disabled', true);
+                // htmlData += '<div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3"><select class="form-control " class="text-field-size" id="selectBox" name="spls_language"><option value="">Select Language</option>           <option value="english">English</option> <option value="german">German</option>           <option value="french">French</option> <option value="spanish">Spanish</option> </select>  </div> </div> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3">     <select class="form-control " class="text-field-size" id="selectBox"              name="spls_language_proficiency_level"> <option value="">Select Language Proficiency Level</option><option value="level1">Level 1 - Elementary Proficiency</option>           <option value="level2">Level 2 - Limited Working Proficiency</option><option value="level3">Level 3 - Professional Working Proficiency</option> <option value="level4">Level 4 - Full Professional Proficiency </option> <option value="level5">Level 5 - Native / Bilingual Proficiency </option>  </select> </div>';
+
+              }
+              $('.lang_div').html(htmlData);
+            }
+           
+
+          }
+        }
+      })
+      
+      //Add language ajax============
+      $('#form7').submit(function(e){
+      // alert(1);
+      // return fasle;
+       e.preventDefault()
+      $('.loader-box').attr('style', 'display:flex !important');
         var formData = $('#form7').serialize();
 
         console.log('formData:', formData)
@@ -248,6 +338,7 @@
           success: function (data) {
             console.log(data);
             if (data.status == false) {
+              
               $('.loader-box').attr('style', 'display:none !important');
 
               Swal.fire({
@@ -265,6 +356,7 @@
               }
 
             } else {
+              
               $('.loader-box').attr('style', 'display:none !important');
 
               Swal.fire({
@@ -283,42 +375,19 @@
             }
           }
         });
-
-      }
+      })
     });
-  </script>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      var flash_msg = $('.flash_msg').html();
-      if (flash_msg != "" && flash_msg != undefined) {
-        setTimeout(function () { $('.flash_msg').html(''); }, 4000);
-      }
-    });
+//     var ca=1
+//     function test(input,c){
+      
+//       var domElement = $('<div class="row"> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3"><select class="form-control " class="text-field-size" id="selectBox" name="spls_language"><option value="">Select Language</option>           <option value="english">English</option> <option value="german">German</option>           <option value="french">French</option> <option value="spanish">Spanish</option> </select>  </div> </div> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3">     <select class="form-control " class="text-field-size" id="selectBox"              name="spls_language_proficiency_level"> <option value="">Select Language Proficiency Level</option><option value="level1">Level 1 - Elementary Proficiency</option>           <option value="level2">Level 2 - Limited Working Proficiency</option><option value="level3">Level 3 - Professional Working Proficiency</option> <option value="level4">Level 4 - Full Professional Proficiency </option> <option value="level5">Level 5 - Native / Bilingual Proficiency </option>  </select> </div> </div></div>' + c++);
+//    alert(c)
+// if (c == 5) {
 
-    $(document).ready(function () {
-      var succ_flash_msg = $('.succ_flash_msg').html();
-      if (succ_flash_msg != "" && succ_flash_msg != undefined) {
-        setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
-      }
-    });  
-  </script>
-  <script>
-    $(document).ready(function () {
-      var c = 2;
-      $("button[name='addPlusbtn']").click(function (e) {
-        e.preventDefault();
-
-        var domElement = $('<div class="row"> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3"><select class="form-control " class="text-field-size" id="selectBox" name="spls_language"><option value="0">Select Language</option>           <option value="english">English</option> <option value="german">German</option>           <option value="french">French</option> <option value="spanish">Spanish</option> </select>  </div> </div> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3">     <select class="form-control " class="text-field-size" id="selectBox"              name="spls_language_proficiency_level"> <option value="0">Select Language Proficiency Level</option><option value="level1">Level 1 - Elementary Proficiency</option>           <option value="level2">Level 2 - Limited Working Proficiency</option><option value="level3">Level 3 - Professional Working Proficiency</option> <option value="level4">Level 4 - Full Professional Proficiency </option> <option value="level5">Level 5 - Native / Bilingual Proficiency </option>  </select> </div> </div></div>' + c++);
-
-        if (c == 5) {
-
-          $("button[name='addPlusbtn']").attr('disabled', true);
-        }
-        $(".divv").before(domElement);
-
-      });
-
-    });
+//   $("button[name='addPlusbtn1']").attr('disabled', true);
+// }
+// $(".divv").append(domElement);
+//     }
   </script>
   </body>
 
