@@ -269,8 +269,21 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
   });
 });
 
-app.get('/service-provider/property-detail', isServiceProvider, function (req, res) {
 
+app.get('/service-provider/professional-details-docs', isServiceProvider, async function (req, res) {
+  console.log("", req.session);
+  //console.log('data===========',data)
+  req.session.pagename = 'service-provider/property';
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('service-provider/professional-details-docs', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+});
+
+
+app.get('/service-provider/property-detail', isServiceProvider, function (req, res) {
   console.log("current session is :", req.session);
   console.log("req.query is :", req.query);
   req.session.pagename = 'service-provider/property';
