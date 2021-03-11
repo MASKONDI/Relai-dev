@@ -225,3 +225,909 @@
     </div>
   </div>
 </div>
+
+
+
+
+<!-- Model for add Existing Tasks for phase-a,b,c,d,e,f--->
+<div class="modal fade permission-modal" id="professionalPhaseA">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h2 class="modal-title text-center">Add Existing Task</h2>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+
+        <div class="todo-list-table">
+          <select onchange="get_selected_phase_existingTask('A','<%=session.active_user_login%>',this)"
+            class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+            data-rule-required="true" data-msg-required="professional is required!">
+            <option value="">Select Hired professional</option>
+            <option value="">
+              hired Professional 1
+            </option>
+            <option value="">
+              hired Professional 1
+            </option>
+          </select>
+
+          <table class="table table-responsive table-checkbox">
+            <thead>
+              <tr>
+                <th style="width:100%">Phase A Task</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><label class="check-permission"> Client requirements
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Stage 0 design programme - Estimated time and cost
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Decide the stages of the project – The project spans from stage X to
+                    Y
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Develop business case – Feasibility studies
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Review of project risks and project budget
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Undertake site appraisal
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Strategic appraisal of planning consideration
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate"
+            placeholder="Due on Date" name="duedate" required>
+          <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
+            placeholder="Add Notes(If any)"></textarea>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Submit</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Model for add Existing Tasks for phase-a,b,c,d,e,f--->
+<div class="modal fade permission-modal" id="professionalPhaseB">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h2 class="modal-title text-center">Add Existing Task</h2>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+
+        <div class="todo-list-table">
+          <select onchange="get_selected_phase_existingTask('B','<%=session.active_user_login%>',this)"
+            class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+            data-rule-required="true" data-msg-required="professional is required!">
+            <option value="">Select Hired professional</option>
+            <option value="">
+              hired Professional 1
+            </option>
+            <option value="">
+              hired Professional 1
+            </option>
+          </select>
+
+          <table class="table table-responsive table-checkbox">
+            <thead>
+              <tr>
+                <th style="width:100%">Phase B Task</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><label class="check-permission"> Define the team of professionals
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Stage 1 design programme - Estimated time and cost - approved
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Feasibility studies
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Agree project budget
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Site information including site survey
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Project programme
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Project execution plan
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission">Planning advice
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Health and safety pre-construction information
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Prepare project brief including project outcomes, quality aspirations
+                    and spatial requirements
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate"
+            placeholder="Due on Date" name="duedate" required>
+          <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
+            placeholder="Add Notes(If any)"></textarea>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Submit</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Model for add Existing Tasks for phase-a,b,c,d,e,f--->
+<div class="modal fade permission-modal" id="professionalPhaseC">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h2 class="modal-title text-center">Add Existing Task</h2>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+
+        <div class="todo-list-table">
+          <select onchange="get_selected_phase_existingTask('C','<%=session.active_user_login%>',this)"
+            class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+            data-rule-required="true" data-msg-required="professional is required!">
+            <option value="">Select Hired professional</option>
+            <option value="">
+              hired Professional 1
+            </option>
+            <option value="">
+              hired Professional 1
+            </option>
+          </select>
+
+          <table class="table table-responsive table-checkbox">
+            <thead>
+              <tr>
+                <th style="width:100%">Phase C Task</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><label class="check-permission"> Stage 2 design programme - Estimated time and cost
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Strategic engineering requirements
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Cost plan
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Project strategies and outline specifications
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Design review
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Pre-application planning advice
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission">Submit outline planning application (optional)
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission">Prepare architectural concept
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate"
+            placeholder="Due on Date" name="duedate" required>
+          <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
+            placeholder="Add Notes(If any)"></textarea>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Submit</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Model for add Existing Tasks for phase-a,b,c,d,e,f--->
+<div class="modal fade permission-modal" id="professionalPhaseD">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h2 class="modal-title text-center">Add Existing Task</h2>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+
+        <div class="todo-list-table">
+          <select onchange="get_selected_phase_existingTask('D','<%=session.active_user_login%>',this)"
+            class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+            data-rule-required="true" data-msg-required="professional is required!">
+            <option value="">Select Hired professional</option>
+            <option value="">
+              hired Professional 1
+            </option>
+            <option value="">
+              hired Professional 1
+            </option>
+          </select>
+
+          <table class="table table-responsive table-checkbox">
+            <thead>
+              <tr>
+                <th style="width:100%">Phase D Task</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><label class="check-permission"> Stage 3 design programme - Estimated time and cost for Stage 3
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Design studies
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Engineering analysis
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Cost analysis
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Project programme
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Project execution plan
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Planning advice
+
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Building regulation checks
+
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Planning application submission
+
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate"
+            placeholder="Due on Date" name="duedate" required>
+          <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
+            placeholder="Add Notes(If any)"></textarea>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Submit</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Model for add Existing Tasks for phase-a,b,c,d,e,f--->
+<div class="modal fade permission-modal" id="professionalPhaseE">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h2 class="modal-title text-center">Add Existing Task</h2>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+
+        <div class="todo-list-table">
+          <select onchange="get_selected_phase_existingTask('E','<%=session.active_user_login%>',this)"
+            class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+            data-rule-required="true" data-msg-required="professional is required!">
+            <option value="">Select Hired professional</option>
+            <option value="">
+              hired Professional 1
+            </option>
+            <option value="">
+              hired Professional 1
+            </option>
+          </select>
+
+          <table class="table table-responsive table-checkbox">
+            <thead>
+              <tr>
+
+                <th style="width:100%">Phase E Task</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><label class="check-permission"> Stage 4 design programme - Estimated time and cost
+
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Prepare building system information
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Integrate specialist subcontractors in the
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> building system information
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Submit building regulation application
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Prepare construction phase plan
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Pre-commencement planning conditions
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+          <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate"
+            placeholder="Due on Date" name="duedate" required>
+          <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
+            placeholder="Add Notes(If any)"></textarea>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Submit</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Model for add Existing Tasks for phase-a,b,c,d,e,f--->
+<div class="modal fade permission-modal" id="professionalPhaseF">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h2 class="modal-title text-center">Add Existing Task</h2>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+
+        <div class="todo-list-table">
+          <select onchange="get_selected_phase_existingTask('F','<%=session.active_user_login%>',this)"
+            class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+            data-rule-required="true" data-msg-required="professional is required!">
+            <option value="">Select Hired professional</option>
+            <option value="">
+              hired Professional 1
+            </option>
+            <option value="">
+              hired Professional 1
+            </option>
+          </select>
+
+          <table class="table table-responsive table-checkbox">
+            <thead>
+              <tr>
+                <th style="width:100%">Phase F Task</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+
+                <td><label class="check-permission"> Stage 5 design programme - Estimated time and cost
+
+
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Finalise site logistic
+
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission">
+                    Monitor construction progress
+
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission">
+                    Answer site queries
+
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission">
+                    Construction phase plan review and update
+
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission">
+                    Prepare building manual
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate"
+            placeholder="Due on Date" name="duedate" required>
+          <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
+            placeholder="Add Notes(If any)"></textarea>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Submit</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Model for add Existing Tasks for phase-a,b,c,d,e,f--->
+<div class="modal fade permission-modal" id="professionalPhaseG">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h2 class="modal-title text-center">Add Existing Task</h2>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+
+        <div class="todo-list-table">
+          <select onchange="get_selected_phase_existingTask('G','<%=session.active_user_login%>',this)"
+            class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+            data-rule-required="true" data-msg-required="professional is required!">
+            <option value="">Select Hired professional</option>
+            <option value="">
+              hired Professional 1
+            </option>
+            <option value="">
+              hired Professional 1
+            </option>
+          </select>
+
+          <table class="table table-responsive table-checkbox">
+            <thead>
+              <tr>
+                <th style="width:100%">Phase G Task</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+
+                <td><label class="check-permission"> Stage 6 design programme - Estimated time and cost
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Plan for use strategy
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission">
+                    Review project performance
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission">
+                    Undertake seasonal commissioning
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission">
+                    Define after care tasks
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission">
+                    Comply with planning condition - verification
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate"
+            placeholder="Due on Date" name="duedate" required>
+          <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
+            placeholder="Add Notes(If any)"></textarea>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Submit</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Model for add Existing Tasks for phase-a,b,c,d,e,f--->
+<div class="modal fade permission-modal" id="professionalPhaseH">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h2 class="modal-title text-center">Add Existing Task</h2>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+
+        <div class="todo-list-table">
+          <select onchange="get_selected_phase_existingTask('H','<%=session.active_user_login%>',this)"
+            class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+            data-rule-required="true" data-msg-required="professional is required!">
+            <option value="">Select Hired professional</option>
+            <option value="">
+              hired Professional 1
+            </option>
+            <option value="">
+              hired Professional 1
+            </option>
+          </select>
+
+          <table class="table table-responsive table-checkbox">
+            <thead>
+              <tr>
+                <th style="width:100%">Phase H Task</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+
+                <td><label class="check-permission"> Stage 6 design programme - Estimated time and cost
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission"> Implement facility management and asset management
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission">
+                    Post occupancy evaluation
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission">
+                    Verify project outcomes including sustainability outcomes
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="check-permission">
+                    Comply with planning condition - verification
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+          <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate"
+            placeholder="Due on Date" name="duedate" required>
+          <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
+            placeholder="Add Notes(If any)"></textarea>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Submit</button>
+      </div>
+
+    </div>
+  </div>
+</div>

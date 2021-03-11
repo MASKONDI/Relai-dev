@@ -14,7 +14,7 @@
                 </a>
               </div>
             </div>
-            <p>CUSTOMER SIGN IN</p>
+            <p>BUYER/SELLER/RENOVATOR SIGN IN</p>
             <h1>Welcome back!</h1>
             <form id="loginform" class="form" method="post" action="/api/cust_signin">
 
@@ -230,13 +230,13 @@
                 timer: 4000
               })
 
-              if(data.redirectpage == true){
+              if (data.redirectpage == true) {
                 setTimeout(function () {
-                //location.reload(true);
-                window.location.href =  data.redirect;
-              }, 4000);
+                  //location.reload(true);
+                  window.location.href = data.redirect;
+                }, 4000);
               }
-             
+
 
 
             } else {
