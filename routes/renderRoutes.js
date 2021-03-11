@@ -357,8 +357,13 @@ app.get('/professionals', isCustomer, async (req, res) => {
   req.session.pagename = 'professionals';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  await ServiceProviderSchema.find({ sps_status: 'active' }).then(async service_provider => {
+  const { page = 1, limit = 2 } = req.query;
+  console.log('pageQuery:',page);
+
+  await ServiceProviderSchema.find({ sps_status: 'active' }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider => {
     // Check for Customer
+    const count = await ServiceProviderSchema.countDocuments({ sps_status: 'active' });
+    console.log('countcount:',count);
     if (!service_provider) {
       console.log("Service Provider not found");
       // req.flash('err_msg', 'Service Provider not found');
@@ -378,9 +383,9 @@ app.get('/professionals', isCustomer, async (req, res) => {
         City.push(sp_id.sps_city);
         await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
           if (otherDetails) {
-            console.log('spp id:', sp_id._id)
+            //console.log('spp id:', sp_id._id)
             let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-            console.log('professionalRating:', professionalRating)
+           // console.log('professionalRating:', professionalRating)
             var sumRating = 0;
             for (var RatingData of professionalRating) {
               sumRating += parseInt(RatingData.sprs_rating);
@@ -392,7 +397,7 @@ app.get('/professionals', isCustomer, async (req, res) => {
               avgRating = 0;
             }
 
-            console.log("avgRating:", avgRating);
+            //console.log("avgRating:", avgRating);
             const spProvider = JSON.stringify(sp_id);
             const parseSpProvider = JSON.parse(spProvider);
             parseSpProvider.professionalBody = otherDetails.spods_professional_body
@@ -418,11 +423,16 @@ app.get('/professionals', isCustomer, async (req, res) => {
       let uniqueLanguageLevel = [...new Set(LanguageLevel)];
 
 
-      console.log("uniqueExperience:", uniqueExperience);
-      console.log("uniqueCategory:", uniqueCategory);
-      console.log("uniqueCity:", uniqueCity);
-      console.log("uniqueLanguage:", uniqueLanguage);
-      console.log("uniqueLanguageLevel:", uniqueLanguageLevel);
+     // console.log("uniqueExperience:", uniqueExperience);
+     // console.log("uniqueCategory:", uniqueCategory);
+      //console.log("uniqueCity:", uniqueCity);
+      //console.log("uniqueLanguage:", uniqueLanguage);
+      //console.log("uniqueLanguageLevel:", uniqueLanguageLevel);
+      //console.log('service_provider:', service_provider)
+      //console.log('serviceProvArray:', serviceProvArray)
+
+      console.log('pagepage:',page);
+      console.log('TotalPages:',Math.ceil(count / limit));
       res.render('professionals', {
         err_msg, success_msg, layout: false,
         session: req.session,
@@ -431,7 +441,9 @@ app.get('/professionals', isCustomer, async (req, res) => {
         uniqueCategory: uniqueCategory.sort(),
         uniqueCity: uniqueCity.sort(),
         uniqueLanguageLevel: uniqueLanguageLevel.sort(),
-        uniqueLanguage: uniqueLanguage.sort()
+        uniqueLanguage: uniqueLanguage.sort(),
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
       });
     }
   })
@@ -442,8 +454,21 @@ app.get('/myprofessionals', isCustomer, async (req, res) => {
   console.log("current user session is :", req.session);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
+  const { page = 1, limit = 2 } = req.query;
+  console.log('mypageQuery:',page);
+  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit);
   console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
+
+  let AllhiredProfeshnoalCount =  await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
+ var totalHire=[];
+  for (var t of AllhiredProfeshnoalCount) {
+      totalHire.push(t.pps_service_provider_id.toString());
+  }
+  let totalHireUnique = [...new Set(totalHire)];
+  console.log('totalHire:',totalHire);
+  console.log('totalHireUnique:',totalHireUnique);
+  const count = totalHireUnique.length;
+
   let serviceProvArray = [];
   for (var k of AllhiredProfeshnoal) {
     await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
@@ -476,15 +501,19 @@ app.get('/myprofessionals', isCustomer, async (req, res) => {
   //const UserviceProvArray = [...new Set(serviceProvArray.map(item => item))]; // [ 'A', 'B']
 
   const UserviceProvArray = [...new Map(serviceProvArray.map(item => [item['_id'], item])).values()];
-
+  console.log('mycountcount:',count);
   //const UserviceProvArray = [ ...new Set(serviceProvArray)]  
   console.log('serviceProvArray:', UserviceProvArray)
+  console.log('mypagepage:',page);
+      console.log('myTotalPages:',Math.ceil(count / limit));
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('myprofessionals', {
     err_msg, success_msg, layout: false,
     session: req.session,
-    data: UserviceProvArray
+    data: UserviceProvArray,
+    totalPages: Math.ceil(count / limit),
+    currentPage: page
   });
 });
 
@@ -568,10 +597,16 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
 app.get('/professionals-filter', isCustomer, (req, res) => {
   req.session.pagename = 'professionals';
   console.log('role data:', req.query.role);
-  ServiceProviderSchema.find({ sps_role_name: req.query.role }).then(async service_provider_detail => {
+
+  const { page = 1, limit = 2 } = req.query;
+  console.log('pageQuery:',page);
+
+  ServiceProviderSchema.find({ sps_role_name: req.query.role,sps_status: 'active' }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
     if (service_provider_detail) {
 
-
+      const count = await ServiceProviderSchema.countDocuments({ sps_role_name: req.query.role,sps_status: 'active' });
+      console.log('countcount:',count);
+     
       let serviceProvArray = [];
       for (var sp_id of service_provider_detail) {
         await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
@@ -613,24 +648,26 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
 
 
       var uniqueArray = '';
-      console.log('service_provider_detail:', serviceProvArray)
+      //console.log('service_provider_detail:', serviceProvArray)
       if (serviceProvArray != '') {
         console.log('hereeee..');
         uniqueArray = removeDuplicates(serviceProvArray, "_id");
       } else {
         console.log('not hereeee..');
-
         uniqueArray = serviceProvArray;
       }
 
       console.log('uniqueArray:', uniqueArray)
-
+      console.log('Filterpagepage:',page);
+      console.log('FilterTotalPages:',Math.ceil(count / limit));
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.send({
         err_msg, success_msg, layout: false,
         session: req.session,
-        filterData: uniqueArray
+        filterData: uniqueArray,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
       })
     }
   }).catch((err) => {
@@ -659,7 +696,13 @@ app.get('/professionals-searchbar', (req, res) => {
             }
           });
           let unique = [...new Set(professionalIDs)];
-          ServiceProviderSchema.find({ _id: { $in: unique } }).then(async service_provider_detail => {
+          const { page = 1, limit = 2 } = req.query;
+          console.log('pageQuery:',page);
+          ServiceProviderSchema.find({ _id: { $in: unique } }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+
+         const count = unique.length;
+         console.log('countcount:',count);
+
 
             let serviceProvArray = [];
             for (var sp_id of service_provider_detail) {
@@ -699,11 +742,15 @@ app.get('/professionals-searchbar', (req, res) => {
               });
             }
 
+            console.log('SearchFilterpagepage:',page);
+            console.log('SearchFilterTotalPages:',Math.ceil(count / limit));
 
             res.send({
               err_msg, success_msg, layout: false,
               session: req.session,
-              filterData: serviceProvArray
+              filterData: serviceProvArray,
+              totalPages: Math.ceil(count / limit),
+              currentPage: page
             })
           });
         }
@@ -718,10 +765,34 @@ app.get('/professionals-searchbar', (req, res) => {
 // My professional filter role
 app.get('/my-professionals-filter', isCustomer, async (req, res) => {
   req.session.pagename = 'professionals';
+  const { page = 1, limit = 2 } = req.query;
+  console.log('pageQuery:',req.query);
+
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
   let serviceProvArray = [];
-  for (var k of AllhiredProfeshnoal) {
-    await ServiceProviderSchema.find({ $and: [{ _id: k.pps_service_provider_id, sps_role_name: req.query.role }] }).then(async (allProfeshnoals) => {
+
+  let AllhiredProfeshnoalCount =  await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
+  var totalHire=[];
+   for (var t of AllhiredProfeshnoalCount) {
+    await ServiceProviderSchema.find({ $and: [{ _id: t.pps_service_provider_id, sps_role_name: req.query.role }] }).then(async (allProfeshnoals1) => {
+      for (let ii of allProfeshnoals1) {
+             totalHire.push(ii._id.toString());
+      }
+    });
+   }
+   let totalHireUnique = [...new Set(totalHire)];
+   console.log('FiltertotalHire:',totalHire);
+   console.log('FiltertotalHireUnique:',totalHireUnique);
+   const count = totalHireUnique.length;
+
+   
+   console.log('AllhiredProfeshnoal:',AllhiredProfeshnoal);
+//.sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit)
+ // for (var k of AllhiredProfeshnoal) {
+   //{ $in: AllhiredProfeshnoalID }
+   // _id: k.pps_service_provider_id
+    await ServiceProviderSchema.find({ $and: [{_id:{ $in: totalHireUnique }, sps_role_name: req.query.role }] }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (allProfeshnoals) => {
+      console.log('allProfeshnoals:',allProfeshnoals);
       for (let i of allProfeshnoals) {
         let professionalRating = await RatingSchema.find({ sprs_service_provider_id: i._id })
         console.log('professionalRating:', professionalRating)
@@ -745,11 +816,12 @@ app.get('/my-professionals-filter', isCustomer, async (req, res) => {
         // serviceProvArray.push(temps)
       }
     });
-  }
+  //}
 
 
   var uniqueArray = '';
   console.log('service_provider_detail:', serviceProvArray)
+
   if (serviceProvArray != '') {
     console.log('hereeee..');
     uniqueArray = removeDuplicates(serviceProvArray, "_id");
@@ -760,10 +832,17 @@ app.get('/my-professionals-filter', isCustomer, async (req, res) => {
   }
   //var uniqueArray = removeDuplicates(serviceProvArray, "_id");
   //console.log("uniqueArray is: " + JSON.stringify(uniqueArray));
+
+  console.log('Filtermycountcount:',count);
+  console.log('Filtermypagepage:',page);
+  console.log('FiltermyTotalPages:',Math.ceil(count / limit));
+
   res.send({
     err_msg, success_msg, layout: false,
     session: req.session,
-    data: uniqueArray
+    data: uniqueArray,
+    totalPages: Math.ceil(count / limit),
+    currentPage: page
   });
 
 });
@@ -776,6 +855,8 @@ app.get('/my-professionals-filter', isCustomer, async (req, res) => {
 // My Professional Filter name surname qualification
 app.get('/my-professionals-searchbar', async (req, res) => {
   req.session.pagename = 'professionals';
+  const { page = 1, limit = 2 } = req.query;
+  console.log('pageQuery:',req.query);
   let professionalIDs = [];
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
   let AllhiredProfeshnoalID = [];
@@ -810,11 +891,14 @@ app.get('/my-professionals-searchbar', async (req, res) => {
           console.log('MYYYY professionalIDs:', professionalIDs);
 
           let unique = [...new Set(professionalIDs)];
-
+          if(unique > 1){
+            var citrus = unique.slice(0, 4);
+          }
           console.log('MYYYY unique:', unique);
+          const count = unique.length;
+          console.log('countcount:',count);
 
-
-          ServiceProviderSchema.find({ _id: { $in: unique } }).then(async service_provider_detail => {
+          ServiceProviderSchema.find({ _id: { $in: unique } }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
             for (var sp_id of service_provider_detail) {
               await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
                 if (otherDetails) {
@@ -822,8 +906,6 @@ app.get('/my-professionals-searchbar', async (req, res) => {
                   const spProvider = JSON.stringify(sp_id);
                   const parseSpProvider = JSON.parse(spProvider);
                   parseSpProvider.professionalBody = otherDetails.spods_professional_body
-
-
 
                   let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
                   console.log('professionalRating:', professionalRating)
@@ -839,24 +921,28 @@ app.get('/my-professionals-searchbar', async (req, res) => {
                   }
                   console.log('avgRating:', avgRating)
 
-
                   let temps = await parseSpProvider
-
                   const spProvider1 = JSON.stringify(temps);
                   const parseSpProvider1 = JSON.parse(spProvider1);
                   parseSpProvider1.avgRating = avgRating
-
-
 
                   serviceProvArray.push(parseSpProvider1);
                   //console.log("service_provider Array list in loop:", serviceProvArray);
                 }
               });
             }
+
+             console.log("service_provider Array list in loop:", serviceProvArray);
+            console.log('SearchFilterpagepage:',page);
+            console.log('SearchFilterTotalPages:',Math.ceil(count / limit));
+
+
             res.send({
               err_msg, success_msg, layout: false,
               session: req.session,
-              filterData: serviceProvArray
+              filterData: serviceProvArray,
+              totalPages: Math.ceil(count / limit),
+              currentPage: page
             })
           });
 
@@ -1759,13 +1845,26 @@ app.get('/mydreamhome-details-phase-o', isCustomer, async (req, res) => {
 app.get('/mydreamhome', isCustomer, async (req, res) => {
   req.session.pagename = 'mydreamhome';
   console.log("current session is", req.session);
+
+  const { page = 1, limit = 2 } = req.query;
+  console.log('pageQuery:',page);
+
   PropertiesSchema.find({
     $or: [
       { $and: [{ ps_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login },] },
       { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_other_property_type: req.session.active_user_login }] }
     ]
-  }).sort({ _id: -1 }).then(async (data) => {
+  }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
     if (data) {
+
+      const count = await PropertiesSchema.countDocuments({
+        $or: [
+          { $and: [{ ps_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login },] },
+          { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_other_property_type: req.session.active_user_login }] }
+        ]
+      });
+      console.log('countcount:',count);
+   
       let arr = [];
 
       for (let img of data) {
@@ -1788,8 +1887,9 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
         err_msg, success_msg, layout: false,
         session: req.session,
         propertyData: data,
-        propertyImage: arr
-
+        propertyImage: arr,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
       });
 
     }
@@ -3124,12 +3224,19 @@ app.post('/professionals-multifilter', async (req, res) => {
     console.log('cityKeyword:', cityKeyword)
     console.log('languageKeyword:', languageKeyword)
 
+    const { page = 1, limit = 2 } = req.body;
+    let count = 0;
+    console.log('pageQuery:',page);
+    console.log('req.query:',req.body);
+
     /*== Category==*/
     if (categoryKeyword) {
       console.log('categoryKeyword11:', categoryKeyword)
       for (var categoryWord of categoryKeyword) {
         QuerySyntex = { sps_role_name: categoryWord };
-        await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+         count = await ServiceProviderSchema.countDocuments(QuerySyntex);
+        console.log('countcount:',count);
+        await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
             for (var sp_id of service_provider_detail) {
               //let temp = await sp_id._id;
@@ -3159,18 +3266,34 @@ app.post('/professionals-multifilter', async (req, res) => {
                   categoryServiceProvData.push(parseSpProvider1);
                 }
               });
-              let temp = await sp_id._id.toString();
-              await categoryServiceProvIdArray.push(temp);
+              //let temp = await sp_id._id.toString();
+              //await categoryServiceProvIdArray.push(temp);
             }
           }
         })
+
+        await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
+          if (service_provider_detail1) {
+            for (var sp_id1 of service_provider_detail1) {
+               let temp = await sp_id1._id.toString();
+               await categoryServiceProvIdArray.push(temp);
+            }
+          }
+        });
+
+
       }
+
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
       //if(experienceKeyword == '' && ){
       if (experienceKeyword == '' && cityKeyword == '' && languageKeyword == '') {
         res.send({
           err_msg, success_msg, layout: false,
           session: req.session,
-          filterData: categoryServiceProvData
+          filterData: categoryServiceProvData,
+          totalPages: Math.ceil(count / limit),
+          currentPage: page
         })
       }
     }
@@ -3181,7 +3304,9 @@ if(cityKeyword){
   console.log('cityKeyword11:',cityKeyword)
    for (var cityWord of cityKeyword) {
      QuerySyntex = { sps_city:cityWord };
-     await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+     count = await ServiceProviderSchema.countDocuments(QuerySyntex);
+     console.log('countcount:',count);
+     await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
        if (service_provider_detail) {
            for (var sp_id of service_provider_detail) {
              //let temp = await sp_id._id;
@@ -3216,12 +3341,29 @@ if(cityKeyword){
            }
        }
      })
+
+     await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
+      if (service_provider_detail1) {
+        for (var sp_id1 of service_provider_detail1) {
+           let temp = await sp_id1._id.toString();
+           await cityServiceProvIdArray.push(temp);
+        }
+      }
+    });
+
+
    }
+
+   console.log('currentPage:',page);
+   console.log('totalPages:',Math.ceil(count / limit));
+
    if(experienceKeyword == '' && categoryKeyword == '' && languageKeyword == ''){
      res.send({
        err_msg, success_msg, layout: false,
        session: req.session,
-       filterData: cityServiceProvData
+       filterData: cityServiceProvData,
+       totalPages: Math.ceil(count / limit),
+       currentPage: page
      })
    }
  }
@@ -3232,7 +3374,9 @@ if(cityKeyword){
   console.log('cityKeyword11:',languageKeyword)
    for (var languageWord of languageKeyword) {
      QuerySyntex = { spls_language:languageWord };
-     await ServiceProviderLanguageSchema.find(QuerySyntex).then(async service_provider_detail_lang => {
+     count = await ServiceProviderLanguageSchema.countDocuments(QuerySyntex);
+     console.log('countcount:',count);
+     await ServiceProviderLanguageSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail_lang => {
        if (service_provider_detail_lang) {
            for (var lang_sp_id of service_provider_detail_lang) {
              //let temp = await sp_id._id;
@@ -3267,17 +3411,35 @@ if(cityKeyword){
 
              })
             
-             let temp = await lang_sp_id.spls_service_provider_id.toString();
-             await languageServiceProvIdArray.push(temp);
+            //  let temp = await lang_sp_id.spls_service_provider_id.toString();
+            //  await languageServiceProvIdArray.push(temp);
            }
        }
      })
+
+
+     await ServiceProviderLanguageSchema.find(QuerySyntex).then(async service_provider_detail_lang1 => {
+      if (service_provider_detail_lang1) {
+        for (var lang_sp_id1 of service_provider_detail_lang1) {
+          let temp = await lang_sp_id1.spls_service_provider_id.toString();
+          await languageServiceProvIdArray.push(temp);
+        }
+      }
+    });
+
+
    }
+
+   console.log('currentPage:',page);
+   console.log('totalPages:',Math.ceil(count / limit));
+
    if(experienceKeyword == '' && categoryKeyword == '' && cityKeyword == ''){
      res.send({
        err_msg, success_msg, layout: false,
        session: req.session,
-       filterData: languageServiceProvData
+       filterData: languageServiceProvData,
+       totalPages: Math.ceil(count / limit),
+       currentPage: page
      })
    }
  }
@@ -3290,7 +3452,9 @@ if(cityKeyword){
   if (experienceKeyword) {
     for (var experienceWord of experienceKeyword) {
       QuerySyntex = { sps_experience: experienceWord };
-      await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+      count = await ServiceProviderSchema.countDocuments(QuerySyntex);
+      console.log('countcount:',count);
+      await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
         if (service_provider_detail) {
           for (var sp_id of service_provider_detail) {
 
@@ -3322,17 +3486,33 @@ if(cityKeyword){
 
 
             //await experienceServiceProvData.push(sp_id);
-            let temp = await sp_id._id.toString();
-            await experienceServiceProvIdArray.push(temp);
+          
           }
         }
       })
+
+
+
+      await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
+        if (service_provider_detail1) {
+          for (var sp_id1 of service_provider_detail1) {
+             let temp = await sp_id1._id.toString();
+             await experienceServiceProvIdArray.push(temp);
+          }
+        }
+      });
     }
+
+    console.log('currentPage:',page);
+    console.log('totalPages:',Math.ceil(count / limit));
+
     if (categoryKeyword == '' && cityKeyword == '' && languageKeyword == '') {
       res.send({
         err_msg, success_msg, layout: false,
         session: req.session,
-        filterData: experienceServiceProvData
+        filterData: experienceServiceProvData,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
       })
     }
   }
@@ -3451,12 +3631,16 @@ if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityS
   console.log('insideee Category and Expirence')
    let ttt = await getMatch(experienceServiceProvIdArray, categoryServiceProvIdArray); 
    console.log('ttt:', ttt)
+
+   count = ttt.length;
+   console.log('CE countcount:',count);
+
    if(ttt){
      for (var t of ttt) {
           if(t){
             QuerySyntex = { _id:t };
             console.log()
-            await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+            await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
               if (service_provider_detail) {
                   for (var sp_id of service_provider_detail) {
 
@@ -3492,10 +3676,15 @@ if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityS
             })
           }
         }
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
+
         res.send({
           err_msg, success_msg, layout: false,
           session: req.session,
-          filterData: catExpServiceProvIdArray
+          filterData: catExpServiceProvIdArray,
+          totalPages: Math.ceil(count / limit),
+          currentPage: page
         })
 
       } else {
@@ -3514,12 +3703,16 @@ if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityS
   console.log('insideee Category and City')
    let ttt = await getMatch(cityServiceProvIdArray, categoryServiceProvIdArray); 
    console.log('ttt:', ttt)
+
+   count = ttt.length;
+   console.log('CC countcount:',count);
+
    if(ttt){
      for (var t of ttt) {
           if(t){
             QuerySyntex = { _id:t };
             console.log()
-            await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
               if (service_provider_detail) {
                   for (var sp_id of service_provider_detail) {
 
@@ -3554,10 +3747,16 @@ if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityS
           }
         }
 
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
+
+
         res.send({
           err_msg, success_msg, layout: false,
           session: req.session,
-          filterData: catExpServiceProvIdArray
+          filterData: catExpServiceProvIdArray,
+          totalPages: Math.ceil(count / limit),
+          currentPage: page
         })
 
       } else {
@@ -3576,12 +3775,16 @@ if(languageServiceProvIdArray !='' && categoryServiceProvIdArray !='' && citySer
   console.log('insideee Category And Language')
    let ttt = await getMatch(languageServiceProvIdArray, categoryServiceProvIdArray); 
    console.log('ttt:', ttt)
+
+   count = ttt.length;
+   console.log('CL countcount:',count);
+
    if(ttt){
      for (var t of ttt) {
           if(t){
             QuerySyntex = { _id:t };
             console.log()
-            await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
               if (service_provider_detail) {
                   for (var sp_id of service_provider_detail) {
 
@@ -3615,11 +3818,15 @@ if(languageServiceProvIdArray !='' && categoryServiceProvIdArray !='' && citySer
             })
           }
         }
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
 
         res.send({
           err_msg, success_msg, layout: false,
           session: req.session,
-          filterData: catExpServiceProvIdArray
+          filterData: catExpServiceProvIdArray,
+          totalPages: Math.ceil(count / limit),
+          currentPage: page
         })
 
       } else {
@@ -3639,12 +3846,16 @@ if(languageServiceProvIdArray !='' && categoryServiceProvIdArray !='' && citySer
   console.log('insideee Expirence and City')
    let ttt = await getMatch(cityServiceProvIdArray, experienceServiceProvIdArray); 
    console.log('ttt:', ttt)
+
+   count = ttt.length;
+   console.log('CL countcount:',count);
+
    if(ttt){
      for (var t of ttt) {
           if(t){
             QuerySyntex = { _id:t };
             console.log()
-            await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
               if (service_provider_detail) {
                   for (var sp_id of service_provider_detail) {
 
@@ -3679,10 +3890,15 @@ if(languageServiceProvIdArray !='' && categoryServiceProvIdArray !='' && citySer
           }
         }
 
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
+
         res.send({
           err_msg, success_msg, layout: false,
           session: req.session,
-          filterData: catExpServiceProvIdArray
+          filterData: catExpServiceProvIdArray,
+          totalPages: Math.ceil(count / limit),
+          currentPage: page
         })
 
       } else {
@@ -3701,12 +3917,17 @@ if(languageServiceProvIdArray !='' && categoryServiceProvIdArray !='' && citySer
   console.log('insideee Expirence and City')
    let ttt = await getMatch(languageServiceProvIdArray, experienceServiceProvIdArray); 
    console.log('ttt:', ttt)
+
+   count = ttt.length;
+   console.log('EL countcount:',count);
+
+
    if(ttt){
      for (var t of ttt) {
           if(t){
             QuerySyntex = { _id:t };
             console.log()
-            await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
               if (service_provider_detail) {
                   for (var sp_id of service_provider_detail) {
 
@@ -3741,10 +3962,15 @@ if(languageServiceProvIdArray !='' && categoryServiceProvIdArray !='' && citySer
           }
         }
 
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
+
         res.send({
           err_msg, success_msg, layout: false,
           session: req.session,
-          filterData: catExpServiceProvIdArray
+          filterData: catExpServiceProvIdArray,
+          totalPages: Math.ceil(count / limit),
+          currentPage: page
         })
 
       } else {
@@ -3765,12 +3991,16 @@ if(languageServiceProvIdArray !='' && cityServiceProvIdArray !='' && experienceS
   console.log('insideee Category And Language')
    let ttt = await getMatch(languageServiceProvIdArray, cityServiceProvIdArray); 
    console.log('ttt:', ttt)
+   
+   count = ttt.length;
+   console.log('CityL countcount:',count);
+
    if(ttt){
      for (var t of ttt) {
           if(t){
             QuerySyntex = { _id:t };
             console.log()
-            await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
               if (service_provider_detail) {
                   for (var sp_id of service_provider_detail) {
 
@@ -3805,10 +4035,15 @@ if(languageServiceProvIdArray !='' && cityServiceProvIdArray !='' && experienceS
           }
         }
 
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
+
         res.send({
           err_msg, success_msg, layout: false,
           session: req.session,
-          filterData: catExpServiceProvIdArray
+          filterData: catExpServiceProvIdArray,
+          totalPages: Math.ceil(count / limit),
+          currentPage: page
         })
 
       } else {
@@ -3829,12 +4064,18 @@ if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityS
    console.log('firstArray:', firstArray)
    let ttt = await getMatch(firstArray, cityServiceProvIdArray); 
    console.log('ttt:', ttt)
+
+      
+   count = ttt.length;
+   console.log('CityL countcount:',count);
+
+
    if(ttt){
      for (var t of ttt) {
           if(t){
             QuerySyntex = { _id:t };
             console.log()
-            await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
               if (service_provider_detail) {
                   for (var sp_id of service_provider_detail) {
 
@@ -3872,11 +4113,15 @@ if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityS
             })
         }
       }
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
 
       res.send({
         err_msg, success_msg, layout: false,
         session: req.session,
-        filterData: catExpServiceProvIdArray
+        filterData: catExpServiceProvIdArray,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
       })
 
     }else{
@@ -3896,12 +4141,16 @@ if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && langu
    console.log('firstArray:', firstArray)
    let ttt = await getMatch(firstArray, languageServiceProvIdArray); 
    console.log('ttt:', ttt)
+
+   count = ttt.length;
+   console.log('CityL countcount:',count);
+
    if(ttt){
      for (var t of ttt) {
           if(t){
             QuerySyntex = { _id:t };
             console.log()
-            await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
               if (service_provider_detail) {
                   for (var sp_id of service_provider_detail) {
 
@@ -3940,10 +4189,15 @@ if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && langu
         }
       }
 
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
+
       res.send({
         err_msg, success_msg, layout: false,
         session: req.session,
-        filterData: catExpServiceProvIdArray
+        filterData: catExpServiceProvIdArray,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
       })
 
     }else{
@@ -3963,12 +4217,18 @@ if(cityServiceProvIdArray !='' && categoryServiceProvIdArray !='' && languageSer
    console.log('firstArray:', firstArray)
    let ttt = await getMatch(firstArray, languageServiceProvIdArray); 
    console.log('ttt:', ttt)
+
+   
+   count = ttt.length;
+   console.log('CityL countcount:',count);
+
+
    if(ttt){
      for (var t of ttt) {
           if(t){
             QuerySyntex = { _id:t };
             console.log()
-            await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
               if (service_provider_detail) {
                   for (var sp_id of service_provider_detail) {
 
@@ -4007,10 +4267,15 @@ if(cityServiceProvIdArray !='' && categoryServiceProvIdArray !='' && languageSer
         }
       }
 
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
+
       res.send({
         err_msg, success_msg, layout: false,
         session: req.session,
-        filterData: catExpServiceProvIdArray
+        filterData: catExpServiceProvIdArray,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
       })
 
     }else{
@@ -4031,12 +4296,16 @@ if(cityServiceProvIdArray !='' && languageServiceProvIdArray !='' && experienceS
    console.log('firstArray:', firstArray)
    let ttt = await getMatch(firstArray, languageServiceProvIdArray); 
    console.log('ttt:', ttt)
+
+   count = ttt.length;
+   console.log('CityL countcount:',count);
+
    if(ttt){
      for (var t of ttt) {
           if(t){
             QuerySyntex = { _id:t };
             console.log()
-            await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
               if (service_provider_detail) {
                   for (var sp_id of service_provider_detail) {
 
@@ -4075,10 +4344,15 @@ if(cityServiceProvIdArray !='' && languageServiceProvIdArray !='' && experienceS
         }
       }
 
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
+
       res.send({
         err_msg, success_msg, layout: false,
         session: req.session,
-        filterData: catExpServiceProvIdArray
+        filterData: catExpServiceProvIdArray,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
       })
 
     }else{
@@ -4101,12 +4375,18 @@ if(cityServiceProvIdArray !='' && languageServiceProvIdArray !='' && experienceS
    console.log('SecondArray:', SecondArray)
    let ttt = await getMatch(SecondArray, categoryServiceProvIdArray); 
    console.log('ttt:', ttt)
+
+   
+   count = ttt.length;
+   console.log('CityL countcount:',count);
+
+
    if(ttt){
      for (var t of ttt) {
           if(t){
             QuerySyntex = { _id:t };
             console.log()
-            await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail => {
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
               if (service_provider_detail) {
                   for (var sp_id of service_provider_detail) {
 
@@ -4145,10 +4425,15 @@ if(cityServiceProvIdArray !='' && languageServiceProvIdArray !='' && experienceS
         }
       }
 
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
+
       res.send({
         err_msg, success_msg, layout: false,
         session: req.session,
-        filterData: catExpServiceProvIdArray
+        filterData: catExpServiceProvIdArray,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
       })
 
     }else{

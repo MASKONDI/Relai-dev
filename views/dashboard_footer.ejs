@@ -1798,18 +1798,57 @@ Myprofessional
   });
 </script>
 <script>
-  // $(document).ready(function () {
-  //   $(".sidenav ul li").click(function () {
-  //     $(".sidenav ul li").removeClass("active");
-  //     $(this).addClass("active");
-  //   });
-  // });
-  // $(document).ready(function () {
-  //   $(".right-navbar li").click(function () {
-  //     $("right-navbar li").removeClass("active");
-  //     $(this).addClass("active");
-  //   });
-  // });
+
+function paginationMyProfesstionalFuntion(page){
+  $('.loader-box').attr('style','display:flex !important');
+    var role = $('#professional-role li a.active_role').data('role');
+    $.ajax({
+      type: "GET",
+      data: {
+        role: role,
+        page: page
+      },
+      url: "/my-professionals-filter",
+      cache: false,
+      success: function (html) {
+        $('.loader-box').attr('style','display:none !important');
+        console.log('result:', html)
+        var htmlData = '';
+        var pagination = '';
+        var pageList='';
+        if (html.data.length > 0) {
+          $.each(html.data, function (i, data) {
+            console.log('val:', data)
+            if(data != null){
+             htmlData += '<div class="col-sm-4 col-md-4 col-lg-3"><div class="card card-fix3"><div class="row"><div class="float-left card-header-fix"><div class="semi-circle"> <img class="card-img-top" src="images/recent-user-2.png" alt=""></div></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span> '+ data.avgRating +' Rating</span></div></div><div class="card-body"> <button type="button" class="btn btn-cancel" style="margin-top: 30px; margin-bottom: 0px;"><a style="color:#fff;" href="/professionals-detail?id='+ data._id +'">View</a></button></div></div></div>';
+            }
+          });
+
+          if(html.totalPages > 1){
+              if(html.currentPage > 1){ var currentPage1 = html.currentPage-1; 
+                pageList +='<li class="page-item"><a class="page-link" onclick="paginationProfesstionalFuntion('+currentPage1+')" href="javascript:void(0)" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> <span class="sr-only">Previous</span> </a></li>';
+            }
+                        for(var k=1; k<= html.totalPages; k++){
+                          var tClass=''; if(k == html.currentPage){ tClass='active'; }
+
+                            pageList +='<li class="page-item '+tClass+'"><a class="page-link" onclick="paginationMyProfesstionalFuntion('+k+')" href="javascript:void(0)">'+k+'</a></li>';
+                        }
+            if(html.currentPage < html.totalPages){ var currentPage1 = html.currentPage+1;             
+              pageList +='<li class="page-item"> <a class="page-link" onclick="paginationProfesstionalFuntion('+currentPage1+')"  href="javascript:void(0)" aria-label="Next"> <span aria-hidden="true">&raquo;</span> <span class="sr-only">Next</span> </a></li>';   
+            }             
+        }
+
+        } else {
+          htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
+          pageList = '';
+        }
+        $('#filter_data').html(htmlData);
+        $('.myprofessional-pagination-section .pagination').html(pageList);
+      }
+    });
+}
+
+
   $("#professional-role li a").click(function (e) {
     $('#professional-role li a').removeClass('active_role');
     $(this).addClass('active_role');
@@ -1826,6 +1865,8 @@ Myprofessional
         $('.loader-box').attr('style','display:none !important');
         console.log('result:', html)
         var htmlData = '';
+        var pagination = '';
+        var pageList='';
         if (html.data.length > 0) {
           $.each(html.data, function (i, data) {
             console.log('val:', data)
@@ -1833,13 +1874,82 @@ Myprofessional
              htmlData += '<div class="col-sm-4 col-md-4 col-lg-3"><div class="card card-fix3"><div class="row"><div class="float-left card-header-fix"><div class="semi-circle"> <img class="card-img-top" src="images/recent-user-2.png" alt=""></div></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span> '+ data.avgRating +' Rating</span></div></div><div class="card-body"> <button type="button" class="btn btn-cancel" style="margin-top: 30px; margin-bottom: 0px;"><a style="color:#fff;" href="/professionals-detail?id='+ data._id +'">View</a></button></div></div></div>';
             }
           });
+
+          if(html.totalPages > 1){
+              if(html.currentPage > 1){ var currentPage1 = html.currentPage-1; 
+                pageList +='<li class="page-item"><a class="page-link" onclick="paginationMyProfesstionalFuntion('+currentPage1+')" href="javascript:void(0)" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> <span class="sr-only">Previous</span> </a></li>';
+            }
+                        for(var k=1; k<= html.totalPages; k++){
+                          var tClass=''; if(k == html.currentPage){ tClass='active'; }
+
+                            pageList +='<li class="page-item '+tClass+'"><a class="page-link" onclick="paginationMyProfesstionalFuntion('+k+')" href="javascript:void(0)">'+k+'</a></li>';
+                        }
+            if(html.currentPage < html.totalPages){ var currentPage1 = html.currentPage+1;             
+              pageList +='<li class="page-item"> <a class="page-link" onclick="paginationMyProfesstionalFuntion('+currentPage1+')"  href="javascript:void(0)" aria-label="Next"> <span aria-hidden="true">&raquo;</span> <span class="sr-only">Next</span> </a></li>';   
+            }             
+        }
+
         } else {
           htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
+          pageList = '';
         }
         $('#filter_data').html(htmlData);
+        $('.myprofessional-pagination-section .pagination').html(pageList);
       }
     });
   });
+
+
+
+  function paginationSearchMyProfesstionalFuntion(page){
+    $('.loader-box').attr('style','display:flex !important');
+    var searchVal = $('.professional-search').val();
+    $.ajax({
+      type: "GET",
+      data: {
+        searchKeyword: searchVal,
+        page:page
+      },
+      url: "/my-professionals-searchbar",
+      cache: false,
+      success: function (html) {
+        $('.loader-box').attr('style','display:none !important');
+        console.log('result:', html.filterData)
+        var htmlData = '';
+        var pagination = '';
+        var pageList='';
+        if (html.filterData.length > 0) {
+          $.each(html.filterData, function (i, data) {
+            console.log('val:', data)
+            if(data != null){
+              htmlData += '<div class="col-sm-4 col-md-4 col-lg-3"><div class="card card-fix3"><div class="row"><div class="float-left card-header-fix"><div class="semi-circle"> <img class="card-img-top" src="images/recent-user-2.png" alt=""></div></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span>'+ data.avgRating +' Rating</span></div></div><div class="card-body"> <button type="button" class="btn btn-cancel" style="margin-top: 30px; margin-bottom: 0px;"><a style="color:#fff;" href="/professionals-detail?id='+ data._id +'">View</a></button></div></div></div>'; 
+            }
+          });
+
+            if(html.totalPages > 1){
+                if(html.currentPage > 1){ var currentPage1 = html.currentPage-1; 
+                  pageList +='<li class="page-item"><a class="page-link" onclick="paginationSearchMyProfesstionalFuntion('+currentPage1+')" href="javascript:void(0)" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> <span class="sr-only">Previous</span> </a></li>';
+              }
+                          for(var k=1; k<= html.totalPages; k++){
+                            var tClass=''; if(k == html.currentPage){ tClass='active'; }
+
+                              pageList +='<li class="page-item '+tClass+'"><a class="page-link" onclick="paginationSearchMyProfesstionalFuntion('+k+')" href="javascript:void(0)">'+k+'</a></li>';
+                          }
+              if(html.currentPage < html.totalPages){ var currentPage1 = html.currentPage+1;             
+                pageList +='<li class="page-item"> <a class="page-link" onclick="paginationSearchMyProfesstionalFuntion('+currentPage1+')"  href="javascript:void(0)" aria-label="Next"> <span aria-hidden="true">&raquo;</span> <span class="sr-only">Next</span> </a></li>';   
+              }             
+          }
+        } else {
+          htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
+          pageList = '';
+        }
+        $('#filter_data').html(htmlData);
+        $('.myprofessional-pagination-section .pagination').html(pageList);
+      }
+    });
+  }
+
+
   $('.my-professional-search-form').on('submit', function (e) {
       e.preventDefault();
  // $("#professional-search-btn").click(function (e) {
@@ -1857,6 +1967,7 @@ Myprofessional
         $('.loader-box').attr('style','display:none !important');
         console.log('result:', html.filterData)
         var htmlData = '';
+        var pageList ='';
         if (html.filterData.length > 0) {
           $.each(html.filterData, function (i, data) {
             console.log('val:', data)
@@ -1864,13 +1975,33 @@ Myprofessional
              htmlData += '<div class="col-sm-4 col-md-4 col-lg-3"><div class="card card-fix3"><div class="row"><div class="float-left card-header-fix"><div class="semi-circle"> <img class="card-img-top" src="images/recent-user-2.png" alt=""></div></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span>'+ data.avgRating +' Rating</span></div></div><div class="card-body"> <button type="button" class="btn btn-cancel" style="margin-top: 30px; margin-bottom: 0px;"><a style="color:#fff;" href="/professionals-detail?id='+ data._id +'">View</a></button></div></div></div>';
             }
           });
+
+          
+          if(html.totalPages > 1){
+              if(html.currentPage > 1){ var currentPage1 = html.currentPage-1; 
+                pageList +='<li class="page-item"><a class="page-link" onclick="paginationSearchMyProfesstionalFuntion('+currentPage1+')" href="javascript:void(0)" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> <span class="sr-only">Previous</span> </a></li>';
+            }
+                        for(var k=1; k<= html.totalPages; k++){
+                          var tClass=''; if(k == html.currentPage){ tClass='active'; }
+
+                            pageList +='<li class="page-item '+tClass+'"><a class="page-link" onclick="paginationSearchMyProfesstionalFuntion('+k+')" href="javascript:void(0)">'+k+'</a></li>';
+                        }
+            if(html.currentPage < html.totalPages){ var currentPage1 = html.currentPage+1;             
+              pageList +='<li class="page-item"> <a class="page-link" onclick="paginationSearchMyProfesstionalFuntion('+currentPage1+')"  href="javascript:void(0)" aria-label="Next"> <span aria-hidden="true">&raquo;</span> <span class="sr-only">Next</span> </a></li>';   
+            }             
+        }
+
         } else {
           htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
+          pageList='';
         }
         $('#filter_data').html(htmlData);
+        $('.myprofessional-pagination-section .pagination').html(pageList);
+
       }
     });
   });
+
   $('.right-navbar li').click(function () {
     $('.right-navbar li').each(function () {
       $(this).removeClass('active');
@@ -2360,6 +2491,61 @@ Professional
   //     $(this).addClass("active");
   //   });
   // });
+
+  function paginationProfesstionalFuntion(page){
+    //console.log('page:'+page)
+    //console.log('role:'+role)
+    $('.loader-box').attr('style','display:flex !important');
+    var role = $('#professional-role-list li a.active_role').data('role');
+    //var role = 'Accountant';
+    $.ajax({
+      type: "GET",
+      data: {
+        role: role,
+        page: page
+      },
+      url: "/professionals-filter",
+      cache: false,
+      success: function (html) {
+        $('.loader-box').attr('style','display:none !important');
+        console.log('result:', html.filterData)
+        var htmlData = '';
+        var pagination = '';
+        var pageList='';
+        if (html.filterData.length > 0) {
+          $.each(html.filterData, function (i, data) {
+            console.log('val:', data)
+            if(data != null){
+            htmlData += '<div class="col-lg-3"><div class="card card-fix2"><div class="row"><div class="float-left card-header-fix"> <a href="/professionals-detail?id=' + data._id + '"> <img class="card-img-top" src="images/recent-user-2.png" alt="Card image cap"> </a></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>' + data.avgRating + ' Rating</span></div></div><div class="card-body"><p class="card-text">' + data.professionalBody + '</p></div></div></div>';
+            }
+          });
+
+          if(html.totalPages > 1){
+              if(html.currentPage > 1){ var currentPage1 = html.currentPage-1; 
+                pageList +='<li class="page-item"><a class="page-link" onclick="paginationProfesstionalFuntion('+currentPage1+')" href="javascript:void(0)" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> <span class="sr-only">Previous</span> </a></li>';
+            }
+                        for(var k=1; k<= html.totalPages; k++){
+                          var tClass=''; if(k == html.currentPage){ tClass='active'; }
+
+                            pageList +='<li class="page-item '+tClass+'"><a class="page-link" onclick="paginationProfesstionalFuntion('+k+')" href="javascript:void(0)">'+k+'</a></li>';
+                        }
+            if(html.currentPage < html.totalPages){ var currentPage1 = html.currentPage+1;             
+              pageList +='<li class="page-item"> <a class="page-link" onclick="paginationProfesstionalFuntion('+currentPage1+')"  href="javascript:void(0)" aria-label="Next"> <span aria-hidden="true">&raquo;</span> <span class="sr-only">Next</span> </a></li>';   
+            }        
+        }
+        
+        } else {
+          htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
+          pageList = '';
+        }
+
+       
+        $('.professional-find-list #filter_data').html(htmlData);
+        $('.professional-pagination-section .pagination').html(pageList);
+      }
+    });
+  }
+
   $("#professional-role-list li a").click(function (e) {
     $('#professional-role-list li a').removeClass('active_role');
     $(this).addClass('active_role');
@@ -2375,7 +2561,11 @@ Professional
       success: function (html) {
         $('.loader-box').attr('style','display:none !important');
         console.log('result:', html.filterData)
+        console.log('html:', html)
+        console.log('htmlcurrentPage:', html.currentPage)
         var htmlData = '';
+        var pagination = '';
+        var pageList='';
         if (html.filterData.length > 0) {
           $.each(html.filterData, function (i, data) {
             console.log('val:', data)
@@ -2383,13 +2573,86 @@ Professional
             htmlData += '<div class="col-lg-3"><div class="card card-fix2"><div class="row"><div class="float-left card-header-fix"> <a href="/professionals-detail?id=' + data._id + '"> <img class="card-img-top" src="images/recent-user-2.png" alt="Card image cap"> </a></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>' + data.avgRating + ' Rating</span></div></div><div class="card-body"><p class="card-text">' + data.professionalBody + '</p></div></div></div>';
             }
           });
+
+          if(html.totalPages > 1){
+              if(html.currentPage > 1){ var currentPage1 = html.currentPage-1; 
+                pageList +='<li class="page-item"><a class="page-link" onclick="paginationProfesstionalFuntion('+currentPage1+')" href="javascript:void(0)" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> <span class="sr-only">Previous</span> </a></li>';
+            }
+                        for(var k=1; k<= html.totalPages; k++){
+                          var tClass=''; if(k == html.currentPage){ tClass='active'; }
+
+                            pageList +='<li class="page-item '+tClass+'"><a class="page-link" onclick="paginationProfesstionalFuntion('+k+')" href="javascript:void(0)">'+k+'</a></li>';
+                        }
+            if(html.currentPage < html.totalPages){ var currentPage1 = html.currentPage+1;             
+              pageList +='<li class="page-item"> <a class="page-link" onclick="paginationProfesstionalFuntion('+currentPage1+')"  href="javascript:void(0)" aria-label="Next"> <span aria-hidden="true">&raquo;</span> <span class="sr-only">Next</span> </a></li>';   
+            }             
+        }
+
+
         } else {
           htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
+          pageList = '';
         }
+
+
         $('.professional-find-list #filter_data').html(htmlData);
+        $('.professional-pagination-section .pagination').html(pageList);
       }
     });
   });
+
+
+
+  function paginationSearchProfesstionalFuntion(page){
+    $('.loader-box').attr('style','display:flex !important');
+    var searchVal = $('.professional-search-form-sec .professional-search').val();
+    $.ajax({
+      type: "GET",
+      data: {
+        searchKeyword: searchVal,
+        page:page
+      },
+      url: "/professionals-searchbar",
+      cache: false,
+      success: function (html) {
+        $('.loader-box').attr('style','display:none !important');
+        console.log('result:', html.filterData)
+        var htmlData = '';
+        var pagination = '';
+        var pageList='';
+        if (html.filterData.length > 0) {
+          $.each(html.filterData, function (i, data) {
+            console.log('val:', data)
+            if(data != null){
+             htmlData += '<div class="col-lg-3"><div class="card card-fix2"><div class="row"><div class="float-left card-header-fix"> <a href="/professionals-detail?id=' + data._id + '"> <img class="card-img-top" src="images/recent-user-2.png" alt="Card image cap"> </a></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>' + data.avgRating + ' Rating</span></div></div><div class="card-body"><p class="card-text">' + data.professionalBody + '</p></div></div></div>';
+            }
+          });
+
+            if(html.totalPages > 1){
+                if(html.currentPage > 1){ var currentPage1 = html.currentPage-1; 
+                  pageList +='<li class="page-item"><a class="page-link" onclick="paginationSearchProfesstionalFuntion('+currentPage1+')" href="javascript:void(0)" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> <span class="sr-only">Previous</span> </a></li>';
+              }
+                          for(var k=1; k<= html.totalPages; k++){
+                            var tClass=''; if(k == html.currentPage){ tClass='active'; }
+
+                              pageList +='<li class="page-item '+tClass+'"><a class="page-link" onclick="paginationSearchProfesstionalFuntion('+k+')" href="javascript:void(0)">'+k+'</a></li>';
+                          }
+              if(html.currentPage < html.totalPages){ var currentPage1 = html.currentPage+1;             
+                pageList +='<li class="page-item"> <a class="page-link" onclick="paginationSearchProfesstionalFuntion('+currentPage1+')"  href="javascript:void(0)" aria-label="Next"> <span aria-hidden="true">&raquo;</span> <span class="sr-only">Next</span> </a></li>';   
+              }             
+          }
+        } else {
+          htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
+          pageList = '';
+        }
+        $('.professional-find-list #filter_data').html(htmlData);
+        $('.professional-pagination-section .pagination').html(pageList);
+
+      }
+    });
+  }
+
+
   //$("#professional-search-btn").click(function (e) {
     $('.professional-search-form-sec #professional-search-form').on('submit', function (e) {
       e.preventDefault();
@@ -2406,6 +2669,8 @@ Professional
         $('.loader-box').attr('style','display:none !important');
         console.log('result:', html.filterData)
         var htmlData = '';
+        var pagination = '';
+        var pageList='';
         if (html.filterData.length > 0) {
           $.each(html.filterData, function (i, data) {
             console.log('val:', data)
@@ -2413,10 +2678,29 @@ Professional
              htmlData += '<div class="col-lg-3"><div class="card card-fix2"><div class="row"><div class="float-left card-header-fix"> <a href="/professionals-detail?id=' + data._id + '"> <img class="card-img-top" src="images/recent-user-2.png" alt="Card image cap"> </a></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>' + data.avgRating + ' Rating</span></div></div><div class="card-body"><p class="card-text">' + data.professionalBody + '</p></div></div></div>';
             }
           });
+
+          if(html.totalPages > 1){
+              if(html.currentPage > 1){ var currentPage1 = html.currentPage-1; 
+                pageList +='<li class="page-item"><a class="page-link" onclick="paginationSearchProfesstionalFuntion('+currentPage1+')" href="javascript:void(0)" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> <span class="sr-only">Previous</span> </a></li>';
+            }
+                        for(var k=1; k<= html.totalPages; k++){
+                          var tClass=''; if(k == html.currentPage){ tClass='active'; }
+
+                            pageList +='<li class="page-item '+tClass+'"><a class="page-link" onclick="paginationSearchProfesstionalFuntion('+k+')" href="javascript:void(0)">'+k+'</a></li>';
+                        }
+            if(html.currentPage < html.totalPages){ var currentPage1 = html.currentPage+1;             
+              pageList +='<li class="page-item"> <a class="page-link" onclick="paginationSearchProfesstionalFuntion('+currentPage1+')"  href="javascript:void(0)" aria-label="Next"> <span aria-hidden="true">&raquo;</span> <span class="sr-only">Next</span> </a></li>';   
+            }             
+        }
+
+
         } else {
           htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
+          pageList = '';
         }
         $('.professional-find-list #filter_data').html(htmlData);
+        $('.professional-pagination-section .pagination').html(pageList);
+
       }
     });
   });
@@ -4442,6 +4726,55 @@ console.log('Inside Seller');
       })
     })
 
+
+function paginationMultifilter(page){
+
+  $('.loader-box').attr('style','display:flex !important');
+      var formData = $("#multifilterForm").serialize()+'&page='+page;
+      console.log(formData)
+      $.ajax({
+      type: "POST",
+      data: formData,
+      url: "/professionals-multifilter",
+      cache: false,
+      success: function (html) {
+        $('.loader-box').attr('style','display:none !important');
+        console.log('result:', html.filterData)
+        var htmlData = '';
+        var pageList = '';
+        if (html.filterData.length > 0) {
+         $.each(html.filterData, function (i, data) {
+            console.log('val:', data)
+            htmlData += '<div class="col-lg-3"><div class="card card-fix2"><div class="row"><div class="float-left card-header-fix"> <a href="/professionals-detail?id=' + data._id + '"> <img class="card-img-top" src="images/recent-user-2.png" alt="Card image cap"> </a></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>' + data.avgRating + ' Rating</span></div></div><div class="card-body"><p class="card-text">' + data.professionalBody + '</p></div></div></div>';
+         });
+
+        if(html.totalPages > 1){
+              if(html.currentPage > 1){ var currentPage1 = html.currentPage-1; 
+                pageList +='<li class="page-item"><a class="page-link" onclick="paginationMultifilter('+currentPage1+')" href="javascript:void(0)" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> <span class="sr-only">Previous</span> </a></li>';
+            }
+                        for(var k=1; k<= html.totalPages; k++){
+                          var tClass=''; if(k == html.currentPage){ tClass='active'; }
+
+                            pageList +='<li class="page-item '+tClass+'"><a class="page-link" onclick="paginationMultifilter('+k+')" href="javascript:void(0)">'+k+'</a></li>';
+                        }
+            if(html.currentPage < html.totalPages){ var currentPage1 = html.currentPage+1;             
+              pageList +='<li class="page-item"> <a class="page-link" onclick="paginationMultifilter('+currentPage1+')"  href="javascript:void(0)" aria-label="Next"> <span aria-hidden="true">&raquo;</span> <span class="sr-only">Next</span> </a></li>';   
+            }             
+        }
+
+
+        } else {
+          htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
+          pageList='';
+        }
+        $('#filter_data').html(htmlData);
+        $('.professional-pagination-section .pagination').html(pageList);
+      }
+    });
+
+}
+
+
     function multifilter(){
       $('.loader-box').attr('style','display:flex !important');
       var formData = $("#multifilterForm").serialize();
@@ -4455,17 +4788,34 @@ console.log('Inside Seller');
         $('.loader-box').attr('style','display:none !important');
         console.log('result:', html.filterData)
         var htmlData = '';
+        var pageList = '';
         if (html.filterData.length > 0) {
          $.each(html.filterData, function (i, data) {
             console.log('val:', data)
             htmlData += '<div class="col-lg-3"><div class="card card-fix2"><div class="row"><div class="float-left card-header-fix"> <a href="/professionals-detail?id=' + data._id + '"> <img class="card-img-top" src="images/recent-user-2.png" alt="Card image cap"> </a></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="Card image cap">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="Card image cap">&nbsp;<span>' + data.avgRating + ' Rating</span></div></div><div class="card-body"><p class="card-text">' + data.professionalBody + '</p></div></div></div>';
+         });
 
-            //htmlData += '<div class="col-sm-4 col-md-4 col-lg-3"><div class="card card-fix3"><div class="row"><div class="float-left card-header-fix"><div class="semi-circle"> <img class="card-img-top" src="images/recent-user-2.png" alt=""></div></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span>'+ data.avgRating +' Rating</span></div></div><div class="card-body"> <button type="button" class="btn btn-cancel" style="margin-top: 30px; margin-bottom: 0px;"><a style="color:#fff;" href="/professionals-detail?id='+ data._id +'">View</a></button></div></div></div>';
-          });
+        if(html.totalPages > 1){
+              if(html.currentPage > 1){ var currentPage1 = html.currentPage-1; 
+                pageList +='<li class="page-item"><a class="page-link" onclick="paginationMultifilter('+currentPage1+')" href="javascript:void(0)" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> <span class="sr-only">Previous</span> </a></li>';
+            }
+                        for(var k=1; k<= html.totalPages; k++){
+                          var tClass=''; if(k == html.currentPage){ tClass='active'; }
+
+                            pageList +='<li class="page-item '+tClass+'"><a class="page-link" onclick="paginationMultifilter('+k+')" href="javascript:void(0)">'+k+'</a></li>';
+                        }
+            if(html.currentPage < html.totalPages){ var currentPage1 = html.currentPage+1;             
+              pageList +='<li class="page-item"> <a class="page-link" onclick="paginationMultifilter('+currentPage1+')"  href="javascript:void(0)" aria-label="Next"> <span aria-hidden="true">&raquo;</span> <span class="sr-only">Next</span> </a></li>';   
+            }             
+        }
+
+
         } else {
           htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
+          pageList='';
         }
         $('#filter_data').html(htmlData);
+        $('.professional-pagination-section .pagination').html(pageList);
       }
     });
     }
