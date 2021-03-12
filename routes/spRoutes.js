@@ -25,7 +25,7 @@ const CustomerSchema = require("../models/customers");
 const PropertiesSchema = require("../models/properties");
 const PropertyProfessionalSchema = require("../models/property_professional_Schema");
 const CustomerUploadDocsSchema = require("../models/customer_upload_document");
-const TaskHelper = require("./api/addTask");
+//const TaskHelper = require("./api/addTask");
 
 const ServiceProviderPortfolioSchema = require("../models/service_provider_portfolio");
 const ServiceProviderSchema = require("../models/service_providers");
@@ -38,6 +38,7 @@ const ServiceProviderReferenceSchema = require("../models/service_provider_refer
 const ServiceProviderIndemnityDetailsSchema = require("../models/service_provider_indemnity_details");
 
 const MessageSchema = require("../models/message");
+const TaskHelper = require("../routes/api/service_provider_helper/taskHelper");
 
 function tallyVotes(AllhiredProfeshnoal) {
   return AllhiredProfeshnoal.reduce((total, i) => total + i.pps_pofessional_budget, 0);
@@ -150,6 +151,9 @@ function getPhase(phase) {
 
 
 }
+
+
+
 
 app.get('/signup-professionals-profile', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
@@ -500,8 +504,8 @@ app.get('/service-provider/professionals-detail-message', isServiceProvider, asy
   console.log("current session is :", req.session);
   req.session.pagename = 'service-provider/property';
   var newData = [];
-  console.log(' property id  :', req.session.property_id);
-  console.log('helooooo', req.query.pid);
+  //console.log(' property id  :', req.session.property_id);
+  //console.log('helooooo', req.query.pid);
   req.session.customer_id = req.query.pid;
   let property = await PropertiesSchema.findOne({ _id: req.session.property_id });
   await MessageSchema.find({
@@ -547,8 +551,8 @@ app.get('/service-provider/professionals-detail-message', isServiceProvider, asy
   }).catch((err) => {
     console.log(err)
   })
-  console.log('property:', property)
-  console.log('ChatData:', newData)
+  //console.log('property:', property)
+  //console.log('ChatData:', newData)
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('service-provider/professionals-detail-message', {
@@ -605,7 +609,7 @@ app.get('/service-provider-get-message-property', async (req, res) => {
         const ss = await s;
        newData.push(ss);
       }
-      console.log('Get newData', newData);
+      //console.log('Get newData', newData);
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.send({
@@ -656,7 +660,7 @@ app.get('/service-provider/complaints-professional-detail', isServiceProvider, f
 
 
 app.get('/service-provider/professionals-detail-message', isServiceProvider, function (req, res) {
-  console.log("current session is :", req.session);
+  //console.log("current session is :", req.session);
   req.session.pagename = 'service-provider/property';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -724,14 +728,225 @@ app.get('/signup-professionals-profile-4', isServiceProvider, async (req, res) =
   });
 });
 
-app.get('/service-provider/myproperties-detail-phaseA', isServiceProvider, function (req, res) {
+app.get('/service-provider/myproperties-detail-phaseA', isServiceProvider, async function (req, res) {
   console.log("current session is :", req.session);
+  console.log("request coming from server is", req.query);
+  //Need to  write logic for fetching Task Data from 
+  var property_id = req.query.id;
+  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  var user_id = req.session.user_id;
+  req.session.property_id = req.query.id
+  var phase_name = req.query.phase;
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
+
+  console.log("task Object is:", taskObject);
   err_msg = req.flash('err_msg');
   req.session.pagename = 'service-provider/property';
   success_msg = req.flash('success_msg');
   res.render('service-provider/myproperties-detail-phaseA', {
     err_msg, success_msg, layout: false,
-    session: req.session
+    session: req.session,
+    propertyData: propertyData,
+    step: req.query.step,
+    phase: req.query.phase,
+    taskObject: taskObject
+  });
+});
+
+app.get('/service-provider/myproperties-detail-phaseB', isServiceProvider, async function (req, res) {
+  console.log("request coming from server is", req.query);
+  //Need to  write logic for fetching Task Data from 
+  var property_id = req.query.id;
+  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  var user_id = req.session.user_id;
+  req.session.property_id = req.query.id
+  var phase_name = req.query.phase;
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
+
+  console.log("task Object is:", taskObject);
+  err_msg = req.flash('err_msg');
+  req.session.pagename = 'service-provider/property';
+  success_msg = req.flash('success_msg');
+  res.render('service-provider/myproperties-detail-phaseB', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    propertyData: propertyData,
+    step: req.query.step,
+    phase: req.query.phase,
+    taskObject: taskObject
+  });
+});
+
+app.get('/service-provider/myproperties-detail-phaseC', isServiceProvider, async function (req, res) {
+  console.log("current session is :", req.session);
+  console.log("request coming from server is", req.query);
+  //Need to  write logic for fetching Task Data from 
+  var property_id = req.query.id;
+  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  var user_id = req.session.user_id;
+  req.session.property_id = req.query.id
+  var phase_name = req.query.phase;
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
+
+  console.log("task Object is:", taskObject);
+  err_msg = req.flash('err_msg');
+  req.session.pagename = 'service-provider/property';
+  success_msg = req.flash('success_msg');
+  res.render('service-provider/myproperties-detail-phaseC', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    propertyData: propertyData,
+    step: req.query.step,
+    phase: req.query.phase,
+    taskObject: taskObject
+  });
+});
+
+app.get('/service-provider/myproperties-detail-phaseD', isServiceProvider, async function (req, res) {
+  console.log("current session is :", req.session);
+  console.log("request coming from server is", req.query);
+  //Need to  write logic for fetching Task Data from 
+  var property_id = req.query.id;
+  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  var user_id = req.session.user_id;
+  req.session.property_id = req.query.id
+  var phase_name = req.query.phase;
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
+
+  console.log("task Object is:", taskObject);
+  err_msg = req.flash('err_msg');
+  req.session.pagename = 'service-provider/property';
+  success_msg = req.flash('success_msg');
+  res.render('service-provider/myproperties-detail-phaseD', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    propertyData: propertyData,
+    step: req.query.step,
+    phase: req.query.phase,
+    taskObject: taskObject
+  });
+});
+
+app.get('/service-provider/myproperties-detail-phaseE', isServiceProvider, async function (req, res) {
+  console.log("current session is :", req.session);
+  console.log("request coming from server is", req.query);
+  //Need to  write logic for fetching Task Data from 
+  var property_id = req.query.id;
+  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  var user_id = req.session.user_id;
+  req.session.property_id = req.query.id
+  var phase_name = req.query.phase;
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
+
+  console.log("task Object is:", taskObject);
+  err_msg = req.flash('err_msg');
+  req.session.pagename = 'service-provider/property';
+  success_msg = req.flash('success_msg');
+  res.render('service-provider/myproperties-detail-phaseE', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    propertyData: propertyData,
+    step: req.query.step,
+    phase: req.query.phase,
+    taskObject: taskObject
+  });
+});
+app.get('/service-provider/myproperties-detail-phaseF', isServiceProvider, async function (req, res) {
+  console.log("current session is :", req.session);
+  console.log("request coming from server is", req.query);
+  //Need to  write logic for fetching Task Data from 
+  var property_id = req.query.id;
+  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  var user_id = req.session.user_id;
+  req.session.property_id = req.query.id
+  var phase_name = req.query.phase;
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
+
+  console.log("task Object is:", taskObject);
+  err_msg = req.flash('err_msg');
+  req.session.pagename = 'service-provider/property';
+  success_msg = req.flash('success_msg');
+  res.render('service-provider/myproperties-detail-phaseF', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    propertyData: propertyData,
+    step: req.query.step,
+    phase: req.query.phase,
+    taskObject: taskObject
+  });
+});
+
+app.get('/service-provider/myproperties-detail-phaseG', isServiceProvider, async function (req, res) {
+  console.log("current session is :", req.session);
+  console.log("request coming from server is", req.query);
+  //Need to  write logic for fetching Task Data from 
+  var property_id = req.query.id;
+  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  var user_id = req.session.user_id;
+  req.session.property_id = req.query.id
+  var phase_name = req.query.phase;
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
+
+  console.log("task Object is:", taskObject);
+  err_msg = req.flash('err_msg');
+  req.session.pagename = 'service-provider/property';
+  success_msg = req.flash('success_msg');
+  res.render('service-provider/myproperties-detail-phaseG', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    propertyData: propertyData,
+    step: req.query.step,
+    phase: req.query.phase,
+    taskObject: taskObject
+  });
+});
+
+app.get('/service-provider/myproperties-detail-phaseH', isServiceProvider, async function (req, res) {
+  console.log("current session is :", req.session);
+  console.log("request coming from server is", req.query);
+  //Need to  write logic for fetching Task Data from 
+  var property_id = req.query.id;
+  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  var user_id = req.session.user_id;
+  req.session.property_id = req.query.id
+  var phase_name = req.query.phase;
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
+
+  console.log("task Object is:", taskObject);
+  err_msg = req.flash('err_msg');
+  req.session.pagename = 'service-provider/property';
+  success_msg = req.flash('success_msg');
+  res.render('service-provider/myproperties-detail-phaseH', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    propertyData: propertyData,
+    step: req.query.step,
+    phase: req.query.phase,
+    taskObject: taskObject
+  });
+});
+app.get('/service-provider/myproperties-detail-phaseO', isServiceProvider, async function (req, res) {
+  console.log("current session is :", req.session);
+  console.log("request coming from server is", req.query);
+  //Need to  write logic for fetching Task Data from 
+  var property_id = req.query.id;
+  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  var user_id = req.session.user_id;
+  req.session.property_id = req.query.id
+  var phase_name = req.query.phase;
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
+
+  console.log("task Object is:", taskObject);
+  err_msg = req.flash('err_msg');
+  req.session.pagename = 'service-provider/property';
+  success_msg = req.flash('success_msg');
+  res.render('service-provider/myproperties-detail-phaseO', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    propertyData: propertyData,
+    step: req.query.step,
+    phase: req.query.phase,
+    taskObject: taskObject
   });
 });
 
@@ -985,7 +1200,7 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
 
         let todoArray = [];
         var c = 0;
-        let TaskDetailObj = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login);
+        let TaskDetailObj = await TaskHelper.GetTaskById(req.query.id, req.session.user_id);
         var phase_page_name = '';
         for (var ph of TaskDetailObj) {
           var ServiceProffId='';
