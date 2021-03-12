@@ -1,0 +1,194 @@
+<%- include('dashboard_header_professional')-%>
+  <%- include('edit-profile-professional-model')-%>
+
+    <div class="dashboard-wpr">
+      <div class="container-fluid">
+        <div class="row content">
+          <div class="col-sm-2 sidenav hidden-xs-down">
+            <div class="user-login text-center">
+              <div class="user-profile">
+                <img src="../images/user-3.png" alt="" title="">
+              </div>
+              <div class="user-name">
+                <h6>
+                  <%= session.name%>,<span><i>
+                        <%= session.role %>
+                      </i>
+                    </span>
+                </h6>
+
+                <a href="#"><i>
+                    <%= session.email%>
+                      <%- include('edit-profile-professional-icon')-%>
+                  </i></a>
+              </div>
+            </div>
+            <%- include('sidebar-professional')-%>
+          </div>
+          <div class="col-sm-12 col-lg-10">
+            <div class="dashboard-inner">
+              <div class="row">
+                <div class="breadcumb">
+                  <ul>
+                    <li><a href="../myproperties-detail"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+                        Back
+                        to Nacary
+                        Apartment</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="docs-files-section">
+                <div class="row">
+                  <div class="col-sm-12 col-lg-12">
+                    <div class="docs-files">
+                      <div class="clearfix">
+                        <div class="float-left">
+                          <h2>Docs & Files</h2>
+                        </div>
+                        <div class="float-right">
+                          <a href="#" class="btn btn-add-property">Add New Document</a>
+                        </div>
+                      </div>
+                      <ul class="docs-list">
+                        <li><a href="#"><img src="../images/idproof.png" alt=""
+                              title=""><br><span>idproof.jpg</span></a>
+                        </li>
+                        <li><a href="#"><img src="../images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a>
+                        </li>
+                        <li><a href="#"><img src="../images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a>
+                        </li>
+                        <li><a href="#"><img src="../images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a>
+                        </li>
+                        <li><a href="#"><img src="../images/pdf.png" alt="" title=""><br><span>contract.pdf</span></a>
+                        </li>
+                        <li><a href="#"><img src="../images/idproof.png" alt=""
+                              title=""><br><span>idproof.jpg</span></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="doc-table">
+                <table class="table table-responsive">
+                  <thead>
+                    <tr>
+                      <th>Document Name</th>
+                      <th>Date</th>
+                      <th>Permissions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><img class="pdf-file" src="../images/pdf.png">
+                        <p><span>Contract.pdf</span> 256.0 KB</p>
+                      </td>
+                      <td><span class="professionals-view">17 Nov, 2020 </span></td>
+                      <td>
+                        <ul style="display: flex;">
+                          <li>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="View Document"><img
+                                src="../images/eye.png"></a>
+                          </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                          <li>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Download Document"><img
+                                src="../images/drop-down.png"></a>
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><img class="pdf-file" src="../images/doc.png">
+                        <p><span>Contract.pdf</span> 256.0 KB</p>
+                      </td>
+                      <td><span class="professionals-view">17 Nov, 2020
+
+                          <!-- <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
+                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">2 professionals</a>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png"> Alex
+                                  Jackson</a>
+                                <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png"> Alex
+                                  Jackson</a>
+                              </div>
+                            </li> -->
+
+                        </span></td>
+                      <td>
+                        <ul style="display: flex;">
+                          <li>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="View Document"><img
+                                src="../images/eye.png"></a>
+                          </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                          <li>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Download Document">
+                              <img src="../images/drop-down.png"></a>
+                          </li>
+                        </ul>
+                        <!-- <div class="recent-img">
+                          <img src="../images/recent-user-1.png"><img class="mr-10"
+                            src="../images/recent-user-2.png"><img class="mr-10" src="../images/recent-user-3.png">
+                          <a href="#" data-toggle="modal" data-target="#myModal">Change permission</a> -->
+              </div>
+              </td>
+              </tr>
+              <tr>
+                <td><img class="pdf-file" src="../images/idproof.png">
+                  <p><span>Contract.pdf</span> 256.0 KB</p>
+                </td>
+                <td><span class="professionals-view">17 Nov, 2020 | Downloaded by<ul>
+                      <li class="dropdown"><a href="#" class="dropdown-toggle" type="button" id="dropdownMenuButton"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">2 professionals</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png"> Alex
+                            Jackson</a>
+                          <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png"> Alex
+                            Jackson</a>
+                        </div>
+                      </li>
+                    </ul></span></td>
+                <td>
+                  <div class="recent-img">
+                    <img src="../images/recent-user-1.png"><img class="mr-10" src="../images/recent-user-2.png"><img
+                      class="mr-10" src="../images/recent-user-3.png">
+                    <a href="#" data-toggle="modal" data-target="#myModal">Change permission</a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><img class="pdf-file" src="../images/pdf.png">
+                  <p><span>Contract.pdf</span> 256.0 KB</p>
+                </td>
+                <td><span class="professionals-view">17 Nov, 2020 | Downloaded by<ul>
+                      <li class="dropdown"><a href="#" class="dropdown-toggle" type="button" id="dropdownMenuButton"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">2 professionals</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png"> Alex
+                            Jackson</a>
+                          <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png"> Alex
+                            Jackson</a>
+                        </div>
+                      </li>
+                    </ul></span></td>
+                <td>
+                  <div class="recent-img">
+                    <img src="../images/recent-user-1.png"><img class="mr-10" src="../images/recent-user-2.png"><img
+                      class="mr-10" src="../images/recent-user-3.png">
+                    <a href="#" data-toggle="modal" data-target="#myModal">Change permission</a>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+    <%- include('professional-footer')-%>
+      </body>
+
+      </html>

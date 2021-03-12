@@ -6,8 +6,6 @@ module.exports.GetTaskById = function (ppts_property_id,ppts_is_active_user_flag
        if(ppts_property_id!=null){
         var data={
             ppts_property_id: ppts_property_id
-
-           
         }
         PropertyProfessinoalTaskSchema.find(data).then(async(resp)=>{
             console.log('resp:====',resp)

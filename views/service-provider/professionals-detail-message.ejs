@@ -1,6 +1,5 @@
 <%- include('dashboard_header_professional')-%>
   <%- include('edit-profile-professional-model')-%>
-
     <div class="dashboard-wpr">
       <div class="container-fluid">
         <div class="row content">
@@ -16,7 +15,6 @@
                       </i>
                     </span>
                 </h6>
-
                 <a href="#"><i>
                     <%= session.email%>
                       <%- include('edit-profile-professional-icon')-%>
@@ -30,54 +28,21 @@
             <div class="row">
               <div class="breadcumb left-arrow">
                 <ul>
-                  <li><a href="/service-provider/property-detail"><i class="fa fa-long-arrow-left"
-                        aria-hidden="true"></i>
-                      Back to all professionals</a></li>
+                  <li><a href="/service-provider/myproperties-detail?id=<%=session.property_id%>"><i class="fa fa-long-arrow-left"
+                        aria-hidden="true"></i> Back
+                      to <%=property.ps_property_name%></a></li>
                 </ul>
               </div>
             </div>
             <div class=" user-fix">
               <div class="row">
                 <div class="col-sm-12 col-lg-6">
-                  <div class="user-profile-fix2 float-left">
-                    <img src="../images/user-4.png" alt="" title="">
-                  </div>
                   <div class="user-name-fix float-left">
-                    <h2>Alex Jackson</h2>
-                    <p>Architect</p>
-                  </div>
-                </div>
-                <div class="col-sm-12 col-lg-6">
-                  <div class="float-left icon-fix">
-                    <img class=" card-image-fix" src="../images/experience.png" alt="Card image cap">&nbsp;<span>5
-                      years</span>
-                  </div>
-                  <div class="float-left icon-fix2">
-                    <img class=" card-image-fix" src="../images/rating.png" alt="Card image cap">&nbsp;<span>4.0
-                      Rating</span>
+                    <h2>Message</h2>
                   </div>
                 </div>
               </div>
             </div>
-
-            <div class="col-sm-12 col-lg-12">
-              <div class="professional-inner">
-                <div class="professional-files-section2">
-                  <div class="row">
-                    <div class="float-left image-fix">
-                      <img class="" src="../images/phone.png" alt="Card image cap">&nbsp;<span>+56295856321
-                      </span>
-                    </div>
-                    <div class="float-left image-fix">
-                      <img class="" src="../images/mail.png"
-                        alt="Card image cap">&nbsp;<span>alexjackson@gmail.com</span>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
 
             <div class="col-sm-12 col-lg-12">
               <div class="professional-inner">
@@ -86,58 +51,44 @@
                   <div class="row">
                     <div class="col-sm-12 col-lg-12">
                       <div class="messages-section">
-                        <div class="messages-box clearfix">
-                          <div class="message-user-img">
-                            <img src="../images/recent-user-1.png" alt="" title="">
+                        <div class="messages-section">
+                          <div id="message_board">
+                            <% chatData.forEach(function(row){ %>
+                              <div class="messages-box clearfix">
+                                <div class="message-user-img">
+                                  <% if(row.sms_user_profile_img){ %>
+                                    <img src="../upload/<%= row.sms_user_profile_img%>" alt="" title="">
+                                  <% }else{ %>
+                                    <img src="../images/img_avatar.png" alt="" title="">
+                                  <%}%>
+                                </div>
+                                <div class="message-content">
+                                  <h3><%= row.senderName%></h3>
+                                  <p><%= row.sms_message%></p>
+                                  <p class="hours-ago text-right"><%= row.msgTime%></p>
+                                </div>
+                              </div>
+                              <% }); %>
                           </div>
-                          <div class="message-content">
-                            <h3>You</h3>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-                              has been the industry's standard dummy text ever since the 1500s,</p>
-                            <p class="hours-ago text-right">13 hours ago</p>
-                          </div>
-                        </div>
-                        <div class="messages-box clearfix">
-                          <div class="message-user-img">
-                            <img src="../images/recent-user-1.png" alt="" title="">
-                          </div>
-                          <div class="message-content">
-                            <h3>Alex Jackson</h3>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-                              has been the industry's standard dummy text ever since the 1500s,</p>
-                            <p class="hours-ago text-right">13 hours ago</p>
-                          </div>
-                        </div>
-                        <div class="messages-box clearfix">
-                          <div class="message-user-img">
-                            <img src="../images/recent-user-1.png" alt="" title="">
-                          </div>
-                          <div class="message-content">
-                            <h3>you</h3>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-                              has been the industry's standard dummy text ever since the 1500s,</p>
-                            <p class="hours-ago text-right">13 hours ago</p>
-                          </div>
-                        </div>
-                        <div class="messages-box clearfix">
-                          <div class="message-user-img">
-                            <img src="../images/recent-user-1.png" alt="" title="">
-                          </div>
-                          <div class="message-content">
-                            <h3>Alex Jackson</h3>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-                              has been the industry's standard dummy text ever since the 1500s,</p>
-                            <p class="hours-ago text-right">13 hours ago</p>
-                          </div>
-                        </div>
-                        <div class="text-message-box clearfix">
-                          <div class="text-box">
-                            <textarea class="form-control" style="min-width: 80%; margin-bottom: 10px; " rows="3"
-                              id="comment">Write your reply here</textarea>
-
-                            <button type="submit" class="btn btn-next"
-                              style="width: 164px; float:right; border-radius: 5px;">
-                              Send</button>
+                          <div class="text-message-box clearfix">
+                            <% var userid=''; if(session.active_user_login == property.ps_is_active_user_flag){ %> 
+                                <%userid = property.ps_user_id%>
+                            <% }else{%>  
+                               <%userid = property.ps_tagged_user_id%>
+                            <% } %> 
+                            <form method="POST" id="chat_form">
+                              <div class="text-box chat_status_section">
+                                <input type="hidden" name="professional_id" data-val="<%=session.user_id%>"
+                                  value="<%=session.user_id%>" id="professional_id">
+                                <input type="hidden" name="property_id" value="<%=property._id%>" id="property_id">
+                                <input type="hidden" name="customer_id" value="<%=customer_id%>" id="customer_id">
+                                <textarea name="chat_input" class="form-control"
+                                  style="min-width: 80%; margin-bottom: 10px; " rows="3" id="comment"></textarea>
+                                <button id="chat_submit" type="button" class="btn btn-next"
+                                  style="width: 164px; float:right; border-radius: 5px;">
+                                  Send</button>
+                              </div>
+                            </form>
                           </div>
                         </div>
                       </div>
@@ -153,8 +104,48 @@
     </div>
     </div>
     </div>
-
+<button class="myhello">helllo</button>
     <%- include('professional-footer')%>
+
+    <script>
+      function getAllMessage(sms_receiver_id, sms_sender_id, sms_property_id) {
+      $.ajax({
+        type: "GET",
+        data: {
+          sms_receiver_id: sms_receiver_id,
+          sms_sender_id: sms_sender_id,
+          sms_property_id: sms_property_id
+        },
+        url: "/service-provider-get-message-property",
+        cache: false,
+        success: function (datas) {
+          if (datas.chatData.length > 0) {
+            console.log('data:',datas)
+            var htmlData = '';
+            $.each(datas.chatData, function (i, data) {
+              var imageData='';
+              if(data.sms_user_profile_img){
+                imageData = '<img src="../upload/'+data.sms_user_profile_img+'" alt="" title="">';
+              }else{
+                imageData = '<img src="../images/img_avatar.png" alt="" title="">';
+              }
+              htmlData += '<div class="messages-box clearfix"><div class="message-user-img">'+imageData+'</div><div class="message-content"><h3>' + data.senderName + '</h3><p>'+data.sms_message.trim()+'</p><p class="hours-ago text-right">' + data.msgTime + '</p></div></div>';
+            });
+            $('#message_board').html(htmlData);
+          }
+        }
+      });
+    }
+
+    setInterval(function () {
+      var professional_id = $("#chat_form #professional_id").val();
+      var customer_id = $("#customer_id").val();
+      var property_id = $("#chat_form  #property_id").val();
+        getAllMessage(customer_id, professional_id, property_id);
+    }, 1000);
+
+  </script>
+
       </body>
 
       </html>

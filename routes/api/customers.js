@@ -2743,5 +2743,23 @@ if(req.body.document_id!=''&&req.body.document_id!=undefined){
 }
 })
 
+
+//service-provider-message-unread
+
+
+router.post('/customer-message-unread', (req, res) => {
+  console.log("Customer Unread Send Message data from client is :", req.body);
+  MessageSchema.updateMany({sms_property_id:req.body.sms_property_id,sms_sender_id:req.body.sms_sender_id,sms_receiver_id:req.body.sms_receiver_id,sms_sender_type:req.body.sms_sender_type,sms_receiver_type:req.body.sms_receiver_type }, { $set: { sms_read_status: 'read' } }, { upsert: true }, function (err) {
+    if (err) {
+      console.log(err)
+      res.send({ status: false, message: 'Something going wrong please check again !!' })
+    } else {
+      res.send({ status: true, message: 'Task update successfully !!' })
+      console.log("Message Status update successfully");
+    }
+  });
+});
+
+
 module.exports = router;
 

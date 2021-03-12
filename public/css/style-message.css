@@ -272,3 +272,7 @@ span#comment-error {
         height: 209px;
         overflow: auto;
     }
+    .do-list-sec .message-img img {
+        width: 35px;
+        border-radius: 35px;
+    }
