@@ -136,6 +136,38 @@ module.exports.updatePortpofolio = function (req) {
 
     }).catch((error) => { console.log(error) });
 }
+
+module.exports.updatePortpofolioById = function (req) {
+    return new Promise(async function (resolve, reject) {
+            let ext_type = '';
+            var ext = ''
+                ext = req.file.mimetype
+                console.log(ext)
+               
+                if (ext == "video/mp4") {
+                    ext_type = 'video';
+                } else if(ext=='image/jpeg'||ext=='image/png'){
+
+                    ext_type = 'image';
+                }
+                if(ext_type=='image'||ext_type=='video'){
+                var obj = {
+                    spps_filename: req.file.filename,
+                    spps_service_provider_id: req.session.user_id,
+                    spps_type: ext_type,
+                    
+                }
+                var resp = await ServiceProviderPortfolioSchema.updateOne(obj).where({_id:req.body.img_id})
+                if(resp){
+                    resolve(true)
+                }
+               
+            }else{
+                reject(false)
+            }      
+
+    }).catch((error) => { console.log(error) });
+}
 module.exports.getPortpofolio = function (id) {
 return new Promise(async function (resolve, reject) {
     if (id != null) {

@@ -312,6 +312,7 @@
     function yesnoCheck() {
       if (document.getElementById('yesCheck').checked) {
         document.getElementById('ifYes').style.display = 'block';
+        $('.spods_details_of_convictions').attr('required',true)
       }
       else {
         document.getElementById('ifYes').style.display = 'none';
