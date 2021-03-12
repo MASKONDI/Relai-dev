@@ -18,6 +18,7 @@ const PropertiesPictureSchema = require("../models/properties_picture");
 
 const PropertiesPlanPictureSchema = require("../models/properties_plan_picture");
 const CustomerUploadDocsSchema = require("../models/customer_upload_document");
+const ServiceProviderUploadDocsSchema = require("../models/service_provider_upload_document");
 const ComplaintsSchema = require("../models/Complaints");
 const ComplaintsDetailsSchema = require("../models/complaint_details_model");
 const RatingSchema = require("../models/service_provider_rating_Schema");
@@ -797,7 +798,216 @@ app.post('/submit-proposal', upload.single('proposal-docs'),async (req, res, nex
     }
   });
 });
+app.post('/sp_upload-new-document', upload.single('task-document'), async (req, res, next) => {
+  var err_msg = null;
+  var success_msg = null;
+  var obj = {};
+  //console.log("req is :", req.file);
+  console.log("body of document=", req.body);
+  //add conditions for type of file and set the type of file
+  //console.log(".........files.......", req.file.filename)
+  var ext = path.extname(req.file.filename);
+  //console.log('extextext:', ext)
+  
+  var basename = path.basename(req.file.filename, ext);
+  //console.log('basename:', basename)
+  let ext_type = '';
 
+  if (ext == ".mp4" || ext == ".wmv") {
+    ext_type = 'video';
+  } else if (ext == ".pdf") {
+    ext_type = 'pdf';
+  } else if (ext == ".docx") {
+    ext_type = 'doc';
+  } else if (ext == ".txt") {
+    ext_type = 'txt';
+  } else {
+    ext_type = 'image';
+  }
+  //let ext_type = (ext == ".mp4") ? "video" : "image";
+  console.log('Sizetest:', req.file.size);
+  let size = req.file.size / 1024;
+  let docs_size = "";
+  let docs_size_valid_mb = "";
+  let docs_size_valid_kb = "";
+  if (size > 1024) {
+    size = size / 1024;
+    docs_size = size.toFixed(1) + " MB";
+    docs_size_valid_mb = size;
+  } else {
+    docs_size = size.toFixed(1) + " KB"
+    docs_size_valid_kb = size;
+  }
+  if (docs_size_valid_mb <= parseInt(10) || docs_size_valid_mb == 'NaN') {
+    if (ext_type == 'image') {
+      var baseExt = ext.replace(/\./g, "");
+      var w_text = new Date().toUTCString()
+      var file_hash = path.join(__dirname + '../../public/taskdocument/' + req.file.filename);
+      var icon_images = path.join(__dirname + '../../public/images/logo-2.png');
+      let icon_image = await Jimp.read(icon_images)
+      await Jimp.read(file_hash, async function (err, image) {
+        if (err) {
+          console.log("jimp error", err);
+          res.send(err)
+        }
+
+        await icon_image.resize(80, 30);
+        await Jimp.loadFont(Jimp.FONT_SANS_8_WHITE, async function (err, font) {
+          if (err) {
+            console.log("jimp3 error", err);
+            res.send(err)
+          }
+          image.composite(icon_image, (image.bitmap.width - 90), (image.bitmap.height - 45), {
+            mode: Jimp.BLEND_SOURCE_OVER,
+            opacityDest: 1,
+            opacitySource: 0.9
+          });
+          image.print(font, (image.bitmap.width - 110), (image.bitmap.height - 10), w_text)
+          // nova_new.composite(image, 0, 0);
+          var d = await image.getBase64Async(Jimp.MIME_PNG)
+          var base64Str = d;
+          var path = __dirname + '../../public/taskdocument/';
+          var optionalObj = { 'fileName': basename, 'type': baseExt };
+          base64ToImage(base64Str, path, optionalObj);
+
+          console.log("file extension is", { ext_type, ext })
+
+          if (req.body.tuds_task_id) {
+            console.log('A')
+            obj = {
+              spuds_phase_flag: req.body.cuds_phase_flag,
+              spuds_task_id: req.body.tuds_task_id,
+              spuds_phase_name: req.body.tuds_phase_name,
+              spuds_task_name: req.body.tuds_task_name,
+              spuds_service_provider_id: req.body.tuds_service_provider_id,
+              spuds_property_id: req.body.property_id,
+              spuds_document_name: req.file.filename,
+              spuds_customer_id: req.session.user_id,
+              spuds_is_active_user_flag: req.session.active_user_login,
+              spuds_document_type: ext_type,
+              spuds_document_size: docs_size,
+              spuds_document_file: {
+                data: d,
+                contentType: ext
+              }
+            }
+
+          } else {
+            console.log('B')
+            obj = {
+              spuds_property_id: req.body.property_id,
+              spuds_document_name: req.file.filename,
+              spuds_customer_id: req.session.user_id,
+              spuds_is_active_user_flag: req.session.active_user_login,
+              spuds_document_type: ext_type,
+              spuds_document_size: docs_size,
+              spuds_document_file: {
+                data: d,
+                contentType: ext
+              }
+            }
+          }
+          //console.log('obj==============',obj)
+
+
+          ServiceProviderUploadDocsSchema.create(obj, (err, item) => {
+            if (err) {
+              console.log(err); console.log(err);
+              req.flash('err_msg', "Something went worng please try after some time");
+              res.send({
+                'status': false,
+                'message': 'Something Wrong',
+                'redirect': '/mydreamhome-details-docs'
+              })
+              // res.redirect('/mydreamhome-details-docs');
+            }
+            else {
+              item.save();
+              console.log("file Submitted Successfully");
+              req.flash('success_msg', "Document Uploaded Successfully.");
+              res.send({
+                'status': true,
+                'message': 'Document Upload Successfully',
+                'redirect': '/mydreamhome-details-docs'
+              })
+              //res.redirect('/mydreamhome-details-docs');
+            }
+          });
+
+        })
+
+      });
+    } else {
+      if (req.body.tuds_task_id) {
+        obj = {
+          spuds_phase_flag: req.body.cuds_phase_flag,
+          spuds_task_id: req.body.tuds_task_id,
+          spuds_phase_name: req.body.tuds_phase_name,
+          spuds_task_name: req.body.tuds_task_name,
+          spuds_service_provider_id: req.body.tuds_service_provider_id,
+          spuds_property_id: req.body.property_id,
+          spuds_document_name: req.file.filename,
+          spuds_customer_id: req.session.user_id,
+          spuds_is_active_user_flag: req.session.active_user_login,
+          spuds_document_type: ext_type,
+          spuds_document_size: docs_size,
+          spuds_document_file: {
+            data: '',
+            contentType: ext
+          }
+        }
+      } else {
+        obj = {
+          spuds_property_id: req.body.property_id,
+          spuds_document_name: req.file.filename,
+          spuds_customer_id: req.session.user_id,
+          spuds_is_active_user_flag: req.session.active_user_login,
+          spuds_document_type: ext_type,
+          spuds_document_size: docs_size,
+          spuds_document_file: {
+            data: '',
+            contentType: ext
+          }
+        }
+      }
+
+
+
+      ServiceProviderUploadDocsSchema.create(obj, (err, item) => {
+        if (err) {
+          console.log(err); console.log(err);
+          req.flash('err_msg', "Something went worng please try after some time");
+          //res.redirect('/mydreamhome-details-docs');
+          res.send({
+            'status': false,
+            'message': 'Something Wrong',
+            'redirect': '/mydreamhome-details-docs'
+          })
+        }
+        else {
+          item.save();
+          console.log("file Submitted Successfully");
+          //res.redirect('/mydreamhome-details-docs');
+          res.send({
+            'status': true,
+            'message': 'Document Upload Successfully',
+            'redirect': '/mydreamhome-details-docs'
+          })
+
+        }
+      });
+
+
+    }
+  } else {
+    console.log('File size not supported')
+    res.send({
+      'status': false,
+      'message': 'Please upload file less than 10MB',
+      'redirect': '/mydreamhome-details-docs'
+    })
+  }
+});
 
 
 module.exports = app;
