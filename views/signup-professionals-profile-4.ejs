@@ -201,7 +201,7 @@
 
                           <div class="employment-sec">
                             <p>Add your past work experience</p>
-                            <h5>Build your credibility by showcasing the projects or jobs you h</h5>
+                            <h5>Build your credibility by showcasing the projects or jobs you have</h5>
                             <div class="employment_list">
                               <%if(all_employe_history.length>0){%>
                                 <%all_employe_history.forEach(function(row,i){%>
@@ -339,11 +339,24 @@
       }
     });
   </script>
+
   <script>
     $(document).ready(function () {
+      spehs_to_date.max = new Date().toISOString().split("T")[0];
+      //spehs_from_date.min=new Date().toISOString().split('T')[0]
+      var StartDate= document.getElementById('spehs_from_date').value;
+  var EndDate= document.getElementById('spehs_to_date').value;
+  var eDate = new Date(EndDate);
+  var sDate = new Date(StartDate);
+  if(StartDate!= '' && StartDate!= '' && sDate> eDate)
+    {
+    alert("Please ensure that the End Date is greater than or equal to the Start Date.");
+    return false;
+    }else{
       //$('#next_btn_4').attr('disabled', true);
       $("#Employment_form_btn").click(function (e) {
         e.preventDefault();
+        $('.loader-box').attr('style', 'display:flex !important');
         //alert(e.target)
         var formdata = $("#employment_form").serialize();
         console.log('formdata:', formdata);
@@ -354,14 +367,24 @@
           cache: false,
           //dataType:'json',
           success: function (data) {
+            $('.loader-box').attr('style', 'display:none !important');
             console.log(data)
             if (data.status == true) {
               $('#employment_form')[0].reset();
               if (data.action == 'add') {
                 var fromDateYear = new Date(data.employmentDetail.spehs_from_date).getFullYear();
                 var toDateYear = new Date(data.employmentDetail.spehs_to_date).getFullYear();
-                $('#myModal1').modal('hide');
-                $('.employment_list').append('<div class="row"><div class="col-sm-12 col-lg-9"><div class=""><p><b>' + data.employmentDetail.spehs_name_of_employer + ' . ' + data.employmentDetail.spehs_job_title + '</p></b><h6>' + data.employmentDetail.spehs_job_description + '</h6><h6>' + fromDateYear + '-' + toDateYear + '</h6></div></div><div class="col-sm-12 col-lg-3"><div class=""> <img style="width:19%"onclick="editEmployment(' + "'" + data.employmentDetail._id + "'" + ')" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;<img style="width:19%" onclick="deleteEmployment(' + "'" + data.employmentDetail._id + "'" + ')"src="images/delete-icon.png" alt=""></div></div></div>')
+                Swal.fire({
+                  icon: 'success',
+                  title: data.success_msg,
+                  showConfirmButton: false,
+                  confirmButtonColor: '#005377',
+                  timer: 3000
+                }).then((result)=>{
+                  $('#myModal1').modal('hide');
+                  $('.employment_list').append('<div class="row"><div class="col-sm-12 col-lg-9"><div class=""><p><b>' + data.employmentDetail.spehs_name_of_employer + ' . ' + data.employmentDetail.spehs_job_title + '</p></b><h6>' + data.employmentDetail.spehs_job_description + '</h6><h6>' + fromDateYear + '-' + toDateYear + '</h6></div></div><div class="col-sm-12 col-lg-3"><div class=""> <img style="width:19%"onclick="editEmployment(' + "'" + data.employmentDetail._id + "'" + ')" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;<img style="width:19%" onclick="deleteEmployment(' + "'" + data.employmentDetail._id + "'" + ')"src="images/delete-icon.png" alt=""></div></div></div>')
+                  location.reload(true);
+                })
               } else {
                 Swal.fire({
                   icon: 'success',
@@ -369,10 +392,9 @@
                   showConfirmButton: false,
                   confirmButtonColor: '#005377',
                   timer: 3000
-                })
-                setTimeout(function () {
+                }).then((result)=>{
                   location.reload(true);
-                }, 3000);
+                })
               }
             } else {
               Swal.fire({
@@ -390,11 +412,13 @@
           }
         })
       })
+    }
     });
   </script>
   <script>
     function editEmployment(id) {
       var emp_historyId = id;
+      $('.loader-box').attr('style', 'display:flex !important');
       $.ajax({
         type: "POST",
         data: {
@@ -404,6 +428,7 @@
         url: "/api/edit-service_provider_employment_history",
         cache: false,
         success: function (data) {
+          $('.loader-box').attr('style', 'display:none !important');
           console.log(data);
           $('#myModal1').modal('show');
           if (data.status == true) {
@@ -424,10 +449,10 @@
               showConfirmButton: false,
               confirmButtonColor: '#005377',
               timer: 3000
-            })
-            setTimeout(function () {
-              location.reload(true);
-            }, 3000);
+            }).then((result)=>{
+                  location.reload(true);
+                })
+            
           }
         }
       });
@@ -443,6 +468,7 @@
         confirmButtonColor: '#005377',
       }).then((result) => {
         if (result.isConfirmed) {
+          $('.loader-box').attr('style', 'display:flex !important');
           $.ajax({
             type: "POST",
             data: {
@@ -452,19 +478,20 @@
             url: "/api/delete-service_provider_employment_history",
             cache: false,
             success: function (data) {
+              $('.loader-box').attr('style', 'display:none !important');
               console.log(data);
               if (data.status == true) {
                 //location.reload(true);
                 Swal.fire({
                   icon: 'success',
-                  title: data.message,
+                  title: 'Employment History '+data.message,
                   showConfirmButton: false,
                   confirmButtonColor: '#005377',
                   timer: 3000
-                })
-                setTimeout(function () {
+                }).then((result)=>{
                   location.reload(true);
-                }, 3000);
+                })
+                
               } else {
                 Swal.fire({
                   icon: 'error',
@@ -472,10 +499,9 @@
                   showConfirmButton: false,
                   confirmButtonColor: '#005377',
                   timer: 3000
-                })
-                setTimeout(function () {
+                }).then((result)=>{
                   location.reload(true);
-                }, 3000);
+                })
               }
             }
           });

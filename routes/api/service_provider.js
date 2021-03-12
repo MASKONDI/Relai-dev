@@ -13,7 +13,7 @@ const PlanSchema = require("../../models/plan");
 const ServiceProviderPersonalDetailsSchema = require("../../models/service_provider_personal_details");
 const ServiceProviderIndemnityDetailsSchema = require("../../models/service_provider_indemnity_details");
 const validateProfChangePasswordInput = require('../../Validation/change-password-professional');
-
+const ServiceProviderUploadDocsSchema = require("../../models/service_provider_upload_document");
 const MessageSchema = require("../../models/message");
 
 const isEmpty = require('../../Validation/is-empty');
@@ -178,14 +178,17 @@ router.post("/service_provider_register", (req, res) => {
 /* -------------------------------------------------------------------------------------------------
 POST : service_provider_personal_details post api is responsible for submitting signup-professionals-profile form data 
 ------------------------------------------------------------------------------------------------- */
+var moment = require('moment');
 router.get("/service_provider_personal_details", async(req, res) => {
   console.log('req',req.query);
   if(req.query.user_id){
    var data = await signUpHelper.getPersonalDetialByID(req.query.user_id);
    if(data){
+     
     return res.send({
       'status':true,
-      'data':data
+      'data':data,
+      'moment':moment
     })
    }else{
     return res.send({
@@ -850,6 +853,32 @@ router.post("/service_provider_indemnity_details", (req, res) => {
 /* -------------------------------------------------------------------------------------------------
 POST : service_provider_language post api is responsible for submitting signup-professionals-profile-7 form data 
 ------------------------------------------------------------------------------------------------- */
+router.post("/delete_service_provider_language", async(req, res) => {
+  var err_msg = null;
+  var success_msg = null;
+  //TODO:need to add condition is session is expired
+  let deleteData = '';
+  console.log("req.body is : ", req.body);
+  console.log("req.session.user_id is ", req.session.user_id);
+  if (req.body.action == 'language-delete') {
+    deleteData = await ServiceProviderLanguageSchema.deleteOne({ _id: req.body.langId });
+  }
+  if (deleteData) {
+    console.log("server response is success: ", deleteData);
+    res.send({
+      deleteData: deleteData,
+      message: 'Language Deleted Successfully !!',
+      status: true
+    });
+  } else {
+    console.log("server response is error: ", deleteData);
+    res.send({
+      deleteData: deleteData,
+      message: 'Something going wrong please try again !!',
+      status: false
+    });
+  }
+})
 router.get("/service_provider_language", async(req, res) => {
   console.log('req',req.query);
   if(req.query.user_id){
@@ -926,7 +955,32 @@ router.post("/service_provider_language",async (req, res) => {
 
 
 });
-
+/* -------------------------------------------------------------------------------------------------
+Get : portpolio post api is responsible for geting portpolio form data 
+------------------------------------------------------------------------------------------------- */
+router.get("/portpolio", async(req, res) => {
+  console.log('req',req.query);
+  if(req.query.user_id){
+   var data = await signUpHelper.getPortpofolio(req.query.user_id);
+   console.log('language',data)
+   if(data.length>0){
+    return res.send({
+      'status':true,
+      'data':data
+    })
+   }else{
+    return res.send({
+      'status':false,
+      
+    })
+   }
+  }else{
+    return res.send({
+      'status':false,
+      
+    })
+  }
+})
 /* -------------------------------------------------------------------------------------------------
 POST : service_provider_sign post api is used for login service_provider account 
 ------------------------------------------------------------------------------------------------- */
@@ -1669,4 +1723,31 @@ router.post('/service-provider-message-unread', (req, res) => {
 });
 
 
+router.post("/remove_sp_uploaded_document", async (req, res) => {
+  var err_msg = null;
+  var success_msg = null;
+  //TODO:need to add condition is session is expired
+  let deleteData = '';
+  console.log("req.body is : ", req.body);
+  console.log("req.session.user_id is ", req.session.user_id);
+  if (req.body.action == 'sp_doc_delete') {
+    deleteData = await ServiceProviderUploadDocsSchema.deleteOne({ _id: req.body.document_id });
+  }
+  if (deleteData) {
+    console.log("server response is success: ", deleteData);
+    res.send({
+      deleteData: deleteData,
+      message: 'Document Deleted Successfully !!',
+      status: true
+    });
+  } else {
+    console.log("server response is error: ", deleteData);
+    res.send({
+      deleteData: deleteData,
+      message: 'Something going wrong please try again !!',
+      status: false
+    });
+  }
+
+});
 module.exports = router;

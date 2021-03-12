@@ -234,7 +234,7 @@
                             <div class="col-sm-12 col-lg-6">
                               <div class="input-box-size-fix3">
                                 <input type="text" onfocus="(this.type='date')" class="form-control text-field-size spods_renewal_date"
-                                  id="" placeholder="Renewal Date" name="spods_renewal_date" value="">
+                                  id="spods_renewal_date" placeholder="Renewal Date" name="spods_renewal_date" value="">
                               </div>
                             </div>
                           </div>
@@ -399,6 +399,7 @@
   </script>
   <script type="text/javascript">
     $(document).ready(function () {
+      spods_renewal_date.min=new Date().toISOString().split('T')[0];
       var data = {
         user_id:'<%= session.user_id%>'
       }
@@ -412,15 +413,11 @@
             console.log(data);
             if (data.status == true) {
               $('.indemnity_detail_id').val(data.data._id);
-
-// spods_created_at: "2021-03-09T11:58:12.086Z"
-// spods_level_of_cover: "dd"
-// spods_name_insurer: "123"
-// spods_option_pl_claims: "yes"
-// spods_option_pl_cover: "yes"
-// spods_pl_claim_details: "abcd"
-// spods_renewal_date: "2021-03-19T00:00:00.000Z"
-// spods_service_provider_id: "6034d24278df4a1240758383"
+              var date    = new Date(data.data.spods_renewal_date),
+              yr      = date.getFullYear(),
+              month   = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth(),
+              day     = date.getDate()  < 10 ? '0' + date.getDate()  : date.getDate(),
+              newDate = day + '-' + month + '-' + yr;
               if(data.data.spods_option_pl_claims=='yes'){
                 $('.spods_pl_claim_details').val(data.data.spods_pl_claim_details)
                 $("#yesCheck_p6").attr('checked', 'checked');
@@ -435,7 +432,7 @@
                 $('.spods_name_insurer').val(data.data.spods_name_insurer)
                 $('.spods_broker_details').val(data.data.spods_broker_details)
                 $('.spods_level_of_cover').val(data.data.spods_level_of_cover)
-                $('.spods_renewal_date').val(data.data.spods_renewal_date)
+                $('.spods_renewal_date').val(newDate)
                 $("#yesCheck2_p6").attr('checked', 'checked');
                 document.getElementById('ifYes2').style.display = 'block';
                

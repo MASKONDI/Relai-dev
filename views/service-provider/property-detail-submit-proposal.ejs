@@ -67,7 +67,7 @@
                   <%=propertyDetailData[0].ps_additional_note%>
                 </p>
               </div>
-              <form class="form" id="submit_proposal_form" action="/submit-proposal" method="POST"
+              <form class="form" id="submit_proposal_form" action="" method="POST"
                 enctype="multipart/form-data">
                 <input type="hidden" name="sps_service_provider_id" id="" value="<%=session.user_id%>">
                 <input type="hidden" name="sps_property_id" id="" value="<%=propertyDetailData[0]._id%>">
@@ -81,12 +81,12 @@
 
                     <div class="input-box-size-fix2">
                       <input type="text" onfocus="(this.type='date')" class="form-control property-input-size-fix "
-                        id="sps_start_date" placeholder="Start date" name="sps_start_date">
+                        id="sps_start_date" placeholder="Start date" name="sps_start_date" required>
                     </div>
 
                     <div class="input-box-size-fix2">
                       <input type="text" onfocus="(this.type='date')" class="form-control property-input-size-fix "
-                        id="sps_end_date" placeholder="End date" name="sps_end_date">
+                        id="sps_end_date" placeholder="End date" name="sps_end_date" required>
                     </div>
 
                   </div>
@@ -124,29 +124,37 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="input-box-size-fix2">
+                      <!-- <div class="input-box-size-fix2">
                         <input type="text" class="form-control property-input-size-fix " id="address"
                           placeholder="MileStone 1" name="milestone">
                       </div>
                       <div class="input-box-size-fix2">
                         <input type="text" onfocus="(this.type='date')" class="form-control property-input-size-fix "
                           id="milestoneDate" placeholder="Date" name="milestonedate">
-                      </div>
+                      </div> -->
                     </div>
                     <div class="row">
                       <div class="row">
-                        <div class="input-box-size-fix2">
+                        <!-- <div class="input-box-size-fix2">
                           <input type="text" class="form-control property-input-size-fix " id="address"
-                            placeholder="MileStone 2" name="address">
+                            placeholder="MileStone 2" name="milestone">
                         </div>
                         <div class="input-box-size-fix2">
                           <input type="text" onfocus="(this.type='date')" class="form-control property-input-size-fix "
-                            id="Date" placeholder="Date" name="Date">
+                            id="Date" placeholder="Date" name="milestonedate">
+                        </div> -->
+                        <div class="input-box-size-fix2">
+                          <input type="text" class="form-control property-input-size-fix " id="address"
+                            placeholder="MileStone 1" name="milestone" required>
+                        </div>
+                        <div class="input-box-size-fix2">
+                          <input type="text" onfocus="(this.type='date')" class="form-control property-input-size-fix "
+                            id="milestoneDate" placeholder="Date" name="milestonedate" required>
                         </div>
                       </div>
                       <div class="">
                         <!-- <a href="#" class="btn property-add-btn" id="addPlusbtn"><i class="fa fa-plus"></i></a> -->
-                        <button class="btn  property-add-btn" name="addPlusbtn"><i class="fa fa-plus"></i></button>
+                        <a class="btn  property-add-btn" name="addPlusbtn"><i class="fa fa-plus"></i></a>
                       </div>
                       <div class="divv"></div>
                     </div>
@@ -166,7 +174,7 @@
                       <div class="input-box-size-fix2">
                         <div class=" property-attchment-box-fix">
                           <p>Add attachments if any </p><span class=""> <a id="button"></a>
-                            <input id="file-input" type="file" id="proposal-docs" name="proposal-docs" /></span>
+                            <input id="file-input" type="file" id="proposal-docs" name="proposal-docs" required /></span>
 
                         </div>
                       </div>

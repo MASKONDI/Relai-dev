@@ -204,17 +204,21 @@
 <script>
   $(document).ready(function () {
     $("#submit_proposal_form").on('submit', function (e) {
-      var formData = $("#submit_proposal_form").serialize();
+      e.preventDefault()
+      //var formData = $("#submit_proposal_form").serialize();
+      var formData = new FormData($('#submit_proposal_form')[0]);
       console.log(formData)
       //return;
-      alert(formData);
+     // alert(formData);
       $('.loader-box').attr('style', 'display:flex !important');
       if (formData) {
         $.ajax({
           type: "POST",
           data: formData,
-          url: "/submit_proposal",
+          url: "/submit-proposal",
           cache: false,
+          contentType: false,
+          processData: false,
           success: function (data) {
             if (data.status == false) {
               $('.loader-box').attr('style', 'display:none !important');
@@ -260,18 +264,25 @@
 <script>
   $(document).ready(function () {
     var c = 2;
-    $("button[name='addPlusbtn']").click(function (e) {
+    $("a[name='addPlusbtn']").click(function (e) {
       e.preventDefault();
 
-      var domElement = $(' <div class="row"><div class="input-box-size-fix2"><input type="text" class="form-control property-input-size-fix " id="address" placeholder="MileStone 2" name="address"></div><div class="input-box-size-fix2"> <input type="date"  class="form-control property-input-size-fix "                id="Date" placeholder="Date" name="Date"></div></div>' + c++);
+      var domElement = $(' <div class="row"><div class="input-box-size-fix2"><input type="text" class="form-control property-input-size-fix " id="address" placeholder="MileStone 2" name="milestone" required></div><div class="input-box-size-fix2"> <input type="date"  class="form-control property-input-size-fix "                id="Date" placeholder="Date" name="milestonedate" required></div><a class="btn property-add-btn remove_field"><i class="fa fa-minus"></i></a></div>' + c++);
 
       if (c == 10) {
 
-        $("button[name='addPlusbtn']").attr('disabled', true);
+        $("a[name='addPlusbtn']").attr('disabled', true);
       }
       $(".divv").before(domElement);
 
     });
+    $('.row').on("click",".remove_field", function(e){ //user click on remove text
+        e.preventDefault(); $(this).parent('div').remove(); c--;
+        
+          $("a[name='addPlusbtn']").attr('disabled', false);
+        
+  })
+
 
   });
 </script>
@@ -340,3 +351,4 @@ function scrollToBottom() {
       });
 
      </script>
+

@@ -450,12 +450,14 @@ app.get('/service-provider/professional-details-docs', isServiceProvider, async 
   //     }
   //   });
   // }
-
+  var all_sp_doc=await propertyHelper.getAllServiceProviderDocument(req.session.user_id,req.session.property_id)
+  console.log(all_sp_doc)
   res.render('service-provider/professional-details-docs', {
     err_msg, success_msg, layout: false,
     session: req.session,
     data: serviceProvArray,
     allDocument: normalDocArray,//need to show property wise document still showing all uploaded
+    service_provider_document:all_sp_doc,
     taskDocument: taskDocArray,
     property: property,
     moment: moment
