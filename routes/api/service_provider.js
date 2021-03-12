@@ -14,6 +14,7 @@ const ServiceProviderPersonalDetailsSchema = require("../../models/service_provi
 const ServiceProviderIndemnityDetailsSchema = require("../../models/service_provider_indemnity_details");
 const validateProfChangePasswordInput = require('../../Validation/change-password-professional');
 
+const MessageSchema = require("../../models/message");
 
 const isEmpty = require('../../Validation/is-empty');
 
@@ -1623,6 +1624,49 @@ router.post('/professional-change-password', function (req, res) {
 });
 
 
+router.post('/service-provider-message', (req, res) => {
+  console.log("Service Send Message data from client is :", req.body);
+  const newMessage = new MessageSchema({
+    sms_property_id: req.body.sms_property_id,// storing property_id if its not null
+    sms_sender_id: req.body.sms_sender_id,//check if msg comes from customer portal than store customer_Id
+    sms_receiver_id: req.body.sms_receiver_id, //recevier_id
+    sms_sender_type: req.body.sms_sender_type,
+    sms_receiver_type: req.body.sms_receiver_type,
+    sms_message: req.body.message,
+    sms_msg_Date: req.body.sms_msg_Date,
+    sms_read_status: req.body.sms_read_status, //default is unread
+    sms_is_active_user_flag: req.session.active_user_login
+  })
+  newMessage.save().then(message => {
+    console.log("getting response form server is :", message);
+    res.send({
+      msgData: message
+    })
+    //res.flash('success_msg', 'message forward successfully');
+    //res.redirect('/'); //set based on current login if its customer portal then redirect customer_message portal and 
+  }).catch(err => {
+    console.log(err)
+    //req.flash('err_msg', 'Something went wrong please try again later.');
+    //res.redirect('/professionals-hirenow');
+  });
+});
+
+
+//service-provider-message-unread
+
+
+router.post('/service-provider-message-unread', (req, res) => {
+  console.log("Service Unread Send Message data from client is :", req.body);
+  MessageSchema.updateMany({sms_property_id:req.body.sms_property_id,sms_sender_id:req.body.sms_sender_id,sms_receiver_id:req.body.sms_receiver_id,sms_sender_type:req.body.sms_sender_type,sms_receiver_type:req.body.sms_receiver_type }, { $set: { sms_read_status: 'read' } }, { upsert: true }, function (err) {
+    if (err) {
+      console.log(err)
+      res.send({ status: false, message: 'Something going wrong please check again !!' })
+    } else {
+      res.send({ status: true, message: 'Task update successfully !!' })
+      console.log("Message Status update successfully");
+    }
+  });
+});
 
 
 module.exports = router;

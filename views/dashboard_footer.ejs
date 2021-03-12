@@ -1428,6 +1428,33 @@ myDREAMHOME-DETAILS-MESSAGE
               });
             }
           });
+
+     $('#chat_form').click(function (e) {
+        console.log('Customer messg staus')
+            var professional_id = $("#chat_form #professional_id").val();
+            var customer_id = $("#customer_id").val();
+            var property_id = $("#chat_form #property_id").val();
+        console.log('professional_id:', professional_id);
+        console.log('customer_id:', customer_id);
+        console.log('property_id:', property_id);
+          $.ajax({
+            type: "POST",
+            data: {
+              sms_receiver_id: customer_id,
+              sms_property_id: property_id,
+              sms_sender_id: professional_id,
+              sms_sender_type: 'service_provider',
+              sms_receiver_type: 'customer',
+              sms_read_status: 'read'
+            },
+            url: "/api/customer-message-unread",
+            cache: false,
+            success: function (data) {
+              $("#comment").val('');
+            }
+          });
+      });
+
         </script>
 
 <!-- ===============================

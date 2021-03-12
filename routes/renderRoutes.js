@@ -357,8 +357,43 @@ app.get('/professionals', isCustomer, async (req, res) => {
   req.session.pagename = 'professionals';
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  const { page = 1, limit = 2 } = req.query;
+  const { page = 1, limit = 12 } = req.query;
   console.log('pageQuery:',page);
+  let uniqueExperience ='';
+  let uniqueCategory = '';
+  let uniqueCity ='';
+  let uniqueLanguage ='';
+  let uniqueLanguageLevel ='';
+  let Experience = [];
+  let Category = [];
+  let City = [];
+  let Language = [];
+  let LanguageLevel = [];
+  await ServiceProviderSchema.find({ sps_status: 'active' }).then(async service_provider1 => {
+    if (service_provider1) {
+      for (var sp_id of service_provider1) {
+        Experience.push(sp_id.sps_experience);
+        Category.push(sp_id.sps_role_name);
+        City.push(sp_id.sps_city);
+        await ServiceProviderLanguageSchema.findOne({ spls_service_provider_id: sp_id._id }).then(async languageDetails => {
+          if (languageDetails) {
+            Language.push(languageDetails.spls_language);
+            LanguageLevel.push(languageDetails.spls_language_proficiency_level)
+          }
+        })
+      }
+          
+     uniqueExperience = [...new Set(Experience)];
+     uniqueCategory = [...new Set(Category)];
+     uniqueCity = [...new Set(City)];
+     uniqueLanguage = [...new Set(Language)];
+     uniqueLanguageLevel = [...new Set(LanguageLevel)];
+
+    }
+
+
+
+  });
 
   await ServiceProviderSchema.find({ sps_status: 'active' }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider => {
     // Check for Customer
@@ -372,18 +407,21 @@ app.get('/professionals', isCustomer, async (req, res) => {
     }
     else {
       let serviceProvArray = [];
-      let Experience = [];
-      let Category = [];
-      let City = [];
-      let Language = [];
-      let LanguageLevel = [];
+      // let Experience = [];
+      // let Category = [];
+      // let City = [];
+      // let Language = [];
+      // let LanguageLevel = [];
       for (var sp_id of service_provider) {
-        Experience.push(sp_id.sps_experience);
-        Category.push(sp_id.sps_role_name);
-        City.push(sp_id.sps_city);
+        //Experience.push(sp_id.sps_experience);
+       // Category.push(sp_id.sps_role_name);
+       // City.push(sp_id.sps_city);
+        console.log('Main spp id:', sp_id._id)
         await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
           if (otherDetails) {
             //console.log('spp id:', sp_id._id)
+            console.log('Other spp id:', otherDetails)
+
             let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
            // console.log('professionalRating:', professionalRating)
             var sumRating = 0;
@@ -407,29 +445,24 @@ app.get('/professionals', isCustomer, async (req, res) => {
           }
         });
 
-        await ServiceProviderLanguageSchema.findOne({ spls_service_provider_id: sp_id._id }).then(async languageDetails => {
-          if (languageDetails) {
-            Language.push(languageDetails.spls_language);
-            LanguageLevel.push(languageDetails.spls_language_proficiency_level)
-          }
-        })
+        // await ServiceProviderLanguageSchema.findOne({ spls_service_provider_id: sp_id._id }).then(async languageDetails => {
+        //   if (languageDetails) {
+        //     Language.push(languageDetails.spls_language);
+        //     LanguageLevel.push(languageDetails.spls_language_proficiency_level)
+        //   }
+        // })
 
       }
 
-      let uniqueExperience = [...new Set(Experience)];
-      let uniqueCategory = [...new Set(Category)];
-      let uniqueCity = [...new Set(City)];
-      let uniqueLanguage = [...new Set(Language)];
-      let uniqueLanguageLevel = [...new Set(LanguageLevel)];
 
 
-     // console.log("uniqueExperience:", uniqueExperience);
-     // console.log("uniqueCategory:", uniqueCategory);
-      //console.log("uniqueCity:", uniqueCity);
-      //console.log("uniqueLanguage:", uniqueLanguage);
-      //console.log("uniqueLanguageLevel:", uniqueLanguageLevel);
-      //console.log('service_provider:', service_provider)
-      //console.log('serviceProvArray:', serviceProvArray)
+    //  console.log("uniqueExperience:", uniqueExperience);
+    //  console.log("uniqueCategory:", uniqueCategory);
+    //   console.log("uniqueCity:", uniqueCity);
+    //   console.log("uniqueLanguage:", uniqueLanguage);
+    //   console.log("uniqueLanguageLevel:", uniqueLanguageLevel);
+    //   console.log('service_provider:', service_provider)
+    //   console.log('serviceProvArray:', serviceProvArray)
 
       console.log('pagepage:',page);
       console.log('TotalPages:',Math.ceil(count / limit));
@@ -454,7 +487,7 @@ app.get('/myprofessionals', isCustomer, async (req, res) => {
   console.log("current user session is :", req.session);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  const { page = 1, limit = 2 } = req.query;
+  const { page = 1, limit = 12 } = req.query;
   console.log('mypageQuery:',page);
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit);
   console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
@@ -598,7 +631,7 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
   req.session.pagename = 'professionals';
   console.log('role data:', req.query.role);
 
-  const { page = 1, limit = 2 } = req.query;
+  const { page = 1, limit = 12 } = req.query;
   console.log('pageQuery:',page);
 
   ServiceProviderSchema.find({ sps_role_name: req.query.role,sps_status: 'active' }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
@@ -696,7 +729,7 @@ app.get('/professionals-searchbar', (req, res) => {
             }
           });
           let unique = [...new Set(professionalIDs)];
-          const { page = 1, limit = 2 } = req.query;
+          const { page = 1, limit = 12 } = req.query;
           console.log('pageQuery:',page);
           ServiceProviderSchema.find({ _id: { $in: unique } }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
 
@@ -765,7 +798,7 @@ app.get('/professionals-searchbar', (req, res) => {
 // My professional filter role
 app.get('/my-professionals-filter', isCustomer, async (req, res) => {
   req.session.pagename = 'professionals';
-  const { page = 1, limit = 2 } = req.query;
+  const { page = 1, limit = 12 } = req.query;
   console.log('pageQuery:',req.query);
 
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
@@ -855,7 +888,7 @@ app.get('/my-professionals-filter', isCustomer, async (req, res) => {
 // My Professional Filter name surname qualification
 app.get('/my-professionals-searchbar', async (req, res) => {
   req.session.pagename = 'professionals';
-  const { page = 1, limit = 2 } = req.query;
+  const { page = 1, limit = 12 } = req.query;
   console.log('pageQuery:',req.query);
   let professionalIDs = [];
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
@@ -1846,7 +1879,7 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
   req.session.pagename = 'mydreamhome';
   console.log("current session is", req.session);
 
-  const { page = 1, limit = 2 } = req.query;
+  const { page = 1, limit = 9 } = req.query;
   console.log('pageQuery:',page);
 
   PropertiesSchema.find({
@@ -3224,7 +3257,7 @@ app.post('/professionals-multifilter', async (req, res) => {
     console.log('cityKeyword:', cityKeyword)
     console.log('languageKeyword:', languageKeyword)
 
-    const { page = 1, limit = 2 } = req.body;
+    const { page = 1, limit = 12 } = req.body;
     let count = 0;
     console.log('pageQuery:',page);
     console.log('req.query:',req.body);
