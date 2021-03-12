@@ -30,8 +30,8 @@
               <div class="row">
                 <div class="breadcumb">
                   <ul>
-                    <li><a href="/service-provider/myproperties?id=<%=session.property_id%>"><i class="fa fa-long-arrow-left"
-                          aria-hidden="true"></i> Back
+                    <li><a href="/service-provider/myproperties?id=<%=session.property_id%>"><i
+                          class="fa fa-long-arrow-left" aria-hidden="true"></i> Back
                         to <%=property.ps_property_name%></a></li>
                   </ul>
                 </div>
@@ -44,22 +44,39 @@
                         <div class="float-left">
                           <h2>Docs & Files</h2>
                         </div>
-                        <div class="float-right">
-                          <a href="#" class="btn btn-add-property">Add New Document</a>
-                        </div>
+                        <form action="/upload-new-document" method="post" id="newDocumentform"
+                          enctype="multipart/form-data">
+                          <div class="float-right">
+                            <a href="#" class="upload-any"><img src="../images/upload.png">
+                              <span>
+                                <div class="custom-file-input">
+                                  <input type="hidden" name="property_id" value='<%=property._id%>'
+                                    id="hiddenPropertyId">
+                                  <input onchange="previewFile(this);" type="file" id="image" name="task-document"
+                                    value="" required>
+                                  <input type="button">
+                                </div>
+                              </span>
+                            </a>
+
+                            <button class="btn btn-add-property">Add New Document</button>
+                          </div>
+                        </form>
+
                       </div>
                       <ul class="docs-list">
                         <span id="upload-doc-view"></span>
                         <% allDocument.forEach(function(row){%>
                           <%if(row.cuds_document_type=='image'){%>
-                            <li><a href="#"><img src="/taskdocument/<%= row.cuds_document_name%>" alt="" title=""><br><span
+                            <li><a href="#"><img src="/taskdocument/<%= row.cuds_document_name%>" alt=""
+                                  title=""><br><span
                                   style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                   <%= row.cuds_document_name%>
                                 </span></a>
                             </li>
                             <%}else if(row.cuds_document_type=='pdf' ){%>
-                              <li><a download href="/taskdocument/<%= row.cuds_document_name%>"><img src="../images/pdficon.png"
-                                    alt="" title=""><br><span
+                              <li><a download href="/taskdocument/<%= row.cuds_document_name%>"><img
+                                    src="../images/pdficon.png" alt="" title=""><br><span
                                     style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                     <%= row.cuds_document_name%>
                                   </span></a>
@@ -87,7 +104,7 @@
                                     </li>
                                     <%}%>
                                       <%});%>
-                    
+
                       </ul>
                     </div>
                   </div>
@@ -103,9 +120,9 @@
                     </tr>
                   </thead>
                   <tbody>
-               
-                  
-              
+
+
+
                     <%if(allDocument.length==0){%>
                       <tr>
                         <td>
@@ -118,14 +135,14 @@
                             <tr>
                               <td>
                                 <img class="pdf-file" src="/taskdocument/<%= row.cuds_document_name%>">
-                                <p ><span class='doc_name'>
-                                  <%= row.cuds_document_name%>
+                                <p><span class='doc_name'>
+                                    <%= row.cuds_document_name%>
                                   </span>
                                   <%= row.cuds_document_size%>
                                 </p>
                               </td>
                               <td><span class="professionals-view">
-                                <%=moment(row.cuds_created_at).format('D MMM YY'); %>| Downloaded by<ul>
+                                  <%=moment(row.cuds_created_at).format('D MMM YY'); %>| Downloaded by<ul>
                                       <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
                                           id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                           aria-expanded="false">2 professionals</a>
@@ -141,7 +158,8 @@
                               <td>
                                 <div class="recent-img">
                                   <img src="../images/recent-user-1.png"><img class="mr-10"
-                                    src="../images/recent-user-2.png"><img class="mr-10" src="../images/recent-user-3.png">
+                                    src="../images/recent-user-2.png"><img class="mr-10"
+                                    src="../images/recent-user-3.png">
                                   <!--data-toggle="modal" data-target="#changePermisionModal" -->
                                   <a href="javascript:void(0)" value="<%=row._id%>"
                                     class="getDocId changePermissionModal">Change permission</a>
@@ -163,8 +181,10 @@
                               <tr>
                                 <td>
                                   <img class="pdf-file" src="../images/pdficon.png">
-                                  <p><span >
-                                      <li class='doc_name'><%= row.cuds_document_name%></li>
+                                  <p><span>
+                                      <li class='doc_name'>
+                                        <%= row.cuds_document_name%>
+                                      </li>
                                     </span>
                                     <%= row.cuds_document_size%>
                                   </p>
@@ -175,9 +195,11 @@
                                             id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">2 professionals</a>
                                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png"> Alex
+                                            <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png">
+                                              Alex
                                               Jackson</a>
-                                            <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png"> Alex
+                                            <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png">
+                                              Alex
                                               Jackson</a>
                                           </div>
                                         </li>
@@ -186,7 +208,8 @@
                                 <td>
                                   <div class="recent-img">
                                     <img src="../images/recent-user-1.png"><img class="mr-10"
-                                      src="../images/recent-user-2.png"><img class="mr-10" src="../images/recent-user-3.png">
+                                      src="../images/recent-user-2.png"><img class="mr-10"
+                                      src="../images/recent-user-3.png">
                                     <!--data-toggle="modal" data-target="#changePermisionModal" -->
                                     <a href="javascript:void(0)" value="<%=row._id%>"
                                       class="getDocId changePermissionModal">Change permission</a>
@@ -269,10 +292,12 @@
                                                 id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                                 aria-expanded="false">2 professionals</a>
                                               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png">
+                                                <a class="dropdown-item" href="#"><img
+                                                    src="../images/recent-user-3.png">
                                                   Alex
                                                   Jackson</a>
-                                                <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png">
+                                                <a class="dropdown-item" href="#"><img
+                                                    src="../images/recent-user-3.png">
                                                   Alex
                                                   Jackson</a>
                                               </div>
@@ -324,10 +349,12 @@
                                                   id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                                   aria-expanded="false">2 professionals</a>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                  <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png">
+                                                  <a class="dropdown-item" href="#"><img
+                                                      src="../images/recent-user-3.png">
                                                     Alex
                                                     Jackson</a>
-                                                  <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png">
+                                                  <a class="dropdown-item" href="#"><img
+                                                      src="../images/recent-user-3.png">
                                                     Alex
                                                     Jackson</a>
                                                 </div>
@@ -356,13 +383,68 @@
                                         <%}%>
 
 
-              </tbody>
-              </table>
+                  </tbody>
+                </table>
+              </div>
+              <div class="doc-table">
+                <h3>Customer Docs & files</h3>
+                <table class="table table-responsive">
+                  <thead>
+                    <tr>
+                      <th>Document Name</th>
+                      <th>Date</th>
+                      <th>Permissions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><img class="pdf-file" src="../images/pdf.png">
+                        <p><span>Contract.pdf</span> 256.0 KB</p>
+                      </td>
+                      <td><span class="professionals-view">17 Nov, 2020 </span></td>
+                      <td>
+                        <ul style="display: flex;">
+                          <li>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="View Document"><img
+                                src="../images/eye.png"></a>
+                          </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                          <li>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Download Document"><img
+                                src="../images/drop-down.png"></a>
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><img class="pdf-file" src="../images/doc.png">
+                        <p><span>Contract.pdf</span> 256.0 KB</p>
+                      </td>
+                      <td><span class="professionals-view">17 Nov, 2020
+                        </span></td>
+                      <td>
+                        <ul style="display: flex;">
+                          <li>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="View Document"><img
+                                src="../images/eye.png"></a>
+                          </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                          <li>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Download Document">
+                              <img src="../images/drop-down.png"></a>
+                          </li>
+                        </ul>
+
+
+                      </td>
+                    </tr>
+
+
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
     </div>
     <%- include('professional-footer')-%>

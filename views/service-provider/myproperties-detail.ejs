@@ -77,11 +77,11 @@
                             <!-- The slideshow -->
                             <div class="carousel-inner">
                               <% var c=0; propertyImage.forEach(function(rows){%>
-                              <div class="carousel-item   <%if(c==0){%> active <%}%>">
-                                <img src="../propimg/<%=rows.pps_property_image_name%>" alt="">
-                              </div>
-                              <% c++;});%>
-                              
+                                <div class="carousel-item carousel-item-fix  <%if(c==0){%> active <%}%>">
+                                  <img src="../propimg/<%=rows.pps_property_image_name%>" alt="">
+                                </div>
+                                <% c++;});%>
+
                             </div>
                             <!-- Left and right controls -->
                             <a class="carousel-control-prev" href="#demo" data-slide="prev">
@@ -96,19 +96,24 @@
                           <div class="apartment-details">
                             <div class="clearfix">
                               <div class="float-left">
-                                <h3 class="apartment-name"><a href="#">    <%=propertyDetailData[0].ps_property_name%><span>(
-                                  <%=propertyDetailData[0].ps_unique_code%> )
-                                </span></a></h3>
+                                <h3 class="apartment-name"><a href="#">
+                                    <%=propertyDetailData[0].ps_property_name%><span>(
+                                        <%=propertyDetailData[0].ps_unique_code%> )
+                                      </span>
+                                  </a></h3>
                                 <div class="row">
                                   <div class="col-sm-12 col-lg-6">
                                     <div class="location-part"><a href="#"><img src="../images/location.png">
-                                        <span> <%=propertyDetailData[0].ps_property_address%>,
-                                          <%=propertyDetailData[0].ps_property_country_id%></span></a></div>
+                                        <span>
+                                          <%=propertyDetailData[0].ps_property_address%>,
+                                            <%=propertyDetailData[0].ps_property_country_id%>
+                                        </span></a></div>
                                   </div>
 
                                   <div class="col-sm-12 col-lg-6 ">
                                     <div class="recent-img img-fix">
-                                      <img style="width: 30px; border-radius: 30px;" src="../upload/<%=CustomerDetails[0].cus_profile_image_name%>"><span>
+                                      <img style="width: 30px; border-radius: 30px;"
+                                        src="../upload/<%=CustomerDetails[0].cus_profile_image_name%>"><span>
                                         by <%=CustomerDetails[0].cus_fullname%>
                                       </span>
                                     </div>
@@ -173,7 +178,7 @@
                                                 <div class="col-6 col-sm-6 col-lg-3">
                                                   <div class="start-date">
                                                     <p>Duration<br><b>
-                                                      <%=estimated_time%>
+                                                        <%=estimated_time%>
                                                       </b></p>
                                                   </div>
                                                 </div>
@@ -189,110 +194,199 @@
 
               <div class="linear-arrow-sec">
                 <div class="row">
-                  <div class="col-md-9">
-                    <div class="progress-line">
-                      <ul>
-                        <li class="progress-1"><a href="/service-provider/myproperties-detail-phaseA"><img
-                              src="../images/white-prgress=arrow.png"></a> <span>Phase A</span></li>
-                        <li class="progress-2"><img src="../images/white-prgress=arrow.png"> <span>Phase B</span></li>
-                        <li class="progress-3"><img src="../images/white-prgress=arrow.png"> <span>Phase C</span></li>
-                        <li class="progress-4"><img src="../images/white-prgress=arrow.png"> <span>Phase D</span></li>
-                        <li class="progress-5"><img src="../images/white-prgress=arrow.png"> <span>Phase E</span></li>
-                        <li class="progress-6"><img src="../images/white-prgress=arrow.png"> <span>Phase F</span></li>
-                      </ul>
-                    </div>
-                    <div class="time-schedule2">
-                      <ul>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            2 weeks
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            2 weeks
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            2 weeks
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            2 weeks
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            2 weeks
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            2 weeks
-                          </div>
-                        </li>
-                      </ul>
-                      <ul>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            5,000 $
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            5,000 $
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            5,000 $
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            5,000 $
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            5,000 $
-                          </div>
-                        </li>
-                        <li>
-                          <div>
-                            <img src="../images/track-active.png">
-                            5,000 $
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="col">
-                      <div class="time-cost-sec common-box-shadow">
-                        <h6>TOTAL TIME</h6>
-                        <h6 style="color:#005377; font-weight: bold;"> 525 days</h6>
+                  <% if(propertyDetailData[0].ps_is_active_user_flag=='renovator' ) {%>
+                    <div class="col-md-9">
+                      <div class="progress-line">
+                        <ul>
+                          <li class="progress-1"><a
+                              href="/service-provider/myproperties-detail-phaseA?id=<%=propertyDetailData[0]._id%>&phase=Strategic definition&step=A"><img
+                                src="../images/white-prgress=arrow.png"></a>
+                            <span>Phase
+                              A</span>
+                          </li>
+                          <li class="progress-2"><a
+                              href="/service-provider/myproperties-detail-phaseB?id=<%=propertyDetailData[0]._id%>&phase=Preparation and Briefing&step=B"><img
+                                src="../images/white-prgress=arrow.png"></a> <span>Phase B</span>
+                          </li>
+                          <li class="progress-3"><a
+                              href="/service-provider/myproperties-detail-phaseC?id=<%=propertyDetailData[0]._id%>&phase=Spatial coordination&step=C"><img
+                                src="../images/white-prgress=arrow.png"></a> <span>Phase C</span>
+                          </li>
+                          <li class="progress-4"><a
+                              href="/service-provider/myproperties-detail-phaseD?id=<%=propertyDetailData[0]._id%>&phase=Technical Design&step=D"><img
+                                src="../images/white-prgress=arrow.png"></a> <span>Phase D</span>
+                          </li>
+                          <li class="progress-5"><a
+                              href="/service-provider/myproperties-detail-phaseE?id=<%=propertyDetailData[0]._id%>&phase=Manifacturing and Construction&step=E"><img
+                                src="../images/white-prgress=arrow.png"></a> <span>Phase E</span>
+                          </li>
+                          <li class="progress-6"><a
+                              href="/service-provider/myproperties-detail-phaseF?id=<%=propertyDetailData[0]._id%>&phase=Concept Design&step=F"><img
+                                src="../images/white-prgress=arrow.png"></a> <span>Phase F</span>
+                          </li>
+                          <li class=""><a
+                              href="/service-provider/myproperties-detail-phaseG?id=<%=propertyDetailData[0]._id%>&phase=Handover&step=G"><img
+                                src="../images/white-prgress=arrow.png"></a> <span>Phase G</span></li>
+                          <li class=""><a
+                              href="/service-provider/myproperties-detail-phaseH?id=<%=propertyDetailData[0]._id%>&phase=Use&step=H"><img
+                                src="../images/white-prgress=arrow.png"></a> <span>Phase H</span></li>
+                        </ul>
                       </div>
-                      <div class="time-cost-sec common-box-shadow">
-                        <h6>TOTAL COST</h6>
-                        <h6 style="color: #005377; font-weight: bold;"> 10000 $</h6>
+                      <div class="time-schedule">
+                        <ul>
+                          <li>
+                            <div>
+                              <img src="../images/track-active.png">
+                              2 weeks
+                            </div>
+                          </li>
+                          <li>
+                            <div>
+                              <img src="../images/track-active.png">
+                              2 weeks
+                            </div>
+                          </li>
+                          <li>
+                            <div>
+                              <img src="../images/track-active.png">
+                              2 weeks
+                            </div>
+                          </li>
+                          <li>
+                            <div>
+                              <img src="../images/track-active.png">
+                              2 weeks
+                            </div>
+                          </li>
+                        </ul>
+                        <ul>
+                          <li>
+                            <div>
+                              <img src="../images/track-active.png">
+                              5,000 $
+                            </div>
+                          </li>
+                          <li>
+                            <div>
+                              <img src="../images/track-active.png">
+                              5,000 $
+                            </div>
+                          </li>
+                          <li>
+                            <div>
+                              <img src="../images/track-active.png">
+                              5,000 $
+                            </div>
+                          </li>
+                          <li>
+                            <div>
+                              <img src="../images/track-active.png">
+                              5,000 $
+                            </div>
+                          </li>
+                        </ul>
                       </div>
+                    </div>
+                    <%} else {%>
+                      <div class="col-md-9">
+                        <div class="progress-line">
+                          <ul>
 
-                    </div>
-                  </div>
+                            <li class="progress-1"><a
+                                href="/service-provider/myproperties-detail-phaseA?id=<%=propertyDetailData[0]._id%>&phase=Instruction&step=A"><img
+                                  src="../images/white-prgress=arrow.png"></a>
+                              <span>Phase
+                                A</span>
+                            </li>
+                            <li class="progress-2"><a
+                                href="/service-provider/myproperties-detail-phaseB?id=<%=propertyDetailData[0]._id%>&phase=Pre-exchange Submitting the contract&step=B"><img
+                                  src="../images/white-prgress=arrow.png"></a> <span>Phase
+                                B</span></li>
+                            <li class="progress-3"><a
+                                href="/service-provider/myproperties-detail-phaseC?id=<%=propertyDetailData[0]._id%>&phase=Prior to exchange of contracts&step=C"><img
+                                  src="../images/white-prgress=arrow.png"></a> <span>Phase
+                                C</span></li>
+                            <li class="progress-4"><a
+                                href="/service-provider/myproperties-detail-phaseD?id=<%=propertyDetailData[0]._id%>&phase=Exchange of contracts&step=D"><img
+                                  src="../images/white-prgress=arrow.png"></a> <span>Phase
+                                D</span></li>
+                            <li class=""><a
+                                href="/service-provider/myproperties-detail-phaseE?id=<%=propertyDetailData[0]._id%>&phase=Completion&step=E"><img
+                                  src="../images/white-prgress=arrow.png"></a> <span>Phase E</span></li>
+                            <li class=""><a
+                                href="/service-provider/myproperties-detail-phaseF?id=<%=propertyDetailData[0]._id%>&phase=Post-Completion&step=F"><img
+                                  src="../images/white-prgress=arrow.png"></a> <span>Phase F</span></li>
+                          </ul>
+                        </div>
+                        <div class="time-schedule">
+                          <ul>
+                            <li>
+                              <div>
+                                <img src="../images/track-active.png">
+                                2 weeks
+                              </div>
+                            </li>
+                            <li>
+                              <div>
+                                <img src="../images/track-active.png">
+                                2 weeks
+                              </div>
+                            </li>
+                            <li>
+                              <div>
+                                <img src="../images/track-active.png">
+                                2 weeks
+                              </div>
+                            </li>
+                            <li>
+                              <div>
+                                <img src="../images/track-active.png">
+                                2 weeks
+                              </div>
+                            </li>
+                          </ul>
+                          <ul>
+                            <li>
+                              <div>
+                                <img src="../images/track-active.png">
+                                5,000 $
+                              </div>
+                            </li>
+                            <li>
+                              <div>
+                                <img src="../images/track-active.png">
+                                5,000 $
+                              </div>
+                            </li>
+                            <li>
+                              <div>
+                                <img src="../images/track-active.png">
+                                5,000 $
+                              </div>
+                            </li>
+                            <li>
+                              <div>
+                                <img src="../images/track-active.png">
+                                5,000 $
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <%}%>
+                        <div class="col-md-3">
+                          <div class="col">
+                            <div class="time-cost-sec common-box-shadow">
+                              <h6>TOTAL TIME</h6>
+                              <h6 style="color:#005377; font-weight: bold;"> 525 days</h6>
+                            </div>
+                            <div class="time-cost-sec common-box-shadow">
+                              <h6>TOTAL COST</h6>
+                              <h6 style="color: #005377; font-weight: bold;"> 10000 $</h6>
+                            </div>
+
+                          </div>
+                        </div>
                 </div>
               </div>
 
@@ -316,11 +410,11 @@
                                 <%=row.ppts_task_name%>
                                   <%if(row.ppts_phase_name=='other'){%>
                                     <a
-                                      href="/<%=row.phase_page_name%>?id=<%=row.ppts_property_id%>&phase=<%=row.ppts_phase_name%>&step=O"><img
+                                      href="/<%=row.phase_page_name%>?id=<%=propertyDetailData[0].ppts_property_id%>&phase=<%=row.ppts_phase_name%>&step=O"><img
                                         src="../images/recent-user-1.png"></a>
                                     <%}else{%>
                                       <a
-                                        href="/<%=row.phase_page_name%>?id=<%=row.ppts_property_id%>&phase=<%=row.ppts_phase_name%>&step=<%=row.ppts_phase_flag%>"><img
+                                        href="/<%=row.phase_page_name%>?id=<%=propertyDetailData[0].ppts_property_id%>&phase=<%=row.ppts_phase_name%>&step=<%=row.ppts_phase_flag%>"><img
                                           src="../images/recent-user-1.png"></a>
                                       <%}%>
                                         <em>
@@ -382,9 +476,9 @@
                                       </li>
                                       <%}%>
                                         <%});%>
-                            <%}else{%>
-                              <h6>Docs&File Not Uploaded</h6>
-                              <%}%>
+                                          <%}else{%>
+                                            <h6>Docs&File Not Uploaded</h6>
+                                            <%}%>
                       </ul>
 
                     </div>
@@ -399,8 +493,9 @@
                       <%hiredProfeshnoalList.forEach(function(row){%>
                         <div class="messages-list clearfix">
                           <div class="message-img float-left">
-<!-- //http://localhost:5000/service-provider/professionals-detail-message -->
-                            <a href="/service-provider/professionals-detail-message?id=<%=propertyDetailData[0]._id%>&pid=<%=row._id%>"><img
+                            <!-- //http://localhost:5000/service-provider/professionals-detail-message -->
+                            <a
+                              href="/service-provider/professionals-detail-message?id=<%=propertyDetailData[0]._id%>&pid=<%=row._id%>"><img
                                 src="../upload/<%=row.cus_profile_image_name%>" alt="" title=""></a>
                           </div>
                           <div class="message-drop float-left">
@@ -415,7 +510,7 @@
                         </div>
                         <%});%>
 
-                      <!-- <div class="messages-list clearfix">
+                          <!-- <div class="messages-list clearfix">
                         <div class="message-img float-left">
                           <a href="/service-provider/professionals-detail-message"><img
                               src="../images/recent-user-1.png" alt="" title=""></a>
