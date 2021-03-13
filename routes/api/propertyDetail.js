@@ -166,6 +166,23 @@ module.exports.GetPropertById = function (propertyId, ps_is_active_user_flag) {
         })
     });
 };
+module.exports.GetPropertyById = function (propertyId) {
+    return new Promise(async function (resolve, reject) {
+
+        var data = {
+            $and: [{
+                //ps_is_active_user_flag: ps_is_active_user_flag, _id: propertyId 
+                _id: propertyId
+            }]
+        }
+        await PropertiesSchema.findOne(data).then(async (resp) => {
+            let responce = await resp
+            resolve(responce)
+        }).catch((err) => {
+            reject(err)
+        })
+    });
+};
 module.exports.GetAllProperty = function (user_id, ps_is_active_user_flag) {
     return new Promise(async function (resolve, reject) {
         //console.log('hello',pps_property_id,pps_is_active_user_flag)

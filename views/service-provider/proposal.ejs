@@ -1,0 +1,125 @@
+<%- include('dashboard_header_professional')-%>
+  <%- include('edit-profile-professional-model')-%>
+
+    <div class="dashboard-wpr">
+      <div class="container-fluid">
+        <div class="row content">
+          <div class="col-sm-2 sidenav hidden-xs-down">
+            <div class="user-login text-center">
+
+              <div class="user-profile">
+                <img src="../images/user-3.png" alt="" title="">
+              </div>
+
+              <div class="user-name">
+                <h6>
+                  <%= session.name%>,<span><i>
+                        <%= session.role %>
+                      </i>
+                    </span>
+                </h6>
+
+                <a href="#"><i>
+                    <%= session.email%>
+                      <%- include('edit-profile-professional-icon')-%>
+                  </i></a>
+              </div>
+            </div>
+            <%- include('sidebar-professional')-%>
+          </div>
+          <div class="col-sm-12 col-lg-10">
+            <div class="row complaints-sec">
+              <div class="col-sm-12 col-lg-6">
+                <div class="complaints">
+                  <h2>My Proposals</h2>
+                </div>
+              </div>
+
+
+            </div>
+            <div class="dashboard-inner">
+              <div class="col-sm-12 col-lg-12">
+                <button class="accordion">Active proposals (0)
+                </button>
+                <div class="panel">
+
+                  <ul>
+                    <li>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris
+                        nisi ut aliquip ex ea commodo consequat.</p>
+                    </li>
+                    <li>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris
+                        nisi ut aliquip ex ea commodo consequat.</p>
+                    </li>
+                  </ul>
+                </div>
+
+                <button class="accordion">Submitted proposals (0)
+                </button>
+                <div class="panel">
+                  <ul>
+                    <li>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris
+                        nisi ut aliquip ex ea commodo consequat.</p>
+                    </li>
+                    <li>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris
+                        nisi ut aliquip ex ea commodo consequat.</p>
+                    </li>
+                  </ul>
+                </div>
+
+                <button class="accordion">Section 3</button>
+                <div class="panel">
+                  <ul>
+                    <li>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris
+                        nisi ut aliquip ex ea commodo consequat.</p>
+                    </li>
+                    <li>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris
+                        nisi ut aliquip ex ea commodo consequat.</p>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <%-include('professional-footer')-%>
+
+      <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+          acc[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+              panel.style.maxHeight = null;
+            } else {
+              panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+          });
+        }
+      </script>

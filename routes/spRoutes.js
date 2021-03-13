@@ -453,26 +453,26 @@ app.get('/service-provider/professional-details-docs', isServiceProvider, async 
   //     }
   //   });
   // }
-  var sptaskDocArray=[]
-  var sp_normalDocArray=[]
-  var all_sp_doc=await propertyHelper.getAllServiceProviderDocument(req.session.user_id,req.session.property_id)
+  var sptaskDocArray = []
+  var sp_normalDocArray = []
+  var all_sp_doc = await propertyHelper.getAllServiceProviderDocument(req.session.user_id, req.session.property_id)
   console.log(all_sp_doc)
-  for(var k of all_sp_doc){
+  for (var k of all_sp_doc) {
     let tempss = await k
     const dd = JSON.stringify(tempss);
     const datass = JSON.parse(dd)
-   if(k.spuds_task_id){
-   sptaskDocArray.push(datass)
-   }else{
-    sp_normalDocArray.push(datass)
-   }
+    if (k.spuds_task_id) {
+      sptaskDocArray.push(datass)
+    } else {
+      sp_normalDocArray.push(datass)
+    }
   }
   res.render('service-provider/professional-details-docs', {
     err_msg, success_msg, layout: false,
     session: req.session,
     data: serviceProvArray,
     allDocument: normalDocArray,//need to show property wise document still showing all uploaded
-    service_provider_document:sp_normalDocArray,
+    service_provider_document: sp_normalDocArray,
     taskDocument: sptaskDocArray,
     property: property,
     moment: moment
@@ -1109,6 +1109,7 @@ app.get('/getIdentimitydetails', isServiceProvider, async function (req, res) {
   })
 });
 
+
 app.get('/getLanguagedetails', isServiceProvider, async function (req, res) {
   console.log('req.query:', req.query)
   await ServiceProviderLanguageSchema.find({ spls_service_provider_id: req.query.user_id }).sort({ _id: -1 }).then(async (data) => {
@@ -1345,6 +1346,14 @@ app.post('/get_hired_property_by_id', isServiceProvider, async (req, res) => {
   }
 });
 
+app.get('/service-provider/proposal', isCustomer, (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.render('service-provider/proposal', {
+    err_msg, success_msg, layout: false,
+    session: req.session
+  });
+})
 
 
 module.exports = app;

@@ -5857,3 +5857,31 @@ input::-webkit-inner-spin-button {
     border: 2px solid #005377;
     background-color: #ffffff;
     height: 52px;}
+
+    .accordion {
+        background-color: #f4f0f0;
+        color: #005377;
+        cursor: pointer;
+        padding: 25px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 20px;
+        font-family: 'Gill Sans MT Bold';
+        transition: 0.4s;
+        margin-top: 30px;
+      }
+      
+       .accordion:hover {
+        background-color: #ccc;
+      }
+      
+      .panel {
+        padding: 0 18px;
+        background-color: white;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+        margin-top: 30px;
+      }

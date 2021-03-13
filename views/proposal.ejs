@@ -1,0 +1,143 @@
+<%- include('dashboard_header')-%>
+  <%- include('edit-profile-model')-%>
+    <div class="dashboard-wpr">
+      <div class="container-fluid">
+        <div class="row content">
+          <div class="col-sm-2 sidenav hidden-xs-down">
+            <div class="user-login text-center">
+
+              <%- include('profile-image')-%>
+
+                <div class="user-name">
+                  <h2>
+                    <%= session.name %>
+                  </h2>
+                  <a href="#">
+                    <%= session.email %>
+                      <%- include('edit-profile-icon')-%>
+                  </a>
+                </div>
+            </div>
+            <%- include('sidebar')-%>
+          </div>
+          <div class="col-sm-12 col-lg-10">
+            <div class="row complaints-sec">
+              <div class="col-sm-12 col-lg-6">
+                <div class="complaints">
+                  <h2>My Proposals</h2>
+                </div>
+              </div>
+
+
+            </div>
+            <div class="dashboard-inner">
+              <div class="col-sm-12 col-lg-12">
+                <button class="accordion">Active proposals (<%=activeProposal.length%>)
+                </button>
+                <div class="panel">
+                  <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                    nisi ut aliquip ex ea commodo consequat.</p> -->
+                  <ul>
+                    <%if(activePropertyProposalArray.length>0){%>
+                      <%activePropertyProposalArray.forEach(function(row,i){%>
+                        <li>
+                          <h4>
+                            <%=row.sp_name%> &bull;<span>
+                                <h6>
+                                  <%=row.ps_property_name%>
+                                </h6>
+                              </span>
+                          </h4>
+                          <p>
+                            <%=row.notes%>
+                          </p>
+                          <p>check docs <span><a href="#">
+
+                                <%=row.filename%>
+                              </a></span></p>
+                          <a href="#"><u>View</u></a>
+                          <a href="#"><u>Accept</u></a>
+                          <a href="#"><u>Reject</u></a>
+                        </li>
+                        <%})%>
+                          <%} else {%>
+                            <li>
+                              <p>Currently You don't have Active proposal</p>
+                            </li>
+                            <%}%>
+                              <li>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                  incididunt ut
+                                  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                                  ullamco
+                                  laboris
+                                  nisi ut aliquip ex ea commodo consequat.</p>
+                              </li>
+                  </ul>
+                </div>
+
+                <button class="accordion">Submitted proposals (<%=submitProposal.length%>)
+                </button>
+                <div class="panel">
+                  <ul>
+                    <li>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris
+                        nisi ut aliquip ex ea commodo consequat.</p>
+                    </li>
+                    <li>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris
+                        nisi ut aliquip ex ea commodo consequat.</p>
+                    </li>
+                  </ul>
+                </div>
+
+                <button class="accordion">Section 3</button>
+                <div class="panel">
+                  <ul>
+                    <li>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris
+                        nisi ut aliquip ex ea commodo consequat.</p>
+                    </li>
+                    <li>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris
+                        nisi ut aliquip ex ea commodo consequat.</p>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+
+    <%- include('dashboard_footer')-%>
+      <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+          acc[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+              panel.style.maxHeight = null;
+            } else {
+              panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+          });
+        }
+      </script>
