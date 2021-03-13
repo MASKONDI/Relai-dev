@@ -1,6 +1,6 @@
 <%- include('dashboard_header_professional')-%>
   <%- include('edit-profile-professional-model')-%>
-  <div class="modal fade permission-modal" data-backdrop="static" data-keyboard="false" id="changePermisionModal">
+  <div class="modal fade permission-modal" data-backdrop="static" data-keyboard="false" id="spchangePermisionModal">
 
     <div class="modal-dialog">
       <div class="modal-content">
@@ -17,7 +17,7 @@
               <table class="table table-responsive">
                 <thead>
                   <tr>
-                    <th style="width:70%">Hired Professional</th>
+                    <th style="width:70%">Coustomer</th>
                     <th>View</th>
                     <th>Download</th>
                     <th></th>
@@ -180,6 +180,7 @@
                       <th>Document Name</th>
                       <th>Date</th>
                       <th>Permissions</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -433,12 +434,261 @@
                 </table>
               </div>
               <div class="doc-table">
+                <h4 style="font-size: 18px;color: #005377;font-weight: 700;">Task Docs & Files</h4>
+                <table class="table table-responsive">
+                  <thead>
+                    <tr>
+                      <th>Document Name</th>
+                      <th>Date</th>
+                      <th>Permissions</th>
+                      <th>Phase</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <%if(taskDocument.length==0){%>
+                      <tr>
+                        <td>
+                          <h5>Docs & Files Not Uploaded</h5>
+                        </td>
+                      </tr>
+                      <%}else{%>
+                        <% taskDocument.forEach(function(row){ %>
+                          <%if(row.spuds_document_type=='image'){%>
+                            <tr>
+                              <td>
+                                <img class="pdf-file" src="/taskdocument/<%= row.spuds_document_name%>">
+                                <p ><span class='doc_name'>
+                                    <%= row.spuds_document_name%>
+                                  </span>
+                                  <%= row.spuds_document_size%>
+                                </p>
+                              </td>
+                              <td><span class="professionals-view">
+                                  <%=moment(row.spuds_created_at).format('D MMM YY'); %>| Downloaded by<ul>
+                                      <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
+                                          id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                          aria-expanded="false">2 professionals</a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                          <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png"> Alex
+                                            Jackson</a>
+                                          <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png"> Alex
+                                            Jackson</a>
+                                        </div>
+                                      </li>
+                                    </ul>
+                                </span></td>
+                              <td>
+                                <div class="recent-img">
+                                  <img src="../images/recent-user-1.png"><img class="mr-10"
+                                    src="../images/recent-user-2.png"><img class="mr-10" src="../images/recent-user-3.png">
+                                  <!--data-toggle="modal" data-target="#spchangePermisionModal" -->
+                                  <a href="javascript:void(0)" value="<%=row._id%>"
+                                    class="getDocId changePermissionModal">Change permission</a>
+                                </div>
+                              </td>
+                              <td><%=row.spuds_phase_flag%></td>
+                              <td>
+                                <a href="javascript:void(0)" class="remove_doc"
+                                  onclick="sp_remove_document('<%=row._id%>');" id="<%=row._id%>"><img
+                                    src="../images/delete-icon.png"></a>
+                              </td>
+                            </tr>
+                            <%}else if(row.cuds_document_type=='pdf' ){ %>
+                              
+
+                              <tr>
+                                <td>
+                                  <img class="pdf-file" src="../images/pdficon.png">
+                                  <p><span class='doc_name'>
+                                      <%= row.spuds_document_name%>
+                                    </span>
+                                    <%= row.spuds_document_size%>
+                                  </p>
+                                </td>
+                                <td><span class="professionals-view">
+                                    <%=moment(row.spuds_created_at).format('D MMM YY'); %>| Downloaded by<ul>
+                                        <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">2 professionals</a>
+                                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png"> Alex
+                                              Jackson</a>
+                                            <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png"> Alex
+                                              Jackson</a>
+                                          </div>
+                                        </li>
+                                      </ul>
+                                  </span></td>
+                                <td>
+                                  <div class="recent-img">
+                                    <img src="../images/recent-user-1.png"><img class="mr-10"
+                                      src="../images/recent-user-2.png"><img class="mr-10" src="../images/recent-user-3.png">
+                                    <!--data-toggle="modal" data-target="#spchangePermisionModal" -->
+                                    <a href="javascript:void(0)" value="<%=row._id%>"
+                                      class="getDocId changePermissionModal">Change permission</a>
+                                  </div>
+                                </td>
+                                <td><%=row.spuds_phase_flag%></td>
+                                <td>
+                                  <a href="javascript:void(0)" class="remove_doc"
+                                    onclick="sp_remove_document('<%=row._id%>');" id="<%=row._id%>"><img
+                                      src="../images/delete-icon.png"></a>
+                                </td>
+                              </tr>
+
+                              <%}else if(row.spuds_document_type=='doc' ){ %>
+                               
+                                <tr>
+                                  <td>
+                                    <img class="pdf-file" src="../images/docicon.png">
+                                    <p><span class='doc_name'>
+                                        <%= row.spuds_document_name%>
+                                      </span>
+                                      <%= row.spuds_document_size%>
+                                    </p>
+                                  </td>
+                                  <td><span class="professionals-view">
+                                      <%=moment(row.spuds_created_at).format('D MMM YY'); %>| Downloaded by
+                                        <ul>
+                                          <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
+                                              id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                              aria-expanded="false">2 professionals</a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                              <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png">
+                                                Alex
+                                                Jackson</a>
+                                              <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png">
+                                                Alex
+                                                Jackson</a>
+                                            </div>
+                                          </li>
+                                        </ul>
+                                    </span></td>
+                                  <td>
+                                    <div class="recent-img">
+                                      <img src="../images/recent-user-1.png"><img class="mr-10"
+                                        src="../images/recent-user-2.png"><img class="mr-10"
+                                        src="../images/recent-user-3.png">
+                                      <!--data-toggle="modal" data-target="#spchangePermisionModal" -->
+                                      <a href="javascript:void(0)" value="<%=row._id%>"
+                                        class="getDocId changePermissionModal">Change permission</a>
+                                    </div>
+                                  </td>
+                                  <td><%=row.spuds_phase_flag%></td>
+                                  <td>
+                                    <a href="javascript:void(0)" class="remove_doc"
+                                      onclick="sp_remove_document('<%=row._id%>');" id="<%=row._id%>"><img
+                                        src="../images/delete-icon.png"></a>
+                                  </td>
+                                </tr>
+                                <%}else if(row.spuds_document_type=='txt' ){ %>
+                                 
+                                  <tr>
+                                    <td>
+                                      <img class="pdf-file" src="../images/txticon.png">
+                                      <p><span class='doc_name'>
+                                          <%= row.spuds_document_name%>
+                                        </span>
+                                        <%= row.spuds_document_size%>
+                                      </p>
+                                    </td>
+                                    <td><span class="professionals-view">
+                                        <%=moment(row.spuds_created_at).format('D MMM YY'); %>| Downloaded by
+                                          <ul>
+                                            <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">2 professionals</a>
+                                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png">
+                                                  Alex
+                                                  Jackson</a>
+                                                <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png">
+                                                  Alex
+                                                  Jackson</a>
+                                              </div>
+                                            </li>
+                                          </ul>
+                                      </span></td>
+                                    <td>
+                                      <div class="recent-img">
+                                        <img src="../images/recent-user-1.png"><img class="mr-10"
+                                          src="../images/recent-user-2.png"><img class="mr-10"
+                                          src="../images/recent-user-3.png">
+                                        <!--data-toggle="modal" data-target="#spchangePermisionModal" -->
+                                        <a href="javascript:void(0)" value="<%=row._id%>"
+                                          class="getDocId changePermissionModal">Change permission</a>
+                                      </div>
+                                    </td>
+                                    <td><%=row.spuds_phase_flag%></td>
+                                    <td>
+                                      <a href="javascript:void(0)" class="remove_doc"
+                                        onclick="sp_remove_document('<%=row._id%>');" id="<%=row._id%>"><img
+                                          src="../images/delete-icon.png"></a>
+                                    </td>
+                                  </tr>
+
+                                  <%}else{%>
+
+                                    <tr>
+                                      <td>
+                                       
+                                        <img class="pdf-file" src="../images/videoicon.png">
+                                        <p><span class='doc_name'>
+                                            <%=row.spuds_document_name%>
+                                          </span>
+                                          <%=row.spuds_document_size%>
+                                        </p>
+                                      </td>
+                                      <td><span class="professionals-view">
+                                          <%=moment(row.cuds_created_at).format('D MMM YY'); %>| Downloaded
+                                            by<ul>
+                                              <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
+                                                  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                                  aria-expanded="false">2 professionals</a>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                  <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png">
+                                                    Alex
+                                                    Jackson</a>
+                                                  <a class="dropdown-item" href="#"><img src="../images/recent-user-3.png">
+                                                    Alex
+                                                    Jackson</a>
+                                                </div>
+                                              </li>
+                                            </ul>
+                                        </span></td>
+                                      <td>
+                                        <div class="recent-img">
+                                          <img src="../images/recent-user-1.png"><img class="mr-10"
+                                            src="../images/recent-user-2.png"><img class="mr-10"
+                                            src="../images/recent-user-3.png">
+                                          <!--data-toggle="modal" data-target="#spchangePermisionModal" -->
+                                          <a href="javascript:void(0)" value="<%=row._id%>"
+                                            class="getDocId changePermissionModal">Change permission</a>
+                                        </div>
+                                      </td>
+                                      <td><%=row.spuds_phase_flag%></td>
+                                      <td>
+                                        <a href="javascript:void(0)" class="remove_doc"
+                                          onclick="sp_remove_document('<%=row._id%>');" id="<%=row._id%>"><img
+                                            src="../images/delete-icon.png"></a>
+                                      </td>
+                                    </tr>
+
+                                    <%}%>
+                                      <% });%>
+                                        <%}%>
+                  </tbody>
+                </table>
+              </div>
+              <div class="doc-table">
                 <h3>Customer Docs & files</h3>
                 <table class="table table-responsive">
                   <thead>
                     <tr>
                       <th>Document Name</th>
                       <th>Date</th>
+                      <th>Phase</th>
                       <th>Permissions</th>
                     </tr>
                   </thead>
@@ -457,6 +707,11 @@
                               <p><span><%= row.cuds_document_name%> </span><%= row.cuds_document_size%></p>
                             </td>
                             <td><span class="professionals-view"><%=moment(row.cuds_created_at).format('D MMM YY'); %></span></td>
+                           <%if(row.cuds_phase_flag){%>
+                            <td><%=row.cuds_phase_flag%></td>
+                            <%}else{%>
+                              <td>...</td>
+                              <%}%>
                             <td>
                               <ul style="display: flex;">
                                 <li>
@@ -476,6 +731,11 @@
                                 <p><span><%= row.cuds_document_name%></span><%= row.cuds_document_size%> </p>
                               </td>
                               <td><span class="professionals-view"><%=moment(row.cuds_created_at).format('D MMM YY'); %></span></td>
+                              <%if(row.cuds_phase_flag){%>
+                                <td><%=row.cuds_phase_flag%></td>
+                                <%}else{%>
+                                  <td>...</td>
+                                  <%}%>
                               <td>
                                 <ul style="display: flex;">
                                   <li>
@@ -495,6 +755,11 @@
                                   <p><span><%= row.cuds_document_name%> </span><%= row.cuds_document_size%> </p>
                                 </td>
                                 <td><span class="professionals-view"><%=moment(row.cuds_created_at).format('D MMM YY'); %></span></td>
+                                <%if(row.cuds_phase_flag){%>
+                                  <td><%=row.cuds_phase_flag%></td>
+                                  <%}else{%>
+                                    <td>...</td>
+                                    <%}%>
                                 <td>
                                   <ul style="display: flex;">
                                     <li>
@@ -514,6 +779,11 @@
                                     <p><span><%= row.cuds_document_name%> </span><%= row.cuds_document_size%> </p>
                                   </td>
                                   <td><span class="professionals-view"><%=moment(row.cuds_created_at).format('D MMM YY'); %></span></td>
+                                  <%if(row.cuds_phase_flag){%>
+                                    <td><%=row.cuds_phase_flag%></td>
+                                    <%}else{%>
+                                      <td>...</td>
+                                      <%}%>
                                   <td>
                                     <ul style="display: flex;">
                                       <li>
@@ -533,6 +803,11 @@
                                       <p><span><%= row.cuds_document_name%></span><%= row.cuds_document_size%> </p>
                                     </td>
                                     <td><span class="professionals-view"><%=moment(row.cuds_created_at).format('D MMM YY'); %></span></td>
+                                    <%if(row.cuds_phase_flag){%>
+                                      <td><%=row.cuds_phase_flag%></td>
+                                      <%}else{%>
+                                        <td>...</td>
+                                        <%}%>
                                     <td>
                                       <ul style="display: flex;">
                                         <li>
@@ -575,6 +850,7 @@
                   </tbody>
                 </table>
               </div>
+              
             </div>
           </div>
         </div>
@@ -712,14 +988,14 @@
       <script>
         $('.btn-cancel-changepermision').click(function (e) { 
          // alert();
-          $('#changePermisionModal').modal('hide');
+          $('#spchangePermisionModal').modal('hide');
           location.reload();
         });
         var id_element = [];
         $(".changePermissionModal").click(function (e) {
           var docId = $(this).attr('value');
           // alert(docId);
-          $('#changePermisionModal').modal('show');
+          $('#spchangePermisionModal').modal('show');
           $('.doc_id').val(docId);
           $.ajax({
             type: "GET",
@@ -749,8 +1025,8 @@
                   }
                 });
               } else {
-                $('#changePermisionModal .per_checkbox').removeAttr('checked', 'checked');
-                $('#changePermisionModal .check-permission input:checked ~ .checkmark').css('background-color', 'transparent');
+                $('#spchangePermisionModal .per_checkbox').removeAttr('checked', 'checked');
+                $('#spchangePermisionModal .check-permission input:checked ~ .checkmark').css('background-color', 'transparent');
                 //$('.per_checkbox').removeAttr('checked','checked');
                 
               }

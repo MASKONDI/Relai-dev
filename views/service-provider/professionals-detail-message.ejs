@@ -53,6 +53,7 @@
                       <div class="messages-section">
                         <div class="messages-section">
                           <div id="message_board">
+                            <div class="old_message_section">
                             <% chatData.forEach(function(row){ %>
                               <div class="messages-box clearfix">
                                 <div class="message-user-img">
@@ -69,6 +70,8 @@
                                 </div>
                               </div>
                               <% }); %>
+                            </div>  
+                            <span class="latest_msg"></span>
                           </div>
                           <div class="text-message-box clearfix">
                             <% var userid=''; if(session.active_user_login == property.ps_is_active_user_flag){ %> 
@@ -78,6 +81,7 @@
                             <% } %> 
                             <form method="POST" id="chat_form">
                               <div class="text-box chat_status_section">
+                                <input type="hidden" name="msgcount" value="<%=chatData.length %>" id="msgcount">
                                 <input type="hidden" name="professional_id" data-val="<%=session.user_id%>"
                                   value="<%=session.user_id%>" id="professional_id">
                                 <input type="hidden" name="property_id" value="<%=property._id%>" id="property_id">
@@ -104,11 +108,13 @@
     </div>
     </div>
     </div>
-<button class="myhello">helllo</button>
     <%- include('professional-footer')%>
 
     <script>
-      function getAllMessage(sms_receiver_id, sms_sender_id, sms_property_id) {
+      $("#message_board").stop().animate({ scrollTop: $("#message_board")[0].scrollHeight}, 1000);
+      function getAllMessage_sp(sms_receiver_id, sms_sender_id, sms_property_id, msgcount) {
+        console.log('here spp');
+        let oldChat=0;
       $.ajax({
         type: "GET",
         data: {
@@ -119,6 +125,7 @@
         url: "/service-provider-get-message-property",
         cache: false,
         success: function (datas) {
+          console.log('oldChat:',oldChat);
           if (datas.chatData.length > 0) {
             console.log('data:',datas)
             var htmlData = '';
@@ -131,19 +138,37 @@
               }
               htmlData += '<div class="messages-box clearfix"><div class="message-user-img">'+imageData+'</div><div class="message-content"><h3>' + data.senderName + '</h3><p>'+data.sms_message.trim()+'</p><p class="hours-ago text-right">' + data.msgTime + '</p></div></div>';
             });
-            $('#message_board').html(htmlData);
+            console.log('length:',datas.chatData.length)
+            if(datas.chatData.length > msgcount){
+              $('#message_board').html(htmlData);
+            }else{
+              console.log('intervaltotl:',datas.chatData.length)
+            }
+            //$("#message_board").stop().animate({ scrollTop: $("#message_board")[0].scrollHeight}, 1000);
+
           }
+
+          var professional_id = $("#chat_form #professional_id").val();
+           var customer_id = $("#customer_id").val();
+           var property_id = $("#chat_form  #property_id").val();
+            //var msgcount = $("#chat_form  #msgcount").val();
+
+          getAllMessage_sp(customer_id, professional_id, property_id, msgcount);
         }
       });
     }
 
-    setInterval(function () {
+$(document).ready(function() {
+
+    //setInterval(function () {
       var professional_id = $("#chat_form #professional_id").val();
       var customer_id = $("#customer_id").val();
       var property_id = $("#chat_form  #property_id").val();
-        getAllMessage(customer_id, professional_id, property_id);
-    }, 1000);
-
+      var msgcount = $("#chat_form  #msgcount").val();
+      console.log('totalmS:',msgcount)
+        getAllMessage_sp(customer_id, professional_id, property_id, msgcount);
+   // }, 2000);
+  });
   </script>
 
       </body>

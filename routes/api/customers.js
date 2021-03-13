@@ -1454,7 +1454,7 @@ POST : Raise a complaints api is used for raising a complaints to particular ser
 /* -------------------------------------------------------------------------------------------------
 POST : message api is used for sending message to service_provider or vice-versa.
 ------------------------------------------------------------------------------------------------- */
-router.post('/message', (req, res) => {
+router.post('/message', async (req, res) => {
   console.log("Send Message data from client is :", req.body);
   const newMessage = new MessageSchema({
     sms_property_id: req.body.sms_property_id,// storing property_id if its not null
@@ -1467,10 +1467,19 @@ router.post('/message', (req, res) => {
     sms_read_status: req.body.sms_read_status, //default is unread
     sms_is_active_user_flag: req.session.active_user_login
   })
-  newMessage.save().then(message => {
+  newMessage.save().then( async message => {
     console.log("getting response form server is :", message);
+
+    var QueryCount = {
+      $or: [
+        { $and: [{ sms_sender_id: req.body.sms_sender_id }, { sms_receiver_id: req.body.sms_receiver_id }, { sms_property_id: req.body.sms_property_id }] },
+        { $and: [{ sms_sender_id: req.body.sms_receiver_id }, { sms_receiver_id: req.body.sms_sender_id }, { sms_property_id: req.body.sms_property_id }] }
+      ]
+    }
+    const countMsg = await MessageSchema.countDocuments(QueryCount);
     res.send({
-      msgData: message
+      msgData: message,
+      countMsg:countMsg
     })
     //res.flash('success_msg', 'message forward successfully');
     //res.redirect('/'); //set based on current login if its customer portal then redirect customer_message portal and 
