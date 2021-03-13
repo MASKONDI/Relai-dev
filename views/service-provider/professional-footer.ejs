@@ -262,11 +262,8 @@
     var c = 2;
     $("button[name='addPlusbtn']").click(function (e) {
       e.preventDefault();
-
       var domElement = $(' <div class="row"><div class="input-box-size-fix2"><input type="text" class="form-control property-input-size-fix " id="address" placeholder="MileStone 2" name="address"></div><div class="input-box-size-fix2"> <input type="date"  class="form-control property-input-size-fix "                id="Date" placeholder="Date" name="Date"></div></div>' + c++);
-
       if (c == 10) {
-
         $("button[name='addPlusbtn']").attr('disabled', true);
       }
       $(".divv").before(domElement);
@@ -305,15 +302,32 @@ function scrollToBottom() {
             },
             url: "/api/service-provider-message",
             cache: false,
+            beforeSend: function() {
+                  $("#comment").val('');
+                  var imageData='';
+                      var sessionImg = '<%=session.imagename%>';
+                      console.log('teeee:',sessionImg);
+                      if(sessionImg){
+                        imageData = '<img src="../upload/'+sessionImg+'" alt="" title="">';
+                      }else{
+                        imageData = '<img src="../images/img_avatar.png" alt="" title="">';
+                      }
+                      htmlData = '<div class="messages-box clearfix"><div class="message-user-img">'+imageData+'</div><div class="message-content"><h3><%=session.name%></h3><p>'+comment.trim()+'</p><p class="hours-ago text-right">just now</p></div></div>';
+                      $('#message_board').append(htmlData);
+                      $("#message_board").stop().animate({ scrollTop: $("#message_board")[0].scrollHeight}, 1000);
+            },
             success: function (data) {
-              $("#comment").val('');
-              getAllMessage(customer_id, professional_id, property_id);
+              console.log('msgdata:',data);
+              jQuery('#chat_form #msgcount').val(data.countMsg);
+             // $(".latest_msg").html('');
+              //getAllMessage_sp(customer_id, professional_id, property_id);
             }
           });
         }
       });
 
-      $('#chat_form').click(function (e) {
+      //$('#chat_form').click(function (e) {
+     /* $('#chat_form #comment').on('click', function() {
         console.log('messg staus')
         var professional_id = $("#chat_form #professional_id").val();
         var customer_id = $("#customer_id").val();
@@ -337,6 +351,6 @@ function scrollToBottom() {
               $("#comment").val('');
             }
           });
-      });
+      });*/
 
      </script>

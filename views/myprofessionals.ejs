@@ -117,6 +117,7 @@
                               </div>
                               <button type="submit"  id="professional-search-btn"
                                 class="btn professional-search-btn">Search</button>
+                                
                             </form>
                             <div class="dropdown keep-inside-clicks-open">
                               <button class="btn professional-search-btn dropdown-toggle" type="button"
@@ -124,88 +125,192 @@
                                 aria-expanded="false">
                                 Show Filters
                               </button>
+                              <button type="button" onclick="resetMypFilter()" id="reset-search-btn" class="btn professional-search-btn">Reset</button>
                               <div class="dropdown-menu  dropdown-show-filter" aria-labelledby="dropdownMenuButton">
+                                <form id="mySPmultifilterForm" action="#" method="POST">
+                                  <div class="row">
+                                    <div class="col-md-5">
 
-                                <div class="row">
-                                  <div class="col-md-5">
 
+                                      <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                        <li class="nav-item">
+                                          <a class="nav-link active show" id="profile-tab5" data-toggle="tab"
+                                            href="#Category" role="tab" aria-controls="Category"
+                                            aria-selected="false">Category</a>
+                                        </li>
+                                        <li class="nav-item">
+                                          <a class="nav-link" id="profile-tab2" data-toggle="tab" href="#Experience"
+                                            role="tab" aria-controls="Experience" aria-selected="false">Experience</a>
+                                        </li>
+                                        <li class="nav-item">
+                                          <a class="nav-link" id="profile-tab3" data-toggle="tab" href="#Location"
+                                            role="tab" aria-controls="Location" aria-selected="false">Location</a>
+                                        </li>
+                                        <li class="nav-item">
+                                          <a class="nav-link" id="profile-tab4" data-toggle="tab" href="#Language"
+                                            role="tab" aria-controls="Language" aria-selected="false">Language</a>
+                                        </li>
 
-                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                      <li class="nav-item">
-                                        <a class="nav-link active" id="home-tab1" data-toggle="tab" href="#home1"
-                                          role="tab" aria-controls="home1" aria-selected="true">Qualification</a>
-                                      </li>
-                                      <li class="nav-item">
-                                        <a class="nav-link" id="profile-tab2" data-toggle="tab" href="#profile2"
-                                          role="tab" aria-controls="profile2" aria-selected="false">Experience</a>
-                                      </li>
+                                      </ul>
+                                    </div>
+                                    <div class="col-md-7">
 
-                                    </ul>
-                                  </div>
-                                  <div class="col-md-7">
+                                      <div class="tab-content" id="myTabContent">
 
-                                    <div class="tab-content" id="myTabContent">
-                                      <div class="tab-pane fade show active" id="home1" role="tabpanel"
-                                        aria-labelledby="home-tab1">
-                                        <div class="inner-box-qualification">
-                                          <div class="input-group search-input-new">
-                                            <i class="fa fa-search"></i>
-                                            <input id="search-input" type="search" id="form1" class="form-control" />
-                                          </div>
-                                          <div class="form-group for-select-existing-doc">
-                                            <div class="input-group">
-                                              <div>
-                                                <div class="for-doc-select">
-                                                  <div class="checkbox">
-                                                    <label>
-                                                      <input type="checkbox" value="">
-                                                      <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-                                                      Dirving License
+                                        <div class="tab-pane fade" id="Experience" role="tabpanel"
+                                          aria-labelledby="profile-tab2">
+                                          <div class="inner-box-qualification">
+                                            <div class="input-group search-input-new">
+                                              <i class="fa fa-search"></i>
+                                              <input id="myInput1" onkeyup="myFunction1()" type="search"
+                                                class="form-control" />
+                                            </div>
+                                            <div class="form-group for-select-existing-doc">
+                                              <div class="input-group">
+                                                <div>
+                                                  <ul id="myUL1" style="padding-left: 0;">
+                                                    <% uniqueExperience.forEach(function(exprow){ %>
 
-                                                    </label>
-                                                  </div>
-                                                </div>
-                                                <div class="for-doc-select">
-                                                  <div class="checkbox">
-                                                    <label>
-                                                      <input type="checkbox" value="">
-                                                      <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-                                                      Passport
+                                                      <li style="list-style: none;">
+                                                        <div class="for-doc-select">
+                                                          <div class="checkbox">
+                                                            <label>
+                                                              <input onclick="return mySPmultifilter()" type="checkbox"
+                                                                name="experience" value="<%=exprow %>">
+                                                              <span class="cr"><i
+                                                                  class="cr-icon fa fa-check"></i></span>
+                                                              <%= exprow %>
+                                                            </label>
+                                                          </div>
+                                                        </div>
+                                                      </li>
 
-                                                    </label>
-                                                  </div>
-                                                </div>
-                                                <div class="for-doc-select">
-                                                  <div class="checkbox">
-                                                    <label>
-                                                      <input type="checkbox" value="">
-                                                      <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-                                                      Form 3
+                                                      <% }) %>
+                                                  </ul>
 
-                                                    </label>
-                                                  </div>
-                                                </div>
-                                                <div class="for-doc-select">
-                                                  <div class="checkbox">
-                                                    <label>
-                                                      <input type="checkbox" value="">
-                                                      <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-                                                      Utility bill
-
-                                                    </label>
-                                                  </div>
                                                 </div>
                                               </div>
-
                                             </div>
                                           </div>
                                         </div>
+
+
+                                        <div class="tab-pane fade" id="Location" role="tabpanel"
+                                          aria-labelledby="profile-tab3">
+                                          <div class="inner-box-qualification">
+                                            <div class="input-group search-input-new">
+                                              <i class="fa fa-search"></i>
+                                              <input id="myInput2" onkeyup="myFunction2()" type="search"
+                                                class="form-control" />
+                                            </div>
+                                            <div class="form-group for-select-existing-doc">
+                                              <div class="input-group">
+                                                <div>
+                                                  <ul id="myUL2" style="padding-left: 0;">
+                                                    <% uniqueCity.forEach(function(cityrow){ %>
+
+                                                      <li style="list-style: none;">
+                                                        <div class="for-doc-select">
+                                                          <div class="checkbox">
+                                                            <label>
+                                                              <input onclick="return mySPmultifilter()" type="checkbox"
+                                                                name="location_city" value="<%= cityrow %>">
+                                                              <span class="cr"><i
+                                                                  class="cr-icon fa fa-check"></i></span>
+                                                              <%= cityrow %>
+                                                            </label>
+                                                          </div>
+                                                        </div>
+                                                      </li>
+
+                                                      <% }) %>
+                                                  </ul>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+
+
+                                        <div class="tab-pane fade" id="Language" role="tabpanel"
+                                          aria-labelledby="profile-tab4">
+                                          <div class="inner-box-qualification">
+                                            <div class="input-group search-input-new">
+                                              <i class="fa fa-search"></i>
+                                              <input id="myInput3" onkeyup="myFunction3()" type="search"
+                                                class="form-control" />
+                                            </div>
+                                            <div class="form-group for-select-existing-doc">
+                                              <div class="input-group">
+                                                <div>
+                                                  <ul id="myUL3" style="padding-left: 0;">
+                                                    <% uniqueLanguage.forEach(function(langrow){ %>
+
+                                                      <li style="list-style: none;">
+                                                        <div class="for-doc-select">
+                                                          <div class="checkbox">
+                                                            <label>
+                                                              <input onclick="return mySPmultifilter()" type="checkbox"
+                                                                name="language" value="<%= langrow %>">
+                                                              <span class="cr"><i
+                                                                  class="cr-icon fa fa-check"></i></span>
+                                                              <%= langrow %>
+                                                            </label>
+                                                          </div>
+                                                        </div>
+                                                      </li>
+
+                                                      <% }) %>
+                                                  </ul>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+
+
+                                        <div class="tab-pane fade active show" id="Category" role="tabpanel"
+                                          aria-labelledby="profile-tab5">
+                                          <div class="inner-box-qualification">
+                                            <div class="input-group search-input-new">
+                                              <i class="fa fa-search"></i>
+                                              <input id="myInput" onkeyup="myFunction()" type="search"
+                                                class="form-control" />
+                                            </div>
+                                            <div class="form-group for-select-existing-doc">
+                                              <div class="input-group">
+                                                <div>
+                                                  <ul id="myUL" style="padding-left: 0;">
+                                                    <% uniqueCategory.forEach(function(catrow){ %>
+
+                                                      <li style="list-style: none;">
+                                                        <div class="for-doc-select">
+                                                          <div class="checkbox">
+                                                            <label>
+                                                              <input onclick="return mySPmultifilter()" type="checkbox"
+                                                                name="category" value="<%=catrow %>">
+                                                              <span class="cr"><i
+                                                                  class="cr-icon fa fa-check"></i></span>
+                                                              <%= catrow %>
+                                                            </label>
+                                                          </div>
+                                                        </div>
+                                                      </li>
+
+                                                      <% }) %>
+                                                  </ul>
+                                                </div>
+
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+
+
                                       </div>
-                                      <div class="tab-pane fade" id="profile2" role="tabpanel"
-                                        aria-labelledby="profile-tab2">2</div>
                                     </div>
                                   </div>
-                                </div>
+                                </form>
                               </div>
                             </div>
 
@@ -308,9 +413,7 @@
                   <p class="notfound_msg">My professional not found !! </p>
                   <% } %>
             </div>
-
             <div class="myprofessional-pagination-section">
-             
               <nav aria-label="Page navigation example">
                 <ul class="pagination">
                   <% if(totalPages > 1){ %>
@@ -336,9 +439,7 @@
                   <% } %>
                 </ul>
               </nav>
-           
             </div>
-
           </div>
         </div>
       </div>
@@ -347,4 +448,72 @@
     </div>
 
     <%- include('dashboard_footer')-%>
+    <script>
+      function myFunction() {
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myUL");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+          a = li[i].getElementsByTagName("div")[0];
+          txtValue = a.textContent || a.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+          } else {
+            li[i].style.display = "none";
+          }
+        }
+      }
   
+      function myFunction1() {
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById("myInput1");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myUL1");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+          a = li[i].getElementsByTagName("div")[0];
+          txtValue = a.textContent || a.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+          } else {
+            li[i].style.display = "none";
+          }
+        }
+      }
+   
+      function myFunction2() {
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById("myInput2");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myUL2");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+          a = li[i].getElementsByTagName("div")[0];
+          txtValue = a.textContent || a.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+          } else {
+            li[i].style.display = "none";
+          }
+        }
+      }
+  
+      function myFunction3() {
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById("myInput3");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myUL3");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+          a = li[i].getElementsByTagName("div")[0];
+          txtValue = a.textContent || a.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+          } else {
+            li[i].style.display = "none";
+          }
+        }
+      }
+    </script>
