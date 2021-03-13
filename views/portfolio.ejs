@@ -23,7 +23,7 @@
               </span>
               <% }%>
                 <form id="uploadForm" method="POST" enctype="multipart/form-data">
-                  <div class="row">
+                  <div class="row portpolio_div">
 
 
                     <div class="kyc-box-portfolio">
@@ -228,6 +228,7 @@
   <script>
     $(document).ready(function () {
       $("#uploadForm").submit(function (e) {
+        $('.loader-box').attr('style', 'display:flex !important');
         e.preventDefault()
         var formData = new FormData($('#uploadForm')[0]);
         console.log('============', formData)
@@ -239,6 +240,7 @@
           contentType: false,
           processData: false,
           success: function (data) {
+            $('.loader-box').attr('style', 'display:none !important');
             console.log(data)
             if (data.status == true) {
               Swal.fire({
@@ -304,7 +306,91 @@
       }
     }
   </script>
+  <script>
+   $(document).ready(function () {
+      var data = {
+        user_id:'<%= session.user_id%>'
+      }
+      $.ajax({
+          type: "GET",
+          data: data,
+          url: "/api/portpolio",
+          cache: false,
+          success: function (resp) {
+            console.log(resp);
+            if (resp.status == true) {
+              var htmlData = '';
+           
+            if (resp.data.length > 0) {
+              $('.portfolio-submit-btn').attr('disabled', true);
+              $.each(resp.data, function (i, data) {
+                console.log('val:', resp.data[0])
+               var id=resp.data[0]._id
+               //alert(id)
+                htmlData += "<div class='kyc-box-portfolio'><div class=kyc-section-portfolio><img src='../portfolioImage/"+data.spps_filename+"' class='avtar1'></div><div class='driving-liences-portfolio img_name1'><p style='white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>"+data.spps_filename+"</p></div><div class='upload-portfolio'><a href='javascript:void(0)'>Upload</a></div><span><div class='custom-file-input'><input type='file' class='image1'name='portfolio-docs' value=''  onchange='update_port_previewFile(this,"+JSON.stringify(data._id)+");'><input type='button'></div></span></div><input type='hidden' name='portpolio_img_id' value='"+data._id+"'> ";
+              });
+              
+              $('.portpolio_div').html(htmlData);
+            }
+          }
+        }
+        });
+      })
+      function update_port_previewFile(input,img_id){
+       
+        Swal.fire({
+        title: 'Are you sure want to Upload Document?',
+        showCancelButton: true,
+        confirmButtonText: `Yes`,
+        confirmButtonColor: '#005377',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          var data = new FormData();
+          data.append('portfolio-docs', input.files[0]);
+          data.append('img_id', img_id);
+          $('.loader-box').attr('style', 'display:flex !important');
+          $.ajax({
+            type: "POST",
+            data: data,
+            url: "/update_portPolio",
+            cache: false,
+            contentType: false,
+           processData: false,
+            success: function (data) {
+              $('.loader-box').attr('style', 'display:none !important');
+              console.log(data);
+             
+              if (data.status == true) {
+                Swal.fire({
+                  icon: 'success',
+                  title: data.message,
+                  showConfirmButton: false,
+                  confirmButtonColor: '#005377',
+                  timer: 3000
+                }).then((result)=>{
+                  location.reload(true)
+                })
 
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: data.message,
+                  showConfirmButton: false,
+                  confirmButtonColor: '#005377',
+                  timer: 3000
+                }).then((result)=>{
+                  location.reload(true)
+                })
+               
+            ;
+                
+              }
+            }
+          });
+        }
+      })
+      }
+</script>
   </body>
 
   </html>

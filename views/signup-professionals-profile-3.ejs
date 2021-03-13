@@ -169,7 +169,7 @@
               <div class="row">
                 <div class="col-sm-12 col-lg-9">
                   <div class="signup-head">
-                    <h3>Education</h3>
+                    <h3>Education Details</h3>
                   </div>
                 </div>
                 <div class="col-sm-12 col-lg-3">
@@ -221,7 +221,7 @@
                         <div class="row">
                           <div class="edu-btn float-left">
                             <a href="#" class="btn add-edu-btn"><i class="fa fa-plus"></i>&nbsp;&nbsp;
-                              AddEducation</a>
+                              Add Education</a>
                           </div>
                         </div>
                       </div>
@@ -277,8 +277,13 @@
           });
         });
       </script>
-
-
+<script>
+  $(document).ready(function () {
+    toDate.max = new Date().toISOString().split("T")[0];
+          
+        });
+      
+</script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
         integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
         crossorigin="anonymous"></script>
@@ -295,8 +300,10 @@
 
 
         $('#educationForm').validate({
+      
           onfocusout: function (element) {
             this.element(element);
+            
           },
           errorClass: 'error_validate',
           errorElement: 'span',
@@ -304,6 +311,16 @@
             $(element).removeClass(errorClass);
           },
           submitHandler: function (form) {
+  var StartDate= document.getElementById('FromDate').value;
+  var EndDate= document.getElementById('toDate').value;
+  var eDate = new Date(EndDate);
+  var sDate = new Date(StartDate);
+  if(StartDate!= '' && StartDate!= '' && sDate> eDate)
+    {
+    alert("Please ensure that the End Date is greater than or equal to the Start Date.");
+    return false;
+    }else{
+      $('.loader-box').attr('style', 'display:flex !important');
             var formdata = $('#educationForm').serialize();
             console.log('formdata:', formdata);
             $.ajax({
@@ -313,14 +330,25 @@
               cache: false,
               dataType: 'json',
               success: function (data) {
+                $('.loader-box').attr('style', 'display:none !important');
                 console.log(data)
                 if (data.status == true) {
                   $('#educationForm')[0].reset();
                   if (data.action == 'add') {
                     var fromDateYear = new Date(data.educationDetail.spes_from_date).getFullYear();
                     var toDateYear = new Date(data.educationDetail.spes_to_date).getFullYear();
-                    $('#myModal').modal('hide');
-                    $('.education_lists').append('<div class="row"><div class="col-sm-12 col-lg-9"><div class=""><p><b>' + data.educationDetail.spes_university_school_name + '</b></p><h6>' + data.educationDetail.spes_qualification_obtained + '</h6><h6>' + fromDateYear + '-' + toDateYear + '</h6></div></div><div class="col-sm-12 col-lg-3"><div class=""> <img style="width:19%" onclick="editEducation(' + "'" + data.educationDetail._id + "'" + ')" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;<img style="width:19%" onclick="deleteEducation(' + data.educationDetail._id + ')" src="images/delete-icon.png" alt=""></div></div></div>')
+                    Swal.fire({
+                      icon: 'success',
+                      title: data.success_msg,
+                      showConfirmButton: false,
+                      confirmButtonColor: '#005377',
+                      timer: 3000
+                    }).then((result)=>{
+                      $('#myModal').modal('hide');
+                      $('.education_lists').append('<div class="row"><div class="col-sm-12 col-lg-9"><div class=""><p><b>' + data.educationDetail.spes_university_school_name + '</b></p><h6>' + data.educationDetail.spes_qualification_obtained + '</h6><h6>' + fromDateYear + '-' + toDateYear + '</h6></div></div><div class="col-sm-12 col-lg-3"><div class=""> <img style="width:19%" onclick="editEducation(' + "'" + data.educationDetail._id + "'" + ')" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;<img style="width:19%" onclick="deleteEducation(' + data.educationDetail._id + ')" src="images/delete-icon.png" alt=""></div></div></div>')
+                      location.reload(true);
+                    
+                    })
                   } else {
                     Swal.fire({
                       icon: 'success',
@@ -328,10 +356,13 @@
                       showConfirmButton: false,
                       confirmButtonColor: '#005377',
                       timer: 3000
-                    })
-                    setTimeout(function () {
+                    }).then((result)=>{
+                      $('#myModal').modal('hide');
+                      $('.education_lists').append('<div class="row"><div class="col-sm-12 col-lg-9"><div class=""><p><b>' + data.educationDetail.spes_university_school_name + '</b></p><h6>' + data.educationDetail.spes_qualification_obtained + '</h6><h6>' + fromDateYear + '-' + toDateYear + '</h6></div></div><div class="col-sm-12 col-lg-3"><div class=""> <img style="width:19%" onclick="editEducation(' + "'" + data.educationDetail._id + "'" + ')" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;<img style="width:19%" onclick="deleteEducation(' + data.educationDetail._id + ')" src="images/delete-icon.png" alt=""></div></div></div>')
                       location.reload(true);
-                    }, 3000);
+                    
+                    })
+                    
                   }
                 } else {
 
@@ -341,21 +372,33 @@
                     showConfirmButton: false,
                     confirmButtonColor: '#005377',
                     timer: 3000
-                  })
-                  setTimeout(function () {
+                  }).then((result)=>{
                     location.reload(true);
-                  }, 3000);
+                  })
+               
 
 
                 }
               }
             });
+    }
+            
           }
         });
 
 
-        function editEducation(id) {
+    function editEducation(id) {
+      var StartDate= document.getElementById('FromDate').value;
+      var EndDate= document.getElementById('toDate').value;
+      var eDate = new Date(EndDate);
+      var sDate = new Date(StartDate);
+      if(StartDate!= '' && StartDate!= '' && sDate> eDate)
+        {
+        alert("Please ensure that the End Date is greater than or equal to the Start Date.");
+        return false;
+        }else{
           var eduId = id;
+          $('.loader-box').attr('style', 'display:flex !important');
           $.ajax({
             type: "POST",
             data: {
@@ -365,6 +408,7 @@
             url: "/api/edit-professional-basic-details",
             cache: false,
             success: function (data) {
+              $('.loader-box').attr('style', 'display:none !important');
               console.log(data);
               $('#myModal').modal('show');
               if (data.status == true) {
@@ -391,6 +435,7 @@
             }
           });
         }
+    }
 
 
         function deleteEducation(id) {
@@ -402,6 +447,7 @@
             confirmButtonColor: '#005377',
           }).then((result) => {
             if (result.isConfirmed) {
+              $('.loader-box').attr('style', 'display:flex !important');
               $.ajax({
                 type: "POST",
                 data: {
@@ -411,12 +457,13 @@
                 url: "/api/delete-professional-basic-details",
                 cache: false,
                 success: function (data) {
+                  $('.loader-box').attr('style', 'display:none !important');
                   console.log(data);
                   if (data.status == true) {
                     //location.reload(true);
                     Swal.fire({
                       icon: 'success',
-                      title: data.message,
+                      title: 'Education '+data.message,
                       showConfirmButton: false,
                       confirmButtonColor: '#005377',
                       timer: 3000

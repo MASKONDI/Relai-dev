@@ -107,7 +107,7 @@
               <div class="row">
                 <div class="col-sm-12 col-lg-9">
                   <div class="signup-header">
-                    <p>START FOR FREE</p>
+                    <!-- <p>START FOR FREE</p> -->
 
                   </div>
                 </div>
@@ -180,8 +180,8 @@
 
                         <div class="row">
                           <div class="col-sm-12 col-lg-6">
-                            <div class="input-box-size-fix">
-                              <input type="text" class="form-control text-field-size spods_dob " id="" placeholder="Date of Birth"
+                            <div class="input-box-size-fix" id=''>
+                              <input type="text" class="datepicker form-control text-field-size spods_dob " id="datePickerId" placeholder="Date of Birth"
                                 onfocus="(this.type='date')" name="spods_dob" data-rule-required="true"
                                 data-msg-required="Date of birth is required">
                             </div>
@@ -240,7 +240,7 @@
                           <div class="col-sm-12 col-lg-4">
                             <div class="input-box-size-fix">
                               <input type="text" onfocus="(this.type='date')" class="form-control text-field-size start_working_time"
-                                id="" placeholder="Start Date" name="start_working_time">
+                                id="start_working_time" placeholder="Start Date" name="start_working_time">
                             </div>
                           </div>
                         </div>
@@ -352,6 +352,8 @@
   </script>
    <script>
     $(document).ready(function () {
+      datePickerId.max = new Date().toISOString().split("T")[0];
+      start_working_time.min=new Date().toISOString().split('T')[0]
       var data = {
         user_id:'<%= session.user_id%>'
       }
@@ -363,11 +365,19 @@
           success: function (data) {
             console.log(data);
             if (data.status == true) {
+              var date    = new Date(data.data.spods_dob),
+              yr      = date.getFullYear(),
+              month   = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth(),
+              day     = date.getDate()  < 10 ? '0' + date.getDate()  : date.getDate(),
+              newDate = day + '-' + month + '-' + yr;
+
+              //var spods_dob = data.moment(data.data.spods_dob)
+            // var dd= data.moment(data.data.spods_dob).format('L');
               $('.spods_surname').val(data.data.spods_surname);
               $('.spods_fornames').val(data.data.spods_fornames);
               $('.spods_preferred_title').val(data.data.spods_preferred_title);
               $('.spods_former_surnames').val(data.data.spods_former_surnames);
-              $('.spods_dob').val(data.data.spods_dob);
+              $('.spods_dob').val(newDate);
               $('.spods_nationality').val(data.data.spods_nationality);
               $('.spods_address').val(data.data.spods_address);
               $('.spods_postcode').val(data.data.spods_postcode);
@@ -429,6 +439,10 @@
         })
     });
   </script>
+   <script type="text/javascript">
+   
+
+</script>
   </body>
 
   </html>

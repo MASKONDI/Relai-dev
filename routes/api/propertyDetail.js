@@ -8,9 +8,9 @@ const { where } = require("../../models/properties");
 
 module.exports.EditPropertyById = function (req) {
     return new Promise(async function (resolve, reject) {
-        
+
         var phaseArray = [];
-        var chainPropertyIdArray=[];
+        var chainPropertyIdArray = [];
         for (var i in req.body.Phase) {
             var phaseObj = {
                 phase_name: '',
@@ -23,7 +23,7 @@ module.exports.EditPropertyById = function (req) {
             phaseObj.end_date = req.body.endDate[i];
             phaseArray.push(phaseObj);
         }
-        
+
         var editPropObj = {
             ps_property_name: req.body.ps_property_name,
             ps_property_address: req.body.ps_property_address,
@@ -42,89 +42,89 @@ module.exports.EditPropertyById = function (req) {
             ps_property_type: req.body.property_type,
             ps_is_active_user_flag: req.session.active_user_login,
             ps_phase_array: phaseArray,
-            ps_existing_property:req.body.ps_existing_property,
-            ps_chain_property_id:chainPropertyIdArray,
-            ps_other_property_type:req.body.ps_other_property_type
-            
+            ps_existing_property: req.body.ps_existing_property,
+            ps_chain_property_id: chainPropertyIdArray,
+            ps_other_property_type: req.body.ps_other_property_type
+
         };
-        if(req.body.property_type=='Chain'){
-            
+        if (req.body.property_type == 'Chain') {
+
 
             chainPropertyIdArray.push(req.body.ps_chain_property)
         }
-        await PropertiesSchema.updateOne(editPropObj).where({_id:req.body.editPropertyId}).then(async(resp)=>{
-            if(resp){
-                let responce =await resp
+        await PropertiesSchema.updateOne(editPropObj).where({ _id: req.body.editPropertyId }).then(async (resp) => {
+            if (resp) {
+                let responce = await resp
                 resolve(responce)
             }
         }).catch((err) => {
             reject(err)
         })
-    
+
     });
 };
 
 module.exports.EditPropertyImageById = function (req) {
     return new Promise(async function (resolve, reject) {
-        await req.files.propertiespic.forEach(function(element,i){
+        await req.files.propertiespic.forEach(function (element, i) {
             var obj = {
-               
+
                 pps_property_id: req.body.property_id,
                 pps_property_image_name: element.filename,
                 pps_is_active_user_flag: req.session.active_user_login,
-                
+
             }
-            
-            PropertiesPictureSchema.updateOne(obj).where({_id:req.body.image_id}).then(async(resp)=>{
-                if(resp){
+
+            PropertiesPictureSchema.updateOne(obj).where({ _id: req.body.image_id }).then(async (resp) => {
+                if (resp) {
                     //console.log("success image =========",resp)
-                    let responce =await resp
+                    let responce = await resp
                     resolve(responce)
                 }
             }).catch((err) => {
                 reject(err)
             })
-           
-            
-               
-            
+
+
+
+
         });
-       
+
     });
 };
 module.exports.EditPropertyPlanImageById = function (req) {
     return new Promise(async function (resolve, reject) {
-        await req.files.planImage.forEach(function(element,i){
+        await req.files.planImage.forEach(function (element, i) {
             var obj = {
-               
+
                 ppps_property_id: req.body.property_id,
                 ppps_plan_image_name: element.filename,
                 ppps_is_active_user_flag: req.session.active_user_login,
-                
+
             }
-           
-          
-            
-            PropertiesPlanPictureSchema.updateOne(obj).where({_id:req.body.image_id}).then(async(resp)=>{
-                if(resp){
-                    let responce =await resp
+
+
+
+            PropertiesPlanPictureSchema.updateOne(obj).where({ _id: req.body.image_id }).then(async (resp) => {
+                if (resp) {
+                    let responce = await resp
                     resolve(responce)
                 }
             }).catch((err) => {
                 reject(err)
             })
-          
-           
-            
-               
-            
+
+
+
+
+
         });
-       
+
     });
 };
 module.exports.GetPropertImageById = function (propertyId, pps_is_active_user_flag) {
     return new Promise(async function (resolve, reject) {
-        
+
         var data = { $and: [{ pps_is_active_user_flag: pps_is_active_user_flag, pps_property_id: propertyId }] }
         await PropertiesPictureSchema.find(data).then(async (resp) => {
             let responce = await resp
@@ -137,7 +137,7 @@ module.exports.GetPropertImageById = function (propertyId, pps_is_active_user_fl
 };
 module.exports.GetPropertPlanImageById = function (propertyId, ppps_is_active_user_flag) {
     return new Promise(async function (resolve, reject) {
-        
+
         var data = { $and: [{ ppps_is_active_user_flag: ppps_is_active_user_flag, ppps_property_id: propertyId }] }
         await PropertiesPlanPictureSchema.find(data).then(async (resp) => {
             let responce = await resp
@@ -152,10 +152,12 @@ module.exports.GetPropertById = function (propertyId, ps_is_active_user_flag) {
     return new Promise(async function (resolve, reject) {
         //console.log('hello',pps_property_id,pps_is_active_user_flag)
         //var data = { _id: propertyId }
-        var data = { $and: [{
-            //ps_is_active_user_flag: ps_is_active_user_flag, _id: propertyId 
-             _id: propertyId 
-            }] }
+        var data = {
+            $and: [{
+                //ps_is_active_user_flag: ps_is_active_user_flag, _id: propertyId 
+                _id: propertyId
+            }]
+        }
         await PropertiesSchema.findOne(data).then(async (resp) => {
             let responce = await resp
             resolve(responce)
@@ -177,12 +179,12 @@ module.exports.GetAllProperty = function (user_id, ps_is_active_user_flag) {
         })
     });
 };
-module.exports.GetAllPropertyInEdit = function (user_id, ps_is_active_user_flag,property_id) {
+module.exports.GetAllPropertyInEdit = function (user_id, ps_is_active_user_flag, property_id) {
     return new Promise(async function (resolve, reject) {
-      console.log('hello',property_id)
+        console.log('hello', property_id)
         //var data = { _id: propertyId }
-        
-        var data = { $and: [{ ps_is_active_user_flag: ps_is_active_user_flag, ps_user_id: user_id,},{_id:{$ne:property_id}}] }
+
+        var data = { $and: [{ ps_is_active_user_flag: ps_is_active_user_flag, ps_user_id: user_id, }, { _id: { $ne: property_id } }] }
         await PropertiesSchema.find().where(data).then(async (resp) => {
             let responce = await resp
             resolve(responce)
@@ -208,8 +210,8 @@ module.exports.add_new_property_image = function (req) {
                     console.log(err);
                 }
                 else {
-                    item.save().then(async(propertyImageResponce)=>{
-                        if(propertyImageResponce){
+                    item.save().then(async (propertyImageResponce) => {
+                        if (propertyImageResponce) {
                             let responce = await propertyImageResponce
                             resolve(responce);
                         }
@@ -239,8 +241,8 @@ module.exports.add_new_property_plan_image = function (req) {
                     console.log(err);
                 }
                 else {
-                    item.save().then(async(propertyPlanImageResponce)=>{
-                        if(propertyPlanImageResponce){
+                    item.save().then(async (propertyPlanImageResponce) => {
+                        if (propertyPlanImageResponce) {
                             let responce = await propertyPlanImageResponce
                             resolve(responce);
                         }
@@ -257,10 +259,10 @@ module.exports.add_new_property_plan_image = function (req) {
 module.exports.Add_New_Propert = function (req) {
     return new Promise(async function (resolve, reject) {
         var phaseArray = [];
-        var chainPropertyIdArray=[];
-        var chainPropertyNameArray=[];
-        req.body.Phase.forEach(function(row,i){
-        //for (var i in req.body.Phase) {
+        var chainPropertyIdArray = [];
+        var chainPropertyNameArray = [];
+        req.body.Phase.forEach(function (row, i) {
+            //for (var i in req.body.Phase) {
             var phaseObj = {
                 phase_name: '',
                 start_date: '',
@@ -271,7 +273,7 @@ module.exports.Add_New_Propert = function (req) {
             phaseObj.start_date = req.body.startDate[i];
             phaseObj.end_date = req.body.endDate[i];
             phaseArray.push(phaseObj);
-        //}
+            //}
         })
         var PropertyBoject = {
             ps_unique_code: "prop-" + Math.random().toString(36).slice(-6),
@@ -294,14 +296,14 @@ module.exports.Add_New_Propert = function (req) {
             ps_property_type: req.body.property_type,
             ps_is_active_user_flag: req.session.active_user_login,
             ps_phase_array: phaseArray,
-            ps_existing_property:req.body.ps_existing_property,
-            ps_chain_property_id:chainPropertyIdArray,
-            ps_other_property_type:req.body.ps_other_property_type,
-            ps_chain_property_name:chainPropertyNameArray
-            
+            ps_existing_property: req.body.ps_existing_property,
+            ps_chain_property_id: chainPropertyIdArray,
+            ps_other_property_type: req.body.ps_other_property_type,
+            ps_chain_property_name: chainPropertyNameArray
+
         };
-        if(req.body.property_type=='Chain'){
-            var chain_propnameByid=await PropertiesSchema.findOne({_id:req.body.ps_chain_property});
+        if (req.body.property_type == 'Chain') {
+            var chain_propnameByid = await PropertiesSchema.findOne({ _id: req.body.ps_chain_property });
             chainPropertyNameArray.push(chain_propnameByid.ps_property_name);
             chainPropertyIdArray.push(req.body.ps_chain_property)
         }
