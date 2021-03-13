@@ -141,12 +141,13 @@ router.post("/service_provider_register", (req, res) => {
               req.session.success = true,
                 // req.session._id = doc.user_id;
                 req.session.user_id = serviceProviders._id,
-                req.session.name = serviceProviders.sps_firstname + ' ' + serviceProviders.sps_lastname,
+                req.session.name = serviceProviders.sps_fullname,
                 req.session.sps_firstname = serviceProviders.sps_firstname,
                 req.session.sps_lastname = serviceProviders.sps_lastname,
                 req.session.sps_address = serviceProviders.sps_address,
                 req.session.email = serviceProviders.sps_email_id,
                 req.session.role = serviceProviders.sps_role_name,
+                req.session.imagename = '',
                 req.session.is_user_logged_in = true,
                 //   req.flash('service_provider', serviceProviders);
                 // res.redirect("/signup-professionals-profile")
@@ -1046,12 +1047,13 @@ router.post("/service_provider_signin",
               // req.session._id = doc.user_id;
               req.session.success = true
               req.session.user_id = service_provider._id;
-              req.session.name = service_provider.sps_firstname + '' + service_provider.sps_lastname;
+              req.session.name = service_provider.sps_fullname;
               req.session.sps_firstname = service_provider.sps_firstname;
               req.session.sps_lastname = service_provider.sps_lastname;
               req.session.sps_address = service_provider.sps_address;
               req.session.email = service_provider.sps_email_id;
               req.session.role = service_provider.sps_role_name;
+              req.session.imagename ='';
               req.session.is_user_logged_in = true;
 
               // service_provider Matched
@@ -1678,7 +1680,7 @@ router.post('/professional-change-password', function (req, res) {
 });
 
 
-router.post('/service-provider-message', (req, res) => {
+router.post('/service-provider-message', async (req, res) => {
   console.log("Service Send Message data from client is :", req.body);
   const newMessage = new MessageSchema({
     sms_property_id: req.body.sms_property_id,// storing property_id if its not null
@@ -1691,10 +1693,18 @@ router.post('/service-provider-message', (req, res) => {
     sms_read_status: req.body.sms_read_status, //default is unread
     sms_is_active_user_flag: req.session.active_user_login
   })
-  newMessage.save().then(message => {
+  newMessage.save().then(async message => {
     console.log("getting response form server is :", message);
+    let QueryCount = {
+      $or: [
+        { $and: [{ sms_sender_id: req.body.sms_sender_id }, { sms_receiver_id: req.body.sms_receiver_id }, { sms_property_id: req.body.sms_property_id }] },
+        { $and: [{ sms_sender_id: req.body.sms_receiver_id }, { sms_receiver_id: req.body.sms_sender_id }, { sms_property_id: req.body.sms_property_id }] }
+      ]
+    }
+    const countMsg = await MessageSchema.countDocuments(QueryCount);
     res.send({
-      msgData: message
+      msgData: message,
+      countMsg: countMsg
     })
     //res.flash('success_msg', 'message forward successfully');
     //res.redirect('/'); //set based on current login if its customer portal then redirect customer_message portal and 

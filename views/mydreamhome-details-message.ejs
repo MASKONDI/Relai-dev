@@ -39,6 +39,7 @@
                     </div>
                     <div class="messages-section">
                       <div id="message_board">
+                        <div class="old_message_section">
                         <% chatData.forEach(function(row){ %>
                           <div class="messages-box clearfix">
                             <div class="message-user-img">
@@ -55,6 +56,8 @@
                             </div>
                           </div>
                           <% }); %>
+                        </div>  
+                          <span class="latest_msg"></span>
                       </div>
                       <div class="text-message-box clearfix">
                         <% var userid=''; if(session.active_user_login == property.ps_is_active_user_flag){ %> 
@@ -64,6 +67,7 @@
                         <% } %> 
                         <form method="POST" id="chat_form">
                           <div class="text-box">
+                            <input type="hidden" name="msgcount" value="<%=chatData.length %>" id="msgcount">
                             <input type="hidden" name="professional_id" data-val="<%=professional_id%>"
                               value="<%=professional_id%>" id="professional_id">
                             <input type="hidden" name="property_id" value="<%=property._id%>" id="property_id">
@@ -89,7 +93,9 @@
     <%- include('dashboard_footer')-%>
 
 <script>
-      function getAllMessage(sms_receiver_id, sms_sender_id, sms_property_id) {
+  $("#message_board").stop().animate({ scrollTop: $("#message_board")[0].scrollHeight}, 1000);
+      function getAllMessage(sms_receiver_id, sms_sender_id, sms_property_id, msgcount) {
+        console.log('cuss');
       $.ajax({
         type: "GET",
         data: {
@@ -112,16 +118,34 @@
               }
               htmlData += '<div class="messages-box clearfix"><div class="message-user-img">'+imageData+'</div><div class="message-content"><h3>' + data.senderName + '</h3><p>'+data.sms_message.trim()+'</p><p class="hours-ago text-right">' + data.msgTime + '</p></div></div>';
             });
-            $('#message_board').html(htmlData);
+            console.log('length:',datas.chatData.length)
+            if(datas.chatData.length > msgcount){
+              $('#message_board').html(htmlData);
+            }else{
+              console.log('intervaltotl:',datas.chatData.length)
+            }
+            //$("#message_board").stop().animate({ scrollTop: $("#message_board")[0].scrollHeight}, 1000);
+
           }
+
+           var professional_id = $("#chat_form #professional_id").val();
+           var customer_id = $("#customer_id").val();
+           var property_id = $("#chat_form  #property_id").val();
+            //var msgcount = $("#chat_form  #msgcount").val();
+            getAllMessage(professional_id, customer_id, property_id, msgcount);
         }
       });
     }
+    $(document).ready(function() {
 
-    setInterval(function () {
+      console.log('tttttt')
+    //setInterval(function () {
       var professional_id = $("#chat_form #professional_id").val();
       var customer_id = $("#customer_id").val();
       var property_id = $("#chat_form  #property_id").val();
-        getAllMessage(professional_id, customer_id, property_id);
-    }, 1000);
+      var msgcount = $("#chat_form  #msgcount").val();
+      console.log('totalmS:',msgcount)
+        getAllMessage(professional_id, customer_id, property_id, msgcount);
+   // }, 2000);
+  });  
   </script>

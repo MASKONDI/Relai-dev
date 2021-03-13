@@ -1402,10 +1402,10 @@ myDREAMHOME-DETAILS-MESSAGE
             var professional_id = $("#chat_form #professional_id").val();
             var customer_id = $("#customer_id").val();
             var property_id = $("#chat_form #property_id").val();
-            console.log('professional_id:', professional_id);
-            console.log('customer_id:', customer_id);
-            console.log('property_id:', property_id);
-            console.log('comment:', comment);
+            console.log('qprofessional_id:', professional_id);
+            console.log('qcustomer_id:', customer_id);
+            console.log('qproperty_id:', property_id);
+            console.log('qcomment:', comment);
             if (comment) {
               $.ajax({
                 type: "POST",
@@ -1421,39 +1421,56 @@ myDREAMHOME-DETAILS-MESSAGE
                 },
                 url: "/api/message",
                 cache: false,
-                success: function (data) {
+                beforeSend: function() {
                   $("#comment").val('');
-                  getAllMessage(professional_id, customer_id, property_id);
+                  var imageData='';
+                      var sessionImg = '<%=session.imagename%>';
+                      console.log('teeee:',sessionImg);
+                      if(sessionImg){
+                        imageData = '<img src="upload/'+sessionImg+'" alt="" title="">';
+                      }else{
+                        imageData = '<img src="images/img_avatar.png" alt="" title="">';
+                      }
+                      htmlData = '<div class="messages-box clearfix"><div class="message-user-img">'+imageData+'</div><div class="message-content"><h3><%=session.name%></h3><p>'+comment.trim()+'</p><p class="hours-ago text-right">just now</p></div></div>';
+                      $('#message_board').append(htmlData);
+                      $("#message_board").stop().animate({ scrollTop: $("#message_board")[0].scrollHeight}, 1000);
+                 },
+                success: function (data) {
+                  console.log('tessss:',data);
+                  jQuery('#chat_form #msgcount').val(data.countMsg);
+
+                  //getAllMessage(professional_id, customer_id, property_id);
+                  //$("#message_board").stop().animate({ scrollTop: $("#message_board")[0].scrollHeight}, 1000);
                 }
               });
             }
           });
 
-     $('#chat_form').click(function (e) {
-        console.log('Customer messg staus')
-            var professional_id = $("#chat_form #professional_id").val();
-            var customer_id = $("#customer_id").val();
-            var property_id = $("#chat_form #property_id").val();
-        console.log('professional_id:', professional_id);
-        console.log('customer_id:', customer_id);
-        console.log('property_id:', property_id);
-          $.ajax({
-            type: "POST",
-            data: {
-              sms_receiver_id: customer_id,
-              sms_property_id: property_id,
-              sms_sender_id: professional_id,
-              sms_sender_type: 'service_provider',
-              sms_receiver_type: 'customer',
-              sms_read_status: 'read'
-            },
-            url: "/api/customer-message-unread",
-            cache: false,
-            success: function (data) {
-              $("#comment").val('');
-            }
-          });
-      });
+    //  $('#chat_form').click(function (e) {
+    //     console.log('Customer messg staus')
+    //         var professional_id = $("#chat_form #professional_id").val();
+    //         var customer_id = $("#customer_id").val();
+    //         var property_id = $("#chat_form #property_id").val();
+    //     console.log('professional_id:', professional_id);
+    //     console.log('customer_id:', customer_id);
+    //     console.log('property_id:', property_id);
+    //       $.ajax({
+    //         type: "POST",
+    //         data: {
+    //           sms_receiver_id: customer_id,
+    //           sms_property_id: property_id,
+    //           sms_sender_id: professional_id,
+    //           sms_sender_type: 'service_provider',
+    //           sms_receiver_type: 'customer',
+    //           sms_read_status: 'read'
+    //         },
+    //         url: "/api/customer-message-unread",
+    //         cache: false,
+    //         success: function (data) {
+    //           $("#comment").val('');
+    //         }
+    //       });
+    //   });
 
         </script>
 
@@ -4846,6 +4863,112 @@ function paginationMultifilter(page){
       }
     });
     }
+
+    
+
+    
+function mySPpaginationMultifilter(page){
+
+$('.loader-box').attr('style','display:flex !important');
+    var formData = $("#mySPmultifilterForm").serialize()+'&page='+page;
+    console.log(formData)
+    $.ajax({
+    type: "POST",
+    data: formData,
+    url: "/my-service-professionals-multifilter",
+    cache: false,
+    success: function (html) {
+      $('.loader-box').attr('style','display:none !important');
+      console.log('result:', html.filterData)
+      var htmlData = '';
+      var pageList = '';
+      if (html.filterData.length > 0) {
+       $.each(html.filterData, function (i, data) {
+          console.log('val:', data)
+          htmlData += '<div class="col-sm-4 col-md-4 col-lg-3"><div class="card card-fix3"><div class="row"><div class="float-left card-header-fix"><div class="semi-circle"> <img class="card-img-top" src="images/recent-user-2.png" alt=""></div></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span> '+ data.avgRating +' Rating</span></div></div><div class="card-body"> <button type="button" class="btn btn-cancel" style="margin-top: 30px; margin-bottom: 0px;"><a style="color:#fff;" href="/professionals-detail?id='+ data._id +'">View</a></button></div></div></div>';
+        });
+
+      if(html.totalPages > 1){
+            if(html.currentPage > 1){ var currentPage1 = html.currentPage-1; 
+              pageList +='<li class="page-item"><a class="page-link" onclick="mySPpaginationMultifilter('+currentPage1+')" href="javascript:void(0)" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> <span class="sr-only">Previous</span> </a></li>';
+          }
+                      for(var k=1; k<= html.totalPages; k++){
+                        var tClass=''; if(k == html.currentPage){ tClass='active'; }
+
+                          pageList +='<li class="page-item '+tClass+'"><a class="page-link" onclick="mySPpaginationMultifilter('+k+')" href="javascript:void(0)">'+k+'</a></li>';
+                      }
+          if(html.currentPage < html.totalPages){ var currentPage1 = html.currentPage+1;             
+            pageList +='<li class="page-item"> <a class="page-link" onclick="mySPpaginationMultifilter('+currentPage1+')"  href="javascript:void(0)" aria-label="Next"> <span aria-hidden="true">&raquo;</span> <span class="sr-only">Next</span> </a></li>';   
+          }             
+      }
+
+
+      } else {
+        htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
+        pageList='';
+      }
+      $('#filter_data').html(htmlData);
+      $('.myprofessional-pagination-section .pagination').html(pageList);
+
+    }
+  });
+
+}
+
+    function mySPmultifilter(){
+      console.log('myppp')
+      $('.loader-box').attr('style','display:flex !important');
+      var formData = $("#mySPmultifilterForm").serialize();
+      console.log(formData)
+      $.ajax({
+      type: "POST",
+      data: formData,
+      url: "/my-service-professionals-multifilter",
+      cache: false,
+      success: function (html) {
+        $('.loader-box').attr('style','display:none !important');
+        console.log('result:', html.filterData)
+        var htmlData = '';
+        var pageList = '';
+        if (html.filterData.length > 0) {
+         $.each(html.filterData, function (i, data) {
+            console.log('val:', data)
+            htmlData += '<div class="col-sm-4 col-md-4 col-lg-3"><div class="card card-fix3"><div class="row"><div class="float-left card-header-fix"><div class="semi-circle"> <img class="card-img-top" src="images/recent-user-2.png" alt=""></div></div><div class="float-right card-content-fix"><h5> ' + data.sps_fullname + '</h5><p> ' + data.sps_role_name + '</p></div></div><hr class="divider"><div class="row"><div class="float-left card-icon-fix"> <img class=" card-image-fix" src="images/experience.png" alt="">&nbsp;<span> ' + data.sps_experience + ' years </span></div><div class="float-right card-icon-fix2"> <img class=" card-image-fix" src="images/rating.png" alt="">&nbsp;<span> '+ data.avgRating +' Rating</span></div></div><div class="card-body"> <button type="button" class="btn btn-cancel" style="margin-top: 30px; margin-bottom: 0px;"><a style="color:#fff;" href="/professionals-detail?id='+ data._id +'">View</a></button></div></div></div>';
+        
+          });
+
+        if(html.totalPages > 1){
+              if(html.currentPage > 1){ var currentPage1 = html.currentPage-1; 
+                pageList +='<li class="page-item"><a class="page-link" onclick="mySPpaginationMultifilter('+currentPage1+')" href="javascript:void(0)" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> <span class="sr-only">Previous</span> </a></li>';
+            }
+                        for(var k=1; k<= html.totalPages; k++){
+                          var tClass=''; if(k == html.currentPage){ tClass='active'; }
+
+                            pageList +='<li class="page-item '+tClass+'"><a class="page-link" onclick="mySPpaginationMultifilter('+k+')" href="javascript:void(0)">'+k+'</a></li>';
+                        }
+            if(html.currentPage < html.totalPages){ var currentPage1 = html.currentPage+1;             
+              pageList +='<li class="page-item"> <a class="page-link" onclick="mySPpaginationMultifilter('+currentPage1+')"  href="javascript:void(0)" aria-label="Next"> <span aria-hidden="true">&raquo;</span> <span class="sr-only">Next</span> </a></li>';   
+            }             
+        }
+
+
+        } else {
+          htmlData = '<div class="not-found"><p>Not Found !!</p></div>';
+          pageList='';
+        }
+        $('#filter_data').html(htmlData);
+        $('.myprofessional-pagination-section .pagination').html(pageList);
+      }
+    });
+    }
+
+    function resetMypFilter(){
+      window.location.href="/myprofessionals";
+    }  
+    function resetFilter(){
+      window.location.href="/professionals";
+    }     
+     
   </script>
   <script>
     function previewFile_upload_task_document(input, task_id, service_provider_id, phase_name, task_name, property_id,flage) {
