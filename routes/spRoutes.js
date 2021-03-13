@@ -405,9 +405,10 @@ app.get('/service-provider/myproperties', isServiceProvider, async function (req
 app.get('/service-provider/professional-details-docs', isServiceProvider, async function (req, res) {
   console.log("", req.session);
 
-  req.session.pagename = 'mydreamhome';
+  req.session.pagename = 'service-provider/property';
   var normalDocArray = [];
   var taskDocArray = [];
+  var custmorePermisionArray=[];
   //console.log('property id is :', req.session.property_id);
   //req.session.property_id=req.query.id
   err_msg = req.flash('err_msg');
@@ -435,11 +436,28 @@ app.get('/service-provider/professional-details-docs', isServiceProvider, async 
     }
   });
   //const propertyDataObj = await PropertiesSchema.find();
-  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({
-    pps_property_id: req.session.property_id
+  let propertyProfeshnoal = await PropertyProfessionalSchema.find({
+    $and:[{pps_service_provider_id: req.session.user_id,pps_property_id:req.session.property_id}]
   });
-  //console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
-  let serviceProvArray = [];
+  console.log('propertyProfeshnoal', propertyProfeshnoal);
+  for(var k of propertyProfeshnoal){
+    var image = await customerHelper.getCustomerImageByID(k.pps_user_id);
+    await CustomerSchema.findOne({ _id: k.pps_user_id }).then(async (coustomerdata) => {
+      if(coustomerdata){
+        var cust = JSON.stringify(coustomerdata)
+        var custs = JSON.parse(cust)
+        custs.pps_property_id=k.pps_property_id;
+        custs.pps_service_provider_id=k.pps_service_provider_id
+        custs.custormer_as =k.pps_is_active_user_flag
+        custs.profilePic = image
+        let temps = await custs
+        custmorePermisionArray.push(temps)
+      }
+    })
+  console.log('custmorePermisionArray', custmorePermisionArray);
+  }
+
+
   // for (var k of AllhiredProfeshnoal) {
   //   await ServiceProviderSchema.find({ _id: k.pps_service_provider_id }).then(async (allProfeshnoals) => {
   //     for (let i of allProfeshnoals) {
@@ -470,7 +488,7 @@ app.get('/service-provider/professional-details-docs', isServiceProvider, async 
   res.render('service-provider/professional-details-docs', {
     err_msg, success_msg, layout: false,
     session: req.session,
-    data: serviceProvArray,
+    data: custmorePermisionArray,
     allDocument: normalDocArray,//need to show property wise document still showing all uploaded
     service_provider_document:sp_normalDocArray,
     taskDocument: sptaskDocArray,

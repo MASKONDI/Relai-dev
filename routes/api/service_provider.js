@@ -15,7 +15,7 @@ const ServiceProviderIndemnityDetailsSchema = require("../../models/service_prov
 const validateProfChangePasswordInput = require('../../Validation/change-password-professional');
 const ServiceProviderUploadDocsSchema = require("../../models/service_provider_upload_document");
 const MessageSchema = require("../../models/message");
-
+const DocumentPermissionSchema = require('../../models/document_permission')
 const isEmpty = require('../../Validation/is-empty');
 
 
@@ -1760,4 +1760,90 @@ router.post("/remove_sp_uploaded_document", async (req, res) => {
   }
 
 });
+/* -------------------------------------------------------------------------------------------------
+POST : Change Permission api for giving Docs read/write permission to existing serviceProvider.
+------------------------------------------------------------------------------------------------- */
+router.get('/get-sp-change-permision', async (req, res) => {
+  req.session.pagename = 'mydreamhome';
+  console.log('req.query:', req.query)
+  await DocumentPermissionSchema.find({ dps_document_id: req.query.docId }).sort({ _id: -1 }).then(async (data) => {
+    //req.session.complaintID = req.query.complaintID;
+    console.log('dataaa:', data)
+    if (data) {
+      let arr = [];
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        permissionDetailsData: data,
+      });
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+});
+router.post('/sp-change-permision', async (req, res) => {
+  console.log('doc id:', req.body.doc_id)
+  console.log('checkFlag:', req.body.checkFlag)
+  console.log('=========',req.body)
+
+  DocumentPermissionSchema.findOne({ dps_service_provider_id: req.body.service_provider_id, dps_customer_id: req.body.cust_id, dps_document_id: req.body.doc_id }).then(async (data) => {
+    console.log('FindData:', data);
+    let permisionFlagDownload = '';
+    let permisionFlagView = '';
+
+    if (data) {
+
+      if (req.body.checkFlag === 'viewaction') {
+        permisionFlagDownload = data.dps_download_permission;
+        permisionFlagView = req.body.viewFlag;
+        console.log('view....action...')
+      } else {
+        permisionFlagView = data.dps_view_permission;
+        permisionFlagDownload = req.body.downloadFlag;
+        console.log('download....action...')
+
+      }
+
+      console.log('permisionFlagView:', permisionFlagView);
+      console.log('permisionFlagDownload:', permisionFlagDownload);
+
+
+      DocumentPermissionSchema.updateOne({ 'dps_customer_id': req.body.cust_id, 'dps_service_provider_id': req.body.service_provider_id, 'dps_document_id': req.body.doc_id }, { $set: { dps_view_permission: permisionFlagView, dps_download_permission: permisionFlagDownload, dps_is_active_user_flag: req.session.active_user_login } }, { upsert: true }, function (err) {
+        if (err) {
+          console.log("err is :", err);
+          req.flash('err_msg', 'Something went wrong.');
+          //res.redirect('/forget-password')
+        } else {
+          res.send({
+            message: 'Permission Updated !!'
+          })
+        }
+      })
+
+    } else {
+      let permissionObject = {
+        dps_view_permission: req.body.viewFlag,
+        dps_download_permission: req.body.downloadFlag,
+        dps_service_provider_id: req.body.service_provider_id,
+        dps_customer_id: req.body.cust_id,
+        dps_document_id: req.body.doc_id,
+        dps_is_active_user_flag: req.session.active_user_login
+      }
+      console.log('permissionObject:', permissionObject);
+      var docPermissionSave = new DocumentPermissionSchema(permissionObject)
+      docPermissionSave.save().then(async (data) => {
+        console.log('docPermissionSave:', data)
+        res.send({
+          message: 'Permission Updated !!'
+        })
+      }).catch(err => {
+        console.log(err)
+        req.flash('err_msg', 'Something went wrong please try after some time!');
+      });
+    }
+  });
+
+})
 module.exports = router;
