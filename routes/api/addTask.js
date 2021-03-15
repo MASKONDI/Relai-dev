@@ -390,7 +390,7 @@ module.exports.add_existing_task = function (req) {
 
 module.exports.add_existing_task_from_btn = function (req) {
     return new Promise( async function (resolve, reject) {
-
+        var status = 'pending'
         let taskName='';
         if(req.body.task_name){
           taskName = req.body.task_name;
@@ -451,13 +451,15 @@ module.exports.add_existing_task_from_btn = function (req) {
                                  if(!NotesToArray.includes(req.body.notes)){
                                     NotesToArray.push(req.body.notes);
                                  }
+                                 var statusToArray = data1.ppts_task_status;
+                                 statusToArray.push(status);
                                  console.log('Object NotesToArray New String:',NotesToArray);
             
             
                                 PropertyProfessinoalTaskSchema.updateOne({  ppts_property_id: req.body.property_id,
                                     ppts_task_name:row,
                                     ppts_phase_name:req.body.Phase,
-                                    ppts_phase_flag:req.body.ppts_phase_flag  }, { $set: { ppts_assign_to: AssignToArray,ppts_user_id:UseridToArray,ppts_note:NotesToArray,ppts_due_date:DueDateToArray } }, { upsert: true }, function (err) {
+                                    ppts_phase_flag:req.body.ppts_phase_flag  }, { $set: { ppts_assign_to: AssignToArray,ppts_user_id:UseridToArray,ppts_note:NotesToArray,ppts_due_date:DueDateToArray,ppts_task_status:statusToArray } }, { upsert: true }, function (err) {
                                     if (err) {
                                       console.log("err is :", err);
                                       console.log(' Object Dataupdated Not successfully');
@@ -479,7 +481,8 @@ module.exports.add_existing_task_from_btn = function (req) {
                                             ppts_phase_name: req.body.Phase,
                                             ppts_is_active_user_flag: req.session.active_user_login,
                                             ppts_note: req.body.notes,
-                                            ppts_phase_flag:req.body.ppts_phase_flag
+                                            ppts_phase_flag:req.body.ppts_phase_flag,
+                                            ppts_task_status:status
                                         }
                                         const allobj = await  new PropertyProfessinoalTaskSchema(newTask);
                                         allobj.save().then(async function(resp){
@@ -550,13 +553,15 @@ module.exports.add_existing_task_from_btn = function (req) {
                      if(!NotesToArray.includes(req.body.notes)){
                         NotesToArray.push(req.body.notes);
                      }
+                     var statusToArray = data1.ppts_task_status
+                     statusToArray.push(status)
                      console.log('NotesToArray New String:',NotesToArray);
 
 
                     PropertyProfessinoalTaskSchema.updateOne({  ppts_property_id: req.body.property_id,
                         ppts_task_name:taskName,
                         ppts_phase_name:req.body.Phase,
-                        ppts_phase_flag:req.body.ppts_phase_flag  }, { $set: { ppts_assign_to: AssignToArray,ppts_user_id:UseridToArray,ppts_note:NotesToArray,ppts_due_date:DueDateToArray } }, { upsert: true }, function (err) {
+                        ppts_phase_flag:req.body.ppts_phase_flag  }, { $set: { ppts_assign_to: AssignToArray,ppts_user_id:UseridToArray,ppts_note:NotesToArray,ppts_due_date:DueDateToArray ,ppts_task_status:statusToArray} }, { upsert: true }, function (err) {
                         if (err) {
                           console.log("err is :", err);
                           console.log('Dataupdated Not successfully');
@@ -578,7 +583,8 @@ module.exports.add_existing_task_from_btn = function (req) {
                                     ppts_phase_name: req.body.Phase,
                                     ppts_is_active_user_flag: req.session.active_user_login,
                                     ppts_note: req.body.notes,
-                                    ppts_phase_flag:req.body.ppts_phase_flag
+                                    ppts_phase_flag:req.body.ppts_phase_flag,
+                                    ppts_task_status:status
                             }
                             const allobj = await  new PropertyProfessinoalTaskSchema(newTask);
                             allobj.save().then(async function(resp){
@@ -612,7 +618,7 @@ module.exports.add_existing_task_from_btn = function (req) {
 module.exports.add_existing_task_from_btn_dramhome_details = function (req) {
     return new Promise( async function (resolve, reject) {
         // var newTask={};
-
+        var status='pending'
         let taskName='';
         if(req.body.task_name){
           taskName = req.body.task_name;
@@ -673,13 +679,15 @@ module.exports.add_existing_task_from_btn_dramhome_details = function (req) {
                                  if(!NotesToArray.includes(req.body.notes)){
                                     NotesToArray.push(req.body.notes);
                                  }
+                                 var statusToArray = data1.ppts_task_status
+                                 statusToArray.push(status)
                                  console.log('Object NotesToArray New String:',NotesToArray);
             
             
                                 PropertyProfessinoalTaskSchema.updateOne({  ppts_property_id: req.body.property_id_add_task,
                                     ppts_task_name:row,
                                     ppts_phase_name:req.body.Phase,
-                                    ppts_phase_flag:req.body.ppts_phase_flag  }, { $set: { ppts_assign_to: AssignToArray,ppts_user_id:UseridToArray,ppts_note:NotesToArray,ppts_due_date:DueDateToArray } }, { upsert: true }, function (err) {
+                                    ppts_phase_flag:req.body.ppts_phase_flag  }, { $set: { ppts_assign_to: AssignToArray,ppts_user_id:UseridToArray,ppts_note:NotesToArray,ppts_due_date:DueDateToArray ,ppts_task_status:statusToArray} }, { upsert: true }, function (err) {
                                     if (err) {
                                       console.log("err is :", err);
                                       console.log(' Object Dataupdated Not successfully');
@@ -701,7 +709,8 @@ module.exports.add_existing_task_from_btn_dramhome_details = function (req) {
                                             ppts_phase_name: req.body.Phase,
                                             ppts_is_active_user_flag: req.session.active_user_login,
                                             ppts_note: req.body.notes,
-                                            ppts_phase_flag:req.body.ppts_phase_flag
+                                            ppts_phase_flag:req.body.ppts_phase_flag,
+                                            ppts_task_status:status
                                         }
                                         const allobj = await  new PropertyProfessinoalTaskSchema(newTask);
                                         allobj.save().then(async function(resp){
@@ -772,13 +781,15 @@ module.exports.add_existing_task_from_btn_dramhome_details = function (req) {
                      if(!NotesToArray.includes(req.body.notes)){
                         NotesToArray.push(req.body.notes);
                      }
+                     var statusToArray = data1.ppts_task_status
+                     statusToArray.push(status)
                      console.log('NotesToArray New String:',NotesToArray);
 
 
                     PropertyProfessinoalTaskSchema.updateOne({  ppts_property_id: req.body.property_id_add_task,
                         ppts_task_name:taskName,
                         ppts_phase_name:req.body.Phase,
-                        ppts_phase_flag:req.body.ppts_phase_flag  }, { $set: { ppts_assign_to: AssignToArray,ppts_user_id:UseridToArray,ppts_note:NotesToArray,ppts_due_date:DueDateToArray } }, { upsert: true }, function (err) {
+                        ppts_phase_flag:req.body.ppts_phase_flag  }, { $set: { ppts_assign_to: AssignToArray,ppts_user_id:UseridToArray,ppts_note:NotesToArray,ppts_due_date:DueDateToArray ,ppts_task_status:statusToArray} }, { upsert: true }, function (err) {
                         if (err) {
                           console.log("err is :", err);
                           console.log('Dataupdated Not successfully');
@@ -800,7 +811,8 @@ module.exports.add_existing_task_from_btn_dramhome_details = function (req) {
                                 ppts_phase_name: req.body.Phase,
                                 ppts_is_active_user_flag: req.session.active_user_login,
                                 ppts_note: req.body.notes,
-                                ppts_phase_flag:req.body.ppts_phase_flag
+                                ppts_phase_flag:req.body.ppts_phase_flag,
+                                ppts_task_status:status
                             }
                             const allobj = await  new PropertyProfessinoalTaskSchema(newTask);
                             allobj.save().then(async function(resp){

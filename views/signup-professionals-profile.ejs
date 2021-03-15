@@ -160,7 +160,7 @@
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
                               <select class="form-control required spods_preferred_title" id="selectBox2" name="spods_preferred_title"
-                                data-rule-required="true" data-msg-required="Preferred Title is required">
+                                data-rule-required="true" data-msg-required="Preferred Title is required" required>
                                 <option value="">Preferred Title</option>
                                 <option value="mr">Mr</option>
                                 <option value="miss">Miss</option>
@@ -173,7 +173,7 @@
                             <div class="input-box-size-fix">
                               <input type="text" class="form-control text-field-size spods_former_surnames" id=""
                                 placeholder="Former Surnames(if different from above)" name="spods_former_surnames"
-                                value="<%= session.sps_lastname%>">
+                                value="<%= session.sps_lastname%>" required>
                             </div>
                           </div>
                         </div>
@@ -189,7 +189,7 @@
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
                               <input type="text" class="form-control text-field-size spods_nationality" id="" placeholder="Nationality"
-                                name="spods_nationality">
+                                name="spods_nationality" required>
                             </div>
                           </div>
                         </div>
@@ -205,7 +205,7 @@
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
                               <input type="text" class="form-control text-field-size spods_postcode" id="" placeholder="Post code"
-                                name="spods_postcode">
+                                name="spods_postcode" required>
                             </div>
                           </div>
                         </div>
@@ -215,12 +215,12 @@
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
                               <input type="text" class="form-control text-field-size spods_home_telephone_number" id=""
-                                placeholder="Home Telephone Number" name="spods_home_telephone_number">
+                                placeholder="Home Telephone Number" name="spods_home_telephone_number" required>
                             </div>
                           </div>
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
-                              <select class="form-control spods_postcode_covered" id="selectBox2" name="spods_postcode_covered">
+                              <select class="form-control spods_postcode_covered" id="selectBox2" name="spods_postcode_covered" required>
                                 <option value="0">Post codes covered</option>
                                 <option value=""></option>
                               </select>
@@ -238,7 +238,7 @@
                           <div class="col-sm-12 col-lg-4">
                             <div class="input-box-size-fix">
                               <input type="text" onfocus="(this.type='date')" class="form-control text-field-size start_working_time"
-                                id="start_working_time" placeholder="Start Date" name="start_working_time">
+                                id="start_working_time" placeholder="Start Date" name="start_working_time" required>
                             </div>
                           </div>
                         </div>
