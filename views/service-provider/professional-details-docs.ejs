@@ -1011,17 +1011,17 @@
                 $('.per_checkbox').removeAttr('checked', 'checked');
                 data.permissionDetailsData.forEach(function (permissionData) {
                   console.log('permissionData:', permissionData)
-                  console.log('dps_service_provider_id:', permissionData.dps_service_provider_id)
+                  console.log('dps_customer_id:', permissionData.dps_customer_id)
                   if (permissionData.dps_download_permission == 'yes' && permissionData.dps_view_permission == 'no') {
-                    $('.download_box_' + permissionData.dps_service_provider_id).attr('checked', 'checked');
+                    $('.download_box_' + permissionData.dps_customer_id).attr('checked', 'checked');
                   } else if (permissionData.dps_view_permission == 'yes' && permissionData.dps_download_permission == 'no') {
-                    $('.view_box_' + permissionData.dps_service_provider_id).attr('checked', 'checked');
+                    $('.view_box_' + permissionData.dps_customer_id).attr('checked', 'checked');
                   } else if (permissionData.dps_download_permission == 'yes' && permissionData.dps_view_permission == 'yes') {
-                    $('.view_box_' + permissionData.dps_service_provider_id).attr('checked', 'checked');
-                    $('.download_box_' + permissionData.dps_service_provider_id).attr('checked', 'checked');
+                    $('.view_box_' + permissionData.dps_customer_id).attr('checked', 'checked');
+                    $('.download_box_' + permissionData.dps_customer_id).attr('checked', 'checked');
                   } else {
-                    $('.view_box_' + permissionData.dps_service_provider_id).removeAttr('checked', 'checked');
-                    $('.download_box_' + permissionData.dps_service_provider_id).removeAttr('checked', 'checked');
+                    $('.view_box_' + permissionData.dps_customer_id).removeAttr('checked', 'checked');
+                    $('.download_box_' + permissionData.dps_customer_id).removeAttr('checked', 'checked');
                   }
                 });
               } else {

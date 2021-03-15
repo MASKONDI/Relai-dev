@@ -58,7 +58,7 @@ const PropertyProfessinoalTaskSchema = new Schema({
    },
   ppts_task_status:{
     type: String,
-    enum: ['pending','completed_by_service_provider','confirmed_by_buyer','confirmed_by_seller'],
+    enum: ['pending','completed_by_service_provider','confirmed_by_buyer','confirmed_by_seller','in_progress'],
     default:'pending'
   },
   ppts_created_at: {

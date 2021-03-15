@@ -141,7 +141,7 @@
                             <div class="input-box-size-fix">
                               <input type="text" class="form-control text-field-size spods_surname " id="" placeholder="Surname"
                                 name="spods_surname" required data-rule-required="true"
-                                data-msg-required="Surname is required" value="<%= session.sps_lastname%>">
+                                data-msg-required="Surname is required" value="<%= session.sps_lastname%>" readonly>
                               </input>
                               
                             </div>
@@ -150,7 +150,7 @@
                             <div class="input-box-size-fix">
                               <input type="text" class="form-control text-field-size spods_fornames " id="" placeholder="Forename"
                                 name="spods_fornames" required data-rule-required="true"
-                                data-msg-required="Forename is required" value="<%= session.sps_firstname%>">
+                                data-msg-required="Forename is required" value="<%= session.sps_firstname%>" readonly>
                             </div>
                           </div>
                         </div>
@@ -183,7 +183,7 @@
                             <div class="input-box-size-fix" id=''>
                               <input type="text" class="datepicker form-control text-field-size spods_dob " id="datePickerId" placeholder="Date of Birth"
                                 onfocus="(this.type='date')" name="spods_dob" data-rule-required="true"
-                                data-msg-required="Date of birth is required">
+                                data-msg-required="Date of birth is required" required>
                             </div>
                           </div>
                           <div class="col-sm-12 col-lg-6">
@@ -199,7 +199,7 @@
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix">
                               <input type="text" class="form-control text-field-size spods_address" id="" placeholder="Address"
-                                name="spods_address" value="<%= session.sps_address%>">
+                                name="spods_address" value="<%= session.sps_address%>" readonly>
                             </div>
                           </div>
                           <div class="col-sm-12 col-lg-6">
@@ -232,9 +232,7 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-8">
                             <div class="profile-notes">
-                              <p>if the application is successful, when are you able to start working for Precedent
-                                Surveyors
-                                Ltd?</p>
+                              <p>If the application is successfully submitted, when are you able to start working for Relai?</p>
                             </div>
                           </div>
                           <div class="col-sm-12 col-lg-4">
@@ -365,11 +363,16 @@
           success: function (data) {
             console.log(data);
             if (data.status == true) {
-              var date    = new Date(data.data.spods_dob),
-              yr      = date.getFullYear(),
-              month   = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth(),
-              day     = date.getDate()  < 10 ? '0' + date.getDate()  : date.getDate(),
-              newDate = day + '-' + month + '-' + yr;
+              // var date    = new Date(data.data.spods_dob),
+              // yr      = date.getFullYear(),
+              // month   = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth(),
+              // day     = date.getDate()  < 10 ? '0' + date.getDate()  : date.getDate(),
+              // newDate = day + '-' + month + '-' + yr;
+              // var startworkingdate    = new Date(data.data.spods_start_working_time),
+              // swyr      = startworkingdate.getFullYear(),
+              // swmonth   = startworkingdate.getMonth() < 10 ? '0' + startworkingdate.getMonth() : startworkingdate.getMonth(),
+              // swday     = startworkingdate.getDate()  < 10 ? '0' + startworkingdate.getDate()  : startworkingdate.getDate(),
+              // swnewDate = swday + '-' + swmonth + '-' + swyr;
 
               //var spods_dob = data.moment(data.data.spods_dob)
             // var dd= data.moment(data.data.spods_dob).format('L');
@@ -377,13 +380,13 @@
               $('.spods_fornames').val(data.data.spods_fornames);
               $('.spods_preferred_title').val(data.data.spods_preferred_title);
               $('.spods_former_surnames').val(data.data.spods_former_surnames);
-              $('.spods_dob').val(newDate);
+              $('.spods_dob').val(data.spods_dob);
               $('.spods_nationality').val(data.data.spods_nationality);
               $('.spods_address').val(data.data.spods_address);
               $('.spods_postcode').val(data.data.spods_postcode);
               $('.spods_home_telephone_number').val(data.data.spods_home_telephone_number);
               $('.spods_postcode_covered').val(data.data.spods_postcode_covered);
-              $('.start_working_time').val(data.data.start_working_time);
+              $('.start_working_time').val(data.spods_start_working_time);
               $('.personal_detail_id').val(data.data._id);
 
             }else{

@@ -417,7 +417,7 @@
               yr      = date.getFullYear(),
               month   = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth(),
               day     = date.getDate()  < 10 ? '0' + date.getDate()  : date.getDate(),
-              newDate = day + '-' + month + '-' + yr;
+              newDate =  yr+ '-' + month + '-' + day;
               if(data.data.spods_option_pl_claims=='yes'){
                 $('.spods_pl_claim_details').val(data.data.spods_pl_claim_details)
                 $("#yesCheck_p6").attr('checked', 'checked');
