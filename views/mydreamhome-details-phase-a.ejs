@@ -154,6 +154,8 @@
                                 <th>Professional NA</th>
                                 <%}%>
                                   <th></th>
+                                  <th>Status</th>
+                                  <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -169,7 +171,12 @@
                                     <%=row.ppts_task_name%>
                                   </p>
 
-                                  <input type="checkbox">
+                                  <%if(row.ppts_task_status=='completed_by_service_provider'){%>
+                                    <input type="checkbox" checked disabled>
+                                     
+                                      <%}else{%>
+                                        <input type="checkbox" >
+                                        <%}%>
                                   <span class="checkmark"></span>
                                 </label></td>
 
@@ -198,6 +205,15 @@
 
                                             <td><a class="btn help-btn" href="#" data-toggle="modal"
                                                 data-target="#myModal">Help</a>
+                                            </td>
+                                            <td>
+                                              <%if(row.ppts_task_status=='completed_by_service_provider'){%>
+                                                <a class="btn btn-complete">Complete</a>
+                                                <%}else if(row.ppts_task_status=='in_progress'){%>
+                                                  <a class="btn btn-progress">In Progress</a>
+                                                  <%}else{%>
+                                                  <a class="btn btn-pending">Pending</a>
+                                                <%}%>
                                             </td>
                                             <td class="edit-task<%=row._id%>">
 
@@ -424,6 +440,8 @@
                                 <th>Professional NA</th>
                                 <%}%>
                                   <th></th>
+                                  <th>Status</th>
+                                  <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -439,7 +457,12 @@
                                     <%=row.ppts_task_name%>
                                   </p>
 
-                                  <input type="checkbox">
+                                  <%if(row.ppts_task_status=='completed_by_service_provider'){%>
+                                    <input type="checkbox" checked disabled>
+                                     
+                                      <%}else{%>
+                                        <input type="checkbox" >
+                                        <%}%>
                                   <span class="checkmark"></span>
                                 </label></td>
 
@@ -470,6 +493,15 @@
                                             <td><a class="btn help-btn" href="#" data-toggle="modal"
                                                 data-target="#myModal">Help</a>
                                             </td>
+                                            <td>
+                                              <%if(row.ppts_task_status=='completed_by_service_provider'){%>
+                                                <a class="btn btn-complete">Complete</a>
+                                                <%}else if(row.ppts_task_status=='in_progress'){%>
+                                                  <a class="btn btn-progress">In Progress</a>
+                                                  <%}else{%>
+                                                  <a class="btn btn-pending">Pending</a>
+                                                <%}%>
+                                            </td>
                                             <td class="edit-task<%=row._id%>">
 
                                               <span>
@@ -490,6 +522,7 @@
                                               </span>
 
                                             </td>
+                                            
                                             <!-- <td><i class="fa fa-pencil editbtn" data-toggle="modal"
                                         data-target="#todoNotesModal<%=row._id%>"></i></td> -->
                                             <td>
@@ -690,6 +723,8 @@
                                 <th>Professional NA</th>
                                 <%}%>
                                   <th></th>
+                                  <th>Status</th>
+                                  <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -704,8 +739,13 @@
                                   <p>
                                     <%=row.ppts_task_name%>
                                   </p>
-
-                                  <input type="checkbox">
+                                  <%if(row.ppts_task_status=='completed_by_service_provider'){%>
+                                    <input type="checkbox" checked disabled>
+                                     
+                                      <%}else{%>
+                                        <input type="checkbox" >
+                                        <%}%>
+                                  
                                   <span class="checkmark"></span>
                                 </label></td>
 
@@ -735,6 +775,15 @@
 
                                             <td><a class="btn help-btn" href="#" data-toggle="modal"
                                                 data-target="#myModal">Help</a>
+                                            </td>
+                                            <td>
+                                              <%if(row.ppts_task_status=='completed_by_service_provider'){%>
+                                                <a class="btn btn-complete">Complete</a>
+                                                <%}else if(row.ppts_task_status=='in_progress'){%>
+                                                  <a class="btn btn-progress">In Progress</a>
+                                                  <%}else{%>
+                                                  <a class="btn btn-pending">Pending</a>
+                                                <%}%>
                                             </td>
                                             <td class="edit-task<%=row._id%>">
 

@@ -15,7 +15,8 @@ const ServiceProviderIndemnityDetailsSchema = require("../../models/service_prov
 const validateProfChangePasswordInput = require('../../Validation/change-password-professional');
 const ServiceProviderUploadDocsSchema = require("../../models/service_provider_upload_document");
 const MessageSchema = require("../../models/message");
-
+const DocumentPermissionSchema = require('../../models/document_permission')
+const PropertyProfessinoalTaskSchema=require('../../models/property_professional_tasks_Schema')
 const isEmpty = require('../../Validation/is-empty');
 
 
@@ -184,13 +185,18 @@ router.get("/service_provider_personal_details", async(req, res) => {
   console.log('req',req.query);
   if(req.query.user_id){
    var data = await signUpHelper.getPersonalDetialByID(req.query.user_id);
+ // var d = JSON.stringify(data) 
+ // var dd = JSON.parse(data)
+ var spods_dob=  moment(data.spods_dob).format('YYYY-MM-DD');
+ var spods_start_working_time=  moment(data.spods_start_working_time).format('YYYY-MM-DD');
    if(data){
      
     return res.send({
       'status':true,
       'data':data,
-      'moment':moment
-    })
+      'spods_dob':spods_dob,
+      'spods_start_working_time':spods_start_working_time
+        })
    }else{
     return res.send({
       'status':false,
@@ -212,7 +218,9 @@ router.post("/service_provider_personal_details", (req, res) => {
 
   console.log("req.body is : ", req.body);
   console.log("user_id is:", req.session.user_id);
+  console.log('is update id',req.body.personal_detail_id)
   if(req.body.personal_detail_id!=''){
+    console.log('please update me')
     const serviceProviderPersonalDetails ={
       spods_service_provider_id: req.session.user_id, //storing service_provider_id
       spods_surname: req.body.spods_surname,
@@ -248,42 +256,43 @@ router.post("/service_provider_personal_details", (req, res) => {
         //res.redirect('/signup-professionals-profile');
       });
   }else{
-
-  }
-  const serviceProviderPersonalDetails = new ServiceProviderPersonalDetailsSchema({
-    spods_service_provider_id: req.session.user_id, //storing service_provider_id
-    spods_surname: req.body.spods_surname,
-    spods_fornames: req.body.spods_fornames,
-    spods_preferred_title: req.body.spods_preferred_title,
-    spods_former_surnames: req.body.spods_former_surnames,
-    spods_address: req.body.spods_address,
-    spods_dob: req.body.spods_dob,
-    spods_nationality: req.body.spods_nationality,
-    spods_postcode: req.body.spods_postcode,
-    spods_home_telephone_number: req.body.spods_home_telephone_number,
-    spods_postcode_covered: req.body.spods_postcode_covered,
-    spods_start_working_time: req.body.start_working_time,
-  });
-  serviceProviderPersonalDetails
-    .save()
-    .then(serviceProviders => {
-      console.log("server res is : ", serviceProviders);
-      // res.redirect("/signup-professionals-profile-2")
-      res.send({
-        message: 'Personal-details sumitted successfully,please continue....',
-        status: true,
-      })
-
-    })
-    .catch(err => {
-      console.log(err)
-      res.send({
-        message: 'Something went wrong please try after some time!',
-        status: false
-      })
-      //req.flash('err_msg', 'Something went wrong please try after some time!');
-      //res.redirect('/signup-professionals-profile');
+    console.log('please add me')
+    const serviceProviderPersonalDetails = new ServiceProviderPersonalDetailsSchema({
+      spods_service_provider_id: req.session.user_id, //storing service_provider_id
+      spods_surname: req.body.spods_surname,
+      spods_fornames: req.body.spods_fornames,
+      spods_preferred_title: req.body.spods_preferred_title,
+      spods_former_surnames: req.body.spods_former_surnames,
+      spods_address: req.body.spods_address,
+      spods_dob: req.body.spods_dob,
+      spods_nationality: req.body.spods_nationality,
+      spods_postcode: req.body.spods_postcode,
+      spods_home_telephone_number: req.body.spods_home_telephone_number,
+      spods_postcode_covered: req.body.spods_postcode_covered,
+      spods_start_working_time: req.body.start_working_time,
     });
+    serviceProviderPersonalDetails
+      .save()
+      .then(serviceProviders => {
+        console.log("server res is : ", serviceProviders);
+        // res.redirect("/signup-professionals-profile-2")
+        res.send({
+          message: 'Personal-details sumitted successfully,please continue....',
+          status: true,
+        })
+  
+      })
+      .catch(err => {
+        console.log(err)
+        res.send({
+          message: 'Something went wrong please try after some time!',
+          status: false
+        })
+        //req.flash('err_msg', 'Something went wrong please try after some time!');
+        //res.redirect('/signup-professionals-profile');
+      });
+  }
+  
 });
 
 
@@ -1742,6 +1751,7 @@ router.post("/remove_sp_uploaded_document", async (req, res) => {
   console.log("req.session.user_id is ", req.session.user_id);
   if (req.body.action == 'sp_doc_delete') {
     deleteData = await ServiceProviderUploadDocsSchema.deleteOne({ _id: req.body.document_id });
+    await DocumentPermissionSchema.findOneAndRemove({dps_document_id:req.body.document_id});
   }
   if (deleteData) {
     console.log("server response is success: ", deleteData);
@@ -1759,5 +1769,103 @@ router.post("/remove_sp_uploaded_document", async (req, res) => {
     });
   }
 
+});
+/* -------------------------------------------------------------------------------------------------
+POST : Change Permission api for giving Docs read/write permission to existing serviceProvider.
+------------------------------------------------------------------------------------------------- */
+router.get('/get-sp-change-permision', async (req, res) => {
+  req.session.pagename = 'mydreamhome';
+  console.log('req.query:', req.query)
+  await DocumentPermissionSchema.find({ dps_document_id: req.query.docId }).sort({ _id: -1 }).then(async (data) => {
+    //req.session.complaintID = req.query.complaintID;
+    console.log('dataaa:', data)
+    if (data) {
+      let arr = [];
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        permissionDetailsData: data,
+      });
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+});
+router.post('/sp-change-permision', async (req, res) => {
+  console.log('doc id:', req.body.doc_id)
+  console.log('checkFlag:', req.body.checkFlag)
+  console.log('=========',req.body)
+
+  DocumentPermissionSchema.findOne({ dps_service_provider_id: req.body.service_provider_id, dps_customer_id: req.body.cust_id, dps_document_id: req.body.doc_id }).then(async (data) => {
+    console.log('FindData:', data);
+    let permisionFlagDownload = '';
+    let permisionFlagView = '';
+
+    if (data) {
+
+      if (req.body.checkFlag === 'viewaction') {
+        permisionFlagDownload = data.dps_download_permission;
+        permisionFlagView = req.body.viewFlag;
+        console.log('view....action...')
+      } else {
+        permisionFlagView = data.dps_view_permission;
+        permisionFlagDownload = req.body.downloadFlag;
+        console.log('download....action...')
+
+      }
+
+      console.log('permisionFlagView:', permisionFlagView);
+      console.log('permisionFlagDownload:', permisionFlagDownload);
+
+
+      DocumentPermissionSchema.updateOne({ 'dps_customer_id': req.body.cust_id, 'dps_service_provider_id': req.body.service_provider_id, 'dps_document_id': req.body.doc_id }, { $set: { dps_view_permission: permisionFlagView, dps_download_permission: permisionFlagDownload, dps_is_active_user_flag: req.session.active_user_login } }, { upsert: true }, function (err) {
+        if (err) {
+          console.log("err is :", err);
+          req.flash('err_msg', 'Something went wrong.');
+          //res.redirect('/forget-password')
+        } else {
+          res.send({
+            message: 'Permission Updated !!'
+          })
+        }
+      })
+
+    } else {
+      let permissionObject = {
+        dps_view_permission: req.body.viewFlag,
+        dps_download_permission: req.body.downloadFlag,
+        dps_service_provider_id: req.body.service_provider_id,
+        dps_customer_id: req.body.cust_id,
+        dps_document_id: req.body.doc_id,
+        dps_is_active_user_flag: req.session.active_user_login
+      }
+      console.log('permissionObject:', permissionObject);
+      var docPermissionSave = new DocumentPermissionSchema(permissionObject)
+      docPermissionSave.save().then(async (data) => {
+        console.log('docPermissionSave:', data)
+        res.send({
+          message: 'Permission Updated !!'
+        })
+      }).catch(err => {
+        console.log(err)
+        req.flash('err_msg', 'Something went wrong please try after some time!');
+      });
+    }
+  });
+
+})
+router.post('/sp_task_status_update', (req, res) => {
+  console.log("sp_task_status_update :", req.body);
+  PropertyProfessinoalTaskSchema.updateOne({ _id:req.body.task_id }, { $set: { ppts_task_status: req.body.ppts_task_status} }, { upsert: true }, function (err) {
+    if (err) {
+      console.log(err)
+      res.send({ status: false, message: 'Something going wrong please check again !!' })
+    } else {
+      res.send({ status: true, message: 'Task Status update successfully !!' })
+      console.log("Task Status update successfully");
+    }
+  });
 });
 module.exports = router;

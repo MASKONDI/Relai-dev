@@ -39,7 +39,7 @@
                   style="height: 48px;">
                   <option value="">Select Property</option>
                   <%if(propertyObj.length!=0){%>
-                    <%propertyObj.forEach(function(row,i){%>
+                    <%propertyObj.forEach(function(row,i){console.log('row================',row)%>
                       <option value="<%=row._id%>">
                         <%=row.ps_property_name%>
                       </option>
