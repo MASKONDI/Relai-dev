@@ -1624,27 +1624,27 @@ MYDREAM-HOME-DETAILS-PAHSE-A
                 icon: 'error',
                 title: data.err_msg,
                 showConfirmButton: true,
-                confirmButtonColor: '#005377'
-                //timer: 1500
+                confirmButtonColor: '#005377',
+                timer: 1500
               }).then((result)=>{
 
                 location.reload(true)
                 })
             } else {
               console.log('meserrmessagesage:', data.success_msg)
-              $('#Add_existing_task_form')[0].reset();
-
+              
               Swal.fire({
                 // position: 'top-end',
                 icon: 'success',
                 title: data.success_msg,
                 showConfirmButton: false,
                 confirmButtonColor: '#005377',
-               // timer: 3000
+                 timer: 3000
               }).then((result)=>{
-
-location.reload(true)
-})
+                
+                location.reload(true)
+                //$('#Add_existing_task_form')[0].reset();
+              })
               
               $('#notes,#duedate').val('');
             }

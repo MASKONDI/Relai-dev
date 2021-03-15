@@ -171,7 +171,12 @@
                                     <%=row.ppts_task_name%>
                                   </p>
 
-                                  <input type="checkbox">
+                                  <%if(row.ppts_task_status=='completed_by_service_provider'){%>
+                                    <input type="checkbox" checked disabled>
+                                     
+                                      <%}else{%>
+                                        <input type="checkbox" >
+                                        <%}%>
                                   <span class="checkmark"></span>
                                 </label></td>
 
@@ -452,7 +457,12 @@
                                     <%=row.ppts_task_name%>
                                   </p>
 
-                                  <input type="checkbox">
+                                  <%if(row.ppts_task_status=='completed_by_service_provider'){%>
+                                    <input type="checkbox" checked disabled>
+                                     
+                                      <%}else{%>
+                                        <input type="checkbox" >
+                                        <%}%>
                                   <span class="checkmark"></span>
                                 </label></td>
 
@@ -729,8 +739,13 @@
                                   <p>
                                     <%=row.ppts_task_name%>
                                   </p>
-
-                                  <input type="checkbox">
+                                  <%if(row.ppts_task_status=='completed_by_service_provider'){%>
+                                    <input type="checkbox" checked disabled>
+                                     
+                                      <%}else{%>
+                                        <input type="checkbox" >
+                                        <%}%>
+                                  
                                   <span class="checkmark"></span>
                                 </label></td>
 
