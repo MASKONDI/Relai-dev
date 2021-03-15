@@ -36,7 +36,7 @@ const ServiceProviderLanguageSchema = require("../models/service_provider_langua
 const ServiceProviderEmploymentHistorySchema = require('../models/service_provider_employment_history');
 const ServiceProviderReferenceSchema = require("../models/service_provider_reference");
 const ServiceProviderIndemnityDetailsSchema = require("../models/service_provider_indemnity_details");
-
+const SubmitProposalSchema = require("../models/submit_proposal_schema");
 const MessageSchema = require("../models/message");
 const TaskHelper = require("../routes/api/service_provider_helper/taskHelper");
 
@@ -382,7 +382,11 @@ app.get('/service-provider/myproperties', isServiceProvider, async function (req
   for (let key of AllhiredProfeshnoal) {
     let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
     let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
-    propertyData.property_image = await propertyImageData.pps_property_image_name;
+    console.log("propertyImageData is", propertyImageData);
+    //console.log("propertyImageData is ",propertyImageData.pps_property_image_name);
+    if (propertyImageData) {
+      propertyData.property_image = await propertyImageData.pps_property_image_name;
+    }
     let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
     let customerProfile = await customerHelper.getCustomerImageByID(key.pps_user_id);
     propertyData.customer_name = await customerName
@@ -471,26 +475,26 @@ app.get('/service-provider/professional-details-docs', isServiceProvider, async 
   //     }
   //   });
   // }
-  var sptaskDocArray=[]
-  var sp_normalDocArray=[]
-  var all_sp_doc=await propertyHelper.getAllServiceProviderDocument(req.session.user_id,req.session.property_id)
+  var sptaskDocArray = []
+  var sp_normalDocArray = []
+  var all_sp_doc = await propertyHelper.getAllServiceProviderDocument(req.session.user_id, req.session.property_id)
   console.log(all_sp_doc)
-  for(var k of all_sp_doc){
+  for (var k of all_sp_doc) {
     let tempss = await k
     const dd = JSON.stringify(tempss);
     const datass = JSON.parse(dd)
-   if(k.spuds_task_id){
-   sptaskDocArray.push(datass)
-   }else{
-    sp_normalDocArray.push(datass)
-   }
+    if (k.spuds_task_id) {
+      sptaskDocArray.push(datass)
+    } else {
+      sp_normalDocArray.push(datass)
+    }
   }
   res.render('service-provider/professional-details-docs', {
     err_msg, success_msg, layout: false,
     session: req.session,
     data: custmorePermisionArray,
     allDocument: normalDocArray,//need to show property wise document still showing all uploaded
-    service_provider_document:sp_normalDocArray,
+    service_provider_document: sp_normalDocArray,
     taskDocument: sptaskDocArray,
     property: property,
     moment: moment
@@ -1127,6 +1131,7 @@ app.get('/getIdentimitydetails', isServiceProvider, async function (req, res) {
   })
 });
 
+
 app.get('/getLanguagedetails', isServiceProvider, async function (req, res) {
   console.log('req.query:', req.query)
   await ServiceProviderLanguageSchema.find({ spls_service_provider_id: req.query.user_id }).sort({ _id: -1 }).then(async (data) => {
@@ -1363,7 +1368,97 @@ app.post('/get_hired_property_by_id', isServiceProvider, async (req, res) => {
   }
 });
 
+// app.get('/service-provider/proposal', isCustomer, (req, res) => {
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   res.render('service-provider/proposal', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session
+//   });
+// })
 
+app.get('/service-provider/proposal', isServiceProvider, async (req, res) => {
+  console.log("Current session is :", req.session);
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  req.session.pagename = 'service-provider/proposal';
+
+  //Current active proposal 
+  var activeProposal = await SubmitProposalSchema.find({ sps_service_provider_id: req.session.user_id, sps_status: 'pending' });
+  var activePropertyProposalArray = [];
+  for (var propertyId of activeProposal) {
+    console.log("property Id", propertyId);
+    let propertyObj = await await propertyHelper.getPropertyByID(propertyId.sps_property_id);
+    let serviceProvider = await ServiceProviderSchema.findOne({ _id: propertyId.sps_service_provider_id });
+    if (serviceProvider) {
+      propertyObj.sp_name = serviceProvider.sps_fullname;
+      propertyObj.sp_profession = serviceProvider.sps_role_name;
+    }
+    if (propertyId.sps_extra_notes) {
+      propertyObj.notes = await propertyId.sps_extra_notes;
+    }
+    if (propertyId.sps_filename) {
+      propertyObj.filename = await propertyId.sps_filename;
+    }
+    activePropertyProposalArray.push(propertyObj);
+  }
+  console.log("activePropertyProposalArray is :", activePropertyProposalArray);
+
+
+  //Submitted Proposal For Professional
+  var submitPropertyProposalArray = [];
+  var submitProposal = await SubmitProposalSchema.find({ sps_service_provider_id: req.session.user_id, sps_status: 'accept' });
+  for (var propertyId of submitProposal) {
+    console.log("property Id", propertyId);
+    let propertyObj = await await propertyHelper.getPropertyByID(propertyId.sps_property_id);
+    let serviceProvider = await ServiceProviderSchema.findOne({ _id: propertyId.sps_service_provider_id });
+    if (serviceProvider) {
+      propertyObj.sp_name = serviceProvider.sps_fullname;
+      propertyObj.sp_profession = serviceProvider.sps_role_name;
+    }
+    if (propertyId.sps_extra_notes) {
+      propertyObj.notes = await propertyId.sps_extra_notes;
+    }
+    if (propertyId.sps_filename) {
+      propertyObj.filename = await propertyId.sps_filename;
+    }
+    submitPropertyProposalArray.push(propertyObj);
+  }
+  console.log("submitPropertyProposalArray is :", submitPropertyProposalArray);
+
+
+
+  //fetching Reject Proposal 
+  var rejectPropertyProposalArray = [];
+  var rejectProposal = await SubmitProposalSchema.find({ sps_service_provider_id: req.session.user_id, sps_status: 'reject' });
+  for (var propertyId of rejectProposal) {
+    console.log("property Id", propertyId);
+    let propertyObj = await await propertyHelper.getPropertyByID(propertyId.sps_property_id);
+    let serviceProvider = await ServiceProviderSchema.findOne({ _id: propertyId.sps_service_provider_id });
+    if (serviceProvider) {
+      propertyObj.sp_name = serviceProvider.sps_fullname;
+      propertyObj.sp_profession = serviceProvider.sps_role_name;
+    }
+    if (propertyId.sps_extra_notes) {
+      propertyObj.notes = await propertyId.sps_extra_notes;
+    }
+    if (propertyId.sps_filename) {
+      propertyObj.filename = await propertyId.sps_filename;
+    }
+    rejectPropertyProposalArray.push(propertyObj);
+  }
+  console.log("rejectPropertyProposalArray is :", rejectPropertyProposalArray);
+
+
+  res.render('service-provider/proposal', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    activePropertyProposalArray: activePropertyProposalArray,
+    rejectPropertyProposalArray: rejectPropertyProposalArray,
+    submitPropertyProposalArray: submitPropertyProposalArray,
+
+  });
+})
 
 module.exports = app;
 
