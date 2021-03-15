@@ -37,22 +37,20 @@
         <div class="row content">
           <div class="col-sm-2 sidenav hidden-xs-down">
             <div class="user-login text-center">
-              <div class="user-profile">
-                <img src="../images/user-3.png" alt="" title="">
-              </div>
-              <div class="user-name">
-                <h6>
-                  <%= session.name%>,<span><i>
-                        <%= session.role %>
-                      </i>
-                    </span>
-                </h6>
+              <%- include('sp-profile-image')-%>
+                <div class="user-name">
+                  <h6>
+                    <%= session.name%>,<span><i>
+                          <%= session.role %>
+                        </i>
+                      </span>
+                  </h6>
 
-                <a href="#"><i>
-                    <%= session.email%>
-                      <%- include('edit-profile-professional-icon')-%>
-                  </i></a>
-              </div>
+                  <a href="#"><i>
+                      <%= session.email%>
+                        <%- include('edit-profile-professional-icon')-%>
+                    </i></a>
+                </div>
             </div>
             <%- include('sidebar-professional')-%>
           </div>
@@ -134,12 +132,12 @@
                                   <%=row.ppts_task_name%>
                                 </p>
                                 <%if(row.ppts_task_status=='completed_by_service_provider'){%>
-                                <input type="checkbox" checked disabled>
-                                 
+                                  <input type="checkbox" checked disabled>
+
                                   <%}else{%>
                                     <input type="checkbox">
                                     <%}%>
-                                <span class="checkmark"></span>
+                                      <span class="checkmark"></span>
                               </label></td>
                             <td><a href="#" class="upload-any"><img src="../images/upload.png"><span>
                                   <div class="custom-file-input">
@@ -158,21 +156,24 @@
                               <div class="profile-dropdown">
                                 <%if(row.ppts_task_status=='completed_by_service_provider'){%>
                                   <a class="btn btn-complete">Complete</a>
-                                  <%}else if(row.ppts_task_status=='in_progress'){%>
+                                  <%}else if(row.ppts_task_status=='in_progress' ){%>
                                     <a class="btn btn-progress">In Progress</a>
                                     <%}else{%>
-                                    <a class="btn btn-pending">Pending</a>
-                                  <%}%>
-                                <div class="status-dropdown">
-                                  <a class="btn btn-pending"onclick="sp_task_statusUpdate('<%=row._id%>','pending')">Pending</a>
-                                  <a class="btn btn-progress"onclick="sp_task_statusUpdate('<%=row._id%>','in_progress')">In Progress</a>
-                                  <a class="btn btn-complete"onclick="sp_task_statusUpdate('<%=row._id%>','completed_by_service_provider')">Complete</a>
-                                </div>
+                                      <a class="btn btn-pending">Pending</a>
+                                      <%}%>
+                                        <div class="status-dropdown">
+                                          <a class="btn btn-pending"
+                                            onclick="sp_task_statusUpdate('<%=row._id%>','pending')">Pending</a>
+                                          <a class="btn btn-progress"
+                                            onclick="sp_task_statusUpdate('<%=row._id%>','in_progress')">In Progress</a>
+                                          <a class="btn btn-complete"
+                                            onclick="sp_task_statusUpdate('<%=row._id%>','completed_by_service_provider')">Complete</a>
+                                        </div>
                               </div>
 
                             </td>
-                            
-                             
+
+
                             <td class="edit-task<%=row._id%>">
 
                               <span>
@@ -313,51 +314,51 @@
         }
       </script>
       <script>
-        function sp_task_statusUpdate(task_id,status){
-           
-            
-        Swal.fire({
-          title: 'Are you sure want to Update Status?',
-          showCancelButton: true,
-          confirmButtonText: `Yes`,
-          confirmButtonColor: '#005377',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            
-            $.ajax({
-              type: "POST",
-              data: {
-                'task_id':task_id,
-                'ppts_task_status':status,
-                'action':'sp_task_update'
-            },
-              url: '/api/sp_task_status_update',
-              cache: false,
-              success: function (data) {
-                if (data.status == true) {
-                  Swal.fire({
-                    // position: 'top-end',
-                    icon: 'success',
-                    title: data.message,
-                    showConfirmButton: false,
-                    confirmButtonColor: '#005377',
-                    timer: 3000
-                  })
-                  location.reload(true)
-                } else {
-                  Swal.fire({
-                    // position: 'top-end',
-                    icon: 'error',
-                    title: data.message,
-                    showConfirmButton: true,
-                    confirmButtonColor: '#005377'
-                    //timer: 1500
-                  })
+        function sp_task_statusUpdate(task_id, status) {
+
+
+          Swal.fire({
+            title: 'Are you sure want to Update Status?',
+            showCancelButton: true,
+            confirmButtonText: `Yes`,
+            confirmButtonColor: '#005377',
+          }).then((result) => {
+            if (result.isConfirmed) {
+
+              $.ajax({
+                type: "POST",
+                data: {
+                  'task_id': task_id,
+                  'ppts_task_status': status,
+                  'action': 'sp_task_update'
+                },
+                url: '/api/sp_task_status_update',
+                cache: false,
+                success: function (data) {
+                  if (data.status == true) {
+                    Swal.fire({
+                      // position: 'top-end',
+                      icon: 'success',
+                      title: data.message,
+                      showConfirmButton: false,
+                      confirmButtonColor: '#005377',
+                      timer: 3000
+                    })
+                    location.reload(true)
+                  } else {
+                    Swal.fire({
+                      // position: 'top-end',
+                      icon: 'error',
+                      title: data.message,
+                      showConfirmButton: true,
+                      confirmButtonColor: '#005377'
+                      //timer: 1500
+                    })
+                  }
                 }
-              }
-            })
-          }
-        })
+              })
+            }
+          })
         }
       </script>
       </body>
