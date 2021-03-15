@@ -403,7 +403,16 @@
       var sDate = new Date(StartDate);
       if(StartDate!= '' && StartDate!= '' && sDate> eDate)
         {
-        alert("Please ensure that the End Date is greater than or equal to the Start Date.");
+       // alert("Please ensure that the End Date is greater than or equal to the Start Date.");
+        Swal.fire({
+                    icon: 'error',
+                    title: 'Please ensure that the End Date is greater than or equal to the Start Date.',
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+                  }).then((result)=>{
+                    //location.reload(true);
+                  })
         return false;
         }else{
           var eduId = id;
