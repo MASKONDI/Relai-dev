@@ -37,22 +37,20 @@
         <div class="row content">
           <div class="col-sm-2 sidenav hidden-xs-down">
             <div class="user-login text-center">
-              <div class="user-profile">
-                <img src="../images/user-3.png" alt="" title="">
-              </div>
-              <div class="user-name">
-                <h6>
-                  <%= session.name%>,<span><i>
-                        <%= session.role %>
-                      </i>
-                    </span>
-                </h6>
+              <%- include('sp-profile-image')-%>
+                <div class="user-name">
+                  <h6>
+                    <%= session.name%>,<span><i>
+                          <%= session.role %>
+                        </i>
+                      </span>
+                  </h6>
 
-                <a href="#"><i>
-                    <%= session.email%>
-                      <%- include('edit-profile-professional-icon')-%>
-                  </i></a>
-              </div>
+                  <a href="#"><i>
+                      <%= session.email%>
+                        <%- include('edit-profile-professional-icon')-%>
+                    </i></a>
+                </div>
             </div>
             <%-include('sidebar-professional')-%>
           </div>
