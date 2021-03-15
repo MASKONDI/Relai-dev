@@ -105,6 +105,9 @@ const ServiceProviderSchema = new Schema({
   sps_otp_expire_time: {
     type: String,
   },
+  sps_profile_image_name: {
+    type: String,
+  },
 });
 
 

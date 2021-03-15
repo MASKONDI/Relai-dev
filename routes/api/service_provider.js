@@ -427,7 +427,21 @@ router.post("/service_provider_other_details", (req, res) => {
 /* -------------------------------------------------------------------------------------------------
 POST : service_provider_education post api is responsible for submitting signup-professionals-profile-3 form data 
 ------------------------------------------------------------------------------------------------- */
-
+router.get("/service_provider_education", (req, res) => {
+  ServiceProviderEducationSchema.findOne({spes_service_provider_id:req.query.user_id}).then((resp)=>{
+    if(resp){
+      res.send({
+        status:true,
+        data:resp
+      })
+    }else{
+      res.send({
+        status:false,
+        data:resp
+      })
+    }
+  })
+})
 router.post("/service_provider_education", (req, res) => {
   var err_msg = null;
   var success_msg = null;
@@ -497,7 +511,21 @@ router.post("/service_provider_education", (req, res) => {
 /* -------------------------------------------------------------------------------------------------
 POST : service_provider_employment_history post api is responsible for submitting signup-professionals-profile-4 from data 
 ------------------------------------------------------------------------------------------------- */
-
+router.get("/service_provider_employment_history", (req, res) => {
+  ServiceProviderEmploymentHistorySchema.findOne({spehs_service_provider_id:req.query.user_id}).then((resp)=>{
+    if(resp){
+      res.send({
+        status:true,
+        data:resp
+      })
+    }else{
+      res.send({
+        status:false,
+        data:resp
+      })
+    }
+  })
+})
 router.post("/service_provider_employment_history", (req, res) => {
   var err_msg = null;
   var success_msg = null;

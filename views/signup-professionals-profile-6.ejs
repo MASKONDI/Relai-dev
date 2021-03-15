@@ -70,44 +70,37 @@
             </div>
             <ul class="dashboard-nav">
               <li class="completed">
-                <a href="/signup-professionals-profile">
+                <a href="/signup-professionals-profile" class ="personal_detail_nev">
                   <img class="complete-img" src="images/checked.png">
                   <img class="act-img" src="images/1-active.png">
                   <img src="images/1.png">
                   PERSONAL DETAILS
                 </a>
               </li>
-              <li class="completed">
-                <a href="/signup-professionals-profile-2">
-                  <img class="complete-img" src="images/checked.png">
-                  <img class="act-img" src="images/2-active.png">
-                  <img src="images/2.png"> OTHER DETAILS</a>
+              <li >
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-2"class ="other_detail_nev"><img class="act-img" src="images/2-active.png"><img
+                    src="images/2.png"> OTHER DETAILS</a>
               </li>
-              <li class="completed">
-                <a href="/signup-professionals-profile-3">
-                  <img class="complete-img" src="images/checked.png">
-                  <img class="act-img" src="images/3-active.png">
-                  <img src="images/3.png"> EDUCATION</a>
+              <li>
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-3" class ="education_detail_nev"><img class="act-img" src="images/3-active.png"><img
+                    src="images/3.png"> EDUCATION</a>
               </li>
-              <li class="completed">
-                <a href="/signup-professionals-profile-4">
-                  <img class="complete-img" src="images/checked.png">
-                  <img class="act-img" src="images/4-active.png">
-                  <img src="images/4.png"> EMPLOYMENT HISTORY</a>
+              <li >
+                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-4" class ="employment_detail_nev"><img
+                    src="images/4.png"> EMPLOYMENT HISTORY</a>
               </li>
-              <li class="completed">
-                <a href="/signup-professionals-profile-5">
-                  <img class="complete-img" src="images/checked.png">
-                  <img class="act-img" src="images/5-active.png">
-                  <img src="images/5.png"> REFERENCES</a>
+
+              <li>
+                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-5" class ="refrence_detail_nev"><img class="act-img" src="images/5-active.png"><img
+                    src="images/5.png"> REFERENCES</a>
               </li>
-              <li class="active">
-                <a href="/signup-professionals-profile-6"><img class="act-img" src="images/6-active.png"><img
+              <li  class="active">
+                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-6" class ="indemnity_detail_nev"><img class="act-img" src="images/6-active.png"><img
                     src="images/6.png"> PROFESSIONAL INDEMNITY
                   INSURANCE</a>
               </li>
-              <li>
-                <a href="/signup-professionals-profile-7"><img class="act-img" src="images/7-active.png"><img
+              <li >
+                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-7" class ="language_detail_nev"><img class="act-img" src="images/7-active.png"><img
                     src="images/7.png"> LANGUAGE</a>
               </li>
             </ul>
@@ -399,6 +392,18 @@
   </script>
   <script type="text/javascript">
     $(document).ready(function () {
+      var newHref1 = $('.other_detail_nev').attr('data-href');
+        $('.other_detail_nev').attr('href',newHref1);
+        var newHref2 = $('.education_detail_nev').attr('data-href');
+        $('.education_detail_nev').attr('href',newHref2);
+        var newHref3 = $('.employment_detail_nev').attr('data-href');
+        $('.employment_detail_nev').attr('href',newHref3);
+        var newHref4 = $('.refrence_detail_nev').attr('data-href');
+        $('.refrence_detail_nev').attr('href',newHref4);
+        var newHref5 = $('.refrence_detail_nev').attr('data-href');
+        $('.refrence_detail_nev').attr('href',newHref5);
+        var newHref6 = $('.indemnity_detail_nev').attr('data-href');
+        $('.indemnity_detail_nev').attr('href',newHref6);
       spods_renewal_date.min=new Date().toISOString().split('T')[0];
       var data = {
         user_id:'<%= session.user_id%>'
@@ -412,6 +417,9 @@
           success: function (data) {
             console.log(data);
             if (data.status == true) {
+              
+        var newHref7 = $('.language_detail_nev').attr('data-href');
+        $('.language_detail_nev').attr('href',newHref7);
               $('.indemnity_detail_id').val(data.data._id);
               var date    = new Date(data.data.spods_renewal_date),
               yr      = date.getFullYear(),
