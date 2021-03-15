@@ -397,11 +397,11 @@
                 $("#no3").attr('checked', 'checked');
               }
               if(data.data.spods_option_criminal_convictions=='yes'){
-                //alert()
+                
                 $("#yesCheck").attr('checked', 'checked');
                 //document.getElementById('yesCheck').checked
                 document.getElementById('ifYes').style.display = 'block';
-              }else{
+              }else if(data.data.spods_option_criminal_convictions=='no'){
                 $('.spods_details_of_convictions').val('')
                 $("#noCheck").attr('checked', 'checked');
                // document.getElementById('noCheck').checked

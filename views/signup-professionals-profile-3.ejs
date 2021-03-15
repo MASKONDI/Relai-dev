@@ -23,12 +23,12 @@
             <div class="row">
               <div class="col-sm-12 col-lg-6">
                 <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="FromDate"
-                  placeholder="from Date" name="spes_from_date" data-rule-required="true"
+                  placeholder="From Date" name="spes_from_date" data-rule-required="true"
                   data-msg-required="From Date is required!">
               </div>
               <div class="col-sm-12 col-lg-6">
                 <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="toDate"
-                  placeholder="toDate" name="spes_to_date" data-rule-required="true"
+                  placeholder="To Date" name="spes_to_date" data-rule-required="true"
                   data-msg-required="To Date is required!">
               </div>
             </div>
@@ -280,7 +280,7 @@
 <script>
   $(document).ready(function () {
     toDate.max = new Date().toISOString().split("T")[0];
-          
+    FromDate.max = new Date().toISOString().split("T")[0];     
         });
       
 </script>
@@ -317,7 +317,16 @@
   var sDate = new Date(StartDate);
   if(StartDate!= '' && StartDate!= '' && sDate> eDate)
     {
-    alert("Please ensure that the End Date is greater than or equal to the Start Date.");
+      Swal.fire({
+                    icon: 'error',
+                    title: 'Please ensure that the End Date is greater than or equal to the Start Date.',
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+                  }).then((result)=>{
+                    //location.reload(true);
+                  })
+    // alert("Please ensure that the End Date is greater than or equal to the Start Date.");
     return false;
     }else{
       $('.loader-box').attr('style', 'display:flex !important');
