@@ -99,6 +99,7 @@ app.get('/proposal', isCustomer, async (req, res) => {
     let serviceProvider = await ServiceProviderSchema.findOne({ _id: propertyId.sps_service_provider_id });
     if (serviceProvider) {
       propertyObj.sp_name = serviceProvider.sps_fullname;
+      propertyObj.sp_profession = serviceProvider.sps_role_name;
     }
     if (propertyId.sps_extra_notes) {
       propertyObj.notes = await propertyId.sps_extra_notes;
@@ -110,15 +111,17 @@ app.get('/proposal', isCustomer, async (req, res) => {
   }
   console.log("activePropertyProposalArray is :", activePropertyProposalArray);
 
+
+  //Submitted Proposal For Professional
   var submitPropertyProposalArray = [];
   var submitProposal = await SubmitProposalSchema.find({ sps_customer_id: req.session.user_id, sps_status: 'accept' });
-
   for (var propertyId of submitProposal) {
     console.log("property Id", propertyId);
     let propertyObj = await propertyDetail.GetPropertyById(propertyId.sps_property_id);
     let serviceProvider = await ServiceProviderSchema.findOne({ _id: propertyId.sps_service_provider_id });
     if (serviceProvider) {
       propertyObj.sp_name = serviceProvider.sps_fullname;
+      propertyObj.sp_profession = serviceProvider.sps_role_name;
     }
     if (propertyId.sps_extra_notes) {
       propertyObj.notes = await propertyId.sps_extra_notes;
@@ -130,6 +133,9 @@ app.get('/proposal', isCustomer, async (req, res) => {
   }
   console.log("submitPropertyProposalArray is :", submitPropertyProposalArray);
 
+
+
+  //fetching Reject Proposal 
   var rejectPropertyProposalArray = [];
   var rejectProposal = await SubmitProposalSchema.find({ sps_customer_id: req.session.user_id, sps_status: 'reject' });
   for (var propertyId of rejectProposal) {
@@ -138,6 +144,7 @@ app.get('/proposal', isCustomer, async (req, res) => {
     let serviceProvider = await ServiceProviderSchema.findOne({ _id: propertyId.sps_service_provider_id });
     if (serviceProvider) {
       propertyObj.sp_name = serviceProvider.sps_fullname;
+      propertyObj.sp_profession = serviceProvider.sps_role_name;
     }
     if (propertyId.sps_extra_notes) {
       propertyObj.notes = await propertyId.sps_extra_notes;
@@ -149,16 +156,14 @@ app.get('/proposal', isCustomer, async (req, res) => {
   }
   console.log("rejectPropertyProposalArray is :", rejectPropertyProposalArray);
 
-  console.log("active Proposal is ", activeProposal.length);
-  console.log("submitProposal is ", submitProposal.length);
-  console.log("rejectProposal is ", rejectProposal.length);
+
   res.render('proposal', {
     err_msg, success_msg, layout: false,
     session: req.session,
-    activeProposal: activeProposal,
-    submitProposal: submitProposal,
-    rejectProposal: rejectProposal,
-    activePropertyProposalArray: activePropertyProposalArray
+    activePropertyProposalArray: activePropertyProposalArray,
+    rejectPropertyProposalArray: rejectPropertyProposalArray,
+    submitPropertyProposalArray: submitPropertyProposalArray,
+
   });
 })
 
