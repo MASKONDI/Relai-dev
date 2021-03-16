@@ -50,7 +50,7 @@
                     <table class="table table-responsive">
                       <thead>
                         <tr>
-                          <th>Professional</th>
+                          <th>Customer</th>
                           <th>Property </th>
                           <th>Task </th>
                           <th>Notes</th>
@@ -71,10 +71,11 @@
                             <tr>
                               <%if(activePropertyProposalArray.length>0){%>
                                 <%activePropertyProposalArray.forEach(function(row,i){%>
-                                  <td>
-                                    <label class="check-permission"><img src="../images/recent-user-1.png">
-                                      <%=row.sp_name%>, <span>
-                                          <%=row.sp_profession%>
+                                  <td style="width:30%">
+                                    <label class="check-permission"><img style="width: 15%; border-radius: 50%;"
+                                        src="../upload/<%=row.cus_profile_image_name%>">
+                                      <%=row.cs_name%>, <span>
+                                          <%=row.ps_is_active_user_flag%>
                                         </span>
                                     </label>
                                   </td>
@@ -85,7 +86,9 @@
                                   <td>
                                     <%=row.notes%>
                                   </td>
-                                  <td><a href="/upload/<%=row.filename%>"><u>View</u></a></td>
+                                  <td><a
+                                      href="/service-provider/proposal-details?id=<%=row.proposalId%>"><u>View</u></a>
+                                  </td>
                                   <!-- <td> <a href="#"><u>Accept</u></a></td> -->
                                   <!-- <td><a href="#"><u>Reject</u></a></td>
                                 <td><a href="#"><u>Remove</u></a></td> -->
@@ -108,7 +111,7 @@
                     <table class="table table-responsive">
                       <thead>
                         <tr>
-                          <th>Professional</th>
+                          <th>Customer</th>
                           <th>Property </th>
                           <th>Task </th>
                           <th>Notes</th>
@@ -128,10 +131,11 @@
                             <tr>
                               <%if(submitPropertyProposalArray.length>0){%>
                                 <%submitPropertyProposalArray.forEach(function(row,i){%>
-                                  <td>
-                                    <label class="check-permission"><img src="../images/recent-user-1.png">
-                                      <%=row.sp_name%>, <span>
-                                          <%=row.sp_profession%>
+                                  <td style="width:30%">
+                                    <label class="check-permission"><img style="width: 15%; border-radius: 50%;"
+                                        src="../upload/<%=row.cus_profile_image_name%>">
+                                      <%=row.cs_name%>, <span>
+                                          <%=row.ps_is_active_user_flag%>
                                         </span>
                                     </label>
                                   </td>
@@ -142,7 +146,9 @@
                                   <td>
                                     <%=row.notes%>
                                   </td>
-                                  <td><a href="/upload/<%=row.filename%>"><u>View</u></a></td>
+                                  <td><a
+                                      href="/service-provider/proposal-details?id=<%=row.proposalId%>"><u>View</u></a>
+                                  </td>
                                   <!-- <td> <a href="#"><u>Accept</u></a></td>
                                 <td><a href="#"><u>Reject</u></a></td>
                                 <td><a href="#"><u>Remove</u></a></td> -->
@@ -164,7 +170,7 @@
                     <table class="table table-responsive">
                       <thead>
                         <tr>
-                          <th>Professional</th>
+                          <th>Customer</th>
                           <th>Property </th>
                           <th>Task </th>
                           <th>Notes</th>
@@ -185,10 +191,11 @@
                             <tr>
                               <%if(rejectPropertyProposalArray.length>0){%>
                                 <%rejectPropertyProposalArray.forEach(function(row,i){%>
-                                  <td>
-                                    <label class="check-permission"><img src="../images/recent-user-1.png">
-                                      <%=row.sp_name%>, <span>
-                                          <%=row.sp_profession%>
+                                  <td style="width:30%">
+                                    <label class="check-permission"><img style="width: 15%; border-radius: 50%;"
+                                        src="../upload/<%=row.cus_profile_image_name%>">
+                                      <%=row.cs_name%>, <span>
+                                          <%=row.ps_is_active_user_flag%>
                                         </span>
                                     </label>
                                   </td>
@@ -199,15 +206,14 @@
                                   <td>
                                     <%=row.notes%>
                                   </td>
-                                  <td><a href="/upload/<%=row.filename%>"><u>View</u></a></td>
+                                  <td><a
+                                      href="/service-provider/proposal-details?id=<%=row.proposalId%>"><u>View</u></a>
+                                  </td>
                                   <!-- <td> <a href="#"><u>Accept</u></a></td>
                                 <td><a href="#"><u>Reject</u></a></td>
                                 <td><a href="#"><u>Remove</u></a></td> -->
                             </tr>
                             <%})%>
-
-
-
                               <%}%>
                                 <%}%>
                       </tbody>

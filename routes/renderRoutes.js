@@ -171,18 +171,6 @@ app.get('/proposal', isCustomer, async (req, res) => {
 })
 
 
-app.get('/proposal-details', isCustomer, async (req, res) => {
-  console.log("Current session is :", req.session);
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  req.session.pagename = 'proposal';
-  var activeProposal = await SubmitProposalSchema.findOne({ _id: req.query.user_id });
-  console.log("active Proposal is:", activeProposal);
-  res.render('proposal-details', {
-    err_msg, success_msg, layout: false,
-    session: req.session,
-  });
-})
 
 //** customer Signup ***********8 */
 app.get("/signup", (req, res) => {
@@ -5848,6 +5836,63 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
   }
 
+});
+
+app.get('/proposal-details', isCustomer, async (req, res) => {
+  console.log("Current query is :", req.query);
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  req.session.pagename = 'proposal';
+  var proposalDetails = [];
+  var activeProposal = await SubmitProposalSchema.find({ _id: req.query.id });
+  console.log("activeProposal is ", activeProposal);
+  if (activeProposal) {
+    for (var propertyId of activeProposal) {
+      console.log("property Id", propertyId);
+
+      let propertyObj = await propertyDetail.GetPropertyById(propertyId.sps_property_id);
+      let serviceProvider = await ServiceProviderSchema.findOne({ _id: propertyId.sps_service_provider_id });
+      var totalProposal = await SubmitProposalSchema.find({ sps_service_provider_id: propertyId.sps_service_provider_id });
+
+      if (totalProposal) {
+        propertyObj.total_proposal = await totalProposal.length;
+      }
+      if (serviceProvider) {
+        propertyObj.sp_name = await serviceProvider.sps_fullname;
+        propertyObj.sp_profession = await serviceProvider.sps_role_name;
+        propertyObj.sp_state = await serviceProvider.sps_state;
+        propertyObj.sp_country = await serviceProvider.sps_country_id;
+        propertyObj.sp_city = await serviceProvider.sps_city;
+        propertyObj.sp_joining_date = await serviceProvider.sps_created_at;
+      }
+      propertyObj.proposal_filename = await propertyId.sps_filename;
+      propertyObj.sps_payment_mode = await propertyId.sps_payment_mode;
+      propertyObj.sps_extra_notes = await propertyId.sps_extra_notes;
+      propertyObj.sps_status = await propertyId.sps_status;
+      propertyObj.sps_start_date = await propertyId.sps_start_date;
+      propertyObj.sps_end_date = await propertyId.sps_end_date;
+      propertyObj.proposalId = await propertyId._id;
+      proposalDetails.push(propertyObj);
+    }
+  }
+  console.log("active Proposal is:", proposalDetails);
+  res.render('proposal-details', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    proposalDetails: proposalDetails,
+  });
+})
+
+app.post('/change-proposal-status', isCustomer, async (req, res) => {
+  console.log("Request comming for change status", req.body);
+  let proposalId = req.body.proposalId;
+  SubmitProposalSchema.updateOne({ '_id': proposalId }, { $set: { sps_status: req.body.proposalStatus } }, { upsert: true }, function (err) {
+    if (err) {
+      res.send({ status: false, message: 'Something going wrong please check again !!' })
+    } else {
+      res.send({ status: true, message: 'Your proposal update successfully !!' })
+    }
+  });
 });
 
 
