@@ -733,12 +733,12 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
         sumRating += parseInt(RatingData.sprs_rating);
       }
       let avgRating = sumRating / professionalRating.length;
-      console.log("ProfessionalavgRating 1========", ratingOne.length)
-      console.log("ProfessionalavgRating 2========", ratingTwo.length)
-      console.log("ProfessionalavgRating 3========", ratingThree.length)
-      console.log("ProfessionalavgRating 4========", ratingFour.length)
-      console.log("ProfessionalavgRating 5========", ratingFive.length)
-      console.log("TotalRatingcount========", TotalRatingcount)
+      // console.log("ProfessionalavgRating 1========", ratingOne.length)
+      // console.log("ProfessionalavgRating 2========", ratingTwo.length)
+      // console.log("ProfessionalavgRating 3========", ratingThree.length)
+      // console.log("ProfessionalavgRating 4========", ratingFour.length)
+      // console.log("ProfessionalavgRating 5========", ratingFive.length)
+      // console.log("TotalRatingcount========", TotalRatingcount)
 
       let ratingOneAvg = (((ratingOne.length)/TotalRatingcount)*100);
       let ratingTwoAvg = (((ratingTwo.length)/TotalRatingcount)*100);
@@ -750,11 +750,11 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
       if (!isNaN(ratingThreeAvg)) { ratingThreeAvg = ratingThreeAvg }else{ ratingThreeAvg=0; }
       if (!isNaN(ratingFourAvg)) { ratingFourAvg = ratingFourAvg }else{ ratingFourAvg=0; }
       if (!isNaN(ratingFiveAvg)) { ratingFiveAvg = ratingFiveAvg }else{ ratingFiveAvg=0; }
-      console.log("ratingOneAvg========", ratingOneAvg)
-      console.log("ratingTwoAvg========", ratingTwoAvg)
-      console.log("ratingThreeAvg========", ratingThreeAvg)
-      console.log("ratingFourAvg========", ratingFourAvg)
-      console.log("ratingFiveAvg========", ratingFiveAvg)
+      // console.log("ratingOneAvg========", ratingOneAvg)
+      // console.log("ratingTwoAvg========", ratingTwoAvg)
+      // console.log("ratingThreeAvg========", ratingThreeAvg)
+      // console.log("ratingFourAvg========", ratingFourAvg)
+      // console.log("ratingFiveAvg========", ratingFiveAvg)
 
       if (!isNaN(avgRating)) {
         avgRating = avgRating.toFixed(1);
@@ -779,11 +779,16 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
         professionalRating: professionalRating,
         hiredProfeshnoal: hiredProfeshnoal,
         avgRating: avgRating,
-        ratingOne:ratingOneAvg,
-        ratingTwo:ratingTwoAvg,
-        ratingThree:ratingThreeAvg,
-        ratingFour:ratingFourAvg,
-        ratingFive:ratingFiveAvg,
+        ratingOneavg:ratingOneAvg,
+        ratingTwoavg:ratingTwoAvg,
+        ratingThreeavg:ratingThreeAvg,
+        ratingFouravg:ratingFourAvg,
+        ratingFiveavg:ratingFiveAvg,
+        ratingOne:ratingOne.length,
+        ratingTwo:ratingTwo.length,
+        ratingThree:ratingThree.length,
+        ratingFour:ratingFour.length,
+        ratingFive:ratingFive.length,
         moment: moment,
         propertyObj: propertyObj
       });
