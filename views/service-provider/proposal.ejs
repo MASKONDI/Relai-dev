@@ -61,34 +61,38 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <%if(activePropertyProposalArray.length>0){%>
-                            <%activePropertyProposalArray.forEach(function(row,i){%>
-                              <td>
-                                <label class="check-permission"><img src="../images/recent-user-1.png">
-                                  <%=row.sp_name%>, <span>
-                                      <%=row.sp_profession%>
-                                    </span>
-                                </label>
-                              </td>
-                              <td>
-                                <%=row.ps_property_name%>
-                              </td>
-                              <td>Task Name</td>
-                              <td>
-                                <%=row.notes%>
-                              </td>
-                              <td><a href="/upload/<%=row.filename%>"><u>View</u></a></td>
-                              <!-- <td> <a href="#"><u>Accept</u></a></td> -->
-                              <!-- <td><a href="#"><u>Reject</u></a></td>
+                        <%if(activePropertyProposalArray.length==0){%>
+                          <tr>
+                            <td>
+                              <p>Currently You don't have any proposal.</p>
+                            </td>
+                          </tr>
+                          <%}else{%>
+                            <tr>
+                              <%if(activePropertyProposalArray.length>0){%>
+                                <%activePropertyProposalArray.forEach(function(row,i){%>
+                                  <td>
+                                    <label class="check-permission"><img src="../images/recent-user-1.png">
+                                      <%=row.sp_name%>, <span>
+                                          <%=row.sp_profession%>
+                                        </span>
+                                    </label>
+                                  </td>
+                                  <td>
+                                    <%=row.ps_property_name%>
+                                  </td>
+                                  <td>Task Name</td>
+                                  <td>
+                                    <%=row.notes%>
+                                  </td>
+                                  <td><a href="/upload/<%=row.filename%>"><u>View</u></a></td>
+                                  <!-- <td> <a href="#"><u>Accept</u></a></td> -->
+                                  <!-- <td><a href="#"><u>Reject</u></a></td>
                                 <td><a href="#"><u>Remove</u></a></td> -->
-                        </tr>
-                        <%})%>
-                          <%} else {%>
-
-                            <p>Currently You don't have Active proposal</p>
-
-                            <%}%>
+                            </tr>
+                            <%})%>
+                              <%} %>
+                                <%}%>
                       </tbody>
                     </table>
                   </div>
@@ -114,34 +118,38 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <%if(submitPropertyProposalArray.length>0){%>
-                            <%submitPropertyProposalArray.forEach(function(row,i){%>
-                              <td>
-                                <label class="check-permission"><img src="../images/recent-user-1.png">
-                                  <%=row.sp_name%>, <span>
-                                      <%=row.sp_profession%>
-                                    </span>
-                                </label>
-                              </td>
-                              <td>
-                                <%=row.ps_property_name%>
-                              </td>
-                              <td>Task Name</td>
-                              <td>
-                                <%=row.notes%>
-                              </td>
-                              <td><a href="/upload/<%=row.filename%>"><u>View</u></a></td>
-                              <!-- <td> <a href="#"><u>Accept</u></a></td>
+                        <%if(submitPropertyProposalArray.length==0){%>
+                          <tr>
+                            <td>
+                              <p>Currently You don't have any proposal.</p>
+                            </td>
+                          </tr>
+                          <%}else{%>
+                            <tr>
+                              <%if(submitPropertyProposalArray.length>0){%>
+                                <%submitPropertyProposalArray.forEach(function(row,i){%>
+                                  <td>
+                                    <label class="check-permission"><img src="../images/recent-user-1.png">
+                                      <%=row.sp_name%>, <span>
+                                          <%=row.sp_profession%>
+                                        </span>
+                                    </label>
+                                  </td>
+                                  <td>
+                                    <%=row.ps_property_name%>
+                                  </td>
+                                  <td>Task Name</td>
+                                  <td>
+                                    <%=row.notes%>
+                                  </td>
+                                  <td><a href="/upload/<%=row.filename%>"><u>View</u></a></td>
+                                  <!-- <td> <a href="#"><u>Accept</u></a></td>
                                 <td><a href="#"><u>Reject</u></a></td>
                                 <td><a href="#"><u>Remove</u></a></td> -->
-                        </tr>
-                        <%})%>
-                          <%} else {%>
-
-                            <p>Currently You don't have Active proposal</p>
-
-                            <%}%>
+                            </tr>
+                            <%})%>
+                              <%}%>
+                                <%}%>
                       </tbody>
                     </table>
                   </div>
@@ -167,34 +175,41 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <%if(rejectPropertyProposalArray.length>0){%>
-                            <%rejectPropertyProposalArray.forEach(function(row,i){%>
-                              <td>
-                                <label class="check-permission"><img src="../images/recent-user-1.png">
-                                  <%=row.sp_name%>, <span>
-                                      <%=row.sp_profession%>
-                                    </span>
-                                </label>
-                              </td>
-                              <td>
-                                <%=row.ps_property_name%>
-                              </td>
-                              <td>Task Name</td>
-                              <td>
-                                <%=row.notes%>
-                              </td>
-                              <td><a href="/upload/<%=row.filename%>"><u>View</u></a></td>
-                              <!-- <td> <a href="#"><u>Accept</u></a></td>
+                        <%if(rejectPropertyProposalArray.length==0){%>
+                          <tr>
+                            <td>
+                              <p>Currently You don't have rejected proposal.</p>
+                            </td>
+                          </tr>
+                          <%}else{%>
+                            <tr>
+                              <%if(rejectPropertyProposalArray.length>0){%>
+                                <%rejectPropertyProposalArray.forEach(function(row,i){%>
+                                  <td>
+                                    <label class="check-permission"><img src="../images/recent-user-1.png">
+                                      <%=row.sp_name%>, <span>
+                                          <%=row.sp_profession%>
+                                        </span>
+                                    </label>
+                                  </td>
+                                  <td>
+                                    <%=row.ps_property_name%>
+                                  </td>
+                                  <td>Task Name</td>
+                                  <td>
+                                    <%=row.notes%>
+                                  </td>
+                                  <td><a href="/upload/<%=row.filename%>"><u>View</u></a></td>
+                                  <!-- <td> <a href="#"><u>Accept</u></a></td>
                                 <td><a href="#"><u>Reject</u></a></td>
                                 <td><a href="#"><u>Remove</u></a></td> -->
-                        </tr>
-                        <%})%>
-                          <%} else {%>
+                            </tr>
+                            <%})%>
 
-                            <p>Currently You don't have Active proposal</p>
 
-                            <%}%>
+
+                              <%}%>
+                                <%}%>
                       </tbody>
                     </table>
                   </div>
