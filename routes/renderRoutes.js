@@ -31,6 +31,7 @@ const PropertyProfessionalHelper = require("./api/propertyProfessionalDetails")
 
 //const ComplaintsSchema = require("../models/Complaints");
 const ComplaintDetailsSchema = require("../models/complaint_details_model");
+const NotificationSchema = require("../models/notification_modal");
 
 
 const message = require('../models/message');
@@ -425,7 +426,7 @@ app.get('/professionals', isCustomer, async (req, res) => {
             for (var RatingData of professionalRating) {
               sumRating += parseInt(RatingData.sprs_rating);
             }
-            let avgRating = Math.round(sumRating / professionalRating.length);
+            let avgRating = sumRating / professionalRating.length;
             if (!isNaN(avgRating)) {
               avgRating = avgRating.toFixed(1);
             } else {
@@ -601,23 +602,42 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
     if (service_provider_detail) {
 
       let hiredProfeshnoal = await PropertyProfessionalSchema.findOne({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login, pps_service_provider_id: req.query.id });
-      console.log('AllhiredProfeshnoal', hiredProfeshnoal);
+      //console.log('AllhiredProfeshnoal', hiredProfeshnoal);
       let serviceProvArray = [];
 
       //spods_service_provider_id
       let serviceProOtherDetail = await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: service_provider_detail._id });
-      console.log('serviceProOtherDetail:', serviceProOtherDetail)
+     // console.log('serviceProOtherDetail:', serviceProOtherDetail)
       let portpolioImage = await ServiceProviderPortfolioSchema.find({ spps_service_provider_id: req.query.id })
 
       let professionalRating = await RatingSchema.find({ sprs_service_provider_id: req.query.id }).sort({ _id: -1 })
-      console.log('professionalRating:', professionalRating)
+      //console.log('professionalRating:', professionalRating)
 
 
       var sumRating = 0;
+      var ratingOne=[];
+      var ratingTwo=[];
+      var ratingThree=[];
+      var ratingFour=[];
+      var ratingFive=[];
+
       for (var RatingData of professionalRating) {
+        if(RatingData.sprs_rating == '1'){
+            ratingOne.push(RatingData.sprs_rating);
+        }else if(RatingData.sprs_rating == '2'){
+          ratingTwo.push(RatingData.sprs_rating);
+        }else if(RatingData.sprs_rating == '3'){
+          ratingThree.push(RatingData.sprs_rating);
+        }else if(RatingData.sprs_rating == '4'){
+          ratingFour.push(RatingData.sprs_rating);
+        }else if(RatingData.sprs_rating == '5'){
+          ratingFive.push(RatingData.sprs_rating);
+        }
         sumRating += parseInt(RatingData.sprs_rating);
       }
-      let avgRating = Math.round(sumRating / professionalRating.length);
+      let avgRating = sumRating / professionalRating.length;
+      console.log("ProfessionalavgRating========", avgRating)
+
       if (!isNaN(avgRating)) {
         avgRating = avgRating.toFixed(1);
       } else {
@@ -629,7 +649,7 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
         var property_object = await pr;
         propertyObjArray.push(property_object)
       }
-      console.log("propertyObj========", propertyObj)
+      console.log("avgRating========", avgRating)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('professionals-detail', {
@@ -641,6 +661,11 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
         professionalRating: professionalRating,
         hiredProfeshnoal: hiredProfeshnoal,
         avgRating: avgRating,
+        ratingOne:ratingOne.length,
+        ratingTwo:ratingTwo.length,
+        ratingThree:ratingThree.length,
+        ratingFour:ratingFour.length,
+        ratingFive:ratingFive.length,
         moment: moment,
         propertyObj: propertyObj
       });
@@ -689,7 +714,7 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
             for (var RatingData of professionalRating) {
               sumRating += parseInt(RatingData.sprs_rating);
             }
-            let avgRating = Math.round(sumRating / professionalRating.length);
+            let avgRating = sumRating / professionalRating.length;
             if (!isNaN(avgRating)) {
               avgRating = avgRating.toFixed(1);
             } else {
@@ -788,7 +813,7 @@ app.get('/professionals-searchbar', (req, res) => {
                   for (var RatingData of professionalRating) {
                     sumRating += parseInt(RatingData.sprs_rating);
                   }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
+                  let avgRating = sumRating / professionalRating.length;
                   if (!isNaN(avgRating)) {
                     avgRating = avgRating.toFixed(1);
                   } else {
@@ -1250,13 +1275,16 @@ app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
   //       })
   //   });
   // }
+  const { page = 1, limit = 5 } = req.query;
 
-  await MessageSchema.find({
+  var QueryData={
     $or: [
       { $and: [{ sms_sender_id: property.ps_user_id }, { sms_receiver_id: req.query.pid }, { sms_property_id: req.session.property_id }, { sms_sender_id: req.session.user_id }] },
       { $and: [{ sms_sender_id: req.query.pid }, { sms_receiver_id: property.ps_user_id }, { sms_property_id: req.session.property_id }, { sms_receiver_id: req.session.user_id }] }
     ]
-  }).then(async (data) => {
+  };
+  const count = await MessageSchema.countDocuments(QueryData);
+  await MessageSchema.find(QueryData).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
     if (data) {
       for (let providerData of data) {
         var today = new Date();
@@ -1329,7 +1357,8 @@ app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
 
 
 
-  console.log('property:', property)
+  console.log('currentPage:', page)
+  console.log('totalPages:', Math.ceil(count / limit))
 
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -1339,25 +1368,37 @@ app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
 
     property: property,
     professional_id: req.query.pid,
-    chatData: newData
+    chatData: newData.reverse(),
+    totalPages: Math.ceil(count / limit),
+    currentPage: page,
+    msgcount:count
+
     //hiredProfeshnoalList:serviceProvArray
   });
 })
 
-app.get('/professionals-detail-message', (req, res) => {
+app.get('/professionals-detail-message', async (req, res) => {
   req.session.pagename = 'professionals';
   console.log('helooooo', req.query);
   //return
   var newData = [];
-  ServiceProviderSchema.find({ _id: req.query.spp_id }).then(service_provider_detail => {
+  ServiceProviderSchema.find({ _id: req.query.spp_id }).then( async service_provider_detail => {
+
+    const { page = 1, limit = 5 } = req.query;
+
 
     if (service_provider_detail) {
-      MessageSchema.find({
+
+      var QueryData = {
         $or: [
-          { $and: [{ sms_sender_id: req.query.cus_id }, { sms_receiver_id: req.query.spp_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
+          { $and: [{ sms_sender_id: req.query.cus_id }, { sms_receiver_id: req.query.spp_id }] },
           { $and: [{ sms_sender_id: req.query.spp_id }, { sms_receiver_id: req.query.cus_id }] }
         ]
-      }).then(async (data) => {
+      };
+      const count = await MessageSchema.countDocuments(QueryData);
+
+      
+      MessageSchema.find(QueryData).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
         if (data) {
           for (let providerData of data) {
             var today = new Date();
@@ -1423,13 +1464,21 @@ app.get('/professionals-detail-message', (req, res) => {
           }
 
           console.log('newData', newData);
+
+          console.log('Count', count);
+          console.log('Totalpage', Math.ceil(count / limit));
+          console.log('Page', page);
+
           err_msg = req.flash('err_msg');
           success_msg = req.flash('success_msg');
           res.render('professionals-detail-message', {
             err_msg, success_msg, layout: false,
             session: req.session,
             service_provider_detail: service_provider_detail[0],
-            chatData: newData
+            chatData: newData,
+            totalPages: Math.ceil(count / limit),
+            currentPage: page,
+            msgcount:count
           });
         }
       }).catch((err) => {
@@ -2379,93 +2428,66 @@ app.get('/kyc-professional', isServiceProvider, (req, res) => {
 app.get('/get-message', async (req, res) => {
 
   var newData = [];
-  MessageSchema.find({
+
+  const { page = 1, limit = 5 } = req.query;
+  var QueryData = {
     $or: [
-      { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
+      { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }] },
       { $and: [{ sms_sender_id: req.query.sms_receiver_id }, { sms_receiver_id: req.query.sms_sender_id }] }
     ]
-  }).then(async (data) => {
+  };
+  const count = await MessageSchema.countDocuments(QueryData);
+
+  MessageSchema.find(QueryData).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
     if (data) {
-
-
       for (let providerData of data) {
         var today = new Date();
         var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         var dateTime = date + ' ' + time;
-
         var today1 = new Date(providerData.sms_msg_Date);
         var date1 = today1.getFullYear() + '/' + (today1.getMonth() + 1) + '/' + today1.getDate();
         var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
         var dateTime1 = date1 + ' ' + time1;
-
         var msg_time = timeDiffCalc(new Date(dateTime), new Date(dateTime1));
-
         var object_as_string = JSON.stringify(providerData);
         const t = JSON.parse(object_as_string);
         t.msgTime = msg_time;
-        // await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
-        //   if (professional) {
-        //     //console.log('professional:',professional.sps_fullname);
-        //     t.senderName = await professional.sps_fullname;
-        //     //console.log('providerData xxxx New:',t);
-        //   } else {
-        //     t.senderName = await 'You';
-        //   }
-
-        // });
-        // const s = await t;
-        // //console.log('providerData New:',s);
-        // newData.push(s);
-
-
         await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
-          // await ServiceProviderSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async professional => {
-          if (professional) {
-            //console.log('professional:',professional.sps_fullname);
+         if (professional) {
             t.senderName = await professional.sps_fullname;
-            //console.log('providerData xxxx New:',t);
-          }
-
+         }
         });
         const s = await t;
-        // console.log('providerData New:', s);
-
-        //newData.push(s);
-        //var object_as_string1 = JSON.stringify(newData);
-        // const tt = JSON.parse(object_as_string1);
-        //console.log('tt--===:', tt);
-
         await CustomerSchema.findOne({ _id: s.sms_sender_id }).then(async customer => {
-          //await CustomerSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async customer => {
           if (customer) {
-            //console.log('professional:',professional.sps_fullname);
             s.senderName = await customer.cus_fullname;
             s.sms_user_profile_img = await customer.cus_profile_image_name;
-            //console.log('providerData xxxx New:',t);
-          }
-
+         }
         });
         const ss = await s;
-        // console.log('providerData Newssssss:', ss);
         newData.push(ss);
-
-
       }
       // console.log('Get newData',newData);
+
+      console.log('Count', count);
+      console.log('Totalpage', Math.ceil(count / limit));
+      console.log('Page', page);
+
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.send({
         err_msg, success_msg, layout: false,
         session: req.session,
-        chatData: newData
+        chatData: newData,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+        msgcount:count
       });
     }
   }).catch((err) => {
     console.log(err)
   })
-
-
 });
 
 
@@ -2473,70 +2495,62 @@ app.get('/get-message', async (req, res) => {
 app.get('/get-message-property', async (req, res) => {
   var newData = [];
   var newData1 = [];
-  MessageSchema.find({
+
+  const { page = 1, limit = 5 } = req.query;
+  var QueryData = {
     $or: [
-      { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }, { sms_property_id: req.query.sms_property_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
+      { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }, { sms_property_id: req.query.sms_property_id }] },
       { $and: [{ sms_sender_id: req.query.sms_receiver_id }, { sms_receiver_id: req.query.sms_sender_id }, { sms_property_id: req.query.sms_property_id }] }
     ]
-  }).then(async (data) => {
+  };
+  const count = await MessageSchema.countDocuments(QueryData);
+
+
+  MessageSchema.find(QueryData).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
     if (data) {
       for (let providerData of data) {
         var today = new Date();
         var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         var dateTime = date + ' ' + time;
-
         var today1 = new Date(providerData.sms_msg_Date);
         var date1 = today1.getFullYear() + '/' + (today1.getMonth() + 1) + '/' + today1.getDate();
         var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
         var dateTime1 = date1 + ' ' + time1;
-
         var msg_time = timeDiffCalc(new Date(dateTime), new Date(dateTime1));
-
         var object_as_string = JSON.stringify(providerData);
         const t = JSON.parse(object_as_string);
-        //console.log('t:', t);
         t.msgTime = msg_time;
         await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
-          // await ServiceProviderSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async professional => {
-          if (professional) {
-            //console.log('professional:',professional.sps_fullname);
+         if (professional) {
             t.senderName = await professional.sps_fullname;
-            //console.log('providerData xxxx New:',t);
           }
-
         });
         const s = await t;
-        // console.log('providerData New:', s);
-
-        //newData.push(s);
-        //var object_as_string1 = JSON.stringify(newData);
-        // const tt = JSON.parse(object_as_string1);
-        //console.log('tt--===:', tt);
-
         await CustomerSchema.findOne({ _id: s.sms_sender_id }).then(async customer => {
-          //await CustomerSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async customer => {
-          if (customer) {
-            //console.log('professional:',professional.sps_fullname);
+         if (customer) {
             s.senderName = await customer.cus_fullname;
             s.sms_user_profile_img = await customer.cus_profile_image_name;
-            //console.log('providerData xxxx New:',t);
           }
-
         });
         const ss = await s;
-        // console.log('providerData Newssssss:', ss);
         newData.push(ss);
-
-
       }
       console.log('Get newData', newData);
+
+      console.log('Count', count);
+      console.log('Totalpage', Math.ceil(count / limit));
+      console.log('Page', page);
+
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.send({
         err_msg, success_msg, layout: false,
         session: req.session,
-        chatData: newData
+        chatData: newData,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+        msgcount:count
       });
     }
   }).catch((err) => {
@@ -3327,7 +3341,7 @@ app.post('/professionals-multifilter', async (req, res) => {
                   for (var RatingData of professionalRating) {
                     sumRating += parseInt(RatingData.sprs_rating);
                   }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
+                  let avgRating = sumRating / professionalRating.length;
                   if (!isNaN(avgRating)) {
                     avgRating = avgRating.toFixed(1);
                   } else {
@@ -3400,7 +3414,7 @@ if(cityKeyword){
                  for (var RatingData of professionalRating) {
                    sumRating += parseInt(RatingData.sprs_rating);
                  }
-                 let avgRating = Math.round(sumRating / professionalRating.length);
+                 let avgRating = sumRating / professionalRating.length;
                  if (!isNaN(avgRating)) {
                    avgRating = avgRating.toFixed(1);
                  } else {
@@ -3471,7 +3485,7 @@ if(cityKeyword){
                             for (var RatingData of professionalRating) {
                               sumRating += parseInt(RatingData.sprs_rating);
                             }
-                            let avgRating = Math.round(sumRating / professionalRating.length);
+                            let avgRating = sumRating / professionalRating.length;
                             if (!isNaN(avgRating)) {
                               avgRating = avgRating.toFixed(1);
                             } else {
@@ -3547,7 +3561,7 @@ if(cityKeyword){
                 for (var RatingData of professionalRating) {
                   sumRating += parseInt(RatingData.sprs_rating);
                 }
-                let avgRating = Math.round(sumRating / professionalRating.length);
+                let avgRating = sumRating / professionalRating.length;
                 if (!isNaN(avgRating)) {
                   avgRating = avgRating.toFixed(1);
                 } else {
@@ -3733,7 +3747,7 @@ if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityS
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -3805,7 +3819,7 @@ if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityS
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -3877,7 +3891,7 @@ if(languageServiceProvIdArray !='' && categoryServiceProvIdArray !='' && citySer
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -3948,7 +3962,7 @@ if(languageServiceProvIdArray !='' && categoryServiceProvIdArray !='' && citySer
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -4020,7 +4034,7 @@ if(languageServiceProvIdArray !='' && categoryServiceProvIdArray !='' && citySer
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -4093,7 +4107,7 @@ if(languageServiceProvIdArray !='' && cityServiceProvIdArray !='' && experienceS
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -4169,7 +4183,7 @@ if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityS
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -4245,7 +4259,7 @@ if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && langu
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -4324,7 +4338,7 @@ if(cityServiceProvIdArray !='' && categoryServiceProvIdArray !='' && languageSer
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -4402,7 +4416,7 @@ if(cityServiceProvIdArray !='' && languageServiceProvIdArray !='' && experienceS
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -4484,7 +4498,7 @@ if(cityServiceProvIdArray !='' && languageServiceProvIdArray !='' && experienceS
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -4653,7 +4667,7 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
                   for (var RatingData of professionalRating) {
                     sumRating += parseInt(RatingData.sprs_rating);
                   }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
+                  let avgRating = sumRating / professionalRating.length;
                   if (!isNaN(avgRating)) {
                     avgRating = avgRating.toFixed(1);
                   } else {
@@ -4726,7 +4740,7 @@ if(cityKeyword){
                  for (var RatingData of professionalRating) {
                    sumRating += parseInt(RatingData.sprs_rating);
                  }
-                 let avgRating = Math.round(sumRating / professionalRating.length);
+                 let avgRating = sumRating / professionalRating.length;
                  if (!isNaN(avgRating)) {
                    avgRating = avgRating.toFixed(1);
                  } else {
@@ -4797,7 +4811,7 @@ if(cityKeyword){
                             for (var RatingData of professionalRating) {
                               sumRating += parseInt(RatingData.sprs_rating);
                             }
-                            let avgRating = Math.round(sumRating / professionalRating.length);
+                            let avgRating = sumRating / professionalRating.length;
                             if (!isNaN(avgRating)) {
                               avgRating = avgRating.toFixed(1);
                             } else {
@@ -4873,7 +4887,7 @@ if(cityKeyword){
                 for (var RatingData of professionalRating) {
                   sumRating += parseInt(RatingData.sprs_rating);
                 }
-                let avgRating = Math.round(sumRating / professionalRating.length);
+                let avgRating = sumRating / professionalRating.length;
                 if (!isNaN(avgRating)) {
                   avgRating = avgRating.toFixed(1);
                 } else {
@@ -4950,7 +4964,7 @@ if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityS
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -5022,7 +5036,7 @@ if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityS
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -5094,7 +5108,7 @@ if(languageServiceProvIdArray !='' && categoryServiceProvIdArray !='' && citySer
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -5165,7 +5179,7 @@ if(languageServiceProvIdArray !='' && categoryServiceProvIdArray !='' && citySer
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -5237,7 +5251,7 @@ if(languageServiceProvIdArray !='' && categoryServiceProvIdArray !='' && citySer
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -5310,7 +5324,7 @@ if(languageServiceProvIdArray !='' && cityServiceProvIdArray !='' && experienceS
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -5386,7 +5400,7 @@ if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityS
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -5462,7 +5476,7 @@ if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && langu
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -5541,7 +5555,7 @@ if(cityServiceProvIdArray !='' && categoryServiceProvIdArray !='' && languageSer
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -5619,7 +5633,7 @@ if(cityServiceProvIdArray !='' && languageServiceProvIdArray !='' && experienceS
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -5701,7 +5715,7 @@ if(cityServiceProvIdArray !='' && languageServiceProvIdArray !='' && experienceS
                         for (var RatingData of professionalRating) {
                           sumRating += parseInt(RatingData.sprs_rating);
                         }
-                        let avgRating = Math.round(sumRating / professionalRating.length);
+                        let avgRating = sumRating / professionalRating.length;
                         if (!isNaN(avgRating)) {
                           avgRating = avgRating.toFixed(1);
                         } else {
@@ -5766,6 +5780,56 @@ function getMatch(a, b) {
   }
   return matches;
 }
+
+
+
+app.get('/get-notification', isCustomer, async (req, res) => {
+  var notificationObj = {
+   id:'',
+   name:'',
+   image:'',
+   type:'',
+   property_id:'',
+   reciver_id:'',
+   sender_id:'',
+}
+  console.log('dddaaa:',req.query)
+  var notifData=[];
+    await NotificationSchema.find({ ns_receiver:req.query.ns_receiver,ns_receiver_type:req.query.ns_receiver_type,ns_read_status:req.query.ns_read_status }).then(async (notificationResults) => {
+        console.log('notificationL:',notificationResults)
+      if(notificationResults){
+              for (let notifResult of notificationResults) {  
+                if(notifResult.ns_sender_type == 'service_provider'){
+                  await ServiceProviderSchema.findOne({ _id: notifResult.ns_sender }).then(async (cusResult) => { 
+                      notificationObj = {
+                            id:cusResult._id,
+                            name:cusResult.sps_fullname,
+                            image:'',
+                            type:'message',
+                            property_id:notifResult.ns_property_id,
+                            reciver_id:notifResult.ns_receiver,
+                            sender_id:notifResult.ns_sender,
+                       }
+                       notifData.push(notificationObj)
+                  })
+                }
+            }
+        }
+    });
+    uniqueArray = removeDuplicates(notifData, "id");
+   console.log('autoLoadnotifData:',uniqueArray)
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.send({
+      err_msg, success_msg, 
+      layout: false,
+      session: req.session,
+      notifData:uniqueArray
+    });
+  
+  });
+
+
 
 module.exports = app;
 

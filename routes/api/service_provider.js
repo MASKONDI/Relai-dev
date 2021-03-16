@@ -15,6 +15,7 @@ const ServiceProviderIndemnityDetailsSchema = require("../../models/service_prov
 const validateProfChangePasswordInput = require('../../Validation/change-password-professional');
 const ServiceProviderUploadDocsSchema = require("../../models/service_provider_upload_document");
 const MessageSchema = require("../../models/message");
+const NotificationSchema = require("../../models/notification_modal");
 
 const isEmpty = require('../../Validation/is-empty');
 
@@ -1695,6 +1696,18 @@ router.post('/service-provider-message', async (req, res) => {
   })
   newMessage.save().then(async message => {
     console.log("getting response form server is :", message);
+
+    const newNotification = new NotificationSchema({
+      ns_title:'New Message',
+      ns_sender:req.session.user_id,
+      ns_receiver:req.body.sms_receiver_id,
+      ns_property_id:req.body.sms_property_id,
+      ns_sender_type:'service_provider',
+      ns_receiver_type:'customer',
+      ns_read_status:'unseen'
+    });
+    newNotification.save();
+
     let QueryCount = {
       $or: [
         { $and: [{ sms_sender_id: req.body.sms_sender_id }, { sms_receiver_id: req.body.sms_receiver_id }, { sms_property_id: req.body.sms_property_id }] },
@@ -1721,12 +1734,21 @@ router.post('/service-provider-message', async (req, res) => {
 
 router.post('/service-provider-message-unread', (req, res) => {
   console.log("Service Unread Send Message data from client is :", req.body);
-  MessageSchema.updateMany({sms_property_id:req.body.sms_property_id,sms_sender_id:req.body.sms_sender_id,sms_receiver_id:req.body.sms_receiver_id,sms_sender_type:req.body.sms_sender_type,sms_receiver_type:req.body.sms_receiver_type }, { $set: { sms_read_status: 'read' } }, { upsert: true }, function (err) {
+  MessageSchema.updateMany({sms_property_id:req.body.sms_property_id,sms_sender_id:req.body.sms_sender_id,sms_receiver_id:req.body.sms_receiver_id,sms_sender_type:req.body.sms_sender_type,sms_receiver_type:req.body.sms_receiver_type }, { $set: { sms_read_status: 'read' } }, function (err) {
     if (err) {
       console.log(err)
       res.send({ status: false, message: 'Something going wrong please check again !!' })
     } else {
-      res.send({ status: true, message: 'Task update successfully !!' })
+      NotificationSchema.updateMany({ ns_title:'New Message',ns_sender_type:'customer',ns_receiver_type:'service_provider',ns_receiver:req.session.user_id,ns_sender:req.body.sms_sender_id}, { $set: { ns_read_status: 'seen' } }, function (err) {
+        if(err){
+           console.log(err)
+            res.send({ status: false, message: 'Something going wrong please check again !!' })
+        }else{
+          res.send({ status: true, message: 'Task update successfully !!' })
+          console.log("notification messg Status update successfully");
+        }
+  
+      });
       console.log("Message Status update successfully");
     }
   });

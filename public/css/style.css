@@ -5826,3 +5826,45 @@ input::-webkit-inner-spin-button {
     border: 2px solid #005377;
     background-color: #ffffff;
     height: 52px;}
+
+
+    @media (max-width: 768px){
+
+        .dropdown.notification-main-box{
+            display: none;
+        }
+
+        .user-right.for-mobile-view-user{
+width: 45%;
+        }
+
+        .user-right.for-mobile-view-user .rounded-circle {
+            height: 30px;
+            width: 30px;
+        }
+        .user-right.for-mobile-view-user .login-menu {
+            display: flex;
+            align-items: center;
+            margin-right: 0px !important;
+            justify-content: space-around;
+        }
+        .user-right.for-mobile-view-user .notification-main-box .dropdown-toggle {
+            font-size: 26px;
+        }
+        .user-right.for-mobile-view-user .dropdown.notification-main-box{
+            display: block;
+        }
+        .user-right.for-mobile-view-user .notification-main-box .dropdown-menu {
+            min-width: 280px;
+            height: 300px;
+            LEFT: auto;
+            right: -145px;
+            margin: 0 auto;
+        }
+
+    }
+
+
+
+
+

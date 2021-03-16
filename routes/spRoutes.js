@@ -39,6 +39,8 @@ const ServiceProviderIndemnityDetailsSchema = require("../models/service_provide
 
 const MessageSchema = require("../models/message");
 const TaskHelper = require("../routes/api/service_provider_helper/taskHelper");
+const NotificationSchema = require("../models/notification_modal");
+
 
 function tallyVotes(AllhiredProfeshnoal) {
   return AllhiredProfeshnoal.reduce((total, i) => total + i.pps_pofessional_budget, 0);
@@ -211,14 +213,39 @@ app.get('/signup-professionals-profile-5', async (req, res) => {
   //   session: req.session
   // });
 });
-app.get('/service-provider/dashboard-professional', isServiceProvider, (req, res) => {
+app.get('/service-provider/dashboard-professional', isServiceProvider, async (req, res) => {
+
+var notificationObj = {
+     name:'',
+     image:'',
+}
+var notifData=[];
+  await NotificationSchema.find({ ns_receiver: req.session.user_id,ns_receiver_type:'service_provider',ns_read_status:'unseen' }).then(async (notificationResults) => {
+      console.log('notificationL:',notificationResults)
+    if(notificationResults){
+            for (let notifResult of notificationResults) {  
+              if(notifResult.ns_sender_type == 'customer'){
+                await CustomerSchema.findOne({ _id: notifResult.ns_sender }).then(async (cusResult) => { 
+                    notificationObj = {
+                          name:cusResult.cus_fullname,
+                          image:cusResult.cus_profile_image_name,
+                     }
+                     notifData.push(notificationObj)
+                })
+              }
+            }
+           }
+  });
+console.log('notifData:',notifData)
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   req.session.pagename = "service-provider/dashboard-professional"
   res.render('service-provider/dashboard-professional', {
     err_msg, success_msg, layout: false,
-    session: req.session
+    session: req.session,
+    notifData:notifData
   });
+
 });
 app.get('/signup-professionals-profile-6', (req, res) => {
   err_msg = req.flash('err_msg');
@@ -529,13 +556,19 @@ app.get('/service-provider/professionals-detail-message', isServiceProvider, asy
   //console.log(' property id  :', req.session.property_id);
   //console.log('helooooo', req.query.pid);
   req.session.customer_id = req.query.pid;
-  let property = await PropertiesSchema.findOne({ _id: req.session.property_id });
-  await MessageSchema.find({
+  let property = await PropertiesSchema.findOne({ _id: req.query.id });
+
+  const { page = 1, limit = 5 } = req.query;
+
+  var QueryData={
     $or: [
-      { $and: [{ sms_sender_id: req.session.user_id }, { sms_receiver_id: req.query.pid }, { sms_property_id: req.session.property_id }] },
-      { $and: [{ sms_sender_id: req.query.pid }, { sms_receiver_id: req.session.user_id }, { sms_property_id: req.session.property_id }] }
+      { $and: [{ sms_sender_id: req.session.user_id }, { sms_receiver_id: req.query.pid }, { sms_property_id: req.query.id }] },
+      { $and: [{ sms_sender_id: req.query.pid }, { sms_receiver_id: req.session.user_id }, { sms_property_id: req.query.id }] }
     ]
-  }).then(async (data) => {
+  };
+  const count = await MessageSchema.countDocuments(QueryData);
+
+  await MessageSchema.find(QueryData).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
     if (data) {
       for (let providerData of data) {
         var today = new Date();
@@ -575,6 +608,11 @@ app.get('/service-provider/professionals-detail-message', isServiceProvider, asy
   })
   //console.log('property:', property)
   //console.log('ChatData:', newData)
+
+  console.log('currentPage:', page)
+  console.log('totalPages:', Math.ceil(count / limit))
+
+
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('service-provider/professionals-detail-message', {
@@ -582,7 +620,11 @@ app.get('/service-provider/professionals-detail-message', isServiceProvider, asy
     session: req.session,
     property: property,
     customer_id: req.query.pid,
-    chatData: newData
+    chatData: newData.reverse(),
+    totalPages: Math.ceil(count / limit),
+    currentPage: page,
+    msgcount:count
+
   });
 
 });
@@ -591,12 +633,16 @@ app.get('/service-provider/professionals-detail-message', isServiceProvider, asy
 app.get('/service-provider-get-message-property', async (req, res) => {
   var newData = [];
   var newData1 = [];
-  MessageSchema.find({
-    $or: [
-      { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }, { sms_property_id: req.query.sms_property_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
-      { $and: [{ sms_sender_id: req.query.sms_receiver_id }, { sms_receiver_id: req.query.sms_sender_id }, { sms_property_id: req.query.sms_property_id }] }
-    ]
-  }).then(async (data) => {
+  const { page = 1, limit = 5 } = req.query;
+var QueryData = {
+  $or: [
+    { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }, { sms_property_id: req.query.sms_property_id }] },
+    { $and: [{ sms_sender_id: req.query.sms_receiver_id }, { sms_receiver_id: req.query.sms_sender_id }, { sms_property_id: req.query.sms_property_id }] }
+  ]
+};
+  const count = await MessageSchema.countDocuments(QueryData);
+
+  MessageSchema.find(QueryData).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
     if (data) {
       for (let providerData of data) {
         var today = new Date();
@@ -631,13 +677,19 @@ app.get('/service-provider-get-message-property', async (req, res) => {
         const ss = await s;
         newData.push(ss);
       }
-      //console.log('Get newData', newData);
+      console.log('Count', count);
+      console.log('Totalpage', Math.ceil(count / limit));
+      console.log('Page', page);
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.send({
         err_msg, success_msg, layout: false,
         session: req.session,
-        chatData: newData
+        chatData: newData,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+        msgcount:count
+
       });
     }
   }).catch((err) => {
@@ -1330,6 +1382,65 @@ app.post('/get_hired_property_by_id', isServiceProvider, async (req, res) => {
   }
 });
 
+function removeDuplicates(originalArray, prop) {
+  var newArray = [];
+  var lookupObject = {};
+
+  for (var i in originalArray) {
+    lookupObject[originalArray[i][prop]] = originalArray[i];
+  }
+
+  for (i in lookupObject) {
+    newArray.push(lookupObject[i]);
+  }
+  return newArray;
+}
+
+app.get('/service-provider/get-notification', isServiceProvider, async (req, res) => {
+  var notificationObj = {
+        id:'',
+       name:'',
+       image:'',
+       type:'',
+       property_id:'',
+       reciver_id:'',
+       sender_id:'',
+  }
+  console.log('dddaaa:',req.query)
+  var notifData=[];
+    await NotificationSchema.find({ ns_receiver:req.query.ns_receiver,ns_receiver_type:req.query.ns_receiver_type,ns_read_status:req.query.ns_read_status }).then(async (notificationResults) => {
+        console.log('notificationL:',notificationResults)
+      if(notificationResults){
+              for (let notifResult of notificationResults) {  
+                if(notifResult.ns_sender_type == 'customer'){
+                  await CustomerSchema.findOne({ _id: notifResult.ns_sender }).then(async (cusResult) => { 
+                      notificationObj = {
+                            id:cusResult._id,
+                            name:cusResult.cus_fullname,
+                            image:cusResult.cus_profile_image_name,
+                            type:'message',
+                            property_id:notifResult.ns_property_id,
+                            reciver_id:notifResult.ns_receiver,
+                            sender_id:notifResult.ns_sender,
+                       }
+                       notifData.push(notificationObj)
+                  })
+                }
+            }
+        }
+    });
+    uniqueArray = removeDuplicates(notifData, "id");
+   console.log('autoLoadnotifData:',uniqueArray)
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.send({
+      err_msg, success_msg, 
+      layout: false,
+      session: req.session,
+      notifData:uniqueArray
+    });
+  
+  });
 
 
 module.exports = app;

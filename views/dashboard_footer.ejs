@@ -1397,7 +1397,7 @@ myDREAMHOME-DETAILS-MESSAGE
           //   });
           // });
     
-          $('#chat_submit').click(function (e) {
+          $('#chat_form #chat_submit').click(function (e) {
             var comment = $("#comment").val();
             var professional_id = $("#chat_form #professional_id").val();
             var customer_id = $("#customer_id").val();
@@ -1432,45 +1432,42 @@ myDREAMHOME-DETAILS-MESSAGE
                         imageData = '<img src="images/img_avatar.png" alt="" title="">';
                       }
                       htmlData = '<div class="messages-box clearfix"><div class="message-user-img">'+imageData+'</div><div class="message-content"><h3><%=session.name%></h3><p>'+comment.trim()+'</p><p class="hours-ago text-right">just now</p></div></div>';
-                      $('#message_board').append(htmlData);
+                      $('.old_message_section').append(htmlData);
                       $("#message_board").stop().animate({ scrollTop: $("#message_board")[0].scrollHeight}, 1000);
                  },
                 success: function (data) {
                   console.log('tessss:',data);
                   jQuery('#chat_form #msgcount').val(data.countMsg);
-
-                  //getAllMessage(professional_id, customer_id, property_id);
-                  //$("#message_board").stop().animate({ scrollTop: $("#message_board")[0].scrollHeight}, 1000);
                 }
               });
             }
           });
 
-    //  $('#chat_form').click(function (e) {
-    //     console.log('Customer messg staus')
-    //         var professional_id = $("#chat_form #professional_id").val();
-    //         var customer_id = $("#customer_id").val();
-    //         var property_id = $("#chat_form #property_id").val();
-    //     console.log('professional_id:', professional_id);
-    //     console.log('customer_id:', customer_id);
-    //     console.log('property_id:', property_id);
-    //       $.ajax({
-    //         type: "POST",
-    //         data: {
-    //           sms_receiver_id: customer_id,
-    //           sms_property_id: property_id,
-    //           sms_sender_id: professional_id,
-    //           sms_sender_type: 'service_provider',
-    //           sms_receiver_type: 'customer',
-    //           sms_read_status: 'read'
-    //         },
-    //         url: "/api/customer-message-unread",
-    //         cache: false,
-    //         success: function (data) {
-    //           $("#comment").val('');
-    //         }
-    //       });
-    //   });
+    $('#chat_form #comment').on('click', function() {
+            console.log('Customer messg staus')
+            var professional_id = $("#chat_form #professional_id").val();
+            var customer_id = $("#customer_id").val();
+            var property_id = $("#chat_form #property_id").val();
+            console.log('professional_id:', professional_id);
+            console.log('customer_id:', customer_id);
+            console.log('property_id:', property_id);
+          $.ajax({
+            type: "POST",
+            data: {
+              sms_receiver_id: customer_id,
+              sms_property_id: property_id,
+              sms_sender_id: professional_id,
+              sms_sender_type: 'service_provider',
+              sms_receiver_type: 'customer',
+              sms_read_status: 'read'
+            },
+            url: "/api/customer-message-unread",
+            cache: false,
+            success: function (data) {
+              $("#comment").val('');
+            }
+          });
+      });
 
         </script>
 
@@ -2088,6 +2085,7 @@ Prefessional details message
           var comment = $("#pdm_chat_form #comment").val();
           var professional_id = $("#pdm_chat_form #professional_id").val();
           var customer_id = $("#pdm_chat_form #customer_id").val();
+          console.log('professional_id:',professional_id)
           if (comment) {
             $.ajax({
               type: "POST",
@@ -2102,10 +2100,28 @@ Prefessional details message
               },
               url: "/api/message",
               cache: false,
-              success: function (data) {
+              beforeSend: function() {
                 $("#pdm_chat_form #comment").val('');
-                getAllMessage_pdm(professional_id, customer_id);
-              }
+                  var imageData='';
+                      var sessionImg = '<%=session.imagename%>';
+                      console.log('teeee:',sessionImg);
+                      if(sessionImg){
+                        imageData = '<img src="upload/'+sessionImg+'" alt="" title="">';
+                      }else{
+                        imageData = '<img src="images/img_avatar.png" alt="" title="">';
+                      }
+                      htmlData = '<div class="messages-box clearfix"><div class="message-user-img">'+imageData+'</div><div class="message-content"><h3><%=session.name%></h3><p>'+comment.trim()+'</p><p class="hours-ago text-right">just now</p></div></div>';
+                      $('.old_message_section').append(htmlData);
+                      $("#message_board").stop().animate({ scrollTop: $("#message_board")[0].scrollHeight}, 1000);
+                 },
+                success: function (data) {
+                  console.log('tessss:',data);
+                  jQuery('#pdm_chat_form #msgcount').val(data.countMsg);
+                }
+              // success: function (data) {
+              //   $("#pdm_chat_form #comment").val('');
+              //   getAllMessage_pdm(professional_id, customer_id);
+              // }
             });
           }
         });
@@ -2127,7 +2143,7 @@ Professional Details
   });
 jQuery(document).ready(function(){
     var $this = $('.reviews_rating_sec');
-    if ($this.find('div').length > 6) {
+    if ($this.find('.side-feedback-sec').length > 6) {
         $('.reviews_rating_sec').append('<div><a href="javascript:;" class="showMore"></a></div>');
     }
     // If more than 2 Education items, hide the remaining
@@ -5056,6 +5072,71 @@ $('.loader-box').attr('style','display:flex !important');
         }
       })
     }
+
+
+    $(document).ready(function () {
+        console.log('Welcome data');
+         $.ajax({
+            type: "GET",
+            data: {
+              ns_receiver:'<%= session.user_id %>',
+              ns_receiver_type:'customer',
+              ns_read_status:'unseen',
+            },
+            url: "/get-notification",
+            cache: false,
+            success: function (data) {
+              console.log('notification:',data.notifData);
+              $('.totalNotification .badge').text((parseInt(data.notifData.length)-parseInt(1)));
+              if (data.notifData.length > 0) {
+              $.each(data.notifData, function (i, notidata) {
+                if(notidata != null){
+                  let img ='';
+                  let link='';
+                  if(notidata.image){ img = '/upload/'+notidata.image; }else{  img = 'images/img_avatar.png'; }
+                  if(notidata.property_id){ link='/mydreamhome-details-message?id='+notidata.property_id+'&pid='+notidata.sender_id; }else{ link='/mydreamhome-details-message?id='+notidata.reciver_id+'&pid='+notidata.sender_id; }
+                  var notoficationData = '<a onclick="notificationUpdateClick('+i+')" data-property="'+notidata.property_id+'" data-reciver="'+notidata.reciver_id+'" data-sender="'+notidata.sender_id+'" class="notification_'+i+'" data-href="'+link+'" href="javascript:void(0)"><li><div> <img src="'+img+'" alt="" title=""><div><h6>'+notidata.name+'</h6> <p>Sent a new message.</p></div></div></li> </a>';
+                  $('.notify-drop').prepend(notoficationData);
+                }
+              });
+            }
+            if(data.notifData.length > 10){
+                $('.notify-drop .read_all_notification').show();
+            }
+          }
+      });
+    });
+
+
+   function notificationUpdateClick(i){
+    // alert(i);
+     var dataLink = $('.notification_'+i).data('href');
+     var property_id = $('.notification_'+i).data('property');
+     var customer_id = $('.notification_'+i).data('reciver');
+     var professional_id = $('.notification_'+i).data('sender');
+     console.log('Customer messg staus')
+      console.log('professional_id:', professional_id);
+      console.log('customer_id:', customer_id);
+      console.log('property_id:', property_id);
+     $.ajax({
+        type: "POST",
+        data: {
+          sms_receiver_id: customer_id,
+          sms_property_id: property_id,
+          sms_sender_id: professional_id,
+          sms_sender_type: 'service_provider',
+          sms_receiver_type: 'customer',
+          sms_read_status: 'read'
+        },
+        url: "/api/customer-message-unread",
+        cache: false,
+        success: function (data) {
+          console.log('notificationUpdate success')
+          window.location.href=dataLink;
+        }
+      });
+   }
+
   </script>
   </body>
 </html>

@@ -89,6 +89,8 @@
                       <div class="col-sm-12 col-lg-12">
                         <div class="messages-section pdm_section">
                           <div id="message_board">
+                            <div class="loding-sec"><img id="loadermsg" src='http://opengraphicdesign.com/wp-content/uploads/2009/01/loader64.gif'></div>
+                            <div class="old_message_section">
                             <% chatData.forEach(function(row){ %>
                               <div class="messages-box clearfix">
                                 <div class="message-user-img">
@@ -106,10 +108,15 @@
                                 </div>
                               </div>
                               <% }); %>
+                            </div>
                           </div>
                           <div class="text-message-box clearfix">
                             <form method="POST" id="pdm_chat_form">
                               <div class="text-box">
+                                <input type="hidden" name="msgcount" value="<%=msgcount %>" id="msgcount">
+                                <input type="hidden" name="page" value="<%=currentPage %>" id="page">
+                                <input type="hidden" name="Totalpage" value="<%=totalPages %>" id="Totalpage">
+
                                 <input type="hidden" value="<%=service_provider_detail.id%>" name="professional_id"
                                   id="professional_id">
                                 <input type="hidden" value="<%= session.user_id %>" name="customer_id" id="customer_id">
@@ -137,7 +144,59 @@
     </div>
     <%- include('dashboard_footer')-%>
    <script>
-       function getAllMessage_pdm(sms_receiver_id, sms_sender_id) {
+       $("#message_board").stop().animate({ scrollTop: $("#message_board")[0].scrollHeight}, 1000);
+
+
+       $('#message_board').scroll(function(){
+   console.log('ghghg:',$('#message_board').scrollTop());
+    if ($('#message_board').scrollTop() == 0){
+         
+          var professional_id = $("#pdm_chat_form #professional_id").val();
+          var customer_id = $("#pdm_chat_form #customer_id").val();
+          var Totalpage = parseInt($("#pdm_chat_form  #Totalpage").val());
+          var page = parseInt($("#pdm_chat_form  #page").val())+parseInt(1);
+
+
+          console.log('pagges:',page)
+console.log('Totalpage:',Totalpage)
+if(Totalpage >= page){
+  $('#loadermsg').show();
+      $.ajax({
+            url: "/get-message",
+            type: "GET",
+            data: {
+              sms_receiver_id: sms_receiver_id,
+              sms_sender_id: sms_sender_id,
+              page:page
+            },
+            cache: false,
+            success:function(datas){
+              console.log('ttttDat:',datas);
+                if (datas.chatData.length > 0) {
+                  console.log('data:',datas)
+                  var htmlData = '';
+                  $("#pdm_chat_form  #page").val(datas.currentPage);
+                  $("#pdm_chat_form #Totalpage").val(datas.totalPages);
+                  $.each(datas.chatData, function (i, data) {
+                    var imageData='';
+                    if(data.sms_user_profile_img){
+                       imageData = '<img src="upload/'+data.sms_user_profile_img+'" alt="" title="">';
+                    }else{
+                       imageData = '<img src="images/img_avatar.png" alt="" title="">';
+                    }
+                    $('.pdm_section .old_message_section').prepend('<div class="messages-box clearfix"><div class="message-user-img">'+imageData+'</div><div class="message-content"><h3>' + data.senderName + '</h3><p>'+data.sms_message.trim()+'</p><p class="hours-ago text-right">' + data.msgTime + '</p></div></div>');
+                  });
+                }
+                $('#loadermsg').hide();
+                $('#message_board').scrollTop(30);
+            }
+        });
+      }
+    }
+});
+
+       function getAllMessage_pdm(sms_receiver_id, sms_sender_id, msgCount) {
+        var msgCount = $("#pdm_chat_form #msgcount").val();
           $.ajax({
             type: "GET",
             data: {
@@ -160,16 +219,36 @@
                 
                  // htmlData += '<div class="messages-box clearfix"><div class="message-user-img"> <img src="images/recent-user-1.png" alt="" title=""></div><div class="message-content"><h3>' + data.senderName + '</h3><p>' + data.sms_message + '</p><p class="hours-ago text-right">' + data.msgTime + '</p></div></div>';
                 });
-                $('.pdm_section #message_board').html(htmlData);
+
+                $("#pdm_chat_form  #Totalpage").val(datas.totalPages);
+                if(parseInt(datas.msgcount) > parseInt(msgCount)){
+                  console.log('success')
+                  $('.pdm_section .old_message_section').html(htmlData);
+                }else{
+                  console.log('intervaltotl:',datas.chatData.length)
+                }
+
+                //$('.pdm_section #message_board').html(htmlData);
               }
+
+              var professional_id = $("#pdm_chat_form #professional_id").val();
+              var customer_id = $("#pdm_chat_form #customer_id").val();
+            //var msgcount = $("#chat_form  #msgcount").val();
+
+              getAllMessage_pdm(professional_id, customer_id, msgCount);
+
+
             }
           });
         }
   
-        setInterval(function () {
+        $(document).ready(function() {
           var professional_id = $("#pdm_chat_form #professional_id").val();
           var customer_id = $("#pdm_chat_form #customer_id").val();
-          getAllMessage_pdm(professional_id, customer_id);
-        }, 1000);
+          var msgCount = $("#pdm_chat_form  #msgcount").val();
+          console.log('totalmS:',msgCount)
+          getAllMessage_pdm(professional_id, customer_id, msgCount);
+         });
   
+      
     </script> 
