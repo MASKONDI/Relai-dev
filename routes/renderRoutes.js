@@ -107,6 +107,7 @@ app.get('/proposal', isCustomer, async (req, res) => {
     if (propertyId.sps_filename) {
       propertyObj.filename = await propertyId.sps_filename;
     }
+    propertyObj.proposalId = await propertyId._id;
     activePropertyProposalArray.push(propertyObj);
   }
   console.log("activePropertyProposalArray is :", activePropertyProposalArray);
@@ -129,6 +130,7 @@ app.get('/proposal', isCustomer, async (req, res) => {
     if (propertyId.sps_filename) {
       propertyObj.filename = await propertyId.sps_filename;
     }
+    propertyObj.proposalId = await propertyId._id;
     submitPropertyProposalArray.push(propertyObj);
   }
   console.log("submitPropertyProposalArray is :", submitPropertyProposalArray);
@@ -152,6 +154,7 @@ app.get('/proposal', isCustomer, async (req, res) => {
     if (propertyId.sps_filename) {
       propertyObj.filename = await propertyId.sps_filename;
     }
+    propertyObj.proposalId = await propertyId._id;
     rejectPropertyProposalArray.push(propertyObj);
   }
   console.log("rejectPropertyProposalArray is :", rejectPropertyProposalArray);
@@ -167,6 +170,19 @@ app.get('/proposal', isCustomer, async (req, res) => {
   });
 })
 
+
+app.get('/proposal-details', isCustomer, async (req, res) => {
+  console.log("Current session is :", req.session);
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  req.session.pagename = 'proposal';
+  var activeProposal = await SubmitProposalSchema.findOne({ _id: req.query.user_id });
+  console.log("active Proposal is:", activeProposal);
+  res.render('proposal-details', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+  });
+})
 
 //** customer Signup ***********8 */
 app.get("/signup", (req, res) => {
