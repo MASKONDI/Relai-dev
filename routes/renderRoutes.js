@@ -31,6 +31,7 @@ const PropertyProfessionalHelper = require("./api/propertyProfessionalDetails")
 
 //const ComplaintsSchema = require("../models/Complaints");
 const ComplaintDetailsSchema = require("../models/complaint_details_model");
+const NotificationSchema = require("../models/notification_modal");
 
 
 const message = require('../models/message');
@@ -509,7 +510,7 @@ app.get('/professionals', isCustomer, async (req, res) => {
             for (var RatingData of professionalRating) {
               sumRating += parseInt(RatingData.sprs_rating);
             }
-            let avgRating = Math.round(sumRating / professionalRating.length);
+            let avgRating = sumRating / professionalRating.length;
             if (!isNaN(avgRating)) {
               avgRating = avgRating.toFixed(1);
             } else {
@@ -685,23 +686,64 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
     if (service_provider_detail) {
 
       let hiredProfeshnoal = await PropertyProfessionalSchema.findOne({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login, pps_service_provider_id: req.query.id });
-      console.log('AllhiredProfeshnoal', hiredProfeshnoal);
+      //console.log('AllhiredProfeshnoal', hiredProfeshnoal);
       let serviceProvArray = [];
 
       //spods_service_provider_id
       let serviceProOtherDetail = await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: service_provider_detail._id });
-      console.log('serviceProOtherDetail:', serviceProOtherDetail)
+     // console.log('serviceProOtherDetail:', serviceProOtherDetail)
       let portpolioImage = await ServiceProviderPortfolioSchema.find({ spps_service_provider_id: req.query.id })
 
       let professionalRating = await RatingSchema.find({ sprs_service_provider_id: req.query.id }).sort({ _id: -1 })
-      console.log('professionalRating:', professionalRating)
+      //console.log('professionalRating:', professionalRating)
+      const TotalRatingcount = await RatingSchema.countDocuments({ sprs_service_provider_id: req.query.id }).sort({ _id: -1 });
 
 
       var sumRating = 0;
+      var ratingOne=[];
+      var ratingTwo=[];
+      var ratingThree=[];
+      var ratingFour=[];
+      var ratingFive=[];
+
       for (var RatingData of professionalRating) {
+        if(RatingData.sprs_rating == '1'){
+            ratingOne.push(RatingData.sprs_rating);
+        }else if(RatingData.sprs_rating == '2'){
+          ratingTwo.push(RatingData.sprs_rating);
+        }else if(RatingData.sprs_rating == '3'){
+          ratingThree.push(RatingData.sprs_rating);
+        }else if(RatingData.sprs_rating == '4'){
+          ratingFour.push(RatingData.sprs_rating);
+        }else if(RatingData.sprs_rating == '5'){
+          ratingFive.push(RatingData.sprs_rating);
+        }
         sumRating += parseInt(RatingData.sprs_rating);
       }
-      let avgRating = Math.round(sumRating / professionalRating.length);
+      let avgRating = sumRating / professionalRating.length;
+      console.log("ProfessionalavgRating 1========", ratingOne.length)
+      console.log("ProfessionalavgRating 2========", ratingTwo.length)
+      console.log("ProfessionalavgRating 3========", ratingThree.length)
+      console.log("ProfessionalavgRating 4========", ratingFour.length)
+      console.log("ProfessionalavgRating 5========", ratingFive.length)
+      console.log("TotalRatingcount========", TotalRatingcount)
+
+      let ratingOneAvg = (((ratingOne.length)/TotalRatingcount)*100);
+      let ratingTwoAvg = (((ratingTwo.length)/TotalRatingcount)*100);
+      let ratingThreeAvg = (((ratingThree.length)/TotalRatingcount)*100);
+      let ratingFourAvg = (((ratingFour.length)/TotalRatingcount)*100);
+      let ratingFiveAvg = (((ratingFive.length)/TotalRatingcount)*100);
+      if (!isNaN(ratingOneAvg)) { ratingOneAvg = ratingOneAvg }else{ ratingOneAvg=0; }
+      if (!isNaN(ratingTwoAvg)) { ratingTwoAvg = ratingTwoAvg }else{ ratingTwoAvg=0; }
+      if (!isNaN(ratingThreeAvg)) { ratingThreeAvg = ratingThreeAvg }else{ ratingThreeAvg=0; }
+      if (!isNaN(ratingFourAvg)) { ratingFourAvg = ratingFourAvg }else{ ratingFourAvg=0; }
+      if (!isNaN(ratingFiveAvg)) { ratingFiveAvg = ratingFiveAvg }else{ ratingFiveAvg=0; }
+      console.log("ratingOneAvg========", ratingOneAvg)
+      console.log("ratingTwoAvg========", ratingTwoAvg)
+      console.log("ratingThreeAvg========", ratingThreeAvg)
+      console.log("ratingFourAvg========", ratingFourAvg)
+      console.log("ratingFiveAvg========", ratingFiveAvg)
+
       if (!isNaN(avgRating)) {
         avgRating = avgRating.toFixed(1);
       } else {
@@ -713,7 +755,7 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
         var property_object = await pr;
         propertyObjArray.push(property_object)
       }
-      console.log("propertyObj========", propertyObj)
+      console.log("avgRating========", avgRating)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.render('professionals-detail', {
@@ -725,6 +767,11 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
         professionalRating: professionalRating,
         hiredProfeshnoal: hiredProfeshnoal,
         avgRating: avgRating,
+        ratingOne:ratingOneAvg,
+        ratingTwo:ratingTwoAvg,
+        ratingThree:ratingThreeAvg,
+        ratingFour:ratingFourAvg,
+        ratingFive:ratingFiveAvg,
         moment: moment,
         propertyObj: propertyObj
       });
@@ -773,7 +820,7 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
             for (var RatingData of professionalRating) {
               sumRating += parseInt(RatingData.sprs_rating);
             }
-            let avgRating = Math.round(sumRating / professionalRating.length);
+            let avgRating = sumRating / professionalRating.length;
             if (!isNaN(avgRating)) {
               avgRating = avgRating.toFixed(1);
             } else {
@@ -872,7 +919,7 @@ app.get('/professionals-searchbar', (req, res) => {
                   for (var RatingData of professionalRating) {
                     sumRating += parseInt(RatingData.sprs_rating);
                   }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
+                  let avgRating = sumRating / professionalRating.length;
                   if (!isNaN(avgRating)) {
                     avgRating = avgRating.toFixed(1);
                   } else {
@@ -1334,13 +1381,16 @@ app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
   //       })
   //   });
   // }
+  const { page = 1, limit = 5 } = req.query;
 
-  await MessageSchema.find({
+  var QueryData={
     $or: [
       { $and: [{ sms_sender_id: property.ps_user_id }, { sms_receiver_id: req.query.pid }, { sms_property_id: req.session.property_id }, { sms_sender_id: req.session.user_id }] },
       { $and: [{ sms_sender_id: req.query.pid }, { sms_receiver_id: property.ps_user_id }, { sms_property_id: req.session.property_id }, { sms_receiver_id: req.session.user_id }] }
     ]
-  }).then(async (data) => {
+  };
+  const count = await MessageSchema.countDocuments(QueryData);
+  await MessageSchema.find(QueryData).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
     if (data) {
       for (let providerData of data) {
         var today = new Date();
@@ -1413,7 +1463,8 @@ app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
 
 
 
-  console.log('property:', property)
+  console.log('currentPage:', page)
+  console.log('totalPages:', Math.ceil(count / limit))
 
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -1423,25 +1474,37 @@ app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
 
     property: property,
     professional_id: req.query.pid,
-    chatData: newData
+    chatData: newData.reverse(),
+    totalPages: Math.ceil(count / limit),
+    currentPage: page,
+    msgcount:count
+
     //hiredProfeshnoalList:serviceProvArray
   });
 })
 
-app.get('/professionals-detail-message', (req, res) => {
+app.get('/professionals-detail-message', async (req, res) => {
   req.session.pagename = 'professionals';
   console.log('helooooo', req.query);
   //return
   var newData = [];
-  ServiceProviderSchema.find({ _id: req.query.spp_id }).then(service_provider_detail => {
+  ServiceProviderSchema.find({ _id: req.query.spp_id }).then( async service_provider_detail => {
+
+    const { page = 1, limit = 5 } = req.query;
+
 
     if (service_provider_detail) {
-      MessageSchema.find({
+
+      var QueryData = {
         $or: [
-          { $and: [{ sms_sender_id: req.query.cus_id }, { sms_receiver_id: req.query.spp_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
+          { $and: [{ sms_sender_id: req.query.cus_id }, { sms_receiver_id: req.query.spp_id }] },
           { $and: [{ sms_sender_id: req.query.spp_id }, { sms_receiver_id: req.query.cus_id }] }
         ]
-      }).then(async (data) => {
+      };
+      const count = await MessageSchema.countDocuments(QueryData);
+
+      
+      MessageSchema.find(QueryData).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
         if (data) {
           for (let providerData of data) {
             var today = new Date();
@@ -1507,13 +1570,21 @@ app.get('/professionals-detail-message', (req, res) => {
           }
 
           console.log('newData', newData);
+
+          console.log('Count', count);
+          console.log('Totalpage', Math.ceil(count / limit));
+          console.log('Page', page);
+
           err_msg = req.flash('err_msg');
           success_msg = req.flash('success_msg');
           res.render('professionals-detail-message', {
             err_msg, success_msg, layout: false,
             session: req.session,
             service_provider_detail: service_provider_detail[0],
-            chatData: newData
+            chatData: newData,
+            totalPages: Math.ceil(count / limit),
+            currentPage: page,
+            msgcount:count
           });
         }
       }).catch((err) => {
@@ -2463,93 +2534,66 @@ app.get('/kyc-professional', isServiceProvider, (req, res) => {
 app.get('/get-message', async (req, res) => {
 
   var newData = [];
-  MessageSchema.find({
+
+  const { page = 1, limit = 5 } = req.query;
+  var QueryData = {
     $or: [
-      { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
+      { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }] },
       { $and: [{ sms_sender_id: req.query.sms_receiver_id }, { sms_receiver_id: req.query.sms_sender_id }] }
     ]
-  }).then(async (data) => {
+  };
+  const count = await MessageSchema.countDocuments(QueryData);
+
+  MessageSchema.find(QueryData).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
     if (data) {
-
-
       for (let providerData of data) {
         var today = new Date();
         var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         var dateTime = date + ' ' + time;
-
         var today1 = new Date(providerData.sms_msg_Date);
         var date1 = today1.getFullYear() + '/' + (today1.getMonth() + 1) + '/' + today1.getDate();
         var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
         var dateTime1 = date1 + ' ' + time1;
-
         var msg_time = timeDiffCalc(new Date(dateTime), new Date(dateTime1));
-
         var object_as_string = JSON.stringify(providerData);
         const t = JSON.parse(object_as_string);
         t.msgTime = msg_time;
-        // await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
-        //   if (professional) {
-        //     //console.log('professional:',professional.sps_fullname);
-        //     t.senderName = await professional.sps_fullname;
-        //     //console.log('providerData xxxx New:',t);
-        //   } else {
-        //     t.senderName = await 'You';
-        //   }
-
-        // });
-        // const s = await t;
-        // //console.log('providerData New:',s);
-        // newData.push(s);
-
-
         await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
-          // await ServiceProviderSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async professional => {
-          if (professional) {
-            //console.log('professional:',professional.sps_fullname);
+         if (professional) {
             t.senderName = await professional.sps_fullname;
-            //console.log('providerData xxxx New:',t);
-          }
-
+         }
         });
         const s = await t;
-        // console.log('providerData New:', s);
-
-        //newData.push(s);
-        //var object_as_string1 = JSON.stringify(newData);
-        // const tt = JSON.parse(object_as_string1);
-        //console.log('tt--===:', tt);
-
         await CustomerSchema.findOne({ _id: s.sms_sender_id }).then(async customer => {
-          //await CustomerSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async customer => {
           if (customer) {
-            //console.log('professional:',professional.sps_fullname);
             s.senderName = await customer.cus_fullname;
             s.sms_user_profile_img = await customer.cus_profile_image_name;
-            //console.log('providerData xxxx New:',t);
-          }
-
+         }
         });
         const ss = await s;
-        // console.log('providerData Newssssss:', ss);
         newData.push(ss);
-
-
       }
       // console.log('Get newData',newData);
+
+      console.log('Count', count);
+      console.log('Totalpage', Math.ceil(count / limit));
+      console.log('Page', page);
+
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.send({
         err_msg, success_msg, layout: false,
         session: req.session,
-        chatData: newData
+        chatData: newData,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+        msgcount:count
       });
     }
   }).catch((err) => {
     console.log(err)
   })
-
-
 });
 
 
@@ -2557,70 +2601,62 @@ app.get('/get-message', async (req, res) => {
 app.get('/get-message-property', async (req, res) => {
   var newData = [];
   var newData1 = [];
-  MessageSchema.find({
+
+  const { page = 1, limit = 5 } = req.query;
+  var QueryData = {
     $or: [
-      { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }, { sms_property_id: req.query.sms_property_id }, { sms_is_active_user_flag: req.session.active_user_login }] },
+      { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }, { sms_property_id: req.query.sms_property_id }] },
       { $and: [{ sms_sender_id: req.query.sms_receiver_id }, { sms_receiver_id: req.query.sms_sender_id }, { sms_property_id: req.query.sms_property_id }] }
     ]
-  }).then(async (data) => {
+  };
+  const count = await MessageSchema.countDocuments(QueryData);
+
+
+  MessageSchema.find(QueryData).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
     if (data) {
       for (let providerData of data) {
         var today = new Date();
         var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         var dateTime = date + ' ' + time;
-
         var today1 = new Date(providerData.sms_msg_Date);
         var date1 = today1.getFullYear() + '/' + (today1.getMonth() + 1) + '/' + today1.getDate();
         var time1 = today1.getHours() + ":" + today1.getMinutes() + ":" + today1.getSeconds();
         var dateTime1 = date1 + ' ' + time1;
-
         var msg_time = timeDiffCalc(new Date(dateTime), new Date(dateTime1));
-
         var object_as_string = JSON.stringify(providerData);
         const t = JSON.parse(object_as_string);
-        //console.log('t:', t);
         t.msgTime = msg_time;
         await ServiceProviderSchema.findOne({ _id: t.sms_sender_id }).then(async professional => {
-          // await ServiceProviderSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async professional => {
-          if (professional) {
-            //console.log('professional:',professional.sps_fullname);
+         if (professional) {
             t.senderName = await professional.sps_fullname;
-            //console.log('providerData xxxx New:',t);
           }
-
         });
         const s = await t;
-        // console.log('providerData New:', s);
-
-        //newData.push(s);
-        //var object_as_string1 = JSON.stringify(newData);
-        // const tt = JSON.parse(object_as_string1);
-        //console.log('tt--===:', tt);
-
         await CustomerSchema.findOne({ _id: s.sms_sender_id }).then(async customer => {
-          //await CustomerSchema.find({ $or: [ { _id: t.sms_sender_id }, { _id: t.sms_receiver_id } ] }).then(async customer => {
-          if (customer) {
-            //console.log('professional:',professional.sps_fullname);
+         if (customer) {
             s.senderName = await customer.cus_fullname;
             s.sms_user_profile_img = await customer.cus_profile_image_name;
-            //console.log('providerData xxxx New:',t);
           }
-
         });
         const ss = await s;
-        // console.log('providerData Newssssss:', ss);
         newData.push(ss);
-
-
       }
       console.log('Get newData', newData);
+
+      console.log('Count', count);
+      console.log('Totalpage', Math.ceil(count / limit));
+      console.log('Page', page);
+
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.send({
         err_msg, success_msg, layout: false,
         session: req.session,
-        chatData: newData
+        chatData: newData,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+        msgcount:count
       });
     }
   }).catch((err) => {
@@ -3378,77 +3414,77 @@ app.post('/professionals-multifilter', async (req, res) => {
 
     const { page = 1, limit = 4 } = req.body;
     let count = 0;
-    console.log('pageQuery:', page);
-    console.log('req.query:', req.body);
+    console.log('pageQuery:',page);
+    console.log('req.query:',req.body);
 
     /*== Category==*/
     if (categoryKeyword) {
       console.log('categoryKeyword11:', categoryKeyword)
 
       //QuerySyntexCount = { sps_role_name: { $in: categoryKeyword }, sps_status: 'active'  };
+    
+     // for (var categoryWord of categoryKeyword) {
+        QuerySyntex = { sps_role_name: { $in: categoryKeyword }, sps_status: 'active' };
+        count = await ServiceProviderSchema.countDocuments(QuerySyntex);
+        console.log('countcount:',count);
+        console.log('limitss:',limit);
+  
+        await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+          if (service_provider_detail) {
+      console.log('service_provider_detail:',service_provider_detail);
+            
+            for (var sp_id of service_provider_detail) {
+              //let temp = await sp_id._id;
 
-      // for (var categoryWord of categoryKeyword) {
-      QuerySyntex = { sps_role_name: { $in: categoryKeyword }, sps_status: 'active' };
-      count = await ServiceProviderSchema.countDocuments(QuerySyntex);
-      console.log('countcount:', count);
-      console.log('limitss:', limit);
-
-      await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-        if (service_provider_detail) {
-          console.log('service_provider_detail:', service_provider_detail);
-
-          for (var sp_id of service_provider_detail) {
-            //let temp = await sp_id._id;
-
-            await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-              if (otherDetails) {
-                const spProvider = JSON.stringify(sp_id);
-                const parseSpProvider = JSON.parse(spProvider);
-                parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                // console.log('professionalRating:', professionalRating)
-                var sumRating = 0;
-                for (var RatingData of professionalRating) {
-                  sumRating += parseInt(RatingData.sprs_rating);
+              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                if (otherDetails) {
+                  const spProvider = JSON.stringify(sp_id);
+                  const parseSpProvider = JSON.parse(spProvider);
+                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                 // console.log('professionalRating:', professionalRating)
+                  var sumRating = 0;
+                  for (var RatingData of professionalRating) {
+                    sumRating += parseInt(RatingData.sprs_rating);
+                  }
+                  let avgRating = sumRating / professionalRating.length;
+                  if (!isNaN(avgRating)) {
+                    avgRating = avgRating.toFixed(1);
+                  } else {
+                    avgRating = 0;
+                  }
+                  //console.log('avgRating:', avgRating)
+                  let temps = await parseSpProvider
+                  const spProvider1 = JSON.stringify(temps);
+                  const parseSpProvider1 = JSON.parse(spProvider1);
+                  parseSpProvider1.avgRating = avgRating
+                  categoryServiceProvData.push(parseSpProvider1);
                 }
-                let avgRating = Math.round(sumRating / professionalRating.length);
-                if (!isNaN(avgRating)) {
-                  avgRating = avgRating.toFixed(1);
-                } else {
-                  avgRating = 0;
-                }
-                //console.log('avgRating:', avgRating)
-                let temps = await parseSpProvider
-                const spProvider1 = JSON.stringify(temps);
-                const parseSpProvider1 = JSON.parse(spProvider1);
-                parseSpProvider1.avgRating = avgRating
-                categoryServiceProvData.push(parseSpProvider1);
-              }
-            });
-            //let temp = await sp_id._id.toString();
-            //await categoryServiceProvIdArray.push(temp);
+              });
+              //let temp = await sp_id._id.toString();
+              //await categoryServiceProvIdArray.push(temp);
+            }
           }
-        }
-      })
+        })
 
-      await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
-        if (service_provider_detail1) {
-          for (var sp_id1 of service_provider_detail1) {
-            let temp = await sp_id1._id.toString();
-            await categoryServiceProvIdArray.push(temp);
+        await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
+          if (service_provider_detail1) {
+            for (var sp_id1 of service_provider_detail1) {
+               let temp = await sp_id1._id.toString();
+               await categoryServiceProvIdArray.push(temp);
+            }
           }
-        }
-      });
+        });
 
 
       //}
 
-      console.log('currentPage:', page);
-      console.log('totalPages:', Math.ceil(count / limit));
-
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
+      
       //if(experienceKeyword == '' && ){
       if (experienceKeyword == '' && cityKeyword == '' && languageKeyword == '') {
-        console.log('categoryServiceProvData:', categoryServiceProvData);
+        console.log('categoryServiceProvData:',categoryServiceProvData);
         res.send({
           err_msg, success_msg, layout: false,
           session: req.session,
@@ -3460,159 +3496,159 @@ app.post('/professionals-multifilter', async (req, res) => {
     }
 
 
-    /*== Location === */
-    if (cityKeyword) {
-      console.log('cityKeyword11:', cityKeyword)
-      //for (var cityWord of cityKeyword) {
-      QuerySyntex = { sps_city: { $in: cityKeyword }, sps_status: 'active' };
+/*== Location === */
+if(cityKeyword){ 
+  console.log('cityKeyword11:',cityKeyword)
+   //for (var cityWord of cityKeyword) {
+     QuerySyntex = { sps_city:{ $in: cityKeyword }, sps_status: 'active' };
+     
+     count = await ServiceProviderSchema.countDocuments(QuerySyntex);
+     console.log('countcount:',count);
+     await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+       if (service_provider_detail) {
+           for (var sp_id of service_provider_detail) {
+             //let temp = await sp_id._id;
+ 
+             await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+               if (otherDetails) {
+                 const spProvider = JSON.stringify(sp_id);
+                 const parseSpProvider = JSON.parse(spProvider);
+                 parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                 let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                 console.log('professionalRating:', professionalRating)
+                 var sumRating = 0;
+                 for (var RatingData of professionalRating) {
+                   sumRating += parseInt(RatingData.sprs_rating);
+                 }
+                 let avgRating = sumRating / professionalRating.length;
+                 if (!isNaN(avgRating)) {
+                   avgRating = avgRating.toFixed(1);
+                 } else {
+                   avgRating = 0;
+                 }
+                 console.log('avgRating:', avgRating)
+                 let temps = await parseSpProvider
+                 const spProvider1 = JSON.stringify(temps);
+                 const parseSpProvider1 = JSON.parse(spProvider1);
+                 parseSpProvider1.avgRating = avgRating
+                 cityServiceProvData.push(parseSpProvider1);
+               }
+             });
+             let temp = await sp_id._id.toString();
+             await cityServiceProvIdArray.push(temp);
+           }
+       }
+     })
 
-      count = await ServiceProviderSchema.countDocuments(QuerySyntex);
-      console.log('countcount:', count);
-      await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-        if (service_provider_detail) {
-          for (var sp_id of service_provider_detail) {
-            //let temp = await sp_id._id;
-
-            await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-              if (otherDetails) {
-                const spProvider = JSON.stringify(sp_id);
-                const parseSpProvider = JSON.parse(spProvider);
-                parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                console.log('professionalRating:', professionalRating)
-                var sumRating = 0;
-                for (var RatingData of professionalRating) {
-                  sumRating += parseInt(RatingData.sprs_rating);
-                }
-                let avgRating = Math.round(sumRating / professionalRating.length);
-                if (!isNaN(avgRating)) {
-                  avgRating = avgRating.toFixed(1);
-                } else {
-                  avgRating = 0;
-                }
-                console.log('avgRating:', avgRating)
-                let temps = await parseSpProvider
-                const spProvider1 = JSON.stringify(temps);
-                const parseSpProvider1 = JSON.parse(spProvider1);
-                parseSpProvider1.avgRating = avgRating
-                cityServiceProvData.push(parseSpProvider1);
-              }
-            });
-            let temp = await sp_id._id.toString();
-            await cityServiceProvIdArray.push(temp);
-          }
+     await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
+      if (service_provider_detail1) {
+        for (var sp_id1 of service_provider_detail1) {
+           let temp = await sp_id1._id.toString();
+           await cityServiceProvIdArray.push(temp);
         }
-      })
-
-      await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
-        if (service_provider_detail1) {
-          for (var sp_id1 of service_provider_detail1) {
-            let temp = await sp_id1._id.toString();
-            await cityServiceProvIdArray.push(temp);
-          }
-        }
-      });
-
-
-      // }
-
-      console.log('currentPage:', page);
-      console.log('totalPages:', Math.ceil(count / limit));
-
-      if (experienceKeyword == '' && categoryKeyword == '' && languageKeyword == '') {
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: cityServiceProvData,
-          totalPages: Math.ceil(count / limit),
-          currentPage: page
-        })
       }
-    }
+    });
 
-    /*===Language=== */
 
-    if (languageKeyword) {
-      console.log('cityKeyword11:', languageKeyword)
-      //for (var languageWord of languageKeyword) {
-      QuerySyntex = { spls_language: { $in: languageKeyword }, sps_status: 'active' };
-      count = await ServiceProviderLanguageSchema.countDocuments(QuerySyntex);
-      console.log('countcount:', count);
-      await ServiceProviderLanguageSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail_lang => {
-        if (service_provider_detail_lang) {
-          for (var lang_sp_id of service_provider_detail_lang) {
-            //let temp = await sp_id._id;
-            await ServiceProviderSchema.find({ _id: lang_sp_id.spls_service_provider_id }).then(async service_provider_detail => {
+  // }
+
+   console.log('currentPage:',page);
+   console.log('totalPages:',Math.ceil(count / limit));
+
+   if(experienceKeyword == '' && categoryKeyword == '' && languageKeyword == ''){
+     res.send({
+       err_msg, success_msg, layout: false,
+       session: req.session,
+       filterData: cityServiceProvData,
+       totalPages: Math.ceil(count / limit),
+       currentPage: page
+     })
+   }
+ }
+
+ /*===Language=== */
+
+ if(languageKeyword){ 
+  console.log('cityKeyword11:',languageKeyword)
+   //for (var languageWord of languageKeyword) {
+     QuerySyntex = { spls_language:{ $in: languageKeyword }, sps_status: 'active' };
+     count = await ServiceProviderLanguageSchema.countDocuments(QuerySyntex);
+     console.log('countcount:',count);
+     await ServiceProviderLanguageSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail_lang => {
+       if (service_provider_detail_lang) {
+           for (var lang_sp_id of service_provider_detail_lang) {
+             //let temp = await sp_id._id;
+             await ServiceProviderSchema.find({_id:lang_sp_id.spls_service_provider_id}).then(async service_provider_detail => { 
               for (var sp_id of service_provider_detail) {
-                await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                  if (otherDetails) {
-                    const spProvider = JSON.stringify(sp_id);
-                    const parseSpProvider = JSON.parse(spProvider);
-                    parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                    let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                    // console.log('professionalRating:', professionalRating)
-                    var sumRating = 0;
-                    for (var RatingData of professionalRating) {
-                      sumRating += parseInt(RatingData.sprs_rating);
-                    }
-                    let avgRating = Math.round(sumRating / professionalRating.length);
-                    if (!isNaN(avgRating)) {
-                      avgRating = avgRating.toFixed(1);
-                    } else {
-                      avgRating = 0;
-                    }
-                    console.log('avgRating:', avgRating)
-                    let temps = await parseSpProvider
-                    const spProvider1 = JSON.stringify(temps);
-                    const parseSpProvider1 = JSON.parse(spProvider1);
-                    parseSpProvider1.avgRating = avgRating
-                    languageServiceProvData.push(parseSpProvider1);
-                  }
-                });
+                      await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                          if (otherDetails) {
+                            const spProvider = JSON.stringify(sp_id);
+                            const parseSpProvider = JSON.parse(spProvider);
+                            parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                            let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                           // console.log('professionalRating:', professionalRating)
+                            var sumRating = 0;
+                            for (var RatingData of professionalRating) {
+                              sumRating += parseInt(RatingData.sprs_rating);
+                            }
+                            let avgRating = sumRating / professionalRating.length;
+                            if (!isNaN(avgRating)) {
+                              avgRating = avgRating.toFixed(1);
+                            } else {
+                              avgRating = 0;
+                            }
+                            console.log('avgRating:', avgRating)
+                            let temps = await parseSpProvider
+                            const spProvider1 = JSON.stringify(temps);
+                            const parseSpProvider1 = JSON.parse(spProvider1);
+                            parseSpProvider1.avgRating = avgRating
+                            languageServiceProvData.push(parseSpProvider1);
+                          }
+                        });
               }
 
-            })
-
+             })
+            
             //  let temp = await lang_sp_id.spls_service_provider_id.toString();
             //  await languageServiceProvIdArray.push(temp);
-          }
+           }
+       }
+     })
+
+
+     await ServiceProviderLanguageSchema.find(QuerySyntex).then(async service_provider_detail_lang1 => {
+      if (service_provider_detail_lang1) {
+        for (var lang_sp_id1 of service_provider_detail_lang1) {
+          let temp = await lang_sp_id1.spls_service_provider_id.toString();
+          await languageServiceProvIdArray.push(temp);
         }
-      })
-
-
-      await ServiceProviderLanguageSchema.find(QuerySyntex).then(async service_provider_detail_lang1 => {
-        if (service_provider_detail_lang1) {
-          for (var lang_sp_id1 of service_provider_detail_lang1) {
-            let temp = await lang_sp_id1.spls_service_provider_id.toString();
-            await languageServiceProvIdArray.push(temp);
-          }
-        }
-      });
-
-
-      //}
-
-      console.log('currentPage:', page);
-      console.log('totalPages:', Math.ceil(count / limit));
-
-      if (experienceKeyword == '' && categoryKeyword == '' && cityKeyword == '') {
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: languageServiceProvData,
-          totalPages: Math.ceil(count / limit),
-          currentPage: page
-        })
       }
-    }
+    });
+
+
+   //}
+
+   console.log('currentPage:',page);
+   console.log('totalPages:',Math.ceil(count / limit));
+
+   if(experienceKeyword == '' && categoryKeyword == '' && cityKeyword == ''){
+     res.send({
+       err_msg, success_msg, layout: false,
+       session: req.session,
+       filterData: languageServiceProvData,
+       totalPages: Math.ceil(count / limit),
+       currentPage: page
+     })
+   }
+ }
 
 
 
-
+ 
     /*=== Expirence ==*/
 
-    if (experienceKeyword) {
-      //for (var experienceWord of experienceKeyword) {
+  if (experienceKeyword) {
+    //for (var experienceWord of experienceKeyword) {
       QuerySyntex = { sps_experience: { $in: experienceKeyword }, sps_status: 'active' };
       count = await ServiceProviderSchema.countDocuments(QuerySyntex);
       //console.log('countcount:',count);
@@ -3626,18 +3662,18 @@ app.post('/professionals-multifilter', async (req, res) => {
                 const parseSpProvider = JSON.parse(spProvider);
                 parseSpProvider.professionalBody = otherDetails.spods_professional_body
                 let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                // console.log('professionalRating:', professionalRating)
+               // console.log('professionalRating:', professionalRating)
                 var sumRating = 0;
                 for (var RatingData of professionalRating) {
                   sumRating += parseInt(RatingData.sprs_rating);
                 }
-                let avgRating = Math.round(sumRating / professionalRating.length);
+                let avgRating = sumRating / professionalRating.length;
                 if (!isNaN(avgRating)) {
                   avgRating = avgRating.toFixed(1);
                 } else {
                   avgRating = 0;
                 }
-                // console.log('avgRating:', avgRating)
+               // console.log('avgRating:', avgRating)
                 let temps = await parseSpProvider
                 const spProvider1 = JSON.stringify(temps);
                 const parseSpProvider1 = JSON.parse(spProvider1);
@@ -3648,7 +3684,7 @@ app.post('/professionals-multifilter', async (req, res) => {
 
 
             //await experienceServiceProvData.push(sp_id);
-
+          
           }
         }
       })
@@ -3658,26 +3694,26 @@ app.post('/professionals-multifilter', async (req, res) => {
       await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
         if (service_provider_detail1) {
           for (var sp_id1 of service_provider_detail1) {
-            let temp = await sp_id1._id.toString();
-            await experienceServiceProvIdArray.push(temp);
+             let temp = await sp_id1._id.toString();
+             await experienceServiceProvIdArray.push(temp);
           }
         }
       });
-      // }
+   // }
 
-      //console.log('currentPage:',page);
-      //console.log('totalPages:',Math.ceil(count / limit));
+    //console.log('currentPage:',page);
+    //console.log('totalPages:',Math.ceil(count / limit));
 
-      if (categoryKeyword == '' && cityKeyword == '' && languageKeyword == '') {
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: experienceServiceProvData,
-          totalPages: Math.ceil(count / limit),
-          currentPage: page
-        })
-      }
+    if (categoryKeyword == '' && cityKeyword == '' && languageKeyword == '') {
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: experienceServiceProvData,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
+      })
     }
+  }
 
     /*== Location === */
     // if (cityKeyword) {
@@ -3788,58 +3824,58 @@ app.post('/professionals-multifilter', async (req, res) => {
 
 
 
-    /*==  Category and Expirence  ==*/
-    if (experienceServiceProvIdArray != '' && categoryServiceProvIdArray != '' && cityServiceProvIdArray == '' && languageServiceProvIdArray == '') {
-      console.log('insideee Category and Expirence')
-      let ttt = await getMatch(experienceServiceProvIdArray, categoryServiceProvIdArray);
-      console.log('ttt:', ttt)
+ /*==  Category and Expirence  ==*/
+if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityServiceProvIdArray =='' && languageServiceProvIdArray ==''){
+  console.log('insideee Category and Expirence')
+   let ttt = await getMatch(experienceServiceProvIdArray, categoryServiceProvIdArray); 
+   console.log('ttt:', ttt)
 
-      count = ttt.length;
-      console.log('CE countcount:', count);
+   count = ttt.length;
+   console.log('CE countcount:',count);
 
-      if (ttt) {
-        //for (var t of ttt) {
-        // if(t){
-        QuerySyntex = { _id: { $in: ttt } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
+   if(ttt){
+     //for (var t of ttt) {
+         // if(t){
+            QuerySyntex = { _id:{ $in: ttt } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
 
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
-                  }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                    }
+                  });
+                  //let temp = await sp_id;
+                  // await catExpServiceProvIdArray.push(temp);
                 }
-              });
-              //let temp = await sp_id;
-              // await catExpServiceProvIdArray.push(temp);
-            }
-          }
-        })
-        //}
-        // }
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
+              }
+            })
+          //}
+       // }
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
 
         res.send({
           err_msg, success_msg, layout: false,
@@ -3861,56 +3897,56 @@ app.post('/professionals-multifilter', async (req, res) => {
 
     /*== Category and City ==*/
 
-    if (cityServiceProvIdArray != '' && categoryServiceProvIdArray != '' && experienceServiceProvIdArray == '' && languageServiceProvIdArray == '') {
-      console.log('insideee Category and City')
-      let ttt = await getMatch(cityServiceProvIdArray, categoryServiceProvIdArray);
-      console.log('ttt:', ttt)
+ if(cityServiceProvIdArray !='' && categoryServiceProvIdArray !='' && experienceServiceProvIdArray =='' && languageServiceProvIdArray ==''){
+  console.log('insideee Category and City')
+   let ttt = await getMatch(cityServiceProvIdArray, categoryServiceProvIdArray); 
+   console.log('ttt:', ttt)
 
-      count = ttt.length;
-      console.log('CC countcount:', count);
+   count = ttt.length;
+   console.log('CC countcount:',count);
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
 
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  // console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
-                  }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                       // console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                    }
+                  });
                 }
-              });
-            }
-          }
-        })
+              }
+            })
         //   }
         // }
 
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
 
 
         res.send({
@@ -3933,55 +3969,55 @@ app.post('/professionals-multifilter', async (req, res) => {
 
     /*== Category And Language == */
 
-    if (languageServiceProvIdArray != '' && categoryServiceProvIdArray != '' && cityServiceProvIdArray == '' && experienceServiceProvIdArray == '') {
-      console.log('insideee Category And Language')
-      let ttt = await getMatch(languageServiceProvIdArray, categoryServiceProvIdArray);
-      console.log('ttt:', ttt)
+if(languageServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityServiceProvIdArray=='' && experienceServiceProvIdArray==''){
+  console.log('insideee Category And Language')
+   let ttt = await getMatch(languageServiceProvIdArray, categoryServiceProvIdArray); 
+   console.log('ttt:', ttt)
 
-      count = ttt.length;
-      console.log('CL countcount:', count);
+   count = ttt.length;
+   console.log('CL countcount:',count);
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
 
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
-                  }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                    }
+                  });
                 }
-              });
-            }
-          }
-        })
+              }
+            })
         //   }
         // }
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
 
         res.send({
           err_msg, success_msg, layout: false,
@@ -4004,56 +4040,56 @@ app.post('/professionals-multifilter', async (req, res) => {
 
     /*== Expirence and City ==*/
 
-    if (cityServiceProvIdArray != '' && experienceServiceProvIdArray != '' && categoryServiceProvIdArray == '' && languageServiceProvIdArray == '') {
-      console.log('insideee Expirence and City')
-      let ttt = await getMatch(cityServiceProvIdArray, experienceServiceProvIdArray);
-      console.log('ttt:', ttt)
+ if(cityServiceProvIdArray !='' && experienceServiceProvIdArray !='' && categoryServiceProvIdArray=='' && languageServiceProvIdArray==''){
+  console.log('insideee Expirence and City')
+   let ttt = await getMatch(cityServiceProvIdArray, experienceServiceProvIdArray); 
+   console.log('ttt:', ttt)
 
-      count = ttt.length;
-      console.log('CL countcount:', count);
+   count = ttt.length;
+   console.log('CL countcount:',count);
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
 
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
-                  }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                    }
+                  });
                 }
-              });
-            }
-          }
-        })
+              }
+            })
         //   }
         // }
 
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
 
         res.send({
           err_msg, success_msg, layout: false,
@@ -4073,59 +4109,59 @@ app.post('/professionals-multifilter', async (req, res) => {
     }
 
 
-    /*== Expirence and Language ==*/
+   /*== Expirence and Language ==*/
 
-    if (languageServiceProvIdArray != '' && experienceServiceProvIdArray != '' && categoryServiceProvIdArray == '' && cityServiceProvIdArray == '') {
-      console.log('insideee Expirence and City')
-      let ttt = await getMatch(languageServiceProvIdArray, experienceServiceProvIdArray);
-      console.log('ttt:', ttt)
+ if(languageServiceProvIdArray !='' && experienceServiceProvIdArray !='' && categoryServiceProvIdArray=='' && cityServiceProvIdArray==''){
+  console.log('insideee Expirence and City')
+   let ttt = await getMatch(languageServiceProvIdArray, experienceServiceProvIdArray); 
+   console.log('ttt:', ttt)
 
-      count = ttt.length;
-      console.log('EL countcount:', count);
+   count = ttt.length;
+   console.log('EL countcount:',count);
 
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
 
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
-                  }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                    }
+                  });
                 }
-              });
-            }
-          }
-        })
+              }
+            })
         //   }
         // }
 
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
 
         res.send({
           err_msg, success_msg, layout: false,
@@ -4149,56 +4185,56 @@ app.post('/professionals-multifilter', async (req, res) => {
 
     /* == City And Language ==*/
 
-    if (languageServiceProvIdArray != '' && cityServiceProvIdArray != '' && experienceServiceProvIdArray == '' && categoryServiceProvIdArray == '') {
-      console.log('insideee Category And Language')
-      let ttt = await getMatch(languageServiceProvIdArray, cityServiceProvIdArray);
-      console.log('ttt:', ttt)
+if(languageServiceProvIdArray !='' && cityServiceProvIdArray !='' && experienceServiceProvIdArray=='' && categoryServiceProvIdArray==''){
+  console.log('insideee Category And Language')
+   let ttt = await getMatch(languageServiceProvIdArray, cityServiceProvIdArray); 
+   console.log('ttt:', ttt)
+   
+   count = ttt.length;
+   console.log('CityL countcount:',count);
 
-      count = ttt.length;
-      console.log('CityL countcount:', count);
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
-
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
-                  }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  // console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                       // console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                    }
+                  });
                 }
-              });
-            }
-          }
-        })
+              }
+            })
         //   }
         // }
 
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
 
         res.send({
           err_msg, success_msg, layout: false,
@@ -4218,406 +4254,406 @@ app.post('/professionals-multifilter', async (req, res) => {
     }
 
 
-    /*== Category + Experience + Location ==*/
+/*== Category + Experience + Location ==*/
 
-    if (experienceServiceProvIdArray != '' && categoryServiceProvIdArray != '' && cityServiceProvIdArray != '' && languageServiceProvIdArray == '') {
-      console.log('insideee Category + Experience + Location')
-      let firstArray = await getMatch(experienceServiceProvIdArray, categoryServiceProvIdArray);
-      console.log('firstArray:', firstArray)
-      let totalArrayId = await getMatch(firstArray, cityServiceProvIdArray);
-      let ttt = [...new Set(totalArrayId)];
-      console.log('ttt:', ttt)
+if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityServiceProvIdArray !='' && languageServiceProvIdArray==''){
+  console.log('insideee Category + Experience + Location')
+   let firstArray = await getMatch(experienceServiceProvIdArray, categoryServiceProvIdArray); 
+   console.log('firstArray:', firstArray)
+   let totalArrayId = await getMatch(firstArray, cityServiceProvIdArray); 
+   let ttt = [...new Set(totalArrayId)];
+   console.log('ttt:', ttt)
+
+      
+   count = ttt.length;
+   console.log('CityL countcount:',count);
 
 
-      count = ttt.length;
-      console.log('CityL countcount:', count);
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
+
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                      }
+                    });
 
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
-
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
+                    //let temp = await sp_id;
+                   // await catExpServiceProvIdArray.push(temp);
                   }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
-                }
-              });
+              }
+            })
+      //   }
+      // }
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
 
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: catExpServiceProvIdArray,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
+      })
 
-              //let temp = await sp_id;
-              // await catExpServiceProvIdArray.push(temp);
-            }
-          }
-        })
-        //   }
-        // }
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
-
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: catExpServiceProvIdArray,
-          totalPages: Math.ceil(count / limit),
-          currentPage: page
-        })
-
-      } else {
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: ''
-        })
-      }
+    }else{
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: ''
+      })
     }
+}
 
-    /*== Category + Experience + Language ==*/
+/*== Category + Experience + Language ==*/
 
-    if (experienceServiceProvIdArray != '' && categoryServiceProvIdArray != '' && languageServiceProvIdArray != '' && cityServiceProvIdArray == '') {
-      console.log('insideee Category + Experience + Language')
-      let firstArray = await getMatch(experienceServiceProvIdArray, categoryServiceProvIdArray);
-      console.log('firstArray:', firstArray)
-      let totalArrayId = await getMatch(firstArray, languageServiceProvIdArray);
-      let ttt = [...new Set(totalArrayId)];
-      console.log('ttt:', ttt)
+if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && languageServiceProvIdArray !='' && cityServiceProvIdArray==''){
+  console.log('insideee Category + Experience + Language')
+   let firstArray = await getMatch(experienceServiceProvIdArray, categoryServiceProvIdArray); 
+   console.log('firstArray:', firstArray)
+   let totalArrayId = await getMatch(firstArray, languageServiceProvIdArray); 
+   let ttt = [...new Set(totalArrayId)];
+   console.log('ttt:', ttt)
 
-      count = ttt.length;
-      console.log('CityL countcount:', count);
+   count = ttt.length;
+   console.log('CityL countcount:',count);
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
 
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                      }
+                    });
+
+
+                    //let temp = await sp_id;
+                   // await catExpServiceProvIdArray.push(temp);
                   }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
-                }
-              });
+              }
+            })
+      //   }
+      // }
 
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
 
-              //let temp = await sp_id;
-              // await catExpServiceProvIdArray.push(temp);
-            }
-          }
-        })
-        //   }
-        // }
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: catExpServiceProvIdArray,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
+      })
 
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
-
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: catExpServiceProvIdArray,
-          totalPages: Math.ceil(count / limit),
-          currentPage: page
-        })
-
-      } else {
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: ''
-        })
-      }
+    }else{
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: ''
+      })
     }
+}
 
-    /*== Category + Location + Language ==*/
+/*== Category + Location + Language ==*/
 
-    if (cityServiceProvIdArray != '' && categoryServiceProvIdArray != '' && languageServiceProvIdArray != '' && experienceServiceProvIdArray == '') {
-      console.log('insideee Category + Location + Language')
-      let firstArray = await getMatch(cityServiceProvIdArray, categoryServiceProvIdArray);
-      console.log('firstArray:', firstArray)
-      let totalArrayId = await getMatch(firstArray, languageServiceProvIdArray);
-      let ttt = [...new Set(totalArrayId)];
-      console.log('ttt:', ttt)
+if(cityServiceProvIdArray !='' && categoryServiceProvIdArray !='' && languageServiceProvIdArray !='' && experienceServiceProvIdArray==''){
+  console.log('insideee Category + Location + Language')
+   let firstArray = await getMatch(cityServiceProvIdArray, categoryServiceProvIdArray); 
+   console.log('firstArray:', firstArray)
+   let totalArrayId = await getMatch(firstArray, languageServiceProvIdArray); 
+   let ttt = [...new Set(totalArrayId)];
+   console.log('ttt:', ttt)
+
+   
+   count = ttt.length;
+   console.log('CityL countcount:',count);
 
 
-      count = ttt.length;
-      console.log('CityL countcount:', count);
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
+
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                      }
+                    });
 
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
-
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
+                    //let temp = await sp_id;
+                   // await catExpServiceProvIdArray.push(temp);
                   }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
-                }
-              });
+              }
+            })
+      //   }
+      // }
 
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
 
-              //let temp = await sp_id;
-              // await catExpServiceProvIdArray.push(temp);
-            }
-          }
-        })
-        //   }
-        // }
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: catExpServiceProvIdArray,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
+      })
 
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
-
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: catExpServiceProvIdArray,
-          totalPages: Math.ceil(count / limit),
-          currentPage: page
-        })
-
-      } else {
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: ''
-        })
-      }
+    }else{
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: ''
+      })
     }
+}
 
 
-    /*== Experience + Location + Language ==*/
+/*== Experience + Location + Language ==*/
 
-    if (cityServiceProvIdArray != '' && languageServiceProvIdArray != '' && experienceServiceProvIdArray != '' && categoryServiceProvIdArray == '') {
-      console.log('insideee Experience + Location + Language')
-      let firstArray = await getMatch(cityServiceProvIdArray, experienceServiceProvIdArray);
-      console.log('firstArray:', firstArray)
-      let totalArrayId = await getMatch(firstArray, languageServiceProvIdArray);
-      let ttt = [...new Set(totalArrayId)];
-      console.log('ttt:', ttt)
+if(cityServiceProvIdArray !='' && languageServiceProvIdArray !='' && experienceServiceProvIdArray !='' && categoryServiceProvIdArray==''){
+  console.log('insideee Experience + Location + Language')
+   let firstArray = await getMatch(cityServiceProvIdArray, experienceServiceProvIdArray); 
+   console.log('firstArray:', firstArray)
+   let totalArrayId = await getMatch(firstArray, languageServiceProvIdArray); 
+   let ttt = [...new Set(totalArrayId)];
+   console.log('ttt:', ttt)
 
-      count = ttt.length;
-      console.log('CityL countcount:', count);
+   count = ttt.length;
+   console.log('CityL countcount:',count);
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
 
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                      }
+                    });
+
+
+                    //let temp = await sp_id;
+                   // await catExpServiceProvIdArray.push(temp);
                   }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
-                }
-              });
+              }
+            })
+      //   }
+      // }
 
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
 
-              //let temp = await sp_id;
-              // await catExpServiceProvIdArray.push(temp);
-            }
-          }
-        })
-        //   }
-        // }
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: catExpServiceProvIdArray,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
+      })
 
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
-
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: catExpServiceProvIdArray,
-          totalPages: Math.ceil(count / limit),
-          currentPage: page
-        })
-
-      } else {
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: ''
-        })
-      }
+    }else{
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: ''
+      })
     }
+}
 
 
-    /*== Experience + Location + Language + Category ==*/
+/*== Experience + Location + Language + Category ==*/
 
-    if (cityServiceProvIdArray != '' && languageServiceProvIdArray != '' && experienceServiceProvIdArray != '' && categoryServiceProvIdArray != '') {
-      console.log('insideee Experience + Location + Language + Category')
-      let firstArray = await getMatch(cityServiceProvIdArray, experienceServiceProvIdArray);
-      console.log('firstArray:', firstArray)
-      let SecondArray = await getMatch(firstArray, languageServiceProvIdArray);
-      console.log('SecondArray:', SecondArray)
-      let totalArrayId = await getMatch(SecondArray, categoryServiceProvIdArray);
-      let ttt = [...new Set(totalArrayId)];
-      console.log('ttt:', ttt)
+if(cityServiceProvIdArray !='' && languageServiceProvIdArray !='' && experienceServiceProvIdArray !='' && categoryServiceProvIdArray !=''){
+  console.log('insideee Experience + Location + Language + Category')
+   let firstArray = await getMatch(cityServiceProvIdArray, experienceServiceProvIdArray); 
+   console.log('firstArray:', firstArray)
+   let SecondArray = await getMatch(firstArray, languageServiceProvIdArray); 
+   console.log('SecondArray:', SecondArray)
+   let totalArrayId = await getMatch(SecondArray, categoryServiceProvIdArray); 
+   let ttt = [...new Set(totalArrayId)];
+   console.log('ttt:', ttt)
+
+   
+   count = ttt.length;
+   console.log('CityL countcount:',count);
 
 
-      count = ttt.length;
-      console.log('CityL countcount:', count);
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
+
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                      }
+                    });
 
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
-
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
+                    //let temp = await sp_id;
+                   // await catExpServiceProvIdArray.push(temp);
                   }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
-                }
-              });
+              }
+            })
+      //   }
+      // }
 
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
 
-              //let temp = await sp_id;
-              // await catExpServiceProvIdArray.push(temp);
-            }
-          }
-        })
-        //   }
-        // }
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: catExpServiceProvIdArray,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
+      })
 
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
-
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: catExpServiceProvIdArray,
-          totalPages: Math.ceil(count / limit),
-          currentPage: page
-        })
-
-      } else {
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: ''
-        })
-      }
+    }else{
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: ''
+      })
     }
-    console.log('experienceServiceProvIdArray:', experienceServiceProvIdArray)
-    console.log('categoryServiceProvIdArray:', categoryServiceProvIdArray)
-    console.log('catExpServiceProvIdArray:', catExpServiceProvIdArray)
-    console.log('cityServiceProvIdArray:', cityServiceProvIdArray)
-    console.log('languageServiceProvIdArray:', languageServiceProvIdArray)
+}
+console.log('experienceServiceProvIdArray:', experienceServiceProvIdArray)
+console.log('categoryServiceProvIdArray:', categoryServiceProvIdArray)
+console.log('catExpServiceProvIdArray:', catExpServiceProvIdArray)
+console.log('cityServiceProvIdArray:', cityServiceProvIdArray)
+console.log('languageServiceProvIdArray:', languageServiceProvIdArray)
 
-  }
+}
 
 });
 
@@ -4694,87 +4730,87 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
     const { page = 1, limit = 1 } = req.body;
     let count = 0;
-    console.log('pageQuery:', page);
-    console.log('req.query:', req.body);
+    console.log('pageQuery:',page);
+    console.log('req.query:',req.body);
 
 
-
-    let AllhiredProfeshnoalCount = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
-    var totalHire = [];
-    for (var t of AllhiredProfeshnoalCount) {
-      totalHire.push(t.pps_service_provider_id.toString());
-    }
-    let totalHireUnique = [...new Set(totalHire)];
-    console.log('FiltertotalHire:', totalHire);
-    console.log('FiltertotalHireUnique:', totalHireUnique);
-    //const count = totalHireUnique.length;
+          
+  let AllhiredProfeshnoalCount =  await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
+  var totalHire=[];
+   for (var t of AllhiredProfeshnoalCount) {
+        totalHire.push(t.pps_service_provider_id.toString());
+   }
+   let totalHireUnique = [...new Set(totalHire)];
+   console.log('FiltertotalHire:',totalHire);
+   console.log('FiltertotalHireUnique:',totalHireUnique);
+   //const count = totalHireUnique.length;
 
 
 
     /*== Category==*/
     if (categoryKeyword) {
       console.log('categoryKeyword11:', categoryKeyword)
-      // for (var categoryWord of categoryKeyword) {
-      QuerySyntex = { sps_role_name: { $in: categoryKeyword }, _id: { $in: totalHireUnique } };
-      count = await ServiceProviderSchema.countDocuments(QuerySyntex);
-      console.log('countcount:', count);
-      console.log('limitss:', limit);
+     // for (var categoryWord of categoryKeyword) {
+        QuerySyntex = { sps_role_name: { $in: categoryKeyword }, _id: { $in: totalHireUnique } };
+        count = await ServiceProviderSchema.countDocuments(QuerySyntex);
+        console.log('countcount:',count);
+        console.log('limitss:',limit);
+  
+        await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+          if (service_provider_detail) {
+          console.log('service_provider_detail:',service_provider_detail); 
+            for (var sp_id of service_provider_detail) {
+              //let temp = await sp_id._id;
 
-      await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-        if (service_provider_detail) {
-          console.log('service_provider_detail:', service_provider_detail);
-          for (var sp_id of service_provider_detail) {
-            //let temp = await sp_id._id;
-
-            await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-              if (otherDetails) {
-                const spProvider = JSON.stringify(sp_id);
-                const parseSpProvider = JSON.parse(spProvider);
-                parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                // console.log('professionalRating:', professionalRating)
-                var sumRating = 0;
-                for (var RatingData of professionalRating) {
-                  sumRating += parseInt(RatingData.sprs_rating);
+              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                if (otherDetails) {
+                  const spProvider = JSON.stringify(sp_id);
+                  const parseSpProvider = JSON.parse(spProvider);
+                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                 // console.log('professionalRating:', professionalRating)
+                  var sumRating = 0;
+                  for (var RatingData of professionalRating) {
+                    sumRating += parseInt(RatingData.sprs_rating);
+                  }
+                  let avgRating = sumRating / professionalRating.length;
+                  if (!isNaN(avgRating)) {
+                    avgRating = avgRating.toFixed(1);
+                  } else {
+                    avgRating = 0;
+                  }
+                  //console.log('avgRating:', avgRating)
+                  let temps = await parseSpProvider
+                  const spProvider1 = JSON.stringify(temps);
+                  const parseSpProvider1 = JSON.parse(spProvider1);
+                  parseSpProvider1.avgRating = avgRating
+                  categoryServiceProvData.push(parseSpProvider1);
                 }
-                let avgRating = Math.round(sumRating / professionalRating.length);
-                if (!isNaN(avgRating)) {
-                  avgRating = avgRating.toFixed(1);
-                } else {
-                  avgRating = 0;
-                }
-                //console.log('avgRating:', avgRating)
-                let temps = await parseSpProvider
-                const spProvider1 = JSON.stringify(temps);
-                const parseSpProvider1 = JSON.parse(spProvider1);
-                parseSpProvider1.avgRating = avgRating
-                categoryServiceProvData.push(parseSpProvider1);
-              }
-            });
-            //let temp = await sp_id._id.toString();
-            //await categoryServiceProvIdArray.push(temp);
+              });
+              //let temp = await sp_id._id.toString();
+              //await categoryServiceProvIdArray.push(temp);
+            }
           }
-        }
-      })
+        })
 
-      await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
-        if (service_provider_detail1) {
-          for (var sp_id1 of service_provider_detail1) {
-            let temp = await sp_id1._id.toString();
-            await categoryServiceProvIdArray.push(temp);
+        await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
+          if (service_provider_detail1) {
+            for (var sp_id1 of service_provider_detail1) {
+               let temp = await sp_id1._id.toString();
+               await categoryServiceProvIdArray.push(temp);
+            }
           }
-        }
-      });
+        });
 
 
       //}
 
-      console.log('currentPage:', page);
-      console.log('totalPages:', Math.ceil(count / limit));
-
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
+      
       //if(experienceKeyword == '' && ){
       if (experienceKeyword == '' && cityKeyword == '' && languageKeyword == '') {
-        console.log('categoryServiceProvData:', categoryServiceProvData);
+        console.log('categoryServiceProvData:',categoryServiceProvData);
         res.send({
           err_msg, success_msg, layout: false,
           session: req.session,
@@ -4786,159 +4822,159 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
     }
 
 
-    /*== Location === */
-    if (cityKeyword) {
-      console.log('cityKeyword11:', cityKeyword)
-      //for (var cityWord of cityKeyword) {
-      QuerySyntex = { sps_city: { $in: cityKeyword }, _id: { $in: totalHireUnique } };
+/*== Location === */
+if(cityKeyword){ 
+  console.log('cityKeyword11:',cityKeyword)
+   //for (var cityWord of cityKeyword) {
+     QuerySyntex = { sps_city:{ $in: cityKeyword }, _id: { $in: totalHireUnique } };
+     
+     count = await ServiceProviderSchema.countDocuments(QuerySyntex);
+     console.log('countcount:',count);
+     await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+       if (service_provider_detail) {
+           for (var sp_id of service_provider_detail) {
+             //let temp = await sp_id._id;
+ 
+             await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+               if (otherDetails) {
+                 const spProvider = JSON.stringify(sp_id);
+                 const parseSpProvider = JSON.parse(spProvider);
+                 parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                 let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                 console.log('professionalRating:', professionalRating)
+                 var sumRating = 0;
+                 for (var RatingData of professionalRating) {
+                   sumRating += parseInt(RatingData.sprs_rating);
+                 }
+                 let avgRating = sumRating / professionalRating.length;
+                 if (!isNaN(avgRating)) {
+                   avgRating = avgRating.toFixed(1);
+                 } else {
+                   avgRating = 0;
+                 }
+                 console.log('avgRating:', avgRating)
+                 let temps = await parseSpProvider
+                 const spProvider1 = JSON.stringify(temps);
+                 const parseSpProvider1 = JSON.parse(spProvider1);
+                 parseSpProvider1.avgRating = avgRating
+                 cityServiceProvData.push(parseSpProvider1);
+               }
+             });
+             let temp = await sp_id._id.toString();
+             await cityServiceProvIdArray.push(temp);
+           }
+       }
+     })
 
-      count = await ServiceProviderSchema.countDocuments(QuerySyntex);
-      console.log('countcount:', count);
-      await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-        if (service_provider_detail) {
-          for (var sp_id of service_provider_detail) {
-            //let temp = await sp_id._id;
-
-            await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-              if (otherDetails) {
-                const spProvider = JSON.stringify(sp_id);
-                const parseSpProvider = JSON.parse(spProvider);
-                parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                console.log('professionalRating:', professionalRating)
-                var sumRating = 0;
-                for (var RatingData of professionalRating) {
-                  sumRating += parseInt(RatingData.sprs_rating);
-                }
-                let avgRating = Math.round(sumRating / professionalRating.length);
-                if (!isNaN(avgRating)) {
-                  avgRating = avgRating.toFixed(1);
-                } else {
-                  avgRating = 0;
-                }
-                console.log('avgRating:', avgRating)
-                let temps = await parseSpProvider
-                const spProvider1 = JSON.stringify(temps);
-                const parseSpProvider1 = JSON.parse(spProvider1);
-                parseSpProvider1.avgRating = avgRating
-                cityServiceProvData.push(parseSpProvider1);
-              }
-            });
-            let temp = await sp_id._id.toString();
-            await cityServiceProvIdArray.push(temp);
-          }
+     await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
+      if (service_provider_detail1) {
+        for (var sp_id1 of service_provider_detail1) {
+           let temp = await sp_id1._id.toString();
+           await cityServiceProvIdArray.push(temp);
         }
-      })
-
-      await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
-        if (service_provider_detail1) {
-          for (var sp_id1 of service_provider_detail1) {
-            let temp = await sp_id1._id.toString();
-            await cityServiceProvIdArray.push(temp);
-          }
-        }
-      });
-
-
-      // }
-
-      console.log('currentPage:', page);
-      console.log('totalPages:', Math.ceil(count / limit));
-
-      if (experienceKeyword == '' && categoryKeyword == '' && languageKeyword == '') {
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: cityServiceProvData,
-          totalPages: Math.ceil(count / limit),
-          currentPage: page
-        })
       }
-    }
+    });
 
-    /*===Language=== */
 
-    if (languageKeyword) {
-      console.log('cityKeyword11:', languageKeyword)
-      //for (var languageWord of languageKeyword) {
-      QuerySyntex = { spls_language: { $in: languageKeyword }, _id: { $in: totalHireUnique } };
-      count = await ServiceProviderLanguageSchema.countDocuments(QuerySyntex);
-      console.log('countcount:', count);
-      await ServiceProviderLanguageSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail_lang => {
-        if (service_provider_detail_lang) {
-          for (var lang_sp_id of service_provider_detail_lang) {
-            //let temp = await sp_id._id;
-            await ServiceProviderSchema.find({ _id: lang_sp_id.spls_service_provider_id }).then(async service_provider_detail => {
+  // }
+
+   console.log('currentPage:',page);
+   console.log('totalPages:',Math.ceil(count / limit));
+
+   if(experienceKeyword == '' && categoryKeyword == '' && languageKeyword == ''){
+     res.send({
+       err_msg, success_msg, layout: false,
+       session: req.session,
+       filterData: cityServiceProvData,
+       totalPages: Math.ceil(count / limit),
+       currentPage: page
+     })
+   }
+ }
+
+ /*===Language=== */
+
+ if(languageKeyword){ 
+  console.log('cityKeyword11:',languageKeyword)
+   //for (var languageWord of languageKeyword) {
+     QuerySyntex = { spls_language:{ $in: languageKeyword }, _id: { $in: totalHireUnique } };
+     count = await ServiceProviderLanguageSchema.countDocuments(QuerySyntex);
+     console.log('countcount:',count);
+     await ServiceProviderLanguageSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail_lang => {
+       if (service_provider_detail_lang) {
+           for (var lang_sp_id of service_provider_detail_lang) {
+             //let temp = await sp_id._id;
+             await ServiceProviderSchema.find({_id:lang_sp_id.spls_service_provider_id}).then(async service_provider_detail => { 
               for (var sp_id of service_provider_detail) {
-                await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                  if (otherDetails) {
-                    const spProvider = JSON.stringify(sp_id);
-                    const parseSpProvider = JSON.parse(spProvider);
-                    parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                    let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                    // console.log('professionalRating:', professionalRating)
-                    var sumRating = 0;
-                    for (var RatingData of professionalRating) {
-                      sumRating += parseInt(RatingData.sprs_rating);
-                    }
-                    let avgRating = Math.round(sumRating / professionalRating.length);
-                    if (!isNaN(avgRating)) {
-                      avgRating = avgRating.toFixed(1);
-                    } else {
-                      avgRating = 0;
-                    }
-                    console.log('avgRating:', avgRating)
-                    let temps = await parseSpProvider
-                    const spProvider1 = JSON.stringify(temps);
-                    const parseSpProvider1 = JSON.parse(spProvider1);
-                    parseSpProvider1.avgRating = avgRating
-                    languageServiceProvData.push(parseSpProvider1);
-                  }
-                });
+                      await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                          if (otherDetails) {
+                            const spProvider = JSON.stringify(sp_id);
+                            const parseSpProvider = JSON.parse(spProvider);
+                            parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                            let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                           // console.log('professionalRating:', professionalRating)
+                            var sumRating = 0;
+                            for (var RatingData of professionalRating) {
+                              sumRating += parseInt(RatingData.sprs_rating);
+                            }
+                            let avgRating = sumRating / professionalRating.length;
+                            if (!isNaN(avgRating)) {
+                              avgRating = avgRating.toFixed(1);
+                            } else {
+                              avgRating = 0;
+                            }
+                            console.log('avgRating:', avgRating)
+                            let temps = await parseSpProvider
+                            const spProvider1 = JSON.stringify(temps);
+                            const parseSpProvider1 = JSON.parse(spProvider1);
+                            parseSpProvider1.avgRating = avgRating
+                            languageServiceProvData.push(parseSpProvider1);
+                          }
+                        });
               }
 
-            })
-
+             })
+            
             //  let temp = await lang_sp_id.spls_service_provider_id.toString();
             //  await languageServiceProvIdArray.push(temp);
-          }
+           }
+       }
+     })
+
+
+     await ServiceProviderLanguageSchema.find(QuerySyntex).then(async service_provider_detail_lang1 => {
+      if (service_provider_detail_lang1) {
+        for (var lang_sp_id1 of service_provider_detail_lang1) {
+          let temp = await lang_sp_id1.spls_service_provider_id.toString();
+          await languageServiceProvIdArray.push(temp);
         }
-      })
-
-
-      await ServiceProviderLanguageSchema.find(QuerySyntex).then(async service_provider_detail_lang1 => {
-        if (service_provider_detail_lang1) {
-          for (var lang_sp_id1 of service_provider_detail_lang1) {
-            let temp = await lang_sp_id1.spls_service_provider_id.toString();
-            await languageServiceProvIdArray.push(temp);
-          }
-        }
-      });
-
-
-      //}
-
-      console.log('currentPage:', page);
-      console.log('totalPages:', Math.ceil(count / limit));
-
-      if (experienceKeyword == '' && categoryKeyword == '' && cityKeyword == '') {
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: languageServiceProvData,
-          totalPages: Math.ceil(count / limit),
-          currentPage: page
-        })
       }
-    }
+    });
+
+
+   //}
+
+   console.log('currentPage:',page);
+   console.log('totalPages:',Math.ceil(count / limit));
+
+   if(experienceKeyword == '' && categoryKeyword == '' && cityKeyword == ''){
+     res.send({
+       err_msg, success_msg, layout: false,
+       session: req.session,
+       filterData: languageServiceProvData,
+       totalPages: Math.ceil(count / limit),
+       currentPage: page
+     })
+   }
+ }
 
 
 
-
+ 
     /*=== Expirence ==*/
 
-    if (experienceKeyword) {
-      //for (var experienceWord of experienceKeyword) {
+  if (experienceKeyword) {
+    //for (var experienceWord of experienceKeyword) {
       QuerySyntex = { sps_experience: { $in: experienceKeyword }, _id: { $in: totalHireUnique } };
       count = await ServiceProviderSchema.countDocuments(QuerySyntex);
       //console.log('countcount:',count);
@@ -4952,18 +4988,18 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
                 const parseSpProvider = JSON.parse(spProvider);
                 parseSpProvider.professionalBody = otherDetails.spods_professional_body
                 let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                // console.log('professionalRating:', professionalRating)
+               // console.log('professionalRating:', professionalRating)
                 var sumRating = 0;
                 for (var RatingData of professionalRating) {
                   sumRating += parseInt(RatingData.sprs_rating);
                 }
-                let avgRating = Math.round(sumRating / professionalRating.length);
+                let avgRating = sumRating / professionalRating.length;
                 if (!isNaN(avgRating)) {
                   avgRating = avgRating.toFixed(1);
                 } else {
                   avgRating = 0;
                 }
-                // console.log('avgRating:', avgRating)
+               // console.log('avgRating:', avgRating)
                 let temps = await parseSpProvider
                 const spProvider1 = JSON.stringify(temps);
                 const parseSpProvider1 = JSON.parse(spProvider1);
@@ -4974,7 +5010,7 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
 
             //await experienceServiceProvData.push(sp_id);
-
+          
           }
         }
       })
@@ -4984,79 +5020,79 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
       await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
         if (service_provider_detail1) {
           for (var sp_id1 of service_provider_detail1) {
-            let temp = await sp_id1._id.toString();
-            await experienceServiceProvIdArray.push(temp);
+             let temp = await sp_id1._id.toString();
+             await experienceServiceProvIdArray.push(temp);
           }
         }
       });
-      // }
+   // }
 
-      //console.log('currentPage:',page);
-      //console.log('totalPages:',Math.ceil(count / limit));
+    //console.log('currentPage:',page);
+    //console.log('totalPages:',Math.ceil(count / limit));
 
-      if (categoryKeyword == '' && cityKeyword == '' && languageKeyword == '') {
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: experienceServiceProvData,
-          totalPages: Math.ceil(count / limit),
-          currentPage: page
-        })
-      }
+    if (categoryKeyword == '' && cityKeyword == '' && languageKeyword == '') {
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: experienceServiceProvData,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
+      })
     }
+  }
 
-    /*==  Category and Expirence  ==*/
-    if (experienceServiceProvIdArray != '' && categoryServiceProvIdArray != '' && cityServiceProvIdArray == '' && languageServiceProvIdArray == '') {
-      console.log('insideee Category and Expirence')
-      let ttt = await getMatch(experienceServiceProvIdArray, categoryServiceProvIdArray);
-      console.log('ttt:', ttt)
+ /*==  Category and Expirence  ==*/
+if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityServiceProvIdArray =='' && languageServiceProvIdArray ==''){
+  console.log('insideee Category and Expirence')
+   let ttt = await getMatch(experienceServiceProvIdArray, categoryServiceProvIdArray); 
+   console.log('ttt:', ttt)
 
-      count = ttt.length;
-      console.log('CE countcount:', count);
+   count = ttt.length;
+   console.log('CE countcount:',count);
 
-      if (ttt) {
-        //for (var t of ttt) {
-        // if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
+   if(ttt){
+     //for (var t of ttt) {
+         // if(t){
+            QuerySyntex = { _id:{ $in: ttt }, _id: { $in: totalHireUnique } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
 
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
-                  }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                    }
+                  });
+                  //let temp = await sp_id;
+                  // await catExpServiceProvIdArray.push(temp);
                 }
-              });
-              //let temp = await sp_id;
-              // await catExpServiceProvIdArray.push(temp);
-            }
-          }
-        })
-        //}
-        // }
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
+              }
+            })
+          //}
+       // }
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
 
         res.send({
           err_msg, success_msg, layout: false,
@@ -5078,56 +5114,56 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
     /*== Category and City ==*/
 
-    if (cityServiceProvIdArray != '' && categoryServiceProvIdArray != '' && experienceServiceProvIdArray == '' && languageServiceProvIdArray == '') {
-      console.log('insideee Category and City')
-      let ttt = await getMatch(cityServiceProvIdArray, categoryServiceProvIdArray);
-      console.log('ttt:', ttt)
+ if(cityServiceProvIdArray !='' && categoryServiceProvIdArray !='' && experienceServiceProvIdArray =='' && languageServiceProvIdArray ==''){
+  console.log('insideee Category and City')
+   let ttt = await getMatch(cityServiceProvIdArray, categoryServiceProvIdArray); 
+   console.log('ttt:', ttt)
 
-      count = ttt.length;
-      console.log('CC countcount:', count);
+   count = ttt.length;
+   console.log('CC countcount:',count);
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt }, _id: { $in: totalHireUnique } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
 
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  // console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
-                  }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                       // console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                    }
+                  });
                 }
-              });
-            }
-          }
-        })
+              }
+            })
         //   }
         // }
 
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
 
 
         res.send({
@@ -5150,55 +5186,55 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
     /*== Category And Language == */
 
-    if (languageServiceProvIdArray != '' && categoryServiceProvIdArray != '' && cityServiceProvIdArray == '' && experienceServiceProvIdArray == '') {
-      console.log('insideee Category And Language')
-      let ttt = await getMatch(languageServiceProvIdArray, categoryServiceProvIdArray);
-      console.log('ttt:', ttt)
+if(languageServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityServiceProvIdArray=='' && experienceServiceProvIdArray==''){
+  console.log('insideee Category And Language')
+   let ttt = await getMatch(languageServiceProvIdArray, categoryServiceProvIdArray); 
+   console.log('ttt:', ttt)
 
-      count = ttt.length;
-      console.log('CL countcount:', count);
+   count = ttt.length;
+   console.log('CL countcount:',count);
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt }, _id: { $in: totalHireUnique } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
 
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
-                  }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                    }
+                  });
                 }
-              });
-            }
-          }
-        })
+              }
+            })
         //   }
         // }
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
 
         res.send({
           err_msg, success_msg, layout: false,
@@ -5221,56 +5257,56 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
     /*== Expirence and City ==*/
 
-    if (cityServiceProvIdArray != '' && experienceServiceProvIdArray != '' && categoryServiceProvIdArray == '' && languageServiceProvIdArray == '') {
-      console.log('insideee Expirence and City')
-      let ttt = await getMatch(cityServiceProvIdArray, experienceServiceProvIdArray);
-      console.log('ttt:', ttt)
+ if(cityServiceProvIdArray !='' && experienceServiceProvIdArray !='' && categoryServiceProvIdArray=='' && languageServiceProvIdArray==''){
+  console.log('insideee Expirence and City')
+   let ttt = await getMatch(cityServiceProvIdArray, experienceServiceProvIdArray); 
+   console.log('ttt:', ttt)
 
-      count = ttt.length;
-      console.log('CL countcount:', count);
+   count = ttt.length;
+   console.log('CL countcount:',count);
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt }, _id: { $in: totalHireUnique } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
 
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
-                  }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                    }
+                  });
                 }
-              });
-            }
-          }
-        })
+              }
+            })
         //   }
         // }
 
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
 
         res.send({
           err_msg, success_msg, layout: false,
@@ -5290,59 +5326,59 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
     }
 
 
-    /*== Expirence and Language ==*/
+   /*== Expirence and Language ==*/
 
-    if (languageServiceProvIdArray != '' && experienceServiceProvIdArray != '' && categoryServiceProvIdArray == '' && cityServiceProvIdArray == '') {
-      console.log('insideee Expirence and City')
-      let ttt = await getMatch(languageServiceProvIdArray, experienceServiceProvIdArray);
-      console.log('ttt:', ttt)
+ if(languageServiceProvIdArray !='' && experienceServiceProvIdArray !='' && categoryServiceProvIdArray=='' && cityServiceProvIdArray==''){
+  console.log('insideee Expirence and City')
+   let ttt = await getMatch(languageServiceProvIdArray, experienceServiceProvIdArray); 
+   console.log('ttt:', ttt)
 
-      count = ttt.length;
-      console.log('EL countcount:', count);
+   count = ttt.length;
+   console.log('EL countcount:',count);
 
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt } , _id: { $in: totalHireUnique }};
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
 
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
-                  }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                    }
+                  });
                 }
-              });
-            }
-          }
-        })
+              }
+            })
         //   }
         // }
 
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
 
         res.send({
           err_msg, success_msg, layout: false,
@@ -5366,56 +5402,56 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
     /* == City And Language ==*/
 
-    if (languageServiceProvIdArray != '' && cityServiceProvIdArray != '' && experienceServiceProvIdArray == '' && categoryServiceProvIdArray == '') {
-      console.log('insideee Category And Language')
-      let ttt = await getMatch(languageServiceProvIdArray, cityServiceProvIdArray);
-      console.log('ttt:', ttt)
+if(languageServiceProvIdArray !='' && cityServiceProvIdArray !='' && experienceServiceProvIdArray=='' && categoryServiceProvIdArray==''){
+  console.log('insideee Category And Language')
+   let ttt = await getMatch(languageServiceProvIdArray, cityServiceProvIdArray); 
+   console.log('ttt:', ttt)
+   
+   count = ttt.length;
+   console.log('CityL countcount:',count);
 
-      count = ttt.length;
-      console.log('CityL countcount:', count);
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt }, _id: { $in: totalHireUnique } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
-
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
-                  }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  // console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                       // console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                    }
+                  });
                 }
-              });
-            }
-          }
-        })
+              }
+            })
         //   }
         // }
 
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
+        console.log('currentPage:',page);
+        console.log('totalPages:',Math.ceil(count / limit));
 
         res.send({
           err_msg, success_msg, layout: false,
@@ -5435,406 +5471,406 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
     }
 
 
-    /*== Category + Experience + Location ==*/
+/*== Category + Experience + Location ==*/
 
-    if (experienceServiceProvIdArray != '' && categoryServiceProvIdArray != '' && cityServiceProvIdArray != '' && languageServiceProvIdArray == '') {
-      console.log('insideee Category + Experience + Location')
-      let firstArray = await getMatch(experienceServiceProvIdArray, categoryServiceProvIdArray);
-      console.log('firstArray:', firstArray)
-      let totalArrayId = await getMatch(firstArray, cityServiceProvIdArray);
-      let ttt = [...new Set(totalArrayId)];
-      console.log('ttt:', ttt)
+if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && cityServiceProvIdArray !='' && languageServiceProvIdArray==''){
+  console.log('insideee Category + Experience + Location')
+   let firstArray = await getMatch(experienceServiceProvIdArray, categoryServiceProvIdArray); 
+   console.log('firstArray:', firstArray)
+   let totalArrayId = await getMatch(firstArray, cityServiceProvIdArray); 
+   let ttt = [...new Set(totalArrayId)];
+   console.log('ttt:', ttt)
+
+      
+   count = ttt.length;
+   console.log('CityL countcount:',count);
 
 
-      count = ttt.length;
-      console.log('CityL countcount:', count);
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt }, _id: { $in: totalHireUnique } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
+
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                      }
+                    });
 
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
-
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
+                    //let temp = await sp_id;
+                   // await catExpServiceProvIdArray.push(temp);
                   }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
-                }
-              });
+              }
+            })
+      //   }
+      // }
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
 
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: catExpServiceProvIdArray,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
+      })
 
-              //let temp = await sp_id;
-              // await catExpServiceProvIdArray.push(temp);
-            }
-          }
-        })
-        //   }
-        // }
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
-
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: catExpServiceProvIdArray,
-          totalPages: Math.ceil(count / limit),
-          currentPage: page
-        })
-
-      } else {
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: ''
-        })
-      }
+    }else{
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: ''
+      })
     }
+}
 
-    /*== Category + Experience + Language ==*/
+/*== Category + Experience + Language ==*/
 
-    if (experienceServiceProvIdArray != '' && categoryServiceProvIdArray != '' && languageServiceProvIdArray != '' && cityServiceProvIdArray == '') {
-      console.log('insideee Category + Experience + Language')
-      let firstArray = await getMatch(experienceServiceProvIdArray, categoryServiceProvIdArray);
-      console.log('firstArray:', firstArray)
-      let totalArrayId = await getMatch(firstArray, languageServiceProvIdArray);
-      let ttt = [...new Set(totalArrayId)];
-      console.log('ttt:', ttt)
+if(experienceServiceProvIdArray !='' && categoryServiceProvIdArray !='' && languageServiceProvIdArray !='' && cityServiceProvIdArray==''){
+  console.log('insideee Category + Experience + Language')
+   let firstArray = await getMatch(experienceServiceProvIdArray, categoryServiceProvIdArray); 
+   console.log('firstArray:', firstArray)
+   let totalArrayId = await getMatch(firstArray, languageServiceProvIdArray); 
+   let ttt = [...new Set(totalArrayId)];
+   console.log('ttt:', ttt)
 
-      count = ttt.length;
-      console.log('CityL countcount:', count);
+   count = ttt.length;
+   console.log('CityL countcount:',count);
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt }, _id: { $in: totalHireUnique } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
 
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                      }
+                    });
+
+
+                    //let temp = await sp_id;
+                   // await catExpServiceProvIdArray.push(temp);
                   }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
-                }
-              });
+              }
+            })
+      //   }
+      // }
 
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
 
-              //let temp = await sp_id;
-              // await catExpServiceProvIdArray.push(temp);
-            }
-          }
-        })
-        //   }
-        // }
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: catExpServiceProvIdArray,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
+      })
 
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
-
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: catExpServiceProvIdArray,
-          totalPages: Math.ceil(count / limit),
-          currentPage: page
-        })
-
-      } else {
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: ''
-        })
-      }
+    }else{
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: ''
+      })
     }
+}
 
-    /*== Category + Location + Language ==*/
+/*== Category + Location + Language ==*/
 
-    if (cityServiceProvIdArray != '' && categoryServiceProvIdArray != '' && languageServiceProvIdArray != '' && experienceServiceProvIdArray == '') {
-      console.log('insideee Category + Location + Language')
-      let firstArray = await getMatch(cityServiceProvIdArray, categoryServiceProvIdArray);
-      console.log('firstArray:', firstArray)
-      let totalArrayId = await getMatch(firstArray, languageServiceProvIdArray);
-      let ttt = [...new Set(totalArrayId)];
-      console.log('ttt:', ttt)
+if(cityServiceProvIdArray !='' && categoryServiceProvIdArray !='' && languageServiceProvIdArray !='' && experienceServiceProvIdArray==''){
+  console.log('insideee Category + Location + Language')
+   let firstArray = await getMatch(cityServiceProvIdArray, categoryServiceProvIdArray); 
+   console.log('firstArray:', firstArray)
+   let totalArrayId = await getMatch(firstArray, languageServiceProvIdArray); 
+   let ttt = [...new Set(totalArrayId)];
+   console.log('ttt:', ttt)
+
+   
+   count = ttt.length;
+   console.log('CityL countcount:',count);
 
 
-      count = ttt.length;
-      console.log('CityL countcount:', count);
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt }, _id: { $in: totalHireUnique } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
+
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                      }
+                    });
 
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
-
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
+                    //let temp = await sp_id;
+                   // await catExpServiceProvIdArray.push(temp);
                   }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
-                }
-              });
+              }
+            })
+      //   }
+      // }
 
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
 
-              //let temp = await sp_id;
-              // await catExpServiceProvIdArray.push(temp);
-            }
-          }
-        })
-        //   }
-        // }
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: catExpServiceProvIdArray,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
+      })
 
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
-
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: catExpServiceProvIdArray,
-          totalPages: Math.ceil(count / limit),
-          currentPage: page
-        })
-
-      } else {
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: ''
-        })
-      }
+    }else{
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: ''
+      })
     }
+}
 
 
-    /*== Experience + Location + Language ==*/
+/*== Experience + Location + Language ==*/
 
-    if (cityServiceProvIdArray != '' && languageServiceProvIdArray != '' && experienceServiceProvIdArray != '' && categoryServiceProvIdArray == '') {
-      console.log('insideee Experience + Location + Language')
-      let firstArray = await getMatch(cityServiceProvIdArray, experienceServiceProvIdArray);
-      console.log('firstArray:', firstArray)
-      let totalArrayId = await getMatch(firstArray, languageServiceProvIdArray);
-      let ttt = [...new Set(totalArrayId)];
-      console.log('ttt:', ttt)
+if(cityServiceProvIdArray !='' && languageServiceProvIdArray !='' && experienceServiceProvIdArray !='' && categoryServiceProvIdArray==''){
+  console.log('insideee Experience + Location + Language')
+   let firstArray = await getMatch(cityServiceProvIdArray, experienceServiceProvIdArray); 
+   console.log('firstArray:', firstArray)
+   let totalArrayId = await getMatch(firstArray, languageServiceProvIdArray); 
+   let ttt = [...new Set(totalArrayId)];
+   console.log('ttt:', ttt)
 
-      count = ttt.length;
-      console.log('CityL countcount:', count);
+   count = ttt.length;
+   console.log('CityL countcount:',count);
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt }, _id: { $in: totalHireUnique } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
 
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                      }
+                    });
+
+
+                    //let temp = await sp_id;
+                   // await catExpServiceProvIdArray.push(temp);
                   }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
-                }
-              });
+              }
+            })
+      //   }
+      // }
 
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
 
-              //let temp = await sp_id;
-              // await catExpServiceProvIdArray.push(temp);
-            }
-          }
-        })
-        //   }
-        // }
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: catExpServiceProvIdArray,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
+      })
 
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
-
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: catExpServiceProvIdArray,
-          totalPages: Math.ceil(count / limit),
-          currentPage: page
-        })
-
-      } else {
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: ''
-        })
-      }
+    }else{
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: ''
+      })
     }
+}
 
 
-    /*== Experience + Location + Language + Category ==*/
+/*== Experience + Location + Language + Category ==*/
 
-    if (cityServiceProvIdArray != '' && languageServiceProvIdArray != '' && experienceServiceProvIdArray != '' && categoryServiceProvIdArray != '') {
-      console.log('insideee Experience + Location + Language + Category')
-      let firstArray = await getMatch(cityServiceProvIdArray, experienceServiceProvIdArray);
-      console.log('firstArray:', firstArray)
-      let SecondArray = await getMatch(firstArray, languageServiceProvIdArray);
-      console.log('SecondArray:', SecondArray)
-      let totalArrayId = await getMatch(SecondArray, categoryServiceProvIdArray);
-      let ttt = [...new Set(totalArrayId)];
-      console.log('ttt:', ttt)
+if(cityServiceProvIdArray !='' && languageServiceProvIdArray !='' && experienceServiceProvIdArray !='' && categoryServiceProvIdArray !=''){
+  console.log('insideee Experience + Location + Language + Category')
+   let firstArray = await getMatch(cityServiceProvIdArray, experienceServiceProvIdArray); 
+   console.log('firstArray:', firstArray)
+   let SecondArray = await getMatch(firstArray, languageServiceProvIdArray); 
+   console.log('SecondArray:', SecondArray)
+   let totalArrayId = await getMatch(SecondArray, categoryServiceProvIdArray); 
+   let ttt = [...new Set(totalArrayId)];
+   console.log('ttt:', ttt)
+
+   
+   count = ttt.length;
+   console.log('CityL countcount:',count);
 
 
-      count = ttt.length;
-      console.log('CityL countcount:', count);
+   if(ttt){
+    //  for (var t of ttt) {
+    //       if(t){
+            QuerySyntex = { _id:{ $in: ttt }, _id: { $in: totalHireUnique } };
+            console.log()
+            await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+              if (service_provider_detail) {
+                  for (var sp_id of service_provider_detail) {
+
+                    await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
+                      if (otherDetails) {
+                        const spProvider = JSON.stringify(sp_id);
+                        const parseSpProvider = JSON.parse(spProvider);
+                        parseSpProvider.professionalBody = otherDetails.spods_professional_body
+                        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
+                        //console.log('professionalRating:', professionalRating)
+                        var sumRating = 0;
+                        for (var RatingData of professionalRating) {
+                          sumRating += parseInt(RatingData.sprs_rating);
+                        }
+                        let avgRating = sumRating / professionalRating.length;
+                        if (!isNaN(avgRating)) {
+                          avgRating = avgRating.toFixed(1);
+                        } else {
+                          avgRating = 0;
+                        }
+                        //console.log('avgRating:', avgRating)
+                        let temps = await parseSpProvider
+                        const spProvider1 = JSON.stringify(temps);
+                        const parseSpProvider1 = JSON.parse(spProvider1);
+                        parseSpProvider1.avgRating = avgRating
+                        catExpServiceProvIdArray.push(parseSpProvider1);
+                      }
+                    });
 
 
-      if (ttt) {
-        //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
-        console.log()
-        await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
-          if (service_provider_detail) {
-            for (var sp_id of service_provider_detail) {
-
-              await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
-                if (otherDetails) {
-                  const spProvider = JSON.stringify(sp_id);
-                  const parseSpProvider = JSON.parse(spProvider);
-                  parseSpProvider.professionalBody = otherDetails.spods_professional_body
-                  let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-                  //console.log('professionalRating:', professionalRating)
-                  var sumRating = 0;
-                  for (var RatingData of professionalRating) {
-                    sumRating += parseInt(RatingData.sprs_rating);
+                    //let temp = await sp_id;
+                   // await catExpServiceProvIdArray.push(temp);
                   }
-                  let avgRating = Math.round(sumRating / professionalRating.length);
-                  if (!isNaN(avgRating)) {
-                    avgRating = avgRating.toFixed(1);
-                  } else {
-                    avgRating = 0;
-                  }
-                  //console.log('avgRating:', avgRating)
-                  let temps = await parseSpProvider
-                  const spProvider1 = JSON.stringify(temps);
-                  const parseSpProvider1 = JSON.parse(spProvider1);
-                  parseSpProvider1.avgRating = avgRating
-                  catExpServiceProvIdArray.push(parseSpProvider1);
-                }
-              });
+              }
+            })
+      //   }
+      // }
 
+      console.log('currentPage:',page);
+      console.log('totalPages:',Math.ceil(count / limit));
 
-              //let temp = await sp_id;
-              // await catExpServiceProvIdArray.push(temp);
-            }
-          }
-        })
-        //   }
-        // }
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: catExpServiceProvIdArray,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
+      })
 
-        console.log('currentPage:', page);
-        console.log('totalPages:', Math.ceil(count / limit));
-
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: catExpServiceProvIdArray,
-          totalPages: Math.ceil(count / limit),
-          currentPage: page
-        })
-
-      } else {
-        res.send({
-          err_msg, success_msg, layout: false,
-          session: req.session,
-          filterData: ''
-        })
-      }
+    }else{
+      res.send({
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        filterData: ''
+      })
     }
-    console.log('experienceServiceProvIdArray:', experienceServiceProvIdArray)
-    console.log('categoryServiceProvIdArray:', categoryServiceProvIdArray)
-    console.log('catExpServiceProvIdArray:', catExpServiceProvIdArray)
-    console.log('cityServiceProvIdArray:', cityServiceProvIdArray)
-    console.log('languageServiceProvIdArray:', languageServiceProvIdArray)
+}
+console.log('experienceServiceProvIdArray:', experienceServiceProvIdArray)
+console.log('categoryServiceProvIdArray:', categoryServiceProvIdArray)
+console.log('catExpServiceProvIdArray:', catExpServiceProvIdArray)
+console.log('cityServiceProvIdArray:', cityServiceProvIdArray)
+console.log('languageServiceProvIdArray:', languageServiceProvIdArray)
 
-  }
+}
 
 });
 
@@ -5907,6 +5943,56 @@ function getMatch(a, b) {
   }
   return matches;
 }
+
+
+
+app.get('/get-notification', isCustomer, async (req, res) => {
+  var notificationObj = {
+   id:'',
+   name:'',
+   image:'',
+   type:'',
+   property_id:'',
+   reciver_id:'',
+   sender_id:'',
+}
+  console.log('dddaaa:',req.query)
+  var notifData=[];
+    await NotificationSchema.find({ ns_receiver:req.query.ns_receiver,ns_receiver_type:req.query.ns_receiver_type,ns_read_status:req.query.ns_read_status }).then(async (notificationResults) => {
+        console.log('notificationL:',notificationResults)
+      if(notificationResults){
+              for (let notifResult of notificationResults) {  
+                if(notifResult.ns_sender_type == 'service_provider'){
+                  await ServiceProviderSchema.findOne({ _id: notifResult.ns_sender }).then(async (cusResult) => { 
+                      notificationObj = {
+                            id:cusResult._id,
+                            name:cusResult.sps_fullname,
+                            image:'',
+                            type:'message',
+                            property_id:notifResult.ns_property_id,
+                            reciver_id:notifResult.ns_receiver,
+                            sender_id:notifResult.ns_sender,
+                       }
+                       notifData.push(notificationObj)
+                  })
+                }
+            }
+        }
+    });
+    uniqueArray = removeDuplicates(notifData, "id");
+   console.log('autoLoadnotifData:',uniqueArray)
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.send({
+      err_msg, success_msg, 
+      layout: false,
+      session: req.session,
+      notifData:uniqueArray
+    });
+  
+  });
+
+
 
 module.exports = app;
 

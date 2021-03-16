@@ -110,12 +110,12 @@
                   </div>
                   <div class="portfolio-submit">
                     <div class="row">
-                      <div class="col-sm-6 col-lg-6">
-                        <button type="submit" class="btn portfolio-submit-btn" name="submit">Upload</button>
+                      <div class="col-sm-6 col-lg-6 " >
+                        <button type="submit" class="btn portfolio-submit-btn float-right" name="submit">Upload</button>
                       </div>
-                      <div class="col-sm-6 col-lg-6">
+                      <!-- <div class="col-sm-6 col-lg-6">
                         <a href="/kyc-professional" class="btn portfolio-submit-btn">Next</a>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </form>
@@ -251,6 +251,7 @@
                 timer: 3000
               }).then((result) => {
                 location.reload(true)
+                window.location.href = '/kyc-professional'
               })
             } else {
               Swal.fire({
@@ -368,7 +369,8 @@
                   confirmButtonColor: '#005377',
                   timer: 3000
                 }).then((result)=>{
-                  location.reload(true)
+                  //location.reload(true)
+                  window.location.href = '/kyc-professional'
                 })
 
               } else {

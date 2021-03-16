@@ -407,28 +407,19 @@
                                         </p>
                                       </div>
                                     </div>
-                                    <% c++; }); var avgRating=Math.round(plantRateSum/total); %>
+                                    <% c++; }); 
+                                    %>
                                       <!-- <%= total %>
                               <%= plantRateSum %> -->
 
                             </div>
-                            <!-- <div style="order: 1;" class="col-lg-6">
-                              <div class="float-left ">
-                                <h1 class="pointer-fix" style="color: #005377;"><% if(!isNaN(avgRating)){ %><%= avgRating.toFixed(1) %> <% }else{%>0.0<% } %></h1>
-                                <p style="margin-left: 20px;">out of 5</p>
-                              </div>
-                              <div>
-                                <img class="feedback-img" src="images/feedback-2.png" alt="">
-                              </div>
-                            </div> -->
+                          
                             <div class="col-lg-6">
                               <div class="row align-item-center mt-3">
                                 <div class="col-lg-2">
                                   <div class="float-left ">
                                     <h1 class="pointer-fix" style="color: #005377;">
-                                      <% if(!isNaN(avgRating)){ %>
-                                        <%= avgRating.toFixed(1) %>
-                                          <% }else{%>0.0<% } %>
+                                      <%= avgRating %>
                                     </h1>
                                     <p style="margin-left: 20px;">out of 5</p>
                                   </div>
@@ -437,9 +428,26 @@
                                   <div class="ratting-overall-box">
                                     <div class="star-rating-piramid">
                                       <ul>
+                                        <!-- <li><span><%=ratingFive.toFixed(1);%></span></li> -->
                                         <li>
                                           <i class="fa fa-star"></i>
                                         </li>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                        <li>
+                                          <i class="fa fa-star"></i>
+                                        </li>
+                                       
+                                      </ul>
+                                      <ul>
+                                        <!-- <li><span><%=ratingFour%></span></li> -->
                                         <li>
                                           <i class="fa fa-star"></i>
                                         </li>
@@ -454,20 +462,7 @@
                                         </li>
                                       </ul>
                                       <ul>
-                                        <li>
-                                          <i class="fa fa-star"></i>
-                                        </li>
-                                        <li>
-                                          <i class="fa fa-star"></i>
-                                        </li>
-                                        <li>
-                                          <i class="fa fa-star"></i>
-                                        </li>
-                                        <li>
-                                          <i class="fa fa-star"></i>
-                                        </li>
-                                      </ul>
-                                      <ul>
+                                        <!-- <li><span><%=ratingThree%></span></li> -->
                                         <li>
                                           <i class="fa fa-star"></i>
                                         </li>
@@ -479,6 +474,7 @@
                                         </li>
                                       </ul>
                                       <ul>
+                                        <!-- <li><span><%=ratingTwo%></span></li> -->
                                         <li>
                                           <i class="fa fa-star"></i>
                                         </li>
@@ -487,6 +483,7 @@
                                         </li>
                                       </ul>
                                       <ul>
+                                        <!-- <li><span><%=ratingOne%></span></li> -->
                                         <li>
                                           <i class="fa fa-star"></i>
                                         </li>
@@ -495,10 +492,30 @@
                                     <div class="progress-rating">
                                       <ul>
                                         <li>
-                                          <div class="progress">
+                                          <div class="progress"> 
                                             <div class="progress-bar progress-bar-success" role="progressbar"
                                               aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                              style="width:90%; background-color:#ffc107">
+                                              style="width:<%=ratingFive.toFixed(1)%>%; background-color:#ffc107;">
+                                            </div>
+                                          </div>
+                                        </li>
+                                      </ul>
+                                      <ul>
+                                        <li>
+                                          <div class="progress"> 
+                                            <div class="progress-bar progress-bar-success" role="progressbar"
+                                              aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                                              style="width:<%=ratingFour.toFixed(1)%>%; background-color:#ffc107;">
+                                            </div>
+                                          </div>
+                                        </li>
+                                      </ul>
+                                      <ul>
+                                        <li>
+                                          <div class="progress"> 
+                                            <div class="progress-bar progress-bar-success" role="progressbar"
+                                              aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                                              style="width:<%=ratingThree.toFixed(1)%>%; background-color:#ffc107">
                                             </div>
                                           </div>
                                         </li>
@@ -508,7 +525,7 @@
                                           <div class="progress">
                                             <div class="progress-bar progress-bar-success" role="progressbar"
                                               aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                              style="width:70%; background-color:#ffc107">
+                                              style="width:<%=ratingTwo.toFixed(1)%>%;background-color:#ffc107">
                                             </div>
                                           </div>
                                         </li>
@@ -518,27 +535,7 @@
                                           <div class="progress">
                                             <div class="progress-bar progress-bar-success" role="progressbar"
                                               aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                              style="width:50%; background-color:#ffc107">
-                                            </div>
-                                          </div>
-                                        </li>
-                                      </ul>
-                                      <ul>
-                                        <li>
-                                          <div class="progress">
-                                            <div class="progress-bar progress-bar-success" role="progressbar"
-                                              aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                              style="width:40%;background-color:#ffc107">
-                                            </div>
-                                          </div>
-                                        </li>
-                                      </ul>
-                                      <ul>
-                                        <li>
-                                          <div class="progress">
-                                            <div class="progress-bar progress-bar-success" role="progressbar"
-                                              aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                              style="width:20%;background-color:#ffc107">
+                                              style="width:<%=ratingOne.toFixed(1)%>%;background-color:#ffc107">
                                             </div>
                                           </div>
                                         </li>

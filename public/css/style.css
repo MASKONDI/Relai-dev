@@ -5886,6 +5886,70 @@ input::-webkit-inner-spin-button {
         margin-top: 30px;
       }
 
+
+@media (max-width: 768px){
+
+.for-main-page-heading{
+    font-size: 26px;
+}
+.for-icon-padding{
+    padding: 0 15px;
+}
+.position-date .date {
+    font-size: 12px;
+}
+.border-right {
+    border-right: none !important;
+}
+.position-date.forskil-box span {
+    margin: 5px 5px 5px 0;
+    display: inline-block;
+    min-width: 45px;
+    text-align: center;
+    color: #005377;
+    padding: 2px 6px;
+    font-size: 12px;
+}
+}
+
+
+      @media (max-width: 768px){
+
+        .dropdown.notification-main-box{
+            display: none;
+        }
+
+        .user-right.for-mobile-view-user{
+width: 45%;
+        }
+
+        .user-right.for-mobile-view-user .rounded-circle {
+            height: 30px;
+            width: 30px;
+        }
+        .user-right.for-mobile-view-user .login-menu {
+            display: flex;
+            align-items: center;
+            margin-right: 0px !important;
+            justify-content: space-around;
+        }
+        .user-right.for-mobile-view-user .notification-main-box .dropdown-toggle {
+            font-size: 26px;
+        }
+        .user-right.for-mobile-view-user .dropdown.notification-main-box{
+            display: block;
+        }
+        .user-right.for-mobile-view-user .notification-main-box .dropdown-menu {
+            min-width: 280px;
+            height: 300px;
+            LEFT: auto;
+            right: -145px;
+            margin: 0 auto;
+        }
+
+    }
+
+    
       /*interview details page css */
 
 .interview-details-inner{
@@ -6023,28 +6087,3 @@ input::-webkit-inner-spin-button {
     color: green;
 }
 
-
-@media (max-width: 768px){
-
-.for-main-page-heading{
-    font-size: 26px;
-}
-.for-icon-padding{
-    padding: 0 15px;
-}
-.position-date .date {
-    font-size: 12px;
-}
-.border-right {
-    border-right: none !important;
-}
-.position-date.forskil-box span {
-    margin: 5px 5px 5px 0;
-    display: inline-block;
-    min-width: 45px;
-    text-align: center;
-    color: #005377;
-    padding: 2px 6px;
-    font-size: 12px;
-}
-}

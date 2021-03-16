@@ -70,33 +70,33 @@
             </div>
             <ul class="dashboard-nav">
               <li class="active">
-                <a href="/signup-professionals-profile"><img class="act-img" src="images/1-active.png"><img
+                <a href="/signup-professionals-profile" class ="personal_detail_nev"><img class="act-img" src="images/1-active.png"><img
                     src="images/1.png">PERSONAL DETAILS </a>
               </li>
               <li>
-                <a href="/signup-professionals-profile-2"><img class="act-img" src="images/2-active.png"><img
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-2"class ="other_detail_nev"><img class="act-img" src="images/2-active.png"><img
                     src="images/2.png"> OTHER DETAILS</a>
               </li>
               <li>
-                <a href="/signup-professionals-profile-3"><img class="act-img" src="images/3-active.png"><img
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-3" class ="education_detail_nev"><img class="act-img" src="images/3-active.png"><img
                     src="images/3.png"> EDUCATION</a>
               </li>
               <li>
-                <a href="/signup-professionals-profile-4"><img class="act-img" src="images/4-active.png"><img
+                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-4" class ="employment_detail_nev"><img class="act-img" src="images/4-active.png"><img
                     src="images/4.png"> EMPLOYMENT HISTORY</a>
               </li>
 
               <li>
-                <a href="/signup-professionals-profile-5"><img class="act-img" src="images/5-active.png"><img
+                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-5" class ="refrence_detail_nev"><img class="act-img" src="images/5-active.png"><img
                     src="images/5.png"> REFERENCES</a>
               </li>
               <li>
-                <a href="/signup-professionals-profile-6"><img class="act-img" src="images/6-active.png"><img
+                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-6" class ="indemnity_detail_nev"><img class="act-img" src="images/6-active.png"><img
                     src="images/6.png"> PROFESSIONAL INDEMNITY
                   INSURANCE</a>
               </li>
               <li>
-                <a href="/signup-professionals-profile-7"><img class="act-img" src="images/7-active.png"><img
+                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-7" class ="language_detail_nev"><img class="act-img" src="images/7-active.png"><img
                     src="images/7.png"> LANGUAGE</a>
               </li>
             </ul>
@@ -291,6 +291,11 @@
   crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+  <!-- <script type="text/javascript">
+    $(document).ready(function () {
+      $('.other_detail_nev').attr('disabled',true)
+    })
+    </script> -->
   <script type="text/javascript">
     $('#form1').validate({
       onfocusout: function (element) {
@@ -363,6 +368,8 @@
           success: function (data) {
             console.log(data);
             if (data.status == true) {
+              var newHref = $('.other_detail_nev').attr('data-href');
+            	$('.other_detail_nev').attr('href',newHref);
               // var date    = new Date(data.data.spods_dob),
               // yr      = date.getFullYear(),
               // month   = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth(),
