@@ -294,6 +294,19 @@ span#comment-error {
         margin-right: 10px;
         color: #005377;
     }
+    .page-item.active .page-link {
+        z-index: 1;
+        color: #fff;
+        background-color: #005377;
+        border-color: #005377;
+    }
+    .page-link {
+        color: #005377;
+    }
+    .progress-rating .progress {
+        height: 5px;
+        background-color: #40343424;
+    }
 
 
     #loadermsg {display:none;     text-align: center;

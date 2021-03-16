@@ -137,97 +137,97 @@ var signup_helper = require('./api/service_provider_helper/signup_helper')
 app.post('/upload', upload.array('portfolio-docs', 10), async (req, res, next) => {
   console.log(req.body);
 
- if(req.body.portpolio_img_id){
- 
-   
-  var responce = await signup_helper.updatePortpofolio(req);
-  console.log("responce", responce)
-  if (responce) {
-    return res.send({
-      'status': true,
-      'message': 'Portfolio-docs Updated Successfully',
+  if (req.body.portpolio_img_id) {
 
 
-    })
+    var responce = await signup_helper.updatePortpofolio(req);
+    console.log("responce", responce)
+    if (responce) {
+      return res.send({
+        'status': true,
+        'message': 'Portfolio-docs Updated Successfully',
+
+
+      })
+    } else {
+      return res.send({
+        'status': false,
+        'message': 'Something Wrong !!',
+
+
+      })
+    }
   } else {
-    return res.send({
-      'status': false,
-      'message': 'Something Wrong !!',
 
 
-    })
+    var responce = await signup_helper.savePortpofolio(req);
+    console.log("responce", responce)
+    if (responce) {
+      return res.send({
+        'status': true,
+        'message': 'Portfolio-docs Uploaded Successfully',
+
+
+      })
+    } else {
+      return res.send({
+        'status': false,
+        'message': 'Something Wrong !!',
+
+
+      })
+    }
   }
- }else{
-  
-  
-  var responce = await signup_helper.savePortpofolio(req);
-  console.log("responce", responce)
-  if (responce) {
-    return res.send({
-      'status': true,
-      'message': 'Portfolio-docs Uploaded Successfully',
 
-
-    })
-  } else {
-    return res.send({
-      'status': false,
-      'message': 'Something Wrong !!',
-
-
-    })
-  }
- }
-  
 });
 
 
 app.post('/update_portPolio', upload.single('portfolio-docs'), async (req, res, next) => {
   console.log(req.body);
-  console.log('edit single file',req.file);
+  console.log('edit single file', req.file);
 
- if(req.body.img_id){
- 
-   
-  var responce = await signup_helper.updatePortpofolioById(req);
-  console.log("responce", responce)
-  if (responce) {
-    return res.send({
-      'status': true,
-      'message': 'Portfolio-docs Updated Successfully',
+  if (req.body.img_id) {
 
 
-    })
+    var responce = await signup_helper.updatePortpofolioById(req);
+    console.log("responce", responce)
+    if (responce) {
+      return res.send({
+        'status': true,
+        'message': 'Portfolio-docs Updated Successfully',
+
+
+      })
+    } else {
+      return res.send({
+        'status': false,
+        'message': 'Something Wrong !!',
+
+
+      })
+    }
   } else {
-    return res.send({
-      'status': false,
-      'message': 'Something Wrong !!',
 
 
-    })
+    var responce = await signup_helper.savePortpofolio(req);
+    console.log("responce", responce)
+    if (responce) {
+      return res.send({
+        'status': true,
+        'message': 'Portfolio-docs Uploaded Successfully',
+
+
+      })
+    } else {
+      return res.send({
+        'status': false,
+        'message': 'Something Wrong !!',
+
+
+      })
+    }
   }
- }else{
-  
-  
-  var responce = await signup_helper.savePortpofolio(req);
-  console.log("responce", responce)
-  if (responce) {
-    return res.send({
-      'status': true,
-      'message': 'Portfolio-docs Uploaded Successfully',
 
-
-    })
-  } else {
-    return res.send({
-      'status': false,
-      'message': 'Something Wrong !!',
-
-
-    })
-  }
- }
-  
 });
 
 
@@ -724,59 +724,59 @@ app.post('/upload-task-document', upload.single('task-document'), async (req, re
 
 
 // Uploading the image
-app.post('/submit-proposal', upload.single('proposal-docs'),async (req, res, next) => {
+app.post('/submit-proposal', upload.single('proposal-docs'), async (req, res, next) => {
   var err_msg = null;
   var success_msg = null;
   console.log("req is :", req.file);
   console.log('req.body is :', req.body);
   console.log("req.session.id is", req.session.user_id);
-  if(typeof(req.body.milestone)=='string'){
+  if (typeof (req.body.milestone) == 'string') {
     var milestoneArray = [];
-     var objtect ={
-       milestone:'',
-       milestone_date:''
-     }
-     objtect.milestone=  req.body.milestone
-     objtect.milestone_date= req.body.milestonedate
-     milestoneArray.push(objtect)
-    
-   var obj = {
-     sps_filename: req.file.filename,
-     sps_customer_id: req.body.sps_customer_id,
-     sps_service_provider_id: req.body.sps_service_provider_id,
-     sps_property_id: req.body.sps_property_id,
-     sps_start_date: req.body.sps_start_date,
-     sps_end_date: req.body.sps_end_date,
-     sps_payment_mode: req.body.sps_payment_mode,
-     sps_extra_notes: req.body.sps_extra_note,
-     sps_milestone_array:milestoneArray
-   }
-  }else{
-    var milestoneArray = [];
-    req.body.milestone.forEach(function(row,i){
-     var objtect ={
-       milestone:'',
-       milestone_date:''
-     }
-     objtect.milestone=  req.body.milestone[i]
-     objtect.milestone_date= req.body.milestonedate[i]
-     milestoneArray.push(objtect)
-    })
-   var obj = {
-     sps_filename: req.file.filename,
-     sps_customer_id: req.body.sps_customer_id,
-     sps_service_provider_id: req.body.sps_service_provider_id,
-     sps_property_id: req.body.sps_property_id,
-     sps_start_date: req.body.sps_start_date,
-     sps_end_date: req.body.sps_end_date,
-     sps_payment_mode: req.body.sps_payment_mode,
-     sps_extra_notes: req.body.sps_extra_note,
-     sps_milestone_array:milestoneArray
-   }
-  }
-   
+    var objtect = {
+      milestone: '',
+      milestone_date: ''
+    }
+    objtect.milestone = req.body.milestone
+    objtect.milestone_date = req.body.milestonedate
+    milestoneArray.push(objtect)
 
- await SubmitProposalSchema.create(obj, (err, item) => {
+    var obj = {
+      sps_filename: req.file.filename,
+      sps_customer_id: req.body.sps_customer_id,
+      sps_service_provider_id: req.body.sps_service_provider_id,
+      sps_property_id: req.body.sps_property_id,
+      sps_start_date: req.body.sps_start_date,
+      sps_end_date: req.body.sps_end_date,
+      sps_payment_mode: req.body.sps_payment_mode,
+      sps_extra_notes: req.body.sps_extra_notes,
+      sps_milestone_array: milestoneArray
+    }
+  } else {
+    var milestoneArray = [];
+    req.body.milestone.forEach(function (row, i) {
+      var objtect = {
+        milestone: '',
+        milestone_date: ''
+      }
+      objtect.milestone = req.body.milestone[i]
+      objtect.milestone_date = req.body.milestonedate[i]
+      milestoneArray.push(objtect)
+    })
+    var obj = {
+      sps_filename: req.file.filename,
+      sps_customer_id: req.body.sps_customer_id,
+      sps_service_provider_id: req.body.sps_service_provider_id,
+      sps_property_id: req.body.sps_property_id,
+      sps_start_date: req.body.sps_start_date,
+      sps_end_date: req.body.sps_end_date,
+      sps_payment_mode: req.body.sps_payment_mode,
+      sps_extra_notes: req.body.sps_extra_note,
+      sps_milestone_array: milestoneArray
+    }
+  }
+
+
+  await SubmitProposalSchema.create(obj, (err, item) => {
     if (err) {
       console.log(err);
       //req.flash('err_msg', "Something went worng please try after some time");
@@ -808,7 +808,7 @@ app.post('/sp_upload-new-document', upload.single('task-document'), async (req, 
   //console.log(".........files.......", req.file.filename)
   var ext = path.extname(req.file.filename);
   //console.log('extextext:', ext)
-  
+
   var basename = path.basename(req.file.filename, ext);
   //console.log('basename:', basename)
   let ext_type = '';

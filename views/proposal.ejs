@@ -1,0 +1,235 @@
+<%- include('dashboard_header')-%>
+  <%- include('edit-profile-model')-%>
+    <div class="dashboard-wpr">
+      <div class="container-fluid">
+        <div class="row content">
+          <div class="col-sm-2 sidenav hidden-xs-down">
+            <div class="user-login text-center">
+
+              <%- include('profile-image')-%>
+
+                <div class="user-name">
+                  <h2>
+                    <%= session.name %>
+                  </h2>
+                  <a href="#">
+                    <%= session.email %>
+                      <%- include('edit-profile-icon')-%>
+                  </a>
+                </div>
+            </div>
+            <%- include('sidebar')-%>
+          </div>
+          <div class="col-sm-12 col-lg-10">
+            <div class="row complaints-sec">
+              <div class="col-sm-12 col-lg-6">
+                <div class="complaints">
+                  <h2>My Proposals</h2>
+                </div>
+              </div>
+
+
+            </div>
+            <div class="dashboard-inner">
+              <div class="col-sm-12 col-lg-12">
+                <button class="accordion">Open proposals (<%=activePropertyProposalArray.length%>)
+                </button>
+                <div class="panel">
+                  <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                    nisi ut aliquip ex ea commodo consequat.</p> -->
+
+
+
+                  <div class="todo-list-table">
+                    <table class="table table-responsive">
+                      <thead>
+                        <tr>
+                          <th>Professional</th>
+                          <th>Property </th>
+                          <th>Task </th>
+                          <th>Notes</th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <%if(activePropertyProposalArray.length==0){%>
+                          <tr>
+                            <td>
+                              <p>Currently You don't have any proposal.</p>
+                            </td>
+                          </tr>
+                          <%}else{%>
+                            <tr>
+                              <%if(activePropertyProposalArray.length>0){%>
+                                <%activePropertyProposalArray.forEach(function(row,i){%>
+                                  <td>
+                                    <label class="check-permission"><img src="images/recent-user-1.png">
+                                      <%=row.sp_name%>, <span>
+                                          <%=row.sp_profession%>
+                                        </span>
+                                    </label>
+                                  </td>
+                                  <td>
+                                    <%=row.ps_property_name%>
+                                  </td>
+                                  <td>Task Name</td>
+                                  <td>
+                                    <%=row.notes%>
+                                  </td>
+                                  <td><a href="/proposal-details?id=<%=row.proposalId%>"><u>View</u></a></td>
+                                  <!-- <td> <a href="#"><u>Accept</u></a></td>
+                                <td><a href="#"><u>Reject</u></a></td>
+                                <td><a href="#"><u>Remove</u></a></td> -->
+                            </tr>
+                            <%})%>
+                              <%}%>
+
+                                <%}%>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+
+                <button class="accordion">Accepted proposals (<%=submitPropertyProposalArray.length%>)
+                </button>
+                <div class="panel">
+
+
+                  <div class="todo-list-table">
+                    <table class="table table-responsive">
+                      <thead>
+                        <tr>
+                          <th>Professional</th>
+                          <th>Property </th>
+                          <th>Task </th>
+                          <th>Notes</th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <%if(submitPropertyProposalArray.length==0){%>
+                          <tr>
+                            <td>
+                              <p>Currently You don't have any proposal.</p>
+                            </td>
+                          </tr>
+                          <%}else{%>
+                            <tr>
+                              <%if(submitPropertyProposalArray.length>0){%>
+                                <%submitPropertyProposalArray.forEach(function(row,i){%>
+                                  <td>
+                                    <label class="check-permission"><img src="images/recent-user-1.png">
+                                      <%=row.sp_name%>, <span>
+                                          <%=row.sp_profession%>
+                                        </span>
+                                    </label>
+                                  </td>
+                                  <td>
+                                    <%=row.ps_property_name%>
+                                  </td>
+                                  <td>Task Name</td>
+                                  <td>
+                                    <%=row.notes%>
+                                  </td>
+                                  <td><a href="/proposal-details?id=<%=row.proposalId%>"><u>View</u></a></td>
+                                  <!-- <td> <a href="#"><u>Accept</u></a></td>
+                                <td><a href="#"><u>Reject</u></a></td>
+                                <td><a href="#"><u>Remove</u></a></td> -->
+                            </tr>
+                            <%})%>
+                              <%}%>
+
+                                <%}%>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <button class="accordion">Rejected proposals (<%=rejectPropertyProposalArray.length%>)</button>
+                <div class="panel">
+                  <div class="todo-list-table">
+                    <table class="table table-responsive">
+                      <thead>
+                        <tr>
+                          <th>Professional</th>
+                          <th>Property </th>
+                          <th>Task </th>
+                          <th>Notes</th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <%if(rejectPropertyProposalArray.length==0){%>
+                          <tr>
+                            <td>
+                              <p>Currently You don't have any proposal.</p>
+                            </td>
+                          </tr>
+                          <%}else{%>
+                            <tr>
+                              <%if(rejectPropertyProposalArray.length>0){%>
+                                <%rejectPropertyProposalArray.forEach(function(row,i){%>
+                                  <td>
+                                    <label class="check-permission"><img src="images/recent-user-1.png">
+                                      <%=row.sp_name%>, <span>
+                                          <%=row.sp_profession%>
+                                        </span>
+                                    </label>
+                                  </td>
+                                  <td>
+                                    <%=row.ps_property_name%>
+                                  </td>
+                                  <td>Task Name</td>
+                                  <td>
+                                    <%=row.notes%>
+                                  </td>
+                                  <td><a href="/proposal-details?id=<%=row.proposalId%>"><u>View</u></a></td>
+                                  <!-- <td> <a href="#"><u>Accept</u></a></td>
+                                <td><a href="#"><u>Reject</u></a></td>
+                                <td><a href="#"><u>Remove</u></a></td> -->
+                            </tr>
+                            <%})%>
+                              <%} %>
+
+                                <%}%>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+
+    <%- include('dashboard_footer')-%>
+      <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+          acc[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+              panel.style.maxHeight = null;
+            } else {
+              panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+          });
+        }
+      </script>

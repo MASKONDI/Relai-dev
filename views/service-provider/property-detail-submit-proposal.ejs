@@ -6,22 +6,20 @@
         <div class="row content">
           <div class="col-sm-2 sidenav hidden-xs-down">
             <div class="user-login text-center">
-              <div class="user-profile">
-                <img src="../images/user-3.png" alt="" title="">
-              </div>
-              <div class="user-name">
-                <h6>
-                  <%= session.name%>,<span><i>
-                        <%= session.role %>
-                      </i>
-                    </span>
-                </h6>
+              <%- include('sp-profile-image')-%>
+                <div class="user-name">
+                  <h6>
+                    <%= session.name%>,<span><i>
+                          <%= session.role %>
+                        </i>
+                      </span>
+                  </h6>
 
-                <a href="#"><i>
-                    <%= session.email%>
-                      <%- include('edit-profile-professional-icon')-%>
-                  </i></a>
-              </div>
+                  <a href="#"><i>
+                      <%= session.email%>
+                        <%- include('edit-profile-professional-icon')-%>
+                    </i></a>
+                </div>
             </div>
             <%- include('sidebar-professional')-%>
           </div>
@@ -67,8 +65,7 @@
                   <%=propertyDetailData[0].ps_additional_note%>
                 </p>
               </div>
-              <form class="form" id="submit_proposal_form" action="" method="POST"
-                enctype="multipart/form-data">
+              <form class="form" id="submit_proposal_form" action="" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="sps_service_provider_id" id="" value="<%=session.user_id%>">
                 <input type="hidden" name="sps_property_id" id="" value="<%=propertyDetailData[0]._id%>">
                 <input type="hidden" name="sps_customer_id" id="" value="<%=customer._id%>">
@@ -174,7 +171,8 @@
                       <div class="input-box-size-fix2">
                         <div class=" property-attchment-box-fix">
                           <p>Add attachments if any </p><span class=""> <a id="button"></a>
-                            <input id="file-input" type="file" id="proposal-docs" name="proposal-docs" required /></span>
+                            <input id="file-input" type="file" id="proposal-docs" name="proposal-docs"
+                              required /></span>
 
                         </div>
                       </div>

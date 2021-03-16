@@ -39,7 +39,7 @@ const message = require('../models/message');
 const DocumentPermissionSchema = require('../models/document_permission')
 const RatingSchema = require("../models/service_provider_rating_Schema");
 const PropertyProfessinoalTaskSchema = require("../models/property_professional_tasks_Schema");
-
+const SubmitProposalSchema = require("../models/submit_proposal_schema");
 var isCustomer = auth.isCustomer;
 var isServiceProvider = auth.isServiceProvider;
 
@@ -88,6 +88,102 @@ app.get('/signin-intro', (req, res) => {
   res.render('signin-intro');
 });
 
+app.get('/proposal', isCustomer, async (req, res) => {
+  console.log("Current session is :", req.session);
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  var activeProposal = await SubmitProposalSchema.find({ sps_customer_id: req.session.user_id, sps_status: 'pending' });
+  var activePropertyProposalArray = [];
+  for (var propertyId of activeProposal) {
+    console.log("property Id", propertyId);
+    let propertyObj = await propertyDetail.GetPropertyById(propertyId.sps_property_id);
+    let serviceProvider = await ServiceProviderSchema.findOne({ _id: propertyId.sps_service_provider_id });
+    if (serviceProvider) {
+      propertyObj.sp_name = serviceProvider.sps_fullname;
+      propertyObj.sp_profession = serviceProvider.sps_role_name;
+    }
+    if (propertyId.sps_extra_notes) {
+      propertyObj.notes = await propertyId.sps_extra_notes;
+    }
+    if (propertyId.sps_filename) {
+      propertyObj.filename = await propertyId.sps_filename;
+    }
+    propertyObj.proposalId = await propertyId._id;
+    activePropertyProposalArray.push(propertyObj);
+  }
+  console.log("activePropertyProposalArray is :", activePropertyProposalArray);
+
+
+  //Submitted Proposal For Professional
+  var submitPropertyProposalArray = [];
+  var submitProposal = await SubmitProposalSchema.find({ sps_customer_id: req.session.user_id, sps_status: 'accept' });
+  for (var propertyId of submitProposal) {
+    console.log("property Id", propertyId);
+    let propertyObj = await propertyDetail.GetPropertyById(propertyId.sps_property_id);
+    let serviceProvider = await ServiceProviderSchema.findOne({ _id: propertyId.sps_service_provider_id });
+    if (serviceProvider) {
+      propertyObj.sp_name = serviceProvider.sps_fullname;
+      propertyObj.sp_profession = serviceProvider.sps_role_name;
+    }
+    if (propertyId.sps_extra_notes) {
+      propertyObj.notes = await propertyId.sps_extra_notes;
+    }
+    if (propertyId.sps_filename) {
+      propertyObj.filename = await propertyId.sps_filename;
+    }
+    propertyObj.proposalId = await propertyId._id;
+    submitPropertyProposalArray.push(propertyObj);
+  }
+  console.log("submitPropertyProposalArray is :", submitPropertyProposalArray);
+
+
+
+  //fetching Reject Proposal 
+  var rejectPropertyProposalArray = [];
+  var rejectProposal = await SubmitProposalSchema.find({ sps_customer_id: req.session.user_id, sps_status: 'reject' });
+  for (var propertyId of rejectProposal) {
+    console.log("property Id", propertyId);
+    let propertyObj = await propertyDetail.GetPropertyById(propertyId.sps_property_id);
+    let serviceProvider = await ServiceProviderSchema.findOne({ _id: propertyId.sps_service_provider_id });
+    if (serviceProvider) {
+      propertyObj.sp_name = serviceProvider.sps_fullname;
+      propertyObj.sp_profession = serviceProvider.sps_role_name;
+    }
+    if (propertyId.sps_extra_notes) {
+      propertyObj.notes = await propertyId.sps_extra_notes;
+    }
+    if (propertyId.sps_filename) {
+      propertyObj.filename = await propertyId.sps_filename;
+    }
+    propertyObj.proposalId = await propertyId._id;
+    rejectPropertyProposalArray.push(propertyObj);
+  }
+  console.log("rejectPropertyProposalArray is :", rejectPropertyProposalArray);
+
+
+  res.render('proposal', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    activePropertyProposalArray: activePropertyProposalArray,
+    rejectPropertyProposalArray: rejectPropertyProposalArray,
+    submitPropertyProposalArray: submitPropertyProposalArray,
+
+  });
+})
+
+
+app.get('/proposal-details', isCustomer, async (req, res) => {
+  console.log("Current session is :", req.session);
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  req.session.pagename = 'proposal';
+  var activeProposal = await SubmitProposalSchema.findOne({ _id: req.query.user_id });
+  console.log("active Proposal is:", activeProposal);
+  res.render('proposal-details', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+  });
+})
 
 //** customer Signup ***********8 */
 app.get("/signup", (req, res) => {
@@ -361,12 +457,12 @@ app.get('/professionals', isCustomer, async (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   const { page = 1, limit = 12 } = req.query;
-  console.log('pageQuery:',page);
-  let uniqueExperience ='';
+  console.log('pageQuery:', page);
+  let uniqueExperience = '';
   let uniqueCategory = '';
-  let uniqueCity ='';
-  let uniqueLanguage ='';
-  let uniqueLanguageLevel ='';
+  let uniqueCity = '';
+  let uniqueLanguage = '';
+  let uniqueLanguageLevel = '';
   let Experience = [];
   let Category = [];
   let City = [];
@@ -385,18 +481,18 @@ app.get('/professionals', isCustomer, async (req, res) => {
           }
         })
       }
-     uniqueExperience = [...new Set(Experience)];
-     uniqueCategory = [...new Set(Category)];
-     uniqueCity = [...new Set(City)];
-     uniqueLanguage = [...new Set(Language)];
-     uniqueLanguageLevel = [...new Set(LanguageLevel)];
+      uniqueExperience = [...new Set(Experience)];
+      uniqueCategory = [...new Set(Category)];
+      uniqueCity = [...new Set(City)];
+      uniqueLanguage = [...new Set(Language)];
+      uniqueLanguageLevel = [...new Set(LanguageLevel)];
     }
   });
 
   await ServiceProviderSchema.find({ sps_status: 'active' }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider => {
     // Check for Customer
     const count = await ServiceProviderSchema.countDocuments({ sps_status: 'active' });
-    console.log('countcount:',count);
+    console.log('countcount:', count);
     if (!service_provider) {
       console.log("Service Provider not found");
       // req.flash('err_msg', 'Service Provider not found');
@@ -412,8 +508,8 @@ app.get('/professionals', isCustomer, async (req, res) => {
       // let LanguageLevel = [];
       for (var sp_id of service_provider) {
         //Experience.push(sp_id.sps_experience);
-       // Category.push(sp_id.sps_role_name);
-       // City.push(sp_id.sps_city);
+        // Category.push(sp_id.sps_role_name);
+        // City.push(sp_id.sps_city);
         console.log('Main spp id:', sp_id._id)
         await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
           if (otherDetails) {
@@ -421,7 +517,7 @@ app.get('/professionals', isCustomer, async (req, res) => {
             console.log('Other spp id:', otherDetails)
 
             let professionalRating = await RatingSchema.find({ sprs_service_provider_id: sp_id._id })
-           // console.log('professionalRating:', professionalRating)
+            // console.log('professionalRating:', professionalRating)
             var sumRating = 0;
             for (var RatingData of professionalRating) {
               sumRating += parseInt(RatingData.sprs_rating);
@@ -454,16 +550,16 @@ app.get('/professionals', isCustomer, async (req, res) => {
 
 
 
-    //  console.log("uniqueExperience:", uniqueExperience);
-    //  console.log("uniqueCategory:", uniqueCategory);
-    //   console.log("uniqueCity:", uniqueCity);
-    //   console.log("uniqueLanguage:", uniqueLanguage);
-    //   console.log("uniqueLanguageLevel:", uniqueLanguageLevel);
-    //   console.log('service_provider:', service_provider)
-    //   console.log('serviceProvArray:', serviceProvArray)
+      //  console.log("uniqueExperience:", uniqueExperience);
+      //  console.log("uniqueCategory:", uniqueCategory);
+      //   console.log("uniqueCity:", uniqueCity);
+      //   console.log("uniqueLanguage:", uniqueLanguage);
+      //   console.log("uniqueLanguageLevel:", uniqueLanguageLevel);
+      //   console.log('service_provider:', service_provider)
+      //   console.log('serviceProvArray:', serviceProvArray)
 
-      console.log('pagepage:',page);
-      console.log('TotalPages:',Math.ceil(count / limit));
+      console.log('pagepage:', page);
+      console.log('TotalPages:', Math.ceil(count / limit));
       res.render('professionals', {
         err_msg, success_msg, layout: false,
         session: req.session,
@@ -486,13 +582,13 @@ app.get('/myprofessionals', isCustomer, async (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   const { page = 1, limit = 12 } = req.query;
-  console.log('mypageQuery:',page);
+  console.log('mypageQuery:', page);
 
-  let uniqueExperience ='';
+  let uniqueExperience = '';
   let uniqueCategory = '';
-  let uniqueCity ='';
-  let uniqueLanguage ='';
-  let uniqueLanguageLevel ='';
+  let uniqueCity = '';
+  let uniqueLanguage = '';
+  let uniqueLanguageLevel = '';
   let Experience = [];
   let Category = [];
   let City = [];
@@ -511,11 +607,11 @@ app.get('/myprofessionals', isCustomer, async (req, res) => {
           }
         })
       }
-     uniqueExperience = [...new Set(Experience)];
-     uniqueCategory = [...new Set(Category)];
-     uniqueCity = [...new Set(City)];
-     uniqueLanguage = [...new Set(Language)];
-     uniqueLanguageLevel = [...new Set(LanguageLevel)];
+      uniqueExperience = [...new Set(Experience)];
+      uniqueCategory = [...new Set(Category)];
+      uniqueCity = [...new Set(City)];
+      uniqueLanguage = [...new Set(Language)];
+      uniqueLanguageLevel = [...new Set(LanguageLevel)];
     }
   });
 
@@ -523,14 +619,14 @@ app.get('/myprofessionals', isCustomer, async (req, res) => {
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit);
   console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
 
-  let AllhiredProfeshnoalCount =  await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
- var totalHire=[];
+  let AllhiredProfeshnoalCount = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
+  var totalHire = [];
   for (var t of AllhiredProfeshnoalCount) {
-      totalHire.push(t.pps_service_provider_id.toString());
+    totalHire.push(t.pps_service_provider_id.toString());
   }
   let totalHireUnique = [...new Set(totalHire)];
-  console.log('totalHire:',totalHire);
-  console.log('totalHireUnique:',totalHireUnique);
+  console.log('totalHire:', totalHire);
+  console.log('totalHireUnique:', totalHireUnique);
   const count = totalHireUnique.length;
 
   let serviceProvArray = [];
@@ -565,11 +661,11 @@ app.get('/myprofessionals', isCustomer, async (req, res) => {
   //const UserviceProvArray = [...new Set(serviceProvArray.map(item => item))]; // [ 'A', 'B']
 
   const UserviceProvArray = [...new Map(serviceProvArray.map(item => [item['_id'], item])).values()];
-  console.log('mycountcount:',count);
+  console.log('mycountcount:', count);
   //const UserviceProvArray = [ ...new Set(serviceProvArray)]  
   console.log('serviceProvArray:', UserviceProvArray)
-  console.log('mypagepage:',page);
-      console.log('myTotalPages:',Math.ceil(count / limit));
+  console.log('mypagepage:', page);
+  console.log('myTotalPages:', Math.ceil(count / limit));
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('myprofessionals', {
@@ -612,6 +708,7 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
 
       let professionalRating = await RatingSchema.find({ sprs_service_provider_id: req.query.id }).sort({ _id: -1 })
       //console.log('professionalRating:', professionalRating)
+      const TotalRatingcount = await RatingSchema.countDocuments({ sprs_service_provider_id: req.query.id }).sort({ _id: -1 });
 
 
       var sumRating = 0;
@@ -636,7 +733,28 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
         sumRating += parseInt(RatingData.sprs_rating);
       }
       let avgRating = sumRating / professionalRating.length;
-      console.log("ProfessionalavgRating========", avgRating)
+      console.log("ProfessionalavgRating 1========", ratingOne.length)
+      console.log("ProfessionalavgRating 2========", ratingTwo.length)
+      console.log("ProfessionalavgRating 3========", ratingThree.length)
+      console.log("ProfessionalavgRating 4========", ratingFour.length)
+      console.log("ProfessionalavgRating 5========", ratingFive.length)
+      console.log("TotalRatingcount========", TotalRatingcount)
+
+      let ratingOneAvg = (((ratingOne.length)/TotalRatingcount)*100);
+      let ratingTwoAvg = (((ratingTwo.length)/TotalRatingcount)*100);
+      let ratingThreeAvg = (((ratingThree.length)/TotalRatingcount)*100);
+      let ratingFourAvg = (((ratingFour.length)/TotalRatingcount)*100);
+      let ratingFiveAvg = (((ratingFive.length)/TotalRatingcount)*100);
+      if (!isNaN(ratingOneAvg)) { ratingOneAvg = ratingOneAvg }else{ ratingOneAvg=0; }
+      if (!isNaN(ratingTwoAvg)) { ratingTwoAvg = ratingTwoAvg }else{ ratingTwoAvg=0; }
+      if (!isNaN(ratingThreeAvg)) { ratingThreeAvg = ratingThreeAvg }else{ ratingThreeAvg=0; }
+      if (!isNaN(ratingFourAvg)) { ratingFourAvg = ratingFourAvg }else{ ratingFourAvg=0; }
+      if (!isNaN(ratingFiveAvg)) { ratingFiveAvg = ratingFiveAvg }else{ ratingFiveAvg=0; }
+      console.log("ratingOneAvg========", ratingOneAvg)
+      console.log("ratingTwoAvg========", ratingTwoAvg)
+      console.log("ratingThreeAvg========", ratingThreeAvg)
+      console.log("ratingFourAvg========", ratingFourAvg)
+      console.log("ratingFiveAvg========", ratingFiveAvg)
 
       if (!isNaN(avgRating)) {
         avgRating = avgRating.toFixed(1);
@@ -661,11 +779,11 @@ app.get('/professionals-detail', isCustomer, (req, res) => {
         professionalRating: professionalRating,
         hiredProfeshnoal: hiredProfeshnoal,
         avgRating: avgRating,
-        ratingOne:ratingOne.length,
-        ratingTwo:ratingTwo.length,
-        ratingThree:ratingThree.length,
-        ratingFour:ratingFour.length,
-        ratingFive:ratingFive.length,
+        ratingOne:ratingOneAvg,
+        ratingTwo:ratingTwoAvg,
+        ratingThree:ratingThreeAvg,
+        ratingFour:ratingFourAvg,
+        ratingFive:ratingFiveAvg,
         moment: moment,
         propertyObj: propertyObj
       });
@@ -692,14 +810,14 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
   console.log('role data:', req.query.role);
 
   const { page = 1, limit = 12 } = req.query;
-  console.log('pageQuery:',page);
+  console.log('pageQuery:', page);
 
-  ServiceProviderSchema.find({ sps_role_name: req.query.role,sps_status: 'active' }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
+  ServiceProviderSchema.find({ sps_role_name: req.query.role, sps_status: 'active' }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
     if (service_provider_detail) {
 
-      const count = await ServiceProviderSchema.countDocuments({ sps_role_name: req.query.role,sps_status: 'active' });
-      console.log('countcount:',count);
-     
+      const count = await ServiceProviderSchema.countDocuments({ sps_role_name: req.query.role, sps_status: 'active' });
+      console.log('countcount:', count);
+
       let serviceProvArray = [];
       for (var sp_id of service_provider_detail) {
         await ServiceProviderOtherDetailsSchema.findOne({ spods_service_provider_id: sp_id._id }).then(async otherDetails => {
@@ -751,8 +869,8 @@ app.get('/professionals-filter', isCustomer, (req, res) => {
       }
 
       console.log('uniqueArray:', uniqueArray)
-      console.log('Filterpagepage:',page);
-      console.log('FilterTotalPages:',Math.ceil(count / limit));
+      console.log('Filterpagepage:', page);
+      console.log('FilterTotalPages:', Math.ceil(count / limit));
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
       res.send({
@@ -790,11 +908,11 @@ app.get('/professionals-searchbar', (req, res) => {
           });
           let unique = [...new Set(professionalIDs)];
           const { page = 1, limit = 12 } = req.query;
-          console.log('pageQuery:',page);
+          console.log('pageQuery:', page);
           ServiceProviderSchema.find({ _id: { $in: unique } }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
 
-         const count = unique.length;
-         console.log('countcount:',count);
+            const count = unique.length;
+            console.log('countcount:', count);
 
 
             let serviceProvArray = [];
@@ -835,8 +953,8 @@ app.get('/professionals-searchbar', (req, res) => {
               });
             }
 
-            console.log('SearchFilterpagepage:',page);
-            console.log('SearchFilterTotalPages:',Math.ceil(count / limit));
+            console.log('SearchFilterpagepage:', page);
+            console.log('SearchFilterTotalPages:', Math.ceil(count / limit));
 
             res.send({
               err_msg, success_msg, layout: false,
@@ -859,56 +977,56 @@ app.get('/professionals-searchbar', (req, res) => {
 app.get('/my-professionals-filter', isCustomer, async (req, res) => {
   req.session.pagename = 'professionals';
   const { page = 1, limit = 12 } = req.query;
-  console.log('pageQuery:',req.query);
+  console.log('pageQuery:', req.query);
 
   //let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
   let serviceProvArray = [];
 
-  let AllhiredProfeshnoalCount =  await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
-  var totalHire=[];
-   for (var t of AllhiredProfeshnoalCount) {
+  let AllhiredProfeshnoalCount = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
+  var totalHire = [];
+  for (var t of AllhiredProfeshnoalCount) {
     await ServiceProviderSchema.find({ $and: [{ _id: t.pps_service_provider_id, sps_role_name: req.query.role }] }).then(async (allProfeshnoals1) => {
       for (let ii of allProfeshnoals1) {
-             totalHire.push(ii._id.toString());
+        totalHire.push(ii._id.toString());
       }
     });
-   }
-   let totalHireUnique = [...new Set(totalHire)];
-   console.log('FiltertotalHire:',totalHire);
-   console.log('FiltertotalHireUnique:',totalHireUnique);
-   const count = totalHireUnique.length;
+  }
+  let totalHireUnique = [...new Set(totalHire)];
+  console.log('FiltertotalHire:', totalHire);
+  console.log('FiltertotalHireUnique:', totalHireUnique);
+  const count = totalHireUnique.length;
 
-   
-   //console.log('AllhiredProfeshnoal:',AllhiredProfeshnoal);
-//.sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit)
- // for (var k of AllhiredProfeshnoal) {
-   //{ $in: AllhiredProfeshnoalID }
-   // _id: k.pps_service_provider_id
-    await ServiceProviderSchema.find({ $and: [{_id:{ $in: totalHireUnique }, sps_role_name: req.query.role }] }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (allProfeshnoals) => {
-      console.log('allProfeshnoals:',allProfeshnoals);
-      for (let i of allProfeshnoals) {
-        let professionalRating = await RatingSchema.find({ sprs_service_provider_id: i._id })
-        console.log('professionalRating:', professionalRating)
-        var sumRating = 0;
-        for (var RatingData of professionalRating) {
-          sumRating += parseInt(RatingData.sprs_rating);
-        }
-        let avgRating = Math.round(sumRating / professionalRating.length);
-        if (!isNaN(avgRating)) {
-          avgRating = avgRating.toFixed(1);
-        } else {
-          avgRating = 0;
-        }
-        console.log('avgRating:', avgRating)
-        let temps = await i
-        const spProvider = JSON.stringify(temps);
-        const parseSpProvider = JSON.parse(spProvider);
-        parseSpProvider.avgRating = avgRating
-        serviceProvArray.push(parseSpProvider)
-        //let temps = await i
-        // serviceProvArray.push(temps)
+
+  //console.log('AllhiredProfeshnoal:',AllhiredProfeshnoal);
+  //.sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit)
+  // for (var k of AllhiredProfeshnoal) {
+  //{ $in: AllhiredProfeshnoalID }
+  // _id: k.pps_service_provider_id
+  await ServiceProviderSchema.find({ $and: [{ _id: { $in: totalHireUnique }, sps_role_name: req.query.role }] }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (allProfeshnoals) => {
+    console.log('allProfeshnoals:', allProfeshnoals);
+    for (let i of allProfeshnoals) {
+      let professionalRating = await RatingSchema.find({ sprs_service_provider_id: i._id })
+      console.log('professionalRating:', professionalRating)
+      var sumRating = 0;
+      for (var RatingData of professionalRating) {
+        sumRating += parseInt(RatingData.sprs_rating);
       }
-    });
+      let avgRating = Math.round(sumRating / professionalRating.length);
+      if (!isNaN(avgRating)) {
+        avgRating = avgRating.toFixed(1);
+      } else {
+        avgRating = 0;
+      }
+      console.log('avgRating:', avgRating)
+      let temps = await i
+      const spProvider = JSON.stringify(temps);
+      const parseSpProvider = JSON.parse(spProvider);
+      parseSpProvider.avgRating = avgRating
+      serviceProvArray.push(parseSpProvider)
+      //let temps = await i
+      // serviceProvArray.push(temps)
+    }
+  });
   //}
 
 
@@ -926,9 +1044,9 @@ app.get('/my-professionals-filter', isCustomer, async (req, res) => {
   //var uniqueArray = removeDuplicates(serviceProvArray, "_id");
   //console.log("uniqueArray is: " + JSON.stringify(uniqueArray));
 
-  console.log('Filtermycountcount:',count);
-  console.log('Filtermypagepage:',page);
-  console.log('FiltermyTotalPages:',Math.ceil(count / limit));
+  console.log('Filtermycountcount:', count);
+  console.log('Filtermypagepage:', page);
+  console.log('FiltermyTotalPages:', Math.ceil(count / limit));
 
   res.send({
     err_msg, success_msg, layout: false,
@@ -949,7 +1067,7 @@ app.get('/my-professionals-filter', isCustomer, async (req, res) => {
 app.get('/my-professionals-searchbar', async (req, res) => {
   req.session.pagename = 'professionals';
   const { page = 1, limit = 12 } = req.query;
-  console.log('pageQuery:',req.query);
+  console.log('pageQuery:', req.query);
   let professionalIDs = [];
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login });
   let AllhiredProfeshnoalID = [];
@@ -984,12 +1102,12 @@ app.get('/my-professionals-searchbar', async (req, res) => {
           console.log('MYYYY professionalIDs:', professionalIDs);
 
           let unique = [...new Set(professionalIDs)];
-          if(unique > 1){
+          if (unique > 1) {
             var citrus = unique.slice(0, 4);
           }
           console.log('MYYYY unique:', unique);
           const count = unique.length;
-          console.log('countcount:',count);
+          console.log('countcount:', count);
 
           ServiceProviderSchema.find({ _id: { $in: unique } }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
             for (var sp_id of service_provider_detail) {
@@ -1025,9 +1143,9 @@ app.get('/my-professionals-searchbar', async (req, res) => {
               });
             }
 
-             console.log("service_provider Array list in loop:", serviceProvArray);
-            console.log('SearchFilterpagepage:',page);
-            console.log('SearchFilterTotalPages:',Math.ceil(count / limit));
+            console.log("service_provider Array list in loop:", serviceProvArray);
+            console.log('SearchFilterpagepage:', page);
+            console.log('SearchFilterTotalPages:', Math.ceil(count / limit));
 
 
             res.send({
@@ -1964,7 +2082,7 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
   console.log("current session is", req.session);
 
   const { page = 1, limit = 9 } = req.query;
-  console.log('pageQuery:',page);
+  console.log('pageQuery:', page);
 
   PropertiesSchema.find({
     $or: [
@@ -1980,8 +2098,8 @@ app.get('/mydreamhome', isCustomer, async (req, res) => {
           { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_other_property_type: req.session.active_user_login }] }
         ]
       });
-      console.log('countcount:',count);
-   
+      console.log('countcount:', count);
+
       let arr = [];
 
       for (let img of data) {

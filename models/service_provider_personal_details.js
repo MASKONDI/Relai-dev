@@ -53,7 +53,7 @@ const ServiceProviderPersonalDetailsSchema = new Schema({
 
   },
   spods_start_working_time: {
-    type: String,
+    type: Date,
   },
 
   spods_created_at: {

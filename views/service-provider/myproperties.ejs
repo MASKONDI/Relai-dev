@@ -6,22 +6,20 @@
         <div class="row content">
           <div class="col-sm-2 sidenav hidden-xs-down">
             <div class="user-login text-center">
-              <div class="user-profile">
-                <img src="../images/user-3.png" alt="" title="">
-              </div>
-              <div class="user-name">
-                <h6>
-                  <%= session.name%>,<span><i>
-                        <%= session.role %>
-                      </i>
-                    </span>
-                </h6>
+              <%- include('sp-profile-image')-%>
+                <div class="user-name">
+                  <h6>
+                    <%= session.name%>,<span><i>
+                          <%= session.role %>
+                        </i>
+                      </span>
+                  </h6>
 
-                <a href="#"><i>
-                    <%= session.email%>
-                      <%- include('edit-profile-professional-icon')-%>
-                  </i></a>
-              </div>
+                  <a href="#"><i>
+                      <%= session.email%>
+                        <%- include('edit-profile-professional-icon')-%>
+                    </i></a>
+                </div>
             </div>
             <%- include('sidebar-professional')-%>
           </div>
@@ -84,7 +82,6 @@
                             </div>
                           </div>
                         </div>
-
                       </div>
                     </div>
 
@@ -115,11 +112,13 @@
                                 <h3><a href="/service-provider/myproperties-detail?id=<%=row._id%>">
                                     <%=row.ps_property_name%>
                                   </a></h3>
-                                <div class="location-part"><a href="/service-provider/myproperties-detail?id=<%=row._id%>"><img
+                                <div class="location-part"><a
+                                    href="/service-provider/myproperties-detail?id=<%=row._id%>"><img
                                       src="../images/location.png">
                                     <%=row.ps_property_address%>, <%=row.ps_property_country_id%>
                                   </a></div>
-                                <div class="location-sec"><a href="/service-provider/myproperties-detail?id=<%=row._id%>"
+                                <div class="location-sec"><a
+                                    href="/service-provider/myproperties-detail?id=<%=row._id%>"
                                     style="font-size:14px"><img style="width: 22px; height:22px"
                                       src="../images/sq.ft.png">
                                     <%=row.ps_property_area%> sq.
@@ -132,7 +131,7 @@
                                   </span>
                                   <%}else{%>
                                     <img src="../upload/<%=row.customer_profile%>"
-                                      style="border-radius: 50%; height: 16px;margin-right: 1px;">
+                                      style="border-radius: 50%; margin-right: 1px; width: 13%;">
                                     <span style="font-size: 13px; margin-left: 0px">by
                                       <%=row.customer_name%>
                                     </span></span>

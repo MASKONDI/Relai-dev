@@ -1271,7 +1271,8 @@ router.post("/addTask_from_Dreamhome_detial_phase", (req, res) => {
       ppts_due_date: req.body.ppts_due_date,
       ppts_phase_name: req.body.ppts_phase_name,
       ppts_is_active_user_flag: req.session.active_user_login,
-      ppts_note: req.body.ppts_note
+      ppts_note: req.body.ppts_note,
+      ppts_task_status:'pending'
     });
     newTask
       .save()
@@ -2792,6 +2793,18 @@ router.post('/customer-message-unread', (req, res) => {
   });
 });
 
+// router.post('/task_status_update', (req, res) => {
+//   console.log("sp_task_status_update :", req.body);
+//   PropertyProfessinoalTaskSchema.updateOne({ _id:req.body.task_id }, { $set: { ppts_task_status: req.body.ppts_task_status} }, { upsert: true }, function (err) {
+//     if (err) {
+//       console.log(err)
+//       res.send({ status: false, message: 'Something going wrong please check again !!' })
+//     } else {
+//       res.send({ status: true, message: 'Task Status update successfully !!' })
+//       console.log("Task Status update successfully");
+//     }
+//   });
+// });
 
 module.exports = router;
 
