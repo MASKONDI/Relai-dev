@@ -39,7 +39,7 @@ module.exports.getCustomerImageByID = function (user_id) {
 module.exports.getCustomerNameByID = function (user_id) {
     return new Promise(async function (resolve, reject) {
         if (user_id != null) {
-           let userdata=await CustomerSchema.findOne({_id:user_id})
+           let userdata=await CustomerSchema.findOne({_id: user_id })
                 if(userdata){
                     var object_as_string = JSON.stringify(userdata);
                     const t = JSON.parse(object_as_string);

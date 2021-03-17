@@ -215,35 +215,35 @@ app.get('/signup-professionals-profile-5', async (req, res) => {
 });
 app.get('/service-provider/dashboard-professional', isServiceProvider, async (req, res) => {
 
-var notificationObj = {
-     name:'',
-     image:'',
-}
-var notifData=[];
-  await NotificationSchema.find({ ns_receiver: req.session.user_id,ns_receiver_type:'service_provider',ns_read_status:'unseen' }).then(async (notificationResults) => {
-      console.log('notificationL:',notificationResults)
-    if(notificationResults){
-            for (let notifResult of notificationResults) {  
-              if(notifResult.ns_sender_type == 'customer'){
-                await CustomerSchema.findOne({ _id: notifResult.ns_sender }).then(async (cusResult) => { 
-                    notificationObj = {
-                          name:cusResult.cus_fullname,
-                          image:cusResult.cus_profile_image_name,
-                     }
-                     notifData.push(notificationObj)
-                })
-              }
+  var notificationObj = {
+    name: '',
+    image: '',
+  }
+  var notifData = [];
+  await NotificationSchema.find({ ns_receiver: req.session.user_id, ns_receiver_type: 'service_provider', ns_read_status: 'unseen' }).then(async (notificationResults) => {
+    console.log('notificationL:', notificationResults)
+    if (notificationResults) {
+      for (let notifResult of notificationResults) {
+        if (notifResult.ns_sender_type == 'customer') {
+          await CustomerSchema.findOne({ _id: notifResult.ns_sender }).then(async (cusResult) => {
+            notificationObj = {
+              name: cusResult.cus_fullname,
+              image: cusResult.cus_profile_image_name,
             }
-           }
+            notifData.push(notificationObj)
+          })
+        }
+      }
+    }
   });
-console.log('notifData:',notifData)
+  console.log('notifData:', notifData)
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   req.session.pagename = "service-provider/dashboard-professional"
   res.render('service-provider/dashboard-professional', {
     err_msg, success_msg, layout: false,
     session: req.session,
-    notifData:notifData
+    notifData: notifData
   });
 
 });
@@ -307,16 +307,19 @@ app.get('/service-provider/track-your-progress-professionals', isServiceProvider
 app.get('/service-provider/property', isServiceProvider, async function (req, res) {
   console.log("current session is  from sp end:", req.session);
   req.session.pagename = 'service-provider/property';
+
+  const { page = 1, limit = 9 } = req.query;
+  console.log('pageQuery:', page);
+
   let propertyArray = []
-  PropertiesSchema.find().sort({ _id: -1 }).limit(9).then(async (data) => {
+  const count = await PropertiesSchema.countDocuments();
+  console.log('countcount:', count);
+
+  PropertiesSchema.find().sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
     if (data) {
       let arr = [];
-      //console.log("Property Data is", data);
       for (let img of data) {
-
-        //propertyArray.push(data)
         await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
-
           let temp = await result
           //for(let image of result){
           //  let temp = await image
@@ -329,47 +332,23 @@ app.get('/service-provider/property', isServiceProvider, async function (req, re
           console.log("arr is", arr);
         })
       }
-
-      //data.add(t);
-      // console.log("customer_name is ", arr[0].customer_name);
-      // console.log('++++++++',arr)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
-
       res.render('service-provider/property', {
         err_msg, success_msg, layout: false,
         session: req.session,
         propertyData: data,
-        propertyImage: arr
+        propertyImage: arr,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
       });
-
     }
   }).catch((err) => {
     console.log(err)
   })
 
 })
-// let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id);
-// for (let key of AllhiredProfeshnoal) {
-//   let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
-//   let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
-//   propertyData.property_image = await propertyImageData.pps_property_image_name;
-//   let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
-//   let customerProfile = await customerHelper.getCustomerImageByID(key.pps_user_id);
-//   propertyData.customer_name = await customerName
-//   propertyData.customer_profile = await customerProfile
-//   propertyArray.push(propertyData)
 
-// }
-
-//   console.log("propertyIdArray", propertyArray);
-//   res.render('service-provider/property', {
-//     err_msg, success_msg, layout: false,
-//     session: req.session,
-//     propertyData: propertyArray,
-
-//   })
-// });
 app.get('/service-provider/professionals-to-do-list', isServiceProvider, async function (req, res) {
   console.log("todo")
   req.session.pagename = 'service-provider/professionals-to-do-list';
@@ -405,27 +384,59 @@ app.get('/service-provider/myproperties', isServiceProvider, async function (req
   console.log("", req.session);
   req.session.pagename = 'service-provider/property';
   let propertyArray = []
+  const { page = 1, limit = 1 } = req.query;
+  console.log('pageQuery:', page);
+  let count = 0;
+  let propertyId = [];
+  let userId = [];
+
   let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id);
   for (let key of AllhiredProfeshnoal) {
-    let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
-    let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
-    console.log("propertyImageData is", propertyImageData);
-    //console.log("propertyImageData is ",propertyImageData.pps_property_image_name);
-    if (propertyImageData) {
-      propertyData.property_image = await propertyImageData.pps_property_image_name;
-    }
-    let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
-    let customerProfile = await customerHelper.getCustomerImageByID(key.pps_user_id);
-    propertyData.customer_name = await customerName
-    propertyData.customer_profile = await customerProfile
-    propertyArray.push(propertyData)
-
+    propertyId.push(key.pps_property_id);
+    userId.push(key.pps_user_id);
   }
-  console.log("propertyIdArray", propertyArray);
+
+  count = await PropertiesSchema.countDocuments({ _id: { $in: propertyId } });
+  let propertyData = await propertyHelper.getPropertyByID(propertyId, limit, page);
+  let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
+  console.log("propertyImageData is", propertyData);
+  //console.log("propertyImageData is ",propertyImageData.pps_property_image_name);
+  if (propertyImageData) {
+    propertyData.property_image = await propertyImageData.pps_property_image_name;
+  }
+  let customerName = await customerHelper.getCustomerNameByID(propertyData.ps_user_id);
+  let customerProfile = await customerHelper.getCustomerImageByID(propertyData.ps_user_id);
+  propertyData.customer_name = await customerName
+  propertyData.customer_profile = await customerProfile
+  propertyArray.push(propertyData)
+
+
+  // for (let key of AllhiredProfeshnoal) {
+  //    count = await PropertiesSchema.countDocuments({_id:key.pps_property_id});
+  //   let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id,limit,page);
+  //   let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
+  //   console.log("propertyImageData is", propertyImageData);
+  //   //console.log("propertyImageData is ",propertyImageData.pps_property_image_name);
+  //   if (propertyImageData) {
+  //     propertyData.property_image = await propertyImageData.pps_property_image_name;
+  //   }
+  //   let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
+  //   let customerProfile = await customerHelper.getCustomerImageByID(key.pps_user_id);
+  //   propertyData.customer_name = await customerName
+  //   propertyData.customer_profile = await customerProfile
+  //   propertyArray.push(propertyData)
+
+  // }
+  //console.log("propertyIdArray", propertyArray);
+  console.log("totalPages", Math.ceil(count / limit));
+  console.log("currentPage", page);
+  console.log("count", count);
   res.render('service-provider/myproperties', {
     err_msg, success_msg, layout: false,
     session: req.session,
     propertyData: propertyArray,
+    totalPages: Math.ceil(count / limit),
+    currentPage: page
 
   })
 });
@@ -439,7 +450,7 @@ app.get('/service-provider/professional-details-docs', isServiceProvider, async 
   req.session.pagename = 'service-provider/property';
   var normalDocArray = [];
   var taskDocArray = [];
-  var custmorePermisionArray=[];
+  var custmorePermisionArray = [];
   //console.log('property id is :', req.session.property_id);
   //req.session.property_id=req.query.id
   err_msg = req.flash('err_msg');
@@ -468,24 +479,24 @@ app.get('/service-provider/professional-details-docs', isServiceProvider, async 
   });
   //const propertyDataObj = await PropertiesSchema.find();
   let propertyProfeshnoal = await PropertyProfessionalSchema.find({
-    $and:[{pps_service_provider_id: req.session.user_id,pps_property_id:req.session.property_id}]
+    $and: [{ pps_service_provider_id: req.session.user_id, pps_property_id: req.session.property_id }]
   });
   console.log('propertyProfeshnoal', propertyProfeshnoal);
-  for(var k of propertyProfeshnoal){
+  for (var k of propertyProfeshnoal) {
     var image = await customerHelper.getCustomerImageByID(k.pps_user_id);
     await CustomerSchema.findOne({ _id: k.pps_user_id }).then(async (coustomerdata) => {
-      if(coustomerdata){
+      if (coustomerdata) {
         var cust = JSON.stringify(coustomerdata)
         var custs = JSON.parse(cust)
-        custs.pps_property_id=k.pps_property_id;
-        custs.pps_service_provider_id=k.pps_service_provider_id
-        custs.custormer_as =k.pps_is_active_user_flag
+        custs.pps_property_id = k.pps_property_id;
+        custs.pps_service_provider_id = k.pps_service_provider_id
+        custs.custormer_as = k.pps_is_active_user_flag
         custs.profilePic = image
         let temps = await custs
         custmorePermisionArray.push(temps)
       }
     })
-  console.log('custmorePermisionArray', custmorePermisionArray);
+    console.log('custmorePermisionArray', custmorePermisionArray);
   }
 
 
@@ -597,7 +608,7 @@ app.get('/service-provider/professionals-detail-message', isServiceProvider, asy
 
   const { page = 1, limit = 5 } = req.query;
 
-  var QueryData={
+  var QueryData = {
     $or: [
       { $and: [{ sms_sender_id: req.session.user_id }, { sms_receiver_id: req.query.pid }, { sms_property_id: req.query.id }] },
       { $and: [{ sms_sender_id: req.query.pid }, { sms_receiver_id: req.session.user_id }, { sms_property_id: req.query.id }] }
@@ -660,7 +671,7 @@ app.get('/service-provider/professionals-detail-message', isServiceProvider, asy
     chatData: newData.reverse(),
     totalPages: Math.ceil(count / limit),
     currentPage: page,
-    msgcount:count
+    msgcount: count
 
   });
 
@@ -671,12 +682,12 @@ app.get('/service-provider-get-message-property', async (req, res) => {
   var newData = [];
   var newData1 = [];
   const { page = 1, limit = 5 } = req.query;
-var QueryData = {
-  $or: [
-    { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }, { sms_property_id: req.query.sms_property_id }] },
-    { $and: [{ sms_sender_id: req.query.sms_receiver_id }, { sms_receiver_id: req.query.sms_sender_id }, { sms_property_id: req.query.sms_property_id }] }
-  ]
-};
+  var QueryData = {
+    $or: [
+      { $and: [{ sms_sender_id: req.query.sms_sender_id }, { sms_receiver_id: req.query.sms_receiver_id }, { sms_property_id: req.query.sms_property_id }] },
+      { $and: [{ sms_sender_id: req.query.sms_receiver_id }, { sms_receiver_id: req.query.sms_sender_id }, { sms_property_id: req.query.sms_property_id }] }
+    ]
+  };
   const count = await MessageSchema.countDocuments(QueryData);
 
   MessageSchema.find(QueryData).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
@@ -725,7 +736,7 @@ var QueryData = {
         chatData: newData,
         totalPages: Math.ceil(count / limit),
         currentPage: page,
-        msgcount:count
+        msgcount: count
 
       });
     }
@@ -1438,133 +1449,194 @@ function removeDuplicates(originalArray, prop) {
 
 app.get('/service-provider/get-notification', isServiceProvider, async (req, res) => {
   var notificationObj = {
-        id:'',
-       name:'',
-       image:'',
-       type:'',
-       property_id:'',
-       reciver_id:'',
-       sender_id:'',
+    id: '',
+    name: '',
+    image: '',
+    type: '',
+    property_id: '',
+    reciver_id: '',
+    sender_id: '',
   }
-  console.log('dddaaa:',req.query)
-  var notifData=[];
-    await NotificationSchema.find({ ns_receiver:req.query.ns_receiver,ns_receiver_type:req.query.ns_receiver_type,ns_read_status:req.query.ns_read_status }).then(async (notificationResults) => {
-        console.log('notificationL:',notificationResults)
-      if(notificationResults){
-              for (let notifResult of notificationResults) {  
-                if(notifResult.ns_sender_type == 'customer'){
-                  await CustomerSchema.findOne({ _id: notifResult.ns_sender }).then(async (cusResult) => { 
-                      notificationObj = {
-                            id:cusResult._id,
-                            name:cusResult.cus_fullname,
-                            image:cusResult.cus_profile_image_name,
-                            type:'message',
-                            property_id:notifResult.ns_property_id,
-                            reciver_id:notifResult.ns_receiver,
-                            sender_id:notifResult.ns_sender,
-                       }
-                       notifData.push(notificationObj)
-                  })
-                }
+  console.log('dddaaa:', req.query)
+  var notifData = [];
+  await NotificationSchema.find({ ns_receiver: req.query.ns_receiver, ns_receiver_type: req.query.ns_receiver_type, ns_read_status: req.query.ns_read_status }).then(async (notificationResults) => {
+    console.log('notificationL:', notificationResults)
+    if (notificationResults) {
+      for (let notifResult of notificationResults) {
+        if (notifResult.ns_sender_type == 'customer') {
+          await CustomerSchema.findOne({ _id: notifResult.ns_sender }).then(async (cusResult) => {
+            notificationObj = {
+              id: cusResult._id,
+              name: cusResult.cus_fullname,
+              image: cusResult.cus_profile_image_name,
+              type: 'message',
+              property_id: notifResult.ns_property_id,
+              reciver_id: notifResult.ns_receiver,
+              sender_id: notifResult.ns_sender,
             }
+            notifData.push(notificationObj)
+          })
         }
-    });
-    uniqueArray = removeDuplicates(notifData, "id");
-   console.log('autoLoadnotifData:',uniqueArray)
-    err_msg = req.flash('err_msg');
-    success_msg = req.flash('success_msg');
-    res.send({
-      err_msg, success_msg, 
-      layout: false,
-      session: req.session,
-      notifData:uniqueArray
-    });
-  
+      }
+    }
+  });
+  uniqueArray = removeDuplicates(notifData, "id");
+  console.log('autoLoadnotifData:', uniqueArray)
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  res.send({
+    err_msg, success_msg,
+    layout: false,
+    session: req.session,
+    notifData: uniqueArray
   });
 
+});
 
-  app.get('/service-provider/proposal', isServiceProvider, async (req, res) => {
-    console.log("Current session is :", req.session);
-    err_msg = req.flash('err_msg');
-    success_msg = req.flash('success_msg');
-    req.session.pagename = 'service-provider/proposal';
-    
-    //Current active proposal
-    var activeProposal = await SubmitProposalSchema.find({ sps_service_provider_id: req.session.user_id, sps_status: 'pending' });
-    var activePropertyProposalArray = [];
-    for (var propertyId of activeProposal) {
+
+
+app.get('/service-provider/proposal', isServiceProvider, async (req, res) => {
+  console.log("Current session is :", req.session);
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  req.session.pagename = 'service-provider/proposal';
+
+  //Current active proposal 
+  var activeProposal = await SubmitProposalSchema.find({ sps_service_provider_id: req.session.user_id, sps_status: 'pending' });
+  var activePropertyProposalArray = [];
+  for (var propertyId of activeProposal) {
     console.log("property Id", propertyId);
-    let propertyObj = await await propertyHelper.getPropertyByID(propertyId.sps_property_id);
-    let serviceProvider = await ServiceProviderSchema.findOne({ _id: propertyId.sps_service_provider_id });
-    if (serviceProvider) {
-    propertyObj.sp_name = serviceProvider.sps_fullname;
-    propertyObj.sp_profession = serviceProvider.sps_role_name;
+    let propertyObj = await propertyHelper.getPropertyByID(propertyId.sps_property_id);
+    let customer = await CustomerSchema.findOne({ _id: propertyId.sps_customer_id });
+    if (customer) {
+      propertyObj.cs_name = customer.cus_fullname;
+      propertyObj.cus_profile_image_name = customer.cus_profile_image_name;
     }
     if (propertyId.sps_extra_notes) {
-    propertyObj.notes = await propertyId.sps_extra_notes;
+      propertyObj.notes = await propertyId.sps_extra_notes;
     }
     if (propertyId.sps_filename) {
-    propertyObj.filename = await propertyId.sps_filename;
+      propertyObj.filename = await propertyId.sps_filename;
     }
+    propertyObj.proposalId = await propertyId._id;
     activePropertyProposalArray.push(propertyObj);
-    }
-    console.log("activePropertyProposalArray is :", activePropertyProposalArray);
-    
-    
-    //Submitted Proposal For Professional
-    var submitPropertyProposalArray = [];
-    var submitProposal = await SubmitProposalSchema.find({ sps_service_provider_id: req.session.user_id, sps_status: 'accept' });
-    for (var propertyId of submitProposal) {
+  }
+  console.log("activePropertyProposalArray is :", activePropertyProposalArray);
+
+
+  //Submitted Proposal For Professional
+  var submitPropertyProposalArray = [];
+  var submitProposal = await SubmitProposalSchema.find({ sps_service_provider_id: req.session.user_id, sps_status: 'accept' });
+  for (var propertyId of submitProposal) {
     console.log("property Id", propertyId);
     let propertyObj = await await propertyHelper.getPropertyByID(propertyId.sps_property_id);
-    let serviceProvider = await ServiceProviderSchema.findOne({ _id: propertyId.sps_service_provider_id });
-    if (serviceProvider) {
-    propertyObj.sp_name = serviceProvider.sps_fullname;
-    propertyObj.sp_profession = serviceProvider.sps_role_name;
+    let customer = await CustomerSchema.findOne({ _id: propertyId.sps_customer_id });
+    if (customer) {
+      propertyObj.cs_name = customer.cus_fullname;
+      propertyObj.cus_profile_image_name = customer.cus_profile_image_name;
     }
     if (propertyId.sps_extra_notes) {
-    propertyObj.notes = await propertyId.sps_extra_notes;
+      propertyObj.notes = await propertyId.sps_extra_notes;
     }
     if (propertyId.sps_filename) {
-    propertyObj.filename = await propertyId.sps_filename;
+      propertyObj.filename = await propertyId.sps_filename;
     }
+    propertyObj.proposalId = await propertyId._id;
     submitPropertyProposalArray.push(propertyObj);
-    }
-    console.log("submitPropertyProposalArray is :", submitPropertyProposalArray);
-    
-    
-    
-    //fetching Reject Proposal
-    var rejectPropertyProposalArray = [];
-    var rejectProposal = await SubmitProposalSchema.find({ sps_service_provider_id: req.session.user_id, sps_status: 'reject' });
-    for (var propertyId of rejectProposal) {
+  }
+  console.log("submitPropertyProposalArray is :", submitPropertyProposalArray);
+
+
+
+  //fetching Reject Proposal 
+  var rejectPropertyProposalArray = [];
+  var rejectProposal = await SubmitProposalSchema.find({ sps_service_provider_id: req.session.user_id, sps_status: 'reject' });
+  for (var propertyId of rejectProposal) {
     console.log("property Id", propertyId);
     let propertyObj = await await propertyHelper.getPropertyByID(propertyId.sps_property_id);
-    let serviceProvider = await ServiceProviderSchema.findOne({ _id: propertyId.sps_service_provider_id });
-    if (serviceProvider) {
-    propertyObj.sp_name = serviceProvider.sps_fullname;
-    propertyObj.sp_profession = serviceProvider.sps_role_name;
+    let customer = await CustomerSchema.findOne({ _id: propertyId.sps_customer_id });
+    if (customer) {
+      propertyObj.cs_name = customer.cus_fullname;
+      propertyObj.cus_profile_image_name = customer.cus_profile_image_name;
+      //propertyObj.sp_profession = customer.sps_role_name;
     }
     if (propertyId.sps_extra_notes) {
-    propertyObj.notes = await propertyId.sps_extra_notes;
+      propertyObj.notes = await propertyId.sps_extra_notes;
     }
     if (propertyId.sps_filename) {
-    propertyObj.filename = await propertyId.sps_filename;
-    }
+      propertyObj.filename = await propertyId.sps_filename;
+    } propertyObj.proposalId = await propertyId._id;
     rejectPropertyProposalArray.push(propertyObj);
-    }
-    console.log("rejectPropertyProposalArray is :", rejectPropertyProposalArray);
-    
-    
-    res.render('service-provider/proposal', {
+  }
+  console.log("rejectPropertyProposalArray is :", rejectPropertyProposalArray);
+
+
+  res.render('service-provider/proposal', {
     err_msg, success_msg, layout: false,
     session: req.session,
     activePropertyProposalArray: activePropertyProposalArray,
     rejectPropertyProposalArray: rejectPropertyProposalArray,
     submitPropertyProposalArray: submitPropertyProposalArray,
-    
-    });
-    })
-    
+
+  });
+})
+
+app.get('/service-provider/proposal-details', isCustomer, async (req, res) => {
+  console.log("Current query is :", req.query);
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  req.session.pagename = 'service-provider/proposal';
+  var proposalDetails = [];
+  var activeProposal = await SubmitProposalSchema.find({ _id: req.query.id });
+  console.log("activeProposal is ", activeProposal);
+  if (activeProposal) {
+    for (var propertyId of activeProposal) {
+      console.log("property Id", propertyId);
+      let propertyObj = await propertyHelper.getPropertyByID(propertyId.sps_property_id);
+      let customer = await CustomerSchema.findOne({ _id: propertyId.sps_customer_id });
+      // var totalProposal = await SubmitProposalSchema.find({ sps: propertyId.sps_service_provider_id });
+
+      // if (totalProposal) {
+      //   propertyObj.total_proposal = await totalProposal.length;
+      // }
+      if (customer) {
+        propertyObj.cs_name = await customer.cus_fullname;
+        // propertyObj.cs_profession = await customer.sps_role_name;
+        propertyObj.cs_state = await customer.cus_state;
+        propertyObj.cs_country = await customer.cus_country_id;
+        propertyObj.cs_city = await customer.cus_city;
+        propertyObj.cs_joining_date = await customer.cus_created_at;
+      }
+      propertyObj.proposal_filename = await propertyId.sps_filename;
+      propertyObj.sps_payment_mode = await propertyId.sps_payment_mode;
+      propertyObj.sps_extra_notes = await propertyId.sps_extra_notes;
+      propertyObj.sps_status = await propertyId.sps_status;
+      propertyObj.sps_start_date = await propertyId.sps_start_date;
+      propertyObj.sps_end_date = await propertyId.sps_end_date;
+      propertyObj.proposalId = await propertyId._id;
+      proposalDetails.push(propertyObj);
+    }
+  }
+  console.log("active Proposal is:", proposalDetails);
+  res.render('service-provider/proposal-details', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    proposalDetails: proposalDetails,
+  });
+})
+
+app.post('/sp-change-proposal-status', isServiceProvider, async (req, res) => {
+  console.log("Request comming for change status", req.body);
+  let proposalId = req.body.proposalId;
+  SubmitProposalSchema.updateOne({ '_id': proposalId }, { $set: { sps_status: req.body.proposalStatus } }, { upsert: true }, function (err) {
+    if (err) {
+      res.send({ status: false, message: 'Something going wrong please check again !!' })
+    } else {
+      res.send({ status: true, message: 'Your proposal update successfully !!' })
+    }
+  });
+});
+
+
 module.exports = app;
 
