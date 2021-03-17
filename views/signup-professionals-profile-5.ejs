@@ -212,16 +212,16 @@
                               </label>
                               <label class="radio-inline">
                                 <input type="radio" name="rs_option_obtain_reference" value="no"
-                                  onclick="javascript:yesnoCheck();" id="noCheck">
+                                  onclick="javascript:yesnoCheck();" id="noCheck" checked>
                                 &nbsp;No&nbsp;&nbsp;
                               </label>
                             </div>
                           </div>
 
-                          <div class="col-sm-12 col-lg-6" id="ifYes">
+                          <div class="col-sm-12 col-lg-6" id="ifYes" style="display: none;">
                             <div class="input-box-size-fix3">
                               <input type="text" class="form-control text-field-size rs_reference_relationship" id=""
-                                placeholder="Relationship(One must be work related)" name="rs_reference_relationship" required value="">
+                                placeholder="Relationship(One must be work related)" name="rs_reference_relationship"  value="">
                             </div>
                           </div>
                         </div>
@@ -438,9 +438,11 @@
     function yesnoCheck() {
       if (document.getElementById('yesCheck').checked) {
         document.getElementById('ifYes').style.display = 'block';
+        $('.rs_reference_relationship').attr('required',true)
       }
-      else {
+      else if(document.getElementById('noCheck').checked){
         document.getElementById('ifYes').style.display = 'none';
+        $('.rs_reference_relationship').attr('required',false)
       }
     }
 

@@ -326,9 +326,8 @@ module.exports.add_existing_task = function (req) {
                         NotesToArray.push(req.body.notes);
                      }
                      var statusToArray = data1.ppts_task_status;
-                      if(!statusToArray.includes(status)){
-                        statusToArray.push(status);
-                      }
+                     statusToArray.push(status);
+                      
                      console.log('NotesToArray New String:',NotesToArray);
 
 

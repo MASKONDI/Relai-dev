@@ -140,12 +140,12 @@
                       </div>
                       <div class="col-sm-12 col-lg-2">
                         <label class="radio-inline">
-                          <input type="radio" name="spods_option_work_permit_for_uk" class="spods_option_work_permit_for_uk" id="yes1" value="yes" required>
+                          <input type="radio" name="spods_option_work_permit_for_uk" class="spods_option_work_permit_for_uk" id="yes1" value="yes" >
                           &nbsp;Yes&nbsp;&nbsp;
                         </label>
                         <label class="radio-inline">
                           <input type="radio" name="spods_option_work_permit_for_uk" class="spods_option_work_permit_for_uk" id="no1"
-                            value="no">&nbsp;No&nbsp;&nbsp;
+                            value="no" checked>&nbsp;No&nbsp;&nbsp;
                         </label>
                       </div>
                       <div class="col-sm-12 col-lg-4">
@@ -158,11 +158,11 @@
                       </div>
                       <div class="col-sm-12 col-lg-2">
                         <label class="radio-inline">
-                          <input type="radio" name="spods_option_uk_driving_licence" value="yes" id="yes3" required>
+                          <input type="radio" name="spods_option_uk_driving_licence" value="yes" id="yes3" >
                           &nbsp;Yes&nbsp;&nbsp;
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="spods_option_uk_driving_licence" id="no3" value="no">
+                          <input type="radio" name="spods_option_uk_driving_licence" id="no3" value="no" checked>
                           &nbsp;No&nbsp;&nbsp;
                         </label>
                       </div>
@@ -175,12 +175,12 @@
                       <div class="col-sm-12 col-lg-2">
                         <label class="radio-inline">
                           <input type="radio" name="spods_option_criminal_convictions" class="" value="yes"
-                            onclick="javascript:yesnoCheck();" id="yesCheck" required>
+                            onclick="javascript:yesnoCheck();" id="yesCheck" >
                           &nbsp;Yes&nbsp;&nbsp;
                         </label>
                         <label class="radio-inline">
                           <input type="radio" name="spods_option_criminal_convictions" value="no"
-                            onclick="javascript:yesnoCheck();" id="noCheck">
+                            onclick="javascript:yesnoCheck();" id="noCheck" checked>
                           &nbsp;No&nbsp;&nbsp;
                         </label>
                       </div>
@@ -197,7 +197,7 @@
                       </span>
                       <% }%>
                         <div class="row">
-                          <div class="col-sm-12 col-lg-12" id="ifYes">
+                          <div class="col-sm-12 col-lg-12" id="ifYes" style="display: none;">
                             <div class="input-box-size">
                               <input type="text" class="form-control text-field-size spods_details_of_convictions" id="criminal_convictions"
                                 name="spods_details_of_convictions"
@@ -216,7 +216,7 @@
                           <div class="col-sm-5 col-lg-6">
                             <div class="input-box-size-fix3">
                               <input type="text" class="form-control text-field-size spods_membership_number" id=""
-                                placeholder="Professional Body Membership No." name="spods_membership_number">
+                                placeholder="Professional Body Membership No." name="spods_membership_number" required>
                             </div>
                           </div>
                           <!-- <div class="col-sm-5 col-lg-5">
@@ -255,7 +255,7 @@
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix3">
                               <input type="text" class="form-control text-field-size spods_other_relevant_qualification" value="" id=""
-                                placeholder="Other Relevant Qualifications" name="spods_other_relevant_qualification">
+                                placeholder="Other Relevant Qualifications" name="spods_other_relevant_qualification" required>
                             </div>
                           </div>
 
@@ -310,16 +310,16 @@
       })
       </script> -->
   <script type="text/javascript">
-    window.onload = function () {
-      document.getElementById('ifYes').style.display = 'none';
-    }
+    // window.onload = function () {
+    //   document.getElementById('ifYes').style.display = 'none';
+    // }
 
     function yesnoCheck() {
       if (document.getElementById('yesCheck').checked) {
         document.getElementById('ifYes').style.display = 'block';
         $('.spods_details_of_convictions').attr('required',true)
       }
-      else {
+      else if(document.getElementById('noCheck').checked){
         document.getElementById('ifYes').style.display = 'none';
         $('.spods_details_of_convictions').attr('required',false)
       }
@@ -407,11 +407,12 @@
                 $("#no3").attr('checked', 'checked');
               }
               if(data.data.spods_option_criminal_convictions=='yes'){
-                //alert()
+                //alert('yes')
                 $("#yesCheck").attr('checked', 'checked');
                 //document.getElementById('yesCheck').checked
                 document.getElementById('ifYes').style.display = 'block';
               }else if(data.data.spods_option_criminal_convictions=='no'){
+                //alert('no')
                 $('.spods_details_of_convictions').val('')
                 $("#noCheck").attr('checked', 'checked');
                // document.getElementById('noCheck').checked

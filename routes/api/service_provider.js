@@ -1908,14 +1908,28 @@ router.post('/sp-change-permision', async (req, res) => {
 })
 router.post('/sp_task_status_update', (req, res) => {
   console.log("sp_task_status_update :", req.body);
-  PropertyProfessinoalTaskSchema.updateOne({ _id:req.body.task_id }, { $set: { ppts_task_status: req.body.ppts_task_status} }, { upsert: true }, function (err) {
+  PropertyProfessinoalTaskSchema.findOne({_id:req.body.task_id}).then((resp)=>{
+ if(resp){
+   var index = resp.ppts_assign_to.indexOf(req.session.user_id)
+  const items = resp.ppts_task_status
+  
+  items[index] = req.body.ppts_task_status
+  console.log('find resp when update',index,items)
+  PropertyProfessinoalTaskSchema.updateOne({ _id:req.body.task_id }, { $set: { ppts_task_status: items} }, function (err,data) {
     if (err) {
       console.log(err)
       res.send({ status: false, message: 'Something going wrong please check again !!' })
     } else {
       res.send({ status: true, message: 'Task Status update successfully !!' })
-      console.log("Task Status update successfully");
+      console.log("Task Status update successfully",data);
     }
   });
+ }else{
+   console.log('error in find')
+ }
+  }).catch((err)=>{
+    console.log(err)
+  })
+  
 });
 module.exports = router;

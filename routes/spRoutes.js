@@ -356,12 +356,12 @@ app.get('/service-provider/professionals-to-do-list', isServiceProvider, async f
   let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id);
   for (let key of AllhiredProfeshnoal) {
     let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
-    let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
-    propertyData.property_image = await propertyImageData.pps_property_image_name;
-    let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
-    let customerProfile = await customerHelper.getCustomerImageByID(key.pps_user_id);
-    propertyData.customer_name = await customerName
-    propertyData.customer_profile = await customerProfile
+    // let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
+    // propertyData.property_image = await propertyImageData.pps_property_image_name;
+    // let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
+    // let customerProfile = await customerHelper.getCustomerImageByID(key.pps_user_id);
+    // propertyData.customer_name = await customerName
+    // propertyData.customer_profile = await customerProfile
     propertyArray.push(propertyData)
 
   }
@@ -859,9 +859,19 @@ app.get('/service-provider/myproperties-detail-phaseA', isServiceProvider, async
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
+var taskArray=[]
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
-
-  console.log("task Object is:", taskObject);
+     for(var k of taskObject){
+       var dd = JSON.stringify(k);
+       var ddd = JSON.parse(dd);
+       
+       var index =k.ppts_assign_to.indexOf(user_id);
+       ddd.user_id = user_id
+       ddd.index = index
+       var datas = await ddd
+       taskArray.push(ddd)
+     }
+  console.log("task Object is:", taskArray);
   err_msg = req.flash('err_msg');
   req.session.pagename = 'service-provider/property';
   success_msg = req.flash('success_msg');
@@ -871,7 +881,7 @@ app.get('/service-provider/myproperties-detail-phaseA', isServiceProvider, async
     propertyData: propertyData,
     step: req.query.step,
     phase: req.query.phase,
-    taskObject: taskObject
+    taskObject: taskArray
   });
 });
 
