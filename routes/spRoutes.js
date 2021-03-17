@@ -323,10 +323,11 @@ app.get('/service-provider/property', isServiceProvider, async function (req, re
           let temp = await result
           //for(let image of result){
           //  let temp = await image
-          let customerName = await customerHelper.getCustomerNameByID(img.ps_user_id);
-          let customerProfile = await customerHelper.getCustomerImageByID(img.ps_user_id);
-          temp.customer_name = await customerName
-          temp.customer_profile = await customerProfile
+          // let customerName = await customerHelper.getCustomerNameByID(img.ps_user_id);
+          // let customerProfile = await customerHelper.getCustomerImageByID(img.ps_user_id);
+          let userdata = await CustomerSchema.findOne({ _id: img.ps_user_id });
+          temp.customer_name = await userdata.cus_fullname;
+          temp.customer_profile = await userdata.cus_profile_image_name;
           arr.push(temp)
           // }
           console.log("arr is", arr);
