@@ -309,6 +309,19 @@ span#comment-error {
     }
 
 
+
+    a.morelink {
+        text-decoration:none;
+        outline: none;
+    }
+    .morecontent span {
+        display: none;
+    }
+    .comment {
+        margin: 10px;
+    }
+    
+
     #loadermsg {display:none;     text-align: center;
         margin: 0 auto;
         width: 35px;

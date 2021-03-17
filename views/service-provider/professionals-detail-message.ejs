@@ -195,12 +195,16 @@ if(Totalpage >= page){
             }
           }
 
-          // var professional_id = $("#chat_form #professional_id").val();
-          //  var customer_id = $("#customer_id").val();
-          //  var property_id = $("#chat_form  #property_id").val();
-          //   //var msgcount = $("#chat_form  #msgcount").val();
+          var pathname = window.location.pathname;
+          console.log('pathname:',pathname)
+          if( pathname == '/service-provider/professionals-detail-message'){
+              var professional_id = $("#chat_form #professional_id").val();
+              var customer_id = $("#customer_id").val();
+              var property_id = $("#chat_form  #property_id").val();
+                //var msgcount = $("#chat_form  #msgcount").val();
+              getAllMessage_sp(customer_id, professional_id, property_id, msgCount);
+          }
 
-          // getAllMessage_sp(customer_id, professional_id, property_id, msgCount);
         }
       });
     }
