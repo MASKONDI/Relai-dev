@@ -2141,18 +2141,18 @@ Professional Details
   });
 jQuery(document).ready(function(){
     var $this = $('.reviews_rating_sec');
-    if ($this.find('.side-feedback-sec').length > 6) {
+    if ($this.find('.side-feedback-sec').length > 5) {
         $('.reviews_rating_sec').append('<div><a href="javascript:;" class="showMore"></a></div>');
     }
     // If more than 2 Education items, hide the remaining
-    $('.reviews_rating_sec .side-feedback-sec').slice(0,6).addClass('shown');
+    $('.reviews_rating_sec .side-feedback-sec').slice(0,5).addClass('shown');
     $('.reviews_rating_sec .side-feedback-sec').not('.shown').hide();
     $('.reviews_rating_sec .showMore').on('click',function(){
       $('.reviews_rating_sec .side-feedback-sec').not('.shown').toggle(300);
       $(this).toggleClass('showLess');
     });
 });
-</script>
+</script> 
 <script>
   
   $('#feedbackForm').validate({
