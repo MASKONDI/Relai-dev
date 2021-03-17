@@ -1,24 +1,29 @@
-<%- include('dashboard_header')-%>
-  <%- include('edit-profile-model')-%>
+<%- include('dashboard_header_professional')-%>
+  <%- include('edit-profile-professional-model')-%>
+
     <div class="dashboard-wpr">
       <div class="container-fluid">
         <div class="row content">
           <div class="col-sm-2 sidenav hidden-xs-down">
             <div class="user-login text-center">
 
-              <%- include('profile-image')-%>
+              <%- include('sp-profile-image')-%>
 
                 <div class="user-name">
-                  <h2>
-                    <%= session.name %>
-                  </h2>
-                  <a href="#">
-                    <%= session.email %>
-                      <%- include('edit-profile-icon')-%>
-                  </a>
+                  <h6>
+                    <%= session.name%>,<span><i>
+                          <%= session.role %>
+                        </i>
+                      </span>
+                  </h6>
+
+                  <a href="#"><i>
+                      <%= session.email%>
+                        <%- include('edit-profile-professional-icon')-%>
+                    </i></a>
                 </div>
             </div>
-            <%- include('sidebar')-%>
+            <%- include('sidebar-professional')-%>
           </div>
           <div class="col-sm-12 col-lg-10">
             <div class="row back-to-home">
@@ -30,7 +35,7 @@
                 <div class="row back-to-home">
                   <div class="breadcumb" style="margin-left: 30px;">
                     <ul>
-                      <li><a href="/proposal"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+                      <li><a href="/service-provider/proposal"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>
                           Back to My
                           Proposal</a></li>
 
@@ -87,7 +92,7 @@
                                   <span><a href="">More</a></span>
                                 </p>
                                 <% if(row.proposal_filename) {%>
-                                  <p><span><a href="/upload/<%=row.proposal_filename%>">View Docs </a></span></p>
+                                  <p><span><a href="../upload/<%=row.proposal_filename%>">View Docs </a></span></p>
                                   <%}%>
                               </div>
                             </div>
@@ -95,7 +100,7 @@
                             <div class="col-md-4">
                               <div class="for-icon-padding">
                                 <div class="d-flex flex-right-box-inner">
-                                  <img class="" src="images/phone.png" alt="Card image cap">&nbsp;<span>
+                                  <img class="" src="../images/phone.png" alt="Card image cap">&nbsp;<span>
                                     <div>
                                       <span>Proposal Schedule</span>
 
@@ -106,7 +111,7 @@
                                   </span>
                                 </div>
                                 <div class="mt-3 d-flex flex-right-box-inner">
-                                  <img class="" src="images/mail.png" alt="Card image cap">&nbsp;<span>Payment Mode
+                                  <img class="" src="../images/mail.png" alt="Card image cap">&nbsp;<span>Payment Mode
                                   </span>
                                   <span class="small-text">
                                     <%=row.sps_payment_mode%>
@@ -167,12 +172,13 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="right-box-freelancer">
-                          <h2>Professionals:</h2>
+                          <h2>Client:</h2>
 
                           <p><b><span>
-                                <%=row.sp_name%>
+                                <%=row.cs_name%>
                               </span>
-                              <%= row.sp_profession%>
+                              <%= row.ps_is_active_user_flag%>
+                                <!-- row.sp_profession -->
                             </b></p>
 
                           <p>Interested in discussing this job?</p>
@@ -191,7 +197,7 @@
                                 <a class="btn-interview opposit-btn" href="" id="removeProposal"
                                   onclick="proposal_remove('<%=row.proposalId%>','reject')">Remove</a>
                                 <%}%>
-                                  <h2>About the Professional</h2>
+                                  <h2>About the Client</h2>
 
                                   <div class="position-date">
                                     <span class="position">Plus</span>
@@ -211,14 +217,14 @@
 
                                   <h2>Location</h2>
                                   <p>
-                                    <%=row.sp_country%> <br>
-                                      <%=row.sp_city%>,<%= row.sp_state%>
+                                    <%=row.cs_country%> <br>
+                                      <%=row.cs_city%>,<%= row.cs_state%>
                                   </p>
 
                                   <h2>History</h2>
 
-                                  <p class="last-question-mark mb-0">More Than <%=row.total_proposal%> proposals <i
-                                        class="fa fa-question" aria-hidden="true"></i></p>
+                                  <p class="last-question-mark mb-0">More Than 10 proposals <i class="fa fa-question"
+                                      aria-hidden="true"></i></p>
 
                                   <p class="mb-0">1,136 Interview</p>
 
@@ -226,8 +232,9 @@
                                   <p class="mb-0">40 Jobs posted</p>
                                   <p class="mb-0">40 Jobs posted</p>
                                   <p class="mb-0">40 Jobs posted</p>
-                                  <p class="mb-0 gray-text">Member since:<%=row.sp_joining_date%>
-                                  </p>
+                                  <p class="mb-0 gray-text">Member since: jul 12, 2020 </p>
+
+
 
                         </div>
                       </div>
@@ -235,6 +242,7 @@
                   </div>
                   <%})%>
                     <%}%>
+
             </div>
           </div>
         </div>
@@ -244,7 +252,7 @@
     </div>
 
 
-    <%- include('dashboard_footer')-%>
+    <%-include('professional-footer')-%>
       <script>
         var acc = document.getElementsByClassName("accordion");
         var i;
@@ -271,7 +279,7 @@
               'proposalStatus': status,
               'action': 'proposal_status_update'
             },
-            url: '/change-proposal-status',
+            url: '/sp-change-proposal-status',
             cache: false,
             success: function (data) {
               if (data.status == true) {
