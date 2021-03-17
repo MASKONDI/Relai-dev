@@ -2,10 +2,11 @@ const PropertiesSchema = require("../../../models/properties");
 const PropertiesPictureSchema = require("../../../models/properties_picture");
 const ServiceProviderUploadDocsSchema = require("../../../models/service_provider_upload_document");
 
-module.exports.getPropertyByID = function (property_id) {
+module.exports.getPropertyByID = function (property_id,limit,page) {
     return new Promise(async function (resolve, reject) {
         if (property_id != null) {
-           let data=await PropertiesSchema.findOne({_id:property_id}).sort({ _id: -1 })
+
+           let data=await PropertiesSchema.findOne({_id:{ $in: property_id }}).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit)
                 if(data){
                     var object_as_string = JSON.stringify(data);
                     const propertyObject = JSON.parse(object_as_string);

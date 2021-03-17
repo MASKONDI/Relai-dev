@@ -307,16 +307,19 @@ app.get('/service-provider/track-your-progress-professionals', isServiceProvider
 app.get('/service-provider/property', isServiceProvider, async function (req, res) {
   console.log("current session is  from sp end:", req.session);
   req.session.pagename = 'service-provider/property';
+
+  const { page = 1, limit = 9 } = req.query;
+  console.log('pageQuery:', page);
+
   let propertyArray = []
-  PropertiesSchema.find().sort({ _id: -1 }).limit(9).then(async (data) => {
+  const count = await PropertiesSchema.countDocuments();
+  console.log('countcount:', count);
+
+  PropertiesSchema.find().sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
     if (data) {
       let arr = [];
-      //console.log("Property Data is", data);
       for (let img of data) {
-
-        //propertyArray.push(data)
         await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
-
           let temp = await result
           //for(let image of result){
           //  let temp = await image
@@ -329,47 +332,23 @@ app.get('/service-provider/property', isServiceProvider, async function (req, re
           console.log("arr is", arr);
         })
       }
-
-      //data.add(t);
-      // console.log("customer_name is ", arr[0].customer_name);
-      // console.log('++++++++',arr)
       err_msg = req.flash('err_msg');
       success_msg = req.flash('success_msg');
-
       res.render('service-provider/property', {
         err_msg, success_msg, layout: false,
         session: req.session,
         propertyData: data,
-        propertyImage: arr
+        propertyImage: arr,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
       });
-
     }
   }).catch((err) => {
     console.log(err)
   })
 
 })
-// let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id);
-// for (let key of AllhiredProfeshnoal) {
-//   let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
-//   let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
-//   propertyData.property_image = await propertyImageData.pps_property_image_name;
-//   let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
-//   let customerProfile = await customerHelper.getCustomerImageByID(key.pps_user_id);
-//   propertyData.customer_name = await customerName
-//   propertyData.customer_profile = await customerProfile
-//   propertyArray.push(propertyData)
 
-// }
-
-//   console.log("propertyIdArray", propertyArray);
-//   res.render('service-provider/property', {
-//     err_msg, success_msg, layout: false,
-//     session: req.session,
-//     propertyData: propertyArray,
-
-//   })
-// });
 app.get('/service-provider/professionals-to-do-list', isServiceProvider, async function (req, res) {
   console.log("todo")
   req.session.pagename = 'service-provider/professionals-to-do-list';
@@ -405,27 +384,59 @@ app.get('/service-provider/myproperties', isServiceProvider, async function (req
   console.log("", req.session);
   req.session.pagename = 'service-provider/property';
   let propertyArray = []
+  const { page = 1, limit = 1 } = req.query;
+  console.log('pageQuery:', page);
+  let count = 0;
+  let propertyId = [];
+  let userId = [];
+
   let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id);
   for (let key of AllhiredProfeshnoal) {
-    let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
-    let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
-    console.log("propertyImageData is", propertyImageData);
-    //console.log("propertyImageData is ",propertyImageData.pps_property_image_name);
-    if (propertyImageData) {
-      propertyData.property_image = await propertyImageData.pps_property_image_name;
-    }
-    let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
-    let customerProfile = await customerHelper.getCustomerImageByID(key.pps_user_id);
-    propertyData.customer_name = await customerName
-    propertyData.customer_profile = await customerProfile
-    propertyArray.push(propertyData)
-
+    propertyId.push(key.pps_property_id);
+    userId.push(key.pps_user_id);
   }
-  console.log("propertyIdArray", propertyArray);
+
+  count = await PropertiesSchema.countDocuments({ _id: { $in: propertyId } });
+  let propertyData = await propertyHelper.getPropertyByID(propertyId, limit, page);
+  let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
+  console.log("propertyImageData is", propertyData);
+  //console.log("propertyImageData is ",propertyImageData.pps_property_image_name);
+  if (propertyImageData) {
+    propertyData.property_image = await propertyImageData.pps_property_image_name;
+  }
+  let customerName = await customerHelper.getCustomerNameByID(propertyData.ps_user_id);
+  let customerProfile = await customerHelper.getCustomerImageByID(propertyData.ps_user_id);
+  propertyData.customer_name = await customerName
+  propertyData.customer_profile = await customerProfile
+  propertyArray.push(propertyData)
+
+
+  // for (let key of AllhiredProfeshnoal) {
+  //    count = await PropertiesSchema.countDocuments({_id:key.pps_property_id});
+  //   let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id,limit,page);
+  //   let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
+  //   console.log("propertyImageData is", propertyImageData);
+  //   //console.log("propertyImageData is ",propertyImageData.pps_property_image_name);
+  //   if (propertyImageData) {
+  //     propertyData.property_image = await propertyImageData.pps_property_image_name;
+  //   }
+  //   let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
+  //   let customerProfile = await customerHelper.getCustomerImageByID(key.pps_user_id);
+  //   propertyData.customer_name = await customerName
+  //   propertyData.customer_profile = await customerProfile
+  //   propertyArray.push(propertyData)
+
+  // }
+  //console.log("propertyIdArray", propertyArray);
+  console.log("totalPages", Math.ceil(count / limit));
+  console.log("currentPage", page);
+  console.log("count", count);
   res.render('service-provider/myproperties', {
     err_msg, success_msg, layout: false,
     session: req.session,
     propertyData: propertyArray,
+    totalPages: Math.ceil(count / limit),
+    currentPage: page
 
   })
 });
