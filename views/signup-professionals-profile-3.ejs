@@ -14,22 +14,22 @@
             <input type="hidden" name="serviceProviderUserId" value="<%=session.user_id%>">
             <input type="text" class="form-control form-control-fix2" id="schoolName"
               placeholder="School(ex: Oxford University)" name="spes_university_school_name" data-rule-required="true"
-              data-msg-required="University/School name is required!">
+              data-msg-required="University/School name is required!" required>
 
             <input type="text" class="form-control form-control-fix2" id="QualificationObtained"
               placeholder="Qualification obtained" name="spes_qualification_obtained" data-rule-required="true"
-              data-msg-required="Qualification name is required!">
+              data-msg-required="Qualification name is required!" required>
 
             <div class="row">
               <div class="col-sm-12 col-lg-6">
                 <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="FromDate"
                   placeholder="From Date" name="spes_from_date" data-rule-required="true"
-                  data-msg-required="From Date is required!">
+                  data-msg-required="From Date is required!" required>
               </div>
               <div class="col-sm-12 col-lg-6">
                 <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="toDate"
                   placeholder="To Date" name="spes_to_date" data-rule-required="true"
-                  data-msg-required="To Date is required!">
+                  data-msg-required="To Date is required!" required>
               </div>
             </div>
             <input type="hidden" name="education_id" value="" class="edit_education_id">
@@ -125,8 +125,10 @@
                   PERSONAL DETAILS
                 </a>
               </li>
-              <li >
-                <a href="javascript:void(0)" data-href="/signup-professionals-profile-2"class ="other_detail_nev"><img class="act-img" src="images/2-active.png"><img
+              <li class="completed">
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-2"class ="other_detail_nev">
+                  <img class="complete-img" src="images/checked.png">
+                  <img class="act-img" src="images/2-active.png"><img
                     src="images/2.png"> OTHER DETAILS</a>
               </li>
               <li class="active">

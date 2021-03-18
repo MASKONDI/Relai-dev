@@ -131,12 +131,16 @@
                   PERSONAL DETAILS
                 </a>
               </li>
-              <li >
-                <a href="javascript:void(0)" data-href="/signup-professionals-profile-2"class ="other_detail_nev"><img class="act-img" src="images/2-active.png"><img
+              <li class="completed">
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-2"class ="other_detail_nev">
+                  <img class="complete-img" src="images/checked.png">
+                  <img class="act-img" src="images/2-active.png"><img
                     src="images/2.png"> OTHER DETAILS</a>
               </li>
-              <li>
-                <a href="javascript:void(0)" data-href="/signup-professionals-profile-3" class ="education_detail_nev"><img class="act-img" src="images/3-active.png"><img
+              <li class="completed">
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-3" class ="education_detail_nev">
+                  <img class="complete-img" src="images/checked.png">
+                  <img class="act-img" src="images/3-active.png"><img
                     src="images/3.png"> EDUCATION</a>
               </li>
               <li class="active">
@@ -261,9 +265,10 @@
       </div>
     </div>
   </div>
-
+  
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
     crossorigin="anonymous"></script>
@@ -294,6 +299,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
     integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
     crossorigin="anonymous"></script>
+    
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
   <script type="text/javascript">
     $(".Employment-btn").click(function (e) {
@@ -303,21 +309,21 @@
       $('#employment_form .edit_employment_id').val();
       $('#employment_form h2.modal-title.w-100').text('Add Employment');
     });
-    $('#employment_form').validate({
-      onfocusout: function (element) {
-        this.element(element);
-      },
-      errorClass: 'error_validate',
-      errorElement: 'span',
-      highlight: function (element, errorClass) {
-        $(element).removeClass(errorClass);
-      },
-      submitHandler: function (form) {
-        $('#submit').attr('disabled', true);
-        //form.submit();
+    // $('#employment_form').validate({
+    //   onfocusout: function (element) {
+    //     this.element(element);
+    //   },
+    //   errorClass: 'error_validate',
+    //   errorElement: 'span',
+    //   highlight: function (element, errorClass) {
+    //     $(element).removeClass(errorClass);
+    //   },
+    //   submitHandler: function (form) {
+    //     //$('#submit').attr('disabled', true);
+    //     //form.submit();
 
-      }
-    });
+    //   }
+    // });
   </script>
 
   <script type="text/javascript">
@@ -374,12 +380,12 @@
     
      
       //$('#next_btn_4').attr('disabled', true);
-      $("#Employment_form_btn").click(function (e) {
+      $("#employment_form").submit(function (e) {
+        e.preventDefault();
         var StartDate= document.getElementById('spehs_from_date').value;
         var EndDate= document.getElementById('spehs_to_date').value;
         var eDate = new Date(EndDate);
         var sDate = new Date(StartDate);
-        e.preventDefault();
         if(StartDate!= '' && StartDate!= '' && sDate> eDate)
     {
       Swal.fire({
@@ -417,10 +423,13 @@
                   confirmButtonColor: '#005377',
                   timer: 3000
                 }).then((result)=>{
+
+                  //alert('11111')
                   $('#myModal1').modal('hide');
                   $('.employment_list').append('<div class="row"><div class="col-sm-12 col-lg-9"><div class=""><p><b>' + data.employmentDetail.spehs_name_of_employer + ' . ' + data.employmentDetail.spehs_job_title + '</p></b><h6>' + data.employmentDetail.spehs_job_description + '</h6><h6>' + fromDateYear + '-' + toDateYear + '</h6></div></div><div class="col-sm-12 col-lg-3"><div class=""> <img style="width:19%"onclick="editEmployment(' + "'" + data.employmentDetail._id + "'" + ')" src="images/write-icon.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;<img style="width:19%" onclick="deleteEmployment(' + "'" + data.employmentDetail._id + "'" + ')"src="images/delete-icon.png" alt=""></div></div></div>')
-                  location.reload(true);
+                 location.reload(true)
                 })
+                
               } else {
                 Swal.fire({
                   icon: 'success',
