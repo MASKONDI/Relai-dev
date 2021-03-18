@@ -166,6 +166,7 @@
                         <%}else{%>
                           <%taskObject.forEach(function(row,i){%>
                             <tr>
+                              
                               <td> <label class="check-todos">
                                   <p>
                                     <%=row.ppts_task_name%>
@@ -185,7 +186,7 @@
                               <%if(hiredProfessional_list.length>0){%>
                                 <%hiredProfessional_list.forEach(function(hp,k){%>
                                   <%if(row.ppts_assign_to.includes(hp._id)){%>
-                                    <td><a href="#" class="upload-any"><img src="images/upload.png">
+                                    <td> <a href="#" class="upload-any"><img src="images/upload.png">
                                         <span>
                                           <div class="custom-file-input">
                                             <input type="file" name="task-document" onchange="previewFile_upload_task_document(this,'<%=row._id%>','<%=hp._id%>','<%=row.ppts_phase_name%>','<%=row.ppts_task_name%>','<%=row.ppts_property_id%>','A')">
@@ -193,7 +194,11 @@
                                           </div>
                                         </span>
                                       </a>
+                                     
                                       <a href="/mydreamhome-details-message?id=<%=row.ppts_property_id%>&pid=<%=hp._id%>"><img src="images/chat.png"></a>
+                                     
+                                        <div class="pending-circle"></div>
+                                      
                                     </td>
                                     <%}else{%>
                                       <td>
@@ -202,7 +207,7 @@
                                       <%}%>
                                         <%});%>
                                           <%}%>
-
+                                            
                                             <td><a class="btn help-btn" href="#" data-toggle="modal"
                                                 data-target="#myModal">Help</a>
                                             </td>
@@ -471,7 +476,17 @@
                               <%if(hiredProfessional_list.length>0){%>
                                 <%hiredProfessional_list.forEach(function(hp,k){%>
                                   <%if(row.ppts_assign_to.includes(hp._id)){%>
-                                    <td><a href="#" class="upload-any"><img src="images/upload.png">
+                                    <td>
+                                      <%if(row.ppts_task_status[row.index]=='completed_by_service_provider'){%>
+                                        <div class="complete-circle"></div>
+                                        <%}else if(row.ppts_task_status[row.index]=='in_progress'){%>
+                                          <div class="inprogress-circle"></div>
+                                          <%}else{%>
+                                            <div class="pending-circle"></div>
+                                            <%}%>
+                                      
+                                      
+                                      <a href="#" class="upload-any"><img src="images/upload.png">
                                         <span>
                                           <div class="custom-file-input">
                                             <input type="file" name="task-document"
@@ -481,6 +496,7 @@
                                         </span>
                                       </a>
                                       <a href="/mydreamhome-details-message?id=<%=row.ppts_property_id%>&pid=<%=hp._id%>"><img src="images/chat.png"></a>
+                                      
                                     </td>
                                     <%}else{%>
                                       <td>

@@ -6086,4 +6086,24 @@ width: 45%;
 .Rating.Line i{
     color: green;
 }
-
+.pending-circle {
+    width:10px;
+    height:10px;
+    color:red;
+    border-radius:50%;
+    background-color:orange;
+  }
+  .inprogress-circle {
+    width:10px;
+    height:10px;
+   
+    border-radius:50%;
+    background-color:blue;
+  }
+  .complete-circle {
+    width:10px;
+    height:10px;
+   
+    border-radius:50%;
+    background-color:green;
+  }
