@@ -385,7 +385,7 @@ app.get('/service-provider/myproperties', isServiceProvider, async function (req
   console.log("", req.session);
   req.session.pagename = 'service-provider/property';
   let propertyArray = []
-  const { page = 1, limit = 1 } = req.query;
+  const { page = 1, limit = 6 } = req.query;
   console.log('pageQuery:', page);
   let count = 0;
   let propertyId = [];
