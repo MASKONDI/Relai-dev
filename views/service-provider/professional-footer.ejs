@@ -442,3 +442,288 @@ function scrollToBottom() {
 
      </script>
 
+<script>
+  $(document).ready(function () {
+    $(".propertyComplaintModal").click(function (e) {
+      $("#MyComplaintModal #coms_complaint_help").html("<option selected value='Property Related Enquiry'>Property Related Enquiry</option>");
+      var propertyId = $(this).data('property_id');
+      $("#MyComplaintModal #property_id").html("<option selected value='" + propertyId + "'></option>");
+      $.ajax({
+        type: "GET",
+        url: "/service-provider/customer-by-property",
+        data: {
+          property_id: propertyId
+        },
+        cache: false,
+        success: function (html) {
+          $('#MyComplaintModal').modal('show');
+          $('#coms_complaint_for').show();
+          console.log('result:', html)
+          var htmlData = '';
+          htmlData += '<option value="">Select Customer</option>';
+          if (html.userdata.length > 0) {
+            $.each(html.userdata, function (i, data) {
+              console.log('val:', data)
+              htmlData += '<option value="' + data._id + '">' + data.cus_fullname + '</option>';
+            });
+          }
+          $('#coms_complaint_for').html(htmlData);
+        }
+      });
+    });
+  });
+
+  function complaint_previewFile1(input){
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              console.log('filess:',input.files[0])
+              if(input.files[0].type == 'image/jpeg' || input.files[0].type == 'image/png' || input.files[0].type == 'image/gif'){
+                $('#uploaded_img').attr('src', e.target.result);
+              }else if(input.files[0].type == 'application/pdf'){
+                $('#uploaded_img').attr('src', 'images/pdficon.png');
+              }else{
+                 Swal.fire({
+                    icon: 'error',
+                    title: 'File type not supported !!',
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+                  })
+              }
+              $('.imgcompaint_name').text(input.files[0].name);
+               // $('#uploaded_img').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img src="'+e.target.result+'" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+  }
+
+  function previewFile_complainsDetails(input){
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              console.log('filess:',input.files[0])
+              if(input.files[0].type == 'image/jpeg' || input.files[0].type == 'image/png' || input.files[0].type == 'image/gif'){
+                $('#uploaded_img').attr('src', e.target.result);
+                $('.complaint_imgname').text(input.files[0].name);
+              }else if(input.files[0].type == 'application/pdf'){
+                $('#uploaded_img').attr('src', 'images/pdficon.png');
+                $('.complaint_imgname').text(input.files[0].name);
+                
+              }else{
+                 Swal.fire({
+                    icon: 'error',
+                    title: 'File type not supported !!',
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+                  })
+              }
+                //$('.ddddd').attr('src', e.target.result);
+               // $('#uploaded_img').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img src="'+e.target.result+'" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+  }
+
+  $('#mycomplent_details_form').validate({
+      onfocusout: function (element) {
+        this.element(element);
+      },
+      errorClass: 'error_validate',
+      errorElement: 'span',
+      errorColor: 'red',
+      highlight: function (element, errorClass) {
+        $(element).removeClass(errorClass);
+      },
+      submitHandler: function (form) {
+        $('#submit').attr('disabled', true);
+        var formData = new FormData($('#mycomplent_details_form')[0]);
+         // var formData = new FormData(this);
+         // var formData = $(this).serialize();
+          console.log('formData:',formData)
+          $.ajax({
+            type: "POST",
+            data: formData,
+            url: "/api/professional-complaint-details-discussion", 
+            cache:false,
+            contentType: false,
+            processData: false,           
+            success: function (data) {
+              console.log(data);
+              if(data.status == true){
+                location.reload(true);
+                  // $('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> '+data.message+'</div>')
+                  // setTimeout(function(){ 
+                  //   $('#MyComplaintModal').modal('hide');
+                  //   location.reload(true);
+                  // }, 6000);
+              }else{
+                $('.complaint_msg').html('<div class="isa_error"><i class="fa fa-check"></i> '+data.message+'</div>')
+              }
+            }
+          });
+      }
+    });
+
+  $('#mycomplent_form').validate({
+    onfocusout: function (element) {
+      this.element(element);
+    },
+    errorClass: 'error_validate',
+    errorElement: 'span',
+    errorColor: 'red',
+    highlight: function (element, errorClass) {
+      $(element).removeClass(errorClass);
+    },
+    submitHandler: function (form) {
+      $('#submit').attr('disabled', true);
+      //form.submit();
+      $('.loader-box').attr('style','display:flex !important');
+      var formData = new FormData($('#mycomplent_form')[0]);
+      console.log('formData:', formData)
+      $.ajax({
+        type: "POST",
+        data: formData,
+        url: "/api/professional-new-raise-a-complaint",
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+          console.log(data);
+          if (data.status == true) {
+            $('.loader-box').attr('style','display:none !important');
+            //$('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> ' + data.message + '</div>')
+            $('#MyComplaintModal').modal('hide');
+              Swal.fire({
+                   // position: 'top-end',
+                    icon: 'success',
+                    title: data.message,
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 5000
+              })
+           setTimeout(function () {
+              location.reload(true);
+            }, 5000);
+
+          } else {
+            $('.loader-box').attr('style','display:none !important');
+            Swal.fire({
+                    icon: 'error',
+                    title: data.message,
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+            })
+            //$('.complaint_msg').html('<div class="isa_error"><i class="fa fa-check"></i> ' + data.message + '</div>')
+          }
+        }
+      });
+    }
+  });
+
+  $( ".sp_close_complaint" ).click(function() {
+  var complainCode = $(this).attr('conplaint-code');
+Swal.fire({ 
+  title: 'Are you sure want to close ticket?',
+  showCancelButton: true,
+  confirmButtonText: `Yes`,
+  confirmButtonColor: '#005377',
+}).then((result) => {
+  if (result.isConfirmed) {
+     
+    $.ajax({
+            type: "POST",
+            data: {
+              complainCode:complainCode
+            },
+            url: "/api/professional-complaint-details-discussion-close", 
+            cache:false,           
+            success: function (data) {
+              console.log(data);
+              if(data.status == true){
+                //location.reload(true);
+                Swal.fire({
+                    icon: 'success',
+                    title: data.message,
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+                  })
+                  setTimeout(function(){ 
+                    location.reload(true);
+                  }, 3000);
+              }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: data.message,
+                    showConfirmButton: false,
+                    confirmButtonColor: '#005377',
+                    timer: 3000
+                  })
+                  setTimeout(function(){ 
+                    location.reload(true);
+                  }, 3000);
+              }
+            }
+          });
+  }
+})
+ });
+
+ $("#coms_complaint_help").change(function () {
+    // var propertyId = $('option:selected', this).attr('property-id');
+    var coms_complaint_help = this.value;
+    if (coms_complaint_help == 'Property Related Enquiry') {
+      $.ajax({
+        type: "GET",
+        url: "/service-provider/property-related-enquiry-proprty-list",
+        cache: false,
+        success: function (html) {
+          $('#property_id').show();
+          console.log('result:', html)
+          var htmlData = '';
+          htmlData += '<option value="">Select Property</option>';
+          if (html.propertyData.length > 0) {
+            $.each(html.propertyData, function (i, data) {
+              console.log('val:', data)
+              htmlData += '<option value="' + data._id + '">' + data.ps_property_name + '</option>';
+            });
+          }
+          $('#property_id').html(htmlData);
+        }
+      });
+    } else {
+      $('#property_id,#coms_complaint_for').hide();
+      $('#property_id,#coms_complaint_for').html('');
+
+    }
+  })
+
+  $("#property_id").change(function () {
+    var property_id = this.value;
+    $.ajax({
+      type: "GET",
+      url: "/service-provider/professional-customer-by-property",
+      data: {
+        property_id: property_id
+      },
+      cache: false,
+      success: function (html) {
+        $('#coms_complaint_for').show();
+        console.log('result:', html)
+        var htmlData = '';
+        htmlData += '<option value="">Select Customer</option>';
+        if (html.cusResultData.length > 0) {
+          $.each(html.cusResultData, function (i, data) {
+            console.log('val:', data)
+            htmlData += '<option value="' + data._id + '">' + data.cus_fullname + '</option>';
+          });
+        }
+        $('#coms_complaint_for').html(htmlData);
+      }
+    });
+  })
+
+</script>
