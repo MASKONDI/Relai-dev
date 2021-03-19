@@ -64,7 +64,7 @@
               </div>
               <div class="col-sm-6 col-lg-6">
                 <div class="complaints float-right">
-                  <a href="#" data-toggle="modal" data-target="#myModal" class="btn btn-complaint">
+                  <a href="#" data-toggle="modal" data-target="#MyComplaintModal" class="btn btn-complaint">
                     Raise a New Complaint</a>
                 </div>
               </div>
@@ -72,109 +72,48 @@
             </div>
 
             <div class=" dashboard-inner">
-
+              <% if(complaintData.length > 0){ %>
               <table class="table table-responsive table-phase-fix">
                 <thead>
                   <tr>
                     <th>Complaint ID</th>
-                    <th>Client Name</th>
-                    <th class="message-th">Message</th>
-                    <th>Property Name</th>
+                    <th>Complaint Type</th>
+                    <th class="message-th">Complaint Subject</th>
                     <th>Date</th>
                     <th>Status</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>
-                      <p>C1234</p>
-                    </td>
-                    <td>Andrew Wills </td>
-                    <td>Lorem ipsum dolor sit amet,</td>
-                    <td>Nacary Apartment </td>
-                    <td>16 Nov, 2020</td>
-                    <td><a href="/service-provider/complaints-professional-detail" class="btn btn-pending">PENDING</a>
-                    </td>
-                    <td> <a href="/service-provider/complaints-professional-detail"><img src="../images/eye.png"></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p>C1234 </p>
-
-                    </td>
-                    <td>Rachel Green </td>
-                    <td>Lorem ipsum dolor sit amet,</td>
-                    <td>Hilton Avenue </td>
-                    <td>16 Nov, 2020</td>
-                    <td><a href="/service-provider/complaints-professional-detail"
-                        class="btn btn-complete">COMPLETED</a></td>
-                    <td> <a href="/service-provider/complaints-professional-detail"><img src="../images/eye.png"></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p>C1234 </p>
-
-                    </td>
-                    <td>Jack Lee </td>
-                    <td>Lorem ipsum dolor sit amet,</td>
-                    <td>Princess Skyline</td>
-                    <td>16 Nov, 2020 </td>
-                    <td><a href="/service-provider/complaints-professional-detail" class="btn btn-pending">PENDING</a>
-                    </td>
-                    <td> <a href="/service-provider/complaints-professional-detail"><img src="../images/eye.png"></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p>C1234 </p>
-
-                    </td>
-                    <td>Celia Ahern </td>
-                    <td>Lorem ipsum dolor sit amet,</td>
-                    <td>Princess Skyline </td>
-                    <td>16 Nov, 2020 </td>
-                    <td><a href="/service-provider/complaints-professional-detail"
-                        class="btn btn-complete">COMPLETED</a>
-                    </td>
-                    <td> <a href="/service-provider/complaints-professional-detail"><img src="../images/eye.png"></a>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      <p>C1234 </p>
-
-                    </td>
-                    <td>Monica Geller</td>
-                    <td>Lorem ipsum dolor sit amet,</td>
-                    <td>Hilton Avenue</td>
-                    <td>16 Nov, 2020 </td>
-                    <td><a href="/service-provider/complaints-professional-detail" class="btn btn-pending">PENDING</a>
-                    </td>
-                    <td> <a href="/service-provider/complaints-professional-detail"><img src="../images/eye.png"></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p>C1234 </p>
-
-                    </td>
-                    <td>Monica Geller</td>
-                    <td>Lorem ipsum dolor sit amet,</td>
-                    <td>Hilton Avenue</td>
-                    <td>16 Nov, 2020 </td>
-                    <td><a href="/service-provider/complaints-professional-detail" class="btn btn-pending">PENDING</a>
-                    </td>
-                    <td> <a href="/service-provider/complaints-professional-detail"><img src="../images/eye.png"></a>
-                    </td>
-                  </tr>
+                  <% var i=0; complaintData.forEach(function(row){ %>
+                    <tr>
+                      <td>
+                        <p>
+                          <%= row.coms_complaint_code%>
+                        </p>
+                      </td>
+                      <td>
+                        <%= row.coms_complaint_help%>
+                      </td>
+                      <td>
+                        <%= row.coms_complaint_subject%>
+                      </td>
+                      <td>
+                        <%= new Intl.DateTimeFormat('en-GB', { year: 'numeric' , month: 'long' , day: '2-digit'
+                          }).format(new Date(row.coms_created_at)) %>
+                      </td>
+                      <td><a href="javascript:void(0)" class="btn btn-pending">
+                          <%= row.coms_complaint_status%>
+                        </a></td>
+                      <td> <a href="/service-provider/complaints-professional-detail?complaintID=<%= row.coms_complaint_code%>" data-toggle="tooltip"
+                          data-placement="top" title="Complaint-detail"><img src="../images/eye.png"></a> </td>
+                    </tr>
+                    <% i++;});%>
                 </tbody>
               </table>
-
-
+              <% }else{ %> 
+                <p style="text-align:center">Complaint Not found !!</p>  
+              <% } %>
             </div>
           </div>
         </div>

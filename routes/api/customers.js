@@ -193,6 +193,8 @@ router.post("/cust_register", (req, res) => {
 
       const newCustomer = new CustomerSchema({
         cus_unique_code: "cust-" + uuidv4(),
+        // cus_firstname:req.body.cus_firstname,
+        // cus_lastname: req.body.cus_lastname,
         cus_fullname: req.body.cus_firstname + ' ' + req.body.cus_lastname,
         cus_email_id: req.body.cus_email_id,
         cus_phone_number: req.body.cus_phone_number,
@@ -338,6 +340,7 @@ router.post("/cust_signin", async (req, res) => {
             req.session.city = customers.cus_city;
             req.session.phoneNumber = customers.cus_phone_number;
             req.session.country = customers.cus_country_id;
+            req.session.cus_firstname = customers.cus_firstname;
             //req.session.profilePicture= customer.profile_picture
             if (customers.cus_profile_image_name) {
               req.session.imagename = customers.cus_profile_image_name
@@ -1272,7 +1275,7 @@ router.post("/addTask_from_Dreamhome_detial_phase", (req, res) => {
       ppts_phase_name: req.body.ppts_phase_name,
       ppts_is_active_user_flag: req.session.active_user_login,
       ppts_note: req.body.ppts_note,
-      ppts_task_status:'pending'
+      ppts_task_status: 'pending'
     });
     newTask
       .save()
@@ -1469,17 +1472,17 @@ router.post('/message', async (req, res) => {
     sms_read_status: req.body.sms_read_status, //default is unread
     sms_is_active_user_flag: req.session.active_user_login
   })
-  newMessage.save().then( async message => {
+  newMessage.save().then(async message => {
     console.log("getting response form server is :", message);
 
     const newNotification = new NotificationSchema({
-      ns_title:'New Message',
-      ns_sender:req.session.user_id,
-      ns_receiver:req.body.sms_receiver_id,
-      ns_property_id:req.body.sms_property_id,
-      ns_sender_type:'customer',
-      ns_receiver_type:'service_provider',
-      ns_read_status:'unseen'
+      ns_title: 'New Message',
+      ns_sender: req.session.user_id,
+      ns_receiver: req.body.sms_receiver_id,
+      ns_property_id: req.body.sms_property_id,
+      ns_sender_type: 'customer',
+      ns_receiver_type: 'service_provider',
+      ns_read_status: 'unseen'
     });
     newNotification.save();
     var QueryCount = {
@@ -1491,7 +1494,7 @@ router.post('/message', async (req, res) => {
     const countMsg = await MessageSchema.countDocuments(QueryCount);
     res.send({
       msgData: message,
-      countMsg:countMsg
+      countMsg: countMsg
     })
     //res.flash('success_msg', 'message forward successfully');
     //res.redirect('/'); //set based on current login if its customer portal then redirect customer_message portal and 
@@ -2743,25 +2746,25 @@ router.get('/getunhiredProfessionalist', async (req, res) => {
 
 });
 
-router.post('/remove_uploaded_document', async(req, res) => {
-console.log('remove_uploaded_document api req',req.body);
-//CustomerUploadDocsSchema
-//DocumentPermissionSchema
-if(req.body.document_id!=''&&req.body.document_id!=undefined){
-  await DocumentPermissionSchema.findOneAndRemove({dps_document_id:req.body.document_id});
- var is_delete= await CustomerUploadDocsSchema.findOneAndRemove({_id:req.body.document_id});
-  if(is_delete){
+router.post('/remove_uploaded_document', async (req, res) => {
+  console.log('remove_uploaded_document api req', req.body);
+  //CustomerUploadDocsSchema
+  //DocumentPermissionSchema
+  if (req.body.document_id != '' && req.body.document_id != undefined) {
+    await DocumentPermissionSchema.findOneAndRemove({ dps_document_id: req.body.document_id });
+    var is_delete = await CustomerUploadDocsSchema.findOneAndRemove({ _id: req.body.document_id });
+    if (is_delete) {
+      return res.send({
+        'status': true,
+        'message': 'Document Remove Successfully..'
+      })
+    }
+  } else {
     return res.send({
-      'status':true,
-      'message':'Document Remove Successfully..'
+      'status': false,
+      'message': 'Something Wrong...'
     })
   }
-}else{
-  return res.send({
-    'status':false,
-    'message':'Something Wrong...'
-  })
-}
 })
 
 
@@ -2770,25 +2773,25 @@ if(req.body.document_id!=''&&req.body.document_id!=undefined){
 
 router.post('/customer-message-unread', (req, res) => {
   console.log("Customer Unread Send Message data from client is :", req.body);
-  console.log('req.body.sms_sender_id:',req.body.sms_sender_id);
-  console.log('req.body.sms_receiver_id:',req.body.sms_receiver_id);
-  MessageSchema.updateMany({sms_property_id:req.body.sms_property_id,sms_sender_id:req.body.sms_sender_id,sms_receiver_id:req.body.sms_receiver_id,sms_sender_type:req.body.sms_sender_type,sms_receiver_type:req.body.sms_receiver_type }, { $set: { sms_read_status: 'read' } }, function (err) {
+  console.log('req.body.sms_sender_id:', req.body.sms_sender_id);
+  console.log('req.body.sms_receiver_id:', req.body.sms_receiver_id);
+  MessageSchema.updateMany({ sms_property_id: req.body.sms_property_id, sms_sender_id: req.body.sms_sender_id, sms_receiver_id: req.body.sms_receiver_id, sms_sender_type: req.body.sms_sender_type, sms_receiver_type: req.body.sms_receiver_type }, { $set: { sms_read_status: 'read' } }, function (err) {
     if (err) {
       console.log(err)
       res.send({ status: false, message: 'Something going wrong please check again !!' })
     } else {
-      NotificationSchema.updateMany({ ns_title:'New Message',ns_sender_type:'service_provider',ns_receiver_type:'customer',ns_receiver:req.session.user_id,ns_sender:req.body.sms_sender_id}, { $set: { ns_read_status: 'seen' } }, function (err) {
-      if(err){
-         console.log(err)
+      NotificationSchema.updateMany({ ns_title: 'New Message', ns_sender_type: 'service_provider', ns_receiver_type: 'customer', ns_receiver: req.session.user_id, ns_sender: req.body.sms_sender_id }, { $set: { ns_read_status: 'seen' } }, function (err) {
+        if (err) {
+          console.log(err)
           res.send({ status: false, message: 'Something going wrong please check again !!' })
-      }else{
-        res.send({ status: true, message: 'Task update successfully !!' })
-        console.log("notification messg Status update successfully");
-      }
+        } else {
+          res.send({ status: true, message: 'Task update successfully !!' })
+          console.log("notification messg Status update successfully");
+        }
 
-    });
-        //res.send({ status: true, message: 'Task update successfully !!' })
-        console.log("Message Status update successfully");
+      });
+      //res.send({ status: true, message: 'Task update successfully !!' })
+      console.log("Message Status update successfully");
     }
   });
 });
