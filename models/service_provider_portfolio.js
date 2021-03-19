@@ -18,7 +18,7 @@ const ServiceProviderPortfolioSchema = new Schema({
   },
   spps_type: {
     type: String,
-    enum: ['image', 'video']
+    enum: ['image', 'video','pdf','doc','txt']
   },
   spps_file: {
     data: Buffer,

@@ -143,6 +143,7 @@
                                 <option value="">Select Language</option>
                                 <option value="english">English</option>
                                 <option value="german">German</option>
+                                <option value="italian">Italian</option> 
                                 <option value="french">French</option>
                                 <option value="spanish">Spanish</option>
                               </select>
@@ -260,9 +261,9 @@
       $("button[name='addPlusbtn']").click(function (e) {
         e.preventDefault();
 
-        var domElement = $('<div class="row"> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3"><select class="form-control " class="text-field-size" id="selectBox" name="spls_language" required><option value="">Select Language</option>           <option value="english">English</option> <option value="german">German</option>           <option value="french">French</option> <option value="spanish">Spanish</option> </select>  </div> </div> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3">     <select class="form-control " class="text-field-size" id="selectBox"              name="spls_language_proficiency_level" required> <option value="">Select Language Proficiency Level</option><option value="level1">Level 1 - Elementary Proficiency</option>           <option value="level2">Level 2 - Limited Working Proficiency</option><option value="level3">Level 3 - Professional Working Proficiency</option> <option value="level4">Level 4 - Full Professional Proficiency </option> <option value="level5">Level 5 - Native / Bilingual Proficiency </option>  </select> </div> </div><div class="col-sm-12 col-lg-1"><div class="add-btn"'+c+'><a class="btn signup-professional7-add-btn remove_field" name="remove_field"><i class="fa fa-minus"></i></a></div></div></div> ' + c++);
+        var domElement = $('<div class="row"> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3"><select class="form-control " class="text-field-size" id="selectBox" name="spls_language" required><option value="">Select Language</option>           <option value="english">English</option> <option value="german">German</option><option value="italian">Italian</option>           <option value="french">French</option> <option value="spanish">Spanish</option> </select>  </div> </div> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3">     <select class="form-control " class="text-field-size" id="selectBox"              name="spls_language_proficiency_level" required> <option value="">Select Language Proficiency Level</option><option value="level1">Level 1 - Elementary Proficiency</option>           <option value="level2">Level 2 - Limited Working Proficiency</option><option value="level3">Level 3 - Professional Working Proficiency</option> <option value="level4">Level 4 - Full Professional Proficiency </option> <option value="level5">Level 5 - Native / Bilingual Proficiency </option>  </select> </div> </div><div class="col-sm-12 col-lg-1"><div class="add-btn"'+c+'><a class="btn signup-professional7-add-btn remove_field" name="remove_field"><i class="fa fa-minus"></i></a></div></div></div> ' + c++);
 
-        if (c == 5) {
+        if (c == 6) {
 
           $("button[name='addPlusbtn']").attr('disabled', true);
         }
@@ -319,6 +320,7 @@
                 console.log('val:', resp.data[0])
                 if(data.spls_language_proficiency_level=='level1'){
                   element='Level 1 - Elementary Proficiency'
+                  
                 }else if(data.spls_language_proficiency_level=='level2'){
                   element='Level 2 - Limited Working Proficiency'
                 }else if(data.spls_language_proficiency_level=='level3'){
@@ -328,7 +330,11 @@
                 }else if(data.spls_language_proficiency_level=='level5'){
                   element='Level 5 - Native / Bilingual Proficiency'
                 }
-                htmlData += ' <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3"><select class="form-control " class="text-field-size" id="selectBox" name="spls_language"><option value="'+data.spls_language.replace(/\w/, c => c.toUpperCase())+'">'+data.spls_language.replace(/\w/, c => c.toUpperCase())+'</option>           <option value="english">English</option> <option value="german">German</option>           <option value="french">French</option> <option value="spanish">Spanish</option> </select>  </div> </div> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3">     <select class="form-control " class="text-field-size" id="selectBox"              name="spls_language_proficiency_level"> <option value="'+data.spls_language_proficiency_level+'">'+element+'</option><option value="level1">Level 1 - Elementary Proficiency</option>           <option value="level2">Level 2 - Limited Working Proficiency</option><option value="level3">Level 3 - Professional Working Proficiency</option> <option value="level4">Level 4 - Full Professional Proficiency </option> <option value="level5">Level 5 - Native / Bilingual Proficiency </option>  </select> </div> </div><input type="hidden" name="lang_id" value="'+data._id+'"> ';
+                if(data.spls_language=='english'){
+                  
+                }
+                
+                htmlData += ' <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3"><select class="form-control selectlangBox" class="text-field-size" id="selectBox" name="spls_language"><option value="'+data.spls_language.replace(/\w/, c => c.toUpperCase())+'">'+data.spls_language.replace(/\w/, c => c.toUpperCase())+'</option>           <option value="english">English</option> <option value="german">German</option> <option value="italian">Italian</option>          <option value="french">French</option> <option value="spanish">Spanish</option> </select>  </div> </div> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3">     <select class="form-control " class="text-field-size" id="selectBox"              name="spls_language_proficiency_level"> <option value="'+data.spls_language_proficiency_level+'">'+element+'</option><option value="level1">Level 1 - Elementary Proficiency</option>           <option value="level2">Level 2 - Limited Working Proficiency</option><option value="level3">Level 3 - Professional Working Proficiency</option> <option value="level4">Level 4 - Full Professional Proficiency </option> <option value="level5">Level 5 - Native / Bilingual Proficiency </option>  </select> </div> </div><input type="hidden" name="lang_id" value="'+data._id+'"> ';
               });
               // htmlData +='<div class="add-btn"><a href="javascript:void(0)" onclick="test(this,'+resp.data.length+')"class="btn signup-professional7-add-btn_addmore" name="addPlusbtn1"><i class="fa fa-plus"></i></a></div>'
               if(resp.data.length<4){

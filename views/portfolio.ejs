@@ -9,7 +9,7 @@
           </div>
 
         </div>
-        <p>SIGN UP</p>
+        <!-- <p>SIGN UP</p> -->
         <h1>Upload your portfolio</h1>
 
         <% if(typeof err_msg!='undefined' ){ %>
@@ -32,7 +32,7 @@
                         <img src="images/upload-icon.png" class="avtar1">
                       </div>
                       <div class="driving-liences-portfolio img_name1">
-                        <p>Picture/Video 1</p>
+                        <p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture/Video 1</p>
                       </div>
                       <div class="upload-portfolio">
                         <a href="javascript:void(0)">Upload</a>
@@ -56,7 +56,7 @@
                         <img src="images/upload-icon.png" class="avtar2">
                       </div>
                       <div class="driving-liences-portfolio img_name2">
-                        <p>Picture/Video 2</p>
+                        <p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture/Video 2</p>
                       </div>
                       <div class="upload-portfolio">
                         <a href="javascript:void(0)">Upload</a>
@@ -64,7 +64,7 @@
                       </div>
                       <span>
                         <div class="custom-file-input">
-                          <input type="file" class="image2" name="portfolio-docs" value="" required
+                          <input type="file" class="image2" name="portfolio-docs" value="" 
                             onchange="port_previewFile(this,2);">
                           <input type="button">
                         </div>
@@ -80,7 +80,7 @@
                         <img src="images/upload-icon.png" class="avtar3">
                       </div>
                       <div class="driving-liences-portfolio img_name3">
-                        <p>Picture/Video 3</p>
+                        <p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture/Video 3</p>
                       </div>
                       <div class="upload-portfolio">
                         <a href="javascript:void(0)">Upload</a>
@@ -88,7 +88,7 @@
                       </div>
                       <span>
                         <div class="custom-file-input">
-                          <input type="file" class="image3" name="portfolio-docs" value="" required
+                          <input type="file" class="image3" name="portfolio-docs" value="" 
                             onchange="port_previewFile(this,3);">
                           <input type="button">
                         </div>
@@ -110,12 +110,13 @@
                   </div>
                   <div class="portfolio-submit">
                     <div class="row">
-                      <div class="col-sm-6 col-lg-6 " >
-                        <button type="submit" class="btn portfolio-submit-btn float-right" name="submit">Upload</button>
+                      <div class="col-sm-6 col-lg-6"  style="padding-top: 60px; padding-right: 227px;">
+                        <a href="/signup-professionals-profile-7" class="btn previous-btn" style="width: 164px; ">PREVIOUS</a>
                       </div>
-                      <!-- <div class="col-sm-6 col-lg-6">
-                        <a href="/kyc-professional" class="btn portfolio-submit-btn">Next</a>
-                      </div> -->
+                      <div class="col-sm-6 col-lg-6 " >
+                        <button type="submit" class="btn portfolio-submit-btn float-right" style="width: 164px; "name="submit">Upload</button>
+                      </div>
+                      
                     </div>
                   </div>
                 </form>
@@ -276,17 +277,33 @@
         reader.onload = function (e) {
           // console.log('filess:', e.target)
           console.log('filess:', input.files[0].type)
+         
           if (input.files[0].type == 'image/jpeg' || input.files[0].type == 'image/png' || input.files[0].type == 'image/gif') {
-            $(".img_name" + c).html(input.files[0].name);
+            $(".img_name" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
             $('.avtar' + c).attr('src', e.target.result)
-            $(".port_Picture_" + c).html(input.files[0].name);
+            $(".port_Picture_" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
             $('#port_addmoreAvtar' + c).attr('src', e.target.result)
           } else if (input.files[0].type == 'video/x-ms-wmv' || input.files[0].type == 'video/mp4') {
-            $(".img_name" + c).html(input.files[0].name);
-            $('.avtar' + c).attr('src', e.target.result)
-            $(".port_Picture_" + c).html(input.files[0].name);
-            $('#port_addmoreAvtar' + c).attr('src', e.target.result)
-          } else {
+            $(".img_name" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('.avtar' + c).attr('src', 'images/videoicon.png')
+            $(".port_Picture_" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('#port_addmoreAvtar' + c).attr('src', 'images/videoicon.png')
+          } else if(input.files[0].type == 'application/pdf'){
+            $(".img_name" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('.avtar' + c).attr('src', 'images/pdf.png')
+            $(".port_Picture_" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('#port_addmoreAvtar' + c).attr('src', 'images/pdf.png')
+          }else if(input.files[0].type == 'text/plain'){
+            $(".img_name" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('.avtar' + c).attr('src', 'images/txticon.png')
+            $(".port_Picture_" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('#port_addmoreAvtar' + c).attr('src', 'images/txticon.png')
+          }else if(input.files[0].type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'){
+            $(".img_name" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('.avtar' + c).attr('src', 'images/docicon.png')
+            $(".port_Picture_" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('#port_addmoreAvtar' + c).attr('src', 'images/docicon.png')
+          }else{
 
             Swal.fire({
               icon: 'error',
@@ -323,12 +340,30 @@
               var htmlData = '';
            
             if (resp.data.length > 0) {
+              var iamgeElement =''
               $('.portfolio-submit-btn').attr('disabled', true);
               $.each(resp.data, function (i, data) {
                 console.log('val:', resp.data[0])
                var id=resp.data[0]._id
                //alert(id)
-                htmlData += "<div class='kyc-box-portfolio'><div class=kyc-section-portfolio><img src='../portfolioImage/"+data.spps_filename+"' class='avtar1'></div><div class='driving-liences-portfolio img_name1'><p style='white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>"+data.spps_filename+"</p></div><div class='upload-portfolio'><a href='javascript:void(0)'>Upload</a></div><span><div class='custom-file-input'><input type='file' class='image1'name='portfolio-docs' value=''  onchange='update_port_previewFile(this,"+JSON.stringify(data._id)+");'><input type='button'></div></span></div><input type='hidden' name='portpolio_img_id' value='"+data._id+"'> ";
+               if(data.spps_type=='doc'){
+                  //$("#img_"+data._id).attr("src","images/docicon.png");
+                htmlData += "<div class='kyc-box-portfolio'><div class=kyc-section-portfolio><img src='images/docicon.png' class='avtar1' id='img_"+data._id+"'></div><div class='driving-liences-portfolio img_name1'><p style='white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>"+data.spps_filename+"</p></div><div class='upload-portfolio'><a href='javascript:void(0)'>Upload</a></div><span><div class='custom-file-input'><input type='file' class='image1'name='portfolio-docs' value=''  onchange='update_port_previewFile(this,"+JSON.stringify(data._id)+");'><input type='button'></div></span></div><input type='hidden' name='portpolio_img_id' value='"+data._id+"'> ";
+                  
+                }else if(data.spps_type=='video'){
+                htmlData += "<div class='kyc-box-portfolio'><div class=kyc-section-portfolio><img src='images/videoicon.png' class='avtar1' id='img_"+data._id+"'></div><div class='driving-liences-portfolio img_name1'><p style='white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>"+data.spps_filename+"</p></div><div class='upload-portfolio'><a href='javascript:void(0)'>Upload</a></div><span><div class='custom-file-input'><input type='file' class='image1'name='portfolio-docs' value=''  onchange='update_port_previewFile(this,"+JSON.stringify(data._id)+");'><input type='button'></div></span></div><input type='hidden' name='portpolio_img_id' value='"+data._id+"'> ";
+
+                }else if(data.spps_type=='pdf'){
+                htmlData += "<div class='kyc-box-portfolio'><div class=kyc-section-portfolio><img src='images/pdf.png' class='avtar1' id='img_"+data._id+"'></div><div class='driving-liences-portfolio img_name1'><p style='white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>"+data.spps_filename+"</p></div><div class='upload-portfolio'><a href='javascript:void(0)'>Upload</a></div><span><div class='custom-file-input'><input type='file' class='image1'name='portfolio-docs' value=''  onchange='update_port_previewFile(this,"+JSON.stringify(data._id)+");'><input type='button'></div></span></div><input type='hidden' name='portpolio_img_id' value='"+data._id+"'> ";
+
+                }else if(data.spps_type=='txt'){
+                htmlData += "<div class='kyc-box-portfolio'><div class=kyc-section-portfolio><img src='images/txticon.png' class='avtar1' id='img_"+data._id+"'></div><div class='driving-liences-portfolio img_name1'><p style='white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>"+data.spps_filename+"</p></div><div class='upload-portfolio'><a href='javascript:void(0)'>Upload</a></div><span><div class='custom-file-input'><input type='file' class='image1'name='portfolio-docs' value=''  onchange='update_port_previewFile(this,"+JSON.stringify(data._id)+");'><input type='button'></div></span></div><input type='hidden' name='portpolio_img_id' value='"+data._id+"'> ";
+
+                }else {
+
+                  htmlData += "<div class='kyc-box-portfolio'><div class=kyc-section-portfolio><img src='../portfolioImage/"+data.spps_filename+"' class='avtar1' id='img_"+data._id+"'></div><div class='driving-liences-portfolio img_name1'><p style='white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>"+data.spps_filename+"</p></div><div class='upload-portfolio'><a href='javascript:void(0)'>Upload</a></div><span><div class='custom-file-input'><input type='file' class='image1'name='portfolio-docs' value=''  onchange='update_port_previewFile(this,"+JSON.stringify(data._id)+");'><input type='button'></div></span></div><input type='hidden' name='portpolio_img_id' value='"+data._id+"'> ";
+                }
+             
               });
               
               $('.portpolio_div').html(htmlData);
