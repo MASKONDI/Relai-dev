@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- Bootstrap CSS -->
- 
+
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <!-- Style CSS -->
@@ -34,24 +34,42 @@
       </button>
       <div class="user-right for-mobile-view-user">
         <ul class="login-menu">
+          <li>
+            <a href="/complaints" data-toggle="tooltip" data-placement="bottom" title="complaints"><img
+                src="images/help.png" alt="" title=""></a>
+
+          </li>
+
           <li class="dropdown notification-main-box">
-            <button type="button" class=" dropdown-toggle totalNotification" data-toggle="dropdown"><i class="fa fa-bell"></i> <span class="badge">0</span> </button>
-              <div class="dropdown-menu">
-                <ul class="notify-drop">
-                  <li style="display:none" class="border-none read_all_notification">
-                     <a href="">Read All Notifications</a>
-                  </li>
-                </ul>
-              </div>
+            <button type="button" class=" dropdown-toggle totalNotification" data-toggle="dropdown"><i
+                class="fa fa-bell"></i> <span class="badge">0</span> </button>
+            <div class="dropdown-menu">
+              <ul class="notify-drop">
+                <li style="display:none" class="border-none read_all_notification">
+                  <a href="">Read All Notifications</a>
+                </li>
+              </ul>
+            </div>
           </li>
           <li class="dropdown"><a href="#" class="dropdown-toggle" type="button" id="dropdownMenuButton"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/recent-user-1.png"
-                width="40" height="40" class="rounded-circle"> John <i class="fa fa-angle-down"
-                aria-hidden="true"></i></a>
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <% if(session.imagename=='' ){%>
+                <img src="images/img_avatar.png" alt="" width="40" height="40" style="border-radius: 50%;" title="">
+                <%} else{%>
+                  <img src="/upload/<%= session.imagename%>" alt="" title="" width="40" height="40"
+                    style="border-radius: 50%;" value="">
+                  <%} %>
+                    <%= session.firsname%> <i class="fa fa-angle-down" aria-hidden="true"></i>
+            </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Setting</a>
-              <a class="dropdown-item" href="#">Account</a>
-              <a class="dropdown-item" href="#">Log Out</a>
+
+              <a href="#" class="dropdown-item" data-toggle="modal" data-target="#photoModal">Upload
+                Photo</a>
+              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#myModal">EditProfile</a>
+              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#changePasswordModal">Change
+                Password</a>
+              <a class="dropdown-item" href="/api/cust_logout">Logout</a>
+
             </div>
           </li>
 
@@ -94,65 +112,101 @@
           </div>
           <div class="col-sm-10 col-lg-10 right-head">
             <div class="right-top-nav">
-              <div class="row">
+              <div class="row align-item-center">
 
-               
 
-                <div class="col-sm-4 col-lg-4">
+
+                <div class="col-sm-6 col-lg-6">
                   <div id="custom-search-input">
-                  <form action="global-search" name="" method="get" id="global_search">
-                    <div class="input-group col-md-12">
-                      <input type="text" class="form-control globalSearch_fields" name="global_search" placeholder="Property Search" />
-                      <span class="input-group-btn">
-                        <button class="btn btn-info" type="submit">
-                          <i class="fa fa-search" aria-hidden="true"></i>
-                        </button>
-                      </span>
-                    </div>
-                  </form>
+                    <form action="global-search" name="" method="get" id="global_search">
+                      <div class="input-group col-md-12">
+                        <input type="text" class="form-control globalSearch_fields" name="global_search"
+                          placeholder="Property Search" />
+                        <span class="input-group-btn">
+                          <button class="btn btn-info" type="submit">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                          </button>
+                        </span>
+                      </div>
+                    </form>
                   </div>
                 </div>
 
-                <div class="col-lg-2 col-sm-2">
-                  <div>
-                    <div class="dropdown notification-main-box">
-                      <button type="button" class=" dropdown-toggle totalNotification" data-toggle="dropdown"><i class="fa fa-bell"></i> <span class="badge">0</span> </button>
-                      <div class="dropdown-menu">
-                        <ul class="notify-drop">
-                          <li style="display:none" class="border-none read_all_notification">
-                             <a href="">Read All Notifications</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                 </div>
-                </div>
-
-           
-
-                <div class="col-sm-5 col-lg-5">
-         
-                  <ul class="right-navbar">
-                    <% if(session.active_user_login=='buyer' ){ %>
-                      <li class="active"><a href="/dashboard" class="buyertab">Buyer </a></li>
-                      <li><a href="/dashboard" class="sellertab">Seller</a></li>
-                      <li><a href="/dashboard" class="renovatortab">Renovator</a></li>
-
-                      <% }else if(session.active_user_login=='seller' ){%>
 
 
-                        <li><a href="/dashboard" class="buyertab">Buyer </a></li>
-                        <li class="active"><a href="/dashboard" class="sellertab">Seller</a></li>
+
+
+                <div class="col-sm-6 col-lg-6">
+
+                  <div class="d-flex flex-wrap justify-end">
+                    <ul class="right-navbar">
+                      <% if(session.active_user_login=='buyer' ){ %>
+                        <li class="active"><a href="/dashboard" class="buyertab">Buyer </a></li>
+                        <li><a href="/dashboard" class="sellertab">Seller</a></li>
                         <li><a href="/dashboard" class="renovatortab">Renovator</a></li>
 
-                        <% }else { %>
+                        <% }else if(session.active_user_login=='seller' ){%>
+
 
                           <li><a href="/dashboard" class="buyertab">Buyer </a></li>
-                          <li><a href="/dashboard" class="sellertab">Seller</a></li>
-                          <li class="active"><a href="/dashboard" class="renovatortab">Renovator</a></li>
+                          <li class="active"><a href="/dashboard" class="sellertab">Seller</a></li>
+                          <li><a href="/dashboard" class="renovatortab">Renovator</a></li>
 
-                          <% }%>
-                  </ul>
+                          <% }else { %>
+
+                            <li><a href="/dashboard" class="buyertab">Buyer </a></li>
+                            <li><a href="/dashboard" class="sellertab">Seller</a></li>
+                            <li class="active"><a href="/dashboard" class="renovatortab">Renovator</a></li>
+
+                            <% }%>
+
+                    </ul>
+                    <ul class="fordesktop-notification">
+                      <li>
+                        <a href="/complaints" data-toggle="tooltip" data-placement="bottom" title="complaints"><img
+                            src="images/help.png" alt="" title=""></a>
+
+                      </li>
+
+
+                      <li>
+                        <div class="dropdown notification-main-box">
+                          <button type="button" class=" dropdown-toggle totalNotification" data-toggle="dropdown"><i
+                              class="fa fa-bell"></i> <span class="badge">0</span> </button>
+                          <div class="dropdown-menu">
+                            <ul class="notify-drop">
+                              <li style="display:none" class="border-none read_all_notification">
+                                <a href="">Read All Notifications</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </li>
+
+                      <li class="dropdown"><a href="#" class="dropdown-toggle" type="button" id="dropdownMenuButton"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <% if(session.imagename=='' ){%>
+                            <img src="images/img_avatar.png" alt="" width="40" height="40" style="border-radius: 50%;"
+                              title="">
+                            <%} else{%>
+                              <img src="/upload/<%= session.imagename%>" alt="" title="" width="40" height="40"
+                                style="border-radius: 50%;" value="">
+                              <%} %>
+                                <%= session.firsname%> <i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </a>
+                        <div class="dropdown-menu" style="width:180px" aria-labelledby="dropdownMenuButton">
+
+                          <a href="#" class="dropdown-item" data-toggle="modal" data-target="#photoModal">Upload
+                            Photo</a>
+                          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#myModal">EditProfile</a>
+                          <a class="dropdown-item" href="#" data-toggle="modal"
+                            data-target="#changePasswordModal">Change Password</a>
+                          <a class="dropdown-item" href="/api/cust_logout">Logout</a>
+
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>

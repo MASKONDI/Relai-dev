@@ -209,7 +209,7 @@
       var formData = new FormData($('#submit_proposal_form')[0]);
       console.log(formData)
       //return;
-     // alert(formData);
+      // alert(formData);
       $('.loader-box').attr('style', 'display:flex !important');
       if (formData) {
         $.ajax({
@@ -275,173 +275,208 @@
       $(".divv").before(domElement);
 
     });
-    $('.row').on("click",".remove_field", function(e){ //user click on remove text
-        e.preventDefault(); $(this).parent('div').remove(); c--;
-        
-          $("a[name='addPlusbtn']").attr('disabled', false);
-        
-  })
+    $('.row').on("click", ".remove_field", function (e) { //user click on remove text
+      e.preventDefault(); $(this).parent('div').remove(); c--;
+
+      $("a[name='addPlusbtn']").attr('disabled', false);
+
+    })
 
 
   });
 </script>
 
 <script>
-function scrollToBottom() {
-  var objDiv = document.getElementById("message_board");
-  objDiv.scrollTop = objDiv.scrollHeight;
-}
-      $('#chat_submit').click(function (e) {
-        var comment = $("#comment").val();
-        var professional_id = $("#chat_form #professional_id").val();
-        var customer_id = $("#customer_id").val();
-        var property_id = $("#chat_form #property_id").val();
-        console.log('professional_id:', professional_id);
-        console.log('customer_id:', customer_id);
-        console.log('property_id:', property_id);
-        console.log('comment:', comment);
-        if (comment) {
-          $.ajax({
-            type: "POST",
-            data: {
-              message: comment.trim(),
-              sms_receiver_id: customer_id,
-              sms_property_id: property_id,
-              sms_sender_id: professional_id,
-              sms_sender_type: 'service_provider',
-              sms_receiver_type: 'customer',
-              sms_msg_Date: new Date(),
-              sms_read_status: 'unread'
-            },
-            url: "/api/service-provider-message",
-            cache: false,
-            beforeSend: function() {
-                  $("#comment").val('');
-                  var imageData='';
-                      var sessionImg = '<%=session.imagename%>';
-                      console.log('teeee:',sessionImg);
-                      if(sessionImg){
-                        imageData = '<img src="../upload/'+sessionImg+'" alt="" title="">';
-                      }else{
-                        imageData = '<img src="../images/img_avatar.png" alt="" title="">';
-                      }
-                      htmlData = '<div class="messages-box clearfix"><div class="message-user-img">'+imageData+'</div><div class="message-content"><h3><%=session.name%></h3><p>'+comment.trim()+'</p><p class="hours-ago text-right">just now</p></div></div>';
-                      $('.old_message_section').append(htmlData);
-                      $("#message_board").stop().animate({ scrollTop: $("#message_board")[0].scrollHeight}, 1000);
-            },
-            success: function (data) {
-              console.log('msgdata:',data);
-              jQuery('#chat_form #msgcount').val(data.countMsg);
-             // $(".latest_msg").html('');
-              //getAllMessage_sp(customer_id, professional_id, property_id);
-            }
-          });
-        }
-      });
-
-      //$('#chat_form').click(function (e) {
-      $('#chat_form #comment').on('click', function() {
-        console.log('messg staus')
-        var professional_id = $("#chat_form #professional_id").val();
-        var customer_id = $("#customer_id").val();
-        var property_id = $("#chat_form #property_id").val();
-        console.log('professional_id:', professional_id);
-        console.log('customer_id:', customer_id);
-        console.log('property_id:', property_id);
-          $.ajax({
-            type: "POST",
-            data: {
-              sms_receiver_id: professional_id,
-              sms_property_id: property_id,
-              sms_sender_id: customer_id,
-              sms_sender_type: 'customer',
-              sms_receiver_type: 'service_provider',
-              sms_read_status: 'read'
-            },
-            url: "/api/service-provider-message-unread",
-            cache: false,
-            success: function (data) {
-              $("#comment").val('');
-            }
-          });
-      });
-      $(document).ready(function () {
-        console.log('Welcome data');
-         $.ajax({
-            type: "GET",
-            data: {
-              ns_receiver:'<%= session.user_id %>',
-              ns_receiver_type:'service_provider',
-              ns_read_status:'unseen',
-            },
-            url: "/service-provider/get-notification",
-            cache: false,
-            success: function (data) {
-              console.log('notification:',data.notifData);
-              $('.totalNotification .badge').text((parseInt(data.notifData.length)-parseInt(1)));
-              if (data.notifData.length > 0) {
-              $.each(data.notifData, function (i, notidata) {
-                  if(notidata != null){
-                    // if(notidata.image){
-                    //   img = '../../upload/'+notidata.image;
-                    // }else{
-                    //   img = '../../images/img_avatar.png';
-                    // }
-                    // var notoficationData = '<li><div> <img src="'+img+'" alt="" title=""><div><h6>'+notidata.name+'</h6> <p>Sent a new message.</p></div></div> </li>';
-                    // $('.notify-drop').prepend(notoficationData);
-
-                  let img ='';
-                  let link='';
-                  if(notidata.image){ img = '../../upload/'+notidata.image; }else{  img = '../../images/img_avatar.png'; }
-                  if(notidata.property_id){ link='/service-provider/professionals-detail-message?id='+notidata.property_id+'&pid='+notidata.sender_id; }else{ link='/service-provider/professionals-detail-message?id='+notidata.reciver_id+'&pid='+notidata.sender_id; }
-                  var notoficationData = '<a onclick="notificationUpdateClick('+i+')" data-property="'+notidata.property_id+'" data-reciver="'+notidata.reciver_id+'" data-sender="'+notidata.sender_id+'" class="notification_'+i+'" data-href="'+link+'" href="javascript:void(0)"><li><div> <img src="'+img+'" alt="" title=""><div><h6>'+notidata.name+'</h6> <p>Sent a new message.</p></div></div></li> </a>';
-                  $('.notify-drop').prepend(notoficationData);
-
-                  }
-              });
-            }
-
-             if(data.notifData.length > 10){
-                $('.notify-drop .read_all_notification').show();
-              }
-
-          }
-      });
-    });
-
-
-    function notificationUpdateClick(i){
-     //alert(i);
-     var dataLink = $('.notification_'+i).data('href');
-     var property_id = $('.notification_'+i).data('property');
-     var professional_id = $('.notification_'+i).data('reciver');
-     var customer_id = $('.notification_'+i).data('sender');
-      console.log('Customer messg staus')
-      console.log('professional_id:', professional_id);
-      console.log('customer_id:', customer_id);
-      console.log('property_id:', property_id);
+  function scrollToBottom() {
+    var objDiv = document.getElementById("message_board");
+    objDiv.scrollTop = objDiv.scrollHeight;
+  }
+  $('#chat_submit').click(function (e) {
+    var comment = $("#comment").val();
+    var professional_id = $("#chat_form #professional_id").val();
+    var customer_id = $("#customer_id").val();
+    var property_id = $("#chat_form #property_id").val();
+    console.log('professional_id:', professional_id);
+    console.log('customer_id:', customer_id);
+    console.log('property_id:', property_id);
+    console.log('comment:', comment);
+    if (comment) {
       $.ajax({
         type: "POST",
         data: {
-          sms_receiver_id: professional_id,
+          message: comment.trim(),
+          sms_receiver_id: customer_id,
           sms_property_id: property_id,
-          sms_sender_id: customer_id,
-          sms_sender_type: 'customer',
-          sms_receiver_type: 'service_provider',
-          sms_read_status: 'read'
+          sms_sender_id: professional_id,
+          sms_sender_type: 'service_provider',
+          sms_receiver_type: 'customer',
+          sms_msg_Date: new Date(),
+          sms_read_status: 'unread'
         },
-        url: "/api/service-provider-message-unread",
+        url: "/api/service-provider-message",
         cache: false,
+        beforeSend: function () {
+          $("#comment").val('');
+          var imageData = '';
+          var sessionImg = '<%=session.imagename%>';
+          console.log('teeee:', sessionImg);
+          if (sessionImg) {
+            imageData = '<img src="../upload/' + sessionImg + '" alt="" title="">';
+          } else {
+            imageData = '<img src="../images/img_avatar.png" alt="" title="">';
+          }
+          htmlData = '<div class="messages-box clearfix"><div class="message-user-img">' + imageData + '</div><div class="message-content"><h3><%=session.name%></h3><p>' + comment.trim() + '</p><p class="hours-ago text-right">just now</p></div></div>';
+          $('.old_message_section').append(htmlData);
+          $("#message_board").stop().animate({ scrollTop: $("#message_board")[0].scrollHeight }, 1000);
+        },
         success: function (data) {
-          console.log('notificationUpdate success')
-          window.location.href=dataLink;
+          console.log('msgdata:', data);
+          jQuery('#chat_form #msgcount').val(data.countMsg);
+          // $(".latest_msg").html('');
+          //getAllMessage_sp(customer_id, professional_id, property_id);
         }
       });
-   }
+    }
+  });
+
+  //$('#chat_form').click(function (e) {
+  $('#chat_form #comment').on('click', function () {
+    console.log('messg staus')
+    var professional_id = $("#chat_form #professional_id").val();
+    var customer_id = $("#customer_id").val();
+    var property_id = $("#chat_form #property_id").val();
+    console.log('professional_id:', professional_id);
+    console.log('customer_id:', customer_id);
+    console.log('property_id:', property_id);
+    $.ajax({
+      type: "POST",
+      data: {
+        sms_receiver_id: professional_id,
+        sms_property_id: property_id,
+        sms_sender_id: customer_id,
+        sms_sender_type: 'customer',
+        sms_receiver_type: 'service_provider',
+        sms_read_status: 'read'
+      },
+      url: "/api/service-provider-message-unread",
+      cache: false,
+      success: function (data) {
+        $("#comment").val('');
+      }
+    });
+  });
+  $(document).ready(function () {
+    console.log('Welcome data');
+    $.ajax({
+      type: "GET",
+      data: {
+        ns_receiver: '<%= session.user_id %>',
+        ns_receiver_type: 'service_provider',
+        ns_read_status: 'unseen',
+      },
+      url: "/service-provider/get-notification",
+      cache: false,
+      success: function (data) {
+        console.log('notification:', data.notifData);
+        $('.totalNotification .badge').text((parseInt(data.notifData.length) - parseInt(1)));
+        if (data.notifData.length > 0) {
+          $.each(data.notifData, function (i, notidata) {
+            if (notidata != null) {
+              // if(notidata.image){
+              //   img = '../../upload/'+notidata.image;
+              // }else{
+              //   img = '../../images/img_avatar.png';
+              // }
+              // var notoficationData = '<li><div> <img src="'+img+'" alt="" title=""><div><h6>'+notidata.name+'</h6> <p>Sent a new message.</p></div></div> </li>';
+              // $('.notify-drop').prepend(notoficationData);
+
+              let img = '';
+              let link = '';
+              if (notidata.image) { img = '../../upload/' + notidata.image; } else { img = '../../images/img_avatar.png'; }
+              if (notidata.property_id) { link = '/service-provider/professionals-detail-message?id=' + notidata.property_id + '&pid=' + notidata.sender_id; } else { link = '/service-provider/professionals-detail-message?id=' + notidata.reciver_id + '&pid=' + notidata.sender_id; }
+              var notoficationData = '<a onclick="notificationUpdateClick(' + i + ')" data-property="' + notidata.property_id + '" data-reciver="' + notidata.reciver_id + '" data-sender="' + notidata.sender_id + '" class="notification_' + i + '" data-href="' + link + '" href="javascript:void(0)"><li><div> <img src="' + img + '" alt="" title=""><div><h6>' + notidata.name + '</h6> <p>Sent a new message.</p></div></div></li> </a>';
+              $('.notify-drop').prepend(notoficationData);
+
+            }
+          });
+        }
+
+        if (data.notifData.length > 10) {
+          $('.notify-drop .read_all_notification').show();
+        }
+
+      }
+    });
+  });
 
 
-     </script>
+  function notificationUpdateClick(i) {
+    //alert(i);
+    var dataLink = $('.notification_' + i).data('href');
+    var property_id = $('.notification_' + i).data('property');
+    var professional_id = $('.notification_' + i).data('reciver');
+    var customer_id = $('.notification_' + i).data('sender');
+    console.log('Customer messg staus')
+    console.log('professional_id:', professional_id);
+    console.log('customer_id:', customer_id);
+    console.log('property_id:', property_id);
+    $.ajax({
+      type: "POST",
+      data: {
+        sms_receiver_id: professional_id,
+        sms_property_id: property_id,
+        sms_sender_id: customer_id,
+        sms_sender_type: 'customer',
+        sms_receiver_type: 'service_provider',
+        sms_read_status: 'read'
+      },
+      url: "/api/service-provider-message-unread",
+      cache: false,
+      success: function (data) {
+        console.log('notificationUpdate success')
+        window.location.href = dataLink;
+      }
+    });
+  }
 
+
+</script>
+
+<script>
+  $(document).ready(function () {
+    $(".buyertab").click(function (e) {
+      $.ajax({
+        type: "GET",
+        url: "/buyer",
+        cache: false,
+        success: function (html) {
+        }
+      });
+
+      location.reload(true);
+    });
+    $(".sellertab").click(function (e) {
+      $.ajax({
+        type: "GET",
+        url: "/seller",
+        cache: false,
+        success: function (html) {
+        }
+      });
+      location.reload(true);
+    });
+    $(".renovatortab").click(function (e) {
+      $.ajax({
+        type: "GET",
+        url: "/renovator",
+        cache: false,
+        success: function (html) {
+        }
+      });
+      location.reload(true);
+    });
+  })
+</script>
 <script>
   $(document).ready(function () {
     $(".propertyComplaintModal").click(function (e) {
@@ -473,98 +508,98 @@ function scrollToBottom() {
     });
   });
 
-  function complaint_previewFile1(input){
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-              console.log('filess:',input.files[0])
-              if(input.files[0].type == 'image/jpeg' || input.files[0].type == 'image/png' || input.files[0].type == 'image/gif'){
-                $('#uploaded_img').attr('src', e.target.result);
-              }else if(input.files[0].type == 'application/pdf'){
-                $('#uploaded_img').attr('src', 'images/pdficon.png');
-              }else{
-                 Swal.fire({
-                    icon: 'error',
-                    title: 'File type not supported !!',
-                    showConfirmButton: false,
-                    confirmButtonColor: '#005377',
-                    timer: 3000
-                  })
-              }
-              $('.imgcompaint_name').text(input.files[0].name);
-               // $('#uploaded_img').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img src="'+e.target.result+'" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
-            }
-            reader.readAsDataURL(input.files[0]);
+  function complaint_previewFile1(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        console.log('filess:', input.files[0])
+        if (input.files[0].type == 'image/jpeg' || input.files[0].type == 'image/png' || input.files[0].type == 'image/gif') {
+          $('#uploaded_img').attr('src', e.target.result);
+        } else if (input.files[0].type == 'application/pdf') {
+          $('#uploaded_img').attr('src', 'images/pdficon.png');
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'File type not supported !!',
+            showConfirmButton: false,
+            confirmButtonColor: '#005377',
+            timer: 3000
+          })
         }
+        $('.imgcompaint_name').text(input.files[0].name);
+        // $('#uploaded_img').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img src="'+e.target.result+'" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
   }
 
-  function previewFile_complainsDetails(input){
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-              console.log('filess:',input.files[0])
-              if(input.files[0].type == 'image/jpeg' || input.files[0].type == 'image/png' || input.files[0].type == 'image/gif'){
-                $('#uploaded_img').attr('src', e.target.result);
-                $('.complaint_imgname').text(input.files[0].name);
-              }else if(input.files[0].type == 'application/pdf'){
-                $('#uploaded_img').attr('src', 'images/pdficon.png');
-                $('.complaint_imgname').text(input.files[0].name);
-                
-              }else{
-                 Swal.fire({
-                    icon: 'error',
-                    title: 'File type not supported !!',
-                    showConfirmButton: false,
-                    confirmButtonColor: '#005377',
-                    timer: 3000
-                  })
-              }
-                //$('.ddddd').attr('src', e.target.result);
-               // $('#uploaded_img').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img src="'+e.target.result+'" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
-            }
-            reader.readAsDataURL(input.files[0]);
+  function previewFile_complainsDetails(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        console.log('filess:', input.files[0])
+        if (input.files[0].type == 'image/jpeg' || input.files[0].type == 'image/png' || input.files[0].type == 'image/gif') {
+          $('#uploaded_img').attr('src', e.target.result);
+          $('.complaint_imgname').text(input.files[0].name);
+        } else if (input.files[0].type == 'application/pdf') {
+          $('#uploaded_img').attr('src', 'images/pdficon.png');
+          $('.complaint_imgname').text(input.files[0].name);
+
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'File type not supported !!',
+            showConfirmButton: false,
+            confirmButtonColor: '#005377',
+            timer: 3000
+          })
         }
+        //$('.ddddd').attr('src', e.target.result);
+        // $('#uploaded_img').html('<li style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a href="#"><img src="'+e.target.result+'" alt="" title=""><br><span>'+input.files[0].name+'</span></a></li>');
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
   }
 
   $('#mycomplent_details_form').validate({
-      onfocusout: function (element) {
-        this.element(element);
-      },
-      errorClass: 'error_validate',
-      errorElement: 'span',
-      errorColor: 'red',
-      highlight: function (element, errorClass) {
-        $(element).removeClass(errorClass);
-      },
-      submitHandler: function (form) {
-        $('#submit').attr('disabled', true);
-        var formData = new FormData($('#mycomplent_details_form')[0]);
-         // var formData = new FormData(this);
-         // var formData = $(this).serialize();
-          console.log('formData:',formData)
-          $.ajax({
-            type: "POST",
-            data: formData,
-            url: "/api/professional-complaint-details-discussion", 
-            cache:false,
-            contentType: false,
-            processData: false,           
-            success: function (data) {
-              console.log(data);
-              if(data.status == true){
-                location.reload(true);
-                  // $('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> '+data.message+'</div>')
-                  // setTimeout(function(){ 
-                  //   $('#MyComplaintModal').modal('hide');
-                  //   location.reload(true);
-                  // }, 6000);
-              }else{
-                $('.complaint_msg').html('<div class="isa_error"><i class="fa fa-check"></i> '+data.message+'</div>')
-              }
-            }
-          });
-      }
-    });
+    onfocusout: function (element) {
+      this.element(element);
+    },
+    errorClass: 'error_validate',
+    errorElement: 'span',
+    errorColor: 'red',
+    highlight: function (element, errorClass) {
+      $(element).removeClass(errorClass);
+    },
+    submitHandler: function (form) {
+      $('#submit').attr('disabled', true);
+      var formData = new FormData($('#mycomplent_details_form')[0]);
+      // var formData = new FormData(this);
+      // var formData = $(this).serialize();
+      console.log('formData:', formData)
+      $.ajax({
+        type: "POST",
+        data: formData,
+        url: "/api/professional-complaint-details-discussion",
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+          console.log(data);
+          if (data.status == true) {
+            location.reload(true);
+            // $('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> '+data.message+'</div>')
+            // setTimeout(function(){ 
+            //   $('#MyComplaintModal').modal('hide');
+            //   location.reload(true);
+            // }, 6000);
+          } else {
+            $('.complaint_msg').html('<div class="isa_error"><i class="fa fa-check"></i> ' + data.message + '</div>')
+          }
+        }
+      });
+    }
+  });
 
   $('#mycomplent_form').validate({
     onfocusout: function (element) {
@@ -579,7 +614,7 @@ function scrollToBottom() {
     submitHandler: function (form) {
       $('#submit').attr('disabled', true);
       //form.submit();
-      $('.loader-box').attr('style','display:flex !important');
+      $('.loader-box').attr('style', 'display:flex !important');
       var formData = new FormData($('#mycomplent_form')[0]);
       console.log('formData:', formData)
       $.ajax({
@@ -592,29 +627,29 @@ function scrollToBottom() {
         success: function (data) {
           console.log(data);
           if (data.status == true) {
-            $('.loader-box').attr('style','display:none !important');
+            $('.loader-box').attr('style', 'display:none !important');
             //$('.complaint_msg').html('<div class="isa_success"><i class="fa fa-check"></i> ' + data.message + '</div>')
             $('#MyComplaintModal').modal('hide');
-              Swal.fire({
-                   // position: 'top-end',
-                    icon: 'success',
-                    title: data.message,
-                    showConfirmButton: false,
-                    confirmButtonColor: '#005377',
-                    timer: 5000
-              })
-           setTimeout(function () {
+            Swal.fire({
+              // position: 'top-end',
+              icon: 'success',
+              title: data.message,
+              showConfirmButton: false,
+              confirmButtonColor: '#005377',
+              timer: 5000
+            })
+            setTimeout(function () {
               location.reload(true);
             }, 5000);
 
           } else {
-            $('.loader-box').attr('style','display:none !important');
+            $('.loader-box').attr('style', 'display:none !important');
             Swal.fire({
-                    icon: 'error',
-                    title: data.message,
-                    showConfirmButton: false,
-                    confirmButtonColor: '#005377',
-                    timer: 3000
+              icon: 'error',
+              title: data.message,
+              showConfirmButton: false,
+              confirmButtonColor: '#005377',
+              timer: 3000
             })
             //$('.complaint_msg').html('<div class="isa_error"><i class="fa fa-check"></i> ' + data.message + '</div>')
           }
@@ -623,56 +658,56 @@ function scrollToBottom() {
     }
   });
 
-  $( ".sp_close_complaint" ).click(function() {
-  var complainCode = $(this).attr('conplaint-code');
-Swal.fire({ 
-  title: 'Are you sure want to close ticket?',
-  showCancelButton: true,
-  confirmButtonText: `Yes`,
-  confirmButtonColor: '#005377',
-}).then((result) => {
-  if (result.isConfirmed) {
-     
-    $.ajax({
-            type: "POST",
-            data: {
-              complainCode:complainCode
-            },
-            url: "/api/professional-complaint-details-discussion-close", 
-            cache:false,           
-            success: function (data) {
-              console.log(data);
-              if(data.status == true){
-                //location.reload(true);
-                Swal.fire({
-                    icon: 'success',
-                    title: data.message,
-                    showConfirmButton: false,
-                    confirmButtonColor: '#005377',
-                    timer: 3000
-                  })
-                  setTimeout(function(){ 
-                    location.reload(true);
-                  }, 3000);
-              }else{
-                Swal.fire({
-                    icon: 'error',
-                    title: data.message,
-                    showConfirmButton: false,
-                    confirmButtonColor: '#005377',
-                    timer: 3000
-                  })
-                  setTimeout(function(){ 
-                    location.reload(true);
-                  }, 3000);
-              }
-            }
-          });
-  }
-})
- });
+  $(".sp_close_complaint").click(function () {
+    var complainCode = $(this).attr('conplaint-code');
+    Swal.fire({
+      title: 'Are you sure want to close ticket?',
+      showCancelButton: true,
+      confirmButtonText: `Yes`,
+      confirmButtonColor: '#005377',
+    }).then((result) => {
+      if (result.isConfirmed) {
 
- $("#coms_complaint_help").change(function () {
+        $.ajax({
+          type: "POST",
+          data: {
+            complainCode: complainCode
+          },
+          url: "/api/professional-complaint-details-discussion-close",
+          cache: false,
+          success: function (data) {
+            console.log(data);
+            if (data.status == true) {
+              //location.reload(true);
+              Swal.fire({
+                icon: 'success',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 3000
+              })
+              setTimeout(function () {
+                location.reload(true);
+              }, 3000);
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 3000
+              })
+              setTimeout(function () {
+                location.reload(true);
+              }, 3000);
+            }
+          }
+        });
+      }
+    })
+  });
+
+  $("#coms_complaint_help").change(function () {
     // var propertyId = $('option:selected', this).attr('property-id');
     var coms_complaint_help = this.value;
     if (coms_complaint_help == 'Property Related Enquiry') {
@@ -723,7 +758,7 @@ Swal.fire({
         }
         $('#coms_complaint_for').html(htmlData);
       }
-    }); 
+    });
   })
 
 </script>
