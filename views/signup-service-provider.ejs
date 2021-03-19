@@ -103,7 +103,7 @@
                         <div class="col-md-6">
                           <div class="form-group ">
                             <input type="number" class="form-control form-control-size" id="text"
-                              placeholder="Experience in years" name="sps_experience" required data-rule-required="true"
+                              placeholder="Experience in years" min="0" oninput="validity.valid||(value='');" name="sps_experience" required data-rule-required="true"
                               data-msg-required="Experience is required!">
                           </div>
                         </div>

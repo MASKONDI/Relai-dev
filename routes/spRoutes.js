@@ -41,6 +41,9 @@ const MessageSchema = require("../models/message");
 const TaskHelper = require("../routes/api/service_provider_helper/taskHelper");
 const NotificationSchema = require("../models/notification_modal");
 
+const ComplaintsSchema = require("../models/Complaints");
+const ComplaintDetailsSchema = require("../models/complaint_details_model");
+
 
 function tallyVotes(AllhiredProfeshnoal) {
   return AllhiredProfeshnoal.reduce((total, i) => total + i.pps_pofessional_budget, 0);
@@ -356,15 +359,15 @@ app.get('/service-provider/professionals-to-do-list', isServiceProvider, async f
   console.log("todo")
   req.session.pagename = 'service-provider/professionals-to-do-list';
   let propertyArray = []
-  let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id);
+  let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id, req.session.active_user_login);
   for (let key of AllhiredProfeshnoal) {
     let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
-    let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
-    propertyData.property_image = await propertyImageData.pps_property_image_name;
-    let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
-    let customerProfile = await customerHelper.getCustomerImageByID(key.pps_user_id);
-    propertyData.customer_name = await customerName
-    propertyData.customer_profile = await customerProfile
+    // let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
+    // propertyData.property_image = await propertyImageData.pps_property_image_name;
+    // let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
+    // let customerProfile = await customerHelper.getCustomerImageByID(key.pps_user_id);
+    // propertyData.customer_name = await customerName
+    // propertyData.customer_profile = await customerProfile
     propertyArray.push(propertyData)
 
   }
@@ -752,39 +755,19 @@ app.get('/service-provider-get-message-property', async (req, res) => {
 });
 
 
-app.get('/service-provider/complaints-professional-detail', isServiceProvider, function (req, res) {
-  console.log("current session is :", req.session);
-  req.session.pagename = 'service-provider/complaints-professional';
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('service-provider/complaints-professional-detail', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
-
-app.get('/service-provider/complaints-professional', isServiceProvider, function (req, res) {
-  console.log("current session is :", req.session);
-  req.session.pagename = 'service-provider/complaints-professional';
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('service-provider/complaints-professional', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
 
 
-app.get('/service-provider/complaints-professional-detail', isServiceProvider, function (req, res) {
-  console.log("current session is :", req.session);
-  req.session.pagename = 'service-provider/complaints-professional-detail';
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('service-provider/complaints-professional-detail', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
+
+// app.get('/service-provider/complaints-professional-detail', isServiceProvider, function (req, res) {
+//   console.log("current session is :", req.session);
+//   req.session.pagename = 'service-provider/complaints-professional-detail';
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   res.render('service-provider/complaints-professional-detail', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session
+//   });
+// });
 
 
 app.get('/service-provider/professionals-detail-message', isServiceProvider, function (req, res) {
@@ -865,9 +848,19 @@ app.get('/service-provider/myproperties-detail-phaseA', isServiceProvider, async
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
+  var taskArray = []
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
+  for (var k of taskObject) {
+    var dd = JSON.stringify(k);
+    var ddd = JSON.parse(dd);
 
-  console.log("task Object is:", taskObject);
+    var index = k.ppts_assign_to.indexOf(user_id);
+    ddd.user_id = user_id
+    ddd.index = index
+    var datas = await ddd
+    taskArray.push(ddd)
+  }
+  console.log("task Object is:", taskArray);
   err_msg = req.flash('err_msg');
   req.session.pagename = 'service-provider/property';
   success_msg = req.flash('success_msg');
@@ -877,7 +870,7 @@ app.get('/service-provider/myproperties-detail-phaseA', isServiceProvider, async
     propertyData: propertyData,
     step: req.query.step,
     phase: req.query.phase,
-    taskObject: taskObject
+    taskObject: taskArray
   });
 });
 
@@ -1644,6 +1637,7 @@ app.post('/sp-change-proposal-status', isServiceProvider, async (req, res) => {
 });
 
 
+
 app.get('/buyer', isCustomer, function (req, res) {
   console.log("buyer");
   var test = req.session.is_user_logged_in;
@@ -1685,6 +1679,137 @@ app.get('/renovator', isCustomer, function (req, res) {
 
 
 
+
+app.get('/service-provider/customer-by-property', isServiceProvider, async function (req, res) {
+  console.log("", req.session);
+  req.session.pagename = 'service-provider/property';
+  let propertyData = await PropertiesSchema.findOne({ _id: req.query.property_id })
+  if (propertyData) {
+    let userdata = await CustomerSchema.find({ _id: propertyData.ps_user_id })
+    if (userdata) {
+      res.send({
+        err_msg, success_msg,
+        layout: false,
+        session: req.session,
+        userdata: userdata
+      })
+    } else {
+      res.send({
+        err_msg, success_msg,
+        layout: false,
+        session: req.session,
+        userdata: ''
+      })
+    }
+  } else {
+
+    res.send({
+      err_msg, success_msg,
+      layout: false,
+      session: req.session,
+      userdata: ''
+    })
+
+  }
+});
+
+
+app.get('/service-provider/complaints-professional', isServiceProvider, function (req, res) {
+  console.log("current session is :", req.session);
+  req.session.pagename = 'service-provider/complaints-professional';
+  ComplaintsSchema.find({ coms_user_id: req.session.user_id, coms_is_active_user_flag: req.session.active_user_login }).sort({ _id: -1 }).then(async (data) => {
+    console.log('dataaa:', data)
+    if (data) {
+      let arr = [];
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.render('service-provider/complaints-professional', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        complaintData: data
+      });
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+});
+
+
+app.get('/service-provider/complaints-professional-detail', isServiceProvider, async function (req, res) {
+  console.log("current session is :", req.session);
+  req.session.pagename = 'service-provider/complaints-professional';
+  console.log('req.query.complaintID:', req.query.complaintID)
+
+  let complaintData = await ComplaintsSchema.find({ coms_complaint_code: req.query.complaintID });
+  console.log('testDataCom:', complaintData)
+  await ComplaintDetailsSchema.find({ comsd_id: req.query.complaintID }).sort({ _id: -1 }).then(async (data) => {
+    req.session.complaintID = req.query.complaintID;
+    console.log('dataaa:', data)
+    if (data) {
+      let arr = [];
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.render('service-provider/complaints-professional-detail', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        complaintDetailsData: data,
+        complaintData: complaintData
+      });
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+});
+
+
+app.get('/service-provider/property-related-enquiry-proprty-list', isServiceProvider, async (req, res) => {
+  req.session.pagename = 'mydreamhome';
+  console.log("current session is", req.session);
+  console.log("req.session.user_id", req.session.user_id);
+  console.log(" req.session.active_user_login:", req.session.active_user_login);
+
+
+  let propertyArray = []
+  let propertyId = [];
+  let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id);
+  for (let key of AllhiredProfeshnoal) {
+    propertyId.push(key.pps_property_id);
+  }
+  let data = await PropertiesSchema.find({ _id: { $in: propertyId } })
+  if (data) {
+    res.send({
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      propertyData: data
+    });
+  } else {
+    console.log(err)
+  }
+})
+
+
+app.get('/service-provider/professional-customer-by-property', async (req, res) => {
+  let serviceProvArray = [];
+  console.log('propertyidid:', req.query.property_id);
+  let data = await PropertiesSchema.findOne({ _id: req.query.property_id })
+  if (data) {
+    console.log('data:', data)
+    await CustomerSchema.find({ _id: data.ps_user_id }).then(async (cusResult) => {
+      if (cusResult) {
+        res.send({
+          session: req.session,
+          cusResultData: cusResult
+        });
+      } else {
+        console.log(err)
+      }
+    })
+  } else {
+    console.log(err)
+  }
+
+
+});
 
 module.exports = app;
 

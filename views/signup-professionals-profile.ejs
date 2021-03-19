@@ -182,7 +182,7 @@
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix" id=''>
                               <input type="text" class="datepicker form-control text-field-size spods_dob " id="datePickerId" placeholder="Date of Birth"
-                                onfocus="(this.type='date')" name="spods_dob" data-rule-required="true"
+                                onfocus="(this.type='date')" min="1980-01-01" name="spods_dob" data-rule-required="true"
                                 data-msg-required="Date of birth is required" required>
                             </div>
                           </div>
@@ -237,7 +237,7 @@
                           </div>
                           <div class="col-sm-12 col-lg-4">
                             <div class="input-box-size-fix">
-                              <input type="text" onfocus="(this.type='date')" class="form-control text-field-size start_working_time"
+                              <input type="text" onfocus="(this.type='date')" min="1980-01-01" class="form-control text-field-size start_working_time"
                                 id="start_working_time" placeholder="Start Date" name="start_working_time" required>
                             </div>
                           </div>
@@ -314,18 +314,18 @@
     });
   </script>
   <script type="text/javascript">
-    window.onload = function () {
-      document.getElementById('ifYes').style.display = 'none';
-    }
+    // window.onload = function () {
+    //   document.getElementById('ifYes').style.display = 'none';
+    // }
 
-    function yesnoCheck() {
-      if (document.getElementById('yesCheck').checked) {
-        document.getElementById('ifYes').style.display = 'block';
-      }
-      else {
-        document.getElementById('ifYes').style.display = 'none';
-      }
-    }
+    // function yesnoCheck() {
+    //   if (document.getElementById('yesCheck').checked) {
+    //     document.getElementById('ifYes').style.display = 'block';
+    //   }
+    //   else {
+    //     document.getElementById('ifYes').style.display = 'none';
+    //   }
+    // }
 
   </script>
   <script type="text/javascript">

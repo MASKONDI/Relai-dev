@@ -25,23 +25,32 @@ module.exports.getAllEmployeHistory = function (service_provider_id) {
         }
     }).catch((error) => { });
 };
-
+function getExtension(filename) {
+    return filename.split('.').pop();
+}
 module.exports.savePortpofolio = function (req) {
     return new Promise(async function (resolve, reject) {
         if (req.files.length != 0) {
             let ext_type = '';
             var ext = ''
             await req.files.forEach(async element => {
-                ext = element.mimetype
+                
+                ext =getExtension(element.filename)
                 console.log(ext)
                
-                if (ext == "video/mp4") {
+                if (ext == "mp4") {
                     ext_type = 'video';
-                } else if(ext=='image/jpeg'||ext=='image/png'){
+                } else if (ext == "docx") {
+                    ext_type = 'doc';
+                  } else if (ext == "txt") {
+                    ext_type = 'txt';
+                  }else if(ext=='jpg'||ext=='png'||ext=='jfif'||ext=='jpeg'){
 
                     ext_type = 'image';
-                }
-                if(ext_type=='image'||ext_type=='video'){
+                }else if (ext == "pdf") {
+                    ext_type = 'pdf';
+                  }
+                if(ext_type=='image'||ext_type=='video'||ext_type=='doc'||ext_type=='txt'||ext_type=='pdf'){
                 var obj = {
                     spps_filename: element.filename,
                     spps_service_provider_id: req.session.user_id,
@@ -85,16 +94,22 @@ module.exports.updatePortpofolio = function (req) {
             let ext_type = '';
             var ext = ''
             await req.files.forEach(async function(element,i){
-                ext = element.mimetype
+                ext = getExtension(element.filename)
                 console.log(ext)
                
-                if (ext == "video/mp4") {
+                if (ext == "mp4") {
                     ext_type = 'video';
-                } else if(ext=='image/jpeg'||ext=='image/png'){
+                } else if (ext == "docx") {
+                    ext_type = 'doc';
+                  } else if (ext == "txt") {
+                    ext_type = 'txt';
+                  }else if(ext=='jpg'||ext=='png'||ext=='jfif'||ext=='jpeg'){
 
                     ext_type = 'image';
-                }
-                if(ext_type=='image'||ext_type=='video'){
+                }else if (ext == "pdf") {
+                    ext_type = 'pdf';
+                  }
+                if(ext_type=='image'||ext_type=='video'||ext_type=='doc'||ext_type=='txt'||ext_type=='pdf'){
                 var obj = {
                     spps_filename: element.filename,
                     spps_service_provider_id: req.session.user_id,
@@ -141,16 +156,22 @@ module.exports.updatePortpofolioById = function (req) {
     return new Promise(async function (resolve, reject) {
             let ext_type = '';
             var ext = ''
-                ext = req.file.mimetype
-                console.log(ext)
+                ext = getExtension(req.file.filename)
+                console.log('ext======================',ext)
                
-                if (ext == "video/mp4") {
+                if (ext == "mp4") {
                     ext_type = 'video';
-                } else if(ext=='image/jpeg'||ext=='image/png'){
+                } else if (ext == "docx") {
+                    ext_type = 'doc';
+                  } else if (ext == "txt") {
+                    ext_type = 'txt';
+                  }else if(ext=='jpg'||ext=='png'||ext=='jfif'||ext=='jpeg'){
 
                     ext_type = 'image';
-                }
-                if(ext_type=='image'||ext_type=='video'){
+                }else if (ext == "pdf") {
+                    ext_type = 'pdf';
+                  }
+                if(ext_type=='image'||ext_type=='video'||ext_type=='doc'||ext_type=='txt'||ext_type=='pdf'){
                 var obj = {
                     spps_filename: req.file.filename,
                     spps_service_provider_id: req.session.user_id,

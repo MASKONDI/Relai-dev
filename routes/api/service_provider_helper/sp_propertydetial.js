@@ -26,6 +26,18 @@ module.exports.getPropertyByID = function (property_id, limit, page) {
     return new Promise(async function (resolve, reject) {
         if (property_id != null) {
 
+
+            // let data = await PropertiesSchema.find({ _id: { $in: property_id } }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit)
+            // if (data) {
+            //     var object_as_string = JSON.stringify(data);
+            //     const propertyObject = JSON.parse(object_as_string);
+
+            //     resolve(propertyObject)
+            // } else {
+            //     reject({ status: 0, 'message': 'property not found' })
+            // }
+
+
             let data = await PropertiesSchema.find({ _id: { $in: property_id } }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit)
             if (data) {
                 var object_as_string = JSON.stringify(data);

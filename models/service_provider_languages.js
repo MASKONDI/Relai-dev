@@ -15,7 +15,7 @@ const ServiceProviderLanguageSchema = new Schema({
 
   spls_language: {
     type: String,
-    enum: ['english', 'german', 'french', 'spanish']
+    enum: ['english', 'german', 'french', 'spanish','italian']
   },
   spls_language_proficiency_level: {
     type: String,

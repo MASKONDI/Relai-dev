@@ -198,11 +198,14 @@ if(Totalpage >= page){
             //$("#message_board").stop().animate({ scrollTop: $("#message_board")[0].scrollHeight}, 1000);
 
           }
-
-          // var professional_id = $("#chat_form #professional_id").val();
-          //  var customer_id = $("#customer_id").val();
-          //  var property_id = $("#chat_form  #property_id").val();
-          //  getAllMessage(professional_id, customer_id, property_id, msgCount);
+          var pathname = window.location.pathname;
+          console.log('pathname:',pathname)
+          if( pathname == '/mydreamhome-details-message'){
+              var professional_id = $("#chat_form #professional_id").val();
+              var customer_id = $("#customer_id").val();
+              var property_id = $("#chat_form  #property_id").val();
+              getAllMessage(professional_id, customer_id, property_id, msgCount);
+          }
         }
       });
     }
