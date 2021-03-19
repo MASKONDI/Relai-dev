@@ -282,7 +282,8 @@ app.get('/otp-professional', function (req, res) {
   });
 });
 app.get('/service-provider/track-your-progress-professionals', isServiceProvider, async function (req, res) {
-  let data = await trackYourProgress.getAllPropertyByUserId(req.session.user_id)
+  console.log("Current session for service-provider is :", req.session);
+  let data = await trackYourProgress.getAllPropertyByUserId(req.session.user_id, req.session.active_user_login)
   console.log('data=======', data);
   //console.log("current session is :", req.session);
   req.session.pagename = 'service-provider/track-your-progress-professionals';
@@ -314,12 +315,13 @@ app.get('/service-provider/property', isServiceProvider, async function (req, re
   let propertyArray = []
   const count = await PropertiesSchema.countDocuments();
   console.log('countcount:', count);
-
-  PropertiesSchema.find().sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
+  console.log("req.session.active_user_login", req.session.active_user_login);
+  PropertiesSchema.find({ ps_is_active_user_flag: req.session.active_user_login }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
     if (data) {
+      console.log("PropertiesSchema is ", data);
       let arr = [];
       for (let img of data) {
-        await PropertiesPictureSchema.find({ pps_property_id: img._id }).then(async (result) => {
+        await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
           let temp = await result
           //for(let image of result){
           //  let temp = await image
@@ -385,31 +387,35 @@ app.get('/service-provider/myproperties', isServiceProvider, async function (req
   console.log("", req.session);
   req.session.pagename = 'service-provider/property';
   let propertyArray = []
-  const { page = 1, limit = 1 } = req.query;
+  const { page = 1, limit = 2 } = req.query;
   console.log('pageQuery:', page);
   let count = 0;
   let propertyId = [];
   let userId = [];
 
-  let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id);
+  let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id, req.session.active_user_login);
   for (let key of AllhiredProfeshnoal) {
     propertyId.push(key.pps_property_id);
     userId.push(key.pps_user_id);
   }
+  console.log("AllhiredProfeshnoal is ", AllhiredProfeshnoal);
+  console.log("propertyId is ", propertyId);
 
   count = await PropertiesSchema.countDocuments({ _id: { $in: propertyId } });
   let propertyData = await propertyHelper.getPropertyByID(propertyId, limit, page);
-  let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
-  console.log("propertyImageData is", propertyData);
-  //console.log("propertyImageData is ",propertyImageData.pps_property_image_name);
-  if (propertyImageData) {
-    propertyData.property_image = await propertyImageData.pps_property_image_name;
+  for (let propertyData1 of propertyData) {
+    let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData1._id);
+    console.log("propertyImageData is", propertyData1);
+    //console.log("propertyImageData is ",propertyImageData.pps_property_image_name);
+    if (propertyImageData) {
+      propertyData1.property_image = await propertyImageData.pps_property_image_name;
+    }
+    let customerName = await customerHelper.getCustomerNameByID(propertyData1.ps_user_id);
+    let customerProfile = await customerHelper.getCustomerImageByID(propertyData1.ps_user_id);
+    propertyData1.customer_name = await customerName
+    propertyData1.customer_profile = await customerProfile
+    propertyArray.push(propertyData1)
   }
-  let customerName = await customerHelper.getCustomerNameByID(propertyData.ps_user_id);
-  let customerProfile = await customerHelper.getCustomerImageByID(propertyData.ps_user_id);
-  propertyData.customer_name = await customerName
-  propertyData.customer_profile = await customerProfile
-  propertyArray.push(propertyData)
 
 
   // for (let key of AllhiredProfeshnoal) {
@@ -441,7 +447,6 @@ app.get('/service-provider/myproperties', isServiceProvider, async function (req
 
   })
 });
-
 
 
 
@@ -546,7 +551,7 @@ app.get('/service-provider/property-detail', isServiceProvider, function (req, r
   console.log("current session is :", req.session);
   console.log("req.query is :", req.query);
   req.session.pagename = 'service-provider/property';
-  PropertiesSchema.find({ _id: req.query.id }).then(async (data) => {
+  PropertiesSchema.find({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
     if (data) {
       let customerName = await customerHelper.getCustomerNameByID(data[0].ps_user_id);
       let customerProfile = await customerHelper.getCustomerImageByID(data[0].ps_user_id);
@@ -1222,7 +1227,7 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
   if (req.query.id) {
     req.session.property_id = req.query.id
     console.log("req.query.id:", req.query.id);
-    PropertiesSchema.find({ _id: req.query.id }).then(async (data) => {
+    PropertiesSchema.find({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
       if (data) {
 
 
@@ -1238,7 +1243,7 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
           })
         }
 
-        let allDocumentUploadByCustmer = await CustomerUploadDocsSchema.find({ cuds_property_id: req.query.id });
+        let allDocumentUploadByCustmer = await CustomerUploadDocsSchema.find({ cuds_property_id: req.query.id, cuds_is_active_user_flag: req.session.active_user_login });
         //console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
         let serviceProvArray = [];
         let totalcostArray = [];
@@ -1415,7 +1420,7 @@ app.get('/service-provider/myproperties-details-to-dos', isServiceProvider, asyn
 app.post('/get_hired_property_by_id', isServiceProvider, async (req, res) => {
   console.log("Getting request from server ", req.body);
   if (req.body.property_id) {
-    let singlePropertyObj = await propertyHelper.getPropertyByID(req.body.property_id);
+    let singlePropertyObj = await PropertiesSchema.find({ _id: req.body.property_id });
     console.log('singlePropertyObj', singlePropertyObj);
     if (singlePropertyObj) {
       return res.send({
@@ -1637,6 +1642,48 @@ app.post('/sp-change-proposal-status', isServiceProvider, async (req, res) => {
     }
   });
 });
+
+
+app.get('/buyer', isCustomer, function (req, res) {
+  console.log("buyer");
+  var test = req.session.is_user_logged_in;
+  var active_user = req.session.active_user_login;
+  if (test == true && active_user != 'buyer') {
+    req.session.active_user_login = "buyer"
+    //req.session.isChanged();
+    res.redirect('/dashboard-professional')
+    console.log("current user login and session is", req.session);
+  }
+
+});
+
+
+app.get('/seller', isCustomer, function (req, res) {
+  console.log("seller");
+  var test = req.session.is_user_logged_in;
+  var active_user = req.session.active_user_login;
+  if (test == true && active_user != 'seller') {
+    req.session.active_user_login = "seller"
+    //req.session.isChanged();
+    res.redirect('/dashboard-professional')
+    console.log("current user login and session is", req.session);
+  }
+});
+
+
+app.get('/renovator', isCustomer, function (req, res) {
+  console.log("renovator");
+  var test = req.session.is_user_logged_in;
+  var active_user = req.session.active_user_login;
+  if (test == true && active_user != 'renovator') {
+    req.session.active_user_login = "renovator"
+    //req.session.isChanged();
+    res.redirect('service-provider/dashboard-professional')
+    console.log("current user login and session", req.session);
+  }
+});
+
+
 
 
 module.exports = app;

@@ -17,7 +17,7 @@ const ServiceProviderUploadDocsSchema = require("../../models/service_provider_u
 const MessageSchema = require("../../models/message");
 const NotificationSchema = require("../../models/notification_modal");
 const DocumentPermissionSchema = require('../../models/document_permission')
-const PropertyProfessinoalTaskSchema=require('../../models/property_professional_tasks_Schema')
+const PropertyProfessinoalTaskSchema = require('../../models/property_professional_tasks_Schema')
 const isEmpty = require('../../Validation/is-empty');
 
 
@@ -151,14 +151,15 @@ router.post("/service_provider_register", (req, res) => {
                 req.session.role = serviceProviders.sps_role_name,
                 req.session.imagename = '',
                 req.session.is_user_logged_in = true,
-                //   req.flash('service_provider', serviceProviders);
-                // res.redirect("/signup-professionals-profile")
-                res.send({
-                  serviceProviders: serviceProviders,
-                  message: "You have registered sucessfully.",
-                  status: true,
+                req.session.active_user_login = "buyer"
+              //   req.flash('service_provider', serviceProviders);
+              // res.redirect("/signup-professionals-profile")
+              res.send({
+                serviceProviders: serviceProviders,
+                message: "You have registered sucessfully.",
+                status: true,
 
-                })
+              })
 
             })
             .catch(err => {
@@ -182,32 +183,32 @@ router.post("/service_provider_register", (req, res) => {
 POST : service_provider_personal_details post api is responsible for submitting signup-professionals-profile form data 
 ------------------------------------------------------------------------------------------------- */
 var moment = require('moment');
-router.get("/service_provider_personal_details", async(req, res) => {
-  console.log('req',req.query);
-  if(req.query.user_id){
-   var data = await signUpHelper.getPersonalDetialByID(req.query.user_id);
- // var d = JSON.stringify(data) 
- // var dd = JSON.parse(data)
- var spods_dob=  moment(data.spods_dob).format('YYYY-MM-DD');
- var spods_start_working_time=  moment(data.spods_start_working_time).format('YYYY-MM-DD');
-   if(data){
-     
+router.get("/service_provider_personal_details", async (req, res) => {
+  console.log('req', req.query);
+  if (req.query.user_id) {
+    var data = await signUpHelper.getPersonalDetialByID(req.query.user_id);
+    // var d = JSON.stringify(data) 
+    // var dd = JSON.parse(data)
+    var spods_dob = moment(data.spods_dob).format('YYYY-MM-DD');
+    var spods_start_working_time = moment(data.spods_start_working_time).format('YYYY-MM-DD');
+    if (data) {
+
+      return res.send({
+        'status': true,
+        'data': data,
+        'spods_dob': spods_dob,
+        'spods_start_working_time': spods_start_working_time
+      })
+    } else {
+      return res.send({
+        'status': false,
+
+      })
+    }
+  } else {
     return res.send({
-      'status':true,
-      'data':data,
-      'spods_dob':spods_dob,
-      'spods_start_working_time':spods_start_working_time
-        })
-   }else{
-    return res.send({
-      'status':false,
-      
-    })
-   }
-  }else{
-    return res.send({
-      'status':false,
-      
+      'status': false,
+
     })
   }
 
@@ -219,10 +220,10 @@ router.post("/service_provider_personal_details", (req, res) => {
 
   console.log("req.body is : ", req.body);
   console.log("user_id is:", req.session.user_id);
-  console.log('is update id',req.body.personal_detail_id)
-  if(req.body.personal_detail_id!=''){
+  console.log('is update id', req.body.personal_detail_id)
+  if (req.body.personal_detail_id != '') {
     console.log('please update me')
-    const serviceProviderPersonalDetails ={
+    const serviceProviderPersonalDetails = {
       spods_service_provider_id: req.session.user_id, //storing service_provider_id
       spods_surname: req.body.spods_surname,
       spods_fornames: req.body.spods_fornames,
@@ -237,7 +238,7 @@ router.post("/service_provider_personal_details", (req, res) => {
       spods_start_working_time: req.body.start_working_time,
     }
     ServiceProviderPersonalDetailsSchema
-      .updateOne(serviceProviderPersonalDetails).where({_id:req.body.personal_detail_id})
+      .updateOne(serviceProviderPersonalDetails).where({ _id: req.body.personal_detail_id })
       .then(serviceProviders => {
         console.log("server res is : ", serviceProviders);
         // res.redirect("/signup-professionals-profile-2")
@@ -245,7 +246,7 @@ router.post("/service_provider_personal_details", (req, res) => {
           message: 'Personal-details Update successfully',
           status: true,
         })
-  
+
       })
       .catch(err => {
         console.log(err)
@@ -256,7 +257,7 @@ router.post("/service_provider_personal_details", (req, res) => {
         //req.flash('err_msg', 'Something went wrong please try after some time!');
         //res.redirect('/signup-professionals-profile');
       });
-  }else{
+  } else {
     console.log('please add me')
     const serviceProviderPersonalDetails = new ServiceProviderPersonalDetailsSchema({
       spods_service_provider_id: req.session.user_id, //storing service_provider_id
@@ -281,7 +282,7 @@ router.post("/service_provider_personal_details", (req, res) => {
           message: 'Personal-details sumitted successfully,please continue....',
           status: true,
         })
-  
+
       })
       .catch(err => {
         console.log(err)
@@ -293,32 +294,32 @@ router.post("/service_provider_personal_details", (req, res) => {
         //res.redirect('/signup-professionals-profile');
       });
   }
-  
+
 });
 
 
 /* -------------------------------------------------------------------------------------------------
 POST : service_provider_other_details post api is responsible for submitting signup-professionals-profile-2 form data 
 ------------------------------------------------------------------------------------------------- */
-router.get("/service_provider_other_details", async(req, res) => {
-  console.log('req',req.query);
-  if(req.query.user_id){
-   var data = await signUpHelper.getOtherDetialByID(req.query.user_id);
-   if(data){
+router.get("/service_provider_other_details", async (req, res) => {
+  console.log('req', req.query);
+  if (req.query.user_id) {
+    var data = await signUpHelper.getOtherDetialByID(req.query.user_id);
+    if (data) {
+      return res.send({
+        'status': true,
+        'data': data
+      })
+    } else {
+      return res.send({
+        'status': false,
+
+      })
+    }
+  } else {
     return res.send({
-      'status':true,
-      'data':data
-    })
-   }else{
-    return res.send({
-      'status':false,
-      
-    })
-   }
-  }else{
-    return res.send({
-      'status':false,
-      
+      'status': false,
+
     })
   }
 })
@@ -328,7 +329,7 @@ router.post("/service_provider_other_details", (req, res) => {
   //TODO:need to add condition is session is expired
   console.log("req.body is : ", req.body);
   console.log("req.session.user_id is ", req.session.user_id);
-  if(req.body.other_detail_id){
+  if (req.body.other_detail_id) {
     if (req.body.spods_option_criminal_convictions == 'yes' && req.body.spods_details_of_convictions == "") {
       //req.flash('err_msg', '.');
       //return res.redirect('/signup-professionals-profile-2')
@@ -340,7 +341,7 @@ router.post("/service_provider_other_details", (req, res) => {
       })
     }
     else {
-      const serviceProviderOtherDetails ={
+      const serviceProviderOtherDetails = {
         spods_service_provider_id: req.session.user_id, //storing service_provider_id
         spods_option_work_permit_for_uk: req.body.spods_option_work_permit_for_uk,
         spods_option_criminal_convictions: req.body.spods_option_criminal_convictions,
@@ -353,7 +354,7 @@ router.post("/service_provider_other_details", (req, res) => {
         spods_other_relevant_qualification: req.body.spods_other_relevant_qualification
       }
       ServiceProviderOtherDetailsSchema
-        .updateOne(serviceProviderOtherDetails).where({_id:req.body.other_detail_id})
+        .updateOne(serviceProviderOtherDetails).where({ _id: req.body.other_detail_id })
         .then(serviceProviders => {
           console.log("server response is ;", serviceProviders);
           // res.redirect("/signup-professionals-profile-3")
@@ -374,7 +375,7 @@ router.post("/service_provider_other_details", (req, res) => {
           })
         });
     }
-  }else{
+  } else {
     if (req.body.spods_option_criminal_convictions == 'yes' && req.body.spods_details_of_convictions == "") {
       //req.flash('err_msg', '.');
       //return res.redirect('/signup-professionals-profile-2')
@@ -429,16 +430,16 @@ router.post("/service_provider_other_details", (req, res) => {
 POST : service_provider_education post api is responsible for submitting signup-professionals-profile-3 form data 
 ------------------------------------------------------------------------------------------------- */
 router.get("/service_provider_education", (req, res) => {
-  ServiceProviderEducationSchema.findOne({spes_service_provider_id:req.query.user_id}).then((resp)=>{
-    if(resp){
+  ServiceProviderEducationSchema.findOne({ spes_service_provider_id: req.query.user_id }).then((resp) => {
+    if (resp) {
       res.send({
-        status:true,
-        data:resp
+        status: true,
+        data: resp
       })
-    }else{
+    } else {
       res.send({
-        status:false,
-        data:resp
+        status: false,
+        data: resp
       })
     }
   })
@@ -513,16 +514,16 @@ router.post("/service_provider_education", (req, res) => {
 POST : service_provider_employment_history post api is responsible for submitting signup-professionals-profile-4 from data 
 ------------------------------------------------------------------------------------------------- */
 router.get("/service_provider_employment_history", (req, res) => {
-  ServiceProviderEmploymentHistorySchema.findOne({spehs_service_provider_id:req.query.user_id}).then((resp)=>{
-    if(resp){
+  ServiceProviderEmploymentHistorySchema.findOne({ spehs_service_provider_id: req.query.user_id }).then((resp) => {
+    if (resp) {
       res.send({
-        status:true,
-        data:resp
+        status: true,
+        data: resp
       })
-    }else{
+    } else {
       res.send({
-        status:false,
-        data:resp
+        status: false,
+        data: resp
       })
     }
   })
@@ -652,26 +653,26 @@ router.post("/delete-service_provider_employment_history", async (req, res) => {
 /* -------------------------------------------------------------------------------------------------
 POST : service_provider_reference post api is responsible for submitting signup-professionals-profile-5 from data 
 ------------------------------------------------------------------------------------------------- */
-router.get("/get_service_provider_reference", async(req, res) => {
-  console.log('req',req.query);
-  if(req.query.user_id){
-   var data = await signUpHelper.getReferenceDetailById(req.query.user_id);
-   console.log('=====================',data)
-   if(data){
+router.get("/get_service_provider_reference", async (req, res) => {
+  console.log('req', req.query);
+  if (req.query.user_id) {
+    var data = await signUpHelper.getReferenceDetailById(req.query.user_id);
+    console.log('=====================', data)
+    if (data) {
+      return res.send({
+        'status': true,
+        'data': data
+      })
+    } else {
+      return res.send({
+        'status': false,
+
+      })
+    }
+  } else {
     return res.send({
-      'status':true,
-      'data':data
-    })
-   }else{
-    return res.send({
-      'status':false,
-      
-    })
-   }
-  }else{
-    return res.send({
-      'status':false,
-      
+      'status': false,
+
     })
   }
 })
@@ -683,47 +684,47 @@ router.post("/service_provider_reference", (req, res) => {
   console.log("req.body is====++++++++ : ", req.body);
   console.log("req.session.user_id is ", req.session.user_id);
 
-  if(req.body.ref_id!=''){
-   console.log('edit able')
-   const serviceProviderReference = {
-    //rs_service_provider_id //TODO:*Need to store same sp_id while registering */
-    
-    rs_reference_type: req.body.rs_reference_type,
-    rs_reference_job_title: req.body.rs_reference_job_title,
-    rs_reference_organisation: req.body.rs_reference_organisation,
-    rs_reference_postal_code: req.body.rs_reference_postal_code,
-    rs_reference_address: req.body.rs_reference_address,
-    rs_reference_telePhoneNumber: req.body.rs_reference_telePhoneNumber,
-    rs_reference_emailid: req.body.rs_reference_emailid,
-    rs_option_obtain_reference: req.body.rs_option_obtain_reference,
-    rs_reference_relationship: req.body.rs_reference_relationship,
-    rs_reference_fullname: req.body.rs_reference_fullname
-  }
-  ServiceProviderReferenceSchema
-      .updateOne(serviceProviderReference).where({_id:req.body.ref_id})
+  if (req.body.ref_id != '') {
+    console.log('edit able')
+    const serviceProviderReference = {
+      //rs_service_provider_id //TODO:*Need to store same sp_id while registering */
+
+      rs_reference_type: req.body.rs_reference_type,
+      rs_reference_job_title: req.body.rs_reference_job_title,
+      rs_reference_organisation: req.body.rs_reference_organisation,
+      rs_reference_postal_code: req.body.rs_reference_postal_code,
+      rs_reference_address: req.body.rs_reference_address,
+      rs_reference_telePhoneNumber: req.body.rs_reference_telePhoneNumber,
+      rs_reference_emailid: req.body.rs_reference_emailid,
+      rs_option_obtain_reference: req.body.rs_option_obtain_reference,
+      rs_reference_relationship: req.body.rs_reference_relationship,
+      rs_reference_fullname: req.body.rs_reference_fullname
+    }
+    ServiceProviderReferenceSchema
+      .updateOne(serviceProviderReference).where({ _id: req.body.ref_id })
       .then(serviceProviders => {
-        
+
         console.log("server response is:", serviceProviders);
-        
+
         res.send({
           message: "Reference-details Update successfully",
           status: true,
-          redirect :'/service-provider/dashboard-professional',
-          action:'edit'
+          redirect: '/service-provider/dashboard-professional',
+          action: 'edit'
         })
       })
       .catch(err => {
         console.log(err)
-        
+
         res.send({
           err_msg: 'Something went wrong please try after some time',
           status: false
         });
-  
+
       });
-  }else{
+  } else {
     console.log('add able');
-    
+
     const serviceProviderReference = new ServiceProviderReferenceSchema({
       //rs_service_provider_id //TODO:*Need to store same sp_id while registering */
       rs_service_provider_id: req.session.user_id,
@@ -738,56 +739,56 @@ router.post("/service_provider_reference", (req, res) => {
       rs_reference_relationship: req.body.rs_reference_relationship,
       rs_reference_fullname: req.body.rs_reference_fullname
     });
-  
+
     serviceProviderReference
       .save()
       .then(serviceProviders => {
-        
+
         console.log("server response is:", serviceProviders);
-        
+
         res.send({
           message: "Reference-details submitted successfully, please continue...",
           status: true,
-          action:'add'
+          action: 'add'
         })
       })
       .catch(err => {
         console.log(err)
-        
+
         res.send({
           err_msg: 'Something went wrong please try after some time',
           status: false
         });
-  
+
       });
   }
-  
+
 });
 
 
 /* -------------------------------------------------------------------------------------------------
 POST : service_provider_indemnity_details post api is responsible for submitting signup-professionals-profile-6 form data 
 ------------------------------------------------------------------------------------------------- */
-router.get("/service_provider_indemnity_details", async(req, res) => {
-  console.log('req',req.query);
-  if(req.query.user_id){
-   var data = await signUpHelper.getIndemnityDetailsById(req.query.user_id);
-   console.log('indemnity_details',data)
-   if(data){
+router.get("/service_provider_indemnity_details", async (req, res) => {
+  console.log('req', req.query);
+  if (req.query.user_id) {
+    var data = await signUpHelper.getIndemnityDetailsById(req.query.user_id);
+    console.log('indemnity_details', data)
+    if (data) {
+      return res.send({
+        'status': true,
+        'data': data
+      })
+    } else {
+      return res.send({
+        'status': false,
+
+      })
+    }
+  } else {
     return res.send({
-      'status':true,
-      'data':data
-    })
-   }else{
-    return res.send({
-      'status':false,
-      
-    })
-   }
-  }else{
-    return res.send({
-      'status':false,
-      
+      'status': false,
+
     })
   }
 })
@@ -796,9 +797,9 @@ router.post("/service_provider_indemnity_details", (req, res) => {
   var err_msg = null;
   var success_msg = null;
   //TODO:need to add condition is session is expired
-  
+
   console.log("req.body is : ", req.body);
-  if(req.body.indemnity_detail_id!=''){
+  if (req.body.indemnity_detail_id != '') {
     if (req.body.spods_option_pl_claims === "yes" && req.body.spods_pl_claim_details === '') {
       //req.flash("err_msg", "Please Enter PI claim details!");
       //res.redirect('/signup-professionals-profile-6');
@@ -810,7 +811,7 @@ router.post("/service_provider_indemnity_details", (req, res) => {
         redirect: ''
       })
     } else {
-      const serviceProviderIndemnityDetails ={
+      const serviceProviderIndemnityDetails = {
         spods_service_provider_id: req.session.user_id,
         spods_option_pl_claims: req.body.spods_option_pl_claims,
         spods_pl_claim_details: req.body.spods_pl_claim_details,
@@ -819,10 +820,10 @@ router.post("/service_provider_indemnity_details", (req, res) => {
         spods_broker_details: req.body.spods_broker_details,
         spods_level_of_cover: req.body.spods_level_of_cover,
         spods_renewal_date: req.body.spods_renewal_date,
-  
+
       }
       ServiceProviderIndemnityDetailsSchema
-        .updateOne(serviceProviderIndemnityDetails).where({_id:req.body.indemnity_detail_id})
+        .updateOne(serviceProviderIndemnityDetails).where({ _id: req.body.indemnity_detail_id })
         .then(serviceProviders => {
           console.log("server response is:", serviceProviders);
           res.send({
@@ -841,7 +842,7 @@ router.post("/service_provider_indemnity_details", (req, res) => {
           //res.redirect('/signup-professionals-profile-6');
         });
     }
-  }else{
+  } else {
     if (req.body.spods_option_pl_claims === "yes" && req.body.spods_pl_claim_details === '') {
       //req.flash("err_msg", "Please Enter PI claim details!");
       //res.redirect('/signup-professionals-profile-6');
@@ -862,7 +863,7 @@ router.post("/service_provider_indemnity_details", (req, res) => {
         spods_broker_details: req.body.spods_broker_details,
         spods_level_of_cover: req.body.spods_level_of_cover,
         spods_renewal_date: req.body.spods_renewal_date,
-  
+
       });
       serviceProviderIndemnityDetails
         .save()
@@ -885,14 +886,14 @@ router.post("/service_provider_indemnity_details", (req, res) => {
         });
     }
   }
-  
+
 });
 
 
 /* -------------------------------------------------------------------------------------------------
 POST : service_provider_language post api is responsible for submitting signup-professionals-profile-7 form data 
 ------------------------------------------------------------------------------------------------- */
-router.post("/delete_service_provider_language", async(req, res) => {
+router.post("/delete_service_provider_language", async (req, res) => {
   var err_msg = null;
   var success_msg = null;
   //TODO:need to add condition is session is expired
@@ -918,78 +919,78 @@ router.post("/delete_service_provider_language", async(req, res) => {
     });
   }
 })
-router.get("/service_provider_language", async(req, res) => {
-  console.log('req',req.query);
-  if(req.query.user_id){
-   var data = await signUpHelper.getIndemnityLanguageById(req.query.user_id);
-   console.log('language',data)
-   if(data.length>0){
+router.get("/service_provider_language", async (req, res) => {
+  console.log('req', req.query);
+  if (req.query.user_id) {
+    var data = await signUpHelper.getIndemnityLanguageById(req.query.user_id);
+    console.log('language', data)
+    if (data.length > 0) {
+      return res.send({
+        'status': true,
+        'data': data
+      })
+    } else {
+      return res.send({
+        'status': false,
+
+      })
+    }
+  } else {
     return res.send({
-      'status':true,
-      'data':data
-    })
-   }else{
-    return res.send({
-      'status':false,
-      
-    })
-   }
-  }else{
-    return res.send({
-      'status':false,
-      
+      'status': false,
+
     })
   }
 })
-router.post("/service_provider_language",async (req, res) => {
+router.post("/service_provider_language", async (req, res) => {
   var err_msg = null;
   var success_msg = null;
   //TODO:need to add condition is session is expired
   var flag = true;
   console.log("req.body is lang: ", req.body.spls_language);
- // console.log("req.body is lang: ", req.body);
-  if(req.body.spls_language!=''){
-    if(typeof(req.body.spls_language)=='object'){
-      if(req.body.spls_language.length==0||req.body.spls_language_proficiency_level.length==0){
-       res.send(
-         {
-           'status':0,
-           'message':'something went wrong....'
-         }
-       )
-      }else{
-        if(req.body.lang_id){
-          console.log('edit multiple lang',req.body.lang_id)
-          var responce= await signUpHelper.editMultipleLang(req)
-         res.send(responce)
-        }else{
+  // console.log("req.body is lang: ", req.body);
+  if (req.body.spls_language != '') {
+    if (typeof (req.body.spls_language) == 'object') {
+      if (req.body.spls_language.length == 0 || req.body.spls_language_proficiency_level.length == 0) {
+        res.send(
+          {
+            'status': 0,
+            'message': 'something went wrong....'
+          }
+        )
+      } else {
+        if (req.body.lang_id) {
+          console.log('edit multiple lang', req.body.lang_id)
+          var responce = await signUpHelper.editMultipleLang(req)
+          res.send(responce)
+        } else {
           console.log('add multiple lang')
-          var responce= await signUpHelper.saveMultipleLang(req)
+          var responce = await signUpHelper.saveMultipleLang(req)
           res.send(responce)
         }
       }
       //console.log('bbbbbbbbbbbbbbbb')
-      
+
       //res.send(responce)
-    }else if(typeof(req.body.spls_language)=='string'){
-      if(req.body.lang_id){
-        console.log('edit one lang',req.body.lang_id)
+    } else if (typeof (req.body.spls_language) == 'string') {
+      if (req.body.lang_id) {
+        console.log('edit one lang', req.body.lang_id)
         var responce = await signUpHelper.editOneLang(req)
         res.send(responce)
-      }else{
+      } else {
         console.log('add one lang')
         var responce = await signUpHelper.saveOneLang(req)
         res.send(responce)
       }
-      
+
       //console.log('aaaaaaaaaaaaaaaaaa')
-     
+
     }
-  }else{
-  res.send({
-    status:false,
-    'message':'please select filds'
-  })
+  } else {
+    res.send({
+      status: false,
+      'message': 'please select filds'
+    })
   }
 
 
@@ -997,26 +998,26 @@ router.post("/service_provider_language",async (req, res) => {
 /* -------------------------------------------------------------------------------------------------
 Get : portpolio post api is responsible for geting portpolio form data 
 ------------------------------------------------------------------------------------------------- */
-router.get("/portpolio", async(req, res) => {
-  console.log('req',req.query);
-  if(req.query.user_id){
-   var data = await signUpHelper.getPortpofolio(req.query.user_id);
-   console.log('language',data)
-   if(data.length>0){
+router.get("/portpolio", async (req, res) => {
+  console.log('req', req.query);
+  if (req.query.user_id) {
+    var data = await signUpHelper.getPortpofolio(req.query.user_id);
+    console.log('language', data)
+    if (data.length > 0) {
+      return res.send({
+        'status': true,
+        'data': data
+      })
+    } else {
+      return res.send({
+        'status': false,
+
+      })
+    }
+  } else {
     return res.send({
-      'status':true,
-      'data':data
-    })
-   }else{
-    return res.send({
-      'status':false,
-      
-    })
-   }
-  }else{
-    return res.send({
-      'status':false,
-      
+      'status': false,
+
     })
   }
 })
@@ -1091,8 +1092,9 @@ router.post("/service_provider_signin",
               req.session.sps_address = service_provider.sps_address;
               req.session.email = service_provider.sps_email_id;
               req.session.role = service_provider.sps_role_name;
-              req.session.imagename ='';
+              req.session.imagename = '';
               req.session.is_user_logged_in = true;
+              req.session.active_user_login = "buyer"
 
               // service_provider Matched
               const payload = { id: service_provider.id, sps_fullname: service_provider.sps_firstname + '' + service_provider.sps_lastname, sps_email_id: service_provider.sps_email_id }; // Create JWT Payload
@@ -1735,13 +1737,13 @@ router.post('/service-provider-message', async (req, res) => {
     console.log("getting response form server is :", message);
 
     const newNotification = new NotificationSchema({
-      ns_title:'New Message',
-      ns_sender:req.session.user_id,
-      ns_receiver:req.body.sms_receiver_id,
-      ns_property_id:req.body.sms_property_id,
-      ns_sender_type:'service_provider',
-      ns_receiver_type:'customer',
-      ns_read_status:'unseen'
+      ns_title: 'New Message',
+      ns_sender: req.session.user_id,
+      ns_receiver: req.body.sms_receiver_id,
+      ns_property_id: req.body.sms_property_id,
+      ns_sender_type: 'service_provider',
+      ns_receiver_type: 'customer',
+      ns_read_status: 'unseen'
     });
     newNotification.save();
 
@@ -1771,20 +1773,20 @@ router.post('/service-provider-message', async (req, res) => {
 
 router.post('/service-provider-message-unread', (req, res) => {
   console.log("Service Unread Send Message data from client is :", req.body);
-  MessageSchema.updateMany({sms_property_id:req.body.sms_property_id,sms_sender_id:req.body.sms_sender_id,sms_receiver_id:req.body.sms_receiver_id,sms_sender_type:req.body.sms_sender_type,sms_receiver_type:req.body.sms_receiver_type }, { $set: { sms_read_status: 'read' } }, function (err) {
+  MessageSchema.updateMany({ sms_property_id: req.body.sms_property_id, sms_sender_id: req.body.sms_sender_id, sms_receiver_id: req.body.sms_receiver_id, sms_sender_type: req.body.sms_sender_type, sms_receiver_type: req.body.sms_receiver_type }, { $set: { sms_read_status: 'read' } }, function (err) {
     if (err) {
       console.log(err)
       res.send({ status: false, message: 'Something going wrong please check again !!' })
     } else {
-      NotificationSchema.updateMany({ ns_title:'New Message',ns_sender_type:'customer',ns_receiver_type:'service_provider',ns_receiver:req.session.user_id,ns_sender:req.body.sms_sender_id}, { $set: { ns_read_status: 'seen' } }, function (err) {
-        if(err){
-           console.log(err)
-            res.send({ status: false, message: 'Something going wrong please check again !!' })
-        }else{
+      NotificationSchema.updateMany({ ns_title: 'New Message', ns_sender_type: 'customer', ns_receiver_type: 'service_provider', ns_receiver: req.session.user_id, ns_sender: req.body.sms_sender_id }, { $set: { ns_read_status: 'seen' } }, function (err) {
+        if (err) {
+          console.log(err)
+          res.send({ status: false, message: 'Something going wrong please check again !!' })
+        } else {
           res.send({ status: true, message: 'Task update successfully !!' })
           console.log("notification messg Status update successfully");
         }
-  
+
       });
       console.log("Message Status update successfully");
     }
@@ -1801,7 +1803,7 @@ router.post("/remove_sp_uploaded_document", async (req, res) => {
   console.log("req.session.user_id is ", req.session.user_id);
   if (req.body.action == 'sp_doc_delete') {
     deleteData = await ServiceProviderUploadDocsSchema.deleteOne({ _id: req.body.document_id });
-    await DocumentPermissionSchema.findOneAndRemove({dps_document_id:req.body.document_id});
+    await DocumentPermissionSchema.findOneAndRemove({ dps_document_id: req.body.document_id });
   }
   if (deleteData) {
     console.log("server response is success: ", deleteData);
@@ -1846,7 +1848,7 @@ router.get('/get-sp-change-permision', async (req, res) => {
 router.post('/sp-change-permision', async (req, res) => {
   console.log('doc id:', req.body.doc_id)
   console.log('checkFlag:', req.body.checkFlag)
-  console.log('=========',req.body)
+  console.log('=========', req.body)
 
   DocumentPermissionSchema.findOne({ dps_service_provider_id: req.body.service_provider_id, dps_customer_id: req.body.cust_id, dps_document_id: req.body.doc_id }).then(async (data) => {
     console.log('FindData:', data);
@@ -1908,7 +1910,7 @@ router.post('/sp-change-permision', async (req, res) => {
 })
 router.post('/sp_task_status_update', (req, res) => {
   console.log("sp_task_status_update :", req.body);
-  PropertyProfessinoalTaskSchema.updateOne({ _id:req.body.task_id }, { $set: { ppts_task_status: req.body.ppts_task_status} }, { upsert: true }, function (err) {
+  PropertyProfessinoalTaskSchema.updateOne({ _id: req.body.task_id }, { $set: { ppts_task_status: req.body.ppts_task_status } }, { upsert: true }, function (err) {
     if (err) {
       console.log(err)
       res.send({ status: false, message: 'Something going wrong please check again !!' })
