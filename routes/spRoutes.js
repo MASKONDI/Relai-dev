@@ -160,22 +160,46 @@ function getPhase(phase) {
 
 
 
-app.get('/signup-professionals-profile', isServiceProvider, (req, res) => {
+app.get('/signup-professionals-profile', isServiceProvider, async(req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   console.log("Current session is : ", req.session);
-  res.render('signup-professionals-profile', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
+  if (req.query.editid) {
+    let data = await signUpHelper.getPersonalDetialByID(req.query.editid);
+    console.log(data)
+    res.render('signup-professionals-profile', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      data:data
+    });
+  }else{
+    res.render('signup-professionals-profile', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      data:null
+    });
+  }
+  
 });
-app.get('/signup-professionals-profile-2', isServiceProvider, (req, res) => {
+app.get('/signup-professionals-profile-2', isServiceProvider,async (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile-2', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
+  if (req.query.editid) {
+    let data = await signUpHelper.getOtherDetialByID(req.query.editid);
+    console.log(data)
+    res.render('signup-professionals-profile-2', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      data:data
+    });
+  }else{
+    res.render('signup-professionals-profile-2', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      data:null
+    });
+  }
+ 
 });
 
 
@@ -250,13 +274,25 @@ app.get('/service-provider/dashboard-professional', isServiceProvider, async (re
   });
 
 });
-app.get('/signup-professionals-profile-6', (req, res) => {
+app.get('/signup-professionals-profile-6', async(req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile-6', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
+  if (req.query.editid) {
+    let data = await signUpHelper.getIndemnityDetailsById(req.query.editid);
+    console.log(data)
+    res.render('signup-professionals-profile-6', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      data:data
+    });
+  }else{
+    res.render('signup-professionals-profile-6', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      data:null
+    });
+  }
+  
 });
 app.get('/signup-professionals-profile-7', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');

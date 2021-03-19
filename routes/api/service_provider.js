@@ -296,10 +296,19 @@ router.post("/service_provider_personal_details", (req, res) => {
       .then(serviceProviders => {
         console.log("server res is : ", serviceProviders);
         // res.redirect("/signup-professionals-profile-2")
+        if(req.body.isedit==1){
         res.send({
           message: 'Personal-details Update successfully',
           status: true,
+          action:'isedit'
         })
+      }else{
+        res.send({
+          message: 'Personal-details Update successfully',
+          status: true,
+          action:'isnext'
+        })
+      }
 
       })
       .catch(err => {
@@ -412,10 +421,19 @@ router.post("/service_provider_other_details", (req, res) => {
         .then(serviceProviders => {
           console.log("server response is ;", serviceProviders);
           // res.redirect("/signup-professionals-profile-3")
+          if(req.body.isedit==1){
+            res.send({
+              message: "Other-details Update successfully",
+              status: true,
+              action:'isedit'
+            })
+          }else{
           res.send({
             message: "Other-details Update successfully",
-            status: true
+            status: true,
+            action:'isnext'
           })
+        }
         })
         .catch(err => {
           console.log(err)
@@ -759,13 +777,22 @@ router.post("/service_provider_reference", (req, res) => {
       .then(serviceProviders => {
 
         console.log("server response is:", serviceProviders);
-
+       if(req.body.isedit==1){
         res.send({
           message: "Reference-details Update successfully",
           status: true,
           redirect: '/service-provider/dashboard-professional',
-          action: 'edit'
+          action: 'isedit'
         })
+       }else{
+        res.send({
+          message: "Reference-details Update successfully",
+          status: true,
+          redirect: '/service-provider/dashboard-professional',
+          action: 'isnext'
+        })
+       }
+        
       })
       .catch(err => {
         console.log(err)
@@ -880,10 +907,19 @@ router.post("/service_provider_indemnity_details", (req, res) => {
         .updateOne(serviceProviderIndemnityDetails).where({ _id: req.body.indemnity_detail_id })
         .then(serviceProviders => {
           console.log("server response is:", serviceProviders);
+          if(req.body.isedit==1){
           res.send({
             message: "Indemnity-Details Update successfully.",
             status: true,
+            action:'isedit'
           })
+        }else{
+          res.send({
+            message: "Indemnity-Details Update successfully.",
+            status: true,
+            action:'isnext'
+          })
+        }
           //res.redirect("/signup-professionals-profile-7")
         })
         .catch(err => {
