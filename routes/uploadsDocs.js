@@ -181,7 +181,28 @@ app.post('/upload', upload.array('portfolio-docs', 10), async (req, res, next) =
 
 });
 
+app.post('/upload1', upload.array('portfolio-docs', 10), async (req, res, next) => {
+  console.log(req.body);
+    var responce = await signup_helper.savePortpofolio(req);
+    console.log("responce", responce)
+    if (responce) {
+      return res.send({
+        'status': true,
+        'message': 'Portfolio-docs Uploaded Successfully',
 
+
+      })
+    } else {
+      return res.send({
+        'status': false,
+        'message': 'Something Wrong !!',
+
+
+      })
+    }
+
+
+});
 app.post('/update_portPolio', upload.single('portfolio-docs'), async (req, res, next) => {
   console.log(req.body);
   console.log('edit single file', req.file);
