@@ -748,7 +748,7 @@
                                 <td><span class="professionals-view">
                                     <%=moment(row.cuds_created_at).format('D MMM YY'); %>
                                   </span></td>
-                                <%if(row.cuds_phase_flag){%>
+                                <%if(row.cuds_phase_flag){ %>
                                   <td>
                                     <a href="#" data-toggle="tooltip" data-placement="top"
                                       title=" <%=row.cuds_phase_name%> , <%=row.cuds_task_name%>">
@@ -759,19 +759,29 @@
                                     <td>...</td>
                                     <%}%>
                                       <td>
+                                      
+
                                         <ul style="display: flex;">
+                                          <%if(row.permissionData){ %>
+                                          <%if(row.permissionData.dps_view_permission == 'yes'){%>
                                           <li>
                                             <a href="#" data-toggle="tooltip" data-placement="top"
                                               title="View Document"><img src="../images/eye.png" style="width:75%"></a>
                                           </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                          <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
                                           <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
+                                            <a download href="/taskdocument/<%= row.cuds_document_name%>" data-toggle="tooltip" data-placement="top"
                                               title="Download Document"><img src="../images/drop-down.png"></a>
                                           </li>
+                                          <%}%>
+                                          <%}%>
                                         </ul>
                                       </td>
                               </tr>
                               <%}else if(row.cuds_document_type=='pdf' ){ %>
+
+                                
+
                                 <tr>
                                   <td><img class="pdf-file" src="../images/pdficon.png">
                                     <p><span>
@@ -794,16 +804,24 @@
                                       <td>...</td>
                                       <%}%>
                                         <td>
+                                          <a class="word" href="//docs.google.com/gview?url=https://relai.herokuapp.com/taskdocument/sample-1616398262791.pdf&embedded=true">Doc</a>
+                                          
                                           <ul style="display: flex;">
+                                            <%if(row.permissionData){ %>
+                                              <%if(row.permissionData.dps_view_permission == 'yes'){%>
                                             <li>
                                               <a href="#" data-toggle="tooltip" data-placement="top"
                                                 title="View Document"><img src="../images/eye.png"
                                                   style="width:75%"></a>
                                             </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                          <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
+
                                             <li>
-                                              <a href="#" data-toggle="tooltip" data-placement="top"
+                                              <a download href="/taskdocument/<%= row.cuds_document_name%>" data-toggle="tooltip" data-placement="top"
                                                 title="Download Document"><img src="../images/drop-down.png"></a>
                                             </li>
+                                            <%}%>
+                                          <%}%>
                                           </ul>
                                         </td>
                                 </tr>
@@ -831,16 +849,23 @@
                                         <td>...</td>
                                         <%}%>
                                           <td>
+
                                             <ul style="display: flex;">
+                                              <%if(row.permissionData){ %>
+                                                <%if(row.permissionData.dps_view_permission == 'yes'){%>
                                               <li>
                                                 <a href="#" data-toggle="tooltip" data-placement="top"
                                                   title="View Document"><img src="../images/eye.png"
                                                     style="width:75%"></a>
                                               </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                          <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
+
                                               <li>
-                                                <a href="#" data-toggle="tooltip" data-placement="top"
+                                                <a download href="/taskdocument/<%= row.cuds_document_name%>" data-toggle="tooltip" data-placement="top"
                                                   title="Download Document"><img src="../images/drop-down.png"></a>
                                               </li>
+                                              <%}%>
+                                          <%}%> 
                                             </ul>
                                           </td>
                                   </tr>
@@ -868,15 +893,21 @@
                                           <%}%>
                                             <td>
                                               <ul style="display: flex;">
+                                                <%if(row.permissionData){ %>
+                                                  <%if(row.permissionData.dps_view_permission == 'yes'){%>
                                                 <li>
                                                   <a href="#" data-toggle="tooltip" data-placement="top"
                                                     title="View Document"><img src="../images/eye.png"
                                                       style="width:75%"></a>
                                                 </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                          <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
+
                                                 <li>
-                                                  <a href="#" data-toggle="tooltip" data-placement="top"
+                                                  <a download href="/taskdocument/<%= row.cuds_document_name%>" data-toggle="tooltip" data-placement="top"
                                                     title="Download Document"><img src="../images/drop-down.png"></a>
                                                 </li>
+                                                <%}%>
+                                                <%}%> 
                                               </ul>
                                             </td>
                                     </tr>
@@ -904,21 +935,28 @@
                                             <%}%>
                                               <td>
                                                 <ul style="display: flex;">
+                                                  <%if(row.permissionData){ %>
+                                                    <%if(row.permissionData.dps_view_permission == 'yes'){%>
                                                   <li>
                                                     <a href="#" data-toggle="tooltip" data-placement="top"
                                                       title="View Document"><img src="../images/eye.png"
                                                         style="width:75%"></a>
                                                   </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                                  <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
+
                                                   <li>
-                                                    <a href="#" data-toggle="tooltip" data-placement="top"
+                                                    <a download href="/taskdocument/<%= row.cuds_document_name%>" data-toggle="tooltip" data-placement="top"
                                                       title="Download Document"><img src="../images/drop-down.png"></a>
                                                   </li>
+                                                  <%}%>
+                                                  <%}%>  
                                                 </ul>
                                               </td>
                                       </tr>
                                       <%}%>
                                         <%})%>
                                           <%}%>
+
                                             <!-- <tr>
                       <td><img class="pdf-file" src="../images/doc.png">
                         <p><span>Contract.pdf</span> 256.0 KB</p>
@@ -954,7 +992,20 @@
     </div>
     </div>
     <%- include('professional-footer')-%>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+<script src="    https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js
+"></script>
+
       <script>
+
+$(document).ready(function() {
+ $(".word").fancybox({
+  'width': 600, // or whatever
+  'height': 320,
+  'type': 'iframe'
+ });
+}); //  ready 
+
         function sp_previewFile(input) {
           if (input.files && input.files[0]) {
             var reader = new FileReader();

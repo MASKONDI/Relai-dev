@@ -1307,6 +1307,7 @@ router.post("/addTask_from_Dreamhome_detial_phase", (req, res) => {
 })
 
 router.post("/Add_existing_task_from_Dreamhome_detial_phase", (req, res) => {
+  console.log('here this api comming')
   if (req.body.ppts_assign_to == '' || req.body.ppts_assign_to == undefined || req.body.ppts_phase_name == '') {
     return res.send({
       'err_msg': 'All fields are required !!',

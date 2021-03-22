@@ -1,0 +1,78 @@
+<?php 
+require('connection.php'); 
+if(!empty($_POST['edit_invoice_id'])){
+	echo 'vivek';
+		$msg_status='';
+		$status_check=0;
+		$reverse_charge="";
+		$invoice_no="";
+		$invoice_date="";
+		$state="";
+		$state_code="";
+		$transportation_mode="";
+		$vehicel_no="";
+		$date_of_supply="";
+		$place_of_supply="";
+		$billedto_name="";
+		$billedto_address="";
+		$billedto_gstin="";
+		$billedto_state="";
+		$shipto_name="";
+		$shipto_address="";
+		$shipto_gstin="";
+		$shipto_state="";
+		$total_amount_words="";
+		$sub_total="";
+		$total_amount_tax="";
+		$tax_amount_gst="";
+		$grandtotal_amount="";
+		$product_name='';
+		
+
+		print_r($_POST);
+		
+		$date = date('Y-m-d H:i:s');
+		$edit_invoice_id = $_POST['edit_invoice_id'];
+		$reverse_charge = $_POST['reverse_charge'];
+		$invoice_no = $_POST['invoice_no'];
+		$invoice_date = $_POST['invoice_date'];
+		$state = $_POST['state'];
+		$state_code = $_POST['state_code'];
+		$transportation_mode = $_POST['transportation_mode'];
+		$vehicel_no = $_POST['vehicel_no'];
+		$date_of_supply = $_POST['date_of_supply'];
+		$place_of_supply = $_POST['place_of_supply'];
+		$billedto_name = $_POST['billedto_name'];
+		$billedto_address = $_POST['billedto_address'];
+		$billedto_gstin = $_POST['billedto_gstin'];
+		$billedto_state = $_POST['billedto_state'];
+		$shipto_name = $_POST['shipto_name'];
+		$shipto_address = $_POST['shipto_address'];
+		$shipto_gstin = $_POST['shipto_gstin'];
+		$shipto_state = $_POST['shipto_state'];
+		$total_amount_words = $_POST['total_amount_words'];
+		$sub_total = $_POST['sub_total'];
+		$total_amount_tax = $_POST['total_amount_tax'];
+		$tax_amount_gst = $_POST['tax_amount_gst'];
+		$grandtotal_amount = $_POST['grandtotal_amount'];
+		
+		$product_name = $_POST['product_name'];
+		$quantity = $_POST['quantity'];
+		$rate = $_POST['rate'];
+		$amount = $_POST['amount'];
+		$gst_rate = $_POST['gst_rate'];
+		$gst_amount = $_POST['gst_amount'];
+		$total_amount = $_POST['total_amount'];
+
+		$query="UPDATE invoice_details SET `reverse_charge` = '".$reverse_charge."',`invoice_no` = '".$invoice_no."',`invoice_date` = '".$invoice_date."',`state` = '".$state."',`state_code` = '".$state_code."',`transportation_mode` = '".$transportation_mode."',`vehicle_no` = '".$vehicle_no."',`date_of_supply` = '".$date_of_supply."',`place_of_supply` = '".$place_of_supply."',`receiver_name` = '".$receiver_name."',`receiver_address` = '".$receiver_address."',`receiver_gstin` = '".$receiver_gstin."',`receiver_state` = '".$receiver_state."',`consignee_name` = '".$consignee_name."',`consignee_address` = '".$consignee_address."',`consignee_gstin` = '".$consignee_gstin."',`consignee_state` = '".$consignee_state."',`sub_total` = '".$sub_total."',`total_amount_tax` = '".$total_amount_tax."',`total_amount_gst` = '".$total_amount_gst."',`total_amount_after_tax` = '".$total_amount_after_tax."',`amount_in_words` = '".$amount_in_words."' WHERE id = ".$edit_invoice_id.""
+		$distributor_details_id=mysqli_query($con,$query);
+		
+		$msg_status = '<div class="alert alert-success"> <strong>Success!</strong> Invoice '.$invoice_no.' Updated Successfully. </div>';	
+		$status_check=1; 
+	}
+	else{
+		$msg_status = '<div class="alert alert-danger"> <strong>Error!</strong> Not found any information. </div>';
+	}
+	$result_status = array('msg_status'=>$msg_status,'status_check'=>$status_check);
+	echo json_encode($result_status);  
+?>

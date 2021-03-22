@@ -152,6 +152,7 @@ module.exports.add_existing_task = function (req) {
         console.log('Bodyyy task in table:',req.body)
 
         if (typeof (req.body.task_element) == 'object') {
+          console.log('Task Object')
                 req.body.task_element.forEach(async function(row ,i){
                     PropertyProfessinoalTaskSchema.find(
                         {ppts_property_id: req.body.ppts_property_id,
@@ -161,31 +162,12 @@ module.exports.add_existing_task = function (req) {
                           ppts_phase_name:req.body.ppts_phase_name, 
                            ppts_phase_flag:req.body.ppts_phase_flag
                          }).then(async (data) => {
-                          console.log('Already task in table2111:',data)
+                          console.log('Already task in table2111 object:',data)
                         if (!data) {
-                            console.log('ifififi consifotiodsf sjs fksdh')
+                            console.log('if Object')
                           
-                            // newTask ={
-                            // ppts_property_id: req.body.ppts_property_id,
-                            // ppts_user_id: req.session.user_id,
-                            // ppts_task_name: row,
-                            // ppts_assign_to: req.body.ppts_assign_to,
-                            // ppts_due_date: req.body.duedate,
-                            // ppts_phase_name: req.body.ppts_phase_name,
-                            // ppts_is_active_user_flag: req.session.active_user_login,
-                            // ppts_note: req.body.notes,
-                            // ppts_phase_flag:req.body.ppts_phase_flag
-                            // }
-                            // console.log('Newdata',newTask)
-                            // const allobj = await  new PropertyProfessinoalTaskSchema(newTask);
-                            // allobj.save().then(async function(resp){
-                            //     let responce = await resp
-                            //     resolve(responce)
-                            // }).catch((err)=>{
-                            //     reject(err)
-                            // });
                         }else{
-                            console.log('Else consifotiodsf sjs fksdh')
+                            console.log('Else Object')
 
                             PropertyProfessinoalTaskSchema.findOne({
                                 ppts_property_id: req.body.ppts_property_id,
@@ -194,7 +176,7 @@ module.exports.add_existing_task = function (req) {
                                 ppts_phase_flag:req.body.ppts_phase_flag 
                              }).then(async (data1) => { 
                                 if (data1) {
-                                console.log('Object data1data1 String:',data1);
+                               // console.log('Object data1data1 String:',data1);
                                 console.log('Object data1.ppts_assign_to String:',data1.ppts_assign_to);
                                 console.log('Object data1.ppts_user_id String:',data1.ppts_user_id);
             
@@ -210,7 +192,7 @@ module.exports.add_existing_task = function (req) {
                                  }
                                  console.log('Object UseridToArray New String:',UseridToArray);
                                
-                                 var DueDateToArray = data1.ppts_due_date;
+                                /* var DueDateToArray = data1.ppts_due_date;
                                  if(!DueDateToArray.includes(req.body.duedate)){
                                     DueDateToArray.push(req.body.duedate);
                                  }
@@ -221,23 +203,21 @@ module.exports.add_existing_task = function (req) {
                                     NotesToArray.push(req.body.notes);
                                  }
                                  var statusToArray = data1.ppts_task_status;
-                                //  if(statusToArray.includes(status)){
-                                //     statusToArray.push(status);
-                                //  }
+                           
                                 statusToArray.push(status);
-                                 console.log('Object statusToArray New String:',statusToArray);
+                                 console.log('Object statusToArray New String:',statusToArray);*/
             
             
                                 PropertyProfessinoalTaskSchema.updateOne({  ppts_property_id: req.body.ppts_property_id,
                                     ppts_task_name:row,
                                     ppts_phase_name:req.body.ppts_phase_name,
-                                    ppts_phase_flag:req.body.ppts_phase_flag  }, { $set: { ppts_assign_to: AssignToArray,ppts_user_id:UseridToArray,ppts_note:NotesToArray,ppts_due_date:DueDateToArray ,ppts_task_status:statusToArray} }, { upsert: true }, function (err) {
+                                    ppts_phase_flag:req.body.ppts_phase_flag  }, { $set: { ppts_assign_to: AssignToArray,ppts_user_id:UseridToArray} }, function (err) {
                                     if (err) {
                                       console.log("err is :", err);
-                                      console.log(' Object Dataupdated Not successfully');
+                                      console.log(' Object Data updated Not successfully');
                   
                                     } else {
-                                               console.log(' Object Dataupdated successfully');
+                                               console.log(' Object Data updated successfully');
                                     }
                                   })
                                 }else{
@@ -278,7 +258,9 @@ module.exports.add_existing_task = function (req) {
                 })
       
           } else {
-            console.log("addTask post String:", req.body);
+          console.log('Task string')
+
+            //console.log("addTask post String:", req.body);
 
             PropertyProfessinoalTaskSchema.findOne({
                    ppts_property_id: req.body.ppts_property_id,
@@ -299,7 +281,7 @@ module.exports.add_existing_task = function (req) {
                     ppts_phase_flag:req.body.ppts_phase_flag 
                  }).then(async (data1) => { 
                     if (data1) {
-                    console.log('data1data1 String:',data1);
+                    //console.log('data1data1 String:',data1);
                     console.log('data1.ppts_assign_to String:',data1.ppts_assign_to);
                     console.log('data1.ppts_user_id String:',data1.ppts_user_id);
 
@@ -307,19 +289,19 @@ module.exports.add_existing_task = function (req) {
                      if(!AssignToArray.includes(req.body.ppts_assign_to)){
                         AssignToArray.push(req.body.ppts_assign_to);
                      }
-                     console.log('AssignToArray New String:',AssignToArray);
+                     //console.log('AssignToArray New String:',AssignToArray);
 
                      var UseridToArray = data1.ppts_user_id;
                      if(!UseridToArray.includes(req.session.user_id)){
                         UseridToArray.push(req.session.user_id);
                      }
-                     console.log('UseridToArray New String:',UseridToArray);
+                     //console.log('UseridToArray New String:',UseridToArray);
                    
                      var DueDateToArray = data1.ppts_due_date;
                      if(!DueDateToArray.includes(req.body.duedate)){
                         DueDateToArray.push(req.body.duedate);
                      }
-                     console.log('DueDateToArray New String:',DueDateToArray);
+                     //console.log('DueDateToArray New String:',DueDateToArray);
 
                      var NotesToArray = data1.ppts_note;
                      if(!NotesToArray.includes(req.body.notes)){
@@ -328,7 +310,7 @@ module.exports.add_existing_task = function (req) {
                      var statusToArray = data1.ppts_task_status;
                      statusToArray.push(status);
                       
-                     console.log('NotesToArray New String:',NotesToArray);
+                     //console.log('NotesToArray New String:',NotesToArray);
 
 
                     PropertyProfessinoalTaskSchema.updateOne({  ppts_property_id: req.body.ppts_property_id,
@@ -364,24 +346,14 @@ module.exports.add_existing_task = function (req) {
                                 resolve(responce)
                             }).catch((err)=>{
                                 reject(err)
-                            });
-                        
-                    }
-                         
-
+                            });                        
+                    }                        
                  })
-
               }else{
-              
-                console.log('Already task in table2111 String:',data)
-
-
+                console.log('Already task in table2111 String:')
               }
             })
-     
-            
           }
-      
     });
 };
 

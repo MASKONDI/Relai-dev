@@ -327,7 +327,7 @@ app.post('/upload-new-document', upload.single('task-document'), async (req, res
     ext_type = 'video';
   } else if (ext == ".pdf") {
     ext_type = 'pdf';
-  } else if (ext == ".docx") {
+  } else if (ext == ".docx" || ext == ".doc") {
     ext_type = 'doc';
   } else if (ext == ".txt") {
     ext_type = 'txt';

@@ -1817,8 +1817,8 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
   //console.log("hiredProfessional_list", AllProfessional_property_wise)
-  console.log("taskObject mydreamhome-details-phase-a", taskObject)
-  console.log("gest_taskObject", gest_taskObject)
+ // console.log("taskObject mydreamhome-details-phase-a", taskObject)
+ // console.log("gest_taskObject", gest_taskObject)
 
   if (taskObject) {
     req.session.pagename = 'mydreamhome';

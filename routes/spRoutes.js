@@ -43,6 +43,7 @@ const NotificationSchema = require("../models/notification_modal");
 
 const ComplaintsSchema = require("../models/Complaints");
 const ComplaintDetailsSchema = require("../models/complaint_details_model");
+const CustomerDocPermission = require("../models/document_permission");
 
 
 function tallyVotes(AllhiredProfeshnoal) {
@@ -528,24 +529,24 @@ app.get('/service-provider/professional-details-docs', isServiceProvider, async 
     for (var key of resp) {
       let temps = await key
       const d = JSON.stringify(temps);
-      const datas = JSON.parse(d)
-      normalDocArray.push(datas);
-      // if(key.spuds_task_id){
-      //   taskDocArray.push(datas);
-      // }
-      // if (key.cuds_task_id) {
-
-      //   taskDocArray.push(datas);
-      // } else {
-      //   normalDocArray.push(datas);
-      // }
+      const DocData = JSON.parse(d)
+     await CustomerDocPermission.findOne({ dps_document_id:DocData._id }).then(async (docPermissionResp) => { 
+       if(docPermissionResp){
+        DocData.permissionData = docPermissionResp
+       }else{
+        DocData.permissionData ='';
+       }
+      })
+      normalDocArray.push(DocData);
     }
   });
   //const propertyDataObj = await PropertiesSchema.find();
+
+  console.log('normalDocArray:',normalDocArray);
   let propertyProfeshnoal = await PropertyProfessionalSchema.find({
     $and: [{ pps_service_provider_id: req.session.user_id, pps_property_id: req.session.property_id }]
   });
-  console.log('propertyProfeshnoal', propertyProfeshnoal);
+  //console.log('propertyProfeshnoal', propertyProfeshnoal);
   for (var k of propertyProfeshnoal) {
     var image = await customerHelper.getCustomerImageByID(k.pps_user_id);
     await CustomerSchema.findOne({ _id: k.pps_user_id }).then(async (coustomerdata) => {
@@ -560,7 +561,7 @@ app.get('/service-provider/professional-details-docs', isServiceProvider, async 
         custmorePermisionArray.push(temps)
       }
     })
-    console.log('custmorePermisionArray', custmorePermisionArray);
+   // console.log('custmorePermisionArray', custmorePermisionArray);
   }
 
 
