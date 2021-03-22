@@ -2527,6 +2527,12 @@ router.post('/reapitApi-proprty', (req, res) => {
         let propertyJson = JSON.parse(response.body);
         let propertyAddress = [];
         let address = '';
+
+        let propertyObj={
+          value:'',
+          data:'',
+        }
+
         for (let property of propertyJson._embedded) {
           if (property.address.buildingName) {
             address += property.address.buildingName + ' ';
@@ -2546,7 +2552,11 @@ router.post('/reapitApi-proprty', (req, res) => {
           if (property.address.line4) {
             address += property.address.line4 + ' ';
           }
-          propertyAddress.push(address);
+            propertyObj={
+              value:address,
+              data:property.id,
+            }
+          propertyAddress.push(propertyObj);
           address = '';
         }
         return res.send({
@@ -2581,7 +2591,7 @@ router.post('/reapitApi', (req, res) => {
     console.log('tokenRes:', tokenRes)
     var options = {
       'method': 'GET',
-      'url': 'https://platform.reapit.cloud/properties/?address=' + searchText,
+      'url': 'https://platform.reapit.cloud/properties/?id=' + searchText,
       'headers': {
         'api-version': '2020-01-31',
         'reapit-customer': 'SBOX',
@@ -2593,8 +2603,25 @@ router.post('/reapitApi', (req, res) => {
     request(options, function (error, response) {
       if (error) throw new Error(error);
       let ddd = JSON.parse(response.body);
-      return res.send({
-        propertyData: ddd._embedded
+      var options = {
+        'method': 'GET',
+        'url': 'https://platform.reapit.cloud/offers/?embed=property&propertyId='+searchText,
+        'headers': {
+          'api-version': '2020-01-31',
+          'reapit-customer': 'SBOX',
+          'Authorization': 'Bearer ' + tokenRes.access_token,
+          'Content-Type': 'application/json'
+        },
+        body: ''
+      };
+      request(options, function (error, offerResponse) {
+        if (error) throw new Error(error);
+        console.log('offerResponse:',offerResponse)
+        let offer= JSON.parse(offerResponse.body);
+        return res.send({
+          propertyData: ddd._embedded,
+          offerData: offer._embedded
+        });
       });
     });
   });

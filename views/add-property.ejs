@@ -59,6 +59,7 @@
                         </span>
                         <% }%>
 
+                        <!-- <input type="text" name="country" id="autocomplete" /> -->
 
                           <div class="property-form">
                             <div class="row">
@@ -770,6 +771,31 @@
                                     <%}%>
                               </div>
                             </div>
+
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-4">
+                                <%if(propertyObj=='null'){%>
+                                     <input type="text" placeholder="Property Offer Price" value="" name="offer_price" class="form-control property-form-control-size-fix offerPrice" />
+                                  <%}else{%>
+                                    <input type="text" readonly placeholder="Property Offer Price" name="offer_price" value="<%=propertyObj.ps_offer_price%>" class="form-control property-form-control-size-fix offerPrice" />
+                                <%}%>
+                              </div>
+                              <div class="col-sm-12 col-lg-4">
+                                <%if(propertyObj=='null'){%>
+                                     <input type="text" placeholder="Offer status" value="accepted" name="offer_status" class="form-control property-form-control-size-fix offerStatus" />
+                                  <%}else{%>
+                                    <input type="text" readonly placeholder="Offer status" name="offer_status" value="<%=propertyObj.ps_offer_status%>" class="form-control property-form-control-size-fix offerStatus" />
+                                <%}%>
+                              </div>
+
+                              <div class="col-sm-12 col-lg-4">
+                                    <input name="property_lattitude" type="hidden" class="form-control property-form-control-size-fix property_lattitude" />
+                                    <input name="property_longitude" type="hidden" class="form-control property-form-control-size-fix property_longitude" />
+                              </div>
+
+                            </div>
+
+
                           </div>
                           <div class="Phases_section">
                             <div class="row">
@@ -2082,6 +2108,8 @@
                       </div>
                     </form>
                     <%}%>
+
+                  
               </div>
               <!--third form div close-->
             </div>
@@ -2093,7 +2121,29 @@
     </div>
 
     <%- include('dashboard_footer')-%>
-      <script src="https://code.jquery.com/ui/jquery-ui-git.js"></script>
+      <!-- <script src="https://code.jquery.com/ui/jquery-ui-git.js"></script> -->
+      <script src="https://www.jqueryscript.net/demo/jQuery-Ajax-Autocomplete-Plugin-For-Input-Fields-Autocomplete/scripts/jquery.mockjax.js"></script>
+    <!-- <script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script> -->
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script>
+//Function to covert address to Latitude and Longitude
+var getLocation =  function(address) {
+  var geocoder = new google.maps.Geocoder();
+  geocoder.geocode( { 'address': address}, function(results, status) {
+
+  if (status == google.maps.GeocoderStatus.OK) {
+      var latitude = results[0].geometry.location.lat();
+      var longitude = results[0].geometry.location.lng();
+      console.log(latitude, longitude);
+      } 
+  }); 
+}
+
+//Call the function with address as parameter
+getLocation('New York');
+
+</script>
       <script>
         $(function () {
           $.ajax({
@@ -2103,21 +2153,18 @@
             cache: false,
             success: function (data) {
               console.log('Reapit Res:', data);
-              $(".autocomplete").autocomplete({
-                source: data.mydatadata,
-                select: function (event, ui) {
 
-                  //var label = ui.item.label;
-                  // var value = ui.item.value;
-                  // alert(value);
-
+              $('.autocomplete').autocomplete({
+                  lookup: data.mydatadata,
+                  onSelect:function (suggestion) {
+                   // alert('You selected: ' + suggestion.value +', ' + suggestion.data);
                   $('.loader-box').attr('style', 'display:flex !important');
-                  var searchText = ui.item.value;
-                  console.log('TextVivek:', searchText);
+                  //var searchText = ui.item.value;
+                  //console.log('TextVivek:', searchText);
                   $.ajax({
                     type: "POST",
                     data: {
-                      searchText: searchText
+                      searchText: suggestion.data
                     },
                     url: "/api/reapitApi",
                     cache: false,
@@ -2125,19 +2172,72 @@
                       console.log('Reapit Res:', data);
                       $('.loader-box').attr('style', 'display:none !important');
                       $('.property_detial').css('display', 'block');
-                      $('.property_name').val(data.propertyData[0].address.buildingName);
+                      if(data.propertyData[0].address.buildingName){
+                        $('.property_name').val(data.propertyData[0].address.buildingNumber+' '+data.propertyData[0].address.buildingName);
+                      }else if(data.propertyData[0].address.buildingName ==''){
+                        $('.property_name').val(data.propertyData[0].address.buildingNumber+' '+data.propertyData[0].address.line1 + ' ' + data.propertyData[0].address.line2);
+                      }
                       $('#zipcode').val(data.propertyData[0].address.postcode);
                       $('.p_notes').val(data.propertyData[0].description);
-                      $('.p_area').val(data.propertyData[0].internalArea.min + 'x' + data.propertyData[0].internalArea.max + ' ' + data.propertyData[0].internalArea.type);
+                      if(data.propertyData[0].internalArea != null){
+                        $('.p_area').val(data.propertyData[0].internalArea.min + 'x' + data.propertyData[0].internalArea.max + ' ' + data.propertyData[0].internalArea.type);
+                      }
+                      if(data.propertyData[0].address.geolocation){
+                        $('.property_lattitude').val(data.propertyData[0].address.geolocation.latitude)
+                        $('.property_longitude').val(data.propertyData[0].address.geolocation.longitude);
+                      }
                       $('.p_address').val(data.propertyData[0].address.buildingNumber + ' ' + data.propertyData[0].address.line1 + ' ' + data.propertyData[0].address.line2 + ' ' + data.propertyData[0].address.line2 + ' ' + data.propertyData[0].address.line3 + ' ' + data.propertyData[0].address.line4);
                       $('#ps_existing_property option[value="Residential"]').attr("selected", "selected");
                       $('#bedroom option[value="' + data.propertyData[0].bedrooms + '"]').attr("selected", "selected");
                       $('#bedroom2 option[value="' + data.propertyData[0].bathrooms + '"]').attr("selected", "selected");
+                      $.each(data.offerData, function (i, offerdata) {
+                        if(offerdata.status == 'accepted'){
+                          let currencyFormat='';
+                          if( offerdata.currency == 'GBP'){
+                              currencyFormat = '£';
+                          }
+                          if(offerdata.currency == 'USD'){
+                              currencyFormat = '$';
+                          }
+                            $('.offerPrice').val(currencyFormat+' '+offerdata.amount);
+                            $('.offerStatus').val(offerdata.status);
+                        }
+                      })
                     }
                   })
-
                 }
               });
+
+              // $(".autocomplete").autocomplete({
+              //   source: data.mydatadata,
+              //   select: function (event, ui) {
+              //     $('.loader-box').attr('style', 'display:flex !important');
+              //     var searchText = ui.item.value;
+              //     console.log('TextVivek:', searchText);
+              //     $.ajax({
+              //       type: "POST",
+              //       data: {
+              //         searchText: searchText
+              //       },
+              //       url: "/api/reapitApi",
+              //       cache: false,
+              //       success: function (data) {
+              //         console.log('Reapit Res:', data);
+              //         $('.loader-box').attr('style', 'display:none !important');
+              //         $('.property_detial').css('display', 'block');
+              //         $('.property_name').val(data.propertyData[0].address.buildingName);
+              //         $('#zipcode').val(data.propertyData[0].address.postcode);
+              //         $('.p_notes').val(data.propertyData[0].description);
+              //         $('.p_area').val(data.propertyData[0].internalArea.min + 'x' + data.propertyData[0].internalArea.max + ' ' + data.propertyData[0].internalArea.type);
+              //         $('.p_address').val(data.propertyData[0].address.buildingNumber + ' ' + data.propertyData[0].address.line1 + ' ' + data.propertyData[0].address.line2 + ' ' + data.propertyData[0].address.line2 + ' ' + data.propertyData[0].address.line3 + ' ' + data.propertyData[0].address.line4);
+              //         $('#ps_existing_property option[value="Residential"]').attr("selected", "selected");
+              //         $('#bedroom option[value="' + data.propertyData[0].bedrooms + '"]').attr("selected", "selected");
+              //         $('#bedroom2 option[value="' + data.propertyData[0].bathrooms + '"]').attr("selected", "selected");
+              //       }
+              //     })
+
+              //   }
+              // });
             }
           })
         });

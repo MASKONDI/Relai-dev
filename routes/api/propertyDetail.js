@@ -316,8 +316,11 @@ module.exports.Add_New_Propert = function (req) {
             ps_existing_property: req.body.ps_existing_property,
             ps_chain_property_id: chainPropertyIdArray,
             ps_other_property_type: req.body.ps_other_property_type,
-            ps_chain_property_name: chainPropertyNameArray
-
+            ps_chain_property_name: chainPropertyNameArray,
+            ps_property_lat:req.body.property_lattitude,
+            ps_property_long:req.body.property_longitude,
+            ps_offer_price:req.body.offer_price,
+            ps_offer_status:req.body.offer_status,
         };
         if (req.body.property_type == 'Chain') {
             var chain_propnameByid = await PropertiesSchema.findOne({ _id: req.body.ps_chain_property });
