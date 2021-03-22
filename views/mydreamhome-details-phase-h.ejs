@@ -116,8 +116,7 @@
                           <%}%>
                             <div class="float-right">
                               <a href="#" class="add-professionals existingTaskListModal" data-toggle="modal"
-                                data-target="#addTask">Add
-                                Task</a>
+                                data-target="#addTask">Create Task</a>
                             </div>
 
                   </div>
@@ -186,12 +185,14 @@
                                   <td><a href="#" class="upload-any"><img src="images/upload.png">
                                       <span>
                                         <div class="custom-file-input">
-                                           <input type="file" name="task-document" onchange="previewFile_upload_task_document(this,'<%=row._id%>','<%=hp._id%>','<%=row.ppts_phase_name%>','<%=row.ppts_task_name%>','<%=row.ppts_property_id%>','H')">
+                                          <input type="file" name="task-document"
+                                            onchange="previewFile_upload_task_document(this,'<%=row._id%>','<%=hp._id%>','<%=row.ppts_phase_name%>','<%=row.ppts_task_name%>','<%=row.ppts_property_id%>','H')">
                                           <input type="button">
                                         </div>
                                       </span>
                                     </a>
-                                    <a href="/mydreamhome-details-message?id=<%=row.ppts_property_id%>&pid=<%=hp._id%>"><img src="images/chat.png"></a>
+                                    <a href="/mydreamhome-details-message?id=<%=row.ppts_property_id%>&pid=<%=hp._id%>"><img
+                                        src="images/chat.png"></a>
                                   </td>
                                   <%}else{%>
                                     <td>
@@ -200,7 +201,7 @@
                                     <%}%>
                                       <%});%>
                                         <%}%>
-                                          
+
                                           <td><a class="btn help-btn" href="#" data-toggle="modal"
                                               data-target="#myModal">Help</a>
                                           </td>
@@ -391,7 +392,7 @@
                           </tr>
                           <%});%>
                             <%}%>
-                              
+
                   </tbody>
                 </table>
               </div>
