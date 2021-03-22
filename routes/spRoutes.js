@@ -253,6 +253,7 @@ app.get('/service-provider/dashboard-professional', isServiceProvider, async (re
       for (let notifResult of notificationResults) {
         if (notifResult.ns_sender_type == 'customer') {
           await CustomerSchema.findOne({ _id: notifResult.ns_sender }).then(async (cusResult) => {
+            console.log('CustomerSchemaCustomerSchema:',cusResult);
             notificationObj = {
               name: cusResult.cus_fullname,
               image: cusResult.cus_profile_image_name,
@@ -262,7 +263,7 @@ app.get('/service-provider/dashboard-professional', isServiceProvider, async (re
         }
       }
     }
-  });
+  }); 
   console.log('notifData:', notifData)
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -377,6 +378,8 @@ app.get('/service-provider/property', isServiceProvider, async function (req, re
       for (let img of data) {
         await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
           let temp = await result
+
+          console.log('')
           //for(let image of result){
           //  let temp = await image
           // let customerName = await customerHelper.getCustomerNameByID(img.ps_user_id);

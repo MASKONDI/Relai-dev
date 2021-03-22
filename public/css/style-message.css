@@ -410,3 +410,12 @@ span#comment-error {
         font-weight: 600;
         text-decoration: underline;
         }
+
+
+        .autocomplete-suggestions {
+            background: #fff;
+            height: 121px;
+            overflow: auto;
+            margin-top: -20px;
+            cursor: pointer;
+        }

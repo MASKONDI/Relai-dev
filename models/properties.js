@@ -123,7 +123,18 @@ const PropertiesSchema = new Schema({
     type: String,
     enum: ['yes', 'no'],
     default: 'no'
-  }
-
+  },
+  ps_property_lat: {
+    type: String
+  },
+  ps_property_long: {
+    type: String
+  },
+  ps_offer_price: {
+    type: String
+  },
+  ps_offer_status: {
+    type: String
+  },
 });
 module.exports = properties = mongoose.model('properties', PropertiesSchema);
