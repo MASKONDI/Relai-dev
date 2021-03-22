@@ -294,13 +294,28 @@ app.get('/signup-professionals-profile-6', async(req, res) => {
   }
   
 });
-app.get('/signup-professionals-profile-7', isServiceProvider, (req, res) => {
+app.get('/signup-professionals-profile-7', isServiceProvider, async(req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
+  let data = await signUpHelper.getIndemnityLanguageById(req.session.user_id);
+  console.log(data)
+  if(data.length!=0){
   res.render('signup-professionals-profile-7', {
     err_msg, success_msg, layout: false,
-    session: req.session
+    session: req.session,
+    data:data
   });
+}else{
+  res.render('signup-professionals-profile-7', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    data:null
+  });
+}
+  // res.render('signup-professionals-profile-7', {
+  //   err_msg, success_msg, layout: false,
+  //   session: req.session
+  // });
 });
 app.get('/portfolio', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
