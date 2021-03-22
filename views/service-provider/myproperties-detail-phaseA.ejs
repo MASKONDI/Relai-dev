@@ -79,12 +79,22 @@
                   </div>
                 </div>
                 <div class="phase-progress">
-                  <ul>
+
+                  <div data-toggle="tooltip" data-placement="top" title="54%" data-original-title="" class="progress"
+                    style="height:2.5rem">
+
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100"
+                      aria-valuemin="0" aria-valuemax="100"
+                      style="width:45%; background-color:#005377;overflow:hidden; display:inline-block;">
+
+                    </div>
+                    </a>
+                  </div>
+
+                  <!-- <li><a href="#">25%</a></li>
                     <li><a href="#">25%</a></li>
-                    <li><a href="#">25%</a></li>
-                    <li><a href="#">25%</a></li>
-                    <li><a href="#">25%</a></li>
-                  </ul>
+                    <li><a href="#">25%</a></li> -->
+
                 </div>
                 <div class="action-owner">
                   <div class="clearfix">
@@ -154,25 +164,26 @@
 
                             <td>
                               <% if(row.ppts_assign_to.includes(row.user_id)){%>
-                                
-                              <div class="profile-dropdown">
-                                <%if(row.ppts_task_status[row.index]=='completed_by_service_provider'){%>
-                                  <a class="btn btn-complete">Complete</a>
-                                  <%}else if(row.ppts_task_status[row.index]=='in_progress'){%>
-                                    <a class="btn btn-progress">In Progress</a>
-                                    <%}else{%>
-                                      <a class="btn btn-pending">Pending</a>
-                                      <%}%>
-                                        <div class="status-dropdown">
-                                          <a class="btn btn-pending"
-                                            onclick="sp_task_statusUpdate('<%=row._id%>','pending')">Pending</a>
-                                          <a class="btn btn-progress"
-                                            onclick="sp_task_statusUpdate('<%=row._id%>','in_progress')">In Progress</a>
-                                          <a class="btn btn-complete"
-                                            onclick="sp_task_statusUpdate('<%=row._id%>','completed_by_service_provider')">Complete</a>
-                                        </div>
-                              </div>
-                              <%}%>
+
+                                <div class="profile-dropdown">
+                                  <%if(row.ppts_task_status[row.index]=='completed_by_service_provider'){%>
+                                    <a class="btn btn-complete">Complete</a>
+                                    <%}else if(row.ppts_task_status[row.index]=='in_progress' ){%>
+                                      <a class="btn btn-progress">In Progress</a>
+                                      <%}else{%>
+                                        <a class="btn btn-pending">Pending</a>
+                                        <%}%>
+                                          <div class="status-dropdown">
+                                            <a class="btn btn-pending"
+                                              onclick="sp_task_statusUpdate('<%=row._id%>','pending')">Pending</a>
+                                            <a class="btn btn-progress"
+                                              onclick="sp_task_statusUpdate('<%=row._id%>','in_progress')">In
+                                              Progress</a>
+                                            <a class="btn btn-complete"
+                                              onclick="sp_task_statusUpdate('<%=row._id%>','completed_by_service_provider')">Complete</a>
+                                          </div>
+                                </div>
+                                <%}%>
                             </td>
 
 
