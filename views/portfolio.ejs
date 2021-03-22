@@ -113,8 +113,11 @@
                       <div class="col-sm-6 col-lg-6"  style="padding-top: 60px; padding-right: 227px;">
                         <a href="/signup-professionals-profile-7" class="btn previous-btn" style="width: 164px; ">PREVIOUS</a>
                       </div>
-                      <div class="col-sm-6 col-lg-6 " >
-                        <button type="submit" class="btn portfolio-submit-btn float-right" style="width: 164px; "name="submit">Upload</button>
+                      <div class="col-sm-6 col-lg-6 uploadbtndiv" >
+                        <button type="submit" class="btn portfolio-submit-btn uploadbtn float-right" style="width: 164px; "name="submit">Upload</button>
+                      </div>
+                      <div class="col-sm-6 col-lg-6 hideuploadbtndiv" style="display: none;">
+                        <button type="button" class="btn portfolio-submit-btn hideuploadbtn float-right" style="width: 164px; "name="submit">Upload</button>
                       </div>
                       
                     </div>
@@ -269,6 +272,47 @@
         })
 
       })
+      $('.hideuploadbtn').click(function(e){
+        $('.loader-box').attr('style', 'display:flex !important');
+        e.preventDefault()
+        var formData = new FormData($('#uploadForm')[0]);
+        console.log('============', formData)
+        $.ajax({
+          type: "POST",
+          data: formData,
+          url: "/upload1",
+          cache: false,
+          contentType: false,
+          processData: false,
+          success: function (data) {
+            $('.loader-box').attr('style', 'display:none !important');
+            console.log(data)
+            if (data.status == true) {
+              Swal.fire({
+                icon: 'success',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 3000
+              }).then((result) => {
+                location.reload(true)
+                window.location.href = '/kyc-professional'
+              })
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: data.message,
+                showConfirmButton: false,
+                confirmButtonColor: '#005377',
+                timer: 3000
+              }).then((result) => {
+                location.reload(true)
+              })
+            }
+          }
+        })
+
+      })
     });
     function port_previewFile(input, c, prop_img_id) {
       //alert(c)
@@ -323,6 +367,68 @@
 
       }
     }
+    function port_previewFile1(input, c, prop_img_id) {
+      //alert(c)
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          // console.log('filess:', e.target)
+          var status = 0
+          console.log('filess:', input.files[0].type)
+         
+          if (input.files[0].type == 'image/jpeg' || input.files[0].type == 'image/png' || input.files[0].type == 'image/gif') {
+            $(".img_name" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('.avtar' + c).attr('src', e.target.result)
+            $(".port_Picture_" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('#port_addmoreAvtar' + c).attr('src', e.target.result)
+            status=1
+          } else if (input.files[0].type == 'video/x-ms-wmv' || input.files[0].type == 'video/mp4') {
+            $(".img_name" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('.avtar' + c).attr('src', 'images/videoicon.png')
+            $(".port_Picture_" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('#port_addmoreAvtar' + c).attr('src', 'images/videoicon.png')
+            status=1
+          } else if(input.files[0].type == 'application/pdf'){
+            $(".img_name" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('.avtar' + c).attr('src', 'images/pdf.png')
+            $(".port_Picture_" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('#port_addmoreAvtar' + c).attr('src', 'images/pdf.png')
+            status=1
+          }else if(input.files[0].type == 'text/plain'){
+            $(".img_name" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('.avtar' + c).attr('src', 'images/txticon.png')
+            $(".port_Picture_" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('#port_addmoreAvtar' + c).attr('src', 'images/txticon.png')
+            status=1
+          }else if(input.files[0].type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'){
+            $(".img_name" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('.avtar' + c).attr('src', 'images/docicon.png')
+            $(".port_Picture_" + c).html('<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+input.files[0].name+'</p>');
+            $('#port_addmoreAvtar' + c).attr('src', 'images/docicon.png')
+            status=1
+          }else{
+
+            Swal.fire({
+              icon: 'error',
+              title: 'File type not supported !!',
+              showConfirmButton: false,
+              confirmButtonColor: '#005377',
+              timer: 3000
+            }).then((result) => {
+              location.reload(true)
+            })
+          }
+          if( status==1){
+            
+          }
+
+          // $('.avtar' + c).attr('src', e.target.result)
+          // $(".img_name" + c).html(input.files[0].name);
+        }
+        reader.readAsDataURL(input.files[0]);
+
+      }
+    }
   </script>
   <script>
    $(document).ready(function () {
@@ -337,11 +443,13 @@
           success: function (resp) {
             console.log(resp);
             if (resp.status == true) {
+              $('.hideuploadbtndiv').show()
+              $('.uploadbtndiv').hide()
               var htmlData = '';
            
             if (resp.data.length > 0) {
               var iamgeElement =''
-              $('.portfolio-submit-btn').attr('disabled', true);
+              $('.uploadbtn').attr('disabled', true);
               $.each(resp.data, function (i, data) {
                 console.log('val:', resp.data[0])
                var id=resp.data[0]._id
@@ -363,15 +471,21 @@
 
                   htmlData += "<div class='kyc-box-portfolio'><div class=kyc-section-portfolio><img src='../portfolioImage/"+data.spps_filename+"' class='avtar1' id='img_"+data._id+"'></div><div class='driving-liences-portfolio img_name1'><p style='white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>"+data.spps_filename+"</p></div><div class='upload-portfolio'><a href='javascript:void(0)'>Upload</a></div><span><div class='custom-file-input'><input type='file' class='image1'name='portfolio-docs' value=''  onchange='update_port_previewFile(this,"+JSON.stringify(data._id)+");'><input type='button'></div></span></div><input type='hidden' name='portpolio_img_id' value='"+data._id+"'> ";
                 }
-             
-              });
               
+              });
+              htmlData +='<a class="portfolio-btn one" name="addDom" onclick="addmoreBtn()"><div class=portfolio-add-button><img src="images/add-icon.png"> </div> </a>'
               $('.portpolio_div').html(htmlData);
             }
           }
         }
         });
       })
+      var ca=9
+      function addmoreBtn(){
+        var domElement = $('<div class="kyc-box-portfolio"> <div class=kyc-section-portfolio> <img src="images/upload-icon.png" class="avtar" id="port_addmoreAvtar' + ca + '"> </div> <div class="driving-liences-portfolio"> <p class="port_Picture_' + ca + '" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">Picture/Video </p> </div> <div class="upload-portfolio"> <a href="javascript:void(0)">Upload</a> </div> <span> <div class="custom-file-input"> <input type="file" name="portfolio-docs" class="portfolio-docs"onchange="port_previewFile1(this,' + ca + ');" id="image" value="" required> <input type="button"> </div> </span> </div>');
+        $('.one').before(domElement);
+        ca++
+      }
       function update_port_previewFile(input,img_id){
        
         Swal.fire({

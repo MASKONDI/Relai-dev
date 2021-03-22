@@ -364,7 +364,8 @@ app.get('/service-provider/professionals-to-do-list', isServiceProvider, async f
   let propertyArray = []
   let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id, req.session.active_user_login);
   for (let key of AllhiredProfeshnoal) {
-    let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
+    //let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
+    let propertyData = await PropertiesSchema.findOne({ _id: key.pps_property_id, ps_is_active_user_flag: req.session.active_user_login });
     // let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
     // propertyData.property_image = await propertyImageData.pps_property_image_name;
     // let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
@@ -616,8 +617,9 @@ app.get('/service-provider/professionals-detail-message', isServiceProvider, asy
   //console.log(' property id  :', req.session.property_id);
   //console.log('helooooo', req.query.pid);
   req.session.customer_id = req.query.pid;
-  let property = await PropertiesSchema.findOne({ _id: req.query.id });
 
+  let property = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
+  console.log(property);
   const { page = 1, limit = 5 } = req.query;
 
   var QueryData = {
@@ -773,16 +775,16 @@ app.get('/service-provider-get-message-property', async (req, res) => {
 // });
 
 
-app.get('/service-provider/professionals-detail-message', isServiceProvider, function (req, res) {
-  //console.log("current session is :", req.session);
-  req.session.pagename = 'service-provider/property';
-  err_msg = req.flash('err_msg');
-  success_msg = req.flash('success_msg');
-  res.render('/service-provider/professionals-detail-message', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
-});
+// app.get('/service-provider/professionals-detail-message', isServiceProvider, function (req, res) {
+//   //console.log("current session is :", req.session);
+//   req.session.pagename = 'service-provider/property';
+//   err_msg = req.flash('err_msg');
+//   success_msg = req.flash('success_msg');
+//   res.render('/service-provider/professionals-detail-message', {
+//     err_msg, success_msg, layout: false,
+//     session: req.session
+//   });
+// });
 
 app.get('/service-provider/property-detail-submit-proposal', isServiceProvider, function (req, res) {
   console.log("current session is :", req.session);
@@ -847,7 +849,8 @@ app.get('/service-provider/myproperties-detail-phaseA', isServiceProvider, async
   console.log("request coming from server is", req.query);
   //Need to  write logic for fetching Task Data from 
   var property_id = req.query.id;
-  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
+  console.log("Property Data is ::", propertyData);
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
@@ -881,7 +884,7 @@ app.get('/service-provider/myproperties-detail-phaseB', isServiceProvider, async
   console.log("request coming from server is", req.query);
   //Need to  write logic for fetching Task Data from 
   var property_id = req.query.id;
-  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
@@ -906,7 +909,7 @@ app.get('/service-provider/myproperties-detail-phaseC', isServiceProvider, async
   console.log("request coming from server is", req.query);
   //Need to  write logic for fetching Task Data from 
   var property_id = req.query.id;
-  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
@@ -931,7 +934,7 @@ app.get('/service-provider/myproperties-detail-phaseD', isServiceProvider, async
   console.log("request coming from server is", req.query);
   //Need to  write logic for fetching Task Data from 
   var property_id = req.query.id;
-  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
@@ -956,7 +959,7 @@ app.get('/service-provider/myproperties-detail-phaseE', isServiceProvider, async
   console.log("request coming from server is", req.query);
   //Need to  write logic for fetching Task Data from 
   var property_id = req.query.id;
-  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
@@ -980,7 +983,7 @@ app.get('/service-provider/myproperties-detail-phaseF', isServiceProvider, async
   console.log("request coming from server is", req.query);
   //Need to  write logic for fetching Task Data from 
   var property_id = req.query.id;
-  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
@@ -1005,7 +1008,7 @@ app.get('/service-provider/myproperties-detail-phaseG', isServiceProvider, async
   console.log("request coming from server is", req.query);
   //Need to  write logic for fetching Task Data from 
   var property_id = req.query.id;
-  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
@@ -1030,7 +1033,7 @@ app.get('/service-provider/myproperties-detail-phaseH', isServiceProvider, async
   console.log("request coming from server is", req.query);
   //Need to  write logic for fetching Task Data from 
   var property_id = req.query.id;
-  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
@@ -1055,7 +1058,7 @@ app.get('/service-provider/myproperties-detail-phaseO', isServiceProvider, async
   console.log("request coming from server is", req.query);
   //Need to  write logic for fetching Task Data from 
   var property_id = req.query.id;
-  let propertyData = await propertyHelper.getPropertyByID(property_id);
+  let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
@@ -1389,7 +1392,7 @@ app.get('/service-provider/myproperties-details-to-dos', isServiceProvider, asyn
   if (req.query.id) {
     let property_id = req.query.id;
 
-    let TaskDetailObj = await propertyHelper.getPropertyByID(property_id);
+    let TaskDetailObj = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });;
     if (TaskDetailObj) {
       console.log("TaskDetailObj:", TaskDetailObj)
       err_msg = req.flash('err_msg');
@@ -1416,7 +1419,7 @@ app.get('/service-provider/myproperties-details-to-dos', isServiceProvider, asyn
 app.post('/get_hired_property_by_id', isServiceProvider, async (req, res) => {
   console.log("Getting request from server ", req.body);
   if (req.body.property_id) {
-    let singlePropertyObj = await PropertiesSchema.find({ _id: req.body.property_id });
+    let singlePropertyObj = await PropertiesSchema.findOne({ _id: req.body.property_id, ps_is_active_user_flag: req.session.active_user_login });
     console.log('singlePropertyObj', singlePropertyObj);
     if (singlePropertyObj) {
       return res.send({
@@ -1508,7 +1511,7 @@ app.get('/service-provider/proposal', isServiceProvider, async (req, res) => {
   var activePropertyProposalArray = [];
   for (var propertyId of activeProposal) {
     console.log("property Id", propertyId);
-    let propertyObj = await propertyHelper.getPropertyByID(propertyId.sps_property_id);
+    let propertyObj = await PropertiesSchema.findOne({ _id: propertyId.sps_property_id, ps_is_active_user_flag: req.session.active_user_login });;
     let customer = await CustomerSchema.findOne({ _id: propertyId.sps_customer_id });
     if (customer) {
       propertyObj.cs_name = customer.cus_fullname;
@@ -1531,7 +1534,7 @@ app.get('/service-provider/proposal', isServiceProvider, async (req, res) => {
   var submitProposal = await SubmitProposalSchema.find({ sps_service_provider_id: req.session.user_id, sps_status: 'accept' });
   for (var propertyId of submitProposal) {
     console.log("property Id", propertyId);
-    let propertyObj = await await propertyHelper.getPropertyByID(propertyId.sps_property_id);
+    let propertyObj = await PropertiesSchema.findOne({ _id: propertyId.sps_property_id, ps_is_active_user_flag: req.session.active_user_login });
     let customer = await CustomerSchema.findOne({ _id: propertyId.sps_customer_id });
     if (customer) {
       propertyObj.cs_name = customer.cus_fullname;
@@ -1555,7 +1558,8 @@ app.get('/service-provider/proposal', isServiceProvider, async (req, res) => {
   var rejectProposal = await SubmitProposalSchema.find({ sps_service_provider_id: req.session.user_id, sps_status: 'reject' });
   for (var propertyId of rejectProposal) {
     console.log("property Id", propertyId);
-    let propertyObj = await await propertyHelper.getPropertyByID(propertyId.sps_property_id);
+    let propertyObj = await PropertiesSchema.findOne({ _id: propertyId.sps_property_id, ps_is_active_user_flag: req.session.active_user_login });
+
     let customer = await CustomerSchema.findOne({ _id: propertyId.sps_customer_id });
     if (customer) {
       propertyObj.cs_name = customer.cus_fullname;
@@ -1594,7 +1598,8 @@ app.get('/service-provider/proposal-details', isCustomer, async (req, res) => {
   if (activeProposal) {
     for (var propertyId of activeProposal) {
       console.log("property Id", propertyId);
-      let propertyObj = await propertyHelper.getPropertyByID(propertyId.sps_property_id);
+      // let propertyObj = await propertyHelper.getPropertyByID(propertyId.sps_property_id);
+      let propertyObj = await PropertiesSchema.findOne({ _id: propertyId.sps_property_id, ps_is_active_user_flag: req.session.active_user_login });
       let customer = await CustomerSchema.findOne({ _id: propertyId.sps_customer_id });
       // var totalProposal = await SubmitProposalSchema.find({ sps: propertyId.sps_service_provider_id });
 
@@ -1774,7 +1779,7 @@ app.get('/service-provider/property-related-enquiry-proprty-list', isServiceProv
 
   let propertyArray = []
   let propertyId = [];
-  let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id);
+  let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id, req.session.active_user_login);
   for (let key of AllhiredProfeshnoal) {
     propertyId.push(key.pps_property_id);
   }
