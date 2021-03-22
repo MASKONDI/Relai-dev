@@ -101,7 +101,7 @@
               </li>
             </ul>
           </div>
-
+          <%if(data==null){%>
           <div class="col-sm-12 col-lg-9">
             <div class=" dashboard-inner">
               <div class="row">
@@ -268,7 +268,155 @@
               </form>
             </div>
           </div>
-
+          <%}else{%>
+            <div class="col-sm-12 col-lg-9">
+              <div class=" dashboard-inner">
+                <div class="row">
+                  <div class="col-sm-12 col-lg-9">
+                    <div class="signup-header">
+                      <!-- <p>START FOR FREE</p> -->
+  
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12 col-lg-9">
+                    <div class="signup-head">
+                      <h3>Update Personal Details</h3>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-lg-3">
+                    <div class="page-count">
+                      <p> 1 of 6</p>
+                    </div>
+                  </div>
+                </div>
+                <form action="/api/service_provider_personal_details" class="form form-section" method="post" id="form1">
+                  <% if(typeof err_msg!='undefined' ){ %>
+                    <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
+                      <%= err_msg %>
+                    </span>
+                    <% }%>
+                      <% if(typeof success_msg!='undefined' ){ %>
+                        <span class="succ_flash_msg" style="color: green;">
+                          <%= success_msg %>
+                        </span>
+                        <% }%>
+  
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-6">
+                              <div class="input-box-size-fix">
+                                <input type="text" class="form-control text-field-size spods_surname " id="" placeholder="Surname"
+                                  name="spods_surname" required data-rule-required="true"
+                                  data-msg-required="Surname is required" value="<%= session.sps_lastname%>" readonly>
+                                </input>
+                                
+                              </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-6">
+                              <div class="input-box-size-fix">
+                                <input type="text" class="form-control text-field-size spods_fornames " id="" placeholder="Forename"
+                                  name="spods_fornames" required data-rule-required="true"
+                                  data-msg-required="Forename is required" value="<%= session.sps_firstname%>" readonly>
+                              </div>
+                            </div>
+                          </div>
+  
+  
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-6">
+                              <div class="input-box-size-fix">
+                                <select class="form-control required spods_preferred_title" id="selectBox2" name="spods_preferred_title"
+                                  data-rule-required="true" data-msg-required="Preferred Title is required" required>
+                                  <option value="">Preferred Title</option>
+                                  <option value="mr">Mr</option>
+                                  <option value="miss">Miss</option>
+                                  <option value="mrs">Mrs</option>
+                                </select>
+                              </div>
+  
+                            </div>
+                            <div class="col-sm-12 col-lg-6">
+                              <div class="input-box-size-fix">
+                                <input type="text" class="form-control text-field-size spods_former_surnames" id=""
+                                  placeholder="Former Surnames(if different from above)" name="spods_former_surnames"
+                                  value="<%= session.sps_lastname%>" required>
+                              </div>
+                            </div>
+                          </div>
+  
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-6">
+                              <div class="input-box-size-fix" id=''>
+                                <input type="text" class="datepicker form-control text-field-size spods_dob " id="datePickerId" placeholder="Date of Birth"
+                                  onfocus="(this.type='date')" min="1980-01-01" name="spods_dob" data-rule-required="true"
+                                  data-msg-required="Date of birth is required" required>
+                              </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-6">
+                              <div class="input-box-size-fix">
+                                <input type="text" class="form-control text-field-size spods_nationality" id="" placeholder="Nationality"
+                                  name="spods_nationality" required>
+                              </div>
+                            </div>
+                          </div>
+  
+  
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-6">
+                              <div class="input-box-size-fix">
+                                <input type="text" class="form-control text-field-size spods_address" id="" placeholder="Address"
+                                  name="spods_address" value="<%= session.sps_address%>" readonly>
+                              </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-6">
+                              <div class="input-box-size-fix">
+                                <input type="text" class="form-control text-field-size spods_postcode" id="" placeholder="Post code"
+                                  name="spods_postcode" required>
+                              </div>
+                            </div>
+                          </div>
+  
+  
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-6">
+                              <div class="input-box-size-fix">
+                                <input type="text" class="form-control text-field-size spods_home_telephone_number" id=""
+                                  placeholder="Home Telephone Number" name="spods_home_telephone_number" required>
+                              </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-6">
+                              <div class="input-box-size-fix">
+                                <select class="form-control spods_postcode_covered" id="selectBox2" name="spods_postcode_covered" required>
+                                  <option value="0">Post codes covered</option>
+                                  <option value=""></option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+  
+  
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-8">
+                              <div class="profile-notes">
+                                <p>If the application is successfully submitted, when are you able to start working for Relai?</p>
+                              </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-4">
+                              <div class="input-box-size-fix">
+                                <input type="text" onfocus="(this.type='date')" min="1980-01-01" class="form-control text-field-size start_working_time"
+                                  id="start_working_time" placeholder="Start Date" name="start_working_time" required>
+                              </div>
+                            </div>
+                          </div>
+                                <input type="hidden" name="isedit" value="1">
+                                <input type="hidden" name="personal_detail_id" value="<%=data._id%>">
+                          <button type="submit" class="btn btn-next" style="width: 164px;">
+                            Update</button>
+                </form>
+              </div>
+            </div>
+           <%}%>
         </div>
       </div>
     </div>
@@ -370,19 +518,6 @@
             if (data.status == true) {
               var newHref = $('.other_detail_nev').attr('data-href');
             	$('.other_detail_nev').attr('href',newHref);
-              // var date    = new Date(data.data.spods_dob),
-              // yr      = date.getFullYear(),
-              // month   = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth(),
-              // day     = date.getDate()  < 10 ? '0' + date.getDate()  : date.getDate(),
-              // newDate = day + '-' + month + '-' + yr;
-              // var startworkingdate    = new Date(data.data.spods_start_working_time),
-              // swyr      = startworkingdate.getFullYear(),
-              // swmonth   = startworkingdate.getMonth() < 10 ? '0' + startworkingdate.getMonth() : startworkingdate.getMonth(),
-              // swday     = startworkingdate.getDate()  < 10 ? '0' + startworkingdate.getDate()  : startworkingdate.getDate(),
-              // swnewDate = swday + '-' + swmonth + '-' + swyr;
-
-              //var spods_dob = data.moment(data.data.spods_dob)
-            // var dd= data.moment(data.data.spods_dob).format('L');
               $('.spods_surname').val(data.data.spods_surname);
               $('.spods_fornames').val(data.data.spods_fornames);
               $('.spods_preferred_title').val(data.data.spods_preferred_title);
@@ -437,11 +572,23 @@
                 confirmButtonColor: '#005377',
                 timer: 4000
               })
-
-              setTimeout(function () {
+              if(data.action=='isnext'){
+                setTimeout(function () {
                 //location.reload(true);
                 window.location.href = "/signup-professionals-profile-2";
-              }, 4000);
+              }, 4000)
+              }else if(data.action=='isedit'){
+                setTimeout(function () {
+                //location.reload(true);
+                window.location.href = "/service-provider/dashboard-professional";
+              }, 4000)
+              }else{
+                setTimeout(function () {
+                //location.reload(true);
+                window.location.href = "/signup-professionals-profile";
+              }, 4000)
+              }
+              ;
 
             }
           }

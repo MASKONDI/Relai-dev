@@ -160,22 +160,46 @@ function getPhase(phase) {
 
 
 
-app.get('/signup-professionals-profile', isServiceProvider, (req, res) => {
+app.get('/signup-professionals-profile', isServiceProvider, async(req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   console.log("Current session is : ", req.session);
-  res.render('signup-professionals-profile', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
+  if (req.query.editid) {
+    let data = await signUpHelper.getPersonalDetialByID(req.query.editid);
+    console.log(data)
+    res.render('signup-professionals-profile', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      data:data
+    });
+  }else{
+    res.render('signup-professionals-profile', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      data:null
+    });
+  }
+  
 });
-app.get('/signup-professionals-profile-2', isServiceProvider, (req, res) => {
+app.get('/signup-professionals-profile-2', isServiceProvider,async (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile-2', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
+  if (req.query.editid) {
+    let data = await signUpHelper.getOtherDetialByID(req.query.editid);
+    console.log(data)
+    res.render('signup-professionals-profile-2', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      data:data
+    });
+  }else{
+    res.render('signup-professionals-profile-2', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      data:null
+    });
+  }
+ 
 });
 
 
@@ -229,6 +253,7 @@ app.get('/service-provider/dashboard-professional', isServiceProvider, async (re
       for (let notifResult of notificationResults) {
         if (notifResult.ns_sender_type == 'customer') {
           await CustomerSchema.findOne({ _id: notifResult.ns_sender }).then(async (cusResult) => {
+            console.log('CustomerSchemaCustomerSchema:',cusResult);
             notificationObj = {
               name: cusResult.cus_fullname,
               image: cusResult.cus_profile_image_name,
@@ -238,7 +263,7 @@ app.get('/service-provider/dashboard-professional', isServiceProvider, async (re
         }
       }
     }
-  });
+  }); 
   console.log('notifData:', notifData)
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -250,21 +275,48 @@ app.get('/service-provider/dashboard-professional', isServiceProvider, async (re
   });
 
 });
-app.get('/signup-professionals-profile-6', (req, res) => {
+app.get('/signup-professionals-profile-6', async(req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  res.render('signup-professionals-profile-6', {
-    err_msg, success_msg, layout: false,
-    session: req.session
-  });
+  if (req.query.editid) {
+    let data = await signUpHelper.getIndemnityDetailsById(req.query.editid);
+    console.log(data)
+    res.render('signup-professionals-profile-6', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      data:data
+    });
+  }else{
+    res.render('signup-professionals-profile-6', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      data:null
+    });
+  }
+  
 });
-app.get('/signup-professionals-profile-7', isServiceProvider, (req, res) => {
+app.get('/signup-professionals-profile-7', isServiceProvider, async(req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
+  let data = await signUpHelper.getIndemnityLanguageById(req.session.user_id);
+  console.log(data)
+  if(data.length!=0){
   res.render('signup-professionals-profile-7', {
     err_msg, success_msg, layout: false,
-    session: req.session
+    session: req.session,
+    data:data
   });
+}else{
+  res.render('signup-professionals-profile-7', {
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    data:null
+  });
+}
+  // res.render('signup-professionals-profile-7', {
+  //   err_msg, success_msg, layout: false,
+  //   session: req.session
+  // });
 });
 app.get('/portfolio', isServiceProvider, (req, res) => {
   err_msg = req.flash('err_msg');
@@ -326,6 +378,8 @@ app.get('/service-provider/property', isServiceProvider, async function (req, re
       for (let img of data) {
         await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
           let temp = await result
+
+          console.log('')
           //for(let image of result){
           //  let temp = await image
           // let customerName = await customerHelper.getCustomerNameByID(img.ps_user_id);

@@ -242,6 +242,7 @@
                             <div class="prev-btn float-right">
                               <!-- <a href="/signup-professionals-profile-6" class="btn btn-next" style="width: 164px;">
                         NEXT</a> -->
+                        <input type="hidden" name="isedit" value="0">
                         <input type="hidden" name="ref_id" value="" class="ref_id">
                               <button type="submit" class="btn btn-next" style="width: 164px;">
                                 NEXT</button>
@@ -334,6 +335,7 @@
                                 </div>
                               </div>
                               <div>
+                                <input type="hidden" name="isedit" value="1">
                                 <input type="hidden" name="ref_id" value="<%=refrenceData._id%>">
                               <button type="submit" class="btn btn-next" style="width: 164px;">
                                 Update</button>
@@ -410,16 +412,20 @@
                 confirmButtonColor: '#005377',
                 timer: 4000
               })
-              if(data.action=='edit'){
+              if(data.action=='isnext'){
                 setTimeout(function () {
-                //location.reload(true);
-                //window.location.href = data.redirect;
+                
                 window.location.href = "/signup-professionals-profile-6";
+              }, 4000);
+              }else if(data.action=='isedit'){
+                setTimeout(function () {
+                
+                window.location.href = "/service-provider/dashboard-professional";
               }, 4000);
               }else{
                 setTimeout(function () {
                 //location.reload(true);
-                window.location.href = "/signup-professionals-profile-6";
+                window.location.href = "/signup-professionals-profile-5";
               }, 4000);
               }
              

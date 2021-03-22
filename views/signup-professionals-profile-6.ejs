@@ -105,7 +105,7 @@
               </li>
             </ul>
           </div>
-
+           <%if(data==null){%>
           <div class="col-sm-12 col-lg-9">
             <div class=" dashboard-inner">
               <div class="row">
@@ -256,7 +256,144 @@
               </form>
             </div>
           </div>
-
+          <%}else{%>
+            <div class="col-sm-12 col-lg-9">
+              <div class=" dashboard-inner">
+                <div class="row">
+                  <div class="col-sm-12 col-lg-9">
+                    <div class="signup-header">
+                      <!-- <p>START FOR FREE</p> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12 col-lg-9">
+                    <div class="signup-head">
+                      <h3> Update Professional Indemnity Insurance</h3>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-lg-3">
+                    <div class="page-count">
+                      <p> 6 of 7</p>
+                    </div>
+                  </div>
+                </div>
+                <form action="/api/service_provider_indemnity_details" method="post" class="form form-section" id="form6">
+                  <% if(typeof success_msg!='undefined' ){ %>
+                    <span class="succ_flash_msg" style="color: green;">
+                      <%= success_msg %>
+                    </span>
+                    <% }%>
+  
+                      <div class="row">
+                        <div class="col-sm-12 col-lg-4">
+                          <div class="profile-notes">
+                            <p>Have you had any PI claims?
+                            </p>
+                          </div>
+                        </div>
+  
+                        <div class="col-sm-12 col-lg-2">
+                          <div class="profile-radio">
+                            <label class="radio-inline">
+                              <input type="radio" name="spods_option_pl_claims" value="yes"
+                                onclick="javascript:yesnoCheck();" id="yesCheck_p6" >
+                              &nbsp;Yes&nbsp;&nbsp;
+                            </label>
+                            <label class="radio-inline">
+                              <input type="radio" checked name="spods_option_pl_claims" value="no"
+                                onclick="javascript:yesnoCheck();" id="noCheck_p6"> &nbsp;No&nbsp;&nbsp;
+                            </label>
+                          </div>
+                        </div>
+  
+                        <div class="col-sm-12 col-lg-6">
+                          <div class="input-box-size-fix3">
+                            <p>*Give full details including nature of claim and quantum</p>
+                          </div>
+                        </div>
+                      </div>
+                      <% if(typeof err_msg!='undefined' ){ %>
+                        <span class="error_validate flash_msg" style="color: red; padding-bottom: 10px;">
+                          <%= err_msg %>
+                        </span>
+                        <% }%>
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-12" id="ifYes">
+                              <div class="">
+                                <input type=" text" class="form-control text-field spods_pl_claim_details" id="spods_pl_claim_details"
+                                  placeholder="*Please enter PI claim Details" name="spods_pl_claim_details" value="">
+                              </div>
+                            </div>
+                          </div>
+  
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-4">
+                              <div class="profile-notes">
+                                <p>Do you hold your own PI cover?
+                                </p>
+                              </div>
+                            </div>
+  
+                            <div class="col-sm-12 col-lg-2">
+                              <div class="profile-radio">
+                                <label class="radio-inline">
+                                  <input type="radio" name="spods_option_pl_cover" value="yes"
+                                    onclick="javascript:yesnoCheck2();" id="yesCheck2_p6" >
+                                  &nbsp;Yes&nbsp;&nbsp;
+                                </label>
+                                <label class="radio-inline">
+                                  <input type="radio" checked name="spods_option_pl_cover" value="no"
+                                    onclick="javascript:yesnoCheck2();" id="noCheck2_p6"> &nbsp;No&nbsp;&nbsp;
+                                </label>
+                              </div>
+                            </div>
+  
+                          </div>
+  
+                          <div id="ifYes2">
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-6">
+                                <div class="input-box-size-fix3">
+                                  <input type="text" class="form-control text-field-size spods_name_insurer" id="spods_name_insurer"
+                                    placeholder="Name of Insurer" name="spods_name_insurer">
+                                </div>
+                              </div>
+                              <div class="col-sm-12 col-lg-6">
+                                <div class="input-box-size-fix3">
+                                  <input type="text" name="spods_broker_details" value="" class="form-control text-field-size spods_broker_details" id="spods_broker_details"
+                                    placeholder="Broker Details(if applicable)" >
+                                </div>
+                              </div>
+                            </div>
+  
+  
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-6">
+                                <div class="input-box-size-fix3">
+                                  <input type="text" class="form-control text-field-size spods_level_of_cover" id=""
+                                    placeholder="Level of cover" name="spods_level_of_cover" value="">
+                                </div>
+                              </div>
+                              <div class="col-sm-12 col-lg-6">
+                                <div class="input-box-size-fix3">
+                                  <input type="text" onfocus="(this.type='date')" min="1980-01-01" class="form-control text-field-size spods_renewal_date"
+                                    id="spods_renewal_date" placeholder="Renewal Date" name="spods_renewal_date" value="">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <input type="hidden" name="isedit" value="1">
+                            <input type="hidden" name="indemnity_detail_id" value="<%=data._id%>">
+                      <button type="submit" class="btn btn-next" style="margin-top: 5px; width: 150px;">
+                        Update</button>
+                          </div>
+                          
+                </form>
+              </div>
+            </div>
+            <%}%>
         </div>
       </div>
     </div>
@@ -330,11 +467,18 @@
                 confirmButtonColor: '#005377',
                 timer: 4000
               })
-
-              setTimeout(function () {
+              if(data.action=='isnext'){
+                setTimeout(function () {
                 //location.reload(true);
                 window.location.href = "/signup-professionals-profile-7";
               }, 4000);
+              }else{
+                setTimeout(function () {
+                //location.reload(true);
+                window.location.href = "/service-provider/dashboard-professional";
+              }, 4000);
+              }
+              
 
             }
           }

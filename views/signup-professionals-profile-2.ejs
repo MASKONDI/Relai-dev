@@ -103,7 +103,7 @@
               </li>
             </ul>
           </div>
-
+         <%if(data==null){%>
           <div class="col-sm-12 col-lg-9">
             <div class=" dashboard-inner">
               <div class="row">
@@ -280,7 +280,172 @@
               </form>
             </div>
           </div>
-
+          <%}else{%>
+            <div class="col-sm-12 col-lg-9">
+              <div class=" dashboard-inner">
+                <div class="row">
+                  <div class="col-sm-12 col-lg-9">
+                    <div class="signup-header">
+                      <!-- <p>START FOR FREE</p> -->
+  
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12 col-lg-9">
+                    <div class="signup-head">
+                      <h3>Update Other Details</h3>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-lg-3">
+                    <div class="page-count">
+                      <p> 2 of 7</p>
+                    </div>
+                  </div>
+                </div>
+                <form action="/api/service_provider_other_details" method="post" class="form form-section" id="form2">
+  
+  
+                  <% if(typeof success_msg!='undefined' ){ %>
+                    <span class="succ_flash_msg" style="color: green;">
+                      <%= success_msg %>
+                    </span>
+                    <% }%>
+                      <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                          <p>Do you need a work permit to be employed in the UK?</p>
+                        </div>
+                        <div class="col-sm-12 col-lg-2">
+                          <label class="radio-inline">
+                            <input type="radio" name="spods_option_work_permit_for_uk" class="spods_option_work_permit_for_uk" id="yes1" value="yes" >
+                            &nbsp;Yes&nbsp;&nbsp;
+                          </label>
+                          <label class="radio-inline">
+                            <input type="radio" name="spods_option_work_permit_for_uk" class="spods_option_work_permit_for_uk" id="no1"
+                              value="no" checked>&nbsp;No&nbsp;&nbsp;
+                          </label>
+                        </div>
+                        <div class="col-sm-12 col-lg-4">
+  
+                        </div>
+  
+                        <div class="col-sm-12 col-lg-6">
+                          <p>Do you hold a current UK driving licence?
+                          </p>
+                        </div>
+                        <div class="col-sm-12 col-lg-2">
+                          <label class="radio-inline">
+                            <input type="radio" name="spods_option_uk_driving_licence" value="yes" id="yes3" >
+                            &nbsp;Yes&nbsp;&nbsp;
+                          </label>
+                          <label class="radio-inline">
+                            <input type="radio" name="spods_option_uk_driving_licence" id="no3" value="no" checked>
+                            &nbsp;No&nbsp;&nbsp;
+                          </label>
+                        </div>
+                        <div class="col-sm-12 col-lg-4">
+  
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                          <p>Do you have any criminal convictions?</p>
+                        </div>
+                        <div class="col-sm-12 col-lg-2">
+                          <label class="radio-inline">
+                            <input type="radio" name="spods_option_criminal_convictions" class="" value="yes"
+                              onclick="javascript:yesnoCheck();" id="yesCheck" >
+                            &nbsp;Yes&nbsp;&nbsp;
+                          </label>
+                          <label class="radio-inline">
+                            <input type="radio" name="spods_option_criminal_convictions" value="no"
+                              onclick="javascript:yesnoCheck();" id="noCheck" checked>
+                            &nbsp;No&nbsp;&nbsp;
+                          </label>
+                        </div>
+                        <div class="col-sm-12 col-lg-4">
+                          <div class="note-sec">
+                            <p>*Note: you will be asked to provide a basic CRB check if appointed</p>
+                          </div>
+  
+                        </div>
+                      </div>
+                      <% if(typeof err_msg!='undefined' ){ %>
+                        <span class="error_validate flash_msg" style="color: red; padding-bottom: 10px;">
+                          <%= err_msg %>
+                        </span>
+                        <% }%>
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-12" id="ifYes" style="display: none;">
+                              <div class="input-box-size">
+                                <input type="text" class="form-control text-field-size spods_details_of_convictions" id="criminal_convictions"
+                                  name="spods_details_of_convictions"
+                                  placeholder="Please give details of any point/convictions"  value="">
+                              </div>
+  
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-5 col-lg-6">
+                              <div class="input-box-size-fix3">
+                                <input type="text" class="form-control text-field-size spods_professional_body" id=""
+                                  placeholder="Professional Body" name="spods_professional_body" required>
+                              </div>
+                            </div>
+                            <div class="col-sm-5 col-lg-6">
+                              <div class="input-box-size-fix3">
+                                <input type="text" class="form-control text-field-size spods_membership_number" id=""
+                                  placeholder="Professional Body Membership No." name="spods_membership_number" required>
+                              </div>
+                            </div>
+                            <!-- <div class="col-sm-5 col-lg-5">
+                              <div class="input-box-size-fix3">
+                                <input type="date" class="form-control date-field-size " id="" placeholder="End date"
+                                  name="spods_date_registered">
+                              </div>
+                            </div>
+                            <div class="col-sm-2 col-lg-1">
+                              <div class="">
+                                <a href="#" class="btn signup-professional-plus-btn"><i class="fa fa-plus"></i></a>
+                              </div>
+                            </div> -->
+  
+                          </div>
+                          <div class="row">
+                            <!-- <div class="col-sm-5 col-lg-6">
+                              <div class="input-box-size-fix3">
+                                <input type="text" class="form-control text-field-size " id=""
+                                  placeholder="Professional Body Membership No." name="spods_membership_number">
+                              </div>
+                            </div> -->
+                            <!-- <div class="col-sm-5 col-lg-5">
+                              <div class="input-box-size-fix3">
+                                <input type="date" class="form-control date-field-size " id="" placeholder="endDate"
+                                  name="spods_membership_no_date_registered">
+                              </div>
+                            </div>
+                            <div class="col-sm-2 col-lg-1">
+                              <div class="">
+                                <a href="#" class="btn signup-professional-plus-btn"><i class="fa fa-plus"></i></a>
+                              </div>
+                            </div> -->
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-6">
+                              <div class="input-box-size-fix3">
+                                <input type="text" class="form-control text-field-size spods_other_relevant_qualification" value="" id=""
+                                  placeholder="Other Relevant Qualifications" name="spods_other_relevant_qualification" required>
+                              </div>
+                            </div>
+                            <input type="hidden" name="isedit" value="1">
+                                <input type="hidden" name="other_detail_id" value="<%=data._id%>">
+                          <button type="submit" class="btn btn-next" style="margin-top: 5px; width: 150px;">
+                            Update</button>
+                            </div>
+  
+                          
+                </form>
+              </div>
+            </div>
+            <%}%>
         </div>
       </div>
     </div>
@@ -465,11 +630,18 @@
                 confirmButtonColor: '#005377',
                 timer: 4000
               })
-
-              setTimeout(function () {
+              if(data.action=='isnext'){
+                setTimeout(function () {
                 //location.reload(true);
                 window.location.href = "/signup-professionals-profile-3";
               }, 4000);
+              }else{
+                setTimeout(function () {
+                //location.reload(true);
+                window.location.href = "/service-provider/dashboard-professional";
+              }, 4000);
+              }
+              
 
             }
           }
