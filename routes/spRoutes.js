@@ -239,7 +239,7 @@ app.get('/service-provider/dashboard-professional', isServiceProvider, async (re
         }
       }
     }
-  });
+  }); 
   console.log('notifData:', notifData)
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
