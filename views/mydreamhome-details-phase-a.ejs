@@ -480,7 +480,7 @@
                                           <%=row.ppts_task_name%>
                                         </p>
 
-                                        <%if(row.ppts_task_status=='completed_by_service_provider'){%>
+                                        <%if(row.iscompleteStatus==true){%>
                                           <input type="checkbox" checked disabled>
 
                                           <%}else{%>
@@ -493,8 +493,8 @@
                                     <!-- ppts_assign_to  fruits.includes("Mango");-->
                                     <%if(hiredProfessional_list.length>0){%>
                                       <%hiredProfessional_list.forEach(function(hp,k){%>
-                                        <%if(row.ppts_assign_to.includes(hp._id)){
-                                          index=row.ppts_assign_to.indexOf(hp._id) %>
+                                        <%if(row.ppts_assign_to.includes(hp._id.toString())){
+                                          index=row.ppts_assign_to.indexOf(hp._id.toString()) %>
                                           <td>
 
                                             <%if(row.ppts_task_status[index]=='completed_by_service_provider'){%>
@@ -532,12 +532,13 @@
                                                       data-target="#myModal">Help</a>
                                                   </td>
                                                   <td>
-                                                    <%if(row.ppts_task_status=='completed_by_service_provider'){%>
+                                                    <%if(row.iscompleteStatus==true){%>
                                                       <a class="btn btn-complete">Complete</a>
-                                                      <%}else if(row.ppts_task_status=='in_progress' ){%>
-                                                        <a class="btn btn-progress">In Progress</a>
-                                                        <%}else{%>
-                                                          <a class="btn btn-pending">Pending</a>
+                                                      <%}else if(row.ispendingStatus==true ){%>
+                                                        <a class="btn btn-pending">Pending</a>
+                                                        
+                                                        <%}else if(row.iscompleteStatus==false && row.ispendingStatus==false){%>
+                                                          <a class="btn btn-progress">In Progress</a>
                                                           <%}%>
                                                   </td>
                                                   <td class="edit-task<%=row._id%>">

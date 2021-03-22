@@ -1804,7 +1804,25 @@ app.get('/Resend-link', function (req, res) {
 
 
 
-
+// function checkstatus(data) {
+//   for(var k of data){
+//     var ppts_task_status = k.ppts_task_status;
+//     return ppts_task_status;
+//   }
+//   return age >= document.getElementById("ageToCheck").value;
+// }
+// function getTaskStatus(data){
+// for(var k of data){
+//   console.log(k);
+//  k.ppts_task_status.every(checkstatus)
+// }
+// }
+function isStatusComplete(element, index, array) {
+  return element == 'completed_by_service_provider';
+}
+function isStatusPanding(element, index, array) {
+  return element == 'pending';
+}
 
 app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
   //console.log('from get take action url====', req.query)
@@ -1817,17 +1835,38 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
   //console.log("hiredProfessional_list", AllProfessional_property_wise)
-  console.log("taskObject mydreamhome-details-phase-a", taskObject)
-  console.log("gest_taskObject", gest_taskObject)
+  //console.log("taskObject mydreamhome-details-phase-a", taskObject)
+  //console.log("gest_taskObject", gest_taskObject)
+  var taskObjectArray=[]
+  for(k of taskObject){
+      var d = JSON.stringify(k)
+      var dd = JSON.parse(d)
+        var temp = dd
+    var arr = temp.ppts_task_status;
+    var iscomplete =await arr.every(isStatusComplete);
+    var isPanding =await arr.every(isStatusPanding);
+        console.log(iscomplete)
+        temp.iscompleteStatus = iscomplete
+        temp.ispendingStatus = isPanding
+        //var datas = await temp
+        taskObjectArray.push(temp)
+  }
+ console.log("taskObjectArray==============",taskObjectArray)
+ console.log("taskObject==========",taskObject)
+
+  
+
+  
 
   if (taskObject) {
+
     req.session.pagename = 'mydreamhome';
     err_msg = req.flash('err_msg');
     success_msg = req.flash('success_msg');
     res.render('mydreamhome-details-phase-a', {
       err_msg, success_msg, layout: false,
       session: req.session,
-      taskObject: taskObject,
+      taskObject: taskObjectArray,
       propertyData: propertyData,
       step: req.query.step,
       phase: req.query.phase,
