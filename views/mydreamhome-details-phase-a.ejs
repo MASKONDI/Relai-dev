@@ -82,14 +82,24 @@
                   </div>
                 </div>
                 <%if(session.active_user_login=='renovator'){%>
-                  <div class="phase-progress">
+                  <!-- <div class="phase-progress">
                     <ul>
                       <li><a href="javascript:void(0)">25%</a></li>
                       <li><a href="javascript:void(0)">25%</a></li>
                       <li><a href="javascript:void(0)">25%</a></li>
                       <li><a href="javascript:void(0)">25%</a></li>
                     </ul>
-                  </div>
+                  </div> -->
+                  <div class="phase-progress">
+                    <div data-toggle="tooltip" data-placement="top" title="<%=progressResult%>%" data-original-title=""
+                    class="progress" style="height:2.5rem; border-radius: 1.25rem;">
+                    
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100"
+                    aria-valuemin="0" aria-valuemax="100"
+                    style='width:<%=progressResult%>%; background-color:#005377;overflow:hidden; display:inline-block;'>
+                    </div>
+                    </div>
+                    </div>
                   <%}%>
 
                     <div class="action-owner">
@@ -747,14 +757,24 @@
                           </tbody>
                         </table>
                         <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-                        <div class="phase-progress">
+                        <!-- <div class="phase-progress">
                           <ul>
                             <li><a href="javascript:void(0)">25%</a></li>
                             <li><a href="javascript:void(0)">25%</a></li>
                             <li><a href="javascript:void(0)">25%</a></li>
                             <li><a href="javascript:void(0)">25%</a></li>
                           </ul>
-                        </div>
+                        </div> -->
+                        <div class="phase-progress">
+                          <div data-toggle="tooltip" data-placement="top" title="<%=progressResult%>%" data-original-title=""
+                          class="progress" style="height:2.5rem; border-radius: 1.25rem;">
+                          
+                          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100"
+                          aria-valuemin="0" aria-valuemax="100"
+                          style='width:<%=progressResult%>%; background-color:#005377;overflow:hidden; display:inline-block;'>
+                          </div>
+                          </div>
+                          </div>
                         <div>
                           <h4>Seller Task</h4>
                         </div>
@@ -792,12 +812,15 @@
                                         <p>
                                           <%=row.ppts_task_name%>
                                         </p>
-                                        <%if(row.ppts_task_status=='completed_by_service_provider'){%>
+                                        
+                                        
+                                        <%if(row.gestiscompleteStatus==true){%>
                                           <input type="checkbox" checked disabled>
 
                                           <%}else{%>
                                             <input type="checkbox">
                                             <%}%>
+                                           
 
                                               <span class="checkmark"></span>
                                       </label></td>
@@ -841,12 +864,13 @@
                                                       data-target="#myModal">Help</a>
                                                   </td>
                                                   <td>
-                                                    <%if(row.ppts_task_status=='completed_by_service_provider'){%>
+                                                    <%if(row.gestiscompleteStatus==true){%>
                                                       <a class="btn btn-complete">Complete</a>
-                                                      <%}else if(row.ppts_task_status=='in_progress' ){%>
-                                                        <a class="btn btn-progress">In Progress</a>
-                                                        <%}else{%>
-                                                          <a class="btn btn-pending">Pending</a>
+                                                      <%}else if(row.gestispendingStatus==true ){%>
+                                                        <a class="btn btn-pending">Pending</a>
+                                                        
+                                                        <%}else if(row.gestiscompleteStatus==false && row.gestispendingStatus==false){%>
+                                                          <a class="btn btn-progress">In Progress</a>
                                                           <%}%>
                                                   </td>
                                                   <td class="edit-task<%=row._id%>">
@@ -1104,7 +1128,13 @@
                                           <p>
                                             <%=row.ppts_task_name%>
                                           </p>
+                                          
+                                        <%if(row.iscompleteStatus==true){%>
+                                          <input type="checkbox" checked disabled>
 
+                                          <%}else{%>
+                                            <input type="checkbox">
+                                            <%}%>
                                           <input type="checkbox">
                                           <span class="checkmark"></span>
                                         </label></td>
@@ -1148,12 +1178,13 @@
                                                         data-target="#myModal">Help</a>
                                                     </td>
                                                     <td>
-                                                      <%if(row.ppts_task_status=='completed_by_service_provider'){%>
+                                                      <%if(row.iscompleteStatus==true){%>
                                                         <a class="btn btn-complete">Complete</a>
-                                                        <%}else if(row.ppts_task_status=='in_progress' ){%>
-                                                          <a class="btn btn-progress">In Progress</a>
-                                                          <%}else{%>
-                                                            <a class="btn btn-pending">Pending</a>
+                                                        <%}else if(row.ispendingStatus==true ){%>
+                                                          <a class="btn btn-pending">Pending</a>
+                                                          
+                                                          <%}else if(row.iscompleteStatus==false && row.ispendingStatus==false){%>
+                                                            <a class="btn btn-progress">In Progress</a>
                                                             <%}%>
                                                     </td>
                                                     <td class="edit-task<%=row._id%>">
@@ -1372,14 +1403,24 @@
                                       <%}%>
                             </tbody>
                           </table>
-                          <div class="phase-progress">
+                          <!-- <div class="phase-progress">
                             <ul>
                               <li><a href="javascript:void(0)">25%</a></li>
                               <li><a href="javascript:void(0)">25%</a></li>
                               <li><a href="javascript:void(0)">25%</a></li>
                               <li><a href="javascript:void(0)">25%</a></li>
                             </ul>
-                          </div>
+                          </div> -->
+                          <div class="phase-progress">
+                            <div data-toggle="tooltip" data-placement="top" title="<%=progressResult%>%" data-original-title=""
+                            class="progress" style="height:2.5rem; border-radius: 1.25rem;">
+                            
+                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100"
+                            aria-valuemin="0" aria-valuemax="100"
+                            style='width:<%=progressResult%>%; background-color:#005377;overflow:hidden; display:inline-block;'>
+                            </div>
+                            </div>
+                            </div>
                           <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
                           <div>
                             <h4>Buyer Task</h4>
@@ -1421,7 +1462,7 @@
                                           <p>
                                             <%=row.ppts_task_name%>
                                           </p>
-
+                                             
                                           <input type="checkbox">
                                           <span class="checkmark"></span>
                                         </label></td>
@@ -1465,12 +1506,13 @@
                                                         data-target="#myModal">Help</a>
                                                     </td>
                                                     <td>
-                                                      <%if(row.ppts_task_status=='completed_by_service_provider'){%>
+                                                      <%if(row.iscompleteStatus==true){%>
                                                         <a class="btn btn-complete">Complete</a>
-                                                        <%}else if(row.ppts_task_status=='in_progress' ){%>
-                                                          <a class="btn btn-progress">In Progress</a>
-                                                          <%}else{%>
-                                                            <a class="btn btn-pending">Pending</a>
+                                                        <%}else if(row.ispendingStatus==true ){%>
+                                                          <a class="btn btn-pending">Pending</a>
+                                                          
+                                                          <%}else if(row.iscompleteStatus==false && row.ispendingStatus==false){%>
+                                                            <a class="btn btn-progress">In Progress</a>
                                                             <%}%>
                                                     </td>
                                                     <td class="edit-task<%=row._id%>">
