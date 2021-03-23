@@ -1839,18 +1839,29 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
   //console.log("taskObject mydreamhome-details-phase-a", taskObject)
   //console.log("gest_taskObject", gest_taskObject)
   var taskObjectArray=[]
+  var c=0;
+  var progressResult = 0;
   for(k of taskObject){
       var d = JSON.stringify(k)
       var dd = JSON.parse(d)
-        var temp = dd
-    var arr = temp.ppts_task_status;
-    var iscomplete =await arr.every(isStatusComplete);
-    var isPanding =await arr.every(isStatusPanding);
-        console.log(iscomplete)
-        temp.iscompleteStatus = iscomplete
-        temp.ispendingStatus = isPanding
-        //var datas = await temp
-        taskObjectArray.push(temp)
+      var temp = dd
+      var arr = temp.ppts_task_status;
+      var iscomplete =await arr.every(isStatusComplete);
+      var isPanding =await arr.every(isStatusPanding);
+          console.log(iscomplete)
+          temp.iscompleteStatus = iscomplete
+          temp.ispendingStatus = isPanding
+           //progress bar number of total task / no of completed task 
+           if(iscomplete==true){
+             var numofTotalTask =taskObject.length; 
+             var completedTask = c+1
+             console.log('total task',numofTotalTask)
+            console.log('num of completed task',completedTask)
+             progressResult = Math.round((completedTask / numofTotalTask) * 100);
+             console.log('progress==',progressResult);
+             
+           }
+          taskObjectArray.push(temp)
   }
  console.log("taskObjectArray==============",taskObjectArray)
  console.log("taskObject==========",taskObject)

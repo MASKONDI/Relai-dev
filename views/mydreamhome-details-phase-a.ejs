@@ -806,8 +806,8 @@
                                     <!-- ppts_assign_to  fruits.includes("Mango");-->
                                     <%if(hiredProfessional_list.length>0){%>
                                       <%hiredProfessional_list.forEach(function(hp,k){%>
-                                        <%if(row.ppts_assign_to.includes(hp._id)){
-                                          index=row.ppts_assign_to.indexOf(hp._id) %>
+                                        <%if(row.ppts_assign_to.includes(hp._id.toString())){
+                                          index=row.ppts_assign_to.indexOf(hp._id.toString()) %>
                                           <td>
                                             <%if(row.ppts_task_status[index]=='completed_by_service_provider'){%>
                                               <div class="complete-circle"></div>
@@ -1113,8 +1113,8 @@
                                       <!-- ppts_assign_to  fruits.includes("Mango");-->
                                       <%if(hiredProfessional_list.length>0){%>
                                         <%hiredProfessional_list.forEach(function(hp,k){%>
-                                          <%if(row.ppts_assign_to.includes(hp._id)){
-                                            index=row.ppts_assign_to.indexOf(hp._id) %>
+                                          <%if(row.ppts_assign_to.includes(hp._id.toString())){
+                                            index=row.ppts_assign_to.indexOf(hp._id.toString()) %>
                                             <td>
                                               <%if(row.ppts_task_status[index]=='completed_by_service_provider'){%>
                                                 <div class="complete-circle"></div>

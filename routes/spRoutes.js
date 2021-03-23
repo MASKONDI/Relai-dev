@@ -1279,6 +1279,7 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
     req.session.property_id = req.query.id
     console.log("req.query.id:", req.query.id);
     PropertiesSchema.find({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
+     console.log('data=======',data)
       if (data) {
 
 
