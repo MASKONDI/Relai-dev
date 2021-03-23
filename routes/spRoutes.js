@@ -161,7 +161,7 @@ function getPhase(phase) {
 
 
 
-app.get('/signup-professionals-profile', isServiceProvider, async(req, res) => {
+app.get('/signup-professionals-profile', isServiceProvider, async (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   console.log("Current session is : ", req.session);
@@ -171,18 +171,18 @@ app.get('/signup-professionals-profile', isServiceProvider, async(req, res) => {
     res.render('signup-professionals-profile', {
       err_msg, success_msg, layout: false,
       session: req.session,
-      data:data
+      data: data
     });
-  }else{
+  } else {
     res.render('signup-professionals-profile', {
       err_msg, success_msg, layout: false,
       session: req.session,
-      data:null
+      data: null
     });
   }
-  
+
 });
-app.get('/signup-professionals-profile-2', isServiceProvider,async (req, res) => {
+app.get('/signup-professionals-profile-2', isServiceProvider, async (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   if (req.query.editid) {
@@ -191,16 +191,16 @@ app.get('/signup-professionals-profile-2', isServiceProvider,async (req, res) =>
     res.render('signup-professionals-profile-2', {
       err_msg, success_msg, layout: false,
       session: req.session,
-      data:data
+      data: data
     });
-  }else{
+  } else {
     res.render('signup-professionals-profile-2', {
       err_msg, success_msg, layout: false,
       session: req.session,
-      data:null
+      data: null
     });
   }
- 
+
 });
 
 
@@ -254,7 +254,7 @@ app.get('/service-provider/dashboard-professional', isServiceProvider, async (re
       for (let notifResult of notificationResults) {
         if (notifResult.ns_sender_type == 'customer') {
           await CustomerSchema.findOne({ _id: notifResult.ns_sender }).then(async (cusResult) => {
-            console.log('CustomerSchemaCustomerSchema:',cusResult);
+            console.log('CustomerSchemaCustomerSchema:', cusResult);
             notificationObj = {
               name: cusResult.cus_fullname,
               image: cusResult.cus_profile_image_name,
@@ -264,7 +264,45 @@ app.get('/service-provider/dashboard-professional', isServiceProvider, async (re
         }
       }
     }
-  }); 
+  });
+
+
+  let propertyArray = []
+
+  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_service_provider_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login }).sort({ _id: -1 }).limit(4);
+  if (AllhiredProfeshnoal) {
+    for (let key of AllhiredProfeshnoal) {
+      //let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
+      let propertyData = await PropertiesSchema.findOne({ _id: key.pps_property_id, ps_is_active_user_flag: req.session.active_user_login });
+      // let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
+      // propertyData.property_image = await propertyImageData.pps_property_image_name;
+      let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
+      let customerProfile = await customerHelper.getCustomerImageByID(key.pps_user_id);
+      propertyData.customer_name = await customerName
+      propertyData.customer_profile = await customerProfile
+      propertyArray.push(propertyData)
+    }
+  }
+  let custArray = []
+  var userId = [];
+  let AllhiredProfeshnoal2 = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id, req.session.active_user_login);
+  for (let key of AllhiredProfeshnoal2) {
+    userId.push(key.pps_user_id);
+  }
+  console.log("user-Id is :", userId);
+
+  var uniquesCustomer = await userId.unique();
+
+  console.log("uniques user Id is:", uniquesCustomer);
+  if (uniquesCustomer) {
+    for (let key of uniquesCustomer) {
+      let customerData = await CustomerSchema.findOne({ _id: key });
+      custArray.push(customerData)
+    }
+  }
+  // }
+  console.log("Property Array is", propertyArray)
+  console.log("is", custArray)
   console.log('notifData:', notifData)
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
@@ -272,11 +310,35 @@ app.get('/service-provider/dashboard-professional', isServiceProvider, async (re
   res.render('service-provider/dashboard-professional', {
     err_msg, success_msg, layout: false,
     session: req.session,
-    notifData: notifData
+    notifData: notifData,
+    propertyData: propertyArray,
+    custData: custArray
+
   });
 
 });
-app.get('/signup-professionals-profile-6', async(req, res) => {
+
+Array.prototype.contains = function (v) {
+  for (var i = 0; i < this.length; i++) {
+    if (this[i] === v) return true;
+  }
+  return false;
+};
+
+Array.prototype.unique = function () {
+  var arr = [];
+  for (var i = 0; i < this.length; i++) {
+    if (!arr.contains(this[i])) {
+      arr.push(this[i]);
+    }
+  }
+  return arr;
+}
+
+
+
+
+app.get('/signup-professionals-profile-6', async (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   if (req.query.editid) {
@@ -285,35 +347,35 @@ app.get('/signup-professionals-profile-6', async(req, res) => {
     res.render('signup-professionals-profile-6', {
       err_msg, success_msg, layout: false,
       session: req.session,
-      data:data
+      data: data
     });
-  }else{
+  } else {
     res.render('signup-professionals-profile-6', {
       err_msg, success_msg, layout: false,
       session: req.session,
-      data:null
+      data: null
     });
   }
-  
+
 });
-app.get('/signup-professionals-profile-7', isServiceProvider, async(req, res) => {
+app.get('/signup-professionals-profile-7', isServiceProvider, async (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   let data = await signUpHelper.getIndemnityLanguageById(req.session.user_id);
   console.log(data)
-  if(data.length!=0){
-  res.render('signup-professionals-profile-7', {
-    err_msg, success_msg, layout: false,
-    session: req.session,
-    data:data
-  });
-}else{
-  res.render('signup-professionals-profile-7', {
-    err_msg, success_msg, layout: false,
-    session: req.session,
-    data:null
-  });
-}
+  if (data.length != 0) {
+    res.render('signup-professionals-profile-7', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      data: data
+    });
+  } else {
+    res.render('signup-professionals-profile-7', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      data: null
+    });
+  }
   // res.render('signup-professionals-profile-7', {
   //   err_msg, success_msg, layout: false,
   //   session: req.session
@@ -899,7 +961,7 @@ app.get('/signup-professionals-profile-4', isServiceProvider, async (req, res) =
 app.get('/service-provider/myproperties-detail-phaseA', isServiceProvider, async function (req, res) {
   console.log("current session is :", req.session);
   console.log("request coming from server is", req.query);
-  //Need to  write logic for fetching Task Data from 
+
   var property_id = req.query.id;
   let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
   console.log("Property Data is ::", propertyData);
@@ -908,16 +970,30 @@ app.get('/service-provider/myproperties-detail-phaseA', isServiceProvider, async
   var phase_name = req.query.phase;
   var taskArray = []
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
-  for (var k of taskObject) {
-    var dd = JSON.stringify(k);
-    var ddd = JSON.parse(dd);
-
-    var index = k.ppts_assign_to.indexOf(user_id);
-    ddd.user_id = user_id
-    ddd.index = index
-    var datas = await ddd
-    taskArray.push(ddd)
+  var completedTask = 0;
+  var progressResult = 0;
+  console.log("task Object lenght is :", taskObject.length);
+  if (taskObject.length != 0) {
+    for (var k of taskObject) {
+      var dd = JSON.stringify(k);
+      var ddd = JSON.parse(dd);
+      //fetching index 
+      var index = k.ppts_assign_to.indexOf(user_id);
+      if (k.ppts_task_status[index] == 'completed_by_service_provider') {
+        completedTask = completedTask + 1;
+      }
+      ddd.user_id = user_id
+      ddd.index = index
+      var datas = await ddd
+      taskArray.push(ddd)
+    }
+    console.log("completedTask is :", completedTask);
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+  } else {
+    progressResult = 0;
   }
+  completedTask = 0;
+  console.log("progressResult is ", progressResult);
   console.log("task Object is:", taskArray);
   err_msg = req.flash('err_msg');
   req.session.pagename = 'service-provider/property';
@@ -928,21 +1004,48 @@ app.get('/service-provider/myproperties-detail-phaseA', isServiceProvider, async
     propertyData: propertyData,
     step: req.query.step,
     phase: req.query.phase,
-    taskObject: taskArray
+    taskObject: taskArray,
+    progressResult: progressResult
   });
 });
 
 app.get('/service-provider/myproperties-detail-phaseB', isServiceProvider, async function (req, res) {
   console.log("request coming from server is", req.query);
   //Need to  write logic for fetching Task Data from 
+
   var property_id = req.query.id;
   let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
+  console.log("Property Data is ::", propertyData);
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
+  var taskArray = []
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
-
-  console.log("task Object is:", taskObject);
+  var completedTask = 0;
+  var progressResult = 0;
+  console.log("task Object lenght is :", taskObject.length);
+  if (taskObject.length != 0) {
+    for (var k of taskObject) {
+      var dd = JSON.stringify(k);
+      var ddd = JSON.parse(dd);
+      //fetching index 
+      var index = k.ppts_assign_to.indexOf(user_id);
+      if (k.ppts_task_status[index] == 'completed_by_service_provider') {
+        completedTask = completedTask + 1;
+      }
+      ddd.user_id = user_id
+      ddd.index = index
+      var datas = await ddd
+      taskArray.push(ddd)
+    }
+    console.log("completedTask is :", completedTask);
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+  } else {
+    progressResult = 0;
+  }
+  completedTask = 0;
+  console.log("progressResult is ", progressResult);
+  console.log("task Object is:", taskArray);
   err_msg = req.flash('err_msg');
   req.session.pagename = 'service-provider/property';
   success_msg = req.flash('success_msg');
@@ -952,7 +1055,8 @@ app.get('/service-provider/myproperties-detail-phaseB', isServiceProvider, async
     propertyData: propertyData,
     step: req.query.step,
     phase: req.query.phase,
-    taskObject: taskObject
+    taskObject: taskArray,
+    progressResult: progressResult
   });
 });
 
@@ -960,14 +1064,40 @@ app.get('/service-provider/myproperties-detail-phaseC', isServiceProvider, async
   console.log("current session is :", req.session);
   console.log("request coming from server is", req.query);
   //Need to  write logic for fetching Task Data from 
+
   var property_id = req.query.id;
   let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
+  console.log("Property Data is ::", propertyData);
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
+  var taskArray = []
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
-
-  console.log("task Object is:", taskObject);
+  var completedTask = 0;
+  var progressResult = 0;
+  console.log("task Object lenght is :", taskObject.length);
+  if (taskObject.length != 0) {
+    for (var k of taskObject) {
+      var dd = JSON.stringify(k);
+      var ddd = JSON.parse(dd);
+      //fetching index 
+      var index = k.ppts_assign_to.indexOf(user_id);
+      if (k.ppts_task_status[index] == 'completed_by_service_provider') {
+        completedTask = completedTask + 1;
+      }
+      ddd.user_id = user_id
+      ddd.index = index
+      var datas = await ddd
+      taskArray.push(ddd)
+    }
+    console.log("completedTask is :", completedTask);
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+  } else {
+    progressResult = 0;
+  }
+  completedTask = 0;
+  console.log("progressResult is ", progressResult);
+  console.log("task Object is:", taskArray);
   err_msg = req.flash('err_msg');
   req.session.pagename = 'service-provider/property';
   success_msg = req.flash('success_msg');
@@ -977,7 +1107,8 @@ app.get('/service-provider/myproperties-detail-phaseC', isServiceProvider, async
     propertyData: propertyData,
     step: req.query.step,
     phase: req.query.phase,
-    taskObject: taskObject
+    taskObject: taskArray,
+    progressResult: progressResult
   });
 });
 
@@ -985,14 +1116,40 @@ app.get('/service-provider/myproperties-detail-phaseD', isServiceProvider, async
   console.log("current session is :", req.session);
   console.log("request coming from server is", req.query);
   //Need to  write logic for fetching Task Data from 
+
   var property_id = req.query.id;
   let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
+  console.log("Property Data is ::", propertyData);
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
+  var taskArray = []
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
-
-  console.log("task Object is:", taskObject);
+  var completedTask = 0;
+  var progressResult = 0;
+  console.log("task Object lenght is :", taskObject.length);
+  if (taskObject.length != 0) {
+    for (var k of taskObject) {
+      var dd = JSON.stringify(k);
+      var ddd = JSON.parse(dd);
+      //fetching index 
+      var index = k.ppts_assign_to.indexOf(user_id);
+      if (k.ppts_task_status[index] == 'completed_by_service_provider') {
+        completedTask = completedTask + 1;
+      }
+      ddd.user_id = user_id
+      ddd.index = index
+      var datas = await ddd
+      taskArray.push(ddd)
+    }
+    console.log("completedTask is :", completedTask);
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+  } else {
+    progressResult = 0;
+  }
+  completedTask = 0;
+  console.log("progressResult is ", progressResult);
+  console.log("task Object is:", taskArray);
   err_msg = req.flash('err_msg');
   req.session.pagename = 'service-provider/property';
   success_msg = req.flash('success_msg');
@@ -1002,7 +1159,8 @@ app.get('/service-provider/myproperties-detail-phaseD', isServiceProvider, async
     propertyData: propertyData,
     step: req.query.step,
     phase: req.query.phase,
-    taskObject: taskObject
+    taskObject: taskArray,
+    progressResult: progressResult
   });
 });
 
@@ -1010,14 +1168,40 @@ app.get('/service-provider/myproperties-detail-phaseE', isServiceProvider, async
   console.log("current session is :", req.session);
   console.log("request coming from server is", req.query);
   //Need to  write logic for fetching Task Data from 
+
   var property_id = req.query.id;
   let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
+  console.log("Property Data is ::", propertyData);
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
+  var taskArray = []
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
-
-  console.log("task Object is:", taskObject);
+  var completedTask = 0;
+  var progressResult = 0;
+  console.log("task Object lenght is :", taskObject.length);
+  if (taskObject.length != 0) {
+    for (var k of taskObject) {
+      var dd = JSON.stringify(k);
+      var ddd = JSON.parse(dd);
+      //fetching index 
+      var index = k.ppts_assign_to.indexOf(user_id);
+      if (k.ppts_task_status[index] == 'completed_by_service_provider') {
+        completedTask = completedTask + 1;
+      }
+      ddd.user_id = user_id
+      ddd.index = index
+      var datas = await ddd
+      taskArray.push(ddd)
+    }
+    console.log("completedTask is :", completedTask);
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+  } else {
+    progressResult = 0;
+  }
+  completedTask = 0;
+  console.log("progressResult is ", progressResult);
+  console.log("task Object is:", taskArray);
   err_msg = req.flash('err_msg');
   req.session.pagename = 'service-provider/property';
   success_msg = req.flash('success_msg');
@@ -1027,21 +1211,46 @@ app.get('/service-provider/myproperties-detail-phaseE', isServiceProvider, async
     propertyData: propertyData,
     step: req.query.step,
     phase: req.query.phase,
-    taskObject: taskObject
+    taskObject: taskArray,
+    progressResult: progressResult
   });
 });
 app.get('/service-provider/myproperties-detail-phaseF', isServiceProvider, async function (req, res) {
   console.log("current session is :", req.session);
   console.log("request coming from server is", req.query);
-  //Need to  write logic for fetching Task Data from 
   var property_id = req.query.id;
   let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
+  console.log("Property Data is ::", propertyData);
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
+  var taskArray = []
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
-
-  console.log("task Object is:", taskObject);
+  var completedTask = 0;
+  var progressResult = 0;
+  console.log("task Object lenght is :", taskObject.length);
+  if (taskObject.length != 0) {
+    for (var k of taskObject) {
+      var dd = JSON.stringify(k);
+      var ddd = JSON.parse(dd);
+      //fetching index 
+      var index = k.ppts_assign_to.indexOf(user_id);
+      if (k.ppts_task_status[index] == 'completed_by_service_provider') {
+        completedTask = completedTask + 1;
+      }
+      ddd.user_id = user_id
+      ddd.index = index
+      var datas = await ddd
+      taskArray.push(ddd)
+    }
+    console.log("completedTask is :", completedTask);
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+  } else {
+    progressResult = 0;
+  }
+  completedTask = 0;
+  console.log("progressResult is ", progressResult);
+  console.log("task Object is:", taskArray);
   err_msg = req.flash('err_msg');
   req.session.pagename = 'service-provider/property';
   success_msg = req.flash('success_msg');
@@ -1051,7 +1260,8 @@ app.get('/service-provider/myproperties-detail-phaseF', isServiceProvider, async
     propertyData: propertyData,
     step: req.query.step,
     phase: req.query.phase,
-    taskObject: taskObject
+    taskObject: taskArray,
+    progressResult: progressResult
   });
 });
 
@@ -1059,14 +1269,40 @@ app.get('/service-provider/myproperties-detail-phaseG', isServiceProvider, async
   console.log("current session is :", req.session);
   console.log("request coming from server is", req.query);
   //Need to  write logic for fetching Task Data from 
+
   var property_id = req.query.id;
   let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
+  console.log("Property Data is ::", propertyData);
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
+  var taskArray = []
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
-
-  console.log("task Object is:", taskObject);
+  var completedTask = 0;
+  var progressResult = 0;
+  console.log("task Object lenght is :", taskObject.length);
+  if (taskObject.length != 0) {
+    for (var k of taskObject) {
+      var dd = JSON.stringify(k);
+      var ddd = JSON.parse(dd);
+      //fetching index 
+      var index = k.ppts_assign_to.indexOf(user_id);
+      if (k.ppts_task_status[index] == 'completed_by_service_provider') {
+        completedTask = completedTask + 1;
+      }
+      ddd.user_id = user_id
+      ddd.index = index
+      var datas = await ddd
+      taskArray.push(ddd)
+    }
+    console.log("completedTask is :", completedTask);
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+  } else {
+    progressResult = 0;
+  }
+  completedTask = 0;
+  console.log("progressResult is ", progressResult);
+  console.log("task Object is:", taskArray);
   err_msg = req.flash('err_msg');
   req.session.pagename = 'service-provider/property';
   success_msg = req.flash('success_msg');
@@ -1076,7 +1312,8 @@ app.get('/service-provider/myproperties-detail-phaseG', isServiceProvider, async
     propertyData: propertyData,
     step: req.query.step,
     phase: req.query.phase,
-    taskObject: taskObject
+    taskObject: taskArray,
+    progressResult: progressResult
   });
 });
 
@@ -1084,14 +1321,40 @@ app.get('/service-provider/myproperties-detail-phaseH', isServiceProvider, async
   console.log("current session is :", req.session);
   console.log("request coming from server is", req.query);
   //Need to  write logic for fetching Task Data from 
+
   var property_id = req.query.id;
   let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
+  console.log("Property Data is ::", propertyData);
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
+  var taskArray = []
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
-
-  console.log("task Object is:", taskObject);
+  var completedTask = 0;
+  var progressResult = 0;
+  console.log("task Object lenght is :", taskObject.length);
+  if (taskObject.length != 0) {
+    for (var k of taskObject) {
+      var dd = JSON.stringify(k);
+      var ddd = JSON.parse(dd);
+      //fetching index 
+      var index = k.ppts_assign_to.indexOf(user_id);
+      if (k.ppts_task_status[index] == 'completed_by_service_provider') {
+        completedTask = completedTask + 1;
+      }
+      ddd.user_id = user_id
+      ddd.index = index
+      var datas = await ddd
+      taskArray.push(ddd)
+    }
+    console.log("completedTask is :", completedTask);
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+  } else {
+    progressResult = 0;
+  }
+  completedTask = 0;
+  console.log("progressResult is ", progressResult);
+  console.log("task Object is:", taskArray);
   err_msg = req.flash('err_msg');
   req.session.pagename = 'service-provider/property';
   success_msg = req.flash('success_msg');
@@ -1101,7 +1364,8 @@ app.get('/service-provider/myproperties-detail-phaseH', isServiceProvider, async
     propertyData: propertyData,
     step: req.query.step,
     phase: req.query.phase,
-    taskObject: taskObject
+    taskObject: taskArray,
+    progressResult: progressResult
   });
 });
 
@@ -1109,14 +1373,40 @@ app.get('/service-provider/myproperties-detail-phaseO', isServiceProvider, async
   console.log("current session is :", req.session);
   console.log("request coming from server is", req.query);
   //Need to  write logic for fetching Task Data from 
+
   var property_id = req.query.id;
   let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
+  console.log("Property Data is ::", propertyData);
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
   var phase_name = req.query.phase;
+  var taskArray = []
   var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id);
-
-  console.log("task Object is:", taskObject);
+  var completedTask = 0;
+  var progressResult = 0;
+  console.log("task Object lenght is :", taskObject.length);
+  if (taskObject.length != 0) {
+    for (var k of taskObject) {
+      var dd = JSON.stringify(k);
+      var ddd = JSON.parse(dd);
+      //fetching index 
+      var index = k.ppts_assign_to.indexOf(user_id);
+      if (k.ppts_task_status[index] == 'completed_by_service_provider') {
+        completedTask = completedTask + 1;
+      }
+      ddd.user_id = user_id
+      ddd.index = index
+      var datas = await ddd
+      taskArray.push(ddd)
+    }
+    console.log("completedTask is :", completedTask);
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+  } else {
+    progressResult = 0;
+  }
+  completedTask = 0;
+  console.log("progressResult is ", progressResult);
+  console.log("task Object is:", taskArray);
   err_msg = req.flash('err_msg');
   req.session.pagename = 'service-provider/property';
   success_msg = req.flash('success_msg');
@@ -1126,7 +1416,8 @@ app.get('/service-provider/myproperties-detail-phaseO', isServiceProvider, async
     propertyData: propertyData,
     step: req.query.step,
     phase: req.query.phase,
-    taskObject: taskObject
+    taskObject: taskArray,
+    progressResult: progressResult
   });
 });
 

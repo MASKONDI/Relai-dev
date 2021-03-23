@@ -79,12 +79,22 @@
                   </div>
                 </div>
                 <div class="phase-progress">
-                  <ul>
+
+                  <div data-toggle="tooltip" data-placement="top" title="<%=progressResult%>%" data-original-title=""
+                    class="progress" style="height:2.5rem; border-radius: 1.25rem;">
+
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100"
+                      aria-valuemin="0" aria-valuemax="100"
+                      style='width:<%=progressResult%>%; background-color:#005377;overflow:hidden; display:inline-block;'>
+
+                    </div>
+
+                  </div>
+
+                  <!-- <li><a href="#">25%</a></li>
                     <li><a href="#">25%</a></li>
-                    <li><a href="#">25%</a></li>
-                    <li><a href="#">25%</a></li>
-                    <li><a href="#">25%</a></li>
-                  </ul>
+                    <li><a href="#">25%</a></li> -->
+
                 </div>
                 <div class="action-owner">
                   <div class="clearfix">
@@ -146,7 +156,8 @@
                                     <input type="button">
                                   </div>
                                 </span></a></td>
-                            <td><a href="/service-provider/professionals-detail-message?id=<%=row.ppts_property_id%>&pid=<%=session.user_id%>"><img
+                            <td><a
+                                href="/service-provider/professionals-detail-message?id=<%=row.ppts_property_id%>&pid=<%=session.user_id%>"><img
                                   src="../images/chat.png"></a>
                             </td>
                             <td><a class="btn help-btn" href="#" data-toggle="modal" data-target="#myModal">Help</a>
@@ -154,25 +165,26 @@
 
                             <td>
                               <% if(row.ppts_assign_to.includes(row.user_id)){%>
-                                
-                              <div class="profile-dropdown">
-                                <%if(row.ppts_task_status[row.index]=='completed_by_service_provider'){%>
-                                  <a class="btn btn-complete">Complete</a>
-                                  <%}else if(row.ppts_task_status[row.index]=='in_progress'){%>
-                                    <a class="btn btn-progress">In Progress</a>
-                                    <%}else{%>
-                                      <a class="btn btn-pending">Pending</a>
-                                      <%}%>
-                                        <div class="status-dropdown">
-                                          <a class="btn btn-pending"
-                                            onclick="sp_task_statusUpdate('<%=row._id%>','pending')">Pending</a>
-                                          <a class="btn btn-progress"
-                                            onclick="sp_task_statusUpdate('<%=row._id%>','in_progress')">In Progress</a>
-                                          <a class="btn btn-complete"
-                                            onclick="sp_task_statusUpdate('<%=row._id%>','completed_by_service_provider')">Complete</a>
-                                        </div>
-                              </div>
-                              <%}%>
+
+                                <div class="profile-dropdown">
+                                  <%if(row.ppts_task_status[row.index]=='completed_by_service_provider'){%>
+                                    <a class="btn btn-complete">Complete</a>
+                                    <%}else if(row.ppts_task_status[row.index]=='in_progress' ){%>
+                                      <a class="btn btn-progress">In Progress</a>
+                                      <%}else{%>
+                                        <a class="btn btn-pending">Pending</a>
+                                        <%}%>
+                                          <div class="status-dropdown">
+                                            <a class="btn btn-pending"
+                                              onclick="sp_task_statusUpdate('<%=row._id%>','pending')">Pending</a>
+                                            <a class="btn btn-progress"
+                                              onclick="sp_task_statusUpdate('<%=row._id%>','in_progress')">In
+                                              Progress</a>
+                                            <a class="btn btn-complete"
+                                              onclick="sp_task_statusUpdate('<%=row._id%>','completed_by_service_provider')">Complete</a>
+                                          </div>
+                                </div>
+                                <%}%>
                             </td>
 
 
@@ -228,141 +240,7 @@
     </div>
     </div>
     <%-include('professional-footer')-%>
-      <script>
-        function previewFile_upload_task_document(input, task_id, service_provider_id, phase_name, task_name, property_id, flage) {
 
-          Swal.fire({
-            title: 'Are you sure want to Upload Document?',
-            showCancelButton: true,
-            confirmButtonText: `Yes`,
-            confirmButtonColor: '#005377',
-          }).then((result) => {
-            if (result.isConfirmed) {
-
-              if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                if (input.files[0].type == 'image/jpeg' || input.files[0].type == 'image/png' || input.files[0].type == 'image/gif' || input.files[0].type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || input.files[0].type == 'application/msword' || input.files[0].type == 'application/pdf' || input.files[0].type == 'text/plain' || input.files[0].type == 'video/x-ms-wmv') {
-                  $('.loader-box').attr('style', 'display:flex !important');
-                  // alert(1)
-                  reader.readAsDataURL(input.files[0]);
-                  var obj = {
-                    file: input.files[0],
-                    task_id: task_id,
-                    service_provider_id: service_provider_id,
-                    phase_name: phase_name,
-                    task_name: task_name,
-                    property_id: property_id,
-
-                  }
-                  console.log("to send obj:==", obj)
-
-                  var urls = "/sp_upload-new-document";
-                  var data = new FormData();
-                  data.append('task-document', input.files[0]);
-                  data.append('tuds_task_id', task_id);
-                  data.append('tuds_service_provider_id', service_provider_id);
-                  data.append('tuds_phase_name', phase_name);
-                  data.append('tuds_task_name', task_name);
-                  data.append('property_id', property_id);
-                  data.append('cuds_phase_flag', flage);
-                  $.ajax({
-                    type: "POST",
-                    data: data,
-                    url: urls,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    success: function (data) {
-                      if (data.status == true) {
-                        $('.loader-box').attr('style', 'display:none !important');
-                        Swal.fire({
-                          // position: 'top-end',
-                          icon: 'success',
-                          title: data.message,
-                          showConfirmButton: false,
-                          confirmButtonColor: '#005377',
-                          timer: 3000
-                        })
-                        location.reload(true)
-                      } else {
-                        $('.loader-box').attr('style', 'display:none !important');
-                        Swal.fire({
-                          // position: 'top-end',
-                          icon: 'error',
-                          title: data.message,
-                          showConfirmButton: true,
-                          confirmButtonColor: '#005377'
-                          //timer: 1500
-                        })
-                      }
-                    }
-                  })
-                } else {
-                  $('.loader-box').attr('style', 'display:none !important');
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'File type not supported !!',
-                    showConfirmButton: false,
-                    confirmButtonColor: '#005377',
-                    timer: 3000
-                  })
-
-                }
-
-
-              }
-            }
-          })
-        }
-      </script>
-      <script>
-        function sp_task_statusUpdate(task_id, status) {
-
-
-          Swal.fire({
-            title: 'Are you sure want to Update Status?',
-            showCancelButton: true,
-            confirmButtonText: `Yes`,
-            confirmButtonColor: '#005377',
-          }).then((result) => {
-            if (result.isConfirmed) {
-
-              $.ajax({
-                type: "POST",
-                data: {
-                  'task_id': task_id,
-                  'ppts_task_status': status,
-                  'action': 'sp_task_update'
-                },
-                url: '/api/sp_task_status_update',
-                cache: false,
-                success: function (data) {
-                  if (data.status == true) {
-                    Swal.fire({
-                      // position: 'top-end',
-                      icon: 'success',
-                      title: data.message,
-                      showConfirmButton: false,
-                      confirmButtonColor: '#005377',
-                      timer: 3000
-                    })
-                    location.reload(true)
-                  } else {
-                    Swal.fire({
-                      // position: 'top-end',
-                      icon: 'error',
-                      title: data.message,
-                      showConfirmButton: true,
-                      confirmButtonColor: '#005377'
-                      //timer: 1500
-                    })
-                  }
-                }
-              })
-            }
-          })
-        }
-      </script>
       </body>
 
       </html>
