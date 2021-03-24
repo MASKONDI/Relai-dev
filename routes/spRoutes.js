@@ -270,10 +270,13 @@ app.get('/service-provider/dashboard-professional', isServiceProvider, async (re
   let propertyArray = []
 
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_service_provider_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login }).sort({ _id: -1 }).limit(4);
+  console.log(req.session)
+  console.log('AllhiredProfeshnoal:=====',AllhiredProfeshnoal);
+ 
   if (AllhiredProfeshnoal) {
     for (let key of AllhiredProfeshnoal) {
       //let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
-      let propertyData = await PropertiesSchema.findOne({ _id: key.pps_property_id, ps_is_active_user_flag: req.session.active_user_login });
+      let propertyData = await PropertiesSchema.findOne({ _id: key.pps_property_id });
       // let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
       // propertyData.property_image = await propertyImageData.pps_property_image_name;
       let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
@@ -282,6 +285,8 @@ app.get('/service-provider/dashboard-professional', isServiceProvider, async (re
       propertyData.customer_profile = await customerProfile
       propertyArray.push(propertyData)
     }
+  }else{
+    propertyArray
   }
   let custArray = []
   var userId = [];
@@ -479,7 +484,7 @@ app.get('/service-provider/professionals-to-do-list', isServiceProvider, async f
   let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id, req.session.active_user_login);
   for (let key of AllhiredProfeshnoal) {
     //let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
-    let propertyData = await PropertiesSchema.findOne({ _id: key.pps_property_id, ps_is_active_user_flag: req.session.active_user_login });
+    let propertyData = await PropertiesSchema.findOne({ _id: key.pps_property_id });
     // let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
     // propertyData.property_image = await propertyImageData.pps_property_image_name;
     // let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
@@ -963,7 +968,7 @@ app.get('/service-provider/myproperties-detail-phaseA', isServiceProvider, async
   console.log("request coming from server is", req.query);
 
   var property_id = req.query.id;
-  let propertyData = await PropertiesSchema.findOne({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login });
+  let propertyData = await PropertiesSchema.findOne({ _id: req.query.id });
   console.log("Property Data is ::", propertyData);
   var user_id = req.session.user_id;
   req.session.property_id = req.query.id
@@ -1569,7 +1574,7 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
   if (req.query.id) {
     req.session.property_id = req.query.id
     console.log("req.query.id:", req.query.id);
-    PropertiesSchema.find({ _id: req.query.id, ps_is_active_user_flag: req.session.active_user_login }).then(async (data) => {
+    PropertiesSchema.find({ _id: req.query.id }).then(async (data) => {
      console.log('data=======',data)
       if (data) {
 
@@ -1763,7 +1768,7 @@ app.get('/service-provider/myproperties-details-to-dos', isServiceProvider, asyn
 app.post('/get_hired_property_by_id', isServiceProvider, async (req, res) => {
   console.log("Getting request from server ", req.body);
   if (req.body.property_id) {
-    let singlePropertyObj = await PropertiesSchema.findOne({ _id: req.body.property_id, ps_is_active_user_flag: req.session.active_user_login });
+    let singlePropertyObj = await PropertiesSchema.findOne({ _id: req.body.property_id });
     console.log('singlePropertyObj', singlePropertyObj);
     if (singlePropertyObj) {
       return res.send({

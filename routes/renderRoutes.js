@@ -1876,20 +1876,20 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
       temps.gestiscompleteStatus = gest_iscomplete
       temps.gestispendingStatus = gest_isPanding
           if(iscomplete==true){
-            var numofTotalTask1 =gest_taskObject.length; 
+         
             completedTask1 = completedTask1+1
            }
            gest_taskObjectArray.push(temps)
     }
-    console.log('gest total task',numofTotalTask1)
+    console.log('gest total task',gest_taskObject.length)
   console.log('gest num of completed task',completedTask1)
-   progressResult1 = Math.round((completedTask1 / numofTotalTask1) * 100);
+   progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
   }else{
     progressResult1
   }
-  completedTask=0
-  console.log('progressResult==============',progressResult)
-  console.log("taskObjectArray==============",taskObjectArray)
+  completedTask1=0
+  console.log('gest progressResult==============',progressResult1)
+  console.log("gest taskObjectArray==============",gest_taskObjectArray)
   
 
   var taskObjectArray=[]
@@ -1908,25 +1908,26 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
           temp.ispendingStatus = isPanding
            //progress bar number of total task / no of completed task 
            if(iscomplete==true){
-             var numofTotalTask =taskObject.length; 
+           
              completedTask = completedTask+1
             }
             
              
           taskObjectArray.push(temp)
   }
-  console.log('total task',numofTotalTask)
+  console.log('total task',taskObject.length)
   console.log('num of completed task',completedTask)
-   progressResult = Math.round((completedTask / numofTotalTask) * 100);
+   progressResult = Math.round((completedTask / taskObject.length) * 100);
   
 }else{
   progressResult=0
 }
 
 completedTask=0
+console.log('task object length======',taskObject.length)
   console.log('progressResult==============',progressResult)
   console.log("taskObjectArray==============",taskObjectArray)
-  console.log("gest_taskObject=====+++++++++++++++++++++++++++++++++++++++++=====",gest_taskObjectArray)
+  
 
 
   if (taskObject) {
@@ -3282,8 +3283,14 @@ app.get('/to-do-list', isCustomer, async (req, res) => {
   var success_msg = null;
   console.log("todo")
   req.session.pagename = 'to-do-list';
-  let propertyObj = await propertyDetail.GetAllProperty(req.session.user_id, req.session.active_user_login);
-  console.log('property in to-do-list', propertyObj);
+  // let propertyObj = await propertyDetail.GetAllProperty(req.session.user_id, req.session.active_user_login);
+  let propertyObj= await  PropertiesSchema.find({
+    $or: [
+      { $and: [{ ps_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login },] },
+      { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_other_property_type: req.session.active_user_login }] }
+    ]
+  }).sort({ _id: -1 })
+   console.log('property in to-do-list', propertyObj);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('to-do-list', {
