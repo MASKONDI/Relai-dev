@@ -136,5 +136,11 @@ const PropertiesSchema = new Schema({
   ps_offer_status: {
     type: String
   },
+  ps_solicitor_name: {
+    type: Array
+  },
+  ps_solicitor_email: {
+    type: Array
+  }
 });
 module.exports = properties = mongoose.model('properties', PropertiesSchema);

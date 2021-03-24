@@ -412,25 +412,25 @@ module.exports.add_existing_task_from_btn = function (req) {
                                  }
                                  console.log('Object UseridToArray New String:',UseridToArray);
                                
-                                //  var DueDateToArray = data1.ppts_due_date;
-                                //  if(!DueDateToArray.includes(req.body.duedate)){
-                                //     DueDateToArray.push(req.body.duedate);
-                                //  }
-                                //  console.log('Object DueDateToArray New String:',DueDateToArray);
+                                 var DueDateToArray = data1.ppts_due_date;
+                                 if(!DueDateToArray.includes(req.body.duedate)){
+                                    DueDateToArray.push(req.body.duedate);
+                                 }
+                                 console.log('Object DueDateToArray New String:',DueDateToArray);
             
-                                //  var NotesToArray = data1.ppts_note;
-                                //  if(!NotesToArray.includes(req.body.notes)){
-                                //     NotesToArray.push(req.body.notes);
-                                //  }
-                                //  var statusToArray = data1.ppts_task_status;
-                                //  statusToArray.push(status);
-                                //  console.log('Object NotesToArray New String:',NotesToArray);
+                                 var NotesToArray = data1.ppts_note;
+                                 if(!NotesToArray.includes(req.body.notes)){
+                                    NotesToArray.push(req.body.notes);
+                                 }
+                                 var statusToArray = data1.ppts_task_status;
+                                 statusToArray.push(status);
+                                 console.log('Object NotesToArray New String:',NotesToArray);
             
             
                                 PropertyProfessinoalTaskSchema.updateOne({  ppts_property_id: req.body.property_id,
                                     ppts_task_name:row,
                                     ppts_phase_name:req.body.Phase,
-                                    ppts_phase_flag:req.body.ppts_phase_flag  }, { $set: { ppts_assign_to: AssignToArray,ppts_user_id:UseridToArray, } }, { upsert: true }, function (err) {
+                                    ppts_phase_flag:req.body.ppts_phase_flag  }, { $set: { ppts_assign_to: AssignToArray,ppts_user_id:UseridToArray,ppts_note:NotesToArray,ppts_due_date:DueDateToArray,ppts_task_status:statusToArray } }, { upsert: true }, function (err) {
                                     if (err) {
                                       console.log("err is :", err);
                                       console.log(' Object Dataupdated Not successfully');

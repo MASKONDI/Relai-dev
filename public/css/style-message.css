@@ -419,3 +419,15 @@ span#comment-error {
             margin-top: -20px;
             cursor: pointer;
         }
+
+        a.btn.addMoreSolicitor {
+            color: #005377;
+            width: 50px;
+            padding: 9px 9px;
+            margin-top: 0px;
+            margin-left: 0px;
+            border-radius: 10px;
+            border: 2px solid #005377;
+            background-color: #ffffff;
+            height: 45px;
+        }

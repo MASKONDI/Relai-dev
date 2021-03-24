@@ -116,7 +116,7 @@
 
                         <div class="col-md-6">
                           <div class="form-group  ">
-                            <input type="text" class="form-control form-control-size" id="address" placeholder="Address"
+                            <input type="text" class="form-control" id="address" placeholder="Address"
                               name="sps_address" required data-rule-required="true"
                               data-msg-required="Address is required!">
                           </div>
@@ -124,11 +124,16 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group  ">
-                            <select name="country" class="countries form-control selectBox4" id="countryId" required
+                            <!-- <select name="country" class="countries form-control selectBox4" id="countryId" required
                               style="height: 44px;" data-rule-required="true"
                               data-msg-required="Country name is required!">
                               <option value="">Select Country</option>
-                            </select>
+                            </select> -->
+
+                            <input type="text" class="form-control form-control-size" id="countryId" placeholder="Country"
+                            name="country" required data-rule-required="true"
+                            data-msg-required="Country is required!">
+
                           </div>
                         </div>
                       </div>
@@ -137,27 +142,27 @@
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group  ">
-                            <select name="state" class="states form-control selectBox4" id="stateId" required
+                            <!-- <select name="state" class="states form-control selectBox4" id="stateId" required
                               style="height: 44px;" data-rule-required="true"
                               data-msg-required="County name is required!">
                               <option value="">Select County</option>
-                            </select>
+                            </select> -->
 
-                            <!-- <input type="text" class="form-control form-control-size" id="city" placeholder="City"
-                              name="cus_city" required data-rule-required="true"
-                              data-msg-required="City name is required!"> -->
+                            <input type="text" class="form-control form-control-size" id="stateId" placeholder="State"
+                              name="state" required data-rule-required="true"
+                              data-msg-required="State name is required!">
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group ">
-                            <select name="city" class="cities form-control selectBox4" id="cityId" required
+                            <!-- <select name="city" class="cities form-control selectBox4" id="cityId" required
                               style="height: 44px;" data-rule-required="true"
                               data-msg-required="City name is required!">
                               <option value="">Select City</option>
-                            </select>
-                            <!-- <input type="text" class="form-control form-control-size" id="country" placeholder="Country"
-                              name="cus_country_id" required data-rule-required="true"
-                              data-msg-required="Country name is required!"> -->
+                            </select> -->
+                            <input type="text" class="form-control form-control-size" id="cityId" placeholder="City"
+                              name="city" required data-rule-required="true"
+                              data-msg-required="City name is required!">
                           </div>
                         </div>
                       </div>
@@ -276,6 +281,48 @@
   <script type="text/javascript" src="../js/countrystatecity.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDon-wurpooTEYCzFKwMJkBJGa0rAR4b9c"></script>
+  <script>
+     google.maps.event.addDomListener(window, 'load', function ()
+    {
+      var places = new google.maps.places.Autocomplete(document.getElementById('address'));
+      google.maps.event.addListener(places, 'place_changed', function () {
+        console.log(places.getPlace());
+        var getaddress = places.getPlace(); //alert(getaddress.address_components[0].long_name);
+        var whole_address = getaddress.address_components;  //alert(whole_address + 'whole_address');  
+        $('#cityId').val('');
+        $('#stateId').val('');
+        $('#countryId').val('');
+        //$('#ownPinCode').val('');
+        $.each(whole_address, function (key1, value1) {
+          //alert(value1.long_name);
+          //alert(value1.types[0]);
+          if ((value1.types[0]) == 'locality') {
+            var prev_long_name_city = value1.long_name;
+            //alert(prev_long_name_city + '__prev_long_name_city');
+            $('#cityId').val(prev_long_name_city);
+          }
+          if ((value1.types[0]) == 'administrative_area_level_1') {
+            var prev_long_name_state = value1.long_name;
+            //alert(prev_long_name_state + '__prev_long_name_state');
+            $('#stateId').val(prev_long_name_state);
+          }
+          if ((value1.types[0]) == 'country') {
+            var prev_long_name_country = value1.long_name;
+            //alert(prev_long_name_country + '__prev_long_name_country');
+            $('#countryId').val(prev_long_name_country);
+          }
+          // if ((value1.types[0]) == 'postal_code') {
+          //   var prev_long_name_pincode = value1.long_name;
+          //   //alert(prev_long_name_pincode + '__prev_long_name_pincode');
+          //   $('#ownPinCode').val(prev_long_name_pincode);
+          // }
+
+        });
+      });
+      });
+    
+  </script>
 
   <script>
     $(document).ready(function () {

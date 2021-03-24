@@ -10,7 +10,7 @@
     crossorigin="anonymous"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
 
     <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.css"
@@ -19,6 +19,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.js"
     integrity="sha512-tCkLWlSXiiMsUaDl5+8bqwpGXXh0zZsgzX6pB9IQCZH+8iwXRYfcCpdxl/owoM6U4ap7QZDW4kw7djQUiQ4G2A=="
     crossorigin="anonymous"></script>
+  
 
     <script type="text/javascript"
     src="http://extreme.org.in/design/my-reflet-user/assets/js/bootstrap-dropdownhover.min.js"></script>
@@ -41,42 +42,98 @@
 
 
 
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDon-wurpooTEYCzFKwMJkBJGa0rAR4b9c&callback=initMap"></script>
+ <script>
+
+  google.maps.event.addDomListener(window, 'load', function ()
+ {
+  var loc = new locationInfo();
+   var places = new google.maps.places.Autocomplete(document.getElementById('address_myaddress'));
+   google.maps.event.addListener(places, 'place_changed', function () {
+        console.log(places.getPlace());
+        
+        var getaddress = places.getPlace(); //alert(getaddress.address_components[0].long_name);
+        var whole_address = getaddress.address_components;  //alert(whole_address + 'whole_address');  
+        var lat = getaddress.geometry.location.lat();
+        var lng = getaddress.geometry.location.lng();
+
+        console.log('getaddress:',lat)
+        $('#cityId').val('');
+        $('#stateId').val('');
+        $('#countryId').val('');
+        $('#zipcode').val('');
+        $.each(whole_address, function (key1, value1) {
+          //alert(value1.long_name);
+          //alert(value1.types[0]);
+          if ((value1.types[0]) == 'locality' || (value1.types[0]) == 'postal_town') {
+            var prev_long_name_city = value1.long_name;
+            //alert(prev_long_name_city + '__prev_long_name_city');
+            $('#cityId').val(prev_long_name_city);
+          }
+          if ((value1.types[0]) == 'administrative_area_level_1') {
+            var prev_long_name_state = value1.long_name;
+            //alert(prev_long_name_state + '__prev_long_name_state');
+            $('#stateId').val(prev_long_name_state);
+          }
+          if ((value1.types[0]) == 'country') {
+            var prev_long_name_country = value1.long_name;
+           // var prev_long_name_country = value1.short_name;
+            //alert(prev_long_name_country + '__prev_long_name_country');
+              //loc.getStates(prev_long_name_country);
+            //$('#countryId').find('option[countryid='+prev_long_name_country+']').attr('selected','selected');
+            $('#countryId').val(prev_long_name_country);
+          }
+          if ((value1.types[0]) == 'postal_code') {
+            var prev_long_name_pincode = value1.long_name;
+            //alert(prev_long_name_pincode + '__prev_long_name_pincode');
+            $('#zipcode').val(prev_long_name_pincode);
+          }
+
+          $('.property_lattitude').val(lat)
+          $('.property_longitude').val(lng);
+
+        });
+      });
+   });
+ 
+</script>
+
+
+
  <!-- MYDREAMHOME DETAILS DOC -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/js/lightbox.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery.counterup@2.1.0/jquery.counterup.min.js"></script>
-
     <script src="https://www.jqueryscript.net/demo/jQuery-Ajax-Autocomplete-Plugin-For-Input-Fields-Autocomplete/src/jquery.autocomplete.js"></script>
-   
 
     <script type="text/javascript">
-      var locations = [
-        ['Bondi Beach', -33.890542, 151.274856, 4],
-        ['Coogee Beach', -33.923036, 151.259052, 5],
-        ['Cronulla Beach', -34.028249, 151.157507, 3],
-        ['Manly Beach', -33.80010128657071, 151.28747820854187, 2],
-        ['Maroubra Beach', -33.950198, 151.259302, 1]
-      ];
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 10,
-        center: new google.maps.LatLng(-33.92, 151.25),
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      });
-      var infowindow = new google.maps.InfoWindow();
-      var marker, i;
-      for (i = 0; i < locations.length; i++) {
-        marker = new google.maps.Marker({
-          position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-          map: map
-        });
-        google.maps.event.addListener(marker, 'click', (function (marker, i) {
-          return function () {
-            infowindow.setContent(locations[i][0]);
-            infowindow.open(map, marker);
-          }
-        })(marker, i));
-      }
+      // var locations = [
+      //   ['Bondi Beach', -33.890542, 151.274856, 4],
+      //   ['Coogee Beach', -33.923036, 151.259052, 5],
+      //   ['Cronulla Beach', -34.028249, 151.157507, 3],
+      //   ['Manly Beach', -33.80010128657071, 151.28747820854187, 2],
+      //   ['Maroubra Beach', -33.950198, 151.259302, 1]
+      // ];
+      // var map = new google.maps.Map(document.getElementById('map'), {
+      //   zoom: 10,
+      //   center: new google.maps.LatLng(-33.92, 151.25),
+      //   mapTypeId: google.maps.MapTypeId.ROADMAP
+      // });
+      // var infowindow = new google.maps.InfoWindow();
+      // var marker, i;
+      // for (i = 0; i < locations.length; i++) {
+      //   marker = new google.maps.Marker({
+      //     position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+      //     map: map
+      //   });
+      //   google.maps.event.addListener(marker, 'click', (function (marker, i) {
+      //     return function () {
+      //       infowindow.setContent(locations[i][0]);
+      //       infowindow.open(map, marker);
+      //     }
+      //   })(marker, i));
+      // }
     </script>
     <script>
       // $(document).ready(function () {
@@ -321,6 +378,7 @@ function previewFile_profile(input){
             var apiurl = "/api/Editproperty";
           }
           var formData = new FormData($('#propertyform1')[0]);
+          console.log('formData',formData);
           $.ajax({
             type: "POST",
             data: formData,
