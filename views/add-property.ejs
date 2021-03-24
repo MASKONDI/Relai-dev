@@ -94,15 +94,15 @@
                                 <div class="col-sm-12 col-lg-4">
                                   <%if(propertyObj=='null'){%>
                                     <input type="text" class="form-control property-form-control-size-fix p_address"
-                                      id="address" placeholder="Enter address*" name="ps_property_address"
+                                      id="address_myaddress" placeholder="Enter address*" name="ps_property_address"
                                       data-rule-required="true" data-msg-required="Property address is required!"
                                       value="" required>
                                     <%}else{%>
                                       <input type="text" class="form-control property-form-control-size-fix p_address"
-                                        id="address" placeholder="Enter address*" name="ps_property_address"
+                                        id="address_myaddress" placeholder="Enter address*" name="ps_property_address"
                                         data-rule-required="true" data-msg-required="Property address is required!"
                                         value="<%=propertyObj.ps_property_address%>" required>
-                                      <%}%>
+                                    <%}%>
                                 </div>
                                 <div class="col-sm-12 col-lg-4">
                                   <div class="form-group  ">
@@ -112,6 +112,12 @@
                                         data-msg-required="Country name is required!">
                                         <option value="">Select Country*</option>
                                       </select>
+
+                                      <!-- <input type="text" class="form-control property-form-control-size-fix"
+                                      id="countryId" placeholder="Enter Country*" name="country"
+                                      data-rule-required="true" data-msg-required="Country is required!"
+                                      value="" required> -->
+
                                       <%}else{%>
                                         <select name="country" class=" form-control selectBox5" id="countryId" required
                                           style="height: 48px;" data-rule-required="true"
@@ -120,6 +126,12 @@
                                             <%=propertyObj.ps_property_country_id%>
                                           </option>
                                         </select>
+
+                                        <!-- <input type="text" class="form-control property-form-control-size-fix"
+                                        id="countryId" placeholder="Enter Country*" name="country"
+                                        data-rule-required="true" data-msg-required="Country is required!"
+                                        value="<%=propertyObj.ps_property_country_id%>" required> -->
+
                                         <%}%>
                                   </div>
                                 </div>
@@ -129,38 +141,64 @@
                               <div class="col-sm-12 col-lg-4">
                                 <div class="form-group  ">
                                   <%if(propertyObj=='null'){%>
-                                    <select name="state" class="states form-control selectBox5" id="stateId" required
+
+                                    <!-- <select name="state" class="states form-control selectBox5" id="stateId" required
                                       style="height: 48px;" data-rule-required="true"
                                       data-msg-required="County name is required!">
                                       <option value="">Select County*</option>
-                                    </select>
+                                    </select> -->
+
+                                    <input type="text" class="form-control property-form-control-size-fix"
+                                        id="stateId" placeholder="Enter County*" name="state"
+                                        data-rule-required="true" data-msg-required="County is required!"
+                                        value="" required>
+
                                     <%}else{%>
-                                      <select name="state" class=" form-control selectBox5" id="stateId" required
+
+                                      <!-- <select name="state" class=" form-control selectBox5" id="stateId" required
                                         style="height: 48px;" data-rule-required="true"
                                         data-msg-required="County name is required!">
                                         <option value="<%=propertyObj.ps_property_state_id%>">
                                           <%=propertyObj.ps_property_state_id%>
                                         </option>
-                                      </select>
+                                      </select> -->
+
+                                      <input type="text" class="form-control property-form-control-size-fix"
+                                        id="stateId" placeholder="Enter County*" name="state"
+                                        data-rule-required="true" data-msg-required="County is required!"
+                                        value="<%=propertyObj.ps_property_state_id%>" required>
+
                                       <%}%>
                                 </div>
                               </div>
                               <div class="col-sm-12 col-lg-4">
                                 <div class="form-group ">
                                   <%if(propertyObj=='null'){%>
-                                    <select name="city" class="cities form-control selectBox5" id="cityId" required
+                                    <!-- <select name="city" class="cities form-control selectBox5" id="cityId" required
                                       style="height: 48px;" data-rule-required="true"
                                       data-msg-required="City name is required!">
                                       <option value="">Select City*</option>
-                                    </select>
+                                    </select> -->
+
+                                    <input type="text" class="form-control property-form-control-size-fix"
+                                    id="cityId" placeholder="Enter City*" name="city"
+                                    data-rule-required="true" data-msg-required="City is required!"
+                                    value="" required>
+
                                     <%}else{%>
-                                      <select name="city" class="cities form-control selectBox5" id="cityId" required
+                                      <!-- <select name="city" class="cities form-control selectBox5" id="cityId" required
                                         style="height: 48px;" data-rule-required="true"
                                         data-msg-required="City name is required!">
                                         <option value="<%=propertyObj.ps_property_city_id%>">
                                           <%=propertyObj.ps_property_city_id%>
                                         </option>
-                                      </select>
+                                      </select> -->
+
+                                      <input type="text" class="form-control property-form-control-size-fix"
+                                        id="cityId" placeholder="Enter City*" name="city"
+                                        data-rule-required="true" data-msg-required="City is required!"
+                                        value="<%=propertyObj.ps_property_city_id%>" required>
+
                                       <%}%>
                                 </div>
                               </div>
@@ -380,6 +418,62 @@
                                   <%}%>
 
                             </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-12">
+                              <div class="property-step">
+                                <!-- <p>STEP 2</p> -->
+                                <%if(propertyObj=='null'){%>
+                                  <h6>Add solicitor</h6>
+                                  <%}else{%>
+                                    <h6>Update solicitor</h6>
+                                    <%}%>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="input-field">
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-4">
+                                <%if(propertyObj=='null'){%>
+                                  <input type="text" class="form-control property-form-control-size-fix " id="solicitor_name"
+                                    placeholder="Solicitor Name*" name="ps_solicitor_name" value=""
+                                    data-rule-required="true" data-msg-required="Solicitor name is required!">
+                                  <%}else{%>
+                                    <%if(propertyObj.ps_solicitor_name.length>0){%>
+                                      <% var i=0; propertyObj.ps_solicitor_name.forEach(function(row){ %>
+                                        <input type="text" class="form-control property-form-control-size-fix " id="solicitor_name"
+                                          placeholder="Solicitor Name*" name="ps_solicitor_name"
+                                          value="<%=row%>" data-rule-required="true"
+                                          data-msg-required="Solicitor name is required!">
+                                        <% i++;});%>
+                                      <%}%> 
+                                    <%}%>
+                              </div>
+                              <div class="col-sm-12 col-lg-4">
+                                <%if(propertyObj=='null'){%>
+                                  <input type="email" class="form-control property-form-control-size-fix "
+                                    id="solicitor_email" placeholder="Solicitor email address*" name="ps_solicitor_email"
+                                    value="" data-rule-required="true" data-msg-required="Solicitor email is required!" required>
+                                  <%}else{%>
+                                    <%if(propertyObj.ps_solicitor_email.length>0){%>
+                                      <% var i=0; propertyObj.ps_solicitor_email.forEach(function(row){ %>
+                                          <input type="email" readonly class="form-control property-form-control-size-fix "
+                                          id="solicitor_email" placeholder="Solicitor email address*" name="ps_solicitor_email"
+                                          value="<%=row%>" data-rule-required="true"
+                                          data-msg-required="Solicitor email is required!" required>
+                                      <% i++;});%>
+                                      <%}%> 
+                                    <%}%>
+                              </div>
+                              <div class="">
+                                <a class="btn addMoreSolicitor" name="addPlusbtn"><i class="fa fa-plus"></i></a>
+                              </div>
+
+                            
+
+                            </div>
+                            <div class="moreSolicitoreSec"></div>
                           </div>
 
                           <div class="row">
@@ -760,12 +854,12 @@
                               <div class="col-sm-12 col-lg-12">
                                 <%if(propertyObj=='null'){%>
                                   <textarea type="text" style=" width:95%"
-                                    class="form-control property-form-control-size-fix p_notes" id="address"
+                                    class="form-control property-form-control-size-fix p_notes" id="address1"
                                     name="ps_additional_note" value=""
                                     placeholder="Additional notes(if any)"></textarea>
                                   <%}else{%>
                                     <textarea type="text" style=" width:95%"
-                                      class="form-control property-form-control-size-fix p_notes" id="address"
+                                      class="form-control property-form-control-size-fix p_notes" id="address1"
                                       name="ps_additional_note" value=""
                                       placeholder="Additional notes(if any)"><%=propertyObj.ps_additional_note%></textarea>
                                     <%}%>
@@ -2121,10 +2215,31 @@
     </div>
 
     <%- include('dashboard_footer')-%>
-      <!-- <script src="https://code.jquery.com/ui/jquery-ui-git.js"></script> -->
-      <script src="https://www.jqueryscript.net/demo/jQuery-Ajax-Autocomplete-Plugin-For-Input-Fields-Autocomplete/scripts/jquery.mockjax.js"></script>
-</script>
+      <!-- <script src="https://www.jqueryscript.net/demo/jQuery-Ajax-Autocomplete-Plugin-For-Input-Fields-Autocomplete/scripts/jquery.mockjax.js"></script> -->
       <script>
+
+
+$(document).ready(function () {
+    var c = 2;
+    $(".addMoreSolicitor").click(function (e) {
+      e.preventDefault();
+      var domElement = $(' <div class="row"><div class="col-sm-12 col-lg-4"> <input type="text" class="form-control property-form-control-size-fix " id="solicitor_name" placeholder="Solicitor Name*" name="ps_solicitor_name" value="" data-rule-required="true" data-msg-required="Solicitor name is required!"></div><div class="col-sm-12 col-lg-4"> <input type="email" class="form-control property-form-control-size-fix " id="solicitor_email" placeholder="Solicitor email address*" name="ps_solicitor_email" value="" data-rule-required="true" data-msg-required="Solicitor email is required!" required></div><a class="btn property-add-btn remove_field"><i class="fa fa-minus"></i></a></div>' + c++);
+      if (c == 10) {
+        $(".addMoreSolicitor").attr('disabled', true);
+      }
+      $(".moreSolicitoreSec").before(domElement);
+    });
+    $('.row').on("click", ".remove_field", function (e) { //user click on remove text
+      e.preventDefault(); $(this).parent('div').remove(); c--;
+
+      $(".addMoreSolicitor").attr('disabled', false);
+
+    })
+
+
+  });
+
+
         $(function () {
           $.ajax({
             type: "POST",
@@ -2139,8 +2254,6 @@
                   onSelect:function (suggestion) {
                    // alert('You selected: ' + suggestion.value +', ' + suggestion.data);
                   $('.loader-box').attr('style', 'display:flex !important');
-                  //var searchText = ui.item.value;
-                  //console.log('TextVivek:', searchText);
                   $.ajax({
                     type: "POST",
                     data: {
@@ -2150,11 +2263,19 @@
                     cache: false,
                     success: function (data) {
                       console.log('Reapit Res:', data);
+                      $('.p_address,#zipcode,.p_area,#bedroom,#bedroom2,#cityId,#stateId').val('');
+
                       $('.loader-box').attr('style', 'display:none !important');
                       $('.property_detial').css('display', 'block');
+                      console.log(data.propertyData[0].address.countryId);
+                      if(data.propertyData[0].address.countryId){
+                          $('#countryId').find('option[countryid='+data.propertyData[0].address.countryId+']').attr('selected','selected');
+                      }
                       if(data.propertyData[0].address.buildingName){
+                        $('#cityId').val(data.propertyData[0].address.line2)
                         $('.property_name').val(data.propertyData[0].address.buildingNumber+' '+data.propertyData[0].address.buildingName);
                       }else if(data.propertyData[0].address.buildingName ==''){
+                        $('#cityId').val(data.propertyData[0].address.line2)
                         $('.property_name').val(data.propertyData[0].address.buildingNumber+' '+data.propertyData[0].address.line1 + ' ' + data.propertyData[0].address.line2);
                       }
                       $('#zipcode').val(data.propertyData[0].address.postcode);
@@ -2187,37 +2308,6 @@
                   })
                 }
               });
-
-              // $(".autocomplete").autocomplete({
-              //   source: data.mydatadata,
-              //   select: function (event, ui) {
-              //     $('.loader-box').attr('style', 'display:flex !important');
-              //     var searchText = ui.item.value;
-              //     console.log('TextVivek:', searchText);
-              //     $.ajax({
-              //       type: "POST",
-              //       data: {
-              //         searchText: searchText
-              //       },
-              //       url: "/api/reapitApi",
-              //       cache: false,
-              //       success: function (data) {
-              //         console.log('Reapit Res:', data);
-              //         $('.loader-box').attr('style', 'display:none !important');
-              //         $('.property_detial').css('display', 'block');
-              //         $('.property_name').val(data.propertyData[0].address.buildingName);
-              //         $('#zipcode').val(data.propertyData[0].address.postcode);
-              //         $('.p_notes').val(data.propertyData[0].description);
-              //         $('.p_area').val(data.propertyData[0].internalArea.min + 'x' + data.propertyData[0].internalArea.max + ' ' + data.propertyData[0].internalArea.type);
-              //         $('.p_address').val(data.propertyData[0].address.buildingNumber + ' ' + data.propertyData[0].address.line1 + ' ' + data.propertyData[0].address.line2 + ' ' + data.propertyData[0].address.line2 + ' ' + data.propertyData[0].address.line3 + ' ' + data.propertyData[0].address.line4);
-              //         $('#ps_existing_property option[value="Residential"]').attr("selected", "selected");
-              //         $('#bedroom option[value="' + data.propertyData[0].bedrooms + '"]').attr("selected", "selected");
-              //         $('#bedroom2 option[value="' + data.propertyData[0].bathrooms + '"]').attr("selected", "selected");
-              //       }
-              //     })
-
-              //   }
-              // });
             }
           })
         });

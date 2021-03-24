@@ -569,6 +569,7 @@ router.post("/add-new-property", isCustomer, async (req, res) => {
   upload(req, res, async () => {
     if (req.body) {
       console.log("first form body:=", req.body);
+      
       let PropertySaved = await PropertyHelper.Add_New_Propert(req);
       console.log('PropertySaved========', PropertySaved);
       if (PropertySaved) {
@@ -576,6 +577,7 @@ router.post("/add-new-property", isCustomer, async (req, res) => {
         console.log("sending invitation to professional with token");
         invite_function(req, PropertySaved);
         customer_invitation(req, PropertySaved);
+        solicitor_invite_function(req, PropertySaved);
         return res.send({
           'message': ' Your Property Saved plese add property image',
           'status': true,
@@ -1513,7 +1515,6 @@ Function : invite function is used for sending invite to service_provider via gm
 function invite_function(req, saved_property) {
   console.log("Request getting from server :", req.body);
   const payload = { id: saved_property._id, property_name: saved_property.ps_property_name }; // Create Token Payload
-
   // Sign Token
   jwt.sign(
     payload,
@@ -1546,6 +1547,58 @@ function invite_function(req, saved_property) {
           'We suggest you to please visit our Relai plateform and create your account \n' + 'Here is the registration link: http://' + req.headers.host + '/signup?email=' + req.body.ps_other_party_emailid + '&token=' + token + '\n\n' +
 
           'if you already registered please hit given url \n' + ' http://' + req.headers.host + '/signin?email=' + req.body.ps_other_party_emailid + '&token=' + token + '\n\n' +
+
+          'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+      };
+      smtpTransport.sendMail(mailOptions, function (err) {
+        if (err) {
+          console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+          //res.redirect('/add-property')
+        } else {
+          //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
+          // res.redirect('/add-property')
+        }
+      });
+    }
+  );
+}
+
+
+function solicitor_invite_function(req, saved_property) {
+  console.log("Request getting from server :", req.body);
+  const payload = { id: saved_property._id, property_name: saved_property.ps_property_name }; // Create Token Payload
+  // Sign Token
+  jwt.sign(
+    payload,
+    keys.secretOrKey,
+    { expiresIn: 3600 * 60 * 60 },
+    (err, token) => {
+      console.log("Sending Secret token along with customer request", token);
+      var smtpTransport = nodemailer.createTransport({
+        // port: 25,
+        // host: 'localhost',
+        // tls: {
+        //   rejectUnauthorized: false
+        // },
+        // host: 'smtp.gmail.com',
+        // port: 465,
+        // secure: true,
+        service: 'Gmail',
+        auth: {
+          user: keys.user4,
+          pass: keys.pass4,
+        }
+      });
+      const mailOptions = {
+        to: req.body.ps_solicitor_email,
+        from: keys.user4,
+        subject: 'Invitaion letter from Relai',
+
+        text: 'Hello \n\n' + 'you are invited in Relai plateform.\n\n' +
+
+          'We suggest you to please visit our Relai plateform and create your account \n' + 'Here is the registration link: http://' + req.headers.host + '/signup?email=' + req.body.ps_solicitor_email + '&token=' + token + '\n\n' +
+
+          'if you already registered please hit given url \n' + ' http://' + req.headers.host + '/signin?email=' + req.body.ps_solicitor_email + '&token=' + token + '\n\n' +
 
           'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
       };

@@ -217,9 +217,9 @@ function locationInfo() {
                         ///******************************Here we can add more  country list dynamic */
                         //console.log("countries added ", option);
                         //console.log("countries innertext added ", option[0].value);
-                        if (option[0].value == "United Kingdom") {
+                        //if (option[0].value == "United Kingdom") {
                             jQuery('.countries').append(option);
-                        }
+                       // }
 
                     });
                 }

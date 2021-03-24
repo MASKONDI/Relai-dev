@@ -80,6 +80,5 @@ const PropertyProfessinoalTaskSchema = new Schema({
     enum: ['no', 'yes'],
     default: 'no'
   },
-
 });
 module.exports = PropertyProfessinoalTask = mongoose.model('property_professional_task', PropertyProfessinoalTaskSchema);
