@@ -32,7 +32,7 @@ const PropertyProfessionalHelper = require("./api/propertyProfessionalDetails")
 //const ComplaintsSchema = require("../models/Complaints");
 const ComplaintDetailsSchema = require("../models/complaint_details_model");
 const NotificationSchema = require("../models/notification_modal");
-
+const ServiceProviderUploadDocsSchema = require("../models/service_provider_upload_document")
 
 const message = require('../models/message');
 
@@ -1239,6 +1239,7 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
   req.session.pagename = 'mydreamhome';
   var normalDocArray = [];
   var taskDocArray = [];
+  var spDocArray=[]
   //console.log('property id is :', req.session.property_id);
   //req.session.property_id=req.query.id
   err_msg = req.flash('err_msg');
@@ -1247,6 +1248,28 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
     //_id: req.session.property_id, ps_is_active_user_flag: req.session.active_user_login 
     _id: req.session.property_id
   });
+  // ServiceProviderUploadDocsSchema.find({spuds_property_id:req.session.property_id}).then((respdata)=>{
+  //   console.log('responce of sp document',respdata)
+    
+  // })
+  await ServiceProviderUploadDocsSchema.find({
+    spuds_property_id: req.session.property_id
+  }).sort({ _id: -1 }).then(async (spresp) => {
+    for (var keyy of spresp) {
+      let sptemps = await keyy
+      const spd = JSON.stringify(sptemps);
+      const spDocData = JSON.parse(spd)
+     await DocumentPermissionSchema.findOne({ dps_document_id:spDocData._id }).then(async (docPermissionResp) => { 
+       if(docPermissionResp){
+        spDocData.permissionData = docPermissionResp
+       }else{
+        spDocData.permissionData ='';
+       }
+      })
+      spDocArray.push(spDocData);
+    }
+  });
+console.log('sp document',spDocArray)
   await CustomerUploadDocsSchema.find({
     cuds_property_id: req.session.property_id
     // $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.session.property_id, cuds_is_active_user_flag: req.session.active_user_login }] 
@@ -1296,6 +1319,7 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
     data: serviceProvArray,
     allDocument: normalDocArray,//need to show property wise document still showing all uploaded
     taskDocument: taskDocArray,
+    spDocument:spDocArray,
     property: property,
     moment: moment
   });

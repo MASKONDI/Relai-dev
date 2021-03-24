@@ -3072,7 +3072,7 @@ margin-left: 20px;
         margin-top: 0px;
         padding-top: 0px;
     }
-    .portfolio-submit-button a:hover{
+    .portfolio-submit-button:hover{
         color:#fff;
     }
     .submit-btn-fix{
@@ -4292,7 +4292,7 @@ span.float-right u {
     margin-top: 50px;
     margin-bottom: 30px;
 }
-.portfolio-submit a:hover{
+.portfolio-submit:hover{
     color:#ffffff;
 }
 .kyc-submit a:hover{
