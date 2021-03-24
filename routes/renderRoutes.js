@@ -1838,9 +1838,40 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
 
   //console.log("taskObject mydreamhome-details-phase-a", taskObject)
   //console.log("gest_taskObject", gest_taskObject)
+  var gest_taskObjectArray=[]
+  var completedTask1=0;
+  var progressResult1 = 0;
+  if(gest_taskObject.length!=0){
+    for(ky of gest_taskObject){
+      var ds= JSON.stringify(ky)
+      var ds = JSON.parse(ds)
+      var temps = ds
+      var arrr = temps.ppts_task_status;
+      var gest_iscomplete =await arrr.every(isStatusComplete);
+      var gest_isPanding =await arrr.every(isStatusPanding);
+      temps.gestiscompleteStatus = gest_iscomplete
+      temps.gestispendingStatus = gest_isPanding
+          if(iscomplete==true){
+            var numofTotalTask1 =gest_taskObject.length; 
+            completedTask1 = completedTask1+1
+           }
+           gest_taskObjectArray.push(temps)
+    }
+    console.log('gest total task',numofTotalTask1)
+  console.log('gest num of completed task',completedTask1)
+   progressResult1 = Math.round((completedTask1 / numofTotalTask1) * 100);
+  }else{
+    progressResult1
+  }
+  completedTask=0
+  console.log('progressResult==============',progressResult)
+  console.log("taskObjectArray==============",taskObjectArray)
+  
+
   var taskObjectArray=[]
-  var c=0;
+  var completedTask=0;
   var progressResult = 0;
+  if(taskObject.length!=0){
   for(k of taskObject){
       var d = JSON.stringify(k)
       var dd = JSON.parse(d)
@@ -1848,23 +1879,30 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
       var arr = temp.ppts_task_status;
       var iscomplete =await arr.every(isStatusComplete);
       var isPanding =await arr.every(isStatusPanding);
-          console.log(iscomplete)
+         // console.log(iscomplete)
           temp.iscompleteStatus = iscomplete
           temp.ispendingStatus = isPanding
            //progress bar number of total task / no of completed task 
            if(iscomplete==true){
              var numofTotalTask =taskObject.length; 
-             var completedTask = c+1
-             console.log('total task',numofTotalTask)
-            console.log('num of completed task',completedTask)
-             progressResult = Math.round((completedTask / numofTotalTask) * 100);
-             console.log('progress==',progressResult);
+             completedTask = completedTask+1
+            }
+            
              
-           }
           taskObjectArray.push(temp)
   }
- console.log("taskObjectArray==============",taskObjectArray)
- console.log("taskObject==========",taskObject)
+  console.log('total task',numofTotalTask)
+  console.log('num of completed task',completedTask)
+   progressResult = Math.round((completedTask / numofTotalTask) * 100);
+  
+}else{
+  progressResult=0
+}
+
+completedTask=0
+  console.log('progressResult==============',progressResult)
+  console.log("taskObjectArray==============",taskObjectArray)
+  console.log("gest_taskObject=====+++++++++++++++++++++++++++++++++++++++++=====",gest_taskObjectArray)
 
 
   if (taskObject) {
@@ -1880,7 +1918,10 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
       step: req.query.step,
       phase: req.query.phase,
       hiredProfessional_list: AllProfessional_property_wise,
-      gest_taskObject: gest_taskObject
+      gest_taskObject: gest_taskObjectArray,
+      progressResult:progressResult,
+      //progressResult1:progressResult1
+
     });
   } else {
     return res.send({
@@ -1892,7 +1933,16 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
 
 })
 
-
+app.get('/removetasktable',(req,res)=>{
+  var id = req.query.id
+  console.log(id)
+  PropertyProfessinoalTaskSchema.find({ppts_user_id:id}).deleteMany().then((resp)=>{
+    if(resp){
+      console.log(resp)
+      res.json({'resp':resp})
+    }
+  })
+})
 app.get('/mydreamhome-details-phase-b', isCustomer, async (req, res) => {
   //console.log('from get take action url====', req.query)
   var user_id = req.session.user_id;

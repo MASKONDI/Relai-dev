@@ -173,7 +173,8 @@ module.exports.add_existing_task = function (req) {
                                 ppts_property_id: req.body.ppts_property_id,
                                 ppts_task_name:row,
                                 ppts_phase_name:req.body.ppts_phase_name,
-                                ppts_phase_flag:req.body.ppts_phase_flag 
+                                ppts_phase_flag:req.body.ppts_phase_flag ,
+                                ppts_user_id:{$in:req.session.user_id}
                              }).then(async (data1) => { 
                                 if (data1) {
                                // console.log('Object data1data1 String:',data1);
@@ -278,7 +279,8 @@ module.exports.add_existing_task = function (req) {
                     ppts_property_id: req.body.ppts_property_id,
                     ppts_task_name:req.body.task_element,
                     ppts_phase_name:req.body.ppts_phase_name,
-                    ppts_phase_flag:req.body.ppts_phase_flag 
+                    ppts_phase_flag:req.body.ppts_phase_flag ,
+                    ppts_user_id:{$in:req.session.user_id}
                  }).then(async (data1) => { 
                     if (data1) {
                     //console.log('data1data1 String:',data1);
