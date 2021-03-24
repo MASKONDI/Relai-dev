@@ -160,7 +160,8 @@ module.exports.add_existing_task = function (req) {
                           ppts_task_name:row, 
                           ppts_assign_to:{$in:[req.body.ppts_assign_to]},
                           ppts_phase_name:req.body.ppts_phase_name, 
-                           ppts_phase_flag:req.body.ppts_phase_flag
+                           ppts_phase_flag:req.body.ppts_phase_flag,
+                           ppts_is_active_user_flag:req.session.active_user_login
                          }).then(async (data) => {
                           console.log('Already task in table2111 object:',data)
                         if (!data) {
@@ -174,7 +175,8 @@ module.exports.add_existing_task = function (req) {
                                 ppts_task_name:row,
                                 ppts_phase_name:req.body.ppts_phase_name,
                                 ppts_phase_flag:req.body.ppts_phase_flag ,
-                                ppts_user_id:{$in:req.session.user_id}
+                                ppts_user_id:{$in:req.session.user_id},
+                                ppts_is_active_user_flag:req.session.active_user_login
                              }).then(async (data1) => { 
                                 if (data1) {
                                // console.log('Object data1data1 String:',data1);
@@ -182,10 +184,27 @@ module.exports.add_existing_task = function (req) {
                                 console.log('Object data1.ppts_user_id String:',data1.ppts_user_id);
             
                                  var AssignToArray = data1.ppts_assign_to;
+                                 var DueDateToArray = data1.ppts_due_date;
+                                 var NotesToArray = data1.ppts_note;
+                                 var statusToArray = data1.ppts_task_status;
                                  if(!AssignToArray.includes(req.body.ppts_assign_to)){
                                     AssignToArray.push(req.body.ppts_assign_to);
+
+                                    
+                                    //if(!DueDateToArray.includes(req.body.duedate)){
+                                       DueDateToArray.push(req.body.duedate);
+                                   // }
+                                    console.log('Object DueDateToArray New String:',DueDateToArray);
+               
+                                   
+                                    //if(!NotesToArray.includes(req.body.notes)){
+                                       NotesToArray.push(req.body.notes);
+                                    //}
+                                      statusToArray.push(status);
+                                      console.log('Object NotesToArray New String:',NotesToArray);
+                                      console.log('Object statusToArray New String:',statusToArray);
+
                                  }
-                                 console.log('Object AssignToArray New String:',AssignToArray);
             
                                  var UseridToArray = data1.ppts_user_id;
                                  if(!UseridToArray.includes(req.session.user_id)){
@@ -193,7 +212,7 @@ module.exports.add_existing_task = function (req) {
                                  }
                                  console.log('Object UseridToArray New String:',UseridToArray);
                                
-                                /* var DueDateToArray = data1.ppts_due_date;
+                             /*   var DueDateToArray = data1.ppts_due_date;
                                  if(!DueDateToArray.includes(req.body.duedate)){
                                     DueDateToArray.push(req.body.duedate);
                                  }
@@ -206,13 +225,13 @@ module.exports.add_existing_task = function (req) {
                                  var statusToArray = data1.ppts_task_status;
                            
                                 statusToArray.push(status);
-                                 console.log('Object statusToArray New String:',statusToArray);*/
-            
+                                 console.log('Object statusToArray New String:',statusToArray);
+                              */
             
                                 PropertyProfessinoalTaskSchema.updateOne({  ppts_property_id: req.body.ppts_property_id,
                                     ppts_task_name:row,
                                     ppts_phase_name:req.body.ppts_phase_name,
-                                    ppts_phase_flag:req.body.ppts_phase_flag  }, { $set: { ppts_assign_to: AssignToArray,ppts_user_id:UseridToArray} }, function (err) {
+                                    ppts_phase_flag:req.body.ppts_phase_flag,ppts_is_active_user_flag:req.session.active_user_login  }, { $set: { ppts_assign_to: AssignToArray,ppts_user_id:UseridToArray,ppts_due_date:DueDateToArray, ppts_note:NotesToArray,ppts_task_status:statusToArray } }, function (err) {
                                     if (err) {
                                       console.log("err is :", err);
                                       console.log(' Object Data updated Not successfully');
@@ -234,7 +253,7 @@ module.exports.add_existing_task = function (req) {
                                             ppts_is_active_user_flag: req.session.active_user_login,
                                             ppts_note: req.body.notes,
                                             ppts_phase_flag:req.body.ppts_phase_flag,
-                                            ppts_task_status:status
+                                            ppts_task_status:status,
                                         }
                                         console.log('newTasknewTasknewTasknewTask',newTask)
                                         const allobj = await  new PropertyProfessinoalTaskSchema(newTask);
@@ -269,7 +288,8 @@ module.exports.add_existing_task = function (req) {
                    ppts_task_name:req.body.task_element,
                    ppts_assign_to:{$in:req.body.ppts_assign_to}, 
                    ppts_phase_name:req.body.ppts_phase_name,
-                   ppts_phase_flag:req.body.ppts_phase_flag
+                   ppts_phase_flag:req.body.ppts_phase_flag,
+                   ppts_task_source:req.body.ppts_task_source
             }).then(async (data) => {
               if (!data) {
 
@@ -280,7 +300,8 @@ module.exports.add_existing_task = function (req) {
                     ppts_task_name:req.body.task_element,
                     ppts_phase_name:req.body.ppts_phase_name,
                     ppts_phase_flag:req.body.ppts_phase_flag ,
-                    ppts_user_id:{$in:req.session.user_id}
+                    ppts_user_id:{$in:req.session.user_id},
+                    ppts_task_source:req.body.ppts_task_source
                  }).then(async (data1) => { 
                     if (data1) {
                     //console.log('data1data1 String:',data1);
@@ -318,7 +339,7 @@ module.exports.add_existing_task = function (req) {
                     PropertyProfessinoalTaskSchema.updateOne({  ppts_property_id: req.body.ppts_property_id,
                         ppts_task_name:req.body.task_element,
                         ppts_phase_name:req.body.ppts_phase_name,
-                        ppts_phase_flag:req.body.ppts_phase_flag  }, { $set: { ppts_assign_to: AssignToArray,ppts_user_id:UseridToArray,ppts_note:NotesToArray,ppts_due_date:DueDateToArray ,ppts_task_status:statusToArray} }, { upsert: true }, function (err) {
+                        ppts_phase_flag:req.body.ppts_phase_flag,ppts_is_active_user_flag:req.session.active_user_login  }, { $set: { ppts_assign_to: AssignToArray,ppts_user_id:UseridToArray,ppts_note:NotesToArray,ppts_due_date:DueDateToArray ,ppts_task_status:statusToArray} }, function (err) {
                         if (err) {
                           console.log("err is :", err);
                           console.log('Dataupdated Not successfully');
@@ -340,7 +361,8 @@ module.exports.add_existing_task = function (req) {
                                 ppts_is_active_user_flag: req.session.active_user_login,
                                 ppts_note: req.body.notes,
                                 ppts_phase_flag:req.body.ppts_phase_flag,
-                                ppts_task_status:status
+                                ppts_task_status:status,
+                                ppts_task_source:req.body.ppts_task_source
                             }
                             const allobj = await  new PropertyProfessinoalTaskSchema(newTask);
                             allobj.save().then(async function(resp){
