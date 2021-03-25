@@ -121,22 +121,22 @@
             <div class="d-flex flex-wrap justify-end">
               <ul class="right-navbar">
                 <% if(session.active_user_login=='buyer' ){ %>
-                  <li class="active"><a href="/service-provider/dashboard-professional" class="buyertab">Buyer </a></li>
-                  <li><a href="/service-provider/dashboard-professional" class="sellertab">Seller</a></li>
-                  <li><a href="/service-provider/dashboard-professional" class="renovatortab">Renovator</a></li>
+                  <li class="active"><a href="/service-provider/dashboard-professional" class="buyertab">Hired By Buyer </a></li>
+                  <li><a href="/service-provider/dashboard-professional" class="sellertab">Hired By Seller</a></li>
+                  <li><a href="/service-provider/dashboard-professional" class="renovatortab">Hired By Renovator</a></li>
 
                   <% }else if(session.active_user_login=='seller' ){%>
 
 
-                    <li><a href="/service-provider/dashboard-professional" class="buyertab">Buyer </a></li>
-                    <li class="active"><a href="/service-provider/dashboard-professional" class="sellertab">Seller</a>
+                    <li><a href="/service-provider/dashboard-professional" class="buyertab">Hired By Buyer </a></li>
+                    <li class="active"><a href="/service-provider/dashboard-professional" class="sellertab">Hired By Seller</a>
                     </li>
-                    <li><a href="/service-provider/dashboard-professional" class="renovatortab">Renovator</a></li>
+                    <li><a href="/service-provider/dashboard-professional" class="renovatortab">Hired By Renovator</a></li>
 
                     <% }else { %>
 
-                      <li><a href="/service-provider/dashboard-professional" class="buyertab">Buyer </a></li>
-                      <li><a href="/service-provider/dashboard-professional" class="sellertab">Seller</a></li>
+                      <li><a href="/service-provider/dashboard-professional" class="buyertab">Hired By Buyer </a></li>
+                      <li><a href="/service-provider/dashboard-professional" class="sellertab">Hired By Seller</a></li>
                       <li class="active"><a href="/service-provider/dashboard-professional"
                           class="renovatortab">Renovator</a></li>
 

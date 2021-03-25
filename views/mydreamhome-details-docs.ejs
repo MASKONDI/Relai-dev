@@ -195,8 +195,11 @@
                   </div>
                 </div>
               </div>
+              <button class="accordion">Customer uploaded docs & files(<%=allDocument.length%>)
+              </button>
+              <div class="panel">
               <div class="doc-table">
-                <h4 style="font-size: 18px;color: #005377;font-weight: 700;">Property Docs & Files</h4>
+                <!-- <h4 style="font-size: 18px;color: #005377;font-weight: 700;">Property Docs & Files</h4> -->
                 <table class="table table-responsive">
                   <thead>
                     <tr>
@@ -458,8 +461,11 @@
                   </tbody>
                 </table>
               </div>
+            </div>
+            <button class="accordion">Task related docs & files (<%=taskDocument.length%>) </button>
+            <div class="panel">
               <div class="doc-table">
-                <h4 style="font-size: 18px;color: #005377;font-weight: 700;">Task Docs & Files</h4>
+                <!-- <h4 style="font-size: 18px;color: #005377;font-weight: 700;">Task Docs & Files</h4> -->
                 <table class="table table-responsive">
                   <thead>
                     <tr>
@@ -727,6 +733,279 @@
                   </tbody>
                 </table>
               </div>
+              </div>
+              <!-- ==================================================================== -->
+              <button class="accordion">Professional uploaded docs & files (<%=spDocument.length%>) </button>
+            <div class="panel">
+              <div class="doc-table">
+                <!-- <h4 style="font-size: 18px;color: #005377;font-weight: 700;">Task Docs & Files</h4> -->
+                <table class="table table-responsive">
+                  <thead>
+                    <tr>
+                      <th>Document Name</th>
+                      <th>Date</th>
+                      <th>Phase</th>
+                      <th>Permissions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <%if(spDocument.length==0){%>
+                      <tr>
+                        <td>
+                          <h5>Docs & Files Not Uploaded</h5>
+                        </td>
+                      </tr>
+                      <%}else{%>
+                        <% spDocument.forEach(function(row){ %>
+                          <%if(row.spuds_document_type=='image'){%>
+                            <tr>
+                              <td><img class="pdf-file" src="/taskdocument/<%= row.spuds_document_name%>">
+                                <p><span>
+                                    <%= row.spuds_document_name%>
+                                  </span>
+                                  <%= row.spuds_document_size%>
+                                </p>
+                              </td>
+                              <td><span class="professionals-view">
+                                  <%=moment(row.spuds_created_at).format('D MMM YY'); %>
+                                </span></td>
+                              <%if(row.spuds_phase_flag){ %>
+                                <td>
+                                  <a href="#" data-toggle="tooltip" data-placement="top"
+                                    title=" <%=row.spuds_phase_name%> , <%=row.spuds_task_name%>">
+                                    <%=row.spuds_phase_flag%>
+                                  </a>
+                                </td>
+                                <%}else{%>
+                                  <td>...</td>
+                                  <%}%>
+                                    <td>
+                                    
+
+                                      <ul style="display: flex;">
+                                        <%if(row.permissionData){ %>
+                                        <%if(row.permissionData.dps_view_permission == 'yes'){%>
+                                        <li>
+                                          <a href="#" data-toggle="tooltip" data-placement="top"
+                                            title="View Document"><img src="../images/eye.png" style="width:75%"></a>
+                                        </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                        <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
+                                        <li>
+                                          <a download href="/taskdocument/<%= row.spuds_document_name%>" data-toggle="tooltip" data-placement="top"
+                                            title="Download Document"><img src="../images/drop-down.png"></a>
+                                        </li>
+                                        <%}%>
+                                        <%}%>
+                                      </ul>
+                                    </td>
+                            </tr>
+                            <%}else if(row.spuds_document_type=='pdf' ){ %>
+
+                              
+
+                              <tr>
+                                <td><img class="pdf-file" src="../images/pdficon.png">
+                                  <p><span>
+                                      <%= row.spuds_document_name%>
+                                    </span>
+                                    <%= row.spuds_document_size%>
+                                  </p>
+                                </td>
+                                <td><span class="professionals-view">
+                                    <%=moment(row.spuds_created_at).format('D MMM YY'); %>
+                                  </span></td>
+                                <%if(row.spuds_phase_flag){%>
+                                  <td>
+                                    <a href="#" data-toggle="tooltip" data-placement="top"
+                                      title="<%=row.spuds_task_name%>">
+                                      <%=row.spuds_phase_flag%>
+                                    </a>
+                                  </td>
+                                  <%}else{%>
+                                    <td>...</td>
+                                    <%}%>
+                                      <td>
+                                        <a class="word" href="//docs.google.com/gview?url=https://relai.herokuapp.com/taskdocument/sample-1616398262791.pdf&embedded=true"></a>
+                                        
+                                        <ul style="display: flex;">
+                                          <%if(row.permissionData){ %>
+                                            <%if(row.permissionData.dps_view_permission == 'yes'){%>
+                                          <li>
+                                            <a href="#" data-toggle="tooltip" data-placement="top"
+                                              title="View Document"><img src="../images/eye.png"
+                                                style="width:75%"></a>
+                                          </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                        <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
+
+                                          <li>
+                                            <a download href="/taskdocument/<%= row.spuds_document_name%>" data-toggle="tooltip" data-placement="top"
+                                              title="Download Document"><img src="../images/drop-down.png"></a>
+                                          </li>
+                                          <%}%>
+                                        <%}%>
+                                        </ul>
+                                      </td>
+                              </tr>
+                              <%}else if(row.spuds_document_type=='doc' ){%>
+                                <tr>
+                                  <td><img class="pdf-file" src="../images/docicon.png">
+                                    <p><span>
+                                        <%= row.spuds_document_name%>
+                                      </span>
+                                      <%= row.spuds_document_size%>
+                                    </p>
+                                  </td>
+                                  <td><span class="professionals-view">
+                                      <%=moment(row.spuds_created_at).format('D MMM YY'); %>
+                                    </span></td>
+                                  <%if(row.spuds_phase_flag){%>
+                                    <td>
+                                      <a href="#" data-toggle="tooltip" data-placement="top"
+                                        title="<%=row.spuds_task_name%>">
+                                        <%=row.spuds_phase_flag%>
+                                      </a>
+
+                                    </td>
+                                    <%}else{%>
+                                      <td>...</td>
+                                      <%}%>
+                                        <td>
+
+                                          <ul style="display: flex;">
+                                            <%if(row.permissionData){ %>
+                                              <%if(row.permissionData.dps_view_permission == 'yes'){%>
+                                            <li>
+                                              <a href="#" data-toggle="tooltip" data-placement="top"
+                                                title="View Document"><img src="../images/eye.png"
+                                                  style="width:75%"></a>
+                                            </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                        <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
+
+                                            <li>
+                                              <a download href="/taskdocument/<%= row.spuds_document_name%>" data-toggle="tooltip" data-placement="top"
+                                                title="Download Document"><img src="../images/drop-down.png"></a>
+                                            </li>
+                                            <%}%>
+                                        <%}%> 
+                                          </ul>
+                                        </td>
+                                </tr>
+                                <%}else if(row.spuds_document_type=='txt' ){%>
+                                  <tr>
+                                    <td><img class="pdf-file" src="../images/txticon.png">
+                                      <p><span>
+                                          <%= row.spuds_document_name%>
+                                        </span>
+                                        <%= row.spuds_document_size%>
+                                      </p>
+                                    </td>
+                                    <td><span class="professionals-view">
+                                        <%=moment(row.spuds_created_at).format('D MMM YY'); %>
+                                      </span></td>
+                                    <%if(row.spuds_phase_flag){%>
+                                      <td>
+                                        <a href="#" data-toggle="tooltip" data-placement="top"
+                                          title="<%=row.spuds_task_name%>">
+                                          <%=row.spuds_phase_flag%>
+                                        </a>
+                                      </td>
+                                      <%}else{%>
+                                        <td>...</td>
+                                        <%}%>
+                                          <td>
+                                            <ul style="display: flex;">
+                                              <%if(row.permissionData){ %>
+                                                <%if(row.permissionData.dps_view_permission == 'yes'){%>
+                                              <li>
+                                                <a href="#" data-toggle="tooltip" data-placement="top"
+                                                  title="View Document"><img src="../images/eye.png"
+                                                    style="width:75%"></a>
+                                              </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                        <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
+
+                                              <li>
+                                                <a download href="/taskdocument/<%= row.spuds_document_name%>" data-toggle="tooltip" data-placement="top"
+                                                  title="Download Document"><img src="../images/drop-down.png"></a>
+                                              </li>
+                                              <%}%>
+                                              <%}%> 
+                                            </ul>
+                                          </td>
+                                  </tr>
+                                  <%}else{%>
+                                    <tr>
+                                      <td><img class="pdf-file" src="../images/videoicon.png">
+                                        <p><span>
+                                            <%= row.spuds_document_name%>
+                                          </span>
+                                          <%= row.spuds_document_size%>
+                                        </p>
+                                      </td>
+                                      <td><span class="professionals-view">
+                                          <%=moment(row.spuds_created_at).format('D MMM YY'); %>
+                                        </span></td>
+                                      <%if(row.spuds_phase_flag){%>
+                                        <td>
+                                          <a href="#" data-toggle="tooltip" data-placement="top"
+                                            title="<%=row.spuds_task_name%>">
+                                            <%=row.spuds_phase_flag%>
+                                          </a>
+                                        </td>
+                                        <%}else{%>
+                                          <td>...</td>
+                                          <%}%>
+                                            <td>
+                                              <ul style="display: flex;">
+                                                <%if(row.permissionData){ %>
+                                                  <%if(row.permissionData.dps_view_permission == 'yes'){%>
+                                                <li>
+                                                  <a href="#" data-toggle="tooltip" data-placement="top"
+                                                    title="View Document"><img src="../images/eye.png"
+                                                      style="width:75%"></a>
+                                                </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                                <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
+
+                                                <li>
+                                                  <a download href="/taskdocument/<%= row.spuds_document_name%>" data-toggle="tooltip" data-placement="top"
+                                                    title="Download Document"><img src="../images/drop-down.png"></a>
+                                                </li>
+                                                <%}%>
+                                                <%}%>  
+                                              </ul>
+                                            </td>
+                                    </tr>
+                                    <%}%>
+                                      <%})%>
+                                        <%}%>
+
+                                          <!-- <tr>
+                    <td><img class="pdf-file" src="../images/doc.png">
+                      <p><span>Contract.pdf</span> 256.0 KB</p>
+                    </td>
+                    <td><span class="professionals-view">17 Nov, 2020
+                      </span></td>
+                    <td>
+                      <ul style="display: flex;">
+                        <li>
+                          <a href="#" data-toggle="tooltip" data-placement="top" title="View Document"><img
+                              src="../images/eye.png"></a>
+                        </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        <li>
+                          <a href="#" data-toggle="tooltip" data-placement="top" title="Download Document">
+                            <img src="../images/drop-down.png"></a>
+                        </li>
+                      </ul>
+
+
+                    </td>
+                  </tr> -->
+
+
+                  </tbody>
+                </table>
+              </div>
+              </div>
+              <!-- ========================================================================= -->
             </div>
           </div>
         </div>
@@ -781,5 +1060,21 @@
               })
             }
           })
+        }
+      </script>
+       <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+          acc[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+              panel.style.maxHeight = null;
+            } else {
+              panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+          });
         }
       </script>
