@@ -431,3 +431,10 @@ span#comment-error {
             background-color: #ffffff;
             height: 45px;
         }
+
+
+        @media (min-width: 992px){
+            #viewDocModal .modal-lg {
+                max-width: 900px;
+            }
+        }
