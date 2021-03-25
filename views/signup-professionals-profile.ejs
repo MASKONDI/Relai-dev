@@ -516,8 +516,8 @@
           success: function (data) {
             console.log(data);
             if (data.status == true) {
-              var newHref = $('.other_detail_nev').attr('data-href');
-            	$('.other_detail_nev').attr('href',newHref);
+              // var newHref = $('.other_detail_nev').attr('data-href');
+            	// $('.other_detail_nev').attr('href',newHref);
               $('.spods_surname').val(data.data.spods_surname);
               $('.spods_fornames').val(data.data.spods_fornames);
               $('.spods_preferred_title').val(data.data.spods_preferred_title);

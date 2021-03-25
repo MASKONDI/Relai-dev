@@ -195,7 +195,7 @@ app.post('/upload1', upload.array('portfolio-docs', 10), async (req, res, next) 
     } else {
       return res.send({
         'status': false,
-        'message': 'Something Wrong !!',
+        'message': ' Please Upload Document !!',
 
 
       })

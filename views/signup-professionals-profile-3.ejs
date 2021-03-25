@@ -118,7 +118,7 @@
             </div>
             <ul class="dashboard-nav">
               <li class="completed">
-                <a href="/signup-professionals-profile" class ="personal_detail_nev">
+                <a href="javascript:void(0)" class ="personal_detail_nev">
                   <img class="complete-img" src="images/checked.png">
                   <img class="act-img" src="images/1-active.png">
                   <img src="images/1.png">
@@ -132,7 +132,7 @@
                     src="images/2.png"> OTHER DETAILS</a>
               </li>
               <li class="active">
-                <a href="javascript:void(0)" data-href="/signup-professionals-profile-3" class ="education_detail_nev"><img class="act-img" src="images/3-active.png"><img
+                <a href="/signup-professionals-profile-3" data-href="/signup-professionals-profile-3" class ="education_detail_nev"><img class="act-img" src="images/3-active.png"><img
                     src="images/3.png"> EDUCATION</a>
               </li>
               <li  >
@@ -290,10 +290,10 @@
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
       <script>
         $(document).ready(function () {
-          var newHref1 = $('.other_detail_nev').attr('data-href');
-            	$('.other_detail_nev').attr('href',newHref1);
-              var newHref2 = $('.education_detail_nev').attr('data-href');
-            	$('.education_detail_nev').attr('href',newHref2);
+          // var newHref1 = $('.other_detail_nev').attr('data-href');
+          //   	$('.other_detail_nev').attr('href',newHref1);
+          //     var newHref2 = $('.education_detail_nev').attr('data-href');
+          //   	$('.education_detail_nev').attr('href',newHref2);
           var data = {
             user_id:'<%= session.user_id%>'
           }
@@ -306,8 +306,8 @@
                 console.log(data);
                 if (data.status == true) {
                   
-              var newHref3 = $('.employment_detail_nev').attr('data-href');
-            	$('.employment_detail_nev').attr('href',newHref3);
+              // var newHref3 = $('.employment_detail_nev').attr('data-href');
+            	// $('.employment_detail_nev').attr('href',newHref3);
                 }
               }
 

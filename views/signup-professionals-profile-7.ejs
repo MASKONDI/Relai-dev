@@ -66,7 +66,7 @@
             </div>
             <ul class="dashboard-nav">
               <li class="completed">
-                <a href="/signup-professionals-profile" class ="personal_detail_nev">
+                <a href="javascript:void(0)" class ="personal_detail_nev">
                   <img class="complete-img" src="images/checked.png">
                   <img class="act-img" src="images/1-active.png">
                   <img src="images/1.png">
@@ -96,7 +96,7 @@
                   INSURANCE</a>
               </li>
               <li class="active">
-                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-7" class ="language_detail_nev"><img class="act-img" src="images/7-active.png"><img
+                <a href="/signup-professionals-profile-7"  data-href="/signup-professionals-profile-7" class ="language_detail_nev"><img class="act-img" src="images/7-active.png"><img
                     src="images/7.png"> LANGUAGE</a>
               </li>
             </ul>
@@ -287,21 +287,21 @@
   </script>
   <script>
     $(document).ready(function () {
-      var newHref1 = $('.other_detail_nev').attr('data-href');
-        $('.other_detail_nev').attr('href',newHref1);
-        var newHref2 = $('.education_detail_nev').attr('data-href');
-        $('.education_detail_nev').attr('href',newHref2);
-        var newHref3 = $('.employment_detail_nev').attr('data-href');
-        $('.employment_detail_nev').attr('href',newHref3);
+      // var newHref1 = $('.other_detail_nev').attr('data-href');
+      //   $('.other_detail_nev').attr('href',newHref1);
+      //   var newHref2 = $('.education_detail_nev').attr('data-href');
+      //   $('.education_detail_nev').attr('href',newHref2);
+      //   var newHref3 = $('.employment_detail_nev').attr('data-href');
+      //   $('.employment_detail_nev').attr('href',newHref3);
         
-        var newHref4 = $('.refrence_detail_nev').attr('data-href');
-        $('.refrence_detail_nev').attr('href',newHref4);
-        var newHref5 = $('.refrence_detail_nev').attr('data-href');
-        $('.refrence_detail_nev').attr('href',newHref5);
-        var newHref6 = $('.indemnity_detail_nev').attr('data-href');
-        $('.indemnity_detail_nev').attr('href',newHref6);
-        var newHref7 = $('.indemnity_detail_nev').attr('data-href');
-        $('.indemnity_detail_nev').attr('href',newHref7);
+      //   var newHref4 = $('.refrence_detail_nev').attr('data-href');
+      //   $('.refrence_detail_nev').attr('href',newHref4);
+      //   var newHref5 = $('.refrence_detail_nev').attr('data-href');
+      //   $('.refrence_detail_nev').attr('href',newHref5);
+      //   var newHref6 = $('.indemnity_detail_nev').attr('data-href');
+      //   $('.indemnity_detail_nev').attr('href',newHref6);
+      //   var newHref7 = $('.indemnity_detail_nev').attr('data-href');
+      //   $('.indemnity_detail_nev').attr('href',newHref7);
       var data = {
         user_id:'<%= session.user_id%>'
       }
@@ -315,8 +315,8 @@
             console.log(resp);
             if (resp.status == true) {
              
-        var newHref8 = $('.indemnity_detail_nev').attr('data-href');
-        $('.indemnity_detail_nev').attr('href',newHref8);
+        // var newHref8 = $('.indemnity_detail_nev').attr('data-href');
+        // $('.indemnity_detail_nev').attr('href',newHref8);
               var htmlData = '';
             //htmlData += '<option value="">Select Professional</option>';
             if (resp.data.length > 0) {

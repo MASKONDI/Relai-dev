@@ -68,7 +68,7 @@
             </div>
             <ul class="dashboard-nav">
               <li class="completed">
-                <a href="/signup-professionals-profile" class ="personal_detail_nev">
+                <a href="javascript:void(0)" class ="personal_detail_nev">
                   <img class="complete-img" src="images/checked.png">
                   <img class="act-img" src="images/1-active.png">
                   <img src="images/1.png">
@@ -91,7 +91,7 @@
               </li>
 
               <li class="active">
-                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-5" class ="refrence_detail_nev"><img class="act-img" src="images/5-active.png"><img
+                <a href="/signup-professionals-profile-5"  data-href="/signup-professionals-profile-5" class ="refrence_detail_nev"><img class="act-img" src="images/5-active.png"><img
                     src="images/5.png"> REFERENCES</a>
               </li>
               <li  >
@@ -334,7 +334,7 @@
                                   </div>
                                 </div>
                               </div>
-                              <div>
+                              <div style="padding-top: 5px;">
                                 <input type="hidden" name="isedit" value="1">
                                 <input type="hidden" name="ref_id" value="<%=refrenceData._id%>">
                               <button type="submit" class="btn btn-next" style="width: 164px;">
@@ -472,18 +472,18 @@
   </script>
   <script>
     $(document).ready(function () {
-      var newHref1 = $('.other_detail_nev').attr('data-href');
-        $('.other_detail_nev').attr('href',newHref1);
-        var newHref2 = $('.education_detail_nev').attr('data-href');
-        $('.education_detail_nev').attr('href',newHref2);
-        var newHref3 = $('.employment_detail_nev').attr('data-href');
-        $('.employment_detail_nev').attr('href',newHref3);
-        var newHref4 = $('.employment_detail_nev').attr('data-href');
-        $('.employment_detail_nev').attr('href',newHref4);
-        var newHref5 = $('.refrence_detail_nev').attr('data-href');
-        $('.refrence_detail_nev').attr('href',newHref5);
-        var newHref6 = $('.refrence_detail_nev').attr('data-href');
-        $('.refrence_detail_nev').attr('href',newHref6);
+      // var newHref1 = $('.other_detail_nev').attr('data-href');
+      //   $('.other_detail_nev').attr('href',newHref1);
+      //   var newHref2 = $('.education_detail_nev').attr('data-href');
+      //   $('.education_detail_nev').attr('href',newHref2);
+      //   var newHref3 = $('.employment_detail_nev').attr('data-href');
+      //   $('.employment_detail_nev').attr('href',newHref3);
+      //   var newHref4 = $('.employment_detail_nev').attr('data-href');
+      //   $('.employment_detail_nev').attr('href',newHref4);
+      //   var newHref5 = $('.refrence_detail_nev').attr('data-href');
+      //   $('.refrence_detail_nev').attr('href',newHref5);
+      //   var newHref6 = $('.refrence_detail_nev').attr('data-href');
+      //   $('.refrence_detail_nev').attr('href',newHref6);
       var data = {
         user_id:'<%= session.user_id%>'
       }
@@ -497,8 +497,8 @@
             console.log(data);
             if (data.status == true) {
               
-        var newHref7 = $('.indemnity_detail_nev').attr('data-href');
-        $('.indemnity_detail_nev').attr('href',newHref7);
+        // var newHref7 = $('.indemnity_detail_nev').attr('data-href');
+        // $('.indemnity_detail_nev').attr('href',newHref7);
         
               $('.rs_reference_fullname').val(data.data.rs_reference_fullname);
               $('.rs_reference_job_title').val(data.data.rs_reference_job_title);

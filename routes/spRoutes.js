@@ -599,6 +599,7 @@ app.get('/service-provider/professional-details-docs', isServiceProvider, async 
       const DocData = JSON.parse(d)
      await CustomerDocPermission.findOne({ dps_document_id:DocData._id }).then(async (docPermissionResp) => { 
        if(docPermissionResp){
+         
         DocData.permissionData = docPermissionResp
        }else{
         DocData.permissionData ='';
