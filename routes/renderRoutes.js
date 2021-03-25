@@ -162,6 +162,7 @@ app.get('/proposal', isCustomer, async (req, res) => {
   console.log("Current session is :", req.session);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
+  req.session.pagename = 'proposal';
   var activeProposal = await SubmitProposalSchema.find({ sps_customer_id: req.session.user_id, sps_status: 'pending' });
   var activePropertyProposalArray = [];
   for (var propertyId of activeProposal) {

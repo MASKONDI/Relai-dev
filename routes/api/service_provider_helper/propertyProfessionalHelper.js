@@ -23,7 +23,8 @@ const ServiceProviderSchema = require("../../../models/service_providers");
 module.exports.getHiredPropertyProfessional = function (pps_service_provider_id, active_user_login) {
     return new Promise(async function (resolve, reject) {
         if (pps_service_provider_id != null) {
-            let data = await PropertyProfessionalSchema.find({ pps_service_provider_id: pps_service_provider_id}).sort({ _id: -1 });
+            // pps_is_active_user_flag: active_user_login
+            let data = await PropertyProfessionalSchema.find({ pps_service_provider_id: pps_service_provider_id, }).sort({ _id: -1 });
             if (data) {
                 var object_as_string = JSON.stringify(data);
                 const propertyProfessional = JSON.parse(object_as_string);
