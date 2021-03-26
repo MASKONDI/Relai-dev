@@ -322,7 +322,8 @@ module.exports.Add_New_Propert = function (req) {
             ps_offer_price:req.body.offer_price,
             ps_offer_status:req.body.offer_status,
             ps_solicitor_name:req.body.ps_solicitor_name,
-            ps_solicitor_email:req.body.ps_solicitor_email
+            ps_solicitor_email:req.body.ps_solicitor_email,
+            ps_solicitor_for:req.body.ps_solicitor_for
         };
         if (req.body.property_type == 'Chain') {
             var chain_propnameByid = await PropertiesSchema.findOne({ _id: req.body.ps_chain_property });

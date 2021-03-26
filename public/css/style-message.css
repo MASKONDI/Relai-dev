@@ -432,9 +432,93 @@ span#comment-error {
             height: 45px;
         }
 
-
+       /* #viewDocModal .modal-content {
+            pointer-events: none;
+        }*/
         @media (min-width: 992px){
             #viewDocModal .modal-lg {
                 max-width: 900px;
             }
         }
+
+        
+
+      .show-filter-nav.sidenav {
+        height: 100vh;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        right: -40px;
+        background-color: #005377;
+        transition: 0.5s;
+        padding-top: 60px;
+        padding: 20px !important;
+      }
+      
+      
+      
+      .show-filter-nav.sidenav a:hover {
+        color: #f1f1f1;
+      }
+      .show-filter-nav.sidenav .closebtn {
+          position: absolute;
+          top: -10px;
+          left: 8px;
+          font-size: 36px;
+          margin-left: 0;
+          color: #fff;
+      }
+      .show-filter-nav .inner-box-qualification {
+          height: auto;
+          overflow: initial;
+      }
+      .show-filter-nav.sidenav ul li {
+          margin: 0px 0px;
+          padding-left: 0;
+      }
+      .show-filter-nav.sidenav ul li .checkbox label {
+          font-weight: 400;
+          padding: 2px 0px;
+          font-size: 14px;
+          color: #fff;
+      }
+      .show-filter-nav.sidenav ul li .checkbox .cr .cr-icon {
+          font-size: 14px;
+          color: #fff;
+      }
+      .show-filter-nav.sidenav {
+          padding-top: 00px !important;
+      }
+      .show-filter-nav.sidenav .filter-sec {
+          margin-top: 40px;
+          overflow-y: scroll;
+          height: 95vh;
+      }
+      
+      .show-filter-nav.sidenav h3 {
+          color: #fff;
+          font-size: 20px;
+      }
+      .show-filter-nav.sidenav .input-group.search-input-new .form-control{
+        padding: 0px 20px;
+      }
+      .show-filter-nav.sidenav ul li .checkbox .cr {
+          border: 1px solid #fff;
+          margin-left: 0 !important;
+      }
+      @media (max-width: 768px){
+      
+      .show-filter-nav.sidenav {
+          top: 60px;
+          display: block;
+      }
+       
+      
+      
+      
+      }
+      @media screen and (max-height: 450px) {
+        .sidenav {padding-top: 15px !important;}
+        .sidenav a {font-size: 18px;}
+      }

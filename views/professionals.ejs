@@ -69,15 +69,19 @@
                                 class="btn professional-search-btn">Search</button>
                             </form>
                             <div class="dropdown keep-inside-clicks-open">
-                              <button class="btn professional-search-btn dropdown-toggle" type="button"
+                              <!-- <button class="btn professional-search-btn dropdown-toggle" type="button"
                                 id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
                                 Show Filters
-                              </button>
+                              </button> -->
+                              <button class="btn professional-search-btn dropdown-toggle" type="button"
+                              onclick="openNav()">
+                              Show Filters
+                            </button>
                               <button type="button" onclick="resetFilter()" id="reset-search-btn" class="btn professional-search-btn">Reset</button>
 
                               <div class="dropdown-menu  dropdown-show-filter" aria-labelledby="dropdownMenuButton">
-                                <form id="multifilterForm" action="#" method="POST">
+                                <!--<form id="multifilterForm" action="#" method="POST">
                                   <div class="row">
                                     <div class="col-md-5">
 
@@ -260,7 +264,7 @@
                                       </div>
                                     </div>
                                   </div>
-                                </form>
+                                </form>-->
                               </div>
                             </div>
 
@@ -409,7 +413,144 @@
     </div>
     </div>
 
+      <div id="mySidenav" class="sidenav show-filter-nav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <form id="multifilterForm" action="#" method="POST">
+        <div class="filter-sec">
+          <h3>Category</h3>
+          <div class="inner-box-qualification">
+            <div class="form-group for-select-existing-doc">
+              <div class="input-group">
+                <div>
+                  <ul style="padding-left: 0;">
+                    
+                     <% uniqueCategory.forEach(function(catrow){ %>
+                      <li style="list-style: none;">
+                        <div class="for-doc-select">
+                          <div class="checkbox">
+                            <label>
+                              <input onclick="return multifilter()" type="checkbox"
+                              name="category" value="<%=catrow %>">
+                              <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                              <%= catrow %>
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                      <% }) %>
+                  </ul>
+                </div>
+      
+              </div>
+            </div>
+          </div>
+      
+          <h3>Experience</h3>
+          <div class="inner-box-qualification">
+            <div class="form-group for-select-existing-doc">
+              <div class="input-group">
+                <div>
+                  <ul style="padding-left: 0;">
+                      <% uniqueExperience.forEach(function(exprow){ %>
+                      <li style="list-style: none;">
+                        <div class="for-doc-select">
+                          <div class="checkbox">
+                            <label>
+                              <input onclick="return multifilter()" type="checkbox"
+                                name="experience" value="<%=exprow %>">
+                              <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                              <%= exprow %>
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                      <% }) %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+          <h3>Location</h3>
+          <div class="inner-box-qualification">
+            <div class="form-group for-select-existing-doc">
+              <div class="input-group">
+                <div>
+                  <ul style="padding-left: 0;">
+                    
+                      <% uniqueCity.forEach(function(cityrow){ %>
+                      <li style="list-style: none;">
+                        <div class="for-doc-select">
+                          <div class="checkbox">
+                            <label>
+                              <input onclick="return multifilter()" type="checkbox"
+                              name="location_city" value="<%= cityrow %>">
+                              <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                              <%= cityrow %>
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                      <% }) %>
+                      
+                  </ul>
+                </div>
+      
+              </div>
+            </div>
+          </div>
+      
+          <h3>Language</h3>
+          <div class="inner-box-qualification">
+            <div class="form-group for-select-existing-doc">
+              <div class="input-group">
+                <div>
+                  <ul style="padding-left: 0;">
+                    
+      
+
+                      <% uniqueLanguage.forEach(function(langrow){ %>
+                      <li style="list-style: none;">
+                        <div class="for-doc-select">
+                          <div class="checkbox">
+                            <label>
+                              <input onclick="return multifilter()" type="checkbox"
+                              name="language" value="<%= langrow %>">
+                              <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                              <%= langrow %>
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                      <% }) %>
+                      
+      
+                      
+                  </ul>
+                </div>
+      
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      </div>
+      
+
+
+
     <%- include('dashboard_footer')-%>
+
+    <script>
+      function openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+      }
+      
+      function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+      }
+      </script>
+
       <script>
         function myFunction() {
           var input, filter, ul, li, a, i, txtValue;

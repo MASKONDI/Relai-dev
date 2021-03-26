@@ -1406,23 +1406,41 @@ app.get('/add-property', isCustomer, async (req, res) => {
   success_msg = req.flash('success_msg');
   console.log("deep:==", req.query)
   if (req.query.property_id != null) {
-
+    let serviceproviderData=[];
+    let serviceProviderObj = {
+        sp_id:'',
+        sp_name:'',
+        sp_email:''
+    };
     var property_id = req.query.property_id;
     var active_user = req.session.active_user_login;
     req.session.propertyEditId = property_id
     let propertyObj = await propertyDetail.GetPropertById(property_id, active_user);
     let propertyImageObject = await propertyDetail.GetPropertImageById(property_id, active_user);
     let propertyPlanImageObject = await propertyDetail.GetPropertPlanImageById(property_id, active_user);
-    // console.log("propertyObj",propertyObj)
-    // console.log("propertyImageObject",propertyImageObject)
-    // console.log("propertyPlanImageObject",propertyPlanImageObject)
+
+    await ServiceProviderSchema.find({ sps_status: 'active' }).then(async service_provider1 => {
+      if (service_provider1) {
+
+        for (var sp_id of service_provider1) {
+          serviceProviderObj = {
+              sp_id:sp_id._id,
+              sp_name:sp_id.sps_fullname,
+              sp_email:sp_id.sps_email_id
+          }
+          serviceproviderData.push(serviceProviderObj);
+        }
+  
+      }
+    });
+
     res.render('add-property', {
       err_msg, success_msg, layout: false,
       session: req.session,
       propertyObj: propertyObj,
       propertyImageObject: propertyImageObject,
-      propertyPlanImageObject: propertyPlanImageObject
-
+      propertyPlanImageObject: propertyPlanImageObject,
+      serviceproviderData:serviceproviderData
     });
   } else {
 
@@ -1438,13 +1456,13 @@ app.get('/add-property', isCustomer, async (req, res) => {
 app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
   req.session.pagename = 'mydreamhome';
   var newData = [];
-  console.log(' property id  :', req.session.property_id);
+  console.log(' property id  :', req.query.id);
   console.log('helooooo', req.query.pid);
   req.session.professional_id = req.query.pid;
   let property = await PropertiesSchema.findOne({
     $or: [
-      { $and: [{ _id: req.session.property_id }, { ps_is_active_user_flag: req.session.active_user_login }] },
-      { $and: [{ _id: req.session.property_id }, { ps_other_property_type: req.session.active_user_login }] }
+      { $and: [{ _id: req.query.id }, { ps_is_active_user_flag: req.session.active_user_login }] },
+      { $and: [{ _id: req.query.id }, { ps_other_property_type: req.session.active_user_login }] }
     ]
     // _id: req.session.property_id, ps_is_active_user_flag: req.session.active_user_login
   });
@@ -1484,8 +1502,8 @@ app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
 
   var QueryData = {
     $or: [
-      { $and: [{ sms_sender_id: property.ps_user_id }, { sms_receiver_id: req.query.pid }, { sms_property_id: req.session.property_id }, { sms_sender_id: req.session.user_id }] },
-      { $and: [{ sms_sender_id: req.query.pid }, { sms_receiver_id: property.ps_user_id }, { sms_property_id: req.session.property_id }, { sms_receiver_id: req.session.user_id }] }
+      { $and: [{ sms_sender_id: property.ps_user_id }, { sms_receiver_id: req.query.pid }, { sms_property_id: req.query.id }, { sms_sender_id: req.session.user_id }] },
+      { $and: [{ sms_sender_id: req.query.pid }, { sms_receiver_id: property.ps_user_id }, { sms_property_id: req.query.id }, { sms_receiver_id: req.session.user_id }] }
     ]
   };
   const count = await MessageSchema.countDocuments(QueryData);
@@ -3624,7 +3642,7 @@ app.post('/professionals-multifilter', async (req, res) => {
     console.log('cityKeyword:', cityKeyword)
     console.log('languageKeyword:', languageKeyword)
 
-    const { page = 1, limit = 4 } = req.body;
+    const { page = 1, limit = 12 } = req.body;
     let count = 0;
     console.log('pageQuery:', page);
     console.log('req.query:', req.body);
@@ -4940,7 +4958,7 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
     console.log('cityKeyword:', cityKeyword)
     console.log('languageKeyword:', languageKeyword)
 
-    const { page = 1, limit = 1 } = req.body;
+    const { page = 1, limit = 12 } = req.body;
     let count = 0;
     console.log('pageQuery:', page);
     console.log('req.query:', req.body);
