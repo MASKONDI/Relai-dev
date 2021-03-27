@@ -489,7 +489,7 @@
             <div class="input-group">
               <div>
                 <ul style="padding-left: 0;">
-                    <% uniqueExperience.forEach(function(exprow){ %>
+                    <!-- <% uniqueExperience.forEach(function(exprow){ %>
                     <li style="list-style: none;">
                       <div class="for-doc-select">
                         <div class="checkbox">
@@ -502,7 +502,60 @@
                         </div>
                       </div>
                     </li>
-                    <% }) %>
+                    <% }) %> -->
+
+                    <li style="list-style: none;">
+                      <div class="for-doc-select">
+                        <div class="checkbox">
+                          <label>
+                            <input onclick="return mySPmultifilter()" type="checkbox"
+                              name="experience" value="1">
+                            <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                            1 year or less
+                          </label>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li style="list-style: none;">
+                      <div class="for-doc-select">
+                        <div class="checkbox">
+                          <label>
+                            <input onclick="return mySPmultifilter()" type="checkbox"
+                              name="experience" value="2-5">
+                            <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                            2 to 5 years
+                          </label>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li style="list-style: none;">
+                      <div class="for-doc-select">
+                        <div class="checkbox">
+                          <label>
+                            <input onclick="return mySPmultifilter()" type="checkbox"
+                              name="experience" value="6-10">
+                            <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                            6 to 10 years
+                          </label>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li style="list-style: none;">
+                      <div class="for-doc-select">
+                        <div class="checkbox">
+                          <label>
+                            <input onclick="return mySPmultifilter()" type="checkbox"
+                              name="experience" value="11-70">
+                            <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                            more than 10 years
+                          </label>
+                        </div>
+                      </div>
+                    </li>
+
                 </ul>
               </div>
             </div>

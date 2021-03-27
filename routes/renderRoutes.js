@@ -162,6 +162,7 @@ app.get('/proposal', isCustomer, async (req, res) => {
   console.log("Current session is :", req.session);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
+  req.session.pagename = 'proposal';
   var activeProposal = await SubmitProposalSchema.find({ sps_customer_id: req.session.user_id, sps_status: 'pending' });
   var activePropertyProposalArray = [];
   for (var propertyId of activeProposal) {
@@ -1406,12 +1407,6 @@ app.get('/add-property', isCustomer, async (req, res) => {
   success_msg = req.flash('success_msg');
   console.log("deep:==", req.query)
   if (req.query.property_id != null) {
-    let serviceproviderData=[];
-    let serviceProviderObj = {
-        sp_id:'',
-        sp_name:'',
-        sp_email:''
-    };
     var property_id = req.query.property_id;
     var active_user = req.session.active_user_login;
     req.session.propertyEditId = property_id
@@ -1419,31 +1414,15 @@ app.get('/add-property', isCustomer, async (req, res) => {
     let propertyImageObject = await propertyDetail.GetPropertImageById(property_id, active_user);
     let propertyPlanImageObject = await propertyDetail.GetPropertPlanImageById(property_id, active_user);
 
-    await ServiceProviderSchema.find({ sps_status: 'active' }).then(async service_provider1 => {
-      if (service_provider1) {
-
-        for (var sp_id of service_provider1) {
-          serviceProviderObj = {
-              sp_id:sp_id._id,
-              sp_name:sp_id.sps_fullname,
-              sp_email:sp_id.sps_email_id
-          }
-          serviceproviderData.push(serviceProviderObj);
-        }
-  
-      }
-    });
-
     res.render('add-property', {
       err_msg, success_msg, layout: false,
       session: req.session,
       propertyObj: propertyObj,
       propertyImageObject: propertyImageObject,
-      propertyPlanImageObject: propertyPlanImageObject,
-      serviceproviderData:serviceproviderData
+      propertyPlanImageObject: propertyPlanImageObject
     });
   } else {
-
+    //console.log('Add serviceproviderData:',serviceproviderData)
     res.render('add-property', {
       err_msg, success_msg, layout: false,
       session: req.session,
@@ -3607,12 +3586,45 @@ app.post('/professionals-multifilter', async (req, res) => {
     }
 
     if (req.body.experience != undefined) {
+      let expCreateArr=[];
+      for (var expData of req.body.experience) {
+            let expLists = expData.split("-");
+          console.log('Expireancelisisi:',expLists);
+         if(expLists[1]){
+          console.log('expListarra0:',expLists[0]);
+          console.log('expListarra1:',expLists[1]);
+                for(let i=parseInt(expLists[0]); i<=parseInt(expLists[1]); i++){
+                    expCreateArr.push(String(i));
+                }
+            console.log('expCreateArr:',expCreateArr);
+         }else{
+          console.log('expList:',expLists);
+          expCreateArr = expLists;
+         }
+      }
+
       if (typeof (req.body.experience) == 'object') {
-        experienceKeyword = req.body.experience;
+        experienceKeyword = expCreateArr;
+        //experienceKeyword = req.body.experience;
       } else {
         var arr = [];
-        arr.push(req.body.experience);
-        experienceKeyword = arr;
+
+        let expLists = req.body.experience.split("-");
+        console.log('EString xpireancelisisi:',expLists);
+       if(expLists[1]){
+        console.log('EString expListarra0:',expLists[0]);
+        console.log('EString expListarra1:',expLists[1]);
+              for(let i=parseInt(expLists[0]); i<=parseInt(expLists[1]); i++){
+                  expCreateArr.push(String(i));
+              }
+              console.log('EString expCreateArr:',expCreateArr);
+       }else{
+        console.log('EString expList:',expLists);
+        expCreateArr = expLists;
+       }
+
+        //arr.push(req.body.experience);
+        experienceKeyword = expCreateArr;
       }
     }
 
@@ -4922,15 +4934,59 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
       }
     }
 
+    // if (req.body.experience != undefined) {
+    //   if (typeof (req.body.experience) == 'object') {
+    //     experienceKeyword = req.body.experience;
+    //   } else {
+    //     var arr = [];
+    //     arr.push(req.body.experience);
+    //     experienceKeyword = arr;
+    //   }
+    // }
+
     if (req.body.experience != undefined) {
+      let expCreateArr=[];
+      for (var expData of req.body.experience) {
+            let expLists = expData.split("-");
+          console.log('Expireancelisisi:',expLists);
+         if(expLists[1]){
+          console.log('expListarra0:',expLists[0]);
+          console.log('expListarra1:',expLists[1]);
+                for(let i=parseInt(expLists[0]); i<=parseInt(expLists[1]); i++){
+                    expCreateArr.push(String(i));
+                }
+            console.log('expCreateArr:',expCreateArr);
+         }else{
+          console.log('expList:',expLists);
+          expCreateArr = expLists;
+         }
+      }
+
       if (typeof (req.body.experience) == 'object') {
-        experienceKeyword = req.body.experience;
+        experienceKeyword = expCreateArr;
+        //experienceKeyword = req.body.experience;
       } else {
         var arr = [];
-        arr.push(req.body.experience);
-        experienceKeyword = arr;
+
+        let expLists = req.body.experience.split("-");
+        console.log('EString xpireancelisisi:',expLists);
+       if(expLists[1]){
+        console.log('EString expListarra0:',expLists[0]);
+        console.log('EString expListarra1:',expLists[1]);
+              for(let i=parseInt(expLists[0]); i<=parseInt(expLists[1]); i++){
+                  expCreateArr.push(String(i));
+              }
+              console.log('EString expCreateArr:',expCreateArr);
+       }else{
+        console.log('EString expList:',expLists);
+        expCreateArr = expLists;
+       }
+
+        //arr.push(req.body.experience);
+        experienceKeyword = expCreateArr;
       }
     }
+    
 
     if (req.body.location_city != undefined) {
       if (typeof (req.body.location_city) == 'object') {
@@ -6220,6 +6276,35 @@ app.get('/get-notification', isCustomer, async (req, res) => {
     notifData: uniqueArray
   });
 
+});
+
+
+app.get('/get-solicitor-lists', isCustomer, async (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  let serviceproviderData=[];
+    let serviceProviderObj = {
+      value:'',
+      data:'',
+    }
+    await ServiceProviderSchema.find({ sps_status: 'active' }).then(async service_provider1 => {
+      if (service_provider1) {
+        console.log('service_provider1:',service_provider1)
+        for (var sp_id of service_provider1) {
+          serviceProviderObj = {
+              data:sp_id.sps_email_id,
+              value:sp_id.sps_fullname
+          }
+          serviceproviderData.push(serviceProviderObj);
+        }
+      }
+    });
+    console.log('Edit serviceproviderData:',serviceproviderData)
+    res.send({
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      serviceproviderData:serviceproviderData
+    });
 });
 
 

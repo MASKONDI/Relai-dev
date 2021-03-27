@@ -29,12 +29,23 @@
                       <div class="clearfix">
                         <div class="heading-top float-left">
                           <h2 class="">My Property</h2>
-
-
                         </div>
-                        <div class="float-right">
+                        <div class="float-right f-none">
                           <!-- <a href="javascript:void(0)" id="refresh">ref</a> -->
-                          <a href="/add-property" class="btn btn-add-property">Add Property</a>
+                          
+                         
+                            <div class="professional-right-sec">
+                              <a href="/add-property" class="btn btn-add-property">Add Property</a>
+
+                              <div class="dropdown">
+                              <button class="btn professional-search-btn dropdown-toggle" type="button"
+                                onclick="openNav()">
+                                Show Filters
+                              </button>
+                             
+                              </div>
+                            </div>
+                      
                         </div>
                       </div>
                     </div>
@@ -136,4 +147,98 @@
         </div>
       </div>
     </div>
+
+
+    <div id="mySidenav" class="sidenav show-filter-nav propertylist_filter">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <form id="multifilterForm" action="#" method="POST">
+      <div class="filter-sec">
+
+        <h3>Property</h3>
+        <div class="inner-box-qualification">
+          <div class="input-group search-input-new">
+            <i class="fa fa-search"></i>
+            <input id="myInput1" onkeyup="myFunction1()" type="search"
+              class="form-control" placeholder="Name,address,post code,property code"/>
+          </div>
+
+          <div class="form-group for-select-existing-doc">
+            <div class="input-group">
+              <div style="width:100%;">
+                <ul id="myUL1" style="padding-left: 0;">
+                  <% var i=0; propertyData.forEach(function(row){ %>
+                    <li style="list-style: none;">
+                      <div class="for-doc-select">
+                      
+                        <div class="col-sm-12">
+                          <div class="row">
+                          <div style="padding: 0;" class="col-sm-2">
+                          <%if(propertyImage.length>0){%>
+                            <img src="propimg/<%=propertyImage[i][0].pps_property_image_name%>" class="img-circle" width="60px">
+                          <% }else{ %> 
+                            <img src="image/property_dummy.jpg" class="img-circle" width="60px">
+                          <%} %>
+                          </div>
+
+                          <% if(row.ps_property_type=='New' ){ %>
+
+                            <div class="col-sm-8">
+                              <h4 class="pname"><a href="/mydreamhome-details?id=<%=row._id%>"><%= row.ps_property_name%> (<%=row.ps_unique_code%>)</a></h4>
+                              <p class="paddress"><a href="/mydreamhome-details?id=<%=row._id%>"> <%=row.ps_property_address%>,<%=row.ps_property_country_id%>,<%=row.ps_property_zipcode%></a></p>
+                            </div>
+
+                          <%} else {%>
+
+                              <div class="col-sm-8">
+                                <h4 class="pname"><a href="/mydreamhome-details-chainproperty?id=<%=row._id%>"><%= row.ps_property_name%> (<%=row.ps_unique_code%>)</a></h4>
+                                <p class="paddress"><a href="/mydreamhome-details-chainproperty?id=<%=row._id%>"> <%=row.ps_property_address%>,<%=row.ps_property_country_id%>,<%=row.ps_property_zipcode%></a></p>
+                              </div>
+
+                          <%}%>
+                        </div>
+                      </div>
+                      </div>
+                    </li>
+                    <%});%>
+                </ul>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+    
+      </div>
+    </form>
+    </div>
+    
+
+
     <%- include('dashboard_footer')-%>
+
+    <script>
+      function openNav() {
+        document.getElementById("mySidenav").style.width = "400px";
+      }
+      
+      function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+      }
+
+      function myFunction1() {
+          var input, filter, ul, li, a, i, txtValue;
+          input = document.getElementById("myInput1");
+          filter = input.value.toUpperCase();
+          ul = document.getElementById("myUL1");
+          li = ul.getElementsByTagName("li");
+          for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("div")[0];
+            txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              li[i].style.display = "";
+            } else {
+              li[i].style.display = "none";
+            }
+          }
+        }
+
+      </script>

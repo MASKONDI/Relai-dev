@@ -124,7 +124,7 @@
             </div>
             <ul class="dashboard-nav">
               <li class="completed">
-                <a href="/signup-professionals-profile" class ="personal_detail_nev">
+                <a href="javascript:void(0)" class ="personal_detail_nev">
                   <img class="complete-img" src="images/checked.png">
                   <img class="act-img" src="images/1-active.png">
                   <img src="images/1.png">
@@ -144,7 +144,7 @@
                     src="images/3.png"> EDUCATION</a>
               </li>
               <li class="active">
-                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-4" class ="employment_detail_nev"><img
+                <a href="/signup-professionals-profile-4"  data-href="/signup-professionals-profile-4" class ="employment_detail_nev"><img
                     src="images/4.png"> EMPLOYMENT HISTORY</a>
               </li>
 
@@ -343,14 +343,14 @@
   </script>
 <script>
   $(document).ready(function () {
-    var newHref1 = $('.other_detail_nev').attr('data-href');
-        $('.other_detail_nev').attr('href',newHref1);
-        var newHref2 = $('.education_detail_nev').attr('data-href');
-        $('.education_detail_nev').attr('href',newHref2);
-        var newHref3 = $('.employment_detail_nev').attr('data-href');
-        $('.employment_detail_nev').attr('href',newHref3);
-        var newHref4 = $('.employment_detail_nev').attr('data-href');
-        $('.employment_detail_nev').attr('href',newHref4);
+    // var newHref1 = $('.other_detail_nev').attr('data-href');
+    //     $('.other_detail_nev').attr('href',newHref1);
+    //     var newHref2 = $('.education_detail_nev').attr('data-href');
+    //     $('.education_detail_nev').attr('href',newHref2);
+    //     var newHref3 = $('.employment_detail_nev').attr('data-href');
+    //     $('.employment_detail_nev').attr('href',newHref3);
+    //     var newHref4 = $('.employment_detail_nev').attr('data-href');
+    //     $('.employment_detail_nev').attr('href',newHref4);
     var data = {
       user_id:'<%= session.user_id%>'
     }
@@ -363,8 +363,8 @@
           console.log(data);
           if (data.status == true) {
         
-        var newHref5 = $('.refrence_detail_nev').attr('data-href');
-        $('.refrence_detail_nev').attr('href',newHref5);
+        // var newHref5 = $('.refrence_detail_nev').attr('data-href');
+        // $('.refrence_detail_nev').attr('href',newHref5);
         
           }
         }

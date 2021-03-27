@@ -501,12 +501,29 @@ span#comment-error {
           font-size: 20px;
       }
       .show-filter-nav.sidenav .input-group.search-input-new .form-control{
-        padding: 0px 20px;
+        padding: 0px 5px;
       }
       .show-filter-nav.sidenav ul li .checkbox .cr {
           border: 1px solid #fff;
           margin-left: 0 !important;
       }
+
+    .paddress a , .active .paddress a{
+        font-size: 11px !important;
+        color: #f7aeae;
+    }
+    .pname a, .active .pname a{
+        color: #fff;
+    }
+    .pname,.active .pname{ margin-bottom: 6px;
+        line-height: 12px; }
+    .paddress, .active .paddress {
+        line-height: 13px !important;
+    }
+    .propertylist_filter ul li.active a {
+        color: #fff;
+    }
+
       @media (max-width: 768px){
       
       .show-filter-nav.sidenav {

@@ -68,7 +68,7 @@
             </div>
             <ul class="dashboard-nav">
               <li class="completed">
-                <a href="/signup-professionals-profile" class ="personal_detail_nev">
+                <a href="javascript:void(0)" class ="personal_detail_nev">
                   <img class="complete-img" src="images/checked.png">
                   <img class="act-img" src="images/1-active.png">
                   <img src="images/1.png">
@@ -76,7 +76,7 @@
                 </a>
               </li>
               <li class="active">
-                <a href="javascript:void(0)" data-href="/signup-professionals-profile-2"class ="other_detail_nev"><img class="act-img" src="images/2-active.png"><img
+                <a href="/signup-professionals-profile-2" data-href="/signup-professionals-profile-2"class ="other_detail_nev"><img class="act-img" src="images/2-active.png"><img
                     src="images/2.png"> OTHER DETAILS</a>
               </li>
               <li  >
@@ -256,7 +256,9 @@
                             <div class="input-box-size-fix3">
                               <input type="text" class="form-control text-field-size spods_other_relevant_qualification" value="" id=""
                                 placeholder="Other Relevant Qualifications" name="spods_other_relevant_qualification" required>
-                            </div>
+                              
+                              </div>
+                            
                           </div>
 
 
@@ -539,10 +541,10 @@
           success: function (data) {
             console.log(data);
             if (data.status == true) {
-              var newHref1 = $('.other_detail_nev').attr('data-href');
-            	$('.other_detail_nev').attr('href',newHref1);
-              var newHref2 = $('.education_detail_nev').attr('data-href');
-            	$('.education_detail_nev').attr('href',newHref2);
+              // var newHref1 = $('.other_detail_nev').attr('data-href');
+            	// $('.other_detail_nev').attr('href',newHref1);
+              // var newHref2 = $('.education_detail_nev').attr('data-href');
+            	// $('.education_detail_nev').attr('href',newHref2);
               // $('.spods_surname').val(data.data.spods_surname);
                $('.spods_date_registered').val(data.data.spods_date_registered);
                $('.spods_details_of_convictions').val(data.data.spods_details_of_convictions);

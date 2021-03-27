@@ -195,7 +195,7 @@ app.post('/upload1', upload.array('portfolio-docs', 10), async (req, res, next) 
     } else {
       return res.send({
         'status': false,
-        'message': 'Something Wrong !!',
+        'message': ' Please Upload Document !!',
 
 
       })
@@ -760,18 +760,32 @@ app.post('/submit-proposal', upload.single('proposal-docs'), async (req, res, ne
     objtect.milestone = req.body.milestone
     objtect.milestone_date = req.body.milestonedate
     milestoneArray.push(objtect)
-
-    var obj = {
-      sps_filename: req.file.filename,
-      sps_customer_id: req.body.sps_customer_id,
-      sps_service_provider_id: req.body.sps_service_provider_id,
-      sps_property_id: req.body.sps_property_id,
-      sps_start_date: req.body.sps_start_date,
-      sps_end_date: req.body.sps_end_date,
-      sps_payment_mode: req.body.sps_payment_mode,
-      sps_extra_notes: req.body.sps_extra_notes,
-      sps_milestone_array: milestoneArray
-    }
+     if(req.file){
+      var obj = {
+        sps_filename: req.file.filename,
+        sps_customer_id: req.body.sps_customer_id,
+        sps_service_provider_id: req.body.sps_service_provider_id,
+        sps_property_id: req.body.sps_property_id,
+        sps_start_date: req.body.sps_start_date,
+        sps_end_date: req.body.sps_end_date,
+        sps_payment_mode: req.body.sps_payment_mode,
+        sps_extra_notes: req.body.sps_extra_notes,
+        sps_milestone_array: milestoneArray
+      }
+     }else{
+      var obj = {
+       
+        sps_customer_id: req.body.sps_customer_id,
+        sps_service_provider_id: req.body.sps_service_provider_id,
+        sps_property_id: req.body.sps_property_id,
+        sps_start_date: req.body.sps_start_date,
+        sps_end_date: req.body.sps_end_date,
+        sps_payment_mode: req.body.sps_payment_mode,
+        sps_extra_notes: req.body.sps_extra_notes,
+        sps_milestone_array: milestoneArray
+      }
+     }
+    
   } else {
     var milestoneArray = [];
     req.body.milestone.forEach(function (row, i) {
@@ -783,17 +797,32 @@ app.post('/submit-proposal', upload.single('proposal-docs'), async (req, res, ne
       objtect.milestone_date = req.body.milestonedate[i]
       milestoneArray.push(objtect)
     })
-    var obj = {
-      sps_filename: req.file.filename,
-      sps_customer_id: req.body.sps_customer_id,
-      sps_service_provider_id: req.body.sps_service_provider_id,
-      sps_property_id: req.body.sps_property_id,
-      sps_start_date: req.body.sps_start_date,
-      sps_end_date: req.body.sps_end_date,
-      sps_payment_mode: req.body.sps_payment_mode,
-      sps_extra_notes: req.body.sps_extra_note,
-      sps_milestone_array: milestoneArray
+    if(req.file){
+      var obj = {
+        sps_filename: req.file.filename,
+        sps_customer_id: req.body.sps_customer_id,
+        sps_service_provider_id: req.body.sps_service_provider_id,
+        sps_property_id: req.body.sps_property_id,
+        sps_start_date: req.body.sps_start_date,
+        sps_end_date: req.body.sps_end_date,
+        sps_payment_mode: req.body.sps_payment_mode,
+        sps_extra_notes: req.body.sps_extra_note,
+        sps_milestone_array: milestoneArray
+      }
+    }else{
+      var obj = {
+        
+        sps_customer_id: req.body.sps_customer_id,
+        sps_service_provider_id: req.body.sps_service_provider_id,
+        sps_property_id: req.body.sps_property_id,
+        sps_start_date: req.body.sps_start_date,
+        sps_end_date: req.body.sps_end_date,
+        sps_payment_mode: req.body.sps_payment_mode,
+        sps_extra_notes: req.body.sps_extra_note,
+        sps_milestone_array: milestoneArray
+      }
     }
+    
   }
 
 

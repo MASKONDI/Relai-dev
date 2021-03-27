@@ -707,6 +707,7 @@ router.post('/Editproperty', isCustomer, async (req, res) => {
       let edit_property_Obj = await PropertyHelper.EditPropertyById(req);
       if (edit_property_Obj) {
         //console.log(edit_property_Obj);
+        solicitor_invite_function(req, edit_property_Obj);
         return res.send({
           'message': 'property edit successfully',
           'status': true,

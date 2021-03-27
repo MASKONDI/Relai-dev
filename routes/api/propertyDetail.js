@@ -44,8 +44,10 @@ module.exports.EditPropertyById = function (req) {
             ps_phase_array: phaseArray,
             ps_existing_property: req.body.ps_existing_property,
             ps_chain_property_id: chainPropertyIdArray,
-            ps_other_property_type: req.body.ps_other_property_type
-
+            ps_other_property_type: req.body.ps_other_property_type,
+            ps_solicitor_name:req.body.ps_solicitor_name,
+            ps_solicitor_email:req.body.ps_solicitor_email,
+            ps_solicitor_for:req.body.ps_solicitor_for
         };
         if (req.body.property_type == 'Chain') {
 

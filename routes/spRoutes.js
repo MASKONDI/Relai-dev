@@ -513,7 +513,7 @@ app.get('/service-provider/myproperties', isServiceProvider, async function (req
   console.log("", req.session);
   req.session.pagename = 'service-provider/property';
   let propertyArray = []
-  const { page = 1, limit = 2 } = req.query;
+  const { page = 1, limit = 9 } = req.query;
   console.log('pageQuery:', page);
   let count = 0;
   let propertyId = [];
@@ -599,6 +599,7 @@ app.get('/service-provider/professional-details-docs', isServiceProvider, async 
       const DocData = JSON.parse(d)
      await CustomerDocPermission.findOne({ dps_document_id:DocData._id }).then(async (docPermissionResp) => { 
        if(docPermissionResp){
+         
         DocData.permissionData = docPermissionResp
        }else{
         DocData.permissionData ='';
