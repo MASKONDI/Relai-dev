@@ -83,20 +83,21 @@
                       <div class="row">
                         <div class="col-md-6">
                           <div class="input-box-size-fix">
-                            <select class="form-control required" id="selectBox3" name="sps_role_name"
+                            <select class="form-control required serviceprovider_role" id="selectBox3" name="sps_role_name"
                               data-rule-required="true" data-msg-required="Profession Name is required">
                               <option value="">Select Profession</option>
                               <option value="Accountant">Accountant
                               </option>
-                              <option value="Architect"> Architect</option>
+                              <option value="Architect">Architect</option>
                               <option value="Developer">Developer</option>
                               <option value="Engineer">Engineer</option>
                               <option value="Financial Advisor">Financial Advisor</option>
                               <option value="Interior Designer">Interior Designer</option>
                               <option value="Lawyer/Conveyancer">Lawyer/Conveyancer</option>
                               <option value="Mortgage Broker">Developer</option>
-                              <option value="Surveyor"> Surveyor</option>
-                              <option value="Valuer"> Valuer</option>
+                              <option value="Surveyor">Surveyor</option>
+                              <option value="Valuer">Valuer</option>
+                              <option value="Solicitor">Solicitor</option>
                             </select>
                           </div>
                         </div>
@@ -183,6 +184,7 @@
                         </div>
                       </div>
 
+                      <input type="hidden" class="form-control " id="token" name="token">
 
                       <p class="text-center">By signing up, you agree to the <a href="/termandconditions">terms and
                           conditions</a> of Relai.</p>
@@ -436,9 +438,12 @@
       return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
     var email = getParameterByName('email'); // "lorem"
+    var role = getParameterByName('role'); // "lorem"
     var token = getParameterByName('token');
     if (token) {
       $('#token').val(token);
+    }else{
+      $('#token').val('');
     }
     if (email) {
       $('#email').val(email);
@@ -448,6 +453,13 @@
       $('#email').val('');
       $('#email').attrRemove('readonly');
     }
+
+    if(role){
+      $('.serviceprovider_role option[value="'+role+'"]').attr('selected','selected');
+    }else{
+      $('.serviceprovider_role option[value="'+role+'"]').removeAttr('selected');
+    }
+
   </script>
 
 

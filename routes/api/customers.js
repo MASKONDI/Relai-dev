@@ -1569,6 +1569,7 @@ function solicitor_invite_function(req, saved_property) {
   console.log("Request getting from server :", req.body);
   const payload = { id: saved_property._id, property_name: saved_property.ps_property_name }; // Create Token Payload
   // Sign Token
+  //const path = 'http://localhost:5000/signup-service-provider?email=' + req.body.ps_solicitor_email + '&token=' + token + '\n\n';
   jwt.sign(
     payload,
     keys.secretOrKey,
@@ -1576,14 +1577,6 @@ function solicitor_invite_function(req, saved_property) {
     (err, token) => {
       console.log("Sending Secret token along with customer request", token);
       var smtpTransport = nodemailer.createTransport({
-        // port: 25,
-        // host: 'localhost',
-        // tls: {
-        //   rejectUnauthorized: false
-        // },
-        // host: 'smtp.gmail.com',
-        // port: 465,
-        // secure: true,
         service: 'Gmail',
         auth: {
           user: keys.user4,
@@ -1594,20 +1587,16 @@ function solicitor_invite_function(req, saved_property) {
         to: req.body.ps_solicitor_email,
         from: keys.user4,
         subject: 'Invitaion letter from Relai',
-
-        text: 'Hello \n\n' + 'you are invited in Relai plateform.\n\n' +
-
-          'We suggest you to please visit our Relai plateform and create your account \n' + 'Here is the registration link: http://' + req.headers.host + '/signup?email=' + req.body.ps_solicitor_email + '&token=' + token + '\n\n' +
-
-          'if you already registered please hit given url \n' + ' http://' + req.headers.host + '/signin?email=' + req.body.ps_solicitor_email + '&token=' + token + '\n\n' +
-
+        text: 'Hello \n\n' + 'you are invited in Relai plateform for solicitor.\n\n' +
+          'We suggest you to please visit our Relai plateform and create your account \n' + 'Here is the registration link: http://' + req.headers.host + '/signup-service-provider?email=' + req.body.ps_solicitor_email + '&role=Solicitor&token=' + token + '\n\n' +
+          'if you already registered please hit given url \n' + ' http://' + req.headers.host + '/signup-service-provider?email=' + req.body.ps_solicitor_email + '&role=Solicitor&token=' + token + '\n\n' +
           'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
       };
       smtpTransport.sendMail(mailOptions, function (err) {
-        if (err) {
+        if(err){
           console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
           //res.redirect('/add-property')
-        } else {
+        }else{
           //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
           // res.redirect('/add-property')
         }

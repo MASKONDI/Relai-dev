@@ -3813,7 +3813,7 @@ app.post('/professionals-multifilter', async (req, res) => {
     if (languageKeyword) {
       console.log('cityKeyword11:', languageKeyword)
       //for (var languageWord of languageKeyword) {
-      QuerySyntex = { spls_language: { $in: languageKeyword }, sps_status: 'active' };
+      QuerySyntex = { spls_language: { $in: languageKeyword } };
       count = await ServiceProviderLanguageSchema.countDocuments(QuerySyntex);
       console.log('countcount:', count);
       await ServiceProviderLanguageSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail_lang => {
@@ -4986,7 +4986,7 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
         experienceKeyword = expCreateArr;
       }
     }
-    
+
 
     if (req.body.location_city != undefined) {
       if (typeof (req.body.location_city) == 'object') {
@@ -5240,7 +5240,7 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       //}
 
-      console.log('currentPage:', page);
+      console.log('languageServiceProvData:', languageServiceProvData);
       console.log('totalPages:', Math.ceil(count / limit));
 
       if (experienceKeyword == '' && categoryKeyword == '' && cityKeyword == '') {
@@ -6287,7 +6287,7 @@ app.get('/get-solicitor-lists', isCustomer, async (req, res) => {
       value:'',
       data:'',
     }
-    await ServiceProviderSchema.find({ sps_status: 'active' }).then(async service_provider1 => {
+    await ServiceProviderSchema.find({ sps_status: 'active',sps_role_name:"Solicitor" }).then(async service_provider1 => {
       if (service_provider1) {
         console.log('service_provider1:',service_provider1)
         for (var sp_id of service_provider1) {

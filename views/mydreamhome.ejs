@@ -68,12 +68,12 @@
                                         id="<%=row._id%>"><i class="fa fa-edit dream-home-edit-icon "></i></a>
                                       <%}%>
                                         <%}else{%>
-                                          <img src="images/nacary.png">
+                                          <img src="images/property_dummy.jpg">
                                           <a href="/add-property?property_id=<%=row._id%>" class="editProperty"
                                             id="<%=row._id%>"><i class="fa fa-edit dream-home-edit-icon "></i></a>
                                           <%}%>
                                             <%}else{%>
-                                              <img src="images/nacary.png">
+                                              <img src="images/property_dummy.jpg">
                                               <a href="javascript:void(0)" class=""> <i
                                                   class="fa fa-edit dream-home-edit-icon "></i></a>
                                               <%}%>
@@ -169,14 +169,13 @@
                   <% var i=0; propertyData.forEach(function(row){ %>
                     <li style="list-style: none;">
                       <div class="for-doc-select">
-                      
                         <div class="col-sm-12">
                           <div class="row">
                           <div style="padding: 0;" class="col-sm-2">
-                          <%if(propertyImage.length>0){%>
+                          <%if(propertyImage[i].length>0){%>
                             <img src="propimg/<%=propertyImage[i][0].pps_property_image_name%>" class="img-circle" width="60px">
                           <% }else{ %> 
-                            <img src="image/property_dummy.jpg" class="img-circle" width="60px">
+                            <img src="images/property_dummy.jpg" class="img-circle" width="60px">
                           <%} %>
                           </div>
 
@@ -199,7 +198,7 @@
                       </div>
                       </div>
                     </li>
-                    <%});%>
+                    <% i++; });%>
                 </ul>
               </div>
     
