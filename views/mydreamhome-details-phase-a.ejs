@@ -198,11 +198,14 @@
                                         index=row.ppts_assign_to.indexOf(hp._id.toString()) %>
                                         <td>
                                           <%if(row.ppts_task_status[index]=='completed_by_service_provider'){%>
-                                            <div class="complete-circle"></div>
+                                            <div class="complete-circle" data-toggle="tooltip" data-placement="top"
+                                            title="Complete"></div>
                                             <%}else if(row.ppts_task_status[index]=='in_progress' ){%>
-                                              <div class="inprogress-circle"></div>
+                                              <div class="inprogress-circle" data-toggle="tooltip" data-placement="top"
+                                              title="In Progress"></div>
                                               <%}else{%>
-                                                <div class="pending-circle"></div>
+                                                <div class="pending-circle" data-toggle="tooltip" data-placement="top"
+                                                title="Pending"></div>
                                                 <%}%>
                                                   <a href="#" class="upload-any"><img src="images/upload.png">
                                                     <span>
@@ -508,11 +511,14 @@
                                           <td>
 
                                             <%if(row.ppts_task_status[index]=='completed_by_service_provider'){%>
-                                              <div class="complete-circle"></div>
+                                              <div class="complete-circle" data-toggle="tooltip" data-placement="top"
+                                              title="Complete"></div>
                                               <%}else if(row.ppts_task_status[index]=='in_progress' ){%>
-                                                <div class="inprogress-circle"></div>
+                                                <div class="inprogress-circle" data-toggle="tooltip" data-placement="top"
+                                                title="In Progress"></div>
                                                 <%}else{%>
-                                                  <div class="pending-circle"></div>
+                                                  <div class="pending-circle" data-toggle="tooltip" data-placement="top"
+                                                  title="Pending"></div>
                                                   <%}%>
 
 
@@ -833,11 +839,14 @@
                                           index=row.ppts_assign_to.indexOf(hp._id.toString()) %>
                                           <td>
                                             <%if(row.ppts_task_status[index]=='completed_by_service_provider'){%>
-                                              <div class="complete-circle"></div>
+                                              <div class="complete-circle" data-toggle="tooltip" data-placement="top"
+                                              title="Complete"></div>
                                               <%}else if(row.ppts_task_status[index]=='in_progress' ){%>
-                                                <div class="inprogress-circle"></div>
+                                                <div class="inprogress-circle" data-toggle="tooltip" data-placement="top"
+                                                title="In Progress"></div>
                                                 <%}else{%>
-                                                  <div class="pending-circle"></div>
+                                                  <div class="pending-circle" data-toggle="tooltip" data-placement="top"
+                                                  title="Pending"></div>
                                                   <%}%>
                                                     <a href="#" class="upload-any"><img src="images/upload.png">
                                                       <span>
@@ -1135,7 +1144,7 @@
                                           <%}else{%>
                                             <input type="checkbox">
                                             <%}%>
-                                          <input type="checkbox">
+                                          
                                           <span class="checkmark"></span>
                                         </label></td>
 
@@ -1147,11 +1156,14 @@
                                             index=row.ppts_assign_to.indexOf(hp._id.toString()) %>
                                             <td>
                                               <%if(row.ppts_task_status[index]=='completed_by_service_provider'){%>
-                                                <div class="complete-circle"></div>
+                                                <div class="complete-circle" data-toggle="tooltip" data-placement="top"
+                                                title="Complete"></div>
                                                 <%}else if(row.ppts_task_status[index]=='in_progress' ){%>
-                                                  <div class="inprogress-circle"></div>
+                                                  <div class="inprogress-circle" data-toggle="tooltip" data-placement="top"
+                                                  title="In Progress"></div>
                                                   <%}else{%>
-                                                    <div class="pending-circle"></div>
+                                                    <div class="pending-circle" data-toggle="tooltip" data-placement="top"
+                                                    title="Pending"></div>
                                                     <%}%>
                                                       <a href="#" class="upload-any"><img src="images/upload.png">
                                                         <span>
@@ -1463,7 +1475,12 @@
                                             <%=row.ppts_task_name%>
                                           </p>
                                              
-                                          <input type="checkbox">
+                                          <%if(row.iscompleteStatus==true){%>
+                                            <input type="checkbox" checked disabled>
+  
+                                            <%}else{%>
+                                              <input type="checkbox">
+                                              <%}%>
                                           <span class="checkmark"></span>
                                         </label></td>
 
@@ -1475,11 +1492,14 @@
                                             index=row.ppts_assign_to.indexOf(hp._id.toString()) %>
                                             <td>
                                               <%if(row.ppts_task_status[index]=='completed_by_service_provider'){%>
-                                                <div class="complete-circle"></div>
+                                                <div class="complete-circle" data-toggle="tooltip" data-placement="top"
+                                                title="Complete"></div>
                                                 <%}else if(row.ppts_task_status[index]=='in_progress' ){%>
-                                                  <div class="inprogress-circle"></div>
+                                                  <div class="inprogress-circle" data-toggle="tooltip" data-placement="top"
+                                                  title="In Progress"></div>
                                                   <%}else{%>
-                                                    <div class="pending-circle"></div>
+                                                    <div class="pending-circle" data-toggle="tooltip" data-placement="top"
+                                                    title="Pending"></div>
                                                     <%}%>
                                                       <a href="#" class="upload-any"><img src="images/upload.png">
                                                         <span>

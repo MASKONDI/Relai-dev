@@ -1859,10 +1859,6 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
   var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  //console.log("hiredProfessional_list", AllProfessional_property_wise)
-
-  //console.log("taskObject mydreamhome-details-phase-a", taskObject)
-  //console.log("gest_taskObject", gest_taskObject)
   var gest_taskObjectArray=[]
   var completedTask1=0;
   var progressResult1 = 0;
@@ -1979,23 +1975,91 @@ app.get('/mydreamhome-details-phase-b', isCustomer, async (req, res) => {
   var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  //console.log("hiredProfessional_list", AllProfessional_property_wise)
-  console.log("taskObject mydreamhome-details-phase-b", taskObject)
-  console.log("gest_taskObject", gest_taskObject)
+  var gest_taskObjectArray=[]
+  var completedTask1=0;
+  var progressResult1 = 0;
+  if(gest_taskObject.length!=0){
+    for(ky of gest_taskObject){
+      var ds= JSON.stringify(ky)
+      var ds = JSON.parse(ds)
+      var temps = ds
+      var arrr = temps.ppts_task_status;
+      var gest_iscomplete =await arrr.every(isStatusComplete);
+      var gest_isPanding =await arrr.every(isStatusPanding);
+      temps.gestiscompleteStatus = gest_iscomplete
+      temps.gestispendingStatus = gest_isPanding
+          if(iscomplete==true){
+         
+            completedTask1 = completedTask1+1
+           }
+           gest_taskObjectArray.push(temps)
+    }
+    console.log('gest total task',gest_taskObject.length)
+  console.log('gest num of completed task',completedTask1)
+   progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
+  }else{
+    progressResult1
+  }
+  completedTask1=0
+  console.log('gest progressResult==============',progressResult1)
+  console.log("gest taskObjectArray==============",gest_taskObjectArray)
+  
+
+  var taskObjectArray=[]
+  var completedTask=0;
+  var progressResult = 0;
+  if(taskObject.length!=0){
+  for(k of taskObject){
+      var d = JSON.stringify(k)
+      var dd = JSON.parse(d)
+      var temp = dd
+      var arr = temp.ppts_task_status;
+      var iscomplete =await arr.every(isStatusComplete);
+      var isPanding =await arr.every(isStatusPanding);
+         // console.log(iscomplete)
+          temp.iscompleteStatus = iscomplete
+          temp.ispendingStatus = isPanding
+           //progress bar number of total task / no of completed task 
+           if(iscomplete==true){
+           
+             completedTask = completedTask+1
+            }
+            
+             
+          taskObjectArray.push(temp)
+  }
+  console.log('total task',taskObject.length)
+  console.log('num of completed task',completedTask)
+   progressResult = Math.round((completedTask / taskObject.length) * 100);
+  
+}else{
+  progressResult=0
+}
+
+completedTask=0
+console.log('task object length======',taskObject.length)
+  console.log('progressResult==============',progressResult)
+  console.log("taskObjectArray==============",taskObjectArray)
+  
+
 
   if (taskObject) {
+
     req.session.pagename = 'mydreamhome';
     err_msg = req.flash('err_msg');
     success_msg = req.flash('success_msg');
     res.render('mydreamhome-details-phase-b', {
       err_msg, success_msg, layout: false,
       session: req.session,
-      taskObject: taskObject,
+      taskObject: taskObjectArray,
       propertyData: propertyData,
       step: req.query.step,
       phase: req.query.phase,
       hiredProfessional_list: AllProfessional_property_wise,
-      gest_taskObject: gest_taskObject
+      gest_taskObject: gest_taskObjectArray,
+      progressResult:progressResult,
+      //progressResult1:progressResult1
+
     });
   } else {
     return res.send({
@@ -2003,6 +2067,8 @@ app.get('/mydreamhome-details-phase-b', isCustomer, async (req, res) => {
       'message': 'some thing wrong'
     })
   }
+
+
 })
 
 
@@ -2016,23 +2082,91 @@ app.get('/mydreamhome-details-phase-c', isCustomer, async (req, res) => {
   var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  //console.log("hiredProfessional_list", AllProfessional_property_wise)
-  console.log("taskObject mydreamhome-details-phase-c", taskObject)
-  console.log("gest_taskObject", gest_taskObject)
+  var gest_taskObjectArray=[]
+  var completedTask1=0;
+  var progressResult1 = 0;
+  if(gest_taskObject.length!=0){
+    for(ky of gest_taskObject){
+      var ds= JSON.stringify(ky)
+      var ds = JSON.parse(ds)
+      var temps = ds
+      var arrr = temps.ppts_task_status;
+      var gest_iscomplete =await arrr.every(isStatusComplete);
+      var gest_isPanding =await arrr.every(isStatusPanding);
+      temps.gestiscompleteStatus = gest_iscomplete
+      temps.gestispendingStatus = gest_isPanding
+          if(iscomplete==true){
+         
+            completedTask1 = completedTask1+1
+           }
+           gest_taskObjectArray.push(temps)
+    }
+    console.log('gest total task',gest_taskObject.length)
+  console.log('gest num of completed task',completedTask1)
+   progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
+  }else{
+    progressResult1
+  }
+  completedTask1=0
+  console.log('gest progressResult==============',progressResult1)
+  console.log("gest taskObjectArray==============",gest_taskObjectArray)
+  
+
+  var taskObjectArray=[]
+  var completedTask=0;
+  var progressResult = 0;
+  if(taskObject.length!=0){
+  for(k of taskObject){
+      var d = JSON.stringify(k)
+      var dd = JSON.parse(d)
+      var temp = dd
+      var arr = temp.ppts_task_status;
+      var iscomplete =await arr.every(isStatusComplete);
+      var isPanding =await arr.every(isStatusPanding);
+         // console.log(iscomplete)
+          temp.iscompleteStatus = iscomplete
+          temp.ispendingStatus = isPanding
+           //progress bar number of total task / no of completed task 
+           if(iscomplete==true){
+           
+             completedTask = completedTask+1
+            }
+            
+             
+          taskObjectArray.push(temp)
+  }
+  console.log('total task',taskObject.length)
+  console.log('num of completed task',completedTask)
+   progressResult = Math.round((completedTask / taskObject.length) * 100);
+  
+}else{
+  progressResult=0
+}
+
+completedTask=0
+console.log('task object length======',taskObject.length)
+  console.log('progressResult==============',progressResult)
+  console.log("taskObjectArray==============",taskObjectArray)
+  
+
 
   if (taskObject) {
+
     req.session.pagename = 'mydreamhome';
     err_msg = req.flash('err_msg');
     success_msg = req.flash('success_msg');
     res.render('mydreamhome-details-phase-c', {
       err_msg, success_msg, layout: false,
       session: req.session,
-      taskObject: taskObject,
+      taskObject: taskObjectArray,
       propertyData: propertyData,
       step: req.query.step,
       phase: req.query.phase,
       hiredProfessional_list: AllProfessional_property_wise,
-      gest_taskObject: gest_taskObject
+      gest_taskObject: gest_taskObjectArray,
+      progressResult:progressResult,
+      //progressResult1:progressResult1
+
     });
   } else {
     return res.send({
@@ -2040,6 +2174,8 @@ app.get('/mydreamhome-details-phase-c', isCustomer, async (req, res) => {
       'message': 'some thing wrong'
     })
   }
+
+
 })
 
 app.get('/mydreamhome-details-phase-d', isCustomer, async (req, res) => {
@@ -2052,23 +2188,91 @@ app.get('/mydreamhome-details-phase-d', isCustomer, async (req, res) => {
   var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  //console.log("hiredProfessional_list", AllProfessional_property_wise)
-  console.log("taskObject mydreamhome-details-phase-d", taskObject)
-  console.log("gest_taskObject", gest_taskObject)
+  var gest_taskObjectArray=[]
+  var completedTask1=0;
+  var progressResult1 = 0;
+  if(gest_taskObject.length!=0){
+    for(ky of gest_taskObject){
+      var ds= JSON.stringify(ky)
+      var ds = JSON.parse(ds)
+      var temps = ds
+      var arrr = temps.ppts_task_status;
+      var gest_iscomplete =await arrr.every(isStatusComplete);
+      var gest_isPanding =await arrr.every(isStatusPanding);
+      temps.gestiscompleteStatus = gest_iscomplete
+      temps.gestispendingStatus = gest_isPanding
+          if(iscomplete==true){
+         
+            completedTask1 = completedTask1+1
+           }
+           gest_taskObjectArray.push(temps)
+    }
+    console.log('gest total task',gest_taskObject.length)
+  console.log('gest num of completed task',completedTask1)
+   progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
+  }else{
+    progressResult1
+  }
+  completedTask1=0
+  console.log('gest progressResult==============',progressResult1)
+  console.log("gest taskObjectArray==============",gest_taskObjectArray)
+  
+
+  var taskObjectArray=[]
+  var completedTask=0;
+  var progressResult = 0;
+  if(taskObject.length!=0){
+  for(k of taskObject){
+      var d = JSON.stringify(k)
+      var dd = JSON.parse(d)
+      var temp = dd
+      var arr = temp.ppts_task_status;
+      var iscomplete =await arr.every(isStatusComplete);
+      var isPanding =await arr.every(isStatusPanding);
+         // console.log(iscomplete)
+          temp.iscompleteStatus = iscomplete
+          temp.ispendingStatus = isPanding
+           //progress bar number of total task / no of completed task 
+           if(iscomplete==true){
+           
+             completedTask = completedTask+1
+            }
+            
+             
+          taskObjectArray.push(temp)
+  }
+  console.log('total task',taskObject.length)
+  console.log('num of completed task',completedTask)
+   progressResult = Math.round((completedTask / taskObject.length) * 100);
+  
+}else{
+  progressResult=0
+}
+
+completedTask=0
+console.log('task object length======',taskObject.length)
+  console.log('progressResult==============',progressResult)
+  console.log("taskObjectArray==============",taskObjectArray)
+  
+
 
   if (taskObject) {
+
     req.session.pagename = 'mydreamhome';
     err_msg = req.flash('err_msg');
     success_msg = req.flash('success_msg');
     res.render('mydreamhome-details-phase-d', {
       err_msg, success_msg, layout: false,
       session: req.session,
-      taskObject: taskObject,
+      taskObject: taskObjectArray,
       propertyData: propertyData,
       step: req.query.step,
       phase: req.query.phase,
       hiredProfessional_list: AllProfessional_property_wise,
-      gest_taskObject: gest_taskObject
+      gest_taskObject: gest_taskObjectArray,
+      progressResult:progressResult,
+      //progressResult1:progressResult1
+
     });
   } else {
     return res.send({
@@ -2076,6 +2280,8 @@ app.get('/mydreamhome-details-phase-d', isCustomer, async (req, res) => {
       'message': 'some thing wrong'
     })
   }
+
+
 })
 
 app.get('/mydreamhome-details-phase-e', isCustomer, async (req, res) => {
@@ -2088,23 +2294,91 @@ app.get('/mydreamhome-details-phase-e', isCustomer, async (req, res) => {
   var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  //console.log("hiredProfessional_list", AllProfessional_property_wise)
-  console.log("taskObject mydreamhome-details-phase-e", taskObject)
-  console.log("gest_taskObject", gest_taskObject)
+  var gest_taskObjectArray=[]
+  var completedTask1=0;
+  var progressResult1 = 0;
+  if(gest_taskObject.length!=0){
+    for(ky of gest_taskObject){
+      var ds= JSON.stringify(ky)
+      var ds = JSON.parse(ds)
+      var temps = ds
+      var arrr = temps.ppts_task_status;
+      var gest_iscomplete =await arrr.every(isStatusComplete);
+      var gest_isPanding =await arrr.every(isStatusPanding);
+      temps.gestiscompleteStatus = gest_iscomplete
+      temps.gestispendingStatus = gest_isPanding
+          if(iscomplete==true){
+         
+            completedTask1 = completedTask1+1
+           }
+           gest_taskObjectArray.push(temps)
+    }
+    console.log('gest total task',gest_taskObject.length)
+  console.log('gest num of completed task',completedTask1)
+   progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
+  }else{
+    progressResult1
+  }
+  completedTask1=0
+  console.log('gest progressResult==============',progressResult1)
+  console.log("gest taskObjectArray==============",gest_taskObjectArray)
+  
+
+  var taskObjectArray=[]
+  var completedTask=0;
+  var progressResult = 0;
+  if(taskObject.length!=0){
+  for(k of taskObject){
+      var d = JSON.stringify(k)
+      var dd = JSON.parse(d)
+      var temp = dd
+      var arr = temp.ppts_task_status;
+      var iscomplete =await arr.every(isStatusComplete);
+      var isPanding =await arr.every(isStatusPanding);
+         // console.log(iscomplete)
+          temp.iscompleteStatus = iscomplete
+          temp.ispendingStatus = isPanding
+           //progress bar number of total task / no of completed task 
+           if(iscomplete==true){
+           
+             completedTask = completedTask+1
+            }
+            
+             
+          taskObjectArray.push(temp)
+  }
+  console.log('total task',taskObject.length)
+  console.log('num of completed task',completedTask)
+   progressResult = Math.round((completedTask / taskObject.length) * 100);
+  
+}else{
+  progressResult=0
+}
+
+completedTask=0
+console.log('task object length======',taskObject.length)
+  console.log('progressResult==============',progressResult)
+  console.log("taskObjectArray==============",taskObjectArray)
+  
+
 
   if (taskObject) {
+
     req.session.pagename = 'mydreamhome';
     err_msg = req.flash('err_msg');
     success_msg = req.flash('success_msg');
     res.render('mydreamhome-details-phase-e', {
       err_msg, success_msg, layout: false,
       session: req.session,
-      taskObject: taskObject,
+      taskObject: taskObjectArray,
       propertyData: propertyData,
       step: req.query.step,
       phase: req.query.phase,
       hiredProfessional_list: AllProfessional_property_wise,
-      gest_taskObject: gest_taskObject
+      gest_taskObject: gest_taskObjectArray,
+      progressResult:progressResult,
+      //progressResult1:progressResult1
+
     });
   } else {
     return res.send({
@@ -2112,6 +2386,8 @@ app.get('/mydreamhome-details-phase-e', isCustomer, async (req, res) => {
       'message': 'some thing wrong'
     })
   }
+
+
 })
 
 app.get('/mydreamhome-details-phase-f', isCustomer, async (req, res) => {
@@ -2124,23 +2400,91 @@ app.get('/mydreamhome-details-phase-f', isCustomer, async (req, res) => {
   var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  //console.log("hiredProfessional_list", AllProfessional_property_wise)
-  console.log("taskObject mydreamhome-details-phase-f", taskObject)
-  console.log("gest_taskObject", gest_taskObject)
+  var gest_taskObjectArray=[]
+  var completedTask1=0;
+  var progressResult1 = 0;
+  if(gest_taskObject.length!=0){
+    for(ky of gest_taskObject){
+      var ds= JSON.stringify(ky)
+      var ds = JSON.parse(ds)
+      var temps = ds
+      var arrr = temps.ppts_task_status;
+      var gest_iscomplete =await arrr.every(isStatusComplete);
+      var gest_isPanding =await arrr.every(isStatusPanding);
+      temps.gestiscompleteStatus = gest_iscomplete
+      temps.gestispendingStatus = gest_isPanding
+          if(iscomplete==true){
+         
+            completedTask1 = completedTask1+1
+           }
+           gest_taskObjectArray.push(temps)
+    }
+    console.log('gest total task',gest_taskObject.length)
+  console.log('gest num of completed task',completedTask1)
+   progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
+  }else{
+    progressResult1
+  }
+  completedTask1=0
+  console.log('gest progressResult==============',progressResult1)
+  console.log("gest taskObjectArray==============",gest_taskObjectArray)
+  
+
+  var taskObjectArray=[]
+  var completedTask=0;
+  var progressResult = 0;
+  if(taskObject.length!=0){
+  for(k of taskObject){
+      var d = JSON.stringify(k)
+      var dd = JSON.parse(d)
+      var temp = dd
+      var arr = temp.ppts_task_status;
+      var iscomplete =await arr.every(isStatusComplete);
+      var isPanding =await arr.every(isStatusPanding);
+         // console.log(iscomplete)
+          temp.iscompleteStatus = iscomplete
+          temp.ispendingStatus = isPanding
+           //progress bar number of total task / no of completed task 
+           if(iscomplete==true){
+           
+             completedTask = completedTask+1
+            }
+            
+             
+          taskObjectArray.push(temp)
+  }
+  console.log('total task',taskObject.length)
+  console.log('num of completed task',completedTask)
+   progressResult = Math.round((completedTask / taskObject.length) * 100);
+  
+}else{
+  progressResult=0
+}
+
+completedTask=0
+console.log('task object length======',taskObject.length)
+  console.log('progressResult==============',progressResult)
+  console.log("taskObjectArray==============",taskObjectArray)
+  
+
 
   if (taskObject) {
+
     req.session.pagename = 'mydreamhome';
     err_msg = req.flash('err_msg');
     success_msg = req.flash('success_msg');
     res.render('mydreamhome-details-phase-f', {
       err_msg, success_msg, layout: false,
       session: req.session,
-      taskObject: taskObject,
+      taskObject: taskObjectArray,
       propertyData: propertyData,
       step: req.query.step,
       phase: req.query.phase,
       hiredProfessional_list: AllProfessional_property_wise,
-      gest_taskObject: gest_taskObject
+      gest_taskObject: gest_taskObjectArray,
+      progressResult:progressResult,
+      //progressResult1:progressResult1
+
     });
   } else {
     return res.send({
@@ -2148,6 +2492,8 @@ app.get('/mydreamhome-details-phase-f', isCustomer, async (req, res) => {
       'message': 'some thing wrong'
     })
   }
+
+
 })
 
 
@@ -2162,23 +2508,91 @@ app.get('/mydreamhome-details-phase-g', isCustomer, async (req, res) => {
   var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  //console.log("hiredProfessional_list", AllProfessional_property_wise)
-  console.log("taskObject mydreamhome-details-phase-g", taskObject)
-  console.log("gest_taskObject", gest_taskObject)
+  var gest_taskObjectArray=[]
+  var completedTask1=0;
+  var progressResult1 = 0;
+  if(gest_taskObject.length!=0){
+    for(ky of gest_taskObject){
+      var ds= JSON.stringify(ky)
+      var ds = JSON.parse(ds)
+      var temps = ds
+      var arrr = temps.ppts_task_status;
+      var gest_iscomplete =await arrr.every(isStatusComplete);
+      var gest_isPanding =await arrr.every(isStatusPanding);
+      temps.gestiscompleteStatus = gest_iscomplete
+      temps.gestispendingStatus = gest_isPanding
+          if(iscomplete==true){
+         
+            completedTask1 = completedTask1+1
+           }
+           gest_taskObjectArray.push(temps)
+    }
+    console.log('gest total task',gest_taskObject.length)
+  console.log('gest num of completed task',completedTask1)
+   progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
+  }else{
+    progressResult1
+  }
+  completedTask1=0
+  console.log('gest progressResult==============',progressResult1)
+  console.log("gest taskObjectArray==============",gest_taskObjectArray)
+  
+
+  var taskObjectArray=[]
+  var completedTask=0;
+  var progressResult = 0;
+  if(taskObject.length!=0){
+  for(k of taskObject){
+      var d = JSON.stringify(k)
+      var dd = JSON.parse(d)
+      var temp = dd
+      var arr = temp.ppts_task_status;
+      var iscomplete =await arr.every(isStatusComplete);
+      var isPanding =await arr.every(isStatusPanding);
+         // console.log(iscomplete)
+          temp.iscompleteStatus = iscomplete
+          temp.ispendingStatus = isPanding
+           //progress bar number of total task / no of completed task 
+           if(iscomplete==true){
+           
+             completedTask = completedTask+1
+            }
+            
+             
+          taskObjectArray.push(temp)
+  }
+  console.log('total task',taskObject.length)
+  console.log('num of completed task',completedTask)
+   progressResult = Math.round((completedTask / taskObject.length) * 100);
+  
+}else{
+  progressResult=0
+}
+
+completedTask=0
+console.log('task object length======',taskObject.length)
+  console.log('progressResult==============',progressResult)
+  console.log("taskObjectArray==============",taskObjectArray)
+  
+
 
   if (taskObject) {
+
     req.session.pagename = 'mydreamhome';
     err_msg = req.flash('err_msg');
     success_msg = req.flash('success_msg');
     res.render('mydreamhome-details-phase-g', {
       err_msg, success_msg, layout: false,
       session: req.session,
-      taskObject: taskObject,
+      taskObject: taskObjectArray,
       propertyData: propertyData,
       step: req.query.step,
       phase: req.query.phase,
       hiredProfessional_list: AllProfessional_property_wise,
-      gest_taskObject: gest_taskObject
+      gest_taskObject: gest_taskObjectArray,
+      progressResult:progressResult,
+      //progressResult1:progressResult1
+
     });
   } else {
     return res.send({
@@ -2186,10 +2600,117 @@ app.get('/mydreamhome-details-phase-g', isCustomer, async (req, res) => {
       'message': 'some thing wrong'
     })
   }
+
+
 })
 
 
 app.get('/mydreamhome-details-phase-h', isCustomer, async (req, res) => {
+ //console.log('from get take action url====', req.query)
+ var user_id = req.session.user_id;
+ var property_id = req.query.id;
+ req.session.property_id = req.query.id
+ var phase_name = req.query.phase;
+ var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
+ var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
+ var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
+ var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
+ var gest_taskObjectArray=[]
+ var completedTask1=0;
+ var progressResult1 = 0;
+ if(gest_taskObject.length!=0){
+   for(ky of gest_taskObject){
+     var ds= JSON.stringify(ky)
+     var ds = JSON.parse(ds)
+     var temps = ds
+     var arrr = temps.ppts_task_status;
+     var gest_iscomplete =await arrr.every(isStatusComplete);
+     var gest_isPanding =await arrr.every(isStatusPanding);
+     temps.gestiscompleteStatus = gest_iscomplete
+     temps.gestispendingStatus = gest_isPanding
+         if(iscomplete==true){
+        
+           completedTask1 = completedTask1+1
+          }
+          gest_taskObjectArray.push(temps)
+   }
+   console.log('gest total task',gest_taskObject.length)
+ console.log('gest num of completed task',completedTask1)
+  progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
+ }else{
+   progressResult1
+ }
+ completedTask1=0
+ console.log('gest progressResult==============',progressResult1)
+ console.log("gest taskObjectArray==============",gest_taskObjectArray)
+ 
+
+ var taskObjectArray=[]
+ var completedTask=0;
+ var progressResult = 0;
+ if(taskObject.length!=0){
+ for(k of taskObject){
+     var d = JSON.stringify(k)
+     var dd = JSON.parse(d)
+     var temp = dd
+     var arr = temp.ppts_task_status;
+     var iscomplete =await arr.every(isStatusComplete);
+     var isPanding =await arr.every(isStatusPanding);
+        // console.log(iscomplete)
+         temp.iscompleteStatus = iscomplete
+         temp.ispendingStatus = isPanding
+          //progress bar number of total task / no of completed task 
+          if(iscomplete==true){
+          
+            completedTask = completedTask+1
+           }
+           
+            
+         taskObjectArray.push(temp)
+ }
+ console.log('total task',taskObject.length)
+ console.log('num of completed task',completedTask)
+  progressResult = Math.round((completedTask / taskObject.length) * 100);
+ 
+}else{
+ progressResult=0
+}
+
+completedTask=0
+console.log('task object length======',taskObject.length)
+ console.log('progressResult==============',progressResult)
+ console.log("taskObjectArray==============",taskObjectArray)
+ 
+
+
+ if (taskObject) {
+
+   req.session.pagename = 'mydreamhome';
+   err_msg = req.flash('err_msg');
+   success_msg = req.flash('success_msg');
+   res.render('mydreamhome-details-phase-h', {
+     err_msg, success_msg, layout: false,
+     session: req.session,
+     taskObject: taskObjectArray,
+     propertyData: propertyData,
+     step: req.query.step,
+     phase: req.query.phase,
+     hiredProfessional_list: AllProfessional_property_wise,
+     gest_taskObject: gest_taskObjectArray,
+     progressResult:progressResult,
+     //progressResult1:progressResult1
+
+   });
+ } else {
+   return res.send({
+     'status': false,
+     'message': 'some thing wrong'
+   })
+ }
+
+
+})
+app.get('/mydreamhome-details-phase-o', isCustomer, async (req, res) => {
   //console.log('from get take action url====', req.query)
   var user_id = req.session.user_id;
   var property_id = req.query.id;
@@ -2199,54 +2720,91 @@ app.get('/mydreamhome-details-phase-h', isCustomer, async (req, res) => {
   var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  //console.log("hiredProfessional_list", AllProfessional_property_wise)
-  console.log("taskObject mydreamhome-details-phase-h", taskObject)
-  console.log("gest_taskObject", gest_taskObject)
-
-  if (taskObject) {
-    req.session.pagename = 'mydreamhome';
-    err_msg = req.flash('err_msg');
-    success_msg = req.flash('success_msg');
-    res.render('mydreamhome-details-phase-h', {
-      err_msg, success_msg, layout: false,
-      session: req.session,
-      taskObject: taskObject,
-      propertyData: propertyData,
-      step: req.query.step,
-      phase: req.query.phase,
-      hiredProfessional_list: AllProfessional_property_wise,
-      gest_taskObject: gest_taskObject
-    });
-  } else {
-    return res.send({
-      'status': false,
-      'message': 'some thing wrong'
-    })
+  var gest_taskObjectArray=[]
+  var completedTask1=0;
+  var progressResult1 = 0;
+  if(gest_taskObject.length!=0){
+    for(ky of gest_taskObject){
+      var ds= JSON.stringify(ky)
+      var ds = JSON.parse(ds)
+      var temps = ds
+      var arrr = temps.ppts_task_status;
+      var gest_iscomplete =await arrr.every(isStatusComplete);
+      var gest_isPanding =await arrr.every(isStatusPanding);
+      temps.gestiscompleteStatus = gest_iscomplete
+      temps.gestispendingStatus = gest_isPanding
+          if(iscomplete==true){
+         
+            completedTask1 = completedTask1+1
+           }
+           gest_taskObjectArray.push(temps)
+    }
+    console.log('gest total task',gest_taskObject.length)
+  console.log('gest num of completed task',completedTask1)
+   progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
+  }else{
+    progressResult1
   }
-})
-app.get('/mydreamhome-details-phase-o', isCustomer, async (req, res) => {
-  console.log('from get take action url====', req.query)
-  var property_id = req.query.id;
-  req.session.property_id = req.query.id
-  var phase_name = req.query.phase;
-  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, req.session.active_user_login);
-  var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
-  console.log("taskObject by phase name take action", taskObject)
-  var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  console.log("AllProfessional_property_wise", AllProfessional_property_wise)
+  completedTask1=0
+  console.log('gest progressResult==============',progressResult1)
+  console.log("gest taskObjectArray==============",gest_taskObjectArray)
+  
+
+  var taskObjectArray=[]
+  var completedTask=0;
+  var progressResult = 0;
+  if(taskObject.length!=0){
+  for(k of taskObject){
+      var d = JSON.stringify(k)
+      var dd = JSON.parse(d)
+      var temp = dd
+      var arr = temp.ppts_task_status;
+      var iscomplete =await arr.every(isStatusComplete);
+      var isPanding =await arr.every(isStatusPanding);
+         // console.log(iscomplete)
+          temp.iscompleteStatus = iscomplete
+          temp.ispendingStatus = isPanding
+           //progress bar number of total task / no of completed task 
+           if(iscomplete==true){
+           
+             completedTask = completedTask+1
+            }
+            
+             
+          taskObjectArray.push(temp)
+  }
+  console.log('total task',taskObject.length)
+  console.log('num of completed task',completedTask)
+   progressResult = Math.round((completedTask / taskObject.length) * 100);
+  
+}else{
+  progressResult=0
+}
+
+completedTask=0
+console.log('task object length======',taskObject.length)
+  console.log('progressResult==============',progressResult)
+  console.log("taskObjectArray==============",taskObjectArray)
+  
+
 
   if (taskObject) {
+
     req.session.pagename = 'mydreamhome';
     err_msg = req.flash('err_msg');
     success_msg = req.flash('success_msg');
     res.render('mydreamhome-details-phase-o', {
       err_msg, success_msg, layout: false,
       session: req.session,
-      taskObject: taskObject,
+      taskObject: taskObjectArray,
       propertyData: propertyData,
       step: req.query.step,
       phase: req.query.phase,
-      hiredProfessional_list: AllProfessional_property_wise
+      hiredProfessional_list: AllProfessional_property_wise,
+      gest_taskObject: gest_taskObjectArray,
+      progressResult:progressResult,
+      //progressResult1:progressResult1
+
     });
   } else {
     return res.send({
@@ -2254,6 +2812,8 @@ app.get('/mydreamhome-details-phase-o', isCustomer, async (req, res) => {
       'message': 'some thing wrong'
     })
   }
+
+
 })
 // app.get('/mydreamhome', isCustomer, (req, res) => {
 //   err_msg = req.flash('err_msg');

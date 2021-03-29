@@ -121,19 +121,19 @@
 
             <% if( session.imagename=='' ){ %>
 
-              <a href="#" class="upload-profile-pic">
+              <a href="#" class="upload-profile-pic" style="cursor: pointer;">
                 <img src="images/img_avatar.png" alt="" id="blah" class="profile-photo" style="margin-left:10%"> <span>
                   <div class="custom-file-input">
-                    <input type="file" id="image" name="profile-pic" value="" onchange="previewFile_profile(this)" required>
+                    <input type="file" id="image" name="profile-pic" style="cursor: pointer;" value="" onchange="previewFile_profile(this)" required>
                     <input type="button">
                   </div>
                 </span>
               </a>
               <% } else {%>
-                <a href="#" class="upload-profile-pic">
+                <a href="#" class="upload-profile-pic" style="cursor: pointer;">
                   <img src="/upload/<%= session.imagename%>" alt="" id="blah" class="profile-photo"> <span>
-                    <div class="custom-file-input">
-                      <input type="file" id="image" name="profile-pic" value="" required onchange="previewFile_profile(this)">
+                    <div class="custom-file-input" >
+                      <input type="file" id="image" name="profile-pic" style="cursor: pointer;" value="" required onchange="previewFile_profile(this)">
                       <input type="button">
                     </div>
                   </span>

@@ -337,7 +337,7 @@
                                 <%if(propertyObj=='null'){%>
                                   <select name="ps_other_property_type" class=" form-control selectBox5"
                                     id="ps_other_property_type" style="height: 48px;" data-rule-required="false"
-                                    data-msg-required="Other property Type is required!">
+                                    data-msg-required="Other property Type is required!" required>
                                     <option value="">Select User Type</option>
                                     <%if(session.active_user_login=='buyer'){%>
                                       <option value="seller">Seller</option>
@@ -358,7 +358,7 @@
                                   <%}else{%>
                                     <select name="ps_other_property_type" class=" form-control selectBox5"
                                       id="ps_other_property_type" style="height: 48px;" data-rule-required="false"
-                                      data-msg-required="Other property Type is required!">
+                                      data-msg-required="Other property Type is required!" required>
                                       <option value="<%=propertyObj.ps_other_property_type%>">
                                         <%=propertyObj.ps_other_property_type.replace( /\w/, c=> c.toUpperCase())%>
                                       </option>

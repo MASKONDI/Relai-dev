@@ -18,14 +18,52 @@ module.exports.GetProfessionalById = function (ppts_assign_to) {
     })
     });
 };
+const PropertyProfessinoalTaskSchema = require('../../models/property_professional_tasks_Schema')
 module.exports.removeProfessionalById = function (pps_service_provider_id,pps_property_id) {
     return new Promise( async function (resolve, reject) {
+        //ppts_user_id:{$in:req.session.user_id},
+        // PropertyProfessinoalTaskSchema.find({ ppts_property_id:pps_property_id,ppts_assign_to:{$in:pps_service_provider_id}}).then(async(resp)=>{
+        //     console.log('in remove profeshnoal==',resp)
+        //     for(var k of resp){
+        //         const items = k.ppts_task_status;
+        //         var index_profeshnoal_Id=k.ppts_assign_to.indexOf(pps_service_provider_id);
+        //         items.splice(index_profeshnoal_Id, 1);
+        //         var assignItem = k.ppts_assign_to;
+        //         assignItem.splice(index_profeshnoal_Id, 1);
+                
+        //         var responce= await PropertyProfessinoalTaskSchema.updateOne({_id:k._id}, { $set: {ppts_task_status:items ,ppts_assign_to:assignItem} })
+               
+        //         console.log('delete responce==',responce)
+        //     }
+        // })
+        
        
        var data={$and:[{pps_service_provider_id:pps_service_provider_id,pps_property_id:pps_property_id}]}
+
    await PropertyProfessionalSchema.findOneAndRemove(data).then(async(resp)=>{
      
        if(resp){
-          
+        PropertyProfessinoalTaskSchema.find({ ppts_property_id:pps_property_id,ppts_assign_to:{$in:pps_service_provider_id}}).then(async(resp)=>{
+            console.log('in remove profeshnoal==',resp)
+            for(var k of resp){
+                const items = k.ppts_task_status;
+                var index_profeshnoal_Id=k.ppts_assign_to.indexOf(pps_service_provider_id);
+                items.splice(index_profeshnoal_Id, 1);
+                var assignItem = k.ppts_assign_to;
+                assignItem.splice(index_profeshnoal_Id, 1);
+                // ppts_is_delete
+                
+                if(assignItem==0){
+                var responce= await PropertyProfessinoalTaskSchema.updateOne({_id:k._id}, { $set: {ppts_task_status:items ,ppts_assign_to:assignItem,ppts_is_delete:'yes'} })
+                    console.log('responce=========================',responce)
+                }else{
+                var responce= await PropertyProfessinoalTaskSchema.updateOne({_id:k._id}, { $set: {ppts_task_status:items ,ppts_assign_to:assignItem,ppts_is_delete:'no'} })
+
+                }
+              
+            }
+            console.log('asign to==================',k.ppts_assign_to)
+        })
            resolve(resp)
        }
        

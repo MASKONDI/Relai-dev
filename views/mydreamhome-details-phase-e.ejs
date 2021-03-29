@@ -1,5 +1,6 @@
 <%- include('dashboard_header')-%>
   <%- include('edit-profile-model')-%>
+  <%var index=''%>
     <!-- The Modal -->
     <div class="modal permission-modal fade " id="myModal">
       <div class="modal-dialog">
@@ -81,13 +82,14 @@
                 </div>
                 <%if(session.active_user_login=='renovator'){%>
                   <div class="phase-progress">
-                    <ul>
-                      <li><a href="javascript:void(0)">25%</a></li>
-                      <li><a href="javascript:void(0)">25%</a></li>
-                      <li><a href="javascript:void(0)">25%</a></li>
-                      <li><a href="javascript:void(0)">25%</a></li>
-                    </ul>
-                  </div>
+                    <div data-toggle="tooltip" data-placement="top" title="<%=progressResult%>%" data-original-title=""
+                    class="progress" style="height:2.5rem; border-radius: 1.25rem;">
+                    
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100"
+                    aria-valuemin="0" aria-valuemax="100" style='width:<%=progressResult%>%; background-color:#005377;overflow:hidden; display:inline-block;'>
+                    </div>
+                    </div>
+                    </div>
                   <%}%>
                     <div class="action-owner">
                       <div class="clearfix">
@@ -146,6 +148,8 @@
                                     <th>Professional NA</th>
                                     <%}%>
                                       <th></th>
+                                      <th>Status</th>
+                                      <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -161,7 +165,12 @@
                                         <%=row.ppts_task_name%>
                                       </p>
 
-                                      <input type="checkbox">
+                                      <%if(row.iscompleteStatus==true){%>
+                                        <input type="checkbox" checked disabled>
+
+                                        <%}else{%>
+                                          <input type="checkbox">
+                                          <%}%>
                                       <span class="checkmark"></span>
                                     </label></td>
 
@@ -185,11 +194,23 @@
                               </a>
                               <a href="/professionals-detail-message"><img src="images/chat.png"></a>
                             </td> -->
-                                  <%if(hiredProfessional_list.length>0){%>
-                                    <%hiredProfessional_list.forEach(function(hp,i){%>
-                                      <%if(row.ppts_assign_to.includes(hp._id)){%>
+                            <%if(hiredProfessional_list.length>0){%>
+                              <%hiredProfessional_list.forEach(function(hp,k){%>
+                                <%if(row.ppts_assign_to.includes(hp._id.toString())){
+                                  index=row.ppts_assign_to.indexOf(hp._id.toString()) %>
 
-                                        <td><a href="#" class="upload-any"><img src="images/upload.png">
+                                        <td>
+                                          <%if(row.ppts_task_status[index]=='completed_by_service_provider'){%>
+                                            <div class="complete-circle" data-toggle="tooltip" data-placement="top"
+                                            title="Complete"></div>
+                                            <%}else if(row.ppts_task_status[index]=='in_progress' ){%>
+                                              <div class="inprogress-circle" data-toggle="tooltip" data-placement="top"
+                                              title="In Progress"></div>
+                                              <%}else{%>
+                                                <div class="pending-circle" data-toggle="tooltip" data-placement="top"
+                                                title="Pending"></div>
+                                                <%}%>
+                                          <a href="#" class="upload-any"><img src="images/upload.png">
                                             <span>
                                               <div class="custom-file-input">
                                                 <input type="file" name="task-document"
@@ -213,6 +234,14 @@
                                                 <td><a class="btn help-btn" href="#" data-toggle="modal"
                                                     data-target="#myModal">Help</a>
                                                 </td>
+                                                <%if(row.iscompleteStatus==true){%>
+                                                  <a class="btn btn-complete">Complete</a>
+                                                  <%}else if(row.ispendingStatus==true ){%>
+                                                    <a class="btn btn-pending">Pending</a>
+                                                    
+                                                    <%}else if(row.iscompleteStatus==false && row.ispendingStatus==false){%>
+                                                      <a class="btn btn-progress">In Progress</a>
+                                                      <%}%>
                                                 <td>
                                                   <span>
                                                     <div class="profile-dropdown">
@@ -437,6 +466,8 @@
                                       <th>Professional NA</th>
                                       <%}%>
                                         <th></th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -452,7 +483,12 @@
                                           <%=row.ppts_task_name%>
                                         </p>
 
-                                        <input type="checkbox">
+                                        <%if(row.iscompleteStatus==true){%>
+                                          <input type="checkbox" checked disabled>
+
+                                          <%}else{%>
+                                            <input type="checkbox">
+                                            <%}%>
                                         <span class="checkmark"></span>
                                       </label></td>
 
@@ -476,11 +512,23 @@
                               </a>
                               <a href="/professionals-detail-message"><img src="images/chat.png"></a>
                             </td> -->
-                                    <%if(hiredProfessional_list.length>0){%>
-                                      <%hiredProfessional_list.forEach(function(hp,i){%>
-                                        <%if(row.ppts_assign_to.includes(hp._id)){%>
+                            <%if(hiredProfessional_list.length>0){%>
+                              <%hiredProfessional_list.forEach(function(hp,k){%>
+                                <%if(row.ppts_assign_to.includes(hp._id.toString())){
+                                  index=row.ppts_assign_to.indexOf(hp._id.toString()) %>
 
-                                          <td><a href="#" class="upload-any"><img src="images/upload.png">
+                                          <td>
+                                            <%if(row.ppts_task_status[index]=='completed_by_service_provider'){%>
+                                              <div class="complete-circle" data-toggle="tooltip" data-placement="top"
+                                              title="Complete"></div>
+                                              <%}else if(row.ppts_task_status[index]=='in_progress' ){%>
+                                                <div class="inprogress-circle" data-toggle="tooltip" data-placement="top"
+                                                title="In Progress"></div>
+                                                <%}else{%>
+                                                  <div class="pending-circle" data-toggle="tooltip" data-placement="top"
+                                                  title="Pending"></div>
+                                                  <%}%>
+                                            <a href="#" class="upload-any"><img src="images/upload.png">
                                               <span>
                                                 <div class="custom-file-input">
                                                   <input type="file" name="task-document"
@@ -503,6 +551,16 @@
 
                                                   <td><a class="btn help-btn" href="#" data-toggle="modal"
                                                       data-target="#myModal">Help</a>
+                                                  </td>
+                                                  <td>
+                                                    <%if(row.iscompleteStatus==true){%>
+                                                      <a class="btn btn-complete">Complete</a>
+                                                      <%}else if(row.ispendingStatus==true ){%>
+                                                        <a class="btn btn-pending">Pending</a>
+                                                        
+                                                        <%}else if(row.iscompleteStatus==false && row.ispendingStatus==false){%>
+                                                          <a class="btn btn-progress">In Progress</a>
+                                                          <%}%>
                                                   </td>
                                                   <td>
                                                     <span>
@@ -715,13 +773,15 @@
                           </tbody>
                         </table>
                         <div class="phase-progress">
-                          <ul>
-                            <li><a href="javascript:void(0)">25%</a></li>
-                            <li><a href="javascript:void(0)">25%</a></li>
-                            <li><a href="javascript:void(0)">25%</a></li>
-                            <li><a href="javascript:void(0)">25%</a></li>
-                          </ul>
-                        </div>
+                          <div data-toggle="tooltip" data-placement="top" title="<%=progressResult%>%" data-original-title=""
+                          class="progress" style="height:2.5rem; border-radius: 1.25rem;">
+                          
+                          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100"
+                          aria-valuemin="0" aria-valuemax="100"
+                          style='width:<%=progressResult%>%; background-color:#005377;overflow:hidden; display:inline-block;'>
+                          </div>
+                          </div>
+                          </div>
                         <!-- ================================== -->
                         <div>
                           <h4>Seller Task</h4>
@@ -746,6 +806,8 @@
                                       <th>Professional NA</th>
                                       <%}%>
                                         <th></th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -761,7 +823,12 @@
                                           <%=row.ppts_task_name%>
                                         </p>
 
-                                        <input type="checkbox">
+                                        <%if(row.gestiscompleteStatus==true){%>
+                                          <input type="checkbox" checked disabled>
+
+                                          <%}else{%>
+                                            <input type="checkbox">
+                                            <%}%>
                                         <span class="checkmark"></span>
                                       </label></td>
 
@@ -785,11 +852,23 @@
                               </a>
                               <a href="/professionals-detail-message"><img src="images/chat.png"></a>
                             </td> -->
-                                    <%if(hiredProfessional_list.length>0){%>
-                                      <%hiredProfessional_list.forEach(function(hp,i){%>
-                                        <%if(row.ppts_assign_to.includes(hp._id)){%>
+                            <%if(hiredProfessional_list.length>0){%>
+                              <%hiredProfessional_list.forEach(function(hp,k){%>
+                                <%if(row.ppts_assign_to.includes(hp._id.toString())){
+                                  index=row.ppts_assign_to.indexOf(hp._id.toString()) %>
 
-                                          <td><a href="#" class="upload-any"><img src="images/upload.png">
+                                          <td>
+                                            <%if(row.ppts_task_status[index]=='completed_by_service_provider'){%>
+                                              <div class="complete-circle" data-toggle="tooltip" data-placement="top"
+                                              title="Complete"></div>
+                                              <%}else if(row.ppts_task_status[index]=='in_progress' ){%>
+                                                <div class="inprogress-circle" data-toggle="tooltip" data-placement="top"
+                                                title="In Progress"></div>
+                                                <%}else{%>
+                                                  <div class="pending-circle" data-toggle="tooltip" data-placement="top"
+                                                  title="Pending"></div>
+                                                  <%}%>
+                                            <a href="#" class="upload-any"><img src="images/upload.png">
                                               <span>
                                                 <div class="custom-file-input">
                                                   <input type="file" name="task-document"
@@ -812,6 +891,16 @@
 
                                                   <td><a class="btn help-btn" href="#" data-toggle="modal"
                                                       data-target="#myModal">Help</a>
+                                                  </td>
+                                                  <td>
+                                                    <%if(row.gestiscompleteStatus==true){%>
+                                                      <a class="btn btn-complete">Complete</a>
+                                                      <%}else if(row.gestispendingStatus==true ){%>
+                                                        <a class="btn btn-pending">Pending</a>
+                                                        
+                                                        <%}else if(row.gestiscompleteStatus==false && row.gestispendingStatus==false){%>
+                                                          <a class="btn btn-progress">In Progress</a>
+                                                          <%}%>
                                                   </td>
                                                   <td>
                                                     <span>
@@ -1048,6 +1137,8 @@
                                         <th>Professional NA</th>
                                         <%}%>
                                           <th></th>
+                                          <th>Status</th>
+                                          <th>Action</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1063,7 +1154,12 @@
                                             <%=row.ppts_task_name%>
                                           </p>
 
-                                          <input type="checkbox">
+                                          <%if(row.iscompleteStatus==true){%>
+                                            <input type="checkbox" checked disabled>
+  
+                                            <%}else{%>
+                                              <input type="checkbox">
+                                              <%}%>
                                           <span class="checkmark"></span>
                                         </label></td>
 
@@ -1087,11 +1183,23 @@
                                 </a>
                                 <a href="/professionals-detail-message"><img src="images/chat.png"></a>
                               </td> -->
-                                      <%if(hiredProfessional_list.length>0){%>
-                                        <%hiredProfessional_list.forEach(function(hp,i){%>
-                                          <%if(row.ppts_assign_to.includes(hp._id)){%>
+                              <%if(hiredProfessional_list.length>0){%>
+                                <%hiredProfessional_list.forEach(function(hp,k){%>
+                                  <%if(row.ppts_assign_to.includes(hp._id.toString())){
+                                    index=row.ppts_assign_to.indexOf(hp._id.toString()) %>
 
-                                            <td><a href="#" class="upload-any"><img src="images/upload.png">
+                                            <td>
+                                              <%if(row.ppts_task_status[index]=='completed_by_service_provider'){%>
+                                                <div class="complete-circle" data-toggle="tooltip" data-placement="top"
+                                                title="Complete"></div>
+                                                <%}else if(row.ppts_task_status[index]=='in_progress' ){%>
+                                                  <div class="inprogress-circle" data-toggle="tooltip" data-placement="top"
+                                                  title="In Progress"></div>
+                                                  <%}else{%>
+                                                    <div class="pending-circle" data-toggle="tooltip" data-placement="top"
+                                                    title="Pending"></div>
+                                                    <%}%>
+                                              <a href="#" class="upload-any"><img src="images/upload.png">
                                                 <span>
                                                   <div class="custom-file-input">
                                                     <input type="file" name="task-document"
@@ -1114,6 +1222,16 @@
 
                                                     <td><a class="btn help-btn" href="#" data-toggle="modal"
                                                         data-target="#myModal">Help</a>
+                                                    </td>
+                                                    <td>
+                                                      <%if(row.iscompleteStatus==true){%>
+                                                        <a class="btn btn-complete">Complete</a>
+                                                        <%}else if(row.ispendingStatus==true ){%>
+                                                          <a class="btn btn-pending">Pending</a>
+                                                          
+                                                          <%}else if(row.iscompleteStatus==false && row.ispendingStatus==false){%>
+                                                            <a class="btn btn-progress">In Progress</a>
+                                                            <%}%>
                                                     </td>
                                                     <td>
                                                       <span>
@@ -1328,13 +1446,15 @@
                             </tbody>
                           </table>
                           <div class="phase-progress">
-                            <ul>
-                              <li><a href="javascript:void(0)">25%</a></li>
-                              <li><a href="javascript:void(0)">25%</a></li>
-                              <li><a href="javascript:void(0)">25%</a></li>
-                              <li><a href="javascript:void(0)">25%</a></li>
-                            </ul>
-                          </div>
+                            <div data-toggle="tooltip" data-placement="top" title="<%=progressResult%>%" data-original-title=""
+                            class="progress" style="height:2.5rem; border-radius: 1.25rem;">
+                            
+                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100"
+                            aria-valuemin="0" aria-valuemax="100"
+                            style='width:<%=progressResult%>%; background-color:#005377;overflow:hidden; display:inline-block;'>
+                            </div>
+                            </div>
+                            </div>
                           <!-- ================================== -->
                           <div>
                             <h4>Buyer Task</h4>
@@ -1359,6 +1479,8 @@
                                         <th>Professional NA</th>
                                         <%}%>
                                           <th></th>
+                                          <th>Status</th>
+                                          <th>Action</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -1374,7 +1496,12 @@
                                             <%=row.ppts_task_name%>
                                           </p>
 
-                                          <input type="checkbox">
+                                          <%if(row.iscompleteStatus==true){%>
+                                            <input type="checkbox" checked disabled>
+  
+                                            <%}else{%>
+                                              <input type="checkbox">
+                                              <%}%>
                                           <span class="checkmark"></span>
                                         </label></td>
 
@@ -1398,11 +1525,23 @@
                                 </a>
                                 <a href="/professionals-detail-message"><img src="images/chat.png"></a>
                               </td> -->
-                                      <%if(hiredProfessional_list.length>0){%>
-                                        <%hiredProfessional_list.forEach(function(hp,i){%>
-                                          <%if(row.ppts_assign_to.includes(hp._id)){%>
+                              <%if(hiredProfessional_list.length>0){%>
+                                <%hiredProfessional_list.forEach(function(hp,k){%>
+                                  <%if(row.ppts_assign_to.includes(hp._id.toString())){
+                                    index=row.ppts_assign_to.indexOf(hp._id.toString()) %>
 
-                                            <td><a href="#" class="upload-any"><img src="images/upload.png">
+                                            <td>
+                                              <%if(row.ppts_task_status[index]=='completed_by_service_provider'){%>
+                                                <div class="complete-circle" data-toggle="tooltip" data-placement="top"
+                                                title="Complete"></div>
+                                                <%}else if(row.ppts_task_status[index]=='in_progress' ){%>
+                                                  <div class="inprogress-circle" data-toggle="tooltip" data-placement="top"
+                                                  title="In Progress"></div>
+                                                  <%}else{%>
+                                                    <div class="pending-circle" data-toggle="tooltip" data-placement="top"
+                                                    title="Pending"></div>
+                                                    <%}%>
+                                              <a href="#" class="upload-any"><img src="images/upload.png">
                                                 <span>
                                                   <div class="custom-file-input">
                                                     <input type="file" name="task-document"
@@ -1425,6 +1564,16 @@
 
                                                     <td><a class="btn help-btn" href="#" data-toggle="modal"
                                                         data-target="#myModal">Help</a>
+                                                    </td>
+                                                    <td>
+                                                      <%if(row.gestiscompleteStatus==true){%>
+                                                        <a class="btn btn-complete">Complete</a>
+                                                        <%}else if(row.gestispendingStatus==true ){%>
+                                                          <a class="btn btn-pending">Pending</a>
+                                                          
+                                                          <%}else if(row.gestiscompleteStatus==false && row.gestispendingStatus==false){%>
+                                                            <a class="btn btn-progress">In Progress</a>
+                                                            <%}%>
                                                     </td>
                                                     <td>
                                                       <span>

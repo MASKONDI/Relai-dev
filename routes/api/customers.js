@@ -1277,7 +1277,8 @@ router.post("/addTask_from_Dreamhome_detial_phase", (req, res) => {
       ppts_phase_name: req.body.ppts_phase_name,
       ppts_is_active_user_flag: req.session.active_user_login,
       ppts_note: req.body.ppts_note,
-      ppts_task_status: 'pending'
+      ppts_task_status: 'pending',
+      ppts_is_remove_task:'no'
     });
     newTask
       .save()

@@ -76,9 +76,12 @@ const PropertyProfessinoalTaskSchema = new Schema({
     default: 'buyer'
   },
   ppts_is_remove_task:{
-    type: String,
-    enum: ['no', 'yes'],
-    default: 'no'
+    type: Array,
+   
   },
+  ppts_is_delete:{
+    type: String,
+    default:'no'
+  }
 });
 module.exports = PropertyProfessinoalTask = mongoose.model('property_professional_task', PropertyProfessinoalTaskSchema);
