@@ -67,10 +67,10 @@
                                 <div class="property-step">
                                   <!-- <p>STEP 1</p> -->
                                   <%if(propertyObj=='null'){%>
-                                    <h6>Add property name & address</h6>
+                                      <h6>Add property name & address</h6>
                                     <%}else{%>
                                       <h6>Update property name & address</h6>
-                                      <%}%>
+                                    <%}%>
                                 </div>
                               </div>
                             </div>
@@ -436,13 +436,11 @@
                             <div class="row">
                               <div class="col-sm-12 col-lg-4">
                                 <%if(propertyObj=='null'){%>
-                                  <input type="text" class="form-control property-form-control-size-fix " id="solicitor_name"
-                                    placeholder="Solicitor Name*" name="ps_solicitor_name" value=""
-                                    data-rule-required="true" data-msg-required="Solicitor name is required!">
+                                  <input type="text" class="form-control property-form-control-size-fix solicitor_name" id="solicitor_name" placeholder="Solicitor Name*" name="ps_solicitor_name" value="" >
                                   <%}else{%>
                                     <%if(propertyObj.ps_solicitor_name.length>0){%>
                                       <% var i=0; propertyObj.ps_solicitor_name.forEach(function(row){ %>
-                                        <input type="text" class="form-control property-form-control-size-fix " id="solicitor_name"
+                                        <input type="text" class="form-control property-form-control-size-fix edit_solicitor_name" id="solicitor_name"
                                           placeholder="Solicitor Name*" name="ps_solicitor_name"
                                           value="<%=row%>" data-rule-required="true"
                                           data-msg-required="Solicitor name is required!">
@@ -452,13 +450,13 @@
                               </div>
                               <div class="col-sm-12 col-lg-4">
                                 <%if(propertyObj=='null'){%>
-                                  <input type="email" class="form-control property-form-control-size-fix "
+                                  <input type="email" class="form-control property-form-control-size-fix solicitor_email"
                                     id="solicitor_email" placeholder="Solicitor email address*" name="ps_solicitor_email"
-                                    value="" data-rule-required="true" data-msg-required="Solicitor email is required!" required>
+                                    value="">
                                   <%}else{%>
                                     <%if(propertyObj.ps_solicitor_email.length>0){%>
                                       <% var i=0; propertyObj.ps_solicitor_email.forEach(function(row){ %>
-                                          <input type="email" readonly class="form-control property-form-control-size-fix "
+                                          <input type="email" readonly class="form-control property-form-control-size-fix edit_solicitor_email"
                                           id="solicitor_email" placeholder="Solicitor email address*" name="ps_solicitor_email"
                                           value="<%=row%>" data-rule-required="true"
                                           data-msg-required="Solicitor email is required!" required>
@@ -466,12 +464,38 @@
                                       <%}%> 
                                     <%}%>
                               </div>
+
+                              <div class="col-sm-12 col-lg-3">
+                                <%if(propertyObj=='null'){%>
+                                  <select name="ps_solicitor_for" class=" form-control selectBox5"
+                                  id="ps_solicitor_for" style="height: 48px;">
+                                      <option value="">Solicitor For</option>
+                                      <option value="seller">Seller</option>
+                                      <option value="buyer">Buyer</option>
+                                      <option value="renovator">Renovator</option>
+                                </select>
+                                  <%}else{%>
+                                    <%if(propertyObj.ps_solicitor_for.length>0){%>
+                                      <% var i=0; propertyObj.ps_solicitor_for.forEach(function(row){%>
+                                      
+                                      <select name="ps_solicitor_for" class=" form-control selectBox5"
+                                        id="ps_solicitor_for" style="height: 48px;">
+                                            <option value="">Solicitor For</option>
+                                            
+                                            <option <%if(row=='seller'){ %> selected <%}%> value="seller">Seller</option>
+ 
+                                            <option <%if(row=='buyer'){ %> selected <%}%> value="buyer">Buyer</option>
+                                            <option <%if(row=='renovator'){ %> selected <%}%> value="renovator">Renovator</option>
+                                      </select>
+
+                                      <% i++;});%>
+                                      <%}%> 
+                                    <%}%>
+                              </div>
+
                               <div class="">
                                 <a class="btn addMoreSolicitor" name="addPlusbtn"><i class="fa fa-plus"></i></a>
                               </div>
-
-                            
-
                             </div>
                             <div class="moreSolicitoreSec"></div>
                           </div>
@@ -2223,11 +2247,29 @@ $(document).ready(function () {
     var c = 2;
     $(".addMoreSolicitor").click(function (e) {
       e.preventDefault();
-      var domElement = $(' <div class="row"><div class="col-sm-12 col-lg-4"> <input type="text" class="form-control property-form-control-size-fix " id="solicitor_name" placeholder="Solicitor Name*" name="ps_solicitor_name" value="" data-rule-required="true" data-msg-required="Solicitor name is required!"></div><div class="col-sm-12 col-lg-4"> <input type="email" class="form-control property-form-control-size-fix " id="solicitor_email" placeholder="Solicitor email address*" name="ps_solicitor_email" value="" data-rule-required="true" data-msg-required="Solicitor email is required!" required></div><a class="btn property-add-btn remove_field"><i class="fa fa-minus"></i></a></div>' + c++);
+      var domElement = $(' <div class="row"><div class="col-sm-12 col-lg-4"> <input type="text" class="form-control property-form-control-size-fix solicitor_name" id="solicitor_name" placeholder="Solicitor Name*" name="ps_solicitor_name" value="" data-rule-required="true" data-msg-required="Solicitor name is required!"></div><div class="col-sm-12 col-lg-4"> <input type="email" class="form-control property-form-control-size-fix solicitor_email_'+c+'" id="solicitor_email" placeholder="Solicitor email address*" name="ps_solicitor_email" value="" data-rule-required="true" data-msg-required="Solicitor email is required!" required></div><div class="col-sm-12 col-lg-3"><select name="ps_solicitor_for" class=" form-control selectBox5" id="ps_solicitor_for" style="height: 48px;" data-rule-required="false" data-msg-required="Solicitor for is required!"><option value="">Solicitor For</option><option value="seller">Seller</option><option value="buyer">Buyer</option><option value="renovator">Renovator</option> </select></div><a class="btn property-add-btn remove_field"><i class="fa fa-minus"></i></a></div>' + c++);
       if (c == 10) {
         $(".addMoreSolicitor").attr('disabled', true);
       }
       $(".moreSolicitoreSec").before(domElement);
+      console.log('datagg:',c)
+      let count = parseInt(c)-parseInt(1);
+      $.ajax({
+            type: "GET",
+            data: '',
+            url: "/get-solicitor-lists",
+            cache: false,
+            success: function (data) {
+              console.log('Solicitor Res:', data);
+              $('.solicitor_name').autocomplete({
+                  lookup: data.serviceproviderData,
+                  onSelect:function (suggestion) { 
+                       $(".solicitor_email_"+count+"").val(suggestion.data)
+                  }
+              })
+            }
+          })
+
     });
     $('.row').on("click", ".remove_field", function (e) { //user click on remove text
       e.preventDefault(); $(this).parent('div').remove(); c--;
@@ -2239,6 +2281,25 @@ $(document).ready(function () {
 
   });
 
+
+
+  $(function () { 
+    $.ajax({
+            type: "GET",
+            data: '',
+            url: "/get-solicitor-lists",
+            cache: false,
+            success: function (data) {
+              console.log('Solicitor Res:', data);
+              $('.solicitor_name').autocomplete({
+                  lookup: data.serviceproviderData,
+                  onSelect:function (suggestion) { 
+                       $('.solicitor_email').val(suggestion.data)
+                  }
+              })
+            }
+          })
+  })
 
         $(function () {
           $.ajax({

@@ -1,5 +1,34 @@
 <%- include('dashboard_header_professional')-%>
   <%- include('edit-profile-professional-model')-%>
+   
+
+<!-- Model for add Existing Tasks for phase-a,b,c,d,e,f--->
+<div class="modal fade view-doc-modal" data-backdrop="static" data-keyboard="false"  id="viewDocModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Large Modal</h4>
+          <button type="button" class="close closeViewDocModal" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+            <!-- <iframe class = "office iframe" src="https://view.officeapps.live.com/op/embed.aspx?src=https://relai.herokuapp.com/taskdocument/howtoconvert-1616406032794.doc" frameborder="0"
+                scrolling="no" marginheight="0" marginwidth="0" role="document" aria-label="Doc document" title="Doc document" >
+            </iframe>  -->
+            <div id="iframe_div"></div>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-cancel closeViewDocModal" data-dismiss="modal">Close</button> -->
+        </div>
+    </div>
+  </div>
+</div>
+
+
     <div class="modal fade permission-modal" data-backdrop="static" data-keyboard="false" id="spchangePermisionModal">
 
       <div class="modal-dialog">
@@ -808,7 +837,7 @@
                                           <%if(row.permissionData){ %>
                                           <%if(row.permissionData.dps_view_permission == 'yes'){%>
                                           <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
+                                            <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="image" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)" data-toggle="tooltip" data-placement="top"
                                               title="View Document"><img src="../images/eye.png" style="width:75%"></a>
                                           </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                           <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
@@ -822,9 +851,6 @@
                                       </td>
                               </tr>
                               <%}else if(row.cuds_document_type=='pdf' ){ %>
-
-                                
-
                                 <tr>
                                   <td><img class="pdf-file" src="../images/pdficon.png">
                                     <p><span>
@@ -853,7 +879,7 @@
                                             <%if(row.permissionData){ %>
                                               <%if(row.permissionData.dps_view_permission == 'yes'){%>
                                             <li>
-                                              <a href="#" data-toggle="tooltip" data-placement="top"
+                                              <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="pdf" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)" data-toggle="tooltip" data-placement="top"
                                                 title="View Document"><img src="../images/eye.png"
                                                   style="width:75%"></a>
                                             </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -869,6 +895,12 @@
                                         </td>
                                 </tr>
                                 <%}else if(row.cuds_document_type=='doc' ){%>
+
+                                  <!-- <div style="text-align:center">
+                                    <h4>Pdf viewer testing</h4>
+                                      <iframe src="https://docs.google.com/viewer?url=https://relai.herokuapp.com/taskdocument/howtoconvert-1616406032794.doc&embedded=true" frameborder="0" height="500px" width="100%"></iframe>
+                                    </div> -->
+
                                   <tr>
                                     <td><img class="pdf-file" src="../images/docicon.png">
                                       <p><span>
@@ -897,9 +929,7 @@
                                               <%if(row.permissionData){ %>
                                                 <%if(row.permissionData.dps_view_permission == 'yes'){%>
                                               <li>
-                                                <a href="#" data-toggle="tooltip" data-placement="top"
-                                                  title="View Document"><img src="../images/eye.png"
-                                                    style="width:75%"></a>
+                                                <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="doc" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="View Document"><img src="../images/eye.png" style="width:75%"></a>
                                               </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                           <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
 
@@ -939,8 +969,7 @@
                                                 <%if(row.permissionData){ %>
                                                   <%if(row.permissionData.dps_view_permission == 'yes'){%>
                                                 <li>
-                                                  <a href="#" data-toggle="tooltip" data-placement="top"
-                                                    title="View Document"><img src="../images/eye.png"
+                                                  <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="txt" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="View Document"><img src="../images/eye.png"
                                                       style="width:75%"></a>
                                                 </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                           <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
@@ -1014,9 +1043,55 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
 <script src="    https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js
 "></script>
+<script>
+  
+  $(".viewModalDoc").click(function (e) {
+      var doctype = $(this).data('doctype');
+      var docname = $(this).data('docname');
+      var docurl = $(this).data('docurl');
 
-      <script>
+      //var file_src = "https://view.officeapps.live.com/op/embed.aspx?src=https://relai.herokuapp.com/taskdocument/howtoconvert-1616406032794.doc";
+      if(doctype == 'doc'){
+          var file_src = "https://view.officeapps.live.com/op/embed.aspx?src=https://relai.herokuapp.com"+docurl;
+          $("#viewDocModal #iframe_div").empty();
+          //$('<iframe>') .attr('src',file_src).attr('frameborder',0).attr('scrolling',0).attr('marginheight',0).attr('marginwidth',0).attr('width','100%').attr('height',700).insertAfter('#iframe_div');
+           $('#iframe_div').html('<iframe src="'+file_src+'" frameborder="0" scrolling="0" marginheight="0" marginwidth="0" width="100%" height="700"></iframe>')
+          }
 
+      if(doctype == 'pdf'){
+        //https://docs.google.com/viewer?url=https://gate.ac.uk/sale/talks/text-mining-course-sslst2011/slides/module1-intro.pdf&embedded=true
+        var file_src = "https://docs.google.com/viewer?url=https://relai.herokuapp.com"+docurl+"&embedded=true";
+          $("#viewDocModal #iframe_div").empty();
+          $('#iframe_div').html('<iframe src="'+file_src+'" frameborder="0" scrolling="0" marginheight="0" marginwidth="0" width="100%" height="700"></iframe>')
+
+          //$('<iframe>').attr('src',file_src).attr('frameborder',0).attr('scrolling',0).attr('marginheight',0).attr('marginwidth',0).attr('width','100%').attr('height',700).insertAfter('#iframe_div');
+      }
+
+      if(doctype == 'image'){
+          var file_src = "https://relai.herokuapp.com"+docurl
+          $("#viewDocModal #iframe_div").empty();
+          $('<img>').attr('src',file_src).insertAfter('#iframe_div');
+      }
+
+      if(doctype == 'txt'){
+          var file_src = "https://relai.herokuapp.com"+docurl
+          $("#viewDocModal #iframe_div").empty();
+          $('#iframe_div').html('<iframe src="'+file_src+'" frameborder="0" scrolling="0" marginheight="0" marginwidth="0" width="100%" height="700"></iframe>')
+
+          //$('<iframe>').attr('src',file_src).attr('frameborder',0).attr('scrolling',0).attr('marginheight',0).attr('marginwidth',0).attr('width','100%').attr('height',700).insertAfter('#iframe_div');
+      }
+
+      $('#viewDocModal').modal('show');
+      $('#viewDocModal #myModalLabel').text(docname);
+  });
+
+  $('.closeViewDocModal').click(function (e) { 
+        $('#viewDocModal').modal('hide');
+        //window.location.reload(true);
+  });
+</script>
+
+<script>
 $(document).ready(function() {
  $(".word").fancybox({
   'width': 600, // or whatever
@@ -1317,7 +1392,47 @@ $(document).ready(function() {
             }
           });
         }
-  
+
+$(document).keydown(function (event) {
+    if (event.keyCode == 123) { // Prevent F12
+        return false;
+    } else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) { // Prevent Ctrl+Shift+I        
+        return false;
+    }
+});
+
+
+
+if (document.addEventListener) {
+  document.addEventListener('contextmenu', function(e) {
+    //alert("This function has been disabled to prevent you from stealing my code!");
+    e.preventDefault();
+  }, false);
+} else {
+  document.attachEvent('oncontextmenu', function() {
+    //alert("This function has been disabled to prevent you from stealing my code!");
+    window.event.returnValue = false;
+  });
+}
+
+$('body').bind('copy paste',function(e) {
+    e.preventDefault(); return false; 
+});
+
+// Disables ctrl+v, ctrl+x, ctrl+c.
+$('.wrapper.dashboard').on("cut", function(e) {
+  //alert('cut. not allowed!');
+                e.preventDefault();
+});
+$('.wrapper.dashboard').on("copy", function(e) {
+ // alert('copy. not allowed!');
+    e.preventDefault();
+});
+$('.wrapper.dashboard').on("paste", function(e) {
+   // alert('paste. not allowed!');
+    e.preventDefault();
+});
+
       </script>
       </body>
 

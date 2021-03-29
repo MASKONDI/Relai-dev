@@ -1407,26 +1407,22 @@ app.get('/add-property', isCustomer, async (req, res) => {
   success_msg = req.flash('success_msg');
   console.log("deep:==", req.query)
   if (req.query.property_id != null) {
-
     var property_id = req.query.property_id;
     var active_user = req.session.active_user_login;
     req.session.propertyEditId = property_id
     let propertyObj = await propertyDetail.GetPropertById(property_id, active_user);
     let propertyImageObject = await propertyDetail.GetPropertImageById(property_id, active_user);
     let propertyPlanImageObject = await propertyDetail.GetPropertPlanImageById(property_id, active_user);
-    // console.log("propertyObj",propertyObj)
-    // console.log("propertyImageObject",propertyImageObject)
-    // console.log("propertyPlanImageObject",propertyPlanImageObject)
+
     res.render('add-property', {
       err_msg, success_msg, layout: false,
       session: req.session,
       propertyObj: propertyObj,
       propertyImageObject: propertyImageObject,
       propertyPlanImageObject: propertyPlanImageObject
-
     });
   } else {
-
+    //console.log('Add serviceproviderData:',serviceproviderData)
     res.render('add-property', {
       err_msg, success_msg, layout: false,
       session: req.session,
@@ -1439,13 +1435,13 @@ app.get('/add-property', isCustomer, async (req, res) => {
 app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
   req.session.pagename = 'mydreamhome';
   var newData = [];
-  console.log(' property id  :', req.session.property_id);
+  console.log(' property id  :', req.query.id);
   console.log('helooooo', req.query.pid);
   req.session.professional_id = req.query.pid;
   let property = await PropertiesSchema.findOne({
     $or: [
-      { $and: [{ _id: req.session.property_id }, { ps_is_active_user_flag: req.session.active_user_login }] },
-      { $and: [{ _id: req.session.property_id }, { ps_other_property_type: req.session.active_user_login }] }
+      { $and: [{ _id: req.query.id }, { ps_is_active_user_flag: req.session.active_user_login }] },
+      { $and: [{ _id: req.query.id }, { ps_other_property_type: req.session.active_user_login }] }
     ]
     // _id: req.session.property_id, ps_is_active_user_flag: req.session.active_user_login
   });
@@ -1485,8 +1481,8 @@ app.get('/mydreamhome-details-message', isCustomer, async (req, res) => {
 
   var QueryData = {
     $or: [
-      { $and: [{ sms_sender_id: property.ps_user_id }, { sms_receiver_id: req.query.pid }, { sms_property_id: req.session.property_id }, { sms_sender_id: req.session.user_id }] },
-      { $and: [{ sms_sender_id: req.query.pid }, { sms_receiver_id: property.ps_user_id }, { sms_property_id: req.session.property_id }, { sms_receiver_id: req.session.user_id }] }
+      { $and: [{ sms_sender_id: property.ps_user_id }, { sms_receiver_id: req.query.pid }, { sms_property_id: req.query.id }, { sms_sender_id: req.session.user_id }] },
+      { $and: [{ sms_sender_id: req.query.pid }, { sms_receiver_id: property.ps_user_id }, { sms_property_id: req.query.id }, { sms_receiver_id: req.session.user_id }] }
     ]
   };
   const count = await MessageSchema.countDocuments(QueryData);
@@ -4150,12 +4146,45 @@ app.post('/professionals-multifilter', async (req, res) => {
     }
 
     if (req.body.experience != undefined) {
+      let expCreateArr=[];
+      for (var expData of req.body.experience) {
+            let expLists = expData.split("-");
+          console.log('Expireancelisisi:',expLists);
+         if(expLists[1]){
+          console.log('expListarra0:',expLists[0]);
+          console.log('expListarra1:',expLists[1]);
+                for(let i=parseInt(expLists[0]); i<=parseInt(expLists[1]); i++){
+                    expCreateArr.push(String(i));
+                }
+            console.log('expCreateArr:',expCreateArr);
+         }else{
+          console.log('expList:',expLists);
+          expCreateArr = expLists;
+         }
+      }
+
       if (typeof (req.body.experience) == 'object') {
-        experienceKeyword = req.body.experience;
+        experienceKeyword = expCreateArr;
+        //experienceKeyword = req.body.experience;
       } else {
         var arr = [];
-        arr.push(req.body.experience);
-        experienceKeyword = arr;
+
+        let expLists = req.body.experience.split("-");
+        console.log('EString xpireancelisisi:',expLists);
+       if(expLists[1]){
+        console.log('EString expListarra0:',expLists[0]);
+        console.log('EString expListarra1:',expLists[1]);
+              for(let i=parseInt(expLists[0]); i<=parseInt(expLists[1]); i++){
+                  expCreateArr.push(String(i));
+              }
+              console.log('EString expCreateArr:',expCreateArr);
+       }else{
+        console.log('EString expList:',expLists);
+        expCreateArr = expLists;
+       }
+
+        //arr.push(req.body.experience);
+        experienceKeyword = expCreateArr;
       }
     }
 
@@ -4185,7 +4214,7 @@ app.post('/professionals-multifilter', async (req, res) => {
     console.log('cityKeyword:', cityKeyword)
     console.log('languageKeyword:', languageKeyword)
 
-    const { page = 1, limit = 4 } = req.body;
+    const { page = 1, limit = 12 } = req.body;
     let count = 0;
     console.log('pageQuery:', page);
     console.log('req.query:', req.body);
@@ -4344,7 +4373,7 @@ app.post('/professionals-multifilter', async (req, res) => {
     if (languageKeyword) {
       console.log('cityKeyword11:', languageKeyword)
       //for (var languageWord of languageKeyword) {
-      QuerySyntex = { spls_language: { $in: languageKeyword }, sps_status: 'active' };
+      QuerySyntex = { spls_language: { $in: languageKeyword } };
       count = await ServiceProviderLanguageSchema.countDocuments(QuerySyntex);
       console.log('countcount:', count);
       await ServiceProviderLanguageSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail_lang => {
@@ -5465,15 +5494,59 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
       }
     }
 
+    // if (req.body.experience != undefined) {
+    //   if (typeof (req.body.experience) == 'object') {
+    //     experienceKeyword = req.body.experience;
+    //   } else {
+    //     var arr = [];
+    //     arr.push(req.body.experience);
+    //     experienceKeyword = arr;
+    //   }
+    // }
+
     if (req.body.experience != undefined) {
+      let expCreateArr=[];
+      for (var expData of req.body.experience) {
+            let expLists = expData.split("-");
+          console.log('Expireancelisisi:',expLists);
+         if(expLists[1]){
+          console.log('expListarra0:',expLists[0]);
+          console.log('expListarra1:',expLists[1]);
+                for(let i=parseInt(expLists[0]); i<=parseInt(expLists[1]); i++){
+                    expCreateArr.push(String(i));
+                }
+            console.log('expCreateArr:',expCreateArr);
+         }else{
+          console.log('expList:',expLists);
+          expCreateArr = expLists;
+         }
+      }
+
       if (typeof (req.body.experience) == 'object') {
-        experienceKeyword = req.body.experience;
+        experienceKeyword = expCreateArr;
+        //experienceKeyword = req.body.experience;
       } else {
         var arr = [];
-        arr.push(req.body.experience);
-        experienceKeyword = arr;
+
+        let expLists = req.body.experience.split("-");
+        console.log('EString xpireancelisisi:',expLists);
+       if(expLists[1]){
+        console.log('EString expListarra0:',expLists[0]);
+        console.log('EString expListarra1:',expLists[1]);
+              for(let i=parseInt(expLists[0]); i<=parseInt(expLists[1]); i++){
+                  expCreateArr.push(String(i));
+              }
+              console.log('EString expCreateArr:',expCreateArr);
+       }else{
+        console.log('EString expList:',expLists);
+        expCreateArr = expLists;
+       }
+
+        //arr.push(req.body.experience);
+        experienceKeyword = expCreateArr;
       }
     }
+
 
     if (req.body.location_city != undefined) {
       if (typeof (req.body.location_city) == 'object') {
@@ -5501,7 +5574,7 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
     console.log('cityKeyword:', cityKeyword)
     console.log('languageKeyword:', languageKeyword)
 
-    const { page = 1, limit = 1 } = req.body;
+    const { page = 1, limit = 12 } = req.body;
     let count = 0;
     console.log('pageQuery:', page);
     console.log('req.query:', req.body);
@@ -5727,7 +5800,7 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       //}
 
-      console.log('currentPage:', page);
+      console.log('languageServiceProvData:', languageServiceProvData);
       console.log('totalPages:', Math.ceil(count / limit));
 
       if (experienceKeyword == '' && categoryKeyword == '' && cityKeyword == '') {
@@ -6763,6 +6836,35 @@ app.get('/get-notification', isCustomer, async (req, res) => {
     notifData: uniqueArray
   });
 
+});
+
+
+app.get('/get-solicitor-lists', isCustomer, async (req, res) => {
+  err_msg = req.flash('err_msg');
+  success_msg = req.flash('success_msg');
+  let serviceproviderData=[];
+    let serviceProviderObj = {
+      value:'',
+      data:'',
+    }
+    await ServiceProviderSchema.find({ sps_status: 'active',sps_role_name:"Solicitor" }).then(async service_provider1 => {
+      if (service_provider1) {
+        console.log('service_provider1:',service_provider1)
+        for (var sp_id of service_provider1) {
+          serviceProviderObj = {
+              data:sp_id.sps_email_id,
+              value:sp_id.sps_fullname
+          }
+          serviceproviderData.push(serviceProviderObj);
+        }
+      }
+    });
+    console.log('Edit serviceproviderData:',serviceproviderData)
+    res.send({
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      serviceproviderData:serviceproviderData
+    });
 });
 
 
