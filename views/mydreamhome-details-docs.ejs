@@ -1,6 +1,35 @@
 <%- include('dashboard_header')-%>
   <%- include('edit-profile-model')-%>
     <!-- The Modal -->
+
+
+    <!-- Model for add Existing Tasks for phase-a,b,c,d,e,f--->
+<div class="modal fade view-doc-modal" data-backdrop="static" data-keyboard="false"  id="viewDocModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Large Modal</h4>
+          <button type="button" class="close closeViewDocModal" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+            <!-- <iframe class = "office iframe" src="https://view.officeapps.live.com/op/embed.aspx?src=https://relai.herokuapp.com/taskdocument/howtoconvert-1616406032794.doc" frameborder="0"
+                scrolling="no" marginheight="0" marginwidth="0" role="document" aria-label="Doc document" title="Doc document" >
+            </iframe>  -->
+            <div id="iframe_div"></div>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-cancel closeViewDocModal" data-dismiss="modal">Close</button> -->
+        </div>
+    </div>
+  </div>
+</div>
+
+
     <div class="modal fade permission-modal" data-backdrop="static" data-keyboard="false" id="changePermisionModal">
 
       <div class="modal-dialog">
@@ -847,7 +876,7 @@
                                           <%if(row.permissionData){ %>
                                             <%if(row.permissionData.dps_view_permission=='yes' ){%>
                                               <li>
-                                                <a href="#" data-toggle="tooltip" data-placement="top"
+                                                <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="image" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)"  data-toggle="tooltip" data-placement="top"
                                                   title="View Document"><img src="../images/eye.png"
                                                     style="width:75%"></a>
                                               </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -888,14 +917,12 @@
                                       <td>...</td>
                                       <%}%>
                                         <td>
-                                          <a class="word"
-                                            href="//docs.google.com/gview?url=https://relai.herokuapp.com/taskdocument/sample-1616398262791.pdf&embedded=true"></a>
-
+                                        
                                           <ul style="display: flex;">
                                             <%if(row.permissionData){ %>
                                               <%if(row.permissionData.dps_view_permission=='yes' ){%>
                                                 <li>
-                                                  <a href="#" data-toggle="tooltip" data-placement="top"
+                                                  <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="pdf" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)"  data-toggle="tooltip" data-placement="top"
                                                     title="View Document"><img src="../images/eye.png"
                                                       style="width:75%"></a>
                                                 </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -940,7 +967,7 @@
                                               <%if(row.permissionData){ %>
                                                 <%if(row.permissionData.dps_view_permission=='yes' ){%>
                                                   <li>
-                                                    <a href="#" data-toggle="tooltip" data-placement="top"
+                                                    <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="doc" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)"  data-toggle="tooltip" data-placement="top"
                                                       title="View Document"><img src="../images/eye.png"
                                                         style="width:75%"></a>
                                                   </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -971,7 +998,7 @@
                                         </span></td>
                                       <%if(row.spuds_phase_flag){%>
                                         <td>
-                                          <a href="#" data-toggle="tooltip" data-placement="top"
+                                          <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="txt" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)"  data-toggle="tooltip" data-placement="top"
                                             title="<%=row.spuds_task_name%>">
                                             <%=row.spuds_phase_flag%>
                                           </a>
@@ -1015,7 +1042,7 @@
                                           </span></td>
                                         <%if(row.spuds_phase_flag){%>
                                           <td>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
+                                            <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="video" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)"  data-toggle="tooltip" data-placement="top"
                                               title="<%=row.spuds_task_name%>">
                                               <%=row.spuds_phase_flag%>
                                             </a>
@@ -1085,6 +1112,53 @@
     </div>
     <%- include('dashboard_footer')-%>
       <script>
+
+$(".viewModalDoc").click(function (e) {
+      var doctype = $(this).data('doctype');
+      var docname = $(this).data('docname');
+      var docurl = $(this).data('docurl');
+
+      //var file_src = "https://view.officeapps.live.com/op/embed.aspx?src=https://relai.herokuapp.com/taskdocument/howtoconvert-1616406032794.doc";
+      if(doctype == 'doc'){
+          var file_src = "https://view.officeapps.live.com/op/embed.aspx?src=https://relai.herokuapp.com"+docurl;
+          $("#viewDocModal #iframe_div").empty();
+          //$('<iframe>') .attr('src',file_src).attr('frameborder',0).attr('scrolling',0).attr('marginheight',0).attr('marginwidth',0).attr('width','100%').attr('height',700).insertAfter('#iframe_div');
+           $('#iframe_div').html('<iframe src="'+file_src+'" frameborder="0" scrolling="0" marginheight="0" marginwidth="0" width="100%" height="700"></iframe>')
+          }
+
+      if(doctype == 'pdf'){
+        //https://docs.google.com/viewer?url=https://gate.ac.uk/sale/talks/text-mining-course-sslst2011/slides/module1-intro.pdf&embedded=true
+        var file_src = "https://docs.google.com/viewer?url=https://relai.herokuapp.com"+docurl+"&embedded=true";
+          $("#viewDocModal #iframe_div").empty();
+          $('#iframe_div').html('<iframe src="'+file_src+'" frameborder="0" scrolling="0" marginheight="0" marginwidth="0" width="100%" height="700"></iframe>')
+
+          //$('<iframe>').attr('src',file_src).attr('frameborder',0).attr('scrolling',0).attr('marginheight',0).attr('marginwidth',0).attr('width','100%').attr('height',700).insertAfter('#iframe_div');
+      }
+
+      if(doctype == 'image'){
+          var file_src = "https://relai.herokuapp.com"+docurl
+          $("#viewDocModal #iframe_div").empty();
+          $('<img>').attr('src',file_src).insertAfter('#iframe_div');
+      }
+
+      if(doctype == 'txt'){
+          var file_src = "https://relai.herokuapp.com"+docurl
+          $("#viewDocModal #iframe_div").empty();
+          $('#iframe_div').html('<iframe src="'+file_src+'" frameborder="0" scrolling="0" marginheight="0" marginwidth="0" width="100%" height="700"></iframe>')
+
+          //$('<iframe>').attr('src',file_src).attr('frameborder',0).attr('scrolling',0).attr('marginheight',0).attr('marginwidth',0).attr('width','100%').attr('height',700).insertAfter('#iframe_div');
+      }
+
+      $('#viewDocModal').modal('show');
+      $('#viewDocModal #myModalLabel').text(docname);
+  });
+
+  $('.closeViewDocModal').click(function (e) { 
+        $('#viewDocModal').modal('hide');
+        //window.location.reload(true);
+  });
+
+
         function remove_document(document_id) {
           console.log(document_id)
 
