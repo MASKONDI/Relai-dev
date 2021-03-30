@@ -399,7 +399,7 @@
                               </div>
                               <%if(propertyObj=='null'){%>
                                 <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
-                                  <select name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
+                                  <select required name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
                                     id="ps_chain_property" style="height: 48px;">
                                     <!-- <option value="">Select Property For Chain</option> -->
 
@@ -407,7 +407,7 @@
                                 </div>
                                 <%}else{%>
                                   <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
-                                    <select name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
+                                    <select required name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
                                       id="ps_chain_property" style="height: 48px;">
                                       <option value="<%=propertyObj.ps_chain_property_name[0]%>">
                                         <%=propertyObj.ps_chain_property_name%>
@@ -436,32 +436,37 @@
                             <div class="row">
                               <div class="col-sm-12 col-lg-4">
                                 <%if(propertyObj=='null'){%>
-                                  <input type="text" class="form-control property-form-control-size-fix solicitor_name" id="solicitor_name" placeholder="Solicitor Name*" name="ps_solicitor_name" value="" >
+                                  <input type="text" class="form-control property-form-control-size-fix solicitor_name" id="solicitor_name" placeholder="Solicitor Name" name="ps_solicitor_name" value="" >
                                   <%}else{%>
                                     <%if(propertyObj.ps_solicitor_name.length>0){%>
                                       <% var i=0; propertyObj.ps_solicitor_name.forEach(function(row){ %>
                                         <input type="text" class="form-control property-form-control-size-fix edit_solicitor_name" id="solicitor_name"
                                           placeholder="Solicitor Name*" name="ps_solicitor_name"
-                                          value="<%=row%>" data-rule-required="true"
-                                          data-msg-required="Solicitor name is required!">
+                                          value="<%=row%>">
                                         <% i++;});%>
-                                      <%}%> 
+                                      <%}else{%>
+                                          <input type="text" class="form-control property-form-control-size-fix solicitor_name" id="solicitor_name" placeholder="Solicitor Name*" name="ps_solicitor_name" value="" >
+                                        
+                                        <%}%>
                                     <%}%>
                               </div>
                               <div class="col-sm-12 col-lg-4">
                                 <%if(propertyObj=='null'){%>
                                   <input type="email" class="form-control property-form-control-size-fix solicitor_email"
-                                    id="solicitor_email" placeholder="Solicitor email address*" name="ps_solicitor_email"
+                                    id="solicitor_email" placeholder="Solicitor email address" name="ps_solicitor_email"
                                     value="">
                                   <%}else{%>
                                     <%if(propertyObj.ps_solicitor_email.length>0){%>
                                       <% var i=0; propertyObj.ps_solicitor_email.forEach(function(row){ %>
                                           <input type="email" readonly class="form-control property-form-control-size-fix edit_solicitor_email"
-                                          id="solicitor_email" placeholder="Solicitor email address*" name="ps_solicitor_email"
-                                          value="<%=row%>" data-rule-required="true"
-                                          data-msg-required="Solicitor email is required!" required>
+                                          id="solicitor_email" placeholder="Solicitor email address" name="ps_solicitor_email"
+                                          value="<%=row%>">
                                       <% i++;});%>
-                                      <%}%> 
+                                      <%}else{%>
+                                        <input type="email" class="form-control property-form-control-size-fix solicitor_email"
+                                    id="solicitor_email" placeholder="Solicitor email address" name="ps_solicitor_email"
+                                    value="">
+                                        <%}%>
                                     <%}%>
                               </div>
 
@@ -489,7 +494,15 @@
                                       </select>
 
                                       <% i++;});%>
-                                      <%}%> 
+                                      <%}else{%>
+                                        <select name="ps_solicitor_for" class=" form-control selectBox5"
+                                        id="ps_solicitor_for" style="height: 48px;">
+                                            <option value="">Solicitor For</option>
+                                            <option value="seller">Seller</option>
+                                            <option value="buyer">Buyer</option>
+                                            <option value="renovator">Renovator</option>
+                                      </select>
+                                        <%}%>
                                     <%}%>
                               </div>
 
@@ -893,23 +906,45 @@
                             <div class="row">
                               <div class="col-sm-12 col-lg-4">
                                 <%if(propertyObj=='null'){%>
-                                     <input type="text" placeholder="Property Offer Price" value="" name="offer_price" class="form-control property-form-control-size-fix offerPrice" />
+                                  <div style="margin: 15px 0px 5px 0px;" class="input-group mb-3 propertyPricediv">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text">£</span>
+                                    </div>
+                                    <input type="number" placeholder="Property Offer Price" value="" name="offer_price" class="form-control property-form-control-size-fix-price offerPrice" />                    
+                                     <div class="input-group-append">
+                                      <span class="input-group-text">.00</span>
+                                    </div>
+                                  </div>
+
+                                     <!-- <input type="text" placeholder="Property Offer Price" value="" name="offer_price" class="form-control property-form-control-size-fix offerPrice" /> -->
                                   <%}else{%>
-                                    <input type="text" readonly placeholder="Property Offer Price" name="offer_price" value="<%=propertyObj.ps_offer_price%>" class="form-control property-form-control-size-fix offerPrice" />
+
+                                    <div style="margin: 15px 0px 5px 0px;" class="input-group mb-3 propertyPricediv">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text">£</span>
+                                      </div>
+                                   
+                                    <input type="number"   <% if(propertyObj.ps_offer_price){ %> readonly <%}%> placeholder="Property Offer Price" name="offer_price" value="<%=propertyObj.ps_offer_price%>" class="form-control property-form-control-size-fix-price offerPrice" />
+                                   
+                                    <div class="input-group-append">
+                                    <span class="input-group-text">.00</span>
+                                      </div>
+                                    </div>
+
                                 <%}%>
                               </div>
                               <div class="col-sm-12 col-lg-4">
                                 <%if(propertyObj=='null'){%>
-                                     <input type="text" placeholder="Offer status" value="accepted" name="offer_status" class="form-control property-form-control-size-fix offerStatus" />
+                                     <input type="text" readonly placeholder="Offer status" value="accepted" name="offer_status" class="form-control property-form-control-size-fix offerStatus" />
                                   <%}else{%>
                                     <input type="text" readonly placeholder="Offer status" name="offer_status" value="<%=propertyObj.ps_offer_status%>" class="form-control property-form-control-size-fix offerStatus" />
                                 <%}%>
                               </div>
 
-                              <div class="col-sm-12 col-lg-4">
+                              
                                     <input name="property_lattitude" type="hidden" class="form-control property-form-control-size-fix property_lattitude" />
                                     <input name="property_longitude" type="hidden" class="form-control property-form-control-size-fix property_longitude" />
-                              </div>
+                            
 
                             </div>
 
@@ -2361,7 +2396,9 @@ $(document).ready(function () {
                           if(offerdata.currency == 'USD'){
                               currencyFormat = '$';
                           }
-                            $('.offerPrice').val(currencyFormat+' '+offerdata.amount);
+                          
+                            $('.propertyPricediv').text(currencyFormat);
+                            $('.offerPrice').val(offerdata.amount);
                             $('.offerStatus').val(offerdata.status);
                         }
                       })

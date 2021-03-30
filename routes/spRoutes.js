@@ -2169,5 +2169,54 @@ app.get('/service-provider/professional-customer-by-property', async (req, res) 
 
 });
 
+// All Professional Filter name surname qualification
+app.get('/service-provider/professional-global-search', isServiceProvider, async (req, res) => {
+  req.session.pagename = 'service-provider/property';
+  const { page = 1, limit = 9 } = req.query;
+  console.log('pageQuery:', page);
+
+  let propertyArray = []
+  const count = await PropertiesSchema.countDocuments();
+  console.log('countcount:', count);
+  console.log("req.session.active_user_login", req.session.active_user_login);
+  PropertiesSchema.find({ ps_property_name: new RegExp(req.query.global_search, 'i') }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
+    if (data) {
+      console.log("PropertiesSchema is ", data);
+      let arr = [];
+      for (let img of data) {
+        await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
+          let temp = await result
+
+          console.log('')
+          //for(let image of result){
+          //  let temp = await image
+          // let customerName = await customerHelper.getCustomerNameByID(img.ps_user_id);
+          // let customerProfile = await customerHelper.getCustomerImageByID(img.ps_user_id);
+          let userdata = await CustomerSchema.findOne({ _id: img.ps_user_id });
+          temp.customer_name = await userdata.cus_fullname;
+          temp.customer_profile = await userdata.cus_profile_image_name;
+          arr.push(temp)
+          // }
+          console.log("arr is", arr);
+        })
+      }
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.render('service-provider/professional-global-search', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        propertyData: data,
+        propertyImage: arr,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
+      });
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+
+
+});
+
 module.exports = app;
 
