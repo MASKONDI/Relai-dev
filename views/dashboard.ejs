@@ -4,22 +4,22 @@
       <div class="container-fluid">
         <div class="row content">
 
-            <!--Sidebar-->
-            <div class="col-sm-2 sidenav hidden-xs-down">
-              <div class="user-login text-center">
-                <%- include('profile-image')-%>
-                  <div class="user-name">
-                    <h2>
-                      <%= session.name %>
-                    </h2>
-                    <a href="#">
-                      <%= session.email %>
-                        <%- include('edit-profile-icon')-%>
-                    </a>
-                  </div>
-              </div>
-            <%- include('sidebar')-%>
+          <!--Sidebar-->
+          <div class="col-sm-2 sidenav hidden-xs-down">
+            <div class="user-login text-center">
+              <%- include('profile-image')-%>
+                <div class="user-name">
+                  <h2>
+                    <%= session.name %>
+                  </h2>
+                  <a href="#">
+                    <%= session.email %>
+                      <%- include('edit-profile-icon')-%>
+                  </a>
+                </div>
             </div>
+            <%- include('sidebar')-%>
+          </div>
 
           <!-- Body Start -->
           <div class="col-sm-12 col-lg-10">
@@ -50,103 +50,136 @@
                 </div>
                 <div class="col-sm-12 col-lg-7">
                   <div class="row">
-                    <div class="col-sm-6 col-md-6 col-lg-6">
-                      <div class="recent-box">
+                    <%if(propertyData.length>0){%>
+                      <%propertyData.forEach(function(row,i){%>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                          <div class="recent-box">
+                            <p>Recent</p>
+                            <a href="/service-provider/myproperties-detail?id=<%=row._id%>" alt="">
+                              <h2>
+                                <%=row.ps_property_name%>,<span>
+                                    <%=row.ps_property_address%>, <%=row.ps_property_country_id%>
+                                  </span>
+                              </h2>
+                            </a>
+                            <div class="clearfix">
+                              <div class="float-left">
+                                <div class="recent-img">
+                                  <!-- <img src="../images/recent-user-1.png"><img class="mr-10"
+                                    src="../images/recent-user-2.png"><img class="mr-10"
+                                    src="../images/recent-user-3.png"> -->
+                                  <%row.hiredProfessional.forEach(function(sp,i){%>
 
-                        <p>Recent</p>
-                        <a href="/mydreamhome-details" alt="">
-                          <h2>Nacary Apartment,<span>Sudirman, Central Jakarta</span></h2>
-                        </a>
-                        <div class="clearfix">
-                          <div class="float-left">
-                            <div class="recent-img">
-                              <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
-                                class="mr-10" src="images/recent-user-3.png">
-                            </div>
-                          </div>
-                          <div class="float-right">
-                            <div class="progress-box">
-                              <p><span>55%</span> completed</p>
-                              <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                                    <%if(sp.sps_fullname !=null){%>
+                                      <a href="#" data-toggle="tooltip" data-placement="top"
+                                        title="<%=sp.sps_fullname%>">
+                                        <% if(sp.sps_profile_image_name !=null){%>
+                                          <img class="mr-10" src="upload/<%=sp.sps_profile_image_name%>"
+                                            style="border-radius: 50%;">
+                                      </a>
+                                      <%} else {%>
+                                        <img class="mr-10" src="images/img_avatar.png" style="border-radius: 50%;"></a>
+                                        <%}%>
+                                          <%} else {%>
+                                            <%}%>
+                                              <%})%>
+                                </div>
+                              </div>
+                              <div class="float-right">
+                                <div class="progress-box">
+
+                                  <%if(row.hiredProfessional !=null){%>
+                                    <p><span>55%</span> completed</p>
+
+                                    <div class="progress">
+                                      <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                                    </div>
+                                    <%}%>
+
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-lg-6">
-                      <div class="recent-box">
-                        <p>Recent</p>
-                        <a href="/mydreamhome-details" alt="">
-                          <h2>Nacary Apartment,<span>Sudirman, Central Jakarta</span></h2>
-                        </a>
-                        <div class="clearfix">
-                          <div class="float-left">
-                            <div class="recent-img">
-                              <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
-                                class="mr-10" src="images/recent-user-3.png">
-                            </div>
-                          </div>
-                          <div class="float-right">
-                            <div class="progress-box">
-                              <p><span>55%</span> completed</p>
-                              <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                        <%})%>
+                          <%}else{%>
+                            <p style="font-size: 20px; text-align: center;">Property Not Found !!</p>
+                            <%}%>
+                              <!-- <div class="col-sm-6 col-md-6 col-lg-6">
+                                <div class="recent-box">
+                                  <p>Recent</p>
+                                  <a href="/property-detail" alt="">
+                                    <h2>Nacary Apartment,<span>Sudirman, Central Jakarta</span></h2>
+                                  </a>
+                                  <div class="clearfix">
+                                    <div class="float-left">
+                                      <div class="recent-img">
+                                        <img src="../images/recent-user-1.png"><img class="mr-10"
+                                          src="../images/recent-user-2.png"><img class="mr-10"
+                                          src="../images/recent-user-3.png">
+                                      </div>
+                                    </div>
+                                    <div class="float-right">
+                                      <div class="progress-box">
+                                        <p><span>55%</span> completed</p>
+                                        <div class="progress">
+                                          <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-lg-6">
-                      <div class="recent-box">
-                        <p>Recent</p>
-                        <a href="/mydreamhome-details" alt="">
-                          <h2>Nacary Apartment,<span>Sudirman, Central Jakarta</span></h2>
-                        </a>
-                        <div class="clearfix">
-                          <div class="float-left">
-                            <div class="recent-img">
-                              <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
-                                class="mr-10" src="images/recent-user-3.png">
-                            </div>
-                          </div>
-                          <div class="float-right">
-                            <div class="progress-box">
-                              <p><span>55%</span> completed</p>
-                              <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                              <div class="col-sm-6 col-md-6 col-lg-6">
+                                <div class="recent-box">
+                                  <p>Recent</p>
+                                  <a href="/property-detail" alt="">
+                                    <h2>Nacary Apartment,<span>Sudirman, Central Jakarta</span></h2>
+                                  </a>
+                                  <div class="clearfix">
+                                    <div class="float-left">
+                                      <div class="recent-img">
+                                        <img src="../images/recent-user-1.png"><img class="mr-10"
+                                          src="../images/recent-user-2.png"><img class="mr-10"
+                                          src="../images/recent-user-3.png">
+                                      </div>
+                                    </div>
+                                    <div class="float-right">
+                                      <div class="progress-box">
+                                        <p><span>55%</span> completed</p>
+                                        <div class="progress">
+                                          <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-lg-6">
-                      <div class="recent-box">
-                        <p>Recent</p>
-                        <a href="/mydreamhome-details" alt="">
-                          <h2>Nacary Apartment,<span>Sudirman, Central Jakarta</span></h2>
-                        </a>
-                        <div class="clearfix">
-                          <div class="float-left">
-                            <div class="recent-img">
-                              <img src="images/recent-user-1.png"><img class="mr-10" src="images/recent-user-2.png"><img
-                                class="mr-10" src="images/recent-user-3.png">
-                            </div>
-                          </div>
-                          <div class="float-right">
-                            <div class="progress-box">
-                              <p><span>55%</span> completed</p>
-                              <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                              <div class="col-sm-6 col-md-6 col-lg-6">
+                                <div class="recent-box">
+                                  <p>Recent</p>
+                                  <a href="/property-detail" alt="">
+                                    <h2>Nacary Apartment,<span>Sudirman, Central Jakarta</span></h2>
+                                  </a>
+                                  <div class="clearfix">
+                                    <div class="float-left">
+                                      <div class="recent-img">
+                                        <img src="../images/recent-user-1.png"><img class="mr-10"
+                                          src="../images/recent-user-2.png"><img class="mr-10"
+                                          src="../images/recent-user-3.png">
+                                      </div>
+                                    </div>
+                                    <div class="float-right">
+                                      <div class="progress-box">
+                                        <p><span>55%</span> completed</p>
+                                        <div class="progress">
+                                          <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div> -->
                   </div>
                 </div>
               </div>
@@ -169,19 +202,36 @@
                     <div class="my-professionals">
                       <h2>My Professionals</h2>
                       <ul class="professionals-list">
-                        <li><a href="#"><img src="images/prof-img.png" alt="" title="">
-                            <p>Soniya patidar</p>
-                          </a></li>
-                        <li><a href="#"><img src="images/prof-img.png" alt="" title="">
-                            <p>Krishna Bihari Rajput</p>
-                          </a></li>
-                        <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
-                        <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
-                        <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
-                        <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
-                        <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
-                        <li><a href="#"><img src="images/prof-img.png" alt="" title=""></a></li>
-                        <li><a href="/professionals" class="btn btn-add-professional">+</a></li>
+                        <%if(spsData.length>0){%>
+                          <%spsData.forEach(function(row,i){%>
+
+                            <li><a href="#">
+                                <%if(row.sps_profile_image_name !=null) {%>
+                                  <img src="upload/<%=row.sps_profile_image_name%>"
+                                    style="width:60px;height:60px;border-radius: 20%;" alt="" title="">
+                                  <p>
+                                    <%} else {%>
+
+                                      <img src="images/img_avatar.png"
+                                        style="width:60px;height:60px;border-radius: 20%;" alt="" title="">
+                                      <%}%>
+
+                                        <%=row.sps_fullname%>
+                                  </p>
+                              </a></li>
+
+                            <!-- <li><a href="#"><img src="../images/prof-img.png" alt="" title=""></a></li>
+                            <li><a href="#"><img src="../images/prof-img.png" alt="" title=""></a></li>
+                            <li><a href="#"><img src="../images/prof-img.png" alt="" title=""></a></li>
+                            <li><a href="#"><img src="../images/prof-img.png" alt="" title=""></a></li>
+                            <li><a href="#"><img src="../images/prof-img.png" alt="" title=""></a></li>
+                            <li><a href="#"><img src="../images/prof-img.png" alt="" title=""></a></li>
+                            <li><a href="#"><img src="../images/prof-img.png" alt="" title=""></a></li>
+                            <li><a href="#" class="btn btn-add-professional">+</a></li> -->
+                            <%})%>
+                              <%}else{%>
+                                <p style="font-size: 20px; text-align: center;">Clients Not Found !!</p>
+                                <%}%>
                       </ul>
                       <div class="clearfix">
                         <div class="need-help float-left">
