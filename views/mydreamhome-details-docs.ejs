@@ -134,8 +134,8 @@
                                 <div class="custom-file-input">
                                   <input type="hidden" name="property_id" value='<%=property._id%>'
                                     id="hiddenPropertyId">
-                                  <input onchange="previewFile(this);" type="file" id="image" name="task-document" value=""
-                                    required>
+                                  <input onchange="previewFile(this);" type="file" id="image" name="task-document"
+                                    value="" required>
                                   <input type="button">
                                 </div>
                               </span>
@@ -149,14 +149,15 @@
                         <span id="upload-doc-view"></span>
                         <% allDocument.forEach(function(row){%>
                           <%if(row.cuds_document_type=='image'){%>
-                            <li><a href="#"><img src="/taskdocument/<%= row.cuds_document_name%>" alt="" title=""><br><span
+                            <li><a href="#"><img src="/taskdocument/<%= row.cuds_document_name%>" alt=""
+                                  title=""><br><span
                                   style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                   <%= row.cuds_document_name%>
                                 </span></a>
                             </li>
                             <%}else if(row.cuds_document_type=='pdf' ){%>
-                              <li><a download href="/taskdocument/<%= row.cuds_document_name%>"><img src="images/pdficon.png"
-                                    alt="" title=""><br><span
+                              <li><a download href="/taskdocument/<%= row.cuds_document_name%>"><img
+                                    src="images/pdficon.png" alt="" title=""><br><span
                                     style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                                     <%= row.cuds_document_name%>
                                   </span></a>
@@ -198,77 +199,32 @@
               <button class="accordion">Customer uploaded docs & files(<%=allDocument.length%>)
               </button>
               <div class="panel">
-              <div class="doc-table">
-                <!-- <h4 style="font-size: 18px;color: #005377;font-weight: 700;">Property Docs & Files</h4> -->
-                <table class="table table-responsive">
-                  <thead>
-                    <tr>
-                      <th>Document Name</th>
-                      <th>Date</th>
-                      <th>Permissions</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <%if(allDocument.length==0){%>
+                <div class="doc-table">
+                  <!-- <h4 style="font-size: 18px;color: #005377;font-weight: 700;">Property Docs & Files</h4> -->
+                  <table class="table table-responsive">
+                    <thead>
                       <tr>
-                        <td>
-                          <h5>Docs & Files Not Uploaded</h5>
-                        </td>
+                        <th>Document Name</th>
+                        <th>Date</th>
+                        <th>Permissions</th>
+                        <th>Action</th>
                       </tr>
-                      <%}else{%>
-                        <% allDocument.forEach(function(row){ %>
-                          <%if(row.cuds_document_type=='image'){%>
-                            <tr>
-                              <td>
-                                <img class="pdf-file" src="/taskdocument/<%= row.cuds_document_name%>">
-                                <p ><span class='doc_name'>
-                                  <%= row.cuds_document_name%>
-                                  </span>
-                                  <%= row.cuds_document_size%>
-                                </p>
-                              </td>
-                              <td><span class="professionals-view">
-                                <%=moment(row.cuds_created_at).format('D MMM YY'); %>| Downloaded by<ul>
-                                      <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
-                                          id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                          aria-expanded="false">2 professionals</a>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                          <a class="dropdown-item" href="#"><img src="images/recent-user-3.png"> Alex
-                                            Jackson</a>
-                                          <a class="dropdown-item" href="#"><img src="images/recent-user-3.png"> Alex
-                                            Jackson</a>
-                                        </div>
-                                      </li>
-                                    </ul>
-                                </span></td>
-                              <td>
-                                <div class="recent-img">
-                                  <img src="images/recent-user-1.png"><img class="mr-10"
-                                    src="images/recent-user-2.png"><img class="mr-10" src="images/recent-user-3.png">
-                                  <!--data-toggle="modal" data-target="#changePermisionModal" -->
-                                  <a href="javascript:void(0)" value="<%=row._id%>"
-                                    class="getDocId changePermissionModal">Change permission</a>
-                                </div>
-                              </td>
-                              <td>
-                                <a href="javascript:void(0)" class="remove_doc"
-                                  onclick="remove_document('<%=row._id%>');" id="<%=row._id%>"><img
-                                    src="images/delete-icon.png"></a>
-                              </td>
-                            </tr>
-                            <%}else if(row.cuds_document_type=='pdf' ){ %>
-                              <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/pdficon.png" alt="" title=""><br><span
-                            style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-                            <%= row.cuds_document_name%>
-                          </span></a>
-                          </li> -->
-
+                    </thead>
+                    <tbody>
+                      <%if(allDocument.length==0){%>
+                        <tr>
+                          <td>
+                            <h5>Docs & Files Not Uploaded</h5>
+                          </td>
+                        </tr>
+                        <%}else{%>
+                          <% allDocument.forEach(function(row){ %>
+                            <%if(row.cuds_document_type=='image'){%>
                               <tr>
                                 <td>
-                                  <img class="pdf-file" src="images/pdficon.png">
-                                  <p><span >
-                                      <li class='doc_name'><%= row.cuds_document_name%></li>
+                                  <img class="pdf-file" src="/taskdocument/<%= row.cuds_document_name%>">
+                                  <p><span class='doc_name'>
+                                      <%= row.cuds_document_name%>
                                     </span>
                                     <%= row.cuds_document_size%>
                                   </p>
@@ -289,11 +245,30 @@
                                   </span></td>
                                 <td>
                                   <div class="recent-img">
-                                    <img src="images/recent-user-1.png"><img class="mr-10"
-                                      src="images/recent-user-2.png"><img class="mr-10" src="images/recent-user-3.png">
-                                    <!--data-toggle="modal" data-target="#changePermisionModal" -->
-                                    <a href="javascript:void(0)" value="<%=row._id%>"
-                                      class="getDocId changePermissionModal">Change permission</a>
+                                    <!-- <img src="images/recent-user-1.png"><img class="mr-10"
+                                    src="images/recent-user-2.png"><img class="mr-10" src="images/recent-user-3.png"> -->
+                                    <% var i=0; data.forEach(function(sp){ %>
+                                      <%if(sp.sps_fullname !=null){%>
+                                        <a href="#" data-toggle="tooltip" data-placement="top"
+                                          title="<%=sp.sps_fullname%>">
+                                          <% if(sp.sps_profile_image_name !=null){%>
+                                            <img class="mr-10" src="upload/<%=sp.sps_profile_image_name%>" style="border-radius: 50%;width: 45px;
+                                              height: 45px;
+                                            margin-left:-40px;
+                                             ">
+                                        </a>
+                                        <%} else {%>
+                                          <img class="mr-10" src="images/img_avatar.png" style="border-radius: 50%;width: 45px;
+                                            height: 45px;   margin-left:-40px;
+                                            "></a>
+                                          <%}%>
+                                            <%} else {%>
+                                              <%}%>
+
+                                                <%})%>
+                                                  <!--data-toggle="modal" data-target="#changePermisionModal" -->
+                                                  <a href="javascript:void(0)" value="<%=row._id%>"
+                                                    class="getDocId changePermissionModal">Change permission</a>
                                   </div>
                                 </td>
                                 <td>
@@ -302,25 +277,26 @@
                                       src="images/delete-icon.png"></a>
                                 </td>
                               </tr>
-
-                              <%}else if(row.cuds_document_type=='doc' ){ %>
-                                <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/docicon.png" alt="" title=""><br><span
+                              <%}else if(row.cuds_document_type=='pdf' ){ %>
+                                <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/pdficon.png" alt="" title=""><br><span
                             style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                             <%= row.cuds_document_name%>
                           </span></a>
                           </li> -->
+
                                 <tr>
                                   <td>
-                                    <img class="pdf-file" src="images/docicon.png">
-                                    <p><span class='doc_name'>
-                                        <%= row.cuds_document_name%>
+                                    <img class="pdf-file" src="images/pdficon.png">
+                                    <p><span>
+                                        <li class='doc_name'>
+                                          <%= row.cuds_document_name%>
+                                        </li>
                                       </span>
                                       <%= row.cuds_document_size%>
                                     </p>
                                   </td>
                                   <td><span class="professionals-view">
-                                      <%=moment(row.cuds_created_at).format('D MMM YY');%>| Downloaded by
-                                        <ul>
+                                      <%=moment(row.cuds_created_at).format('D MMM YY'); %>| Downloaded by<ul>
                                           <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
                                               id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                               aria-expanded="false">2 professionals</a>
@@ -351,15 +327,16 @@
                                         src="images/delete-icon.png"></a>
                                   </td>
                                 </tr>
-                                <%}else if(row.cuds_document_type=='txt' ){ %>
-                                  <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/txticon.png" alt="" title=""><br><span
+
+                                <%}else if(row.cuds_document_type=='doc' ){ %>
+                                  <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/docicon.png" alt="" title=""><br><span
                             style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                             <%= row.cuds_document_name%>
                           </span></a>
                           </li> -->
                                   <tr>
                                     <td>
-                                      <img class="pdf-file" src="images/txticon.png">
+                                      <img class="pdf-file" src="images/docicon.png">
                                       <p><span class='doc_name'>
                                           <%= row.cuds_document_name%>
                                         </span>
@@ -385,12 +362,31 @@
                                       </span></td>
                                     <td>
                                       <div class="recent-img">
-                                        <img src="images/recent-user-1.png"><img class="mr-10"
+                                        <!-- <img src="images/recent-user-1.png"><img class="mr-10"
                                           src="images/recent-user-2.png"><img class="mr-10"
-                                          src="images/recent-user-3.png">
-                                        <!--data-toggle="modal" data-target="#changePermisionModal" -->
-                                        <a href="javascript:void(0)" value="<%=row._id%>"
-                                          class="getDocId changePermissionModal">Change permission</a>
+                                          src="images/recent-user-3.png"> -->
+                                        <% var i=0; data.forEach(function(sp){ %>
+                                          <%if(sp.sps_fullname !=null){%>
+                                            <a href="#" data-toggle="tooltip" data-placement="top"
+                                              title="<%=sp.sps_fullname%>">
+                                              <% if(sp.sps_profile_image_name !=null){%>
+                                                <img class="mr-10" src="upload/<%=sp.sps_profile_image_name%>" style="border-radius: 50%;width: 45px;
+                                                    height: 45px;
+                                                  margin-left:-40px;
+                                                   ">
+                                            </a>
+                                            <%} else {%>
+                                              <img class="mr-10" src="images/img_avatar.png" style="border-radius: 50%;width: 45px;
+                                                  height: 45px;   margin-left:-40px;
+                                                  "></a>
+                                              <%}%>
+                                                <%} else {%>
+                                                  <%}%>
+
+                                                    <%})%>
+                                                      <!--data-toggle="modal" data-target="#changePermisionModal" -->
+                                                      <a href="javascript:void(0)" value="<%=row._id%>"
+                                                        class="getDocId changePermissionModal">Change permission</a>
                                       </div>
                                     </td>
                                     <td>
@@ -399,22 +395,15 @@
                                           src="images/delete-icon.png"></a>
                                     </td>
                                   </tr>
-
-                                  <%}else{%>
-
-                                    <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/videoicon.png" alt="" title=""><br><span
+                                  <%}else if(row.cuds_document_type=='txt' ){ %>
+                                    <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/txticon.png" alt="" title=""><br><span
                             style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                             <%= row.cuds_document_name%>
                           </span></a>
                           </li> -->
-
                                     <tr>
                                       <td>
-                                        <!-- <video width="200" height="100" controls>
-                                <source src="/upload/<%= row.cuds_document_name%>" type="video/mp4">
-
-                              </video> -->
-                                        <img class="pdf-file" src="images/videoicon.png">
+                                        <img class="pdf-file" src="images/txticon.png">
                                         <p><span class='doc_name'>
                                             <%= row.cuds_document_name%>
                                           </span>
@@ -422,8 +411,8 @@
                                         </p>
                                       </td>
                                       <td><span class="professionals-view">
-                                          <%=moment(row.cuds_created_at).format('D MMM YY'); %>| Downloaded
-                                            by<ul>
+                                          <%=moment(row.cuds_created_at).format('D MMM YY');%>| Downloaded by
+                                            <ul>
                                               <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
                                                   id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                                   aria-expanded="false">2 professionals</a>
@@ -455,86 +444,97 @@
                                       </td>
                                     </tr>
 
-                                    <%}%>
-                                      <% });%>
-                                        <%}%>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <button class="accordion">Task related docs & files (<%=taskDocument.length%>) </button>
-            <div class="panel">
-              <div class="doc-table">
-                <!-- <h4 style="font-size: 18px;color: #005377;font-weight: 700;">Task Docs & Files</h4> -->
-                <table class="table table-responsive">
-                  <thead>
-                    <tr>
-                      <th>Document Name</th>
-                      <th>Date</th>
-                      <th>Permissions</th>
-                      <th>Phase</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <%if(taskDocument.length==0){%>
-                      <tr>
-                        <td>
-                          <h5>Docs & Files Not Uploaded</h5>
-                        </td>
-                      </tr>
-                      <%}else{%>
-                        <% taskDocument.forEach(function(row){ %>
-                          <%if(row.cuds_document_type=='image'){%>
-                            <tr>
-                              <td>
-                                <img class="pdf-file" src="/taskdocument/<%= row.cuds_document_name%>">
-                                <p ><span class='doc_name'>
-                                    <%= row.cuds_document_name%>
-                                  </span>
-                                  <%= row.cuds_document_size%>
-                                </p>
-                              </td>
-                              <td><span class="professionals-view">
-                                  <%=moment(row.cuds_created_at).format('D MMM YY'); %>| Downloaded by<ul>
-                                      <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
-                                          id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                          aria-expanded="false">2 professionals</a>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                          <a class="dropdown-item" href="#"><img src="images/recent-user-3.png"> Alex
-                                            Jackson</a>
-                                          <a class="dropdown-item" href="#"><img src="images/recent-user-3.png"> Alex
-                                            Jackson</a>
-                                        </div>
-                                      </li>
-                                    </ul>
-                                </span></td>
-                              <td>
-                                <div class="recent-img">
-                                  <img src="images/recent-user-1.png"><img class="mr-10"
-                                    src="images/recent-user-2.png"><img class="mr-10" src="images/recent-user-3.png">
-                                  <!--data-toggle="modal" data-target="#changePermisionModal" -->
-                                  <a href="javascript:void(0)" value="<%=row._id%>"
-                                    class="getDocId changePermissionModal">Change permission</a>
-                                </div>
-                              </td>
-                              <td><%=row.cuds_phase_flag%></td>
-                              <td>
-                                <a href="javascript:void(0)" class="remove_doc"
-                                  onclick="remove_document('<%=row._id%>');" id="<%=row._id%>"><img
-                                    src="images/delete-icon.png"></a>
-                              </td>
-                            </tr>
-                            <%}else if(row.cuds_document_type=='pdf' ){ %>
-                              <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/pdficon.png" alt="" title=""><br><span
+                                    <%}else{%>
+
+                                      <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/videoicon.png" alt="" title=""><br><span
                             style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                             <%= row.cuds_document_name%>
                           </span></a>
                           </li> -->
 
+                                      <tr>
+                                        <td>
+                                          <!-- <video width="200" height="100" controls>
+                                <source src="/upload/<%= row.cuds_document_name%>" type="video/mp4">
+
+                              </video> -->
+                                          <img class="pdf-file" src="images/videoicon.png">
+                                          <p><span class='doc_name'>
+                                              <%= row.cuds_document_name%>
+                                            </span>
+                                            <%= row.cuds_document_size%>
+                                          </p>
+                                        </td>
+                                        <td><span class="professionals-view">
+                                            <%=moment(row.cuds_created_at).format('D MMM YY'); %>| Downloaded
+                                              by<ul>
+                                                <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
+                                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">2 professionals</a>
+                                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item" href="#"><img
+                                                        src="images/recent-user-3.png">
+                                                      Alex
+                                                      Jackson</a>
+                                                    <a class="dropdown-item" href="#"><img
+                                                        src="images/recent-user-3.png">
+                                                      Alex
+                                                      Jackson</a>
+                                                  </div>
+                                                </li>
+                                              </ul>
+                                          </span></td>
+                                        <td>
+                                          <div class="recent-img">
+                                            <img src="images/recent-user-1.png"><img class="mr-10"
+                                              src="images/recent-user-2.png"><img class="mr-10"
+                                              src="images/recent-user-3.png">
+                                            <!--data-toggle="modal" data-target="#changePermisionModal" -->
+                                            <a href="javascript:void(0)" value="<%=row._id%>"
+                                              class="getDocId changePermissionModal">Change permission</a>
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <a href="javascript:void(0)" class="remove_doc"
+                                            onclick="remove_document('<%=row._id%>');" id="<%=row._id%>"><img
+                                              src="images/delete-icon.png"></a>
+                                        </td>
+                                      </tr>
+
+                                      <%}%>
+                                        <% });%>
+                                          <%}%>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <button class="accordion">Task related docs & files (<%=taskDocument.length%>) </button>
+              <div class="panel">
+                <div class="doc-table">
+                  <!-- <h4 style="font-size: 18px;color: #005377;font-weight: 700;">Task Docs & Files</h4> -->
+                  <table class="table table-responsive">
+                    <thead>
+                      <tr>
+                        <th>Document Name</th>
+                        <th>Date</th>
+                        <th>Permissions</th>
+                        <th>Phase</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <%if(taskDocument.length==0){%>
+                        <tr>
+                          <td>
+                            <h5>Docs & Files Not Uploaded</h5>
+                          </td>
+                        </tr>
+                        <%}else{%>
+                          <% taskDocument.forEach(function(row){ %>
+                            <%if(row.cuds_document_type=='image'){%>
                               <tr>
                                 <td>
-                                  <img class="pdf-file" src="images/pdficon.png">
+                                  <img class="pdf-file" src="/taskdocument/<%= row.cuds_document_name%>">
                                   <p><span class='doc_name'>
                                       <%= row.cuds_document_name%>
                                     </span>
@@ -564,23 +564,25 @@
                                       class="getDocId changePermissionModal">Change permission</a>
                                   </div>
                                 </td>
-                                <td><%=row.cuds_phase_flag%></td>
+                                <td>
+                                  <%=row.cuds_phase_flag%>
+                                </td>
                                 <td>
                                   <a href="javascript:void(0)" class="remove_doc"
                                     onclick="remove_document('<%=row._id%>');" id="<%=row._id%>"><img
                                       src="images/delete-icon.png"></a>
                                 </td>
                               </tr>
-
-                              <%}else if(row.cuds_document_type=='doc' ){ %>
-                                <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/docicon.png" alt="" title=""><br><span
+                              <%}else if(row.cuds_document_type=='pdf' ){ %>
+                                <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/pdficon.png" alt="" title=""><br><span
                             style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                             <%= row.cuds_document_name%>
                           </span></a>
                           </li> -->
+
                                 <tr>
                                   <td>
-                                    <img class="pdf-file" src="images/docicon.png">
+                                    <img class="pdf-file" src="images/pdficon.png">
                                     <p><span class='doc_name'>
                                         <%= row.cuds_document_name%>
                                       </span>
@@ -588,8 +590,7 @@
                                     </p>
                                   </td>
                                   <td><span class="professionals-view">
-                                      <%=moment(row.cuds_created_at).format('D MMM YY'); %>| Downloaded by
-                                        <ul>
+                                      <%=moment(row.cuds_created_at).format('D MMM YY'); %>| Downloaded by<ul>
                                           <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
                                               id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                               aria-expanded="false">2 professionals</a>
@@ -614,22 +615,25 @@
                                         class="getDocId changePermissionModal">Change permission</a>
                                     </div>
                                   </td>
-                                  <td><%=row.cuds_phase_flag%></td>
+                                  <td>
+                                    <%=row.cuds_phase_flag%>
+                                  </td>
                                   <td>
                                     <a href="javascript:void(0)" class="remove_doc"
                                       onclick="remove_document('<%=row._id%>');" id="<%=row._id%>"><img
                                         src="images/delete-icon.png"></a>
                                   </td>
                                 </tr>
-                                <%}else if(row.cuds_document_type=='txt' ){ %>
-                                  <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/txticon.png" alt="" title=""><br><span
+
+                                <%}else if(row.cuds_document_type=='doc' ){ %>
+                                  <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/docicon.png" alt="" title=""><br><span
                             style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                             <%= row.cuds_document_name%>
                           </span></a>
                           </li> -->
                                   <tr>
                                     <td>
-                                      <img class="pdf-file" src="images/txticon.png">
+                                      <img class="pdf-file" src="images/docicon.png">
                                       <p><span class='doc_name'>
                                           <%= row.cuds_document_name%>
                                         </span>
@@ -663,38 +667,33 @@
                                           class="getDocId changePermissionModal">Change permission</a>
                                       </div>
                                     </td>
-                                    <td><%=row.cuds_phase_flag%></td>
+                                    <td>
+                                      <%=row.cuds_phase_flag%>
+                                    </td>
                                     <td>
                                       <a href="javascript:void(0)" class="remove_doc"
                                         onclick="remove_document('<%=row._id%>');" id="<%=row._id%>"><img
                                           src="images/delete-icon.png"></a>
                                     </td>
                                   </tr>
-
-                                  <%}else{%>
-
-                                    <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/videoicon.png" alt="" title=""><br><span
+                                  <%}else if(row.cuds_document_type=='txt' ){ %>
+                                    <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/txticon.png" alt="" title=""><br><span
                             style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                             <%= row.cuds_document_name%>
                           </span></a>
                           </li> -->
-
                                     <tr>
                                       <td>
-                                        <!-- <video width="200" height="100" controls>
-                                <source src="/upload/<%= row.cuds_document_name%>" type="video/mp4">
-
-                              </video> -->
-                                        <img class="pdf-file" src="images/videoicon.png">
+                                        <img class="pdf-file" src="images/txticon.png">
                                         <p><span class='doc_name'>
-                                            <%=row.cuds_document_name%>
+                                            <%= row.cuds_document_name%>
                                           </span>
-                                          <%=row.cuds_document_size%>
+                                          <%= row.cuds_document_size%>
                                         </p>
                                       </td>
                                       <td><span class="professionals-view">
-                                          <%=moment(row.cuds_created_at).format('D MMM YY'); %>| Downloaded
-                                            by<ul>
+                                          <%=moment(row.cuds_created_at).format('D MMM YY'); %>| Downloaded by
+                                            <ul>
                                               <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
                                                   id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                                   aria-expanded="false">2 professionals</a>
@@ -719,7 +718,9 @@
                                             class="getDocId changePermissionModal">Change permission</a>
                                         </div>
                                       </td>
-                                      <td><%=row.cuds_phase_flag%></td>
+                                      <td>
+                                        <%=row.cuds_phase_flag%>
+                                      </td>
                                       <td>
                                         <a href="javascript:void(0)" class="remove_doc"
                                           onclick="remove_document('<%=row._id%>');" id="<%=row._id%>"><img
@@ -727,84 +728,99 @@
                                       </td>
                                     </tr>
 
-                                    <%}%>
-                                      <% });%>
-                                        <%}%>
-                  </tbody>
-                </table>
-              </div>
+                                    <%}else{%>
+
+                                      <!-- <li><a download href="/upload/<%= row.cuds_document_name%>"><img src="images/videoicon.png" alt="" title=""><br><span
+                            style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                            <%= row.cuds_document_name%>
+                          </span></a>
+                          </li> -->
+
+                                      <tr>
+                                        <td>
+                                          <!-- <video width="200" height="100" controls>
+                                <source src="/upload/<%= row.cuds_document_name%>" type="video/mp4">
+
+                              </video> -->
+                                          <img class="pdf-file" src="images/videoicon.png">
+                                          <p><span class='doc_name'>
+                                              <%=row.cuds_document_name%>
+                                            </span>
+                                            <%=row.cuds_document_size%>
+                                          </p>
+                                        </td>
+                                        <td><span class="professionals-view">
+                                            <%=moment(row.cuds_created_at).format('D MMM YY'); %>| Downloaded
+                                              by<ul>
+                                                <li class="dropdown"><a href="#" class="dropdown-toggle" type="button"
+                                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">2 professionals</a>
+                                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item" href="#"><img
+                                                        src="images/recent-user-3.png">
+                                                      Alex
+                                                      Jackson</a>
+                                                    <a class="dropdown-item" href="#"><img
+                                                        src="images/recent-user-3.png">
+                                                      Alex
+                                                      Jackson</a>
+                                                  </div>
+                                                </li>
+                                              </ul>
+                                          </span></td>
+                                        <td>
+                                          <div class="recent-img">
+                                            <img src="images/recent-user-1.png"><img class="mr-10"
+                                              src="images/recent-user-2.png"><img class="mr-10"
+                                              src="images/recent-user-3.png">
+                                            <!--data-toggle="modal" data-target="#changePermisionModal" -->
+                                            <a href="javascript:void(0)" value="<%=row._id%>"
+                                              class="getDocId changePermissionModal">Change permission</a>
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <%=row.cuds_phase_flag%>
+                                        </td>
+                                        <td>
+                                          <a href="javascript:void(0)" class="remove_doc"
+                                            onclick="remove_document('<%=row._id%>');" id="<%=row._id%>"><img
+                                              src="images/delete-icon.png"></a>
+                                        </td>
+                                      </tr>
+
+                                      <%}%>
+                                        <% });%>
+                                          <%}%>
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <!-- ==================================================================== -->
               <button class="accordion">Professional uploaded docs & files (<%=spDocument.length%>) </button>
-            <div class="panel">
-              <div class="doc-table">
-                <!-- <h4 style="font-size: 18px;color: #005377;font-weight: 700;">Task Docs & Files</h4> -->
-                <table class="table table-responsive">
-                  <thead>
-                    <tr>
-                      <th>Document Name</th>
-                      <th>Date</th>
-                      <th>Phase</th>
-                      <th>Permissions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <%if(spDocument.length==0){%>
+              <div class="panel">
+                <div class="doc-table">
+                  <!-- <h4 style="font-size: 18px;color: #005377;font-weight: 700;">Task Docs & Files</h4> -->
+                  <table class="table table-responsive">
+                    <thead>
                       <tr>
-                        <td>
-                          <h5>Docs & Files Not Uploaded</h5>
-                        </td>
+                        <th>Document Name</th>
+                        <th>Date</th>
+                        <th>Phase</th>
+                        <th>Permissions</th>
                       </tr>
-                      <%}else{%>
-                        <% spDocument.forEach(function(row){ %>
-                          <%if(row.spuds_document_type=='image'){%>
-                            <tr>
-                              <td><img class="pdf-file" src="/taskdocument/<%= row.spuds_document_name%>">
-                                <p><span>
-                                    <%= row.spuds_document_name%>
-                                  </span>
-                                  <%= row.spuds_document_size%>
-                                </p>
-                              </td>
-                              <td><span class="professionals-view">
-                                  <%=moment(row.spuds_created_at).format('D MMM YY'); %>
-                                </span></td>
-                              <%if(row.spuds_phase_flag){ %>
-                                <td>
-                                  <a href="#" data-toggle="tooltip" data-placement="top"
-                                    title=" <%=row.spuds_phase_name%> , <%=row.spuds_task_name%>">
-                                    <%=row.spuds_phase_flag%>
-                                  </a>
-                                </td>
-                                <%}else{%>
-                                  <td>...</td>
-                                  <%}%>
-                                    <td>
-                                    
-
-                                      <ul style="display: flex;">
-                                        <%if(row.permissionData){ %>
-                                        <%if(row.permissionData.dps_view_permission == 'yes'){%>
-                                        <li>
-                                          <a href="#" data-toggle="tooltip" data-placement="top"
-                                            title="View Document"><img src="../images/eye.png" style="width:75%"></a>
-                                        </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                        <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
-                                        <li>
-                                          <a download href="/taskdocument/<%= row.spuds_document_name%>" data-toggle="tooltip" data-placement="top"
-                                            title="Download Document"><img src="../images/drop-down.png"></a>
-                                        </li>
-                                        <%}%>
-                                        <%}%>
-                                      </ul>
-                                    </td>
-                            </tr>
-                            <%}else if(row.spuds_document_type=='pdf' ){ %>
-
-                              
-
+                    </thead>
+                    <tbody>
+                      <%if(spDocument.length==0){%>
+                        <tr>
+                          <td>
+                            <h5>Docs & Files Not Uploaded</h5>
+                          </td>
+                        </tr>
+                        <%}else{%>
+                          <% spDocument.forEach(function(row){ %>
+                            <%if(row.spuds_document_type=='image'){%>
                               <tr>
-                                <td><img class="pdf-file" src="../images/pdficon.png">
+                                <td><img class="pdf-file" src="/taskdocument/<%= row.spuds_document_name%>">
                                   <p><span>
                                       <%= row.spuds_document_name%>
                                     </span>
@@ -814,10 +830,10 @@
                                 <td><span class="professionals-view">
                                     <%=moment(row.spuds_created_at).format('D MMM YY'); %>
                                   </span></td>
-                                <%if(row.spuds_phase_flag){%>
+                                <%if(row.spuds_phase_flag){ %>
                                   <td>
                                     <a href="#" data-toggle="tooltip" data-placement="top"
-                                      title="<%=row.spuds_task_name%>">
+                                      title=" <%=row.spuds_phase_name%> , <%=row.spuds_task_name%>">
                                       <%=row.spuds_phase_flag%>
                                     </a>
                                   </td>
@@ -825,30 +841,33 @@
                                     <td>...</td>
                                     <%}%>
                                       <td>
-                                        <a class="word" href="//docs.google.com/gview?url=https://relai.herokuapp.com/taskdocument/sample-1616398262791.pdf&embedded=true"></a>
-                                        
+
+
                                         <ul style="display: flex;">
                                           <%if(row.permissionData){ %>
-                                            <%if(row.permissionData.dps_view_permission == 'yes'){%>
-                                          <li>
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                              title="View Document"><img src="../images/eye.png"
-                                                style="width:75%"></a>
-                                          </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                        <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
-
-                                          <li>
-                                            <a download href="/taskdocument/<%= row.spuds_document_name%>" data-toggle="tooltip" data-placement="top"
-                                              title="Download Document"><img src="../images/drop-down.png"></a>
-                                          </li>
-                                          <%}%>
-                                        <%}%>
+                                            <%if(row.permissionData.dps_view_permission=='yes' ){%>
+                                              <li>
+                                                <a href="#" data-toggle="tooltip" data-placement="top"
+                                                  title="View Document"><img src="../images/eye.png"
+                                                    style="width:75%"></a>
+                                              </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                              <% }if(row.permissionData.dps_download_permission=='yes' ){ %>
+                                                <li>
+                                                  <a download href="/taskdocument/<%= row.spuds_document_name%>"
+                                                    data-toggle="tooltip" data-placement="top"
+                                                    title="Download Document"><img src="../images/drop-down.png"></a>
+                                                </li>
+                                                <%}%>
+                                                  <%}%>
                                         </ul>
                                       </td>
                               </tr>
-                              <%}else if(row.spuds_document_type=='doc' ){%>
+                              <%}else if(row.spuds_document_type=='pdf' ){ %>
+
+
+
                                 <tr>
-                                  <td><img class="pdf-file" src="../images/docicon.png">
+                                  <td><img class="pdf-file" src="../images/pdficon.png">
                                     <p><span>
                                         <%= row.spuds_document_name%>
                                       </span>
@@ -864,35 +883,37 @@
                                         title="<%=row.spuds_task_name%>">
                                         <%=row.spuds_phase_flag%>
                                       </a>
-
                                     </td>
                                     <%}else{%>
                                       <td>...</td>
                                       <%}%>
                                         <td>
+                                          <a class="word"
+                                            href="//docs.google.com/gview?url=https://relai.herokuapp.com/taskdocument/sample-1616398262791.pdf&embedded=true"></a>
 
                                           <ul style="display: flex;">
                                             <%if(row.permissionData){ %>
-                                              <%if(row.permissionData.dps_view_permission == 'yes'){%>
-                                            <li>
-                                              <a href="#" data-toggle="tooltip" data-placement="top"
-                                                title="View Document"><img src="../images/eye.png"
-                                                  style="width:75%"></a>
-                                            </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                        <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
+                                              <%if(row.permissionData.dps_view_permission=='yes' ){%>
+                                                <li>
+                                                  <a href="#" data-toggle="tooltip" data-placement="top"
+                                                    title="View Document"><img src="../images/eye.png"
+                                                      style="width:75%"></a>
+                                                </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                                <% }if(row.permissionData.dps_download_permission=='yes' ){ %>
 
-                                            <li>
-                                              <a download href="/taskdocument/<%= row.spuds_document_name%>" data-toggle="tooltip" data-placement="top"
-                                                title="Download Document"><img src="../images/drop-down.png"></a>
-                                            </li>
-                                            <%}%>
-                                        <%}%> 
+                                                  <li>
+                                                    <a download href="/taskdocument/<%= row.spuds_document_name%>"
+                                                      data-toggle="tooltip" data-placement="top"
+                                                      title="Download Document"><img src="../images/drop-down.png"></a>
+                                                  </li>
+                                                  <%}%>
+                                                    <%}%>
                                           </ul>
                                         </td>
                                 </tr>
-                                <%}else if(row.spuds_document_type=='txt' ){%>
+                                <%}else if(row.spuds_document_type=='doc' ){%>
                                   <tr>
-                                    <td><img class="pdf-file" src="../images/txticon.png">
+                                    <td><img class="pdf-file" src="../images/docicon.png">
                                       <p><span>
                                           <%= row.spuds_document_name%>
                                         </span>
@@ -908,33 +929,37 @@
                                           title="<%=row.spuds_task_name%>">
                                           <%=row.spuds_phase_flag%>
                                         </a>
+
                                       </td>
                                       <%}else{%>
                                         <td>...</td>
                                         <%}%>
                                           <td>
+
                                             <ul style="display: flex;">
                                               <%if(row.permissionData){ %>
-                                                <%if(row.permissionData.dps_view_permission == 'yes'){%>
-                                              <li>
-                                                <a href="#" data-toggle="tooltip" data-placement="top"
-                                                  title="View Document"><img src="../images/eye.png"
-                                                    style="width:75%"></a>
-                                              </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                        <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
+                                                <%if(row.permissionData.dps_view_permission=='yes' ){%>
+                                                  <li>
+                                                    <a href="#" data-toggle="tooltip" data-placement="top"
+                                                      title="View Document"><img src="../images/eye.png"
+                                                        style="width:75%"></a>
+                                                  </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                                  <% }if(row.permissionData.dps_download_permission=='yes' ){ %>
 
-                                              <li>
-                                                <a download href="/taskdocument/<%= row.spuds_document_name%>" data-toggle="tooltip" data-placement="top"
-                                                  title="Download Document"><img src="../images/drop-down.png"></a>
-                                              </li>
-                                              <%}%>
-                                              <%}%> 
+                                                    <li>
+                                                      <a download href="/taskdocument/<%= row.spuds_document_name%>"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Download Document"><img
+                                                          src="../images/drop-down.png"></a>
+                                                    </li>
+                                                    <%}%>
+                                                      <%}%>
                                             </ul>
                                           </td>
                                   </tr>
-                                  <%}else{%>
+                                  <%}else if(row.spuds_document_type=='txt' ){%>
                                     <tr>
-                                      <td><img class="pdf-file" src="../images/videoicon.png">
+                                      <td><img class="pdf-file" src="../images/txticon.png">
                                         <p><span>
                                             <%= row.spuds_document_name%>
                                           </span>
@@ -957,28 +982,74 @@
                                             <td>
                                               <ul style="display: flex;">
                                                 <%if(row.permissionData){ %>
-                                                  <%if(row.permissionData.dps_view_permission == 'yes'){%>
-                                                <li>
-                                                  <a href="#" data-toggle="tooltip" data-placement="top"
-                                                    title="View Document"><img src="../images/eye.png"
-                                                      style="width:75%"></a>
-                                                </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                                <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
+                                                  <%if(row.permissionData.dps_view_permission=='yes' ){%>
+                                                    <li>
+                                                      <a href="#" data-toggle="tooltip" data-placement="top"
+                                                        title="View Document"><img src="../images/eye.png"
+                                                          style="width:75%"></a>
+                                                    </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                                    <% }if(row.permissionData.dps_download_permission=='yes' ){ %>
 
-                                                <li>
-                                                  <a download href="/taskdocument/<%= row.spuds_document_name%>" data-toggle="tooltip" data-placement="top"
-                                                    title="Download Document"><img src="../images/drop-down.png"></a>
-                                                </li>
-                                                <%}%>
-                                                <%}%>  
+                                                      <li>
+                                                        <a download href="/taskdocument/<%= row.spuds_document_name%>"
+                                                          data-toggle="tooltip" data-placement="top"
+                                                          title="Download Document"><img
+                                                            src="../images/drop-down.png"></a>
+                                                      </li>
+                                                      <%}%>
+                                                        <%}%>
                                               </ul>
                                             </td>
                                     </tr>
-                                    <%}%>
-                                      <%})%>
-                                        <%}%>
+                                    <%}else{%>
+                                      <tr>
+                                        <td><img class="pdf-file" src="../images/videoicon.png">
+                                          <p><span>
+                                              <%= row.spuds_document_name%>
+                                            </span>
+                                            <%= row.spuds_document_size%>
+                                          </p>
+                                        </td>
+                                        <td><span class="professionals-view">
+                                            <%=moment(row.spuds_created_at).format('D MMM YY'); %>
+                                          </span></td>
+                                        <%if(row.spuds_phase_flag){%>
+                                          <td>
+                                            <a href="#" data-toggle="tooltip" data-placement="top"
+                                              title="<%=row.spuds_task_name%>">
+                                              <%=row.spuds_phase_flag%>
+                                            </a>
+                                          </td>
+                                          <%}else{%>
+                                            <td>...</td>
+                                            <%}%>
+                                              <td>
+                                                <ul style="display: flex;">
+                                                  <%if(row.permissionData){ %>
+                                                    <%if(row.permissionData.dps_view_permission=='yes' ){%>
+                                                      <li>
+                                                        <a href="#" data-toggle="tooltip" data-placement="top"
+                                                          title="View Document"><img src="../images/eye.png"
+                                                            style="width:75%"></a>
+                                                      </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                                      <% }if(row.permissionData.dps_download_permission=='yes' ){ %>
 
-                                          <!-- <tr>
+                                                        <li>
+                                                          <a download href="/taskdocument/<%= row.spuds_document_name%>"
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="Download Document"><img
+                                                              src="../images/drop-down.png"></a>
+                                                        </li>
+                                                        <%}%>
+                                                          <%}%>
+                                                </ul>
+                                              </td>
+                                      </tr>
+                                      <%}%>
+                                        <%})%>
+                                          <%}%>
+
+                                            <!-- <tr>
                     <td><img class="pdf-file" src="../images/doc.png">
                       <p><span>Contract.pdf</span> 256.0 KB</p>
                     </td>
@@ -1001,9 +1072,9 @@
                   </tr> -->
 
 
-                  </tbody>
-                </table>
-              </div>
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <!-- ========================================================================= -->
             </div>
@@ -1016,8 +1087,8 @@
       <script>
         function remove_document(document_id) {
           console.log(document_id)
-          
-     
+
+
           Swal.fire({
             title: 'Are you sure want to Remove Document?',
             showCancelButton: true,
@@ -1026,11 +1097,11 @@
           }).then((result) => {
             if (result.isConfirmed) {
               var id = document_id
-             // var data = new FormData();
+              // var data = new FormData();
               //data.append('document_id', document_id);
               $.ajax({
                 type: "POST",
-                data: {'document_id':id},
+                data: { 'document_id': id },
                 url: '/api/remove_uploaded_document',
                 cache: false,
                 //contentType: false,
@@ -1062,7 +1133,7 @@
           })
         }
       </script>
-       <script>
+      <script>
         var acc = document.getElementsByClassName("accordion");
         var i;
 

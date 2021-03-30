@@ -33,42 +33,64 @@
                       <div class="row">
                         <div class="col-md-3">
                           <div class="left-side-content-progress">
-                            <a href="mydreamhome-details?id=<%=row._id%>">  <h3>
-                            <%=row.ps_property_name%>
-                            </h3></a>
+                            <a href="mydreamhome-details?id=<%=row._id%>">
+                              <h3>
+                                <%=row.ps_property_name%>
+                              </h3>
+                            </a>
                             <p><img src="images/dreamhome.png">
                               <%=row.ps_property_address%>,<%=row.ps_property_country_id%>
                             </p>
-                            <ul>
-                              <li><img src="images/recent-user-1.png"></li>
+                            <div class="clearfix">
+                              <div class="float-left">
+                                <div class="recent-img">
+                                  <!-- <li><img src="images/recent-user-1.png"></li>
                               <li><img src="images/recent-user-2.png"></li>
-                              <li><img src="images/recent-user-3.png"></li>
-                            </ul>
+                              <li><img src="images/recent-user-3.png"></li> -->
+                                  <%row.hiredProfessional.forEach(function(sp,i){%>
+
+                                    <%if(sp.sps_fullname !=null){%>
+                                      <a href="#" data-toggle="tooltip" data-placement="top"
+                                        title="<%=sp.sps_fullname%>">
+                                        <% if(sp.sps_profile_image_name !=null){%>
+                                          <img class="mr-10" src="upload/<%=sp.sps_profile_image_name%>"
+                                            style="border-radius: 50%; width:50px;height: 50px;">
+                                      </a>
+                                      <%} else {%>
+                                        <img class="mr-10" src="images/img_avatar.png"
+                                          style="border-radius: 50%; width:50px;height:50px"></a>
+                                        <%}%>
+                                          <%} else {%>
+                                            <%}%>
+                                              <%})%>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <div class="col-md-9">
                           <div class="progress-line">
                             <ul>
-                             
+
                               <% if(session.active_user_login=='renovator' ) {%>
                                 <li class="progress-1"><a
-                                  href="/mydreamhome-details-phase-a?id=<%=row._id%>&phase=Strategic definition&step=A"><img
-                                    src="images/white-prgress=arrow.png"></a> <span>Phase A</span></li>
-                              <li class="progress-2"><a
-                                  href="/mydreamhome-details-phase-b?id=<%=row._id%>&phase=Preparation and Briefing&step=B"><img
-                                    src="images/white-prgress=arrow.png"> </a><span>Phase B</span></li>
-                              <li class="progress-3"><a
-                                  href="/mydreamhome-details-phase-c?id=<%=row._id%>&phase=Spatial coordination&step=C"><img
-                                    src="images/white-prgress=arrow.png"></a> <span>Phase C</span></li>
-                              <li class="progress-4"><a
-                                  href="/mydreamhome-details-phase-d?id=<%=row._id%>&phase=Technical Design&step=D"><img
-                                    src="images/white-prgress=arrow.png"></a><span>Phase D</span></li>
-                              <li class="progress-5"><a
-                                  href="/mydreamhome-details-phase-e?id=<%=row._id%>&phase=Manifacturing and Construction&step=E"><img
-                                    src="images/white-prgress=arrow.png"></a> <span>Phase E</span></li>
-                              <li class="progress-6"><a
-                                  href="/mydreamhome-details-phase-f?id=<%=row._id%>&phase=Concept Design&step=F"><img
-                                    src="images/white-prgress=arrow.png"> </a><span>Phase F</span></li>
+                                    href="/mydreamhome-details-phase-a?id=<%=row._id%>&phase=Strategic definition&step=A"><img
+                                      src="images/white-prgress=arrow.png"></a> <span>Phase A</span></li>
+                                <li class="progress-2"><a
+                                    href="/mydreamhome-details-phase-b?id=<%=row._id%>&phase=Preparation and Briefing&step=B"><img
+                                      src="images/white-prgress=arrow.png"> </a><span>Phase B</span></li>
+                                <li class="progress-3"><a
+                                    href="/mydreamhome-details-phase-c?id=<%=row._id%>&phase=Spatial coordination&step=C"><img
+                                      src="images/white-prgress=arrow.png"></a> <span>Phase C</span></li>
+                                <li class="progress-4"><a
+                                    href="/mydreamhome-details-phase-d?id=<%=row._id%>&phase=Technical Design&step=D"><img
+                                      src="images/white-prgress=arrow.png"></a><span>Phase D</span></li>
+                                <li class="progress-5"><a
+                                    href="/mydreamhome-details-phase-e?id=<%=row._id%>&phase=Manifacturing and Construction&step=E"><img
+                                      src="images/white-prgress=arrow.png"></a> <span>Phase E</span></li>
+                                <li class="progress-6"><a
+                                    href="/mydreamhome-details-phase-f?id=<%=row._id%>&phase=Concept Design&step=F"><img
+                                      src="images/white-prgress=arrow.png"> </a><span>Phase F</span></li>
                                 <li class="progress-7"><a
                                     href="/mydreamhome-details-phase-g?id=<%=row._id%>&phase=Handover&step=G"><img
                                       src="images/white-prgress=arrow.png"></a> <span>Phase G</span></li>
@@ -77,23 +99,23 @@
                                       src="images/white-prgress=arrow.png"> </a><span>Phase H</span></li>
                                 <%}else{%>
                                   <li class="progress-1"><a
-                                    href="/mydreamhome-details-phase-a?id=<%=row._id%>&phase=Instruction&step=A"><img
-                                      src="images/white-prgress=arrow.png"></a> <span>Phase A</span></li>
-                                <li class="progress-2"><a
-                                    href="/mydreamhome-details-phase-b?id=<%=row._id%>&phase=Pre-exchange Submitting the contract&step=B"><img
-                                      src="images/white-prgress=arrow.png"> </a><span>Phase B</span></li>
-                                <li class="progress-3"><a
-                                    href="/mydreamhome-details-phase-c?id=<%=row._id%>&phase=Prior to exchange of contracts&step=C"><img
-                                      src="images/white-prgress=arrow.png"></a> <span>Phase C</span></li>
-                                <li class="progress-4"><a
-                                    href="/mydreamhome-details-phase-d?id=<%=row._id%>&phase=Exchange of contracts&step=D"><img
-                                      src="images/white-prgress=arrow.png"></a><span>Phase D</span></li>
-                                <li class="progress-5"><a
-                                    href="/mydreamhome-details-phase-e?id=<%=row._id%>&phase=Completion&step=E"><img
-                                      src="images/white-prgress=arrow.png"></a> <span>Phase E</span></li>
-                                <li class="progress-6"><a
-                                    href="/mydreamhome-details-phase-f?id=<%=row._id%>&phase=Post-Completion&step=F"><img
-                                      src="images/white-prgress=arrow.png"> </a><span>Phase F</span></li>
+                                      href="/mydreamhome-details-phase-a?id=<%=row._id%>&phase=Instruction&step=A"><img
+                                        src="images/white-prgress=arrow.png"></a> <span>Phase A</span></li>
+                                  <li class="progress-2"><a
+                                      href="/mydreamhome-details-phase-b?id=<%=row._id%>&phase=Pre-exchange Submitting the contract&step=B"><img
+                                        src="images/white-prgress=arrow.png"> </a><span>Phase B</span></li>
+                                  <li class="progress-3"><a
+                                      href="/mydreamhome-details-phase-c?id=<%=row._id%>&phase=Prior to exchange of contracts&step=C"><img
+                                        src="images/white-prgress=arrow.png"></a> <span>Phase C</span></li>
+                                  <li class="progress-4"><a
+                                      href="/mydreamhome-details-phase-d?id=<%=row._id%>&phase=Exchange of contracts&step=D"><img
+                                        src="images/white-prgress=arrow.png"></a><span>Phase D</span></li>
+                                  <li class="progress-5"><a
+                                      href="/mydreamhome-details-phase-e?id=<%=row._id%>&phase=Completion&step=E"><img
+                                        src="images/white-prgress=arrow.png"></a> <span>Phase E</span></li>
+                                  <li class="progress-6"><a
+                                      href="/mydreamhome-details-phase-f?id=<%=row._id%>&phase=Post-Completion&step=F"><img
+                                        src="images/white-prgress=arrow.png"> </a><span>Phase F</span></li>
                                   <%}%>
                             </ul>
                           </div>
