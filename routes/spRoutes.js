@@ -271,8 +271,8 @@ app.get('/service-provider/dashboard-professional', isServiceProvider, async (re
 
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_service_provider_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login }).sort({ _id: -1 }).limit(4);
   console.log(req.session)
-  console.log('AllhiredProfeshnoal:=====',AllhiredProfeshnoal);
- 
+  console.log('AllhiredProfeshnoal:=====', AllhiredProfeshnoal);
+
   if (AllhiredProfeshnoal) {
     for (let key of AllhiredProfeshnoal) {
       //let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
@@ -285,7 +285,7 @@ app.get('/service-provider/dashboard-professional', isServiceProvider, async (re
       propertyData.customer_profile = await customerProfile
       propertyArray.push(propertyData)
     }
-  }else{
+  } else {
     propertyArray
   }
   let custArray = []
@@ -484,7 +484,7 @@ app.get('/service-provider/professionals-to-do-list', isServiceProvider, async f
   console.log("todo")
   req.session.pagename = 'service-provider/professionals-to-do-list';
   let propertyArray = []
-  let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id, req.session.active_user_login);
+  let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_service_provider_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login }).sort({ _id: -1 });
   for (let key of AllhiredProfeshnoal) {
     //let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
     // var query = {
@@ -610,20 +610,20 @@ app.get('/service-provider/professional-details-docs', isServiceProvider, async 
       let temps = await key
       const d = JSON.stringify(temps);
       const DocData = JSON.parse(d)
-     await CustomerDocPermission.findOne({ dps_document_id:DocData._id }).then(async (docPermissionResp) => { 
-       if(docPermissionResp){
-         
-        DocData.permissionData = docPermissionResp
-       }else{
-        DocData.permissionData ='';
-       }
+      await CustomerDocPermission.findOne({ dps_document_id: DocData._id }).then(async (docPermissionResp) => {
+        if (docPermissionResp) {
+
+          DocData.permissionData = docPermissionResp
+        } else {
+          DocData.permissionData = '';
+        }
       })
       normalDocArray.push(DocData);
     }
   });
   //const propertyDataObj = await PropertiesSchema.find();
 
-  console.log('normalDocArray:',normalDocArray);
+  console.log('normalDocArray:', normalDocArray);
   let propertyProfeshnoal = await PropertyProfessionalSchema.find({
     $and: [{ pps_service_provider_id: req.session.user_id, pps_property_id: req.session.property_id }]
   });
@@ -642,7 +642,7 @@ app.get('/service-provider/professional-details-docs', isServiceProvider, async 
         custmorePermisionArray.push(temps)
       }
     })
-   // console.log('custmorePermisionArray', custmorePermisionArray);
+    // console.log('custmorePermisionArray', custmorePermisionArray);
   }
 
 
@@ -1589,7 +1589,7 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
     req.session.property_id = req.query.id
     console.log("req.query.id:", req.query.id);
     PropertiesSchema.find({ _id: req.query.id }).then(async (data) => {
-     console.log('data=======',data)
+      console.log('data=======', data)
       if (data) {
 
 
@@ -1622,9 +1622,9 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
               ]
             }).sort({ _id: -1 }).then(async (msgdata) => {
               console.log('msgdata=', msgdata)
-              if (msgdata !== null) {
+             // if (msgdata !== null) {
                 //for (let i of allProfeshnoals) {
-                if (msgdata) {
+                if (msgdata !== null) {
                   var object_as_string = JSON.stringify(customerDetail);
                   const t = JSON.parse(object_as_string);
                   // console.log('lastIndex:', msgdata.slice(-1)[0]);
@@ -1640,9 +1640,9 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
                   serviceProvArray.push(t)
                 }
                 //}
-              } else {
-                console.log('myfff:')
-              }
+              //} else {
+              //  console.log('myfff:')
+              //}
             })
           }
         }
@@ -1718,6 +1718,8 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
         }
         err_msg = req.flash('err_msg');
         success_msg = req.flash('success_msg');
+        console.log('CustomerDetailsCustomerDetails:',CustomerDetails)
+        console.log('serviceProvArrayserviceProvArray:',serviceProvArray)
         res.render('service-provider/myproperties-detail', {
           err_msg, success_msg, layout: false,
           session: req.session,

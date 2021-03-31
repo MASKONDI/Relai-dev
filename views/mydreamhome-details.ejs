@@ -68,6 +68,57 @@
         </div>
       </div>
     </div>
+
+    <!-- Model for professional Chat-->
+<div class="modal fade permission-modal" id="professionalChat">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h2 class="modal-title text-center"> Hired Professional</h2>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <%hiredProfeshnoalList.forEach(function(row){%>
+          <div class="messages-list clearfix">
+            <div class="message-img float-left">
+
+              <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>&pid=<%=row._id%>">
+                <% if(row.sps_profile_image_name !=null){%>
+                  <img src="upload/<%=row.sps_profile_image_name%>" style="border-radius: 50%;width: 45px;
+                  height: 45px;
+                  ">
+              </a>
+              <%} else {%>
+                <img src="images/img_avatar.png" style="border-radius: 50%;width: 45px;
+                height: 45px;
+               "></a>
+                <%}%>
+            </div>
+            <div class="message-drop float-left">
+              <a href="/mydreamhome-details-message?id=<%=propertyDetailData[0]._id%>&pid=<%=row._id%>"> <h3>
+                <%=row.sps_fullname%>
+              </h3></a>
+              <p>
+                <%=row.sms_message%>
+              </p>
+
+            </div>
+          </div>
+          <%});%>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-cancel" data-dismiss="modal">Close</button>
+        <!--<button type="button" class="btn btn-cancel" data-dismiss="modal">Save</button> -->
+      </div>
+
+    </div>
+  </div>
+</div>
+
     <!-- The Modal -->
     <div class="modal fade permission-modal" id="removeProfessionalModal">
       <div class="modal-dialog">
@@ -247,7 +298,7 @@
                                   </a></div>
                               </div>
                               <div class="img-fix3 float-right">
-                                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top"
+                                <a data-toggle="modal" data-target="#professionalChat" href="javascript:void(0)" data-toggle="tooltip" data-placement="top"
                                   title="Message"><img src="images/chat.png"></a>
                                 <!-- #ComplaintModal -->
                                 <!-- data-toggle="modal" data-target="#MyComplaintModal" -->
@@ -688,7 +739,7 @@
                   <div class="col-sm-6 col-lg-4">
                     <div class="do-list-sec">
                       <div class="do-list-header">
-                        <a href="/mydreamhome-details-message">
+                        <a href="javascript:void(0)" data-toggle="modal" data-target="#professionalChat">
                           <h3 class="text-center">Messages</h3>
                         </a>
                       </div>

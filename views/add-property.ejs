@@ -398,7 +398,7 @@
                               </div>
                               <%if(propertyObj=='null'){%>
                                 <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
-                                  <select required name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
+                                  <select  name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
                                     id="ps_chain_property" style="height: 48px;">
                                     <!-- <option value="">Select Property For Chain</option> -->
 
@@ -406,7 +406,7 @@
                                 </div>
                                 <%}else{%>
                                   <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
-                                    <select required name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
+                                    <select  name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
                                       id="ps_chain_property" style="height: 48px;">
                                       <option value="<%=propertyObj.ps_chain_property_name[0]%>">
                                         <%=propertyObj.ps_chain_property_name%>
@@ -2315,8 +2315,16 @@ $(document).ready(function () {
 
   });
 
+$('#property_type').on('change', function() {
+  //alert( this.value );
+  if(this.value == 'Chain'){
+    $('#ps_chain_property').attr('required','required');
+  }else{
+    $('#ps_chain_property').removeAttr('required');
+  }
+});
 
-
+  ps_chain_property
   $(function () { 
     $.ajax({
             type: "GET",
