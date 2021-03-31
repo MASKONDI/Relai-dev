@@ -468,14 +468,64 @@ app.get('/dashboard', isCustomer, async (req, res) => {
   console.log("current user session is :", req.session);
 
   const mapData = await PropertiesSchema.find({ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login });
-  console.log('MapData:', mapData);
+
+  const recentProperty = await PropertiesSchema.find({ ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login }).sort({ _id: -1 }).limit(4);
+  let propertyArray = []
+
+  if (recentProperty) {
+    for (let key of recentProperty) {
+      let propertyData = await PropertiesSchema.findOne({ _id: key._id });
+      let hiredProfessinoal = await PropertyProfessionalSchema.find({ pps_property_id: key._id });
+      if (hiredProfessinoal) {
+        var hiredProfessionalList = [];
+        for (let key2 of hiredProfessinoal) {
+          let serviceProviderData = await ServiceProviderSchema.findOne({ _id: key2.pps_service_provider_id });
+          hiredProfessionalList.push(serviceProviderData);
+        }
+        propertyData.hiredProfessional = await hiredProfessionalList;
+        console.log();
+        console.log("propertyData is ::::", propertyData.hiredProfessional);
+      }
+      propertyArray.push(propertyData)
+    }
+  }
+
+  //fetching Unique Hired Professional data for Dashboard
+
+  let hiredProfessional = await PropertyProfessionalSchema.find({ pps_user_id: req.session.user_id }).sort({ _id: -1 });
+  var object_as_string = JSON.stringify(hiredProfessional);
+  const propertyProfessional = JSON.parse(object_as_string);
+  let spsArray = [];
+  var spsId = []
+  for (let key of propertyProfessional) {
+    spsId.push(key.pps_service_provider_id);
+  }
+  // console.log("Sps Id is :", spsId);
+  var uniquesSp = await spsId.unique();
+
+  //console.log("uniques sps Id is:", uniquesSp);
+  if (uniquesSp) {
+    for (let key of uniquesSp) {
+      let spsData = await ServiceProviderSchema.findOne({ _id: key });
+      spsArray.push(spsData)
+    }
+  }
+  console.log("Service Provider Array is :", spsArray);
+  //console.log('MapData:', mapData);
+  console.log();
+  console.log();
+  // console.log('property Array is  :', propertyArray[0]);
+  console.log();
+  console.log();
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   req.session.pagename = 'dashboard';
   res.render('dashboard', {
     err_msg, success_msg, layout: false,
     session: req.session,
-    mapData: mapData
+    mapData: mapData,
+    spsData: spsArray,
+    propertyData: propertyArray,
   });
 
 });
@@ -496,13 +546,30 @@ app.get('/track-your-progress', isCustomer, async (req, res) => {
       //ps_user_id: req.session.user_id, ps_is_active_user_flag: req.session.active_user_login
     }]
   }).sort({ _id: -1 })
+  var propertyArray = [];
   if (AllProperty) {
+    for (let key of AllProperty) {
+      let propertyData = await PropertiesSchema.findOne({ _id: key._id });
+      let hiredProfessinoal = await PropertyProfessionalSchema.find({ pps_property_id: key._id });
+      if (hiredProfessinoal) {
+        var hiredProfessionalList = [];
+        for (let key2 of hiredProfessinoal) {
+          let serviceProviderData = await ServiceProviderSchema.findOne({ _id: key2.pps_service_provider_id });
+          hiredProfessionalList.push(serviceProviderData);
+        }
+        propertyData.hiredProfessional = await hiredProfessionalList;
+        console.log();
+        console.log("propertyData is ::::", propertyData.hiredProfessional);
+      }
+      propertyArray.push(propertyData)
+    }
+
     err_msg = req.flash('err_msg');
     success_msg = req.flash('success_msg');
     res.render('track-your-progress', {
       err_msg, success_msg, layout: false,
       session: req.session,
-      AllProperty: AllProperty
+      AllProperty: propertyArray
     });
   }
 
@@ -1240,7 +1307,7 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
   req.session.pagename = 'mydreamhome';
   var normalDocArray = [];
   var taskDocArray = [];
-  var spDocArray=[]
+  var spDocArray = []
   //console.log('property id is :', req.session.property_id);
   //req.session.property_id=req.query.id
   err_msg = req.flash('err_msg');
@@ -1251,7 +1318,7 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
   });
   // ServiceProviderUploadDocsSchema.find({spuds_property_id:req.session.property_id}).then((respdata)=>{
   //   console.log('responce of sp document',respdata)
-    
+
   // })
   await ServiceProviderUploadDocsSchema.find({
     spuds_property_id: req.session.property_id
@@ -1260,17 +1327,17 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
       let sptemps = await keyy
       const spd = JSON.stringify(sptemps);
       const spDocData = JSON.parse(spd)
-     await DocumentPermissionSchema.findOne({ dps_document_id:spDocData._id }).then(async (docPermissionResp) => { 
-       if(docPermissionResp){
-        spDocData.permissionData = docPermissionResp
-       }else{
-        spDocData.permissionData ='';
-       }
+      await DocumentPermissionSchema.findOne({ dps_document_id: spDocData._id }).then(async (docPermissionResp) => {
+        if (docPermissionResp) {
+          spDocData.permissionData = docPermissionResp
+        } else {
+          spDocData.permissionData = '';
+        }
       })
       spDocArray.push(spDocData);
     }
   });
-console.log('sp document',spDocArray)
+  console.log('sp document', spDocArray)
   await CustomerUploadDocsSchema.find({
     cuds_property_id: req.session.property_id
     // $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.session.property_id, cuds_is_active_user_flag: req.session.active_user_login }] 
@@ -1320,7 +1387,7 @@ console.log('sp document',spDocArray)
     data: serviceProvArray,
     allDocument: normalDocArray,//need to show property wise document still showing all uploaded
     taskDocument: taskDocArray,
-    spDocument:spDocArray,
+    spDocument: spDocArray,
     property: property,
     moment: moment
   });
@@ -1855,72 +1922,72 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
   var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  var gest_taskObjectArray=[]
-  var completedTask1=0;
+  var gest_taskObjectArray = []
+  var completedTask1 = 0;
   var progressResult1 = 0;
-  if(gest_taskObject.length!=0){
-    for(ky of gest_taskObject){
-      var ds= JSON.stringify(ky)
+  if (gest_taskObject.length != 0) {
+    for (ky of gest_taskObject) {
+      var ds = JSON.stringify(ky)
       var ds = JSON.parse(ds)
       var temps = ds
       var arrr = temps.ppts_task_status;
-      var gest_iscomplete =await arrr.every(isStatusComplete);
-      var gest_isPanding =await arrr.every(isStatusPanding);
+      var gest_iscomplete = await arrr.every(isStatusComplete);
+      var gest_isPanding = await arrr.every(isStatusPanding);
       temps.gestiscompleteStatus = gest_iscomplete
       temps.gestispendingStatus = gest_isPanding
-          if(iscomplete==true){
-         
-            completedTask1 = completedTask1+1
-           }
-           gest_taskObjectArray.push(temps)
+      if (iscomplete == true) {
+
+        completedTask1 = completedTask1 + 1
+      }
+      gest_taskObjectArray.push(temps)
     }
-    console.log('gest total task',gest_taskObject.length)
-  console.log('gest num of completed task',completedTask1)
-   progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
-  }else{
+    console.log('gest total task', gest_taskObject.length)
+    console.log('gest num of completed task', completedTask1)
+    progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
+  } else {
     progressResult1
   }
-  completedTask1=0
-  console.log('gest progressResult==============',progressResult1)
-  console.log("gest taskObjectArray==============",gest_taskObjectArray)
-  
+  completedTask1 = 0
+  console.log('gest progressResult==============', progressResult1)
+  console.log("gest taskObjectArray==============", gest_taskObjectArray)
 
-  var taskObjectArray=[]
-  var completedTask=0;
+
+  var taskObjectArray = []
+  var completedTask = 0;
   var progressResult = 0;
-  if(taskObject.length!=0){
-  for(k of taskObject){
+  if (taskObject.length != 0) {
+    for (k of taskObject) {
       var d = JSON.stringify(k)
       var dd = JSON.parse(d)
       var temp = dd
       var arr = temp.ppts_task_status;
-      var iscomplete =await arr.every(isStatusComplete);
-      var isPanding =await arr.every(isStatusPanding);
-         // console.log(iscomplete)
-          temp.iscompleteStatus = iscomplete
-          temp.ispendingStatus = isPanding
-           //progress bar number of total task / no of completed task 
-           if(iscomplete==true){
-           
-             completedTask = completedTask+1
-            }
-            
-             
-          taskObjectArray.push(temp)
-  }
-  console.log('total task',taskObject.length)
-  console.log('num of completed task',completedTask)
-   progressResult = Math.round((completedTask / taskObject.length) * 100);
-  
-}else{
-  progressResult=0
-}
+      var iscomplete = await arr.every(isStatusComplete);
+      var isPanding = await arr.every(isStatusPanding);
+      // console.log(iscomplete)
+      temp.iscompleteStatus = iscomplete
+      temp.ispendingStatus = isPanding
+      //progress bar number of total task / no of completed task 
+      if (iscomplete == true) {
 
-completedTask=0
-console.log('task object length======',taskObject.length)
-  console.log('progressResult==============',progressResult)
-  console.log("taskObjectArray==============",taskObjectArray)
-  
+        completedTask = completedTask + 1
+      }
+
+
+      taskObjectArray.push(temp)
+    }
+    console.log('total task', taskObject.length)
+    console.log('num of completed task', completedTask)
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+
+  } else {
+    progressResult = 0
+  }
+
+  completedTask = 0
+  console.log('task object length======', taskObject.length)
+  console.log('progressResult==============', progressResult)
+  console.log("taskObjectArray==============", taskObjectArray)
+
 
 
   if (taskObject) {
@@ -1937,7 +2004,7 @@ console.log('task object length======',taskObject.length)
       phase: req.query.phase,
       hiredProfessional_list: AllProfessional_property_wise,
       gest_taskObject: gest_taskObjectArray,
-      progressResult:progressResult,
+      progressResult: progressResult,
       //progressResult1:progressResult1
 
     });
@@ -1951,13 +2018,13 @@ console.log('task object length======',taskObject.length)
 
 })
 
-app.get('/removetasktable',(req,res)=>{
+app.get('/removetasktable', (req, res) => {
   var id = req.query.id
   console.log(id)
-  PropertyProfessinoalTaskSchema.find({ppts_user_id:id}).deleteMany().then((resp)=>{
-    if(resp){
+  PropertyProfessinoalTaskSchema.find({ ppts_user_id: id }).deleteMany().then((resp) => {
+    if (resp) {
       console.log(resp)
-      res.json({'resp':resp})
+      res.json({ 'resp': resp })
     }
   })
 })
@@ -1971,72 +2038,72 @@ app.get('/mydreamhome-details-phase-b', isCustomer, async (req, res) => {
   var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  var gest_taskObjectArray=[]
-  var completedTask1=0;
+  var gest_taskObjectArray = []
+  var completedTask1 = 0;
   var progressResult1 = 0;
-  if(gest_taskObject.length!=0){
-    for(ky of gest_taskObject){
-      var ds= JSON.stringify(ky)
+  if (gest_taskObject.length != 0) {
+    for (ky of gest_taskObject) {
+      var ds = JSON.stringify(ky)
       var ds = JSON.parse(ds)
       var temps = ds
       var arrr = temps.ppts_task_status;
-      var gest_iscomplete =await arrr.every(isStatusComplete);
-      var gest_isPanding =await arrr.every(isStatusPanding);
+      var gest_iscomplete = await arrr.every(isStatusComplete);
+      var gest_isPanding = await arrr.every(isStatusPanding);
       temps.gestiscompleteStatus = gest_iscomplete
       temps.gestispendingStatus = gest_isPanding
-          if(iscomplete==true){
-         
-            completedTask1 = completedTask1+1
-           }
-           gest_taskObjectArray.push(temps)
+      if (iscomplete == true) {
+
+        completedTask1 = completedTask1 + 1
+      }
+      gest_taskObjectArray.push(temps)
     }
-    console.log('gest total task',gest_taskObject.length)
-  console.log('gest num of completed task',completedTask1)
-   progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
-  }else{
+    console.log('gest total task', gest_taskObject.length)
+    console.log('gest num of completed task', completedTask1)
+    progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
+  } else {
     progressResult1
   }
-  completedTask1=0
-  console.log('gest progressResult==============',progressResult1)
-  console.log("gest taskObjectArray==============",gest_taskObjectArray)
-  
+  completedTask1 = 0
+  console.log('gest progressResult==============', progressResult1)
+  console.log("gest taskObjectArray==============", gest_taskObjectArray)
 
-  var taskObjectArray=[]
-  var completedTask=0;
+
+  var taskObjectArray = []
+  var completedTask = 0;
   var progressResult = 0;
-  if(taskObject.length!=0){
-  for(k of taskObject){
+  if (taskObject.length != 0) {
+    for (k of taskObject) {
       var d = JSON.stringify(k)
       var dd = JSON.parse(d)
       var temp = dd
       var arr = temp.ppts_task_status;
-      var iscomplete =await arr.every(isStatusComplete);
-      var isPanding =await arr.every(isStatusPanding);
-         // console.log(iscomplete)
-          temp.iscompleteStatus = iscomplete
-          temp.ispendingStatus = isPanding
-           //progress bar number of total task / no of completed task 
-           if(iscomplete==true){
-           
-             completedTask = completedTask+1
-            }
-            
-             
-          taskObjectArray.push(temp)
-  }
-  console.log('total task',taskObject.length)
-  console.log('num of completed task',completedTask)
-   progressResult = Math.round((completedTask / taskObject.length) * 100);
-  
-}else{
-  progressResult=0
-}
+      var iscomplete = await arr.every(isStatusComplete);
+      var isPanding = await arr.every(isStatusPanding);
+      // console.log(iscomplete)
+      temp.iscompleteStatus = iscomplete
+      temp.ispendingStatus = isPanding
+      //progress bar number of total task / no of completed task 
+      if (iscomplete == true) {
 
-completedTask=0
-console.log('task object length======',taskObject.length)
-  console.log('progressResult==============',progressResult)
-  console.log("taskObjectArray==============",taskObjectArray)
-  
+        completedTask = completedTask + 1
+      }
+
+
+      taskObjectArray.push(temp)
+    }
+    console.log('total task', taskObject.length)
+    console.log('num of completed task', completedTask)
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+
+  } else {
+    progressResult = 0
+  }
+
+  completedTask = 0
+  console.log('task object length======', taskObject.length)
+  console.log('progressResult==============', progressResult)
+  console.log("taskObjectArray==============", taskObjectArray)
+
 
 
   if (taskObject) {
@@ -2053,7 +2120,7 @@ console.log('task object length======',taskObject.length)
       phase: req.query.phase,
       hiredProfessional_list: AllProfessional_property_wise,
       gest_taskObject: gest_taskObjectArray,
-      progressResult:progressResult,
+      progressResult: progressResult,
       //progressResult1:progressResult1
 
     });
@@ -2078,72 +2145,72 @@ app.get('/mydreamhome-details-phase-c', isCustomer, async (req, res) => {
   var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  var gest_taskObjectArray=[]
-  var completedTask1=0;
+  var gest_taskObjectArray = []
+  var completedTask1 = 0;
   var progressResult1 = 0;
-  if(gest_taskObject.length!=0){
-    for(ky of gest_taskObject){
-      var ds= JSON.stringify(ky)
+  if (gest_taskObject.length != 0) {
+    for (ky of gest_taskObject) {
+      var ds = JSON.stringify(ky)
       var ds = JSON.parse(ds)
       var temps = ds
       var arrr = temps.ppts_task_status;
-      var gest_iscomplete =await arrr.every(isStatusComplete);
-      var gest_isPanding =await arrr.every(isStatusPanding);
+      var gest_iscomplete = await arrr.every(isStatusComplete);
+      var gest_isPanding = await arrr.every(isStatusPanding);
       temps.gestiscompleteStatus = gest_iscomplete
       temps.gestispendingStatus = gest_isPanding
-          if(iscomplete==true){
-         
-            completedTask1 = completedTask1+1
-           }
-           gest_taskObjectArray.push(temps)
+      if (iscomplete == true) {
+
+        completedTask1 = completedTask1 + 1
+      }
+      gest_taskObjectArray.push(temps)
     }
-    console.log('gest total task',gest_taskObject.length)
-  console.log('gest num of completed task',completedTask1)
-   progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
-  }else{
+    console.log('gest total task', gest_taskObject.length)
+    console.log('gest num of completed task', completedTask1)
+    progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
+  } else {
     progressResult1
   }
-  completedTask1=0
-  console.log('gest progressResult==============',progressResult1)
-  console.log("gest taskObjectArray==============",gest_taskObjectArray)
-  
+  completedTask1 = 0
+  console.log('gest progressResult==============', progressResult1)
+  console.log("gest taskObjectArray==============", gest_taskObjectArray)
 
-  var taskObjectArray=[]
-  var completedTask=0;
+
+  var taskObjectArray = []
+  var completedTask = 0;
   var progressResult = 0;
-  if(taskObject.length!=0){
-  for(k of taskObject){
+  if (taskObject.length != 0) {
+    for (k of taskObject) {
       var d = JSON.stringify(k)
       var dd = JSON.parse(d)
       var temp = dd
       var arr = temp.ppts_task_status;
-      var iscomplete =await arr.every(isStatusComplete);
-      var isPanding =await arr.every(isStatusPanding);
-         // console.log(iscomplete)
-          temp.iscompleteStatus = iscomplete
-          temp.ispendingStatus = isPanding
-           //progress bar number of total task / no of completed task 
-           if(iscomplete==true){
-           
-             completedTask = completedTask+1
-            }
-            
-             
-          taskObjectArray.push(temp)
-  }
-  console.log('total task',taskObject.length)
-  console.log('num of completed task',completedTask)
-   progressResult = Math.round((completedTask / taskObject.length) * 100);
-  
-}else{
-  progressResult=0
-}
+      var iscomplete = await arr.every(isStatusComplete);
+      var isPanding = await arr.every(isStatusPanding);
+      // console.log(iscomplete)
+      temp.iscompleteStatus = iscomplete
+      temp.ispendingStatus = isPanding
+      //progress bar number of total task / no of completed task 
+      if (iscomplete == true) {
 
-completedTask=0
-console.log('task object length======',taskObject.length)
-  console.log('progressResult==============',progressResult)
-  console.log("taskObjectArray==============",taskObjectArray)
-  
+        completedTask = completedTask + 1
+      }
+
+
+      taskObjectArray.push(temp)
+    }
+    console.log('total task', taskObject.length)
+    console.log('num of completed task', completedTask)
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+
+  } else {
+    progressResult = 0
+  }
+
+  completedTask = 0
+  console.log('task object length======', taskObject.length)
+  console.log('progressResult==============', progressResult)
+  console.log("taskObjectArray==============", taskObjectArray)
+
 
 
   if (taskObject) {
@@ -2160,7 +2227,7 @@ console.log('task object length======',taskObject.length)
       phase: req.query.phase,
       hiredProfessional_list: AllProfessional_property_wise,
       gest_taskObject: gest_taskObjectArray,
-      progressResult:progressResult,
+      progressResult: progressResult,
       //progressResult1:progressResult1
 
     });
@@ -2184,72 +2251,72 @@ app.get('/mydreamhome-details-phase-d', isCustomer, async (req, res) => {
   var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  var gest_taskObjectArray=[]
-  var completedTask1=0;
+  var gest_taskObjectArray = []
+  var completedTask1 = 0;
   var progressResult1 = 0;
-  if(gest_taskObject.length!=0){
-    for(ky of gest_taskObject){
-      var ds= JSON.stringify(ky)
+  if (gest_taskObject.length != 0) {
+    for (ky of gest_taskObject) {
+      var ds = JSON.stringify(ky)
       var ds = JSON.parse(ds)
       var temps = ds
       var arrr = temps.ppts_task_status;
-      var gest_iscomplete =await arrr.every(isStatusComplete);
-      var gest_isPanding =await arrr.every(isStatusPanding);
+      var gest_iscomplete = await arrr.every(isStatusComplete);
+      var gest_isPanding = await arrr.every(isStatusPanding);
       temps.gestiscompleteStatus = gest_iscomplete
       temps.gestispendingStatus = gest_isPanding
-          if(iscomplete==true){
-         
-            completedTask1 = completedTask1+1
-           }
-           gest_taskObjectArray.push(temps)
+      if (iscomplete == true) {
+
+        completedTask1 = completedTask1 + 1
+      }
+      gest_taskObjectArray.push(temps)
     }
-    console.log('gest total task',gest_taskObject.length)
-  console.log('gest num of completed task',completedTask1)
-   progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
-  }else{
+    console.log('gest total task', gest_taskObject.length)
+    console.log('gest num of completed task', completedTask1)
+    progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
+  } else {
     progressResult1
   }
-  completedTask1=0
-  console.log('gest progressResult==============',progressResult1)
-  console.log("gest taskObjectArray==============",gest_taskObjectArray)
-  
+  completedTask1 = 0
+  console.log('gest progressResult==============', progressResult1)
+  console.log("gest taskObjectArray==============", gest_taskObjectArray)
 
-  var taskObjectArray=[]
-  var completedTask=0;
+
+  var taskObjectArray = []
+  var completedTask = 0;
   var progressResult = 0;
-  if(taskObject.length!=0){
-  for(k of taskObject){
+  if (taskObject.length != 0) {
+    for (k of taskObject) {
       var d = JSON.stringify(k)
       var dd = JSON.parse(d)
       var temp = dd
       var arr = temp.ppts_task_status;
-      var iscomplete =await arr.every(isStatusComplete);
-      var isPanding =await arr.every(isStatusPanding);
-         // console.log(iscomplete)
-          temp.iscompleteStatus = iscomplete
-          temp.ispendingStatus = isPanding
-           //progress bar number of total task / no of completed task 
-           if(iscomplete==true){
-           
-             completedTask = completedTask+1
-            }
-            
-             
-          taskObjectArray.push(temp)
-  }
-  console.log('total task',taskObject.length)
-  console.log('num of completed task',completedTask)
-   progressResult = Math.round((completedTask / taskObject.length) * 100);
-  
-}else{
-  progressResult=0
-}
+      var iscomplete = await arr.every(isStatusComplete);
+      var isPanding = await arr.every(isStatusPanding);
+      // console.log(iscomplete)
+      temp.iscompleteStatus = iscomplete
+      temp.ispendingStatus = isPanding
+      //progress bar number of total task / no of completed task 
+      if (iscomplete == true) {
 
-completedTask=0
-console.log('task object length======',taskObject.length)
-  console.log('progressResult==============',progressResult)
-  console.log("taskObjectArray==============",taskObjectArray)
-  
+        completedTask = completedTask + 1
+      }
+
+
+      taskObjectArray.push(temp)
+    }
+    console.log('total task', taskObject.length)
+    console.log('num of completed task', completedTask)
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+
+  } else {
+    progressResult = 0
+  }
+
+  completedTask = 0
+  console.log('task object length======', taskObject.length)
+  console.log('progressResult==============', progressResult)
+  console.log("taskObjectArray==============", taskObjectArray)
+
 
 
   if (taskObject) {
@@ -2266,7 +2333,7 @@ console.log('task object length======',taskObject.length)
       phase: req.query.phase,
       hiredProfessional_list: AllProfessional_property_wise,
       gest_taskObject: gest_taskObjectArray,
-      progressResult:progressResult,
+      progressResult: progressResult,
       //progressResult1:progressResult1
 
     });
@@ -2290,72 +2357,72 @@ app.get('/mydreamhome-details-phase-e', isCustomer, async (req, res) => {
   var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  var gest_taskObjectArray=[]
-  var completedTask1=0;
+  var gest_taskObjectArray = []
+  var completedTask1 = 0;
   var progressResult1 = 0;
-  if(gest_taskObject.length!=0){
-    for(ky of gest_taskObject){
-      var ds= JSON.stringify(ky)
+  if (gest_taskObject.length != 0) {
+    for (ky of gest_taskObject) {
+      var ds = JSON.stringify(ky)
       var ds = JSON.parse(ds)
       var temps = ds
       var arrr = temps.ppts_task_status;
-      var gest_iscomplete =await arrr.every(isStatusComplete);
-      var gest_isPanding =await arrr.every(isStatusPanding);
+      var gest_iscomplete = await arrr.every(isStatusComplete);
+      var gest_isPanding = await arrr.every(isStatusPanding);
       temps.gestiscompleteStatus = gest_iscomplete
       temps.gestispendingStatus = gest_isPanding
-          if(iscomplete==true){
-         
-            completedTask1 = completedTask1+1
-           }
-           gest_taskObjectArray.push(temps)
+      if (iscomplete == true) {
+
+        completedTask1 = completedTask1 + 1
+      }
+      gest_taskObjectArray.push(temps)
     }
-    console.log('gest total task',gest_taskObject.length)
-  console.log('gest num of completed task',completedTask1)
-   progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
-  }else{
+    console.log('gest total task', gest_taskObject.length)
+    console.log('gest num of completed task', completedTask1)
+    progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
+  } else {
     progressResult1
   }
-  completedTask1=0
-  console.log('gest progressResult==============',progressResult1)
-  console.log("gest taskObjectArray==============",gest_taskObjectArray)
-  
+  completedTask1 = 0
+  console.log('gest progressResult==============', progressResult1)
+  console.log("gest taskObjectArray==============", gest_taskObjectArray)
 
-  var taskObjectArray=[]
-  var completedTask=0;
+
+  var taskObjectArray = []
+  var completedTask = 0;
   var progressResult = 0;
-  if(taskObject.length!=0){
-  for(k of taskObject){
+  if (taskObject.length != 0) {
+    for (k of taskObject) {
       var d = JSON.stringify(k)
       var dd = JSON.parse(d)
       var temp = dd
       var arr = temp.ppts_task_status;
-      var iscomplete =await arr.every(isStatusComplete);
-      var isPanding =await arr.every(isStatusPanding);
-         // console.log(iscomplete)
-          temp.iscompleteStatus = iscomplete
-          temp.ispendingStatus = isPanding
-           //progress bar number of total task / no of completed task 
-           if(iscomplete==true){
-           
-             completedTask = completedTask+1
-            }
-            
-             
-          taskObjectArray.push(temp)
-  }
-  console.log('total task',taskObject.length)
-  console.log('num of completed task',completedTask)
-   progressResult = Math.round((completedTask / taskObject.length) * 100);
-  
-}else{
-  progressResult=0
-}
+      var iscomplete = await arr.every(isStatusComplete);
+      var isPanding = await arr.every(isStatusPanding);
+      // console.log(iscomplete)
+      temp.iscompleteStatus = iscomplete
+      temp.ispendingStatus = isPanding
+      //progress bar number of total task / no of completed task 
+      if (iscomplete == true) {
 
-completedTask=0
-console.log('task object length======',taskObject.length)
-  console.log('progressResult==============',progressResult)
-  console.log("taskObjectArray==============",taskObjectArray)
-  
+        completedTask = completedTask + 1
+      }
+
+
+      taskObjectArray.push(temp)
+    }
+    console.log('total task', taskObject.length)
+    console.log('num of completed task', completedTask)
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+
+  } else {
+    progressResult = 0
+  }
+
+  completedTask = 0
+  console.log('task object length======', taskObject.length)
+  console.log('progressResult==============', progressResult)
+  console.log("taskObjectArray==============", taskObjectArray)
+
 
 
   if (taskObject) {
@@ -2372,7 +2439,7 @@ console.log('task object length======',taskObject.length)
       phase: req.query.phase,
       hiredProfessional_list: AllProfessional_property_wise,
       gest_taskObject: gest_taskObjectArray,
-      progressResult:progressResult,
+      progressResult: progressResult,
       //progressResult1:progressResult1
 
     });
@@ -2396,72 +2463,72 @@ app.get('/mydreamhome-details-phase-f', isCustomer, async (req, res) => {
   var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  var gest_taskObjectArray=[]
-  var completedTask1=0;
+  var gest_taskObjectArray = []
+  var completedTask1 = 0;
   var progressResult1 = 0;
-  if(gest_taskObject.length!=0){
-    for(ky of gest_taskObject){
-      var ds= JSON.stringify(ky)
+  if (gest_taskObject.length != 0) {
+    for (ky of gest_taskObject) {
+      var ds = JSON.stringify(ky)
       var ds = JSON.parse(ds)
       var temps = ds
       var arrr = temps.ppts_task_status;
-      var gest_iscomplete =await arrr.every(isStatusComplete);
-      var gest_isPanding =await arrr.every(isStatusPanding);
+      var gest_iscomplete = await arrr.every(isStatusComplete);
+      var gest_isPanding = await arrr.every(isStatusPanding);
       temps.gestiscompleteStatus = gest_iscomplete
       temps.gestispendingStatus = gest_isPanding
-          if(iscomplete==true){
-         
-            completedTask1 = completedTask1+1
-           }
-           gest_taskObjectArray.push(temps)
+      if (iscomplete == true) {
+
+        completedTask1 = completedTask1 + 1
+      }
+      gest_taskObjectArray.push(temps)
     }
-    console.log('gest total task',gest_taskObject.length)
-  console.log('gest num of completed task',completedTask1)
-   progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
-  }else{
+    console.log('gest total task', gest_taskObject.length)
+    console.log('gest num of completed task', completedTask1)
+    progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
+  } else {
     progressResult1
   }
-  completedTask1=0
-  console.log('gest progressResult==============',progressResult1)
-  console.log("gest taskObjectArray==============",gest_taskObjectArray)
-  
+  completedTask1 = 0
+  console.log('gest progressResult==============', progressResult1)
+  console.log("gest taskObjectArray==============", gest_taskObjectArray)
 
-  var taskObjectArray=[]
-  var completedTask=0;
+
+  var taskObjectArray = []
+  var completedTask = 0;
   var progressResult = 0;
-  if(taskObject.length!=0){
-  for(k of taskObject){
+  if (taskObject.length != 0) {
+    for (k of taskObject) {
       var d = JSON.stringify(k)
       var dd = JSON.parse(d)
       var temp = dd
       var arr = temp.ppts_task_status;
-      var iscomplete =await arr.every(isStatusComplete);
-      var isPanding =await arr.every(isStatusPanding);
-         // console.log(iscomplete)
-          temp.iscompleteStatus = iscomplete
-          temp.ispendingStatus = isPanding
-           //progress bar number of total task / no of completed task 
-           if(iscomplete==true){
-           
-             completedTask = completedTask+1
-            }
-            
-             
-          taskObjectArray.push(temp)
-  }
-  console.log('total task',taskObject.length)
-  console.log('num of completed task',completedTask)
-   progressResult = Math.round((completedTask / taskObject.length) * 100);
-  
-}else{
-  progressResult=0
-}
+      var iscomplete = await arr.every(isStatusComplete);
+      var isPanding = await arr.every(isStatusPanding);
+      // console.log(iscomplete)
+      temp.iscompleteStatus = iscomplete
+      temp.ispendingStatus = isPanding
+      //progress bar number of total task / no of completed task 
+      if (iscomplete == true) {
 
-completedTask=0
-console.log('task object length======',taskObject.length)
-  console.log('progressResult==============',progressResult)
-  console.log("taskObjectArray==============",taskObjectArray)
-  
+        completedTask = completedTask + 1
+      }
+
+
+      taskObjectArray.push(temp)
+    }
+    console.log('total task', taskObject.length)
+    console.log('num of completed task', completedTask)
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+
+  } else {
+    progressResult = 0
+  }
+
+  completedTask = 0
+  console.log('task object length======', taskObject.length)
+  console.log('progressResult==============', progressResult)
+  console.log("taskObjectArray==============", taskObjectArray)
+
 
 
   if (taskObject) {
@@ -2478,7 +2545,7 @@ console.log('task object length======',taskObject.length)
       phase: req.query.phase,
       hiredProfessional_list: AllProfessional_property_wise,
       gest_taskObject: gest_taskObjectArray,
-      progressResult:progressResult,
+      progressResult: progressResult,
       //progressResult1:progressResult1
 
     });
@@ -2504,72 +2571,72 @@ app.get('/mydreamhome-details-phase-g', isCustomer, async (req, res) => {
   var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  var gest_taskObjectArray=[]
-  var completedTask1=0;
+  var gest_taskObjectArray = []
+  var completedTask1 = 0;
   var progressResult1 = 0;
-  if(gest_taskObject.length!=0){
-    for(ky of gest_taskObject){
-      var ds= JSON.stringify(ky)
+  if (gest_taskObject.length != 0) {
+    for (ky of gest_taskObject) {
+      var ds = JSON.stringify(ky)
       var ds = JSON.parse(ds)
       var temps = ds
       var arrr = temps.ppts_task_status;
-      var gest_iscomplete =await arrr.every(isStatusComplete);
-      var gest_isPanding =await arrr.every(isStatusPanding);
+      var gest_iscomplete = await arrr.every(isStatusComplete);
+      var gest_isPanding = await arrr.every(isStatusPanding);
       temps.gestiscompleteStatus = gest_iscomplete
       temps.gestispendingStatus = gest_isPanding
-          if(iscomplete==true){
-         
-            completedTask1 = completedTask1+1
-           }
-           gest_taskObjectArray.push(temps)
+      if (iscomplete == true) {
+
+        completedTask1 = completedTask1 + 1
+      }
+      gest_taskObjectArray.push(temps)
     }
-    console.log('gest total task',gest_taskObject.length)
-  console.log('gest num of completed task',completedTask1)
-   progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
-  }else{
+    console.log('gest total task', gest_taskObject.length)
+    console.log('gest num of completed task', completedTask1)
+    progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
+  } else {
     progressResult1
   }
-  completedTask1=0
-  console.log('gest progressResult==============',progressResult1)
-  console.log("gest taskObjectArray==============",gest_taskObjectArray)
-  
+  completedTask1 = 0
+  console.log('gest progressResult==============', progressResult1)
+  console.log("gest taskObjectArray==============", gest_taskObjectArray)
 
-  var taskObjectArray=[]
-  var completedTask=0;
+
+  var taskObjectArray = []
+  var completedTask = 0;
   var progressResult = 0;
-  if(taskObject.length!=0){
-  for(k of taskObject){
+  if (taskObject.length != 0) {
+    for (k of taskObject) {
       var d = JSON.stringify(k)
       var dd = JSON.parse(d)
       var temp = dd
       var arr = temp.ppts_task_status;
-      var iscomplete =await arr.every(isStatusComplete);
-      var isPanding =await arr.every(isStatusPanding);
-         // console.log(iscomplete)
-          temp.iscompleteStatus = iscomplete
-          temp.ispendingStatus = isPanding
-           //progress bar number of total task / no of completed task 
-           if(iscomplete==true){
-           
-             completedTask = completedTask+1
-            }
-            
-             
-          taskObjectArray.push(temp)
-  }
-  console.log('total task',taskObject.length)
-  console.log('num of completed task',completedTask)
-   progressResult = Math.round((completedTask / taskObject.length) * 100);
-  
-}else{
-  progressResult=0
-}
+      var iscomplete = await arr.every(isStatusComplete);
+      var isPanding = await arr.every(isStatusPanding);
+      // console.log(iscomplete)
+      temp.iscompleteStatus = iscomplete
+      temp.ispendingStatus = isPanding
+      //progress bar number of total task / no of completed task 
+      if (iscomplete == true) {
 
-completedTask=0
-console.log('task object length======',taskObject.length)
-  console.log('progressResult==============',progressResult)
-  console.log("taskObjectArray==============",taskObjectArray)
-  
+        completedTask = completedTask + 1
+      }
+
+
+      taskObjectArray.push(temp)
+    }
+    console.log('total task', taskObject.length)
+    console.log('num of completed task', completedTask)
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+
+  } else {
+    progressResult = 0
+  }
+
+  completedTask = 0
+  console.log('task object length======', taskObject.length)
+  console.log('progressResult==============', progressResult)
+  console.log("taskObjectArray==============", taskObjectArray)
+
 
 
   if (taskObject) {
@@ -2586,7 +2653,7 @@ console.log('task object length======',taskObject.length)
       phase: req.query.phase,
       hiredProfessional_list: AllProfessional_property_wise,
       gest_taskObject: gest_taskObjectArray,
-      progressResult:progressResult,
+      progressResult: progressResult,
       //progressResult1:progressResult1
 
     });
@@ -2602,107 +2669,107 @@ console.log('task object length======',taskObject.length)
 
 
 app.get('/mydreamhome-details-phase-h', isCustomer, async (req, res) => {
- //console.log('from get take action url====', req.query)
- var user_id = req.session.user_id;
- var property_id = req.query.id;
- req.session.property_id = req.query.id
- var phase_name = req.query.phase;
- var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
- var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
- var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
- var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
- var gest_taskObjectArray=[]
- var completedTask1=0;
- var progressResult1 = 0;
- if(gest_taskObject.length!=0){
-   for(ky of gest_taskObject){
-     var ds= JSON.stringify(ky)
-     var ds = JSON.parse(ds)
-     var temps = ds
-     var arrr = temps.ppts_task_status;
-     var gest_iscomplete =await arrr.every(isStatusComplete);
-     var gest_isPanding =await arrr.every(isStatusPanding);
-     temps.gestiscompleteStatus = gest_iscomplete
-     temps.gestispendingStatus = gest_isPanding
-         if(iscomplete==true){
-        
-           completedTask1 = completedTask1+1
-          }
-          gest_taskObjectArray.push(temps)
-   }
-   console.log('gest total task',gest_taskObject.length)
- console.log('gest num of completed task',completedTask1)
-  progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
- }else{
-   progressResult1
- }
- completedTask1=0
- console.log('gest progressResult==============',progressResult1)
- console.log("gest taskObjectArray==============",gest_taskObjectArray)
- 
+  //console.log('from get take action url====', req.query)
+  var user_id = req.session.user_id;
+  var property_id = req.query.id;
+  req.session.property_id = req.query.id
+  var phase_name = req.query.phase;
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
+  var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
+  var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
+  var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
+  var gest_taskObjectArray = []
+  var completedTask1 = 0;
+  var progressResult1 = 0;
+  if (gest_taskObject.length != 0) {
+    for (ky of gest_taskObject) {
+      var ds = JSON.stringify(ky)
+      var ds = JSON.parse(ds)
+      var temps = ds
+      var arrr = temps.ppts_task_status;
+      var gest_iscomplete = await arrr.every(isStatusComplete);
+      var gest_isPanding = await arrr.every(isStatusPanding);
+      temps.gestiscompleteStatus = gest_iscomplete
+      temps.gestispendingStatus = gest_isPanding
+      if (iscomplete == true) {
 
- var taskObjectArray=[]
- var completedTask=0;
- var progressResult = 0;
- if(taskObject.length!=0){
- for(k of taskObject){
-     var d = JSON.stringify(k)
-     var dd = JSON.parse(d)
-     var temp = dd
-     var arr = temp.ppts_task_status;
-     var iscomplete =await arr.every(isStatusComplete);
-     var isPanding =await arr.every(isStatusPanding);
-        // console.log(iscomplete)
-         temp.iscompleteStatus = iscomplete
-         temp.ispendingStatus = isPanding
-          //progress bar number of total task / no of completed task 
-          if(iscomplete==true){
-          
-            completedTask = completedTask+1
-           }
-           
-            
-         taskObjectArray.push(temp)
- }
- console.log('total task',taskObject.length)
- console.log('num of completed task',completedTask)
-  progressResult = Math.round((completedTask / taskObject.length) * 100);
- 
-}else{
- progressResult=0
-}
-
-completedTask=0
-console.log('task object length======',taskObject.length)
- console.log('progressResult==============',progressResult)
- console.log("taskObjectArray==============",taskObjectArray)
- 
+        completedTask1 = completedTask1 + 1
+      }
+      gest_taskObjectArray.push(temps)
+    }
+    console.log('gest total task', gest_taskObject.length)
+    console.log('gest num of completed task', completedTask1)
+    progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
+  } else {
+    progressResult1
+  }
+  completedTask1 = 0
+  console.log('gest progressResult==============', progressResult1)
+  console.log("gest taskObjectArray==============", gest_taskObjectArray)
 
 
- if (taskObject) {
+  var taskObjectArray = []
+  var completedTask = 0;
+  var progressResult = 0;
+  if (taskObject.length != 0) {
+    for (k of taskObject) {
+      var d = JSON.stringify(k)
+      var dd = JSON.parse(d)
+      var temp = dd
+      var arr = temp.ppts_task_status;
+      var iscomplete = await arr.every(isStatusComplete);
+      var isPanding = await arr.every(isStatusPanding);
+      // console.log(iscomplete)
+      temp.iscompleteStatus = iscomplete
+      temp.ispendingStatus = isPanding
+      //progress bar number of total task / no of completed task 
+      if (iscomplete == true) {
 
-   req.session.pagename = 'mydreamhome';
-   err_msg = req.flash('err_msg');
-   success_msg = req.flash('success_msg');
-   res.render('mydreamhome-details-phase-h', {
-     err_msg, success_msg, layout: false,
-     session: req.session,
-     taskObject: taskObjectArray,
-     propertyData: propertyData,
-     step: req.query.step,
-     phase: req.query.phase,
-     hiredProfessional_list: AllProfessional_property_wise,
-     gest_taskObject: gest_taskObjectArray,
-     progressResult:progressResult,
-     //progressResult1:progressResult1
+        completedTask = completedTask + 1
+      }
 
-   });
- } else {
-   return res.send({
-     'status': false,
-     'message': 'some thing wrong'
-   })
- }
+
+      taskObjectArray.push(temp)
+    }
+    console.log('total task', taskObject.length)
+    console.log('num of completed task', completedTask)
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+
+  } else {
+    progressResult = 0
+  }
+
+  completedTask = 0
+  console.log('task object length======', taskObject.length)
+  console.log('progressResult==============', progressResult)
+  console.log("taskObjectArray==============", taskObjectArray)
+
+
+
+  if (taskObject) {
+
+    req.session.pagename = 'mydreamhome';
+    err_msg = req.flash('err_msg');
+    success_msg = req.flash('success_msg');
+    res.render('mydreamhome-details-phase-h', {
+      err_msg, success_msg, layout: false,
+      session: req.session,
+      taskObject: taskObjectArray,
+      propertyData: propertyData,
+      step: req.query.step,
+      phase: req.query.phase,
+      hiredProfessional_list: AllProfessional_property_wise,
+      gest_taskObject: gest_taskObjectArray,
+      progressResult: progressResult,
+      //progressResult1:progressResult1
+
+    });
+  } else {
+    return res.send({
+      'status': false,
+      'message': 'some thing wrong'
+    })
+  }
 
 
 })
@@ -2716,72 +2783,72 @@ app.get('/mydreamhome-details-phase-o', isCustomer, async (req, res) => {
   var gest_taskObject = await TaskHelper.GetGestTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
   var propertyData = await propertyDetail.GetPropertById(property_id, req.session.active_user_login);
   var AllProfessional_property_wise = await PropertyProfessionalHelper.Get_all_Professional_by_property(property_id, req.session.user_id, req.session.active_user_login);
-  var gest_taskObjectArray=[]
-  var completedTask1=0;
+  var gest_taskObjectArray = []
+  var completedTask1 = 0;
   var progressResult1 = 0;
-  if(gest_taskObject.length!=0){
-    for(ky of gest_taskObject){
-      var ds= JSON.stringify(ky)
+  if (gest_taskObject.length != 0) {
+    for (ky of gest_taskObject) {
+      var ds = JSON.stringify(ky)
       var ds = JSON.parse(ds)
       var temps = ds
       var arrr = temps.ppts_task_status;
-      var gest_iscomplete =await arrr.every(isStatusComplete);
-      var gest_isPanding =await arrr.every(isStatusPanding);
+      var gest_iscomplete = await arrr.every(isStatusComplete);
+      var gest_isPanding = await arrr.every(isStatusPanding);
       temps.gestiscompleteStatus = gest_iscomplete
       temps.gestispendingStatus = gest_isPanding
-          if(iscomplete==true){
-         
-            completedTask1 = completedTask1+1
-           }
-           gest_taskObjectArray.push(temps)
+      if (iscomplete == true) {
+
+        completedTask1 = completedTask1 + 1
+      }
+      gest_taskObjectArray.push(temps)
     }
-    console.log('gest total task',gest_taskObject.length)
-  console.log('gest num of completed task',completedTask1)
-   progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
-  }else{
+    console.log('gest total task', gest_taskObject.length)
+    console.log('gest num of completed task', completedTask1)
+    progressResult1 = Math.round((completedTask1 / gest_taskObject.length) * 100);
+  } else {
     progressResult1
   }
-  completedTask1=0
-  console.log('gest progressResult==============',progressResult1)
-  console.log("gest taskObjectArray==============",gest_taskObjectArray)
-  
+  completedTask1 = 0
+  console.log('gest progressResult==============', progressResult1)
+  console.log("gest taskObjectArray==============", gest_taskObjectArray)
 
-  var taskObjectArray=[]
-  var completedTask=0;
+
+  var taskObjectArray = []
+  var completedTask = 0;
   var progressResult = 0;
-  if(taskObject.length!=0){
-  for(k of taskObject){
+  if (taskObject.length != 0) {
+    for (k of taskObject) {
       var d = JSON.stringify(k)
       var dd = JSON.parse(d)
       var temp = dd
       var arr = temp.ppts_task_status;
-      var iscomplete =await arr.every(isStatusComplete);
-      var isPanding =await arr.every(isStatusPanding);
-         // console.log(iscomplete)
-          temp.iscompleteStatus = iscomplete
-          temp.ispendingStatus = isPanding
-           //progress bar number of total task / no of completed task 
-           if(iscomplete==true){
-           
-             completedTask = completedTask+1
-            }
-            
-             
-          taskObjectArray.push(temp)
-  }
-  console.log('total task',taskObject.length)
-  console.log('num of completed task',completedTask)
-   progressResult = Math.round((completedTask / taskObject.length) * 100);
-  
-}else{
-  progressResult=0
-}
+      var iscomplete = await arr.every(isStatusComplete);
+      var isPanding = await arr.every(isStatusPanding);
+      // console.log(iscomplete)
+      temp.iscompleteStatus = iscomplete
+      temp.ispendingStatus = isPanding
+      //progress bar number of total task / no of completed task 
+      if (iscomplete == true) {
 
-completedTask=0
-console.log('task object length======',taskObject.length)
-  console.log('progressResult==============',progressResult)
-  console.log("taskObjectArray==============",taskObjectArray)
-  
+        completedTask = completedTask + 1
+      }
+
+
+      taskObjectArray.push(temp)
+    }
+    console.log('total task', taskObject.length)
+    console.log('num of completed task', completedTask)
+    progressResult = Math.round((completedTask / taskObject.length) * 100);
+
+  } else {
+    progressResult = 0
+  }
+
+  completedTask = 0
+  console.log('task object length======', taskObject.length)
+  console.log('progressResult==============', progressResult)
+  console.log("taskObjectArray==============", taskObjectArray)
+
 
 
   if (taskObject) {
@@ -2798,7 +2865,7 @@ console.log('task object length======',taskObject.length)
       phase: req.query.phase,
       hiredProfessional_list: AllProfessional_property_wise,
       gest_taskObject: gest_taskObjectArray,
-      progressResult:progressResult,
+      progressResult: progressResult,
       //progressResult1:progressResult1
 
     });
@@ -3841,13 +3908,13 @@ app.get('/to-do-list', isCustomer, async (req, res) => {
   console.log("todo")
   req.session.pagename = 'to-do-list';
   // let propertyObj = await propertyDetail.GetAllProperty(req.session.user_id, req.session.active_user_login);
-  let propertyObj= await  PropertiesSchema.find({
+  let propertyObj = await PropertiesSchema.find({
     $or: [
       { $and: [{ ps_user_id: req.session.user_id }, { ps_is_active_user_flag: req.session.active_user_login },] },
       { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_other_property_type: req.session.active_user_login }] }
     ]
   }).sort({ _id: -1 })
-   console.log('property in to-do-list', propertyObj);
+  console.log('property in to-do-list', propertyObj);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('to-do-list', {
@@ -4146,21 +4213,21 @@ app.post('/professionals-multifilter', async (req, res) => {
     }
 
     if (req.body.experience != undefined) {
-      let expCreateArr=[];
+      let expCreateArr = [];
       for (var expData of req.body.experience) {
-            let expLists = expData.split("-");
-          console.log('Expireancelisisi:',expLists);
-         if(expLists[1]){
-          console.log('expListarra0:',expLists[0]);
-          console.log('expListarra1:',expLists[1]);
-                for(let i=parseInt(expLists[0]); i<=parseInt(expLists[1]); i++){
-                    expCreateArr.push(String(i));
-                }
-            console.log('expCreateArr:',expCreateArr);
-         }else{
-          console.log('expList:',expLists);
+        let expLists = expData.split("-");
+        console.log('Expireancelisisi:', expLists);
+        if (expLists[1]) {
+          console.log('expListarra0:', expLists[0]);
+          console.log('expListarra1:', expLists[1]);
+          for (let i = parseInt(expLists[0]); i <= parseInt(expLists[1]); i++) {
+            expCreateArr.push(String(i));
+          }
+          console.log('expCreateArr:', expCreateArr);
+        } else {
+          console.log('expList:', expLists);
           expCreateArr = expLists;
-         }
+        }
       }
 
       if (typeof (req.body.experience) == 'object') {
@@ -4170,18 +4237,18 @@ app.post('/professionals-multifilter', async (req, res) => {
         var arr = [];
 
         let expLists = req.body.experience.split("-");
-        console.log('EString xpireancelisisi:',expLists);
-       if(expLists[1]){
-        console.log('EString expListarra0:',expLists[0]);
-        console.log('EString expListarra1:',expLists[1]);
-              for(let i=parseInt(expLists[0]); i<=parseInt(expLists[1]); i++){
-                  expCreateArr.push(String(i));
-              }
-              console.log('EString expCreateArr:',expCreateArr);
-       }else{
-        console.log('EString expList:',expLists);
-        expCreateArr = expLists;
-       }
+        console.log('EString xpireancelisisi:', expLists);
+        if (expLists[1]) {
+          console.log('EString expListarra0:', expLists[0]);
+          console.log('EString expListarra1:', expLists[1]);
+          for (let i = parseInt(expLists[0]); i <= parseInt(expLists[1]); i++) {
+            expCreateArr.push(String(i));
+          }
+          console.log('EString expCreateArr:', expCreateArr);
+        } else {
+          console.log('EString expList:', expLists);
+          expCreateArr = expLists;
+        }
 
         //arr.push(req.body.experience);
         experienceKeyword = expCreateArr;
@@ -5505,21 +5572,21 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
     // }
 
     if (req.body.experience != undefined) {
-      let expCreateArr=[];
+      let expCreateArr = [];
       for (var expData of req.body.experience) {
-            let expLists = expData.split("-");
-          console.log('Expireancelisisi:',expLists);
-         if(expLists[1]){
-          console.log('expListarra0:',expLists[0]);
-          console.log('expListarra1:',expLists[1]);
-                for(let i=parseInt(expLists[0]); i<=parseInt(expLists[1]); i++){
-                    expCreateArr.push(String(i));
-                }
-            console.log('expCreateArr:',expCreateArr);
-         }else{
-          console.log('expList:',expLists);
+        let expLists = expData.split("-");
+        console.log('Expireancelisisi:', expLists);
+        if (expLists[1]) {
+          console.log('expListarra0:', expLists[0]);
+          console.log('expListarra1:', expLists[1]);
+          for (let i = parseInt(expLists[0]); i <= parseInt(expLists[1]); i++) {
+            expCreateArr.push(String(i));
+          }
+          console.log('expCreateArr:', expCreateArr);
+        } else {
+          console.log('expList:', expLists);
           expCreateArr = expLists;
-         }
+        }
       }
 
       if (typeof (req.body.experience) == 'object') {
@@ -5529,18 +5596,18 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
         var arr = [];
 
         let expLists = req.body.experience.split("-");
-        console.log('EString xpireancelisisi:',expLists);
-       if(expLists[1]){
-        console.log('EString expListarra0:',expLists[0]);
-        console.log('EString expListarra1:',expLists[1]);
-              for(let i=parseInt(expLists[0]); i<=parseInt(expLists[1]); i++){
-                  expCreateArr.push(String(i));
-              }
-              console.log('EString expCreateArr:',expCreateArr);
-       }else{
-        console.log('EString expList:',expLists);
-        expCreateArr = expLists;
-       }
+        console.log('EString xpireancelisisi:', expLists);
+        if (expLists[1]) {
+          console.log('EString expListarra0:', expLists[0]);
+          console.log('EString expListarra1:', expLists[1]);
+          for (let i = parseInt(expLists[0]); i <= parseInt(expLists[1]); i++) {
+            expCreateArr.push(String(i));
+          }
+          console.log('EString expCreateArr:', expCreateArr);
+        } else {
+          console.log('EString expList:', expLists);
+          expCreateArr = expLists;
+        }
 
         //arr.push(req.body.experience);
         experienceKeyword = expCreateArr;
@@ -5640,11 +5707,17 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
       })
 
       await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
-        if (service_provider_detail1) {
+        if (service_provider_detail1.length>0) {
           for (var sp_id1 of service_provider_detail1) {
             let temp = await sp_id1._id.toString();
             await categoryServiceProvIdArray.push(temp);
           }
+        }else{
+          res.send({
+            err_msg, success_msg, layout: false,
+            session: req.session,
+            filterData: ''
+          })
         }
       });
 
@@ -5713,11 +5786,17 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
       })
 
       await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
-        if (service_provider_detail1) {
+        if (service_provider_detail1.length>0) {
           for (var sp_id1 of service_provider_detail1) {
             let temp = await sp_id1._id.toString();
             await cityServiceProvIdArray.push(temp);
           }
+        }else{
+          res.send({
+            err_msg, success_msg, layout: false,
+            session: req.session,
+            filterData: ''
+          })
         }
       });
 
@@ -5789,11 +5868,17 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
 
       await ServiceProviderLanguageSchema.find(QuerySyntex).then(async service_provider_detail_lang1 => {
-        if (service_provider_detail_lang1) {
+        if (service_provider_detail_lang1.length>0) {
           for (var lang_sp_id1 of service_provider_detail_lang1) {
             let temp = await lang_sp_id1.spls_service_provider_id.toString();
             await languageServiceProvIdArray.push(temp);
           }
+        }else{
+          res.send({
+            err_msg, success_msg, layout: false,
+            session: req.session,
+            filterData: ''
+          })
         }
       });
 
@@ -5862,13 +5947,21 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
       })
 
 
-
-      await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
-        if (service_provider_detail1) {
-          for (var sp_id1 of service_provider_detail1) {
+      console.log('DataSingleExp:',QuerySyntex)
+      await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail111 => {
+        console.log('service_provider_detail1--DataSingleExp:',service_provider_detail111)
+        if (service_provider_detail111.length>0) {
+          for (var sp_id1 of service_provider_detail111) {
             let temp = await sp_id1._id.toString();
             await experienceServiceProvIdArray.push(temp);
           }
+        }else{
+          console.log('service_provider_detail1--totalHireUnique:',totalHireUnique)
+          res.send({
+            err_msg, success_msg, layout: false,
+            session: req.session,
+            filterData: ''
+          })
         }
       });
       // }
@@ -5899,8 +5992,9 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
       if (ttt) {
         //for (var t of ttt) {
         // if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
-        console.log()
+          //, _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
+        console.log('quesry syntaxdata:',QuerySyntex)
         await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
             for (var sp_id of service_provider_detail) {
@@ -5939,6 +6033,7 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
         // }
         console.log('currentPage:', page);
         console.log('totalPages:', Math.ceil(count / limit));
+        //console.log('filterDatafilterDatafilterData:', filterData);
 
         res.send({
           err_msg, success_msg, layout: false,
@@ -5971,7 +6066,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
       if (ttt) {
         //  for (var t of ttt) {
         //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+          //, _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6042,8 +6138,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique } 
+        QuerySyntex = { _id: { $in: ttt }};
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6113,8 +6209,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6185,8 +6281,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6258,8 +6354,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique } 
+        QuerySyntex = { _id: { $in: ttt }};
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6334,8 +6430,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6410,8 +6506,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6489,8 +6585,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6567,8 +6663,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6649,8 +6745,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6842,29 +6938,29 @@ app.get('/get-notification', isCustomer, async (req, res) => {
 app.get('/get-solicitor-lists', isCustomer, async (req, res) => {
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
-  let serviceproviderData=[];
-    let serviceProviderObj = {
-      value:'',
-      data:'',
-    }
-    await ServiceProviderSchema.find({ sps_status: 'active',sps_role_name:"Solicitor" }).then(async service_provider1 => {
-      if (service_provider1) {
-        console.log('service_provider1:',service_provider1)
-        for (var sp_id of service_provider1) {
-          serviceProviderObj = {
-              data:sp_id.sps_email_id,
-              value:sp_id.sps_fullname
-          }
-          serviceproviderData.push(serviceProviderObj);
+  let serviceproviderData = [];
+  let serviceProviderObj = {
+    value: '',
+    data: '',
+  }
+  await ServiceProviderSchema.find({ sps_status: 'active', sps_role_name: "Solicitor" }).then(async service_provider1 => {
+    if (service_provider1) {
+      console.log('service_provider1:', service_provider1)
+      for (var sp_id of service_provider1) {
+        serviceProviderObj = {
+          data: sp_id.sps_email_id,
+          value: sp_id.sps_fullname
         }
+        serviceproviderData.push(serviceProviderObj);
       }
-    });
-    console.log('Edit serviceproviderData:',serviceproviderData)
-    res.send({
-      err_msg, success_msg, layout: false,
-      session: req.session,
-      serviceproviderData:serviceproviderData
-    });
+    }
+  });
+  console.log('Edit serviceproviderData:', serviceproviderData)
+  res.send({
+    err_msg, success_msg, layout: false,
+    session: req.session,
+    serviceproviderData: serviceproviderData
+  });
 });
 
 
