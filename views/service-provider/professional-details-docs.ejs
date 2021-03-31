@@ -838,12 +838,12 @@
                                           <%if(row.permissionData.dps_view_permission == 'yes'){%>
                                           <li>
                                             <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="image" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)" data-toggle="tooltip" data-placement="top"
-                                              title="View Document"><img src="../images/eye.png" style="width:75%"></a>
+                                              title="View Document"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                           </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                           <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
                                           <li>
                                             <a download href="/taskdocument/<%= row.cuds_document_name%>" data-toggle="tooltip" data-placement="top"
-                                              title="Download Document"><img src="../images/drop-down.png"></a>
+                                              title="Download Document"><i class="fa fa-download" aria-hidden="true"></i></a>
                                           </li>
                                           <%}%>
                                           <%}%>
@@ -873,21 +873,19 @@
                                       <td>...</td>
                                       <%}%>
                                         <td>
-                                          <a class="word" href="//docs.google.com/gview?url=https://relai.herokuapp.com/taskdocument/sample-1616398262791.pdf&embedded=true"></a>
                                           
                                           <ul style="display: flex;">
                                             <%if(row.permissionData){ %>
                                               <%if(row.permissionData.dps_view_permission == 'yes'){%>
                                             <li>
                                               <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="pdf" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)" data-toggle="tooltip" data-placement="top"
-                                                title="View Document"><img src="../images/eye.png"
-                                                  style="width:75%"></a>
+                                                title="View Document"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                             </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                           <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
 
                                             <li>
                                               <a download href="/taskdocument/<%= row.cuds_document_name%>" data-toggle="tooltip" data-placement="top"
-                                                title="Download Document"><img src="../images/drop-down.png"></a>
+                                                title="Download Document"><i class="fa fa-download" aria-hidden="true"></i></a>
                                             </li>
                                             <%}%>
                                           <%}%>
@@ -896,10 +894,7 @@
                                 </tr>
                                 <%}else if(row.cuds_document_type=='doc' ){%>
 
-                                  <!-- <div style="text-align:center">
-                                    <h4>Pdf viewer testing</h4>
-                                      <iframe src="https://docs.google.com/viewer?url=https://relai.herokuapp.com/taskdocument/howtoconvert-1616406032794.doc&embedded=true" frameborder="0" height="500px" width="100%"></iframe>
-                                    </div> -->
+                                  
 
                                   <tr>
                                     <td><img class="pdf-file" src="../images/docicon.png">
@@ -929,13 +924,13 @@
                                               <%if(row.permissionData){ %>
                                                 <%if(row.permissionData.dps_view_permission == 'yes'){%>
                                               <li>
-                                                <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="doc" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="View Document"><img src="../images/eye.png" style="width:75%"></a>
+                                                <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="doc" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="View Document"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                               </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                           <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
 
                                               <li>
                                                 <a download href="/taskdocument/<%= row.cuds_document_name%>" data-toggle="tooltip" data-placement="top"
-                                                  title="Download Document"><img src="../images/drop-down.png"></a>
+                                                  title="Download Document"><i class="fa fa-download" aria-hidden="true"></i></a>
                                               </li>
                                               <%}%>
                                           <%}%> 
@@ -976,7 +971,7 @@
 
                                                 <li>
                                                   <a download href="/taskdocument/<%= row.cuds_document_name%>" data-toggle="tooltip" data-placement="top"
-                                                    title="Download Document"><img src="../images/drop-down.png"></a>
+                                                    title="Download Document"><i class="fa fa-download" aria-hidden="true"></i></a>
                                                 </li>
                                                 <%}%>
                                                 <%}%> 
@@ -1018,7 +1013,7 @@
 
                                                   <li>
                                                     <a download href="/taskdocument/<%= row.cuds_document_name%>" data-toggle="tooltip" data-placement="top"
-                                                      title="Download Document"><img src="../images/drop-down.png"></a>
+                                                      title="Download Document"><i class="fa fa-download" aria-hidden="true"></i></a>
                                                   </li>
                                                   <%}%>
                                                   <%}%>  
@@ -1393,7 +1388,7 @@ $(document).ready(function() {
           });
         }
 
-$(document).keydown(function (event) {
+/*$(document).keydown(function (event) {
     if (event.keyCode == 123) { // Prevent F12
         return false;
     } else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) { // Prevent Ctrl+Shift+I        
@@ -1432,7 +1427,7 @@ $('.wrapper.dashboard').on("paste", function(e) {
    // alert('paste. not allowed!');
     e.preventDefault();
 });
-
+*/
       </script>
       </body>
 

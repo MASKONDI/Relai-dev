@@ -876,15 +876,14 @@
                                           <%if(row.permissionData){ %>
                                             <%if(row.permissionData.dps_view_permission=='yes' ){%>
                                               <li>
-                                                <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="image" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)"  data-toggle="tooltip" data-placement="top"
-                                                  title="View Document"><img src="../images/eye.png"
-                                                    style="width:75%"></a>
+                                                <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.spuds_document_name%>" data-doctype="image" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)"  data-toggle="tooltip" data-placement="top"
+                                                  title="View Document"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                               </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                               <% }if(row.permissionData.dps_download_permission=='yes' ){ %>
                                                 <li>
                                                   <a download href="/taskdocument/<%= row.spuds_document_name%>"
                                                     data-toggle="tooltip" data-placement="top"
-                                                    title="Download Document"><img src="../images/drop-down.png"></a>
+                                                    title="Download Document"><i class="fa fa-download" aria-hidden="true"></i></a>
                                                 </li>
                                                 <%}%>
                                                   <%}%>
@@ -922,16 +921,15 @@
                                             <%if(row.permissionData){ %>
                                               <%if(row.permissionData.dps_view_permission=='yes' ){%>
                                                 <li>
-                                                  <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="pdf" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)"  data-toggle="tooltip" data-placement="top"
-                                                    title="View Document"><img src="../images/eye.png"
-                                                      style="width:75%"></a>
+                                                  <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.spuds_document_name%>" data-doctype="pdf" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)"  data-toggle="tooltip" data-placement="top"
+                                                    title="View Document"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                                 </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                                 <% }if(row.permissionData.dps_download_permission=='yes' ){ %>
 
                                                   <li>
                                                     <a download href="/taskdocument/<%= row.spuds_document_name%>"
                                                       data-toggle="tooltip" data-placement="top"
-                                                      title="Download Document"><img src="../images/drop-down.png"></a>
+                                                      title="Download Document"><i class="fa fa-download" aria-hidden="true"></i></a>
                                                   </li>
                                                   <%}%>
                                                     <%}%>
@@ -967,17 +965,15 @@
                                               <%if(row.permissionData){ %>
                                                 <%if(row.permissionData.dps_view_permission=='yes' ){%>
                                                   <li>
-                                                    <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="doc" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)"  data-toggle="tooltip" data-placement="top"
-                                                      title="View Document"><img src="../images/eye.png"
-                                                        style="width:75%"></a>
+                                                    <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.spuds_document_name%>" data-doctype="doc" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)"  data-toggle="tooltip" data-placement="top"
+                                                      title="View Document"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                                   </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                                   <% }if(row.permissionData.dps_download_permission=='yes' ){ %>
 
                                                     <li>
                                                       <a download href="/taskdocument/<%= row.spuds_document_name%>"
                                                         data-toggle="tooltip" data-placement="top"
-                                                        title="Download Document"><img
-                                                          src="../images/drop-down.png"></a>
+                                                        title="Download Document"><i class="fa fa-download" aria-hidden="true"></i></a>
                                                     </li>
                                                     <%}%>
                                                       <%}%>
@@ -998,7 +994,7 @@
                                         </span></td>
                                       <%if(row.spuds_phase_flag){%>
                                         <td>
-                                          <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="txt" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)"  data-toggle="tooltip" data-placement="top"
+                                          <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.spuds_document_name%>" data-doctype="txt" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)"  data-toggle="tooltip" data-placement="top"
                                             title="<%=row.spuds_task_name%>">
                                             <%=row.spuds_phase_flag%>
                                           </a>
@@ -1012,16 +1008,14 @@
                                                   <%if(row.permissionData.dps_view_permission=='yes' ){%>
                                                     <li>
                                                       <a href="#" data-toggle="tooltip" data-placement="top"
-                                                        title="View Document"><img src="../images/eye.png"
-                                                          style="width:75%"></a>
+                                                        title="View Document"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                                     </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                                     <% }if(row.permissionData.dps_download_permission=='yes' ){ %>
 
                                                       <li>
                                                         <a download href="/taskdocument/<%= row.spuds_document_name%>"
                                                           data-toggle="tooltip" data-placement="top"
-                                                          title="Download Document"><img
-                                                            src="../images/drop-down.png"></a>
+                                                          title="Download Document"><i class="fa fa-download" aria-hidden="true"></i></a>
                                                       </li>
                                                       <%}%>
                                                         <%}%>
@@ -1042,7 +1036,7 @@
                                           </span></td>
                                         <%if(row.spuds_phase_flag){%>
                                           <td>
-                                            <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.cuds_document_name%>" data-doctype="video" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)"  data-toggle="tooltip" data-placement="top"
+                                            <a class="viewModalDoc" data-docurl="/taskdocument/<%= row.spuds_document_name%>" data-doctype="video" data-docname="<%= row.cuds_document_name%>" href="javascript:void(0)"  data-toggle="tooltip" data-placement="top"
                                               title="<%=row.spuds_task_name%>">
                                               <%=row.spuds_phase_flag%>
                                             </a>
@@ -1056,16 +1050,14 @@
                                                     <%if(row.permissionData.dps_view_permission=='yes' ){%>
                                                       <li>
                                                         <a href="#" data-toggle="tooltip" data-placement="top"
-                                                          title="View Document"><img src="../images/eye.png"
-                                                            style="width:75%"></a>
+                                                          title="View Document"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                                       </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                                       <% }if(row.permissionData.dps_download_permission=='yes' ){ %>
 
                                                         <li>
                                                           <a download href="/taskdocument/<%= row.spuds_document_name%>"
                                                             data-toggle="tooltip" data-placement="top"
-                                                            title="Download Document"><img
-                                                              src="../images/drop-down.png"></a>
+                                                            title="Download Document"><i class="fa fa-download" aria-hidden="true"></i></a>
                                                         </li>
                                                         <%}%>
                                                           <%}%>

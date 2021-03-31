@@ -1609,9 +1609,9 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
               ]
             }).sort({ _id: -1 }).then(async (msgdata) => {
               console.log('msgdata=', msgdata)
-              if (msgdata !== null) {
+             // if (msgdata !== null) {
                 //for (let i of allProfeshnoals) {
-                if (msgdata) {
+                if (msgdata !== null) {
                   var object_as_string = JSON.stringify(customerDetail);
                   const t = JSON.parse(object_as_string);
                   // console.log('lastIndex:', msgdata.slice(-1)[0]);
@@ -1627,9 +1627,9 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
                   serviceProvArray.push(t)
                 }
                 //}
-              } else {
-                console.log('myfff:')
-              }
+              //} else {
+              //  console.log('myfff:')
+              //}
             })
           }
         }
@@ -1705,6 +1705,8 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
         }
         err_msg = req.flash('err_msg');
         success_msg = req.flash('success_msg');
+        console.log('CustomerDetailsCustomerDetails:',CustomerDetails)
+        console.log('serviceProvArrayserviceProvArray:',serviceProvArray)
         res.render('service-provider/myproperties-detail', {
           err_msg, success_msg, layout: false,
           session: req.session,
