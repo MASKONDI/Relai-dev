@@ -542,7 +542,7 @@ router.post("/service_provider_education", (req, res) => {
         res.send({
           status: true,
           action: 'update',
-          success_msg: 'Education updated successfully'
+          success_msg: 'Education details updated successfully'
         });
       }
     })
@@ -564,7 +564,7 @@ router.post("/service_provider_education", (req, res) => {
         res.send({
           educationDetail: serviceProviders,
           status: true,
-          success_msg: 'Education added successfully',
+          success_msg: 'Education details  added successfully',
           action: 'add'
         });
       })

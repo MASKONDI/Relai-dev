@@ -439,7 +439,10 @@ app.get('/service-provider/property', isServiceProvider, async function (req, re
   const count = await PropertiesSchema.countDocuments();
   console.log('countcount:', count);
   console.log("req.session.active_user_login", req.session.active_user_login);
-  PropertiesSchema.find({ ps_is_active_user_flag: req.session.active_user_login }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
+  var query  = {
+    $or:[{ps_is_active_user_flag: req.session.active_user_login },{ps_other_property_type: req.session.active_user_login }]
+  }
+  PropertiesSchema.find(query).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
     if (data) {
       console.log("PropertiesSchema is ", data);
       let arr = [];
@@ -484,7 +487,17 @@ app.get('/service-provider/professionals-to-do-list', isServiceProvider, async f
   let AllhiredProfeshnoal = await propertyProfessinoal.getHiredPropertyProfessional(req.session.user_id, req.session.active_user_login);
   for (let key of AllhiredProfeshnoal) {
     //let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
-    let propertyData = await PropertiesSchema.findOne({ _id: key.pps_property_id });
+    // var query = {
+    //   $and:[
+    //     { _id: { $in:  key.pps_property_id  } },
+    //     {
+    //       $or:[
+    //         {ps_is_active_user_flag:req.session.active_user_login},{ps_other_property_type:req.session.active_user_login}
+    //       ]
+    //   }
+    // ]
+    // }
+    let propertyData = await PropertiesSchema.findOne().where({ _id: key.pps_property_id });
     // let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
     // propertyData.property_image = await propertyImageData.pps_property_image_name;
     // let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
@@ -526,9 +539,9 @@ app.get('/service-provider/myproperties', isServiceProvider, async function (req
   }
   console.log("AllhiredProfeshnoal is ", AllhiredProfeshnoal);
   console.log("propertyId is ", propertyId);
-
+  
   count = await PropertiesSchema.countDocuments({ _id: { $in: propertyId } });
-  let propertyData = await propertyHelper.getPropertyByID(propertyId, limit, page);
+  let propertyData = await propertyHelper.getPropertyByID(propertyId, limit, page,req.session.active_user_login);
   for (let propertyData1 of propertyData) {
     let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData1._id);
     console.log("propertyImageData is", propertyData1);

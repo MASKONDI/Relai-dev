@@ -52,7 +52,7 @@
                 <input type="hidden" class="form-control form-control-fix2" id="ppts_phase_flag" name="ppts_phase_flag"
                   required>
 
-                <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate"
+                <input type="text" onfocus="(this.type='date')"  class="form-control  form-control-fix2 duedate" id="duedate"
                   placeholder="Due on Date" name="duedate" required>
                 <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
                   placeholder="Add Notes(If any)"></textarea>
@@ -703,3 +703,14 @@
     </div>
     </div>
     <%- include('dashboard_footer')-%>
+    <script>
+      var date = new Date().toISOString().slice(0,10);
+
+//To restrict past date
+
+$('.duedate').attr('min', date);
+
+//To restrict future date
+
+//$('#date').attr('max', date);
+      </script>
