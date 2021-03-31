@@ -1567,6 +1567,92 @@ function invite_function(req, saved_property) {
 
 
 function solicitor_invite_function(req, saved_property) {
+    console.log("Request getting from server :", req.body);
+    const payload = { id: saved_property._id, property_name: saved_property.ps_property_name }; // Create Token Payload
+    // Sign Token
+    //const path = 'http://localhost:5000/signup-service-provider?email=' + req.body.ps_solicitor_email + '&token=' + token + '\n\n';
+    console.log(" solicitoy email", req.body.ps_solicitor_email);
+    console.log(" type of solicitoy email", typeof(req.body.ps_solicitor_email));
+    if (typeof (req.body.ps_solicitor_email) == 'object') {
+      console.log('My Object emailsss');
+    if (req.body.ps_solicitor_email.length > 0) {
+      for (let email of req.body.ps_solicitor_email) {
+        jwt.sign(
+        payload,
+        keys.secretOrKey,
+        { expiresIn: 3600*60*60 },
+        (err, token) => {
+        console.log(" Object Sending Secret token along with customer request", token);
+        var smtpTransport = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+          user: keys.user4,
+          pass: keys.pass4,
+        }
+        });
+        const mailOptions = {
+          to: email,
+          from: keys.user4,
+          subject: 'Invitaion letter from Relai',
+          text: 'Hello \n\n' + 'you are invited in Relai plateform for solicitor.\n\n' +
+          'We suggest you to please visit our Relai plateform and create your account \n' + 'Here is the registration link: http://' + req.headers.host + '/signup-service-provider?email=' + email + '&role=Solicitor&token=' + token + '\n\n' +
+          'if you already registered please hit given url \n' + ' http://' + req.headers.host + '/signup-service-provider?email=' + email + '&role=Solicitor&token=' + token + '\n\n' +
+          'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+        };
+        smtpTransport.sendMail(mailOptions, function (err) {
+          if (err) {
+          console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+          //res.redirect('/add-property')
+          } else {
+          //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
+          // res.redirect('/add-property')
+          }
+        });
+        }
+        );
+      }
+    }
+  }else{
+    console.log('My String emailsss:',req.body.ps_solicitor_email);
+
+    jwt.sign(
+      payload,
+      keys.secretOrKey,
+      { expiresIn: 3600*60*60 },
+      (err, token) => {
+      console.log("String Sending Secret token along with customer request", token);
+      var smtpTransport = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: keys.user4,
+        pass: keys.pass4,
+      }
+      });
+      const mailOptions = {
+        to:'vivek.makerit@gmail.com',
+        from: keys.user4,
+        subject: 'Invitaion letter from Relai',
+        text: 'Hello \n\n' + 'you are invited in Relai plateform for solicitor.\n\n' +
+        'We suggest you to please visit our Relai plateform and create your account \n' + 'Here is the registration link: http://' + req.headers.host + '/signup-service-provider?email=' + email + '&role=Solicitor&token=' + token + '\n\n' +
+        'if you already registered please hit given url \n' + ' http://' + req.headers.host + '/signup-service-provider?email=' + email + '&role=Solicitor&token=' + token + '\n\n' +
+        'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+      };
+      smtpTransport.sendMail(mailOptions, function (err) {
+        if (err) {
+        console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+        //res.redirect('/add-property')
+        } else {
+        //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
+        // res.redirect('/add-property')
+        }
+      });
+      }
+      );
+  }
+  }
+
+
+/*function solicitor_invite_function(req, saved_property) {
   console.log("Request getting from server :", req.body);
   const payload = { id: saved_property._id, property_name: saved_property.ps_property_name }; // Create Token Payload
   // Sign Token
@@ -1604,7 +1690,7 @@ function solicitor_invite_function(req, saved_property) {
       });
     }
   );
-}
+}*/
 
 function customer_invitation(req, saved_property) {
   console.log("Request getting from server :", req.body);
