@@ -3092,14 +3092,14 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
           cuds_property_id: req.query.id,
           // $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.query.id, cuds_is_active_user_flag: req.session.active_user_login }]
         });
-        console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
+       // console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
         let serviceProvArray = [];
         let totalcostArray = [];
         var cost = 0;
         var to = [1, 2, 3]
         //var sumof = tallyVotes(to)
         var sumof = tallyVotes(AllhiredProfeshnoal)
-        console.log("sumofsumofsumofsumofsumof", sumof)
+        //console.log("sumofsumofsumofsumofsumof", sumof)
         for (var k of AllhiredProfeshnoal) {
           var costs = parseInt(k.pps_pofessional_budget);
 
@@ -3139,7 +3139,8 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
         var c = 0;
         let TaskDetailObj = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login);
 
-        //console.log("TaskDetailObj===================================================",TaskDetailObj)
+        console.log("TaskDetailObj===================================================",TaskDetailObj)
+       
         var phase_page_name = '';
         for (var ph of TaskDetailObj) {
           const PhaseObject = JSON.stringify(ph);
@@ -3147,27 +3148,44 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
 
           phase_page_name = await getPhase(to_do_data.ppts_phase_flag);
           to_do_data.phase_page_name = phase_page_name
-          //to_do_data.step=to_do_data.ppts_phase_flag
-          //console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',to_do_data)
-          //console.log("to do deta ",to_do_data.ppts_assign_to)
-          let professionalObj = await PropertyProfessionalHelper.GetProfessionalById(to_do_data.ppts_assign_to);
-          if (professionalObj) {
-            for (var Prof_fullname of professionalObj) {
-              to_do_data.professionalName = Prof_fullname.sps_fullname
-
-
-              todoArray.push(to_do_data);
-
-            }
-
+          
+         let sp =  await ServiceProviderSchema.find({'_id': { $in: to_do_data.ppts_assign_to}});
+          for(var ki of sp){
+            const ki1 = JSON.stringify(ki);
+            const ki2 = JSON.parse(ki1);
+            to_do_data.professionalName= await ki2.sps_fullname
+            var ki3 = await to_do_data
+            console.log('to_do_data===============',ki3)
+           // to_do_data.professionalName =  spname2
+           todoArray.push(ki3);
           }
+             //console.log('docs=========',sp);
+          // for(var id of to_do_data.ppts_assign_to){
+          //   var spdetail = await ServiceProviderSchema.findOne({'_id':$in:{to_do_data.ppts_assign_to}})
+          //   console.log('spdetail====',spdetail)
+          //   to_do_data.professionalName =await  spdetail.sps_fullname
+          //   todoArray.push(to_do_data);
+          // }
+        //console.log(todoArray)
+        
+          // let professionalObj = await PropertyProfessionalHelper.GetProfessionalById(to_do_data.ppts_assign_to);
+          // if (professionalObj) {
+          //   for (var Prof_fullname of professionalObj) {
+          //     to_do_data.professionalName = Prof_fullname.sps_fullname
+
+
+              
+
+          //   }
+
+          // }
 
 
 
 
         }
-        //console.log("todoArray=======================",todoArray);
-
+        console.log("todoArray=======================",todoArray);
+     // return;
 
 
 
