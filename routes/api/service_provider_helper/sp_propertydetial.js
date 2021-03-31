@@ -22,7 +22,7 @@ const ServiceProviderUploadDocsSchema = require("../../../models/service_provide
 //         }
 //     }).catch((error) => { });
 // };
-module.exports.getPropertyByID = function (property_id, limit, page) {
+module.exports.getPropertyByID = function (property_id, limit, page,active_user_login) {
     return new Promise(async function (resolve, reject) {
         if (property_id != null) {
 
@@ -37,8 +37,10 @@ module.exports.getPropertyByID = function (property_id, limit, page) {
             //     reject({ status: 0, 'message': 'property not found' })
             // }
 
-
-            let data = await PropertiesSchema.find({ _id: { $in: property_id } }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit)
+            var query = {
+                $and:[{ _id: { $in: property_id } },{$or:[{ps_is_active_user_flag:active_user_login},{ps_other_property_type:active_user_login}]}]
+            }
+            let data = await PropertiesSchema.find(query).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit)
             if (data) {
                 var object_as_string = JSON.stringify(data);
                 const propertyObject = JSON.parse(object_as_string);

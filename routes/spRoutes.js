@@ -439,7 +439,10 @@ app.get('/service-provider/property', isServiceProvider, async function (req, re
   const count = await PropertiesSchema.countDocuments();
   console.log('countcount:', count);
   console.log("req.session.active_user_login", req.session.active_user_login);
-  PropertiesSchema.find({ ps_is_active_user_flag: req.session.active_user_login }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
+  var query  = {
+    $or:[{ps_is_active_user_flag: req.session.active_user_login },{ps_other_property_type: req.session.active_user_login }]
+  }
+  PropertiesSchema.find(query).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
     if (data) {
       console.log("PropertiesSchema is ", data);
       let arr = [];
@@ -484,7 +487,17 @@ app.get('/service-provider/professionals-to-do-list', isServiceProvider, async f
   let AllhiredProfeshnoal = await PropertyProfessionalSchema.find({ pps_service_provider_id: req.session.user_id, pps_is_active_user_flag: req.session.active_user_login }).sort({ _id: -1 });
   for (let key of AllhiredProfeshnoal) {
     //let propertyData = await propertyHelper.getPropertyByID(key.pps_property_id);
-    let propertyData = await PropertiesSchema.findOne({ _id: key.pps_property_id });
+    // var query = {
+    //   $and:[
+    //     { _id: { $in:  key.pps_property_id  } },
+    //     {
+    //       $or:[
+    //         {ps_is_active_user_flag:req.session.active_user_login},{ps_other_property_type:req.session.active_user_login}
+    //       ]
+    //   }
+    // ]
+    // }
+    let propertyData = await PropertiesSchema.findOne().where({ _id: key.pps_property_id });
     // let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData._id);
     // propertyData.property_image = await propertyImageData.pps_property_image_name;
     // let customerName = await customerHelper.getCustomerNameByID(key.pps_user_id);
@@ -526,9 +539,9 @@ app.get('/service-provider/myproperties', isServiceProvider, async function (req
   }
   console.log("AllhiredProfeshnoal is ", AllhiredProfeshnoal);
   console.log("propertyId is ", propertyId);
-
+  
   count = await PropertiesSchema.countDocuments({ _id: { $in: propertyId } });
-  let propertyData = await propertyHelper.getPropertyByID(propertyId, limit, page);
+  let propertyData = await propertyHelper.getPropertyByID(propertyId, limit, page,req.session.active_user_login);
   for (let propertyData1 of propertyData) {
     let propertyImageData = await propertyHelper.getPropertyImageByID(propertyData1._id);
     console.log("propertyImageData is", propertyData1);
@@ -1609,9 +1622,9 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
               ]
             }).sort({ _id: -1 }).then(async (msgdata) => {
               console.log('msgdata=', msgdata)
-              if (msgdata !== null) {
+             // if (msgdata !== null) {
                 //for (let i of allProfeshnoals) {
-                if (msgdata) {
+                if (msgdata !== null) {
                   var object_as_string = JSON.stringify(customerDetail);
                   const t = JSON.parse(object_as_string);
                   // console.log('lastIndex:', msgdata.slice(-1)[0]);
@@ -1627,9 +1640,9 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
                   serviceProvArray.push(t)
                 }
                 //}
-              } else {
-                console.log('myfff:')
-              }
+              //} else {
+              //  console.log('myfff:')
+              //}
             })
           }
         }
@@ -1705,6 +1718,8 @@ app.get('/service-provider/myproperties-detail', isServiceProvider, async functi
         }
         err_msg = req.flash('err_msg');
         success_msg = req.flash('success_msg');
+        console.log('CustomerDetailsCustomerDetails:',CustomerDetails)
+        console.log('serviceProvArrayserviceProvArray:',serviceProvArray)
         res.render('service-provider/myproperties-detail', {
           err_msg, success_msg, layout: false,
           session: req.session,
@@ -2165,6 +2180,55 @@ app.get('/service-provider/professional-customer-by-property', async (req, res) 
   } else {
     console.log(err)
   }
+
+
+});
+
+// All Professional Filter name surname qualification
+app.get('/service-provider/professional-global-search', isServiceProvider, async (req, res) => {
+  req.session.pagename = 'service-provider/property';
+  const { page = 1, limit = 9 } = req.query;
+  console.log('pageQuery:', page);
+
+  let propertyArray = []
+  const count = await PropertiesSchema.countDocuments();
+  console.log('countcount:', count);
+  console.log("req.session.active_user_login", req.session.active_user_login);
+  PropertiesSchema.find({ ps_property_name: new RegExp(req.query.global_search, 'i') }).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async (data) => {
+    if (data) {
+      console.log("PropertiesSchema is ", data);
+      let arr = [];
+      for (let img of data) {
+        await PropertiesPictureSchema.find({ pps_property_id: img._id, pps_is_active_user_flag: req.session.active_user_login }).then(async (result) => {
+          let temp = await result
+
+          console.log('')
+          //for(let image of result){
+          //  let temp = await image
+          // let customerName = await customerHelper.getCustomerNameByID(img.ps_user_id);
+          // let customerProfile = await customerHelper.getCustomerImageByID(img.ps_user_id);
+          let userdata = await CustomerSchema.findOne({ _id: img.ps_user_id });
+          temp.customer_name = await userdata.cus_fullname;
+          temp.customer_profile = await userdata.cus_profile_image_name;
+          arr.push(temp)
+          // }
+          console.log("arr is", arr);
+        })
+      }
+      err_msg = req.flash('err_msg');
+      success_msg = req.flash('success_msg');
+      res.render('service-provider/professional-global-search', {
+        err_msg, success_msg, layout: false,
+        session: req.session,
+        propertyData: data,
+        propertyImage: arr,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page
+      });
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
 
 
 });

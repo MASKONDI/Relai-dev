@@ -5707,11 +5707,17 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
       })
 
       await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
-        if (service_provider_detail1) {
+        if (service_provider_detail1.length>0) {
           for (var sp_id1 of service_provider_detail1) {
             let temp = await sp_id1._id.toString();
             await categoryServiceProvIdArray.push(temp);
           }
+        }else{
+          res.send({
+            err_msg, success_msg, layout: false,
+            session: req.session,
+            filterData: ''
+          })
         }
       });
 
@@ -5780,11 +5786,17 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
       })
 
       await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
-        if (service_provider_detail1) {
+        if (service_provider_detail1.length>0) {
           for (var sp_id1 of service_provider_detail1) {
             let temp = await sp_id1._id.toString();
             await cityServiceProvIdArray.push(temp);
           }
+        }else{
+          res.send({
+            err_msg, success_msg, layout: false,
+            session: req.session,
+            filterData: ''
+          })
         }
       });
 
@@ -5856,11 +5868,17 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
 
       await ServiceProviderLanguageSchema.find(QuerySyntex).then(async service_provider_detail_lang1 => {
-        if (service_provider_detail_lang1) {
+        if (service_provider_detail_lang1.length>0) {
           for (var lang_sp_id1 of service_provider_detail_lang1) {
             let temp = await lang_sp_id1.spls_service_provider_id.toString();
             await languageServiceProvIdArray.push(temp);
           }
+        }else{
+          res.send({
+            err_msg, success_msg, layout: false,
+            session: req.session,
+            filterData: ''
+          })
         }
       });
 
@@ -5929,13 +5947,21 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
       })
 
 
-
-      await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail1 => {
-        if (service_provider_detail1) {
-          for (var sp_id1 of service_provider_detail1) {
+      console.log('DataSingleExp:',QuerySyntex)
+      await ServiceProviderSchema.find(QuerySyntex).then(async service_provider_detail111 => {
+        console.log('service_provider_detail1--DataSingleExp:',service_provider_detail111)
+        if (service_provider_detail111.length>0) {
+          for (var sp_id1 of service_provider_detail111) {
             let temp = await sp_id1._id.toString();
             await experienceServiceProvIdArray.push(temp);
           }
+        }else{
+          console.log('service_provider_detail1--totalHireUnique:',totalHireUnique)
+          res.send({
+            err_msg, success_msg, layout: false,
+            session: req.session,
+            filterData: ''
+          })
         }
       });
       // }
@@ -5966,8 +5992,9 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
       if (ttt) {
         //for (var t of ttt) {
         // if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
-        console.log()
+          //, _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
+        console.log('quesry syntaxdata:',QuerySyntex)
         await ServiceProviderSchema.find(QuerySyntex).sort({ _id: -1 }).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
             for (var sp_id of service_provider_detail) {
@@ -6006,6 +6033,7 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
         // }
         console.log('currentPage:', page);
         console.log('totalPages:', Math.ceil(count / limit));
+        //console.log('filterDatafilterDatafilterData:', filterData);
 
         res.send({
           err_msg, success_msg, layout: false,
@@ -6038,7 +6066,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
       if (ttt) {
         //  for (var t of ttt) {
         //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+          //, _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6109,8 +6138,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique } 
+        QuerySyntex = { _id: { $in: ttt }};
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6180,8 +6209,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6252,8 +6281,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6325,8 +6354,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique } 
+        QuerySyntex = { _id: { $in: ttt }};
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6401,8 +6430,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6477,8 +6506,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6556,8 +6585,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6634,8 +6663,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {
@@ -6716,8 +6745,8 @@ app.post('/my-service-professionals-multifilter', async (req, res) => {
 
       if (ttt) {
         //  for (var t of ttt) {
-        //       if(t){
-        QuerySyntex = { _id: { $in: ttt }, _id: { $in: totalHireUnique } };
+        //       if(t){ , _id: { $in: totalHireUnique }
+        QuerySyntex = { _id: { $in: ttt } };
         console.log()
         await ServiceProviderSchema.find(QuerySyntex).limit(limit * 1).skip((page - 1) * limit).then(async service_provider_detail => {
           if (service_provider_detail) {

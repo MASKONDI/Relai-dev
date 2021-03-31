@@ -184,7 +184,7 @@
                         <div class="row">
                           <div class="col-sm-12 col-lg-6">
                             <div class="input-box-size-fix3">
-                              <input type="number" class="form-control text-field-size rs_reference_telePhoneNumber" id="" placeholder="Telephone No."
+                              <input type="number" minlength="10" maxlength="12" class="form-control text-field-size rs_reference_telePhoneNumber" id="" placeholder="Telephone No."
                                 name="rs_reference_telePhoneNumber" required value="">
                             </div>
                           </div>
@@ -292,13 +292,13 @@
                                 <div class="col-sm-12 col-lg-6">
                                   <div class="input-box-size-fix3">
                                     <input type="text" class="form-control text-field-size " id="" placeholder="Telephone No."
-                                      name="rs_reference_telePhoneNumber" value="<%=refrenceData.rs_reference_telePhoneNumber%>">
+                                      name="rs_reference_telePhoneNumber" minlength="10" maxlength="12" value="<%=refrenceData.rs_reference_telePhoneNumber%>">
                                   </div>
                                 </div>
                                 <div class="col-sm-12 col-lg-6">
                                   <div class="input-box-size-fix3">
                                     <input type="email" class="form-control text-field-size " id="" placeholder="Email ID"
-                                      name="rs_reference_emailid" value="<%=refrenceData.rs_reference_emailid%>">
+                                      name="rs_reference_emailid"  value="<%=refrenceData.rs_reference_emailid%>"min="10" max="12" required>
                                   </div>
                                 </div>
                               </div>
