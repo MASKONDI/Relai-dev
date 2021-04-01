@@ -842,7 +842,8 @@
                                           </li> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                           <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
                                           <li>
-                                            <a download href="/taskdocument/<%= row.cuds_document_name%>" data-toggle="tooltip" data-placement="top"
+                                            <!-- download href="/taskdocument/<%= row.cuds_document_name%>" -->
+                                            <a download href="/taskdocument/<%= row.cuds_document_name%>" class="downloadModalDoc" data-doc_permission_id="<%= row.permissionData._id%>" data-active_flag="<%= row.permissionData.dps_is_active_user_flag%>" data-uploaded_by_id="<%= row.permissionData.dps_customer_id%>" data-downloaded_by_id="<%= row.permissionData.dps_service_provider_id%>"  data-document_id="<%=row.permissionData.dps_document_id%>"    data-toggle="tooltip" data-placement="top"
                                               title="Download Document"><i class="fa fa-download" aria-hidden="true"></i></a>
                                           </li>
                                           <%}%>
@@ -884,7 +885,8 @@
                                           <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
 
                                             <li>
-                                              <a download href="/taskdocument/<%= row.cuds_document_name%>" data-toggle="tooltip" data-placement="top"
+                                              <!-- download href="/taskdocument/<%= row.cuds_document_name%>" -->
+                                              <a download href="/taskdocument/<%= row.cuds_document_name%>" class="downloadModalDoc" data-doc_permission_id="<%= row.permissionData._id%>" data-active_flag="<%= row.permissionData.dps_is_active_user_flag%>" data-uploaded_by_id="<%= row.permissionData.dps_customer_id%>" data-downloaded_by_id="<%= row.permissionData.dps_service_provider_id%>"  data-document_id="<%=row.permissionData.dps_document_id%>"   data-toggle="tooltip" data-placement="top"
                                                 title="Download Document"><i class="fa fa-download" aria-hidden="true"></i></a>
                                             </li>
                                             <%}%>
@@ -929,7 +931,8 @@
                                           <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
 
                                               <li>
-                                                <a download href="/taskdocument/<%= row.cuds_document_name%>" data-toggle="tooltip" data-placement="top"
+                                                <!-- download href="/taskdocument/<%= row.cuds_document_name%>"  -->
+                                                <a download href="/taskdocument/<%= row.cuds_document_name%>" class="downloadModalDoc" data-doc_permission_id="<%= row.permissionData._id%>" data-active_flag="<%= row.permissionData.dps_is_active_user_flag%>" data-uploaded_by_id="<%= row.permissionData.dps_customer_id%>" data-downloaded_by_id="<%= row.permissionData.dps_service_provider_id%>"  data-document_id="<%=row.permissionData.dps_document_id%>" data-toggle="tooltip" data-placement="top"
                                                   title="Download Document"><i class="fa fa-download" aria-hidden="true"></i></a>
                                               </li>
                                               <%}%>
@@ -970,7 +973,8 @@
                                           <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
 
                                                 <li>
-                                                  <a download href="/taskdocument/<%= row.cuds_document_name%>" data-toggle="tooltip" data-placement="top"
+                                                  <!-- download href="/taskdocument/<%= row.cuds_document_name%>" -->
+                                                  <a download href="/taskdocument/<%= row.cuds_document_name%>" class="downloadModalDoc" data-doc_permission_id="<%= row.permissionData._id%>" data-active_flag="<%= row.permissionData.dps_is_active_user_flag%>" data-uploaded_by_id="<%= row.permissionData.dps_customer_id%>" data-downloaded_by_id="<%= row.permissionData.dps_service_provider_id%>"  data-document_id="<%=row.permissionData.dps_document_id%>"  data-toggle="tooltip" data-placement="top"
                                                     title="Download Document"><i class="fa fa-download" aria-hidden="true"></i></a>
                                                 </li>
                                                 <%}%>
@@ -1012,7 +1016,8 @@
                                                   <% }if(row.permissionData.dps_download_permission == 'yes'){ %>
 
                                                   <li>
-                                                    <a download href="/taskdocument/<%= row.cuds_document_name%>" data-toggle="tooltip" data-placement="top"
+                                                    <!-- download href="/taskdocument/<%= row.cuds_document_name%>"  -->
+                                                    <a download href="/taskdocument/<%= row.cuds_document_name%>" class="downloadModalDoc" data-doc_permission_id="<%= row.permissionData._id%>" data-active_flag="<%= row.permissionData.dps_is_active_user_flag%>" data-uploaded_by_id="<%= row.permissionData.dps_customer_id%>" data-downloaded_by_id="<%= row.permissionData.dps_service_provider_id%>"  data-document_id="<%=row.permissionData.dps_document_id%>" data-toggle="tooltip" data-placement="top"
                                                       title="Download Document"><i class="fa fa-download" aria-hidden="true"></i></a>
                                                   </li>
                                                   <%}%>
@@ -1040,6 +1045,49 @@
 "></script>
 <script>
   
+  $('.downloadModalDoc').click(function (e) { 
+      var uploaded_by_id = $(this).data('uploaded_by_id');
+      var downloaded_by_id = $(this).data('downloaded_by_id');
+      var document_id = $(this).data('document_id');
+      var active_flag = $(this).data('active_flag');
+      var doc_permission_id = $(this).data('doc_permission_id');
+      $.ajax({
+              type: "POST",
+              data: {
+                uploaded_by_id:uploaded_by_id,
+                downloaded_by_id:downloaded_by_id,
+                document_id:document_id,
+                active_flag:active_flag,
+                doc_permission_id:doc_permission_id
+              },
+              url: '/api/document_download_count',
+              cache: false,
+              success: function (data) {
+                console.log('data====', data)
+                // if (data.status == true) {
+                //   $('.loader-box').attr('style', 'display:none !important');
+                //   Swal.fire({
+                //     //position: 'top-end',
+                //     icon: 'success',
+                //     title: data.message,
+                //     showConfirmButton: false,
+                //     timer: 2000
+                //   })
+                //   window.location.reload(true);
+                // } else {
+                //   $('.loader-box').attr('style', 'display:none !important');
+                //   Swal.fire({
+                //     //position: 'top-end',
+                //     icon: 'error',
+                //     title: data.message,
+                //     showConfirmButton: false,
+                //     timer: 4000
+                //   })
+                // }
+              }
+            })
+  })
+
   $(".viewModalDoc").click(function (e) {
       var doctype = $(this).data('doctype');
       var docname = $(this).data('docname');

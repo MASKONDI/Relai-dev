@@ -28,6 +28,7 @@ const propertyDetail = require("./api/propertyDetail");
 const TaskHelper = require("./api/addTask");
 const ComplaintsSchema = require("../models/Complaints");
 const PropertyProfessionalHelper = require("./api/propertyProfessionalDetails")
+const DocumentDownloadSchema = require('../models/document_download_modal')
 
 //const ComplaintsSchema = require("../models/Complaints");
 const ComplaintDetailsSchema = require("../models/complaint_details_model");
@@ -1329,7 +1330,15 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
       const spDocData = JSON.parse(spd)
       await DocumentPermissionSchema.findOne({ dps_document_id: spDocData._id }).then(async (docPermissionResp) => {
         if (docPermissionResp) {
-          spDocData.permissionData = docPermissionResp
+          spDocData.permissionData = docPermissionResp;
+          await DocumentDownloadSchema.find({ dd_permission_id: spDocData._id }).then(async (docDownloadData) => {
+            console.log('docDownloadData:',docDownloadData)
+              if (docDownloadData) { 
+                spDocData.docDownloadData = docDownloadData;
+              }else{
+                spDocData.docDownloadData ='';
+              }
+           });
         } else {
           spDocData.permissionData = '';
         }
