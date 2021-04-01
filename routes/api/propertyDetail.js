@@ -5,7 +5,7 @@ const path = require('path');
 const PropertiesPictureSchema = require("../../models/properties_picture");
 const PropertiesPlanPictureSchema = require("../../models/properties_plan_picture");
 const { where } = require("../../models/properties");
-
+const { v4: uuidv4 } = require('uuid');
 module.exports.EditPropertyById = function (req) {
     return new Promise(async function (resolve, reject) {
 
@@ -280,6 +280,8 @@ module.exports.Add_New_Propert = function (req) {
         var phaseArray = [];
         var chainPropertyIdArray = [];
         var chainPropertyNameArray = [];
+        var rendomNumber = Math.floor(10000 + Math.random() * 9000);
+        const PropertyCode = 'PRO'+rendomNumber;
         req.body.Phase.forEach(function (row, i) {
             //for (var i in req.body.Phase) {
             var phaseObj = {
@@ -295,7 +297,8 @@ module.exports.Add_New_Propert = function (req) {
             //}
         })
         var PropertyBoject = {
-            ps_unique_code: "prop-" + Math.random().toString(36).slice(-6),
+            ps_unique_code: PropertyCode,
+            //ps_unique_code: "prop-" + Math.random().toString(36).slice(-6),
             ps_user_id: req.session.user_id, //storing customer_ID
             ps_property_name: req.body.ps_property_name,
             ps_property_address: req.body.ps_property_address,

@@ -30,6 +30,7 @@ const validateCustomerSigninInput = require('../../Validation/cust_signin');
 const validateChangePasswordInput = require('../../Validation/change_password');
 
 const DocumentPermissionSchema = require('../../models/document_permission')
+const DocumentDownloadSchema = require('../../models/document_download_modal')
 const PropertiesPictureSchema = require("../../models/properties_picture");
 const PropertiesPlanPictureSchema = require("../../models/properties_plan_picture");
 const PropertyProfessionalSchema = require("../../models/property_professional_Schema");
@@ -190,9 +191,11 @@ router.post("/cust_register", (req, res) => {
       var otp = generateOTP()
       console.log("otp is", otp);
 
+         let rendomNumber = Math.floor(10000 + Math.random() * 9000);
+         const customerCode = 'CUS'+rendomNumber;  
 
       const newCustomer = new CustomerSchema({
-        cus_unique_code: "cust-" + uuidv4(),
+        cus_unique_code: customerCode,
         // cus_firstname:req.body.cus_firstname,
         // cus_lastname: req.body.cus_lastname,
         cus_fullname: req.body.cus_firstname + ' ' + req.body.cus_lastname,
@@ -205,7 +208,6 @@ router.post("/cust_register", (req, res) => {
         cus_password: req.body.cus_password,
         cus_otp: otp,
         cus_otp_expie_time: otp_expire
-
       });
 
       bcrypt.genSalt(10, (err, salt) => {
@@ -2068,7 +2070,7 @@ router.post('/new-raise-a-complaint', isCustomer, (req, res) => {
     let newComplaint = '';
     const obj = JSON.parse(JSON.stringify(req.body));
     const files = JSON.parse(JSON.stringify(req.files));
-    const ComplaintId = 'C-' + uuidv4().slice(uuidv4().length - 4).toUpperCase();;
+    const ComplaintId = 'C-' + uuidv4().slice(uuidv4().length - 4).toUpperCase();
 
     console.log('filesfiles:', files)
     if (Object.keys(files).length === 0) {
@@ -2966,6 +2968,35 @@ router.post('/customer-message-unread', (req, res) => {
 //     }
 //   });
 // });
+
+router.post('/document_download_count', async (req, res) => {
+  console.log("document_download_count :", req.body);
+  var docPermissionData = await DocumentPermissionSchema.findOne({
+     _id:req.body.doc_permission_id,
+     dps_is_active_user_flag:req.body.active_flag,
+     dps_customer_id:req.body.uploaded_by_id,
+     dps_service_provider_id:req.body.downloaded_by_id,
+     dps_document_id:req.body.document_id
+    });
+
+    if(docPermissionData){
+                 console.log('docPermissionData:',docPermissionData)
+                 DocumentDownloadSchema.updateOne({ dd_permission_id:docPermissionData._id, dd_uploaded_by_id:docPermissionData.dps_customer_id,dd_downloaded_by_id:docPermissionData.dps_service_provider_id,dd_document_id:docPermissionData.dps_document_id}, { $set: { dd_download_status: 'yes'} }, { upsert: true }, function (err) {
+                    if (err) {
+                      console.log(err)
+                      res.send({ status: false, message: 'Something going wrong please check again !!' })
+                    } else {
+                      res.send({ status: true, message: 'downloaded update successfully !!' })
+                      console.log("downloaded update successfully");
+                    }
+                  });
+
+    }else{
+              console.log('else data my doc')
+    }
+
+});
+
 
 module.exports = router;
 
