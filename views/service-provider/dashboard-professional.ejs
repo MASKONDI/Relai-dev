@@ -217,13 +217,13 @@
                         <%if(custData.length>0){%>
                           <%custData.forEach(function(row,i){%>
 
-                            <li><a href="#">
+                            <li>
                               <img src="../upload/<%=row.cus_profile_image_name%>"
-                                  style="width:60px;height:60px;border-radius: 20%;" alt="" title="">
-                                <p>
-                                  <%=row.cus_fullname%>
-                                </p>
-                              </a></li>
+                                style="width:60px;height:60px;border-radius: 20%;" alt="" title="">
+                              <p style="color:#005377">
+                                <%=row.cus_fullname%>
+                              </p>
+                            </li>
 
                             <!-- <li><a href="#"><img src="../images/prof-img.png" alt="" title=""></a></li>
                             <li><a href="#"><img src="../images/prof-img.png" alt="" title=""></a></li>

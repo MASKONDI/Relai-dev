@@ -34,14 +34,16 @@
                 <div class="col-md-6">
                   <div class="form-group  ">
                     <input type="hidden" class="form-control " id="token" name="token">
-                    <input type="text" class="form-control form-control-size " id="Forename" placeholder="Forename"
+                    <label>Forename</label>
+                    <input type="text" class="form-control form-control-size  mt-0" id="Forename" placeholder="Forename"
                       name="cus_firstname" required data-rule-required="true" data-rule-minlength="2"
                       data-msg-required="Forename is required!">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group  ">
-                    <input type="text" class="form-control form-control-size " id="Surname" placeholder="Surname"
+                    <label>Surname</label>
+                    <input type="text" class="form-control form-control-size mt-0 " id="Surname" placeholder="Surname"
                       name="cus_lastname" required data-rule-required="true" data-rule-minlength="2"
                       data-msg-required="Surname is required!">
                   </div>
@@ -50,14 +52,16 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group  ">
-                    <input type="email" class="form-control form-control-size" id="email" placeholder="Email ID"
+                    <label>Email ID</label>
+                    <input type="email" class="form-control form-control-size mt-0" id="email" placeholder="Email ID"
                       name="cus_email_id" required data-rule-required="true" data-rule-email="true"
                       data-msg-required="Email Id is required." data-msg-email="Please Enter Valid Email-ID.">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <input type="number" class="form-control form-control-size" id="phoneNumber"
+                    <label>Phone Number</label>
+                    <input type="number" class="form-control form-control-size mt-0" id="phoneNumber"
                       placeholder="Phone Number" name="cus_phone_number" required data-rule-required="true"
                       data-rule-minlength="10" data-rule-maxlength="12" data-msg-required="PhoneNumber is required!">
                   </div>
@@ -66,7 +70,8 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group  ">
-                    <input type="text" class="form-control " id="address" placeholder="Address"
+                    <label>Address</label>
+                    <input type="text" class="form-control form-control-size mt-0" id="address" placeholder="Address"
                       name="cus_address" required data-rule-required="true" data-msg-required="Address is required!">
                   </div>
                 </div>
@@ -76,8 +81,9 @@
                       style="height: 44px;" data-rule-required="true" data-msg-required="Country name is required!">
                       <option value="">Select Country</option>
                     </select> -->
-                    <input type="text" class="form-control form-control-size" id="country" placeholder="Country"
-                    name="country" required data-rule-required="true" data-msg-required="Country is required!">
+                    <label>Country</label>
+                    <input type="text" class="form-control form-control-size mt-0" id="country" placeholder="Country"
+                      name="country" required data-rule-required="true" data-msg-required="Country is required!">
                   </div>
                 </div>
               </div>
@@ -88,10 +94,9 @@
                       style="height: 44px;" data-rule-required="true" data-msg-required="County name is required!">
                       <option value="">Select County</option>
                     </select> -->
-
-                    <input type="text" class="form-control form-control-size" id="state" placeholder="State"
-                              name="state" required data-rule-required="true"
-                              data-msg-required="State is required!">
+                    <label>State</label>
+                    <input type="text" class="form-control form-control-size mt-0" id="state" placeholder="State"
+                      name="state" required data-rule-required="true" data-msg-required="State is required!">
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -100,15 +105,17 @@
                       style="height: 44px;" data-rule-required="true" data-msg-required="City name is required!">
                       <option value="">Select City</option>
                     </select> -->
-                    <input type="text" class="form-control form-control-size" id="city" placeholder="City"
-                              name="city" required data-rule-required="true"
-                              data-msg-required="City name is required!">
+                    <label>City</label>
+                    <input type="text" class="form-control form-control-size mt-0" id="city" placeholder="City"
+                      name="city" required data-rule-required="true" data-msg-required="City name is required!">
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6">
-                  <div class="form-group  "><input type="password" class="form-control form-control-size" id="password"
+                  <div class="form-group  ">
+                    <label>Password</label>
+                    <input type="password" class="form-control form-control-size mt-0" id="password"
                       placeholder="Password" name="cus_password" required data-rule-required="true"
                       data-rule-minlength="6" data-msg-required="Password is required!">
 
@@ -116,7 +123,8 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-group ">
-                    <input type="password" class="form-control form-control-size" id="password"
+                    <label>Confirm password</label>
+                    <input type="password" class="form-control form-control-size mt-0" id="password"
                       placeholder="Confirm password" name="confirmPassword" required data-rule-required="true"
                       data-rule-minlength="6" data-msg-required="Confirm Password is required!">
                   </div>
@@ -170,10 +178,10 @@
   <!-- <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script> -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDon-wurpooTEYCzFKwMJkBJGa0rAR4b9c"></script>
+  <script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDon-wurpooTEYCzFKwMJkBJGa0rAR4b9c"></script>
   <script>
-     google.maps.event.addDomListener(window, 'load', function ()
-    {
+    google.maps.event.addDomListener(window, 'load', function () {
       var places = new google.maps.places.Autocomplete(document.getElementById('address'));
       google.maps.event.addListener(places, 'place_changed', function () {
         console.log(places.getPlace());
@@ -209,8 +217,8 @@
 
         });
       });
-      });
-    
+    });
+
   </script>
   <script type="text/javascript" src="../js/slick.js"></script>
   <script type="text/javascript" src="../js/slick.min.js"></script>
