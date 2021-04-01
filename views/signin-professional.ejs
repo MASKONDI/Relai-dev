@@ -28,13 +28,19 @@
                     </span>
                     <% }%>
                       <div class="form-group ">
-                        <input type="email" class="form-control signin-form-control" id="email" placeholder="Email ID"
-                          name="sps_email_id" required data-rule-required="true" data-rule-email="true"
-                          data-msg-required="Please Enter Email Id!" data-msg-email="Please Enter Valid Email-ID!">
-                        <input type="password" class="form-control signin-form-control" id="password"
+                        <label>Email ID</label>
+                        <input type="email" class="form-control signin-form-control mt-0" id="email"
+                          placeholder="Email ID" name="sps_email_id" required data-rule-required="true"
+                          data-rule-email="true" data-msg-required="Please Enter Email Id!"
+                          data-msg-email="Please Enter Valid Email-ID!">
+                      </div>
+                      <div class="form-group ">
+                        <label>Password</label>
+                        <input type="password" class="form-control signin-form-control mt-0" id="password"
                           placeholder="Password" name="sps_password" data-rule-required="true" data-rule-maxlength="30"
                           data-msg-required="Please Enter Password!">
                       </div>
+
                       <div class="forgot-pass">
                         <p><a href="/forget-password-professional" style="color: #005377;">
                             Forgot Password? </a> </p>
@@ -236,7 +242,7 @@
       if (succ_flash_msg != "" && succ_flash_msg != undefined) {
         setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
       }
-    });  
+    });
   </script>
 
 
