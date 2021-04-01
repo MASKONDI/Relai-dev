@@ -533,6 +533,28 @@ span#comment-error {
 .doc-table .fa {
     font-size: 25px;
 }  
+.location-part.address-part {
+    max-width: 400px;
+}
+.location-part.address-part a {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.professional-find-list  .card-body{
+    max-width: 400px;
+}
+.professional-find-list .card-text:last-child {
+    margin-bottom: 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+
       @media (max-width: 768px){
       
       .show-filter-nav.sidenav {

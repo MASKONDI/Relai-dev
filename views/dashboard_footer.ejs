@@ -19,8 +19,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.js"
     integrity="sha512-tCkLWlSXiiMsUaDl5+8bqwpGXXh0zZsgzX6pB9IQCZH+8iwXRYfcCpdxl/owoM6U4ap7QZDW4kw7djQUiQ4G2A=="
     crossorigin="anonymous"></script>
-  
-
     <script type="text/javascript"
     src="http://extreme.org.in/design/my-reflet-user/assets/js/bootstrap-dropdownhover.min.js"></script>
     <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDon-wurpooTEYCzFKwMJkBJGa0rAR4b9c"></script> -->
@@ -30,10 +28,8 @@
   crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
   <script type="text/javascript" src="../js/countrystatecity.js"></script>
-
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDon-wurpooTEYCzFKwMJkBJGa0rAR4b9c"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDon-wurpooTEYCzFKwMJkBJGa0rAR4b9c"></script>
  <script>
-
   google.maps.event.addDomListener(window, 'load', function ()
  {
   var loc = new locationInfo();
@@ -97,46 +93,34 @@
     <script src="https://www.jqueryscript.net/demo/jQuery-Ajax-Autocomplete-Plugin-For-Input-Fields-Autocomplete/src/jquery.autocomplete.js"></script>
 
     <script type="text/javascript">
-      // var locations = [
-      //   ['Bondi Beach', -33.890542, 151.274856, 4],
-      //   ['Coogee Beach', -33.923036, 151.259052, 5],
-      //   ['Cronulla Beach', -34.028249, 151.157507, 3],
-      //   ['Manly Beach', -33.80010128657071, 151.28747820854187, 2],
-      //   ['Maroubra Beach', -33.950198, 151.259302, 1]
-      // ];
-      // var map = new google.maps.Map(document.getElementById('map'), {
-      //   zoom: 10,
-      //   center: new google.maps.LatLng(-33.92, 151.25),
-      //   mapTypeId: google.maps.MapTypeId.ROADMAP
-      // });
-      // var infowindow = new google.maps.InfoWindow();
-      // var marker, i;
-      // for (i = 0; i < locations.length; i++) {
-      //   marker = new google.maps.Marker({
-      //     position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-      //     map: map
-      //   });
-      //   google.maps.event.addListener(marker, 'click', (function (marker, i) {
-      //     return function () {
-      //       infowindow.setContent(locations[i][0]);
-      //       infowindow.open(map, marker);
-      //     }
-      //   })(marker, i));
-      // }
+      var locations = [
+        ['Bondi Beach', -33.890542, 151.274856, 4],
+        ['Coogee Beach', -33.923036, 151.259052, 5],
+        ['Cronulla Beach', -34.028249, 151.157507, 3],
+        ['Manly Beach', -33.80010128657071, 151.28747820854187, 2],
+        ['Maroubra Beach', -33.950198, 151.259302, 1]
+      ];
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 10,
+        center: new google.maps.LatLng(-33.92, 151.25),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+      var infowindow = new google.maps.InfoWindow();
+      var marker, i;
+      for (i = 0; i < locations.length; i++) {
+        marker = new google.maps.Marker({
+          position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+          map: map
+        });
+        google.maps.event.addListener(marker, 'click', (function (marker, i) {
+          return function () {
+            infowindow.setContent(locations[i][0]);
+            infowindow.open(map, marker);
+          }
+        })(marker, i));
+      }
     </script>
     <script>
-      // $(document).ready(function () {
-      //   $(".sidenav ul li").dblclick(function () {
-      //     $(".sidenav ul li").removeClass("active");
-      //     $(this).addClass("active");
-      //   });
-      // });
-      // $('.right-navbar li').dblclick(function () {
-      //   $('.right-navbar li').each(function () {
-      //     $(this).removeClass('active');
-      //   });
-      //   $(this).addClass('active');
-      // })
   $('.phase_task_list').multiselect({		
 		nonSelectedText: 'Existing Task'				
 	});
@@ -449,7 +433,7 @@ function previewFile_profile(input){
                                     confirmButtonColor: '#005377',
                                     denyButtonColor: '#005377',
                                     cancelButtonColor: '#d33',
-                                    confirmButtonText: `My dream home`,
+                                    confirmButtonText: `My Properties`,
                                     denyButtonText: `Add Property`,
                                   }).then((result) => {
                                     /* Read more about isConfirmed, isDenied below */

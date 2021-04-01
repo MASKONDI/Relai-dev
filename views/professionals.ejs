@@ -530,30 +530,34 @@
           </div>
 
           <h3>Location</h3>
-          <div class="inner-box-qualification">
+          <div class="inner-box-qualification spCityFilter">
+            <div class="input-group search-input-new">
+              <i class="fa fa-search"></i>
+              <input id="myInput2" onkeyup="myFunction2()" type="search"
+                class="form-control" />
+            </div>
+            
             <div class="form-group for-select-existing-doc">
               <div class="input-group">
                 <div>
-                  <ul style="padding-left: 0;">
-
+                  <ul id="myUL2" style="padding-left: 0;">
                     <% uniqueCity.forEach(function(cityrow){ %>
                       <li style="list-style: none;">
                         <div class="for-doc-select">
                           <div class="checkbox">
                             <label>
-                              <input onclick="return multifilter()" type="checkbox" name="location_city"
-                                value="<%= cityrow %>">
-                              <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                              <input onclick="return multifilter()" type="checkbox"
+                                name="location_city" value="<%= cityrow %>">
+                              <span class="cr"><i
+                                  class="cr-icon fa fa-check"></i></span>
                               <%= cityrow %>
                             </label>
                           </div>
                         </div>
                       </li>
                       <% }) %>
-
                   </ul>
                 </div>
-
               </div>
             </div>
           </div>
@@ -666,6 +670,30 @@
         function closeNav() {
           document.getElementById("mySidenav").style.width = "0";
         }
+
+        // $(document).ready(function () {
+        //   $.ajax({
+        //     type: "GET",
+        //     dataType: "json",
+        //     url: "/json/country.json",
+        //     cache: false,
+        //     success: function (html) {
+        //         console.log('Hello Data:',html.United_Kingdom);
+        //      /* if( html.United_Kingdom == 'United Kingdom'){
+        //         console.log('Country dddddddd Data:',html);
+        //       }*/
+        //       var cityList ='';
+        //       if(html.United_Kingdom.length>0){
+        //         for (i = 0; i < html.United_Kingdom.length; i++) { 
+        //            cityList += '<li style="list-style: none;"><div class="for-doc-select"><div class="checkbox"> <label> <input onclick="return multifilter()" type="checkbox" name="location_city" value="'+html.United_Kingdom[i]+'"> <span class="cr"><i class="cr-icon fa fa-check"></i></span> '+html.United_Kingdom[i]+' </label></div></div></li>';
+        //         }
+        //         jQuery('.spCityFilter #myUL2').html(cityList);
+        //       }
+        //     }
+        //   });
+        //   //location.reload(true);
+        // });
+
       </script>
 
       <script>

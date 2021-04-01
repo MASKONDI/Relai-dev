@@ -146,7 +146,7 @@
               <input type="hidden" name="currentUserId" value="<%=session.user_id%>">
               <input type="hidden" name="property_id" class="property_id" value="">
               <!-- <input type="hidden" name="phase_id" id="phase_id" value=""> -->
-              <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2" id="duedate" placeholder="Due on"
+              <input type="text" onfocus="(this.type='date')" class="form-control  form-control-fix2 duedate" id="duedate" placeholder="Due on"
                 name="duedate" placeholder="Due On Date" required>
               <textarea class="form-control  form-control-fix2" rows="2" name="notes" id="notes"
                 placeholder="Add Notes(If any)"></textarea>
@@ -375,4 +375,16 @@
     </div>
 
     <%- include('dashboard_footer')-%>
-  
+    <script>
+      $(document).ready(function () {
+     var date = new Date().toISOString().slice(0,10);
+    
+    //To restrict past date
+    
+    $('.duedate').attr('min', date);
+    //$('.ppts_due_date').attr('min', date);
+    //To restrict future date
+    
+    //$('#date').attr('max', date);
+      })
+     </script>

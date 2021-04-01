@@ -28,6 +28,7 @@ const propertyDetail = require("./api/propertyDetail");
 const TaskHelper = require("./api/addTask");
 const ComplaintsSchema = require("../models/Complaints");
 const PropertyProfessionalHelper = require("./api/propertyProfessionalDetails")
+const DocumentDownloadSchema = require('../models/document_download_modal')
 
 //const ComplaintsSchema = require("../models/Complaints");
 const ComplaintDetailsSchema = require("../models/complaint_details_model");
@@ -1329,7 +1330,15 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
       const spDocData = JSON.parse(spd)
       await DocumentPermissionSchema.findOne({ dps_document_id: spDocData._id }).then(async (docPermissionResp) => {
         if (docPermissionResp) {
-          spDocData.permissionData = docPermissionResp
+          spDocData.permissionData = docPermissionResp;
+          await DocumentDownloadSchema.find({ dd_permission_id: spDocData._id }).then(async (docDownloadData) => {
+            console.log('docDownloadData:',docDownloadData)
+              if (docDownloadData) { 
+                spDocData.docDownloadData = docDownloadData;
+              }else{
+                spDocData.docDownloadData ='';
+              }
+           });
         } else {
           spDocData.permissionData = '';
         }
@@ -2017,7 +2026,25 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
 
 
 })
-
+app.post('/get_to_do_phase_task',async(req,res)=>{
+ var phase_name= req.body.phase_name;
+  var property_id=req.body.property_id;
+  var user_id=req.body.user_id;
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
+  console.log('task in to-do list=======',taskObject)
+  if(taskObject.length==0){
+    res.send({
+      'status':false,
+      'message':'Task NOt Found !!',
+      'data':taskObject
+    })
+  }
+  res.send({
+    'status':true,
+    'data':taskObject,
+    'message':'Task Found'
+  })
+})
 app.get('/removetasktable', (req, res) => {
   var id = req.query.id
   console.log(id)
@@ -3092,14 +3119,14 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
           cuds_property_id: req.query.id,
           // $and: [{ cuds_customer_id: req.session.user_id, cuds_property_id: req.query.id, cuds_is_active_user_flag: req.session.active_user_login }]
         });
-        console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
+       // console.log('AllhiredProfeshnoal', AllhiredProfeshnoal);
         let serviceProvArray = [];
         let totalcostArray = [];
         var cost = 0;
         var to = [1, 2, 3]
         //var sumof = tallyVotes(to)
         var sumof = tallyVotes(AllhiredProfeshnoal)
-        console.log("sumofsumofsumofsumofsumof", sumof)
+        //console.log("sumofsumofsumofsumofsumof", sumof)
         for (var k of AllhiredProfeshnoal) {
           var costs = parseInt(k.pps_pofessional_budget);
 
@@ -3139,35 +3166,55 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
         var c = 0;
         let TaskDetailObj = await TaskHelper.GetTaskById(req.query.id, req.session.active_user_login);
 
-        //console.log("TaskDetailObj===================================================",TaskDetailObj)
+        console.log("TaskDetailObj===================================================",TaskDetailObj)
+       
         var phase_page_name = '';
         for (var ph of TaskDetailObj) {
           const PhaseObject = JSON.stringify(ph);
           const to_do_data = JSON.parse(PhaseObject);
-
+          var spdata = []
           phase_page_name = await getPhase(to_do_data.ppts_phase_flag);
           to_do_data.phase_page_name = phase_page_name
-          //to_do_data.step=to_do_data.ppts_phase_flag
-          //console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',to_do_data)
-          //console.log("to do deta ",to_do_data.ppts_assign_to)
-          let professionalObj = await PropertyProfessionalHelper.GetProfessionalById(to_do_data.ppts_assign_to);
-          if (professionalObj) {
-            for (var Prof_fullname of professionalObj) {
-              to_do_data.professionalName = Prof_fullname.sps_fullname
-
-
-              todoArray.push(to_do_data);
-
-            }
-
+          
+         let sp =  await ServiceProviderSchema.find({'_id': { $in: to_do_data.ppts_assign_to}});
+          for(var ki of sp){
+            const ki1 = JSON.stringify(ki);
+            const ki2 = JSON.parse(ki1);
+            spdata.push(ki2)
+            // var ki3 = await to_do_data
+            // to_do_data.professionalName =  spname2
           }
+
+          console.log('spdata===============',spdata)
+          to_do_data.professionalName= await spdata
+          todoArray.push(to_do_data);
+             //console.log('docs=========',sp);
+          // for(var id of to_do_data.ppts_assign_to){
+          //   var spdetail = await ServiceProviderSchema.findOne({'_id':$in:{to_do_data.ppts_assign_to}})
+          //   console.log('spdetail====',spdetail)
+          //   to_do_data.professionalName =await  spdetail.sps_fullname
+          //   todoArray.push(to_do_data);
+          // }
+        //console.log(todoArray)
+        
+          // let professionalObj = await PropertyProfessionalHelper.GetProfessionalById(to_do_data.ppts_assign_to);
+          // if (professionalObj) {
+          //   for (var Prof_fullname of professionalObj) {
+          //     to_do_data.professionalName = Prof_fullname.sps_fullname
+
+
+              
+
+          //   }
+
+          // }
 
 
 
 
         }
-        //console.log("todoArray=======================",todoArray);
-
+        console.log("todoArray=======================",todoArray);
+     
 
 
 
@@ -3905,7 +3952,7 @@ app.get('/edit-property', isCustomer, async (req, res) => {
 app.get('/to-do-list', isCustomer, async (req, res) => {
   var err_msg = null;
   var success_msg = null;
-  console.log("todo")
+  console.log("todo=====================",req.query);
   req.session.pagename = 'to-do-list';
   // let propertyObj = await propertyDetail.GetAllProperty(req.session.user_id, req.session.active_user_login);
   let propertyObj = await PropertiesSchema.find({
@@ -3914,15 +3961,51 @@ app.get('/to-do-list', isCustomer, async (req, res) => {
       { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_other_property_type: req.session.active_user_login }] }
     ]
   }).sort({ _id: -1 })
-  console.log('property in to-do-list', propertyObj);
+  //console.log('property in to-do-list', propertyObj);
+  var taskObject=''
+  var taskObjectArray=[]
+  if(req.query.propertyDropDown && req.query.phaseDropDown){
+    var phase_name  =  req.query.phaseDropDown;
+    var property_id =  req.query.propertyDropDown;
+    var user_id     =  req.session.user_id;
+
+     taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
+     console.log('==================================================',taskObject)
+     if (taskObject.length != 0) {
+      for (k of taskObject) {
+      var d = JSON.stringify(k)
+      var dd = JSON.parse(d)
+      var temp = dd
+      var arr = temp.ppts_task_status;
+      var iscomplete = await arr.every(isStatusComplete);
+      var isPanding = await arr.every(isStatusPanding);
+      temp.iscompleteStatus = iscomplete
+      temp.ispendingStatus = isPanding
+      // if (iscomplete == true) {
+
+      //   completedTask = completedTask + 1
+      // }
+
+
+      taskObjectArray.push(temp)
+      
+      }
+    }
+     
+  }
+  //return;
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('to-do-list', {
     err_msg, success_msg, layout: false,
     session: req.session,
     propertyObj: propertyObj,
+    taskObject:taskObjectArray,
     moment: moment,
-    TaskDetailObj: []
+    TaskDetailObj: [],
+    property_id:req.query.propertyDropDown,
+    phaseName:req.query.phaseDropDown
+    
 
   });
 

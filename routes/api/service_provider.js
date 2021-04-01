@@ -165,9 +165,18 @@ router.post("/service_provider_register", (req, res) => {
 
       var otp = generateOTP()
       console.log("otp is", otp);
-
+      var rendomNumber = '';
+      var ServiceProviderCode ='';
+      if(req.body.sps_role_name == 'Solicitor'){
+         rendomNumber = Math.floor(10000 + Math.random() * 9000);
+         ServiceProviderCode = 'SOL'+rendomNumber;  
+      }else{
+        rendomNumber = Math.floor(10000 + Math.random() * 9000);
+        ServiceProviderCode = 'SPR'+rendomNumber;  
+      }
+     
       const newServiceProvider = new ServiceProviderSchema({
-        sps_unique_code: "sp-" + uuidv4(),
+        sps_unique_code: ServiceProviderCode,
         sps_firstname: req.body.sps_firstname,
         sps_lastname: req.body.sps_lastname,
         sps_fullname: req.body.sps_firstname + ' ' + req.body.sps_lastname,

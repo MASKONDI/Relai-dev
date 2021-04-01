@@ -96,7 +96,7 @@
                                 <h3><a href="/mydreamhome-details?id=<%=row._id%>">
                                     <%= row.ps_property_name%>
                                   </a></h3>
-                                <div class="location-part"><a href="#"><img src="images/location.png">
+                                <div class="location-part address-part"><a href="#"><img src="images/location.png">
                                     <%=row.ps_property_address%>,<%=row.ps_property_country_id%>
                                   </a></div>
                                 <div class="location-part"><a href="/mydreamhome-details?id=<%=row._id%>"><img
@@ -116,7 +116,7 @@
                           <% if(totalPages> 1){ %>
                             <li class="page-item">
                               <% if(currentPage> 1){ var currentPage1 = currentPage-1; %>
-                                <a class="page-link" href="/professionals?page=<%=currentPage1%>" aria-label="Previous">
+                                <a class="page-link" href="/mydreamhome?page=<%=currentPage1%>" aria-label="Previous">
                                   <span aria-hidden="true">&laquo;</span>
                                   <span class="sr-only">Previous</span>
                                 </a>
@@ -124,13 +124,13 @@
                             </li>
                             <% for(var i=1; i<=totalPages; i++) { var tClass='' ; if(i==currentPage){ tClass='active' ;
                               } %>
-                              <li class="page-item <%=tClass%>"><a class="page-link" href="/professionals?page=<%=i%>">
+                              <li class="page-item <%=tClass%>"><a class="page-link" href="/mydreamhome?page=<%=i%>">
                                   <%=i%>
                                 </a></li>
                               <% } %>
                                 <% if(currentPage < totalPages){ var currentPage1=currentPage+1; %>
                                   <li class="page-item">
-                                    <a class="page-link" href="/professionals?page=<%=currentPage1%>" aria-label="Next">
+                                    <a class="page-link" href="/mydreamhome?page=<%=currentPage1%>" aria-label="Next">
                                       <span aria-hidden="true">&raquo;</span>
                                       <span class="sr-only">Next</span>
                                     </a>
