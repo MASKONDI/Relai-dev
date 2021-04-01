@@ -622,16 +622,28 @@
                                 <%=row.ppts_task_name%>
                                   <%if(row.ppts_phase_name=='other'){%>
                                     <a
-                                      href="/<%=row.phase_page_name%>?id=<%=row.ppts_property_id%>&phase=<%=row.ppts_phase_name%>&step=O"><img
-                                        src="images/recent-user-1.png"></a>
+                                    href="/<%=row.phase_page_name%>?id=<%=row.ppts_property_id%>&phase=<%=row.ppts_phase_name%>&step=O">
+                                    </a>
+                                   
                                     <%}else{%>
                                       <a
-                                        href="/<%=row.phase_page_name%>?id=<%=row.ppts_property_id%>&phase=<%=row.ppts_phase_name%>&step=<%=row.ppts_phase_flag%>"><img
-                                          src="images/recent-user-1.png"></a>
+                                      href="/<%=row.phase_page_name%>?id=<%=row.ppts_property_id%>&phase=<%=row.ppts_phase_name%>&step=<%=row.ppts_phase_flag%>"></a>
                                       <%}%>
+                                      <%row.professionalName.forEach(function(sp,i){%>
+                                        <% if(row.sps_profile_image_name !=null){%>
+                                          <img src="upload/<%=row.sps_profile_image_name%>" style="border-radius: 50%;width: 30px;
+                                          height: 30px;
+                                          ">
+                                      </a>
+                                      <%} else {%>
+                                        <img src="images/img_avatar.png" style="border-radius: 50%;width: 30px;
+                                        height: 30px;
+                                       "></a>
+                                        <%}%>
                                         <em>
-                                          <%=row.professionalName%>
+                                          <%=sp.sps_fullname%>
                                         </em>
+                                        <%})%>
                               </p>
                               <input type="checkbox">
                               <span class="checkmark"></span>

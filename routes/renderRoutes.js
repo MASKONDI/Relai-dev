@@ -2017,7 +2017,25 @@ app.get('/mydreamhome-details-phase-a', isCustomer, async (req, res) => {
 
 
 })
-
+app.post('/get_to_do_phase_task',async(req,res)=>{
+ var phase_name= req.body.phase_name;
+  var property_id=req.body.property_id;
+  var user_id=req.body.user_id;
+  var taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
+  console.log('task in to-do list=======',taskObject)
+  if(taskObject.length==0){
+    res.send({
+      'status':false,
+      'message':'Task NOt Found !!',
+      'data':taskObject
+    })
+  }
+  res.send({
+    'status':true,
+    'data':taskObject,
+    'message':'Task Found'
+  })
+})
 app.get('/removetasktable', (req, res) => {
   var id = req.query.id
   console.log(id)
@@ -3145,7 +3163,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
         for (var ph of TaskDetailObj) {
           const PhaseObject = JSON.stringify(ph);
           const to_do_data = JSON.parse(PhaseObject);
-
+          var spdata = []
           phase_page_name = await getPhase(to_do_data.ppts_phase_flag);
           to_do_data.phase_page_name = phase_page_name
           
@@ -3153,12 +3171,14 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
           for(var ki of sp){
             const ki1 = JSON.stringify(ki);
             const ki2 = JSON.parse(ki1);
-            to_do_data.professionalName= await ki2.sps_fullname
-            var ki3 = await to_do_data
-            console.log('to_do_data===============',ki3)
-           // to_do_data.professionalName =  spname2
-           todoArray.push(ki3);
+            spdata.push(ki2)
+            // var ki3 = await to_do_data
+            // to_do_data.professionalName =  spname2
           }
+
+          console.log('spdata===============',spdata)
+          to_do_data.professionalName= await spdata
+          todoArray.push(to_do_data);
              //console.log('docs=========',sp);
           // for(var id of to_do_data.ppts_assign_to){
           //   var spdetail = await ServiceProviderSchema.findOne({'_id':$in:{to_do_data.ppts_assign_to}})
@@ -3185,7 +3205,7 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
 
         }
         console.log("todoArray=======================",todoArray);
-     // return;
+     
 
 
 
@@ -3923,7 +3943,7 @@ app.get('/edit-property', isCustomer, async (req, res) => {
 app.get('/to-do-list', isCustomer, async (req, res) => {
   var err_msg = null;
   var success_msg = null;
-  console.log("todo")
+  console.log("todo=====================",req.query);
   req.session.pagename = 'to-do-list';
   // let propertyObj = await propertyDetail.GetAllProperty(req.session.user_id, req.session.active_user_login);
   let propertyObj = await PropertiesSchema.find({
@@ -3932,15 +3952,51 @@ app.get('/to-do-list', isCustomer, async (req, res) => {
       { $and: [{ ps_tagged_user_id: req.session.user_id }, { ps_other_property_type: req.session.active_user_login }] }
     ]
   }).sort({ _id: -1 })
-  console.log('property in to-do-list', propertyObj);
+  //console.log('property in to-do-list', propertyObj);
+  var taskObject=''
+  var taskObjectArray=[]
+  if(req.query.propertyDropDown && req.query.phaseDropDown){
+    var phase_name  =  req.query.phaseDropDown;
+    var property_id =  req.query.propertyDropDown;
+    var user_id     =  req.session.user_id;
+
+     taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
+     console.log('==================================================',taskObject)
+     if (taskObject.length != 0) {
+      for (k of taskObject) {
+      var d = JSON.stringify(k)
+      var dd = JSON.parse(d)
+      var temp = dd
+      var arr = temp.ppts_task_status;
+      var iscomplete = await arr.every(isStatusComplete);
+      var isPanding = await arr.every(isStatusPanding);
+      temp.iscompleteStatus = iscomplete
+      temp.ispendingStatus = isPanding
+      // if (iscomplete == true) {
+
+      //   completedTask = completedTask + 1
+      // }
+
+
+      taskObjectArray.push(temp)
+      
+      }
+    }
+     
+  }
+  //return;
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
   res.render('to-do-list', {
     err_msg, success_msg, layout: false,
     session: req.session,
     propertyObj: propertyObj,
+    taskObject:taskObjectArray,
     moment: moment,
-    TaskDetailObj: []
+    TaskDetailObj: [],
+    property_id:req.query.propertyDropDown,
+    phaseName:req.query.phaseDropDown
+    
 
   });
 
