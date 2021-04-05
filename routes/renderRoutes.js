@@ -1915,7 +1915,7 @@ app.get('/Resend-link', function (req, res) {
 // }
 // }
 function isStatusComplete(element, index, array) {
-  return element == 'completed_by_service_provider';
+  return element == 'approve';
 }
 function isStatusPanding(element, index, array) {
   return element == 'pending';

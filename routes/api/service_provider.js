@@ -2038,10 +2038,10 @@ router.post('/sp_task_status_update', (req, res) => {
 
 router.post('/cus_task_status_approved', (req, res) => {
   console.log("cus_task_status_approved :", req.body);
-
+ 
   PropertyProfessinoalTaskSchema.findOne({ _id: req.body.task_id }).then((resp) => {
     if (resp) {
-      var index = resp.ppts_assign_to.indexOf(req.session.user_id)
+      var index = resp.ppts_assign_to.indexOf(req.body.sp_id)
       const items = resp.ppts_task_status
 
       items[index] = req.body.ppts_task_status

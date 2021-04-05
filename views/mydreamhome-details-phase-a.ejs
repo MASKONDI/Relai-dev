@@ -863,8 +863,10 @@
                                           <%if(row.ppts_assign_to.includes(hp._id.toString())){
                                             index=row.ppts_assign_to.indexOf(hp._id.toString()) %>
                                             <td>
-
-                                              <%if(row.ppts_task_status[index]=='completed_by_service_provider'){%>
+                                              <% if(row.ppts_task_status[index]=='approve' ){%>
+                                                <div class="complete-circle" data-toggle="tooltip"
+                                                  data-placement="top" title="Complete"></div>
+                                              <%}else if(row.ppts_task_status[index]=='completed_by_service_provider'){%>
                                                 <div class="profile-dropdown">
 
                                                   <div class="approval-pending-circle" data-toggle="tooltip"
@@ -872,9 +874,9 @@
 
 
                                                   <div class="status-dropdown2">
-                                                    <a class="btn btn-approve">Approve</a>
+                                                    <a class="btn btn-approve" onclick="cus_task_statusUpdate('<%=row._id%>','<%=hp._id%>','approve')">Approve</a>
 
-                                                    <a class="btn btn-reject">Reject</a>
+                                                    <a class="btn btn-reject" onclick="cus_task_statusUpdate('<%=row._id%>','<%=hp._id%>','reject')">Reject</a>
                                                   </div>
                                                 </div>
                                                 <%}else if(row.ppts_task_status[index]=='in_progress' ){%>

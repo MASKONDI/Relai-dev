@@ -1035,7 +1035,7 @@ app.get('/service-provider/myproperties-detail-phaseA', isServiceProvider, async
       var ddd = JSON.parse(dd);
       //fetching index 
       var index = k.ppts_assign_to.indexOf(user_id);
-      if (k.ppts_task_status[index] == 'completed_by_service_provider') {
+      if (k.ppts_task_status[index] == 'approve') {
         completedTask = completedTask + 1;
       }
       ddd.user_id = user_id
