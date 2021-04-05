@@ -1281,7 +1281,9 @@ router.post("/addTask_from_Dreamhome_detial_phase", (req, res) => {
       ppts_is_active_user_flag: req.session.active_user_login,
       ppts_note: req.body.ppts_note,
       ppts_task_status: 'pending',
-      ppts_is_remove_task: 'no'
+
+      ppts_is_remove_task: 'no',
+      ppts_phase_flag: req.body.ppts_phase_flag
     });
     newTask
       .save()
@@ -2977,13 +2979,13 @@ router.post('/customer-message-unread', (req, res) => {
 router.post('/document_download_count', async (req, res) => {
   console.log("document_download_count :", req.body);
   var docPermissionData = await DocumentPermissionSchema.findOne({
+
     _id: req.body.doc_permission_id,
     dps_is_active_user_flag: req.body.active_flag,
     dps_customer_id: req.body.uploaded_by_id,
     dps_service_provider_id: req.body.downloaded_by_id,
     dps_document_id: req.body.document_id
   });
-
   if (docPermissionData) {
     console.log('docPermissionData:', docPermissionData)
     DocumentDownloadSchema.updateOne({ dd_permission_id: docPermissionData._id, dd_uploaded_by_id: docPermissionData.dps_customer_id, dd_downloaded_by_id: docPermissionData.dps_service_provider_id, dd_document_id: docPermissionData.dps_document_id }, { $set: { dd_download_status: 'yes' } }, { upsert: true }, function (err) {
@@ -2999,7 +3001,6 @@ router.post('/document_download_count', async (req, res) => {
   } else {
     console.log('else data my doc')
   }
-
 });
 
 //Approve Mail and Sending Mail
@@ -3036,6 +3037,7 @@ async function approve_task_mail(req, sp_id, propertyId, taskName) {
         console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
         //res.redirect('/add-property')
       } else {
+        console.log('Email send Successfully');
         //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
         // res.redirect('/add-property')
       }
@@ -3078,6 +3080,7 @@ async function reject_task_mail(req, sp_id, propertyId, taskName) {
         console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
         //res.redirect('/add-property')
       } else {
+        console.log('Email Send Successfully');
         //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
         // res.redirect('/add-property')
       }

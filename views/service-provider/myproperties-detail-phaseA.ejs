@@ -141,7 +141,7 @@
                                 <p>
                                   <%=row.ppts_task_name%>
                                 </p>
-                                <%if(row.ppts_task_status[row.index]=='completed_by_service_provider'){%>
+                                <%if(row.ppts_task_status[row.index]=='approve'){%>
                                   <input type="checkbox" checked disabled>
 
                                   <%}else{%>
@@ -167,8 +167,10 @@
                               <% if(row.ppts_assign_to.includes(row.user_id)){%>
 
                                 <div class="profile-dropdown">
-                                  <%if(row.ppts_task_status[row.index]=='completed_by_service_provider'){%>
+                                  <%if(row.ppts_task_status[row.index]=='approve'){%>
                                     <a class="btn btn-complete">Complete</a>
+                                  <%}else if(row.ppts_task_status[row.index]=='completed_by_service_provider'){%>
+                                    <a class="btn btn-complete">Wait For approval</a>
                                     <%}else if(row.ppts_task_status[row.index]=='in_progress' ){%>
                                       <a class="btn btn-progress">In Progress</a>
                                       <%}else{%>

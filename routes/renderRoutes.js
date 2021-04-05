@@ -1324,6 +1324,8 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
   await ServiceProviderUploadDocsSchema.find({
     spuds_property_id: req.session.property_id
   }).sort({ _id: -1 }).then(async (spresp) => {
+    console.log('sprespsprespspresp:',spresp)
+
     for (var keyy of spresp) {
       let sptemps = await keyy
       const spd = JSON.stringify(sptemps);
@@ -1334,9 +1336,9 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
           await DocumentDownloadSchema.find({ dd_permission_id: spDocData._id }).then(async (docDownloadData) => {
             console.log('docDownloadData:',docDownloadData)
               if (docDownloadData) { 
-                spDocData.docDownloadData = docDownloadData;
+                spDocData.docDownloadData = docDownloadData.length;
               }else{
-                spDocData.docDownloadData ='';
+                spDocData.docDownloadData =0; 
               }
            });
         } else {
@@ -1355,11 +1357,27 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
       let temps = await key
       const d = JSON.stringify(temps);
       const datas = JSON.parse(d)
-
       if (key.cuds_task_id) {
+
+        await DocumentDownloadSchema.find({ dd_document_id: datas._id }).then(async (docDownloadData) => {
+          console.log('Taskkk docDownloadData:',docDownloadData)
+            if (docDownloadData) { 
+              datas.docDownloadData = docDownloadData.length;
+            }else{
+              datas.docDownloadData =0; 
+            }
+         });
 
         taskDocArray.push(datas);
       } else {
+        await DocumentDownloadSchema.find({ dd_document_id: datas._id }).then(async (docDownloadData) => {
+          console.log('datas docDownloadData:',docDownloadData)
+            if (docDownloadData) { 
+              datas.docDownloadData = docDownloadData.length;
+            }else{
+              datas.docDownloadData =0; 
+            }
+         });
         normalDocArray.push(datas);
       }
     }
@@ -1915,7 +1933,7 @@ app.get('/Resend-link', function (req, res) {
 // }
 // }
 function isStatusComplete(element, index, array) {
-  return element == 'completed_by_service_provider';
+  return element == 'approve';
 }
 function isStatusPanding(element, index, array) {
   return element == 'pending';
@@ -3172,6 +3190,12 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
         for (var ph of TaskDetailObj) {
           const PhaseObject = JSON.stringify(ph);
           const to_do_data = JSON.parse(PhaseObject);
+          var result = to_do_data.ppts_task_status;
+          var iscomplete = await result.every(isStatusComplete);
+          var isPanding = await result.every(isStatusPanding);
+          // console.log(iscomplete)
+          to_do_data.iscompleteStatus = iscomplete
+          to_do_data.ispendingStatus = isPanding
           var spdata = []
           phase_page_name = await getPhase(to_do_data.ppts_phase_flag);
           to_do_data.phase_page_name = phase_page_name

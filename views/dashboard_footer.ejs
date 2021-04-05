@@ -5120,5 +5120,58 @@ $('.loader-box').attr('style','display:flex !important');
    }
 
   </script>
+  <script>
+    function cus_task_statusUpdate(task_id, sp_id,status) {
+    
+      if(status=='reject'){
+        var task_status='pending'
+    }else{
+      var task_status='approve'
+    }
+      Swal.fire({
+        title: 'Are you sure want to Approved Status?',
+        showCancelButton: true,
+        confirmButtonText: `Yes`,
+        confirmButtonColor: '#005377',
+      }).then((result) => {
+        if (result.isConfirmed) {
+  
+          $.ajax({
+            type: "POST",
+            data: {
+              'task_id': task_id,
+              'ppts_task_status': task_status,
+              'sp_id':sp_id,
+              'action': 'CUS_task_approve'
+            },
+            url: '/api/cus_task_status_approved',
+            cache: false,
+            success: function (data) {
+              if (data.status == true) {
+                Swal.fire({
+                  // position: 'top-end',
+                  icon: 'success',
+                  title: data.message,
+                  showConfirmButton: false,
+                  confirmButtonColor: '#005377',
+                  timer: 3000
+                })
+                location.reload(true)
+              } else {
+                Swal.fire({
+                  // position: 'top-end',
+                  icon: 'error',
+                  title: data.message,
+                  showConfirmButton: true,
+                  confirmButtonColor: '#005377'
+                  //timer: 1500
+                })
+              }
+            }
+          })
+        }
+      })
+    }
+  </script>
   </body>
 </html>
