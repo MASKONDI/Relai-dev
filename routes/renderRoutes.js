@@ -3190,6 +3190,12 @@ app.get('/mydreamhome-details', isCustomer, async (req, res) => {
         for (var ph of TaskDetailObj) {
           const PhaseObject = JSON.stringify(ph);
           const to_do_data = JSON.parse(PhaseObject);
+          var result = to_do_data.ppts_task_status;
+          var iscomplete = await result.every(isStatusComplete);
+          var isPanding = await result.every(isStatusPanding);
+          // console.log(iscomplete)
+          to_do_data.iscompleteStatus = iscomplete
+          to_do_data.ispendingStatus = isPanding
           var spdata = []
           phase_page_name = await getPhase(to_do_data.ppts_phase_flag);
           to_do_data.phase_page_name = phase_page_name

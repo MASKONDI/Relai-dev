@@ -645,7 +645,12 @@
                                         </em>
                                         <%})%>
                               </p>
-                              <input type="checkbox">
+                              <%if(row.iscompleteStatus==true){%>
+                              <input type="checkbox" checked disabled>
+                                
+                                <%}else{%>
+                              <input type="checkbox" disabled>
+                              <%}%>
                               <span class="checkmark"></span>
                             </label>
                             <%});%>
