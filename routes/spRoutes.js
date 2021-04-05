@@ -44,6 +44,7 @@ const NotificationSchema = require("../models/notification_modal");
 const ComplaintsSchema = require("../models/Complaints");
 const ComplaintDetailsSchema = require("../models/complaint_details_model");
 const CustomerDocPermission = require("../models/document_permission");
+const DocumentDownloadSchema = require('../models/document_download_modal')
 
 
 function tallyVotes(AllhiredProfeshnoal) {
@@ -614,6 +615,16 @@ app.get('/service-provider/professional-details-docs', isServiceProvider, async 
         if (docPermissionResp) {
 
           DocData.permissionData = docPermissionResp
+
+          await DocumentDownloadSchema.find({ dd_document_id: DocData._id }).then(async (docDownloadData) => {
+            console.log('Taskkk docDownloadData:',docDownloadData)
+              if (docDownloadData) { 
+                DocData.docDownloadData = docDownloadData.length;
+              }else{
+                DocData.docDownloadData =0; 
+              }
+           });
+
         } else {
           DocData.permissionData = '';
         }
@@ -668,8 +679,27 @@ app.get('/service-provider/professional-details-docs', isServiceProvider, async 
     const dd = JSON.stringify(tempss);
     const datass = JSON.parse(dd)
     if (k.spuds_task_id) {
+
+      await DocumentDownloadSchema.find({ dd_document_id: datass._id }).then(async (docDownloadData) => {
+        console.log('Taskkk docDownloadData:',docDownloadData)
+          if (docDownloadData) { 
+            datass.docDownloadData = docDownloadData.length;
+          }else{
+            datass.docDownloadData =0; 
+          }
+       });
+
+
       sptaskDocArray.push(datass)
     } else {
+      await DocumentDownloadSchema.find({ dd_document_id: datass._id }).then(async (docDownloadData) => {
+        console.log('Taskkk docDownloadData:',docDownloadData)
+          if (docDownloadData) { 
+            datass.docDownloadData = docDownloadData.length;
+          }else{
+            datass.docDownloadData =0; 
+          }
+       });
       sp_normalDocArray.push(datass)
     }
   }
