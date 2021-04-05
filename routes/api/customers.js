@@ -191,8 +191,8 @@ router.post("/cust_register", (req, res) => {
       var otp = generateOTP()
       console.log("otp is", otp);
 
-         let rendomNumber = Math.floor(10000 + Math.random() * 9000);
-         const customerCode = 'CUS'+rendomNumber;  
+      let rendomNumber = Math.floor(10000 + Math.random() * 9000);
+      const customerCode = 'CUS' + rendomNumber;
 
       const newCustomer = new CustomerSchema({
         cus_unique_code: customerCode,
@@ -571,7 +571,7 @@ router.post("/add-new-property", isCustomer, async (req, res) => {
   upload(req, res, async () => {
     if (req.body) {
       console.log("first form body:=", req.body);
-      
+
       let PropertySaved = await PropertyHelper.Add_New_Propert(req);
       console.log('PropertySaved========', PropertySaved);
       if (PropertySaved) {
@@ -1281,7 +1281,7 @@ router.post("/addTask_from_Dreamhome_detial_phase", (req, res) => {
       ppts_is_active_user_flag: req.session.active_user_login,
       ppts_note: req.body.ppts_note,
       ppts_task_status: 'pending',
-      ppts_is_remove_task:'no'
+      ppts_is_remove_task: 'no'
     });
     newTask
       .save()
@@ -1520,138 +1520,143 @@ function invite_function(req, saved_property) {
   console.log("Request getting from server :", req.body);
   const payload = { id: saved_property._id, property_name: saved_property.ps_property_name }; // Create Token Payload
   // Sign Token
-  jwt.sign(
-    payload,
-    keys.secretOrKey,
-    { expiresIn: 3600 * 60 * 60 },
-    (err, token) => {
-      console.log("Sending Secret token along with customer request", token);
-      var smtpTransport = nodemailer.createTransport({
-        // port: 25,
-        // host: 'localhost',
-        // tls: {
-        //   rejectUnauthorized: false
-        // },
-        // host: 'smtp.gmail.com',
-        // port: 465,
-        // secure: true,
-        service: 'Gmail',
-        auth: {
-          user: keys.user4,
-          pass: keys.pass4,
-        }
-      });
-      const mailOptions = {
-        to: req.body.ps_other_party_emailid,
-        from: keys.user4,
-        subject: 'Invitaion letter from Relai',
-
-        text: 'Dear \n' + req.body.ps_other_party_fullname + '\n\n' + 'you are invited in Relai plateform.\n\n' +
-
-          'We suggest you to please visit our Relai plateform and create your account \n' + 'Here is the registration link: http://' + req.headers.host + '/signup?email=' + req.body.ps_other_party_emailid + '&token=' + token + '\n\n' +
-
-          'if you already registered please hit given url \n' + ' http://' + req.headers.host + '/signin?email=' + req.body.ps_other_party_emailid + '&token=' + token + '\n\n' +
-
-          'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
-      };
-      smtpTransport.sendMail(mailOptions, function (err) {
-        if (err) {
-          console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
-          //res.redirect('/add-property')
-        } else {
-          //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
-          // res.redirect('/add-property')
-        }
-      });
+  // jwt.sign(
+  //   payload,
+  //   keys.secretOrKey,
+  //   { expiresIn: 3600 * 60 * 60 },
+  //   (err, token) => {
+  const propertyId = saved_property._id;
+  console.log("property Id is :", saved_property._id);
+  console.log("Sending Secret token along with customer request", saved_property._id);
+  var smtpTransport = nodemailer.createTransport({
+    // port: 25,
+    // host: 'localhost',
+    // tls: {
+    //   rejectUnauthorized: false
+    // },
+    // host: 'smtp.gmail.com',
+    // port: 465,
+    // secure: true,
+    service: 'Gmail',
+    auth: {
+      user: keys.user4,
+      pass: keys.pass4,
     }
-  );
+  });
+  const mailOptions = {
+    to: req.body.ps_other_party_emailid,
+    from: keys.user4,
+    subject: 'Invitaion letter from Relai',
+
+    text: 'Dear \n' + req.body.ps_other_party_fullname + '\n\n' + 'you are invited in Relai plateform.\n\n' +
+
+      'We suggest you to please visit our Relai plateform and create your account \n' + 'Here is the registration link: http://' + req.headers.host + '/signup?email=' + req.body.ps_other_party_emailid + '&token=' + propertyId + '\n\n' +
+
+      'if you already registered please hit given url \n' + ' http://' + req.headers.host + '/signin?email=' + req.body.ps_other_party_emailid + '&token=' + propertyId + '\n\n' +
+
+      'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+  };
+  smtpTransport.sendMail(mailOptions, function (err) {
+    if (err) {
+      console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+      //res.redirect('/add-property')
+    } else {
+      //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
+      // res.redirect('/add-property')
+    }
+  });
 }
 
 
 function solicitor_invite_function(req, saved_property) {
-    console.log("Request getting from server :", req.body);
-    const payload = { id: saved_property._id, property_name: saved_property.ps_property_name }; // Create Token Payload
-    // Sign Token
-    //const path = 'http://localhost:5000/signup-service-provider?email=' + req.body.ps_solicitor_email + '&token=' + token + '\n\n';
-    console.log(" solicitoy email", req.body.ps_solicitor_email);
-    console.log(" type of solicitoy email", typeof(req.body.ps_solicitor_email));
-    if (typeof (req.body.ps_solicitor_email) == 'object') {
-      console.log('My Object emailsss');
+  console.log("Request getting from server :", req.body);
+  const payload = { id: saved_property._id, property_name: saved_property.ps_property_name }; // Create Token Payload
+  // Sign Token
+  //const path = 'http://localhost:5000/signup-service-provider?email=' + req.body.ps_solicitor_email + '&token=' + token + '\n\n';
+  console.log(" solicitoy email", req.body.ps_solicitor_email);
+  console.log(" type of solicitoy email", typeof (req.body.ps_solicitor_email));
+  if (typeof (req.body.ps_solicitor_email) == 'object') {
+    console.log('My Object emailsss');
     if (req.body.ps_solicitor_email.length > 0) {
       for (let email of req.body.ps_solicitor_email) {
-        jwt.sign(
-        payload,
-        keys.secretOrKey,
-        { expiresIn: 3600*60*60 },
-        (err, token) => {
-        console.log(" Object Sending Secret token along with customer request", token);
+        // console.log(" type of email is :", typeof (email));
+        // jwt.sign(
+        //   payload,
+        //   keys.secretOrKey,
+        //   { expiresIn: 3600 * 60 * 60 },
+        //   (err, token) => {
+        console.log(" Object Sending Secret token along with customer request", saved_property._id);
         var smtpTransport = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-          user: keys.user4,
-          pass: keys.pass4,
-        }
+          service: 'Gmail',
+          auth: {
+            user: keys.user4,
+            pass: keys.pass4,
+          }
         });
         const mailOptions = {
           to: email,
           from: keys.user4,
           subject: 'Invitaion letter from Relai',
           text: 'Hello \n\n' + 'you are invited in Relai plateform for solicitor.\n\n' +
-          'We suggest you to please visit our Relai plateform and create your account \n' + 'Here is the registration link: http://' + req.headers.host + '/signup-service-provider?email=' + email + '&role=Solicitor&token=' + token + '\n\n' +
-          'if you already registered please hit given url \n' + ' http://' + req.headers.host + '/signup-service-provider?email=' + email + '&role=Solicitor&token=' + token + '\n\n' +
-          'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
+            'We suggest you to please visit our Relai plateform and create your account \n' + 'Here is the registration link: http://' + req.headers.host + '/signup-service-provider?email=' + email + '&role=Solicitor&token=' + saved_property._id + '\n\n' +
+            'if you already registered please hit given url \n' + ' http://' + req.headers.host + '/signup-service-provider?email=' + email + '&role=Solicitor&token=' + saved_property._id + '\n\n' +
+            'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
         };
         smtpTransport.sendMail(mailOptions, function (err) {
           if (err) {
-          console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
-          //res.redirect('/add-property')
+            console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+            //res.redirect('/add-property')
           } else {
-          //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
-          // res.redirect('/add-property')
+            //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
+            // res.redirect('/add-property')
           }
         });
-        }
-        );
+        // }
+        //);
       }
     }
-  }else{
-    console.log('My String emailsss:',req.body.ps_solicitor_email);
+  } else {
+    let email = req.body.ps_solicitor_email;
+    console.log('My String emailsss:', email);
+    console.log('My String emailsss:', typeof (email));
 
-    jwt.sign(
-      payload,
-      keys.secretOrKey,
-      { expiresIn: 3600*60*60 },
-      (err, token) => {
-      console.log("String Sending Secret token along with customer request", token);
-      var smtpTransport = nodemailer.createTransport({
+    // jwt.sign(
+    //   payload,
+    //   keys.secretOrKey,
+    //   { expiresIn: 3600 * 60 * 60 },
+    //   (err, token) => {
+    console.log("String Sending Secret token along with customer request", saved_property._id);
+    var smtpTransport = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
         user: keys.user4,
         pass: keys.pass4,
       }
-      });
-      const mailOptions = {
-        to:'vivek.makerit@gmail.com',
-        from: keys.user4,
-        subject: 'Invitaion letter from Relai',
-        text: 'Hello \n\n' + 'you are invited in Relai plateform for solicitor.\n\n' +
-        'We suggest you to please visit our Relai plateform and create your account \n' + 'Here is the registration link: http://' + req.headers.host + '/signup-service-provider?email=' + email + '&role=Solicitor&token=' + token + '\n\n' +
-        'if you already registered please hit given url \n' + ' http://' + req.headers.host + '/signup-service-provider?email=' + email + '&role=Solicitor&token=' + token + '\n\n' +
+    });
+    const mailOptions = {
+      to: email,
+      from: keys.user4,
+      subject: 'Invitaion letter from Relai',
+      text: 'Hello \n\n' + 'you are invited in Relai plateform for solicitor.\n\n' +
+        'We suggest you to please visit our Relai plateform and create your account \n' + 'Here is the registration link: http://' + req.headers.host + '/signup-service-provider?email=' + email + '&role=Solicitor&token=' + saved_property._id + '\n\n' +
+        'if you already registered please hit given url \n' + ' http://' + req.headers.host + '/signup-service-provider?email=' + email + '&role=Solicitor&token=' + saved_property._id + '\n\n' +
         'Thanks and Regards,' + '\n' + 'Relai Team' + '\n\n',
-      };
-      smtpTransport.sendMail(mailOptions, function (err) {
-        if (err) {
+    };
+
+    smtpTransport.sendMail(mailOptions, function (err) {
+      if (err) {
         console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
         //res.redirect('/add-property')
-        } else {
+      } else {
+        console.log("Solicitor Invitation link has been sent successfully on intered email id, please check your mail...");
         //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
         // res.redirect('/add-property')
-        }
-      });
       }
-      );
+    });
+    //   }
+    // );
   }
-  }
+}
 
 
 /*function solicitor_invite_function(req, saved_property) {
@@ -2473,9 +2478,9 @@ router.post("/addTask_from_Dreamhome_detial", (req, res) => {
 async function submit_token(token, user_id) {
   console.log("secret token is", token);
   //console.log("secret token is", req.session.email);
-  var decoded = jwt.verify(token, keys.secretOrKey);
-  console.log("decoded string is :", decoded.id);
-  PropertiesSchema.findOne({ _id: decoded.id }).then(async (data) => {
+  //var decoded = jwt.verify(token, keys.secretOrKey);
+  //console.log("decoded string is :", decoded.id);
+  PropertiesSchema.findOne({ _id: token }).then(async (data) => {
     if (data.is_invite_accepted == "no") {
       // let arr = [];
 
@@ -2488,10 +2493,10 @@ async function submit_token(token, user_id) {
       //     arr.push(temp)
       //     // }
       //   })
-      console.log("property id is user id", decoded.id);
+      console.log("property id is user id", token);
       console.log();
       // }
-      PropertiesSchema.updateOne({ '_id': decoded.id }, { $set: { ps_tagged_user_id: user_id, is_invite_accepted: 'yes' } }, { upsert: true }, function (err) {
+      PropertiesSchema.updateOne({ '_id': token }, { $set: { ps_tagged_user_id: user_id, is_invite_accepted: 'yes' } }, { upsert: true }, function (err) {
         if (err) {
           // res.send({ status: false, message: 'Something going wrong please check again !!' })
           console.log('Something going wrong please check again !!'.err);
@@ -2661,9 +2666,9 @@ router.post('/reapitApi-proprty', (req, res) => {
         let propertyAddress = [];
         let address = '';
 
-        let propertyObj={
-          value:'',
-          data:'',
+        let propertyObj = {
+          value: '',
+          data: '',
         }
 
         for (let property of propertyJson._embedded) {
@@ -2685,10 +2690,10 @@ router.post('/reapitApi-proprty', (req, res) => {
           if (property.address.line4) {
             address += property.address.line4 + ' ';
           }
-            propertyObj={
-              value:address,
-              data:property.id,
-            }
+          propertyObj = {
+            value: address,
+            data: property.id,
+          }
           propertyAddress.push(propertyObj);
           address = '';
         }
@@ -2738,7 +2743,7 @@ router.post('/reapitApi', (req, res) => {
       let ddd = JSON.parse(response.body);
       var options = {
         'method': 'GET',
-        'url': 'https://platform.reapit.cloud/offers/?embed=property&propertyId='+searchText,
+        'url': 'https://platform.reapit.cloud/offers/?embed=property&propertyId=' + searchText,
         'headers': {
           'api-version': '2020-01-31',
           'reapit-customer': 'SBOX',
@@ -2749,8 +2754,8 @@ router.post('/reapitApi', (req, res) => {
       };
       request(options, function (error, offerResponse) {
         if (error) throw new Error(error);
-        console.log('offerResponse:',offerResponse)
-        let offer= JSON.parse(offerResponse.body);
+        console.log('offerResponse:', offerResponse)
+        let offer = JSON.parse(offerResponse.body);
         return res.send({
           propertyData: ddd._embedded,
           offerData: offer._embedded
@@ -2972,31 +2977,116 @@ router.post('/customer-message-unread', (req, res) => {
 router.post('/document_download_count', async (req, res) => {
   console.log("document_download_count :", req.body);
   var docPermissionData = await DocumentPermissionSchema.findOne({
-     _id:req.body.doc_permission_id,
-     dps_is_active_user_flag:req.body.active_flag,
-     dps_customer_id:req.body.uploaded_by_id,
-     dps_service_provider_id:req.body.downloaded_by_id,
-     dps_document_id:req.body.document_id
+    _id: req.body.doc_permission_id,
+    dps_is_active_user_flag: req.body.active_flag,
+    dps_customer_id: req.body.uploaded_by_id,
+    dps_service_provider_id: req.body.downloaded_by_id,
+    dps_document_id: req.body.document_id
+  });
+
+  if (docPermissionData) {
+    console.log('docPermissionData:', docPermissionData)
+    DocumentDownloadSchema.updateOne({ dd_permission_id: docPermissionData._id, dd_uploaded_by_id: docPermissionData.dps_customer_id, dd_downloaded_by_id: docPermissionData.dps_service_provider_id, dd_document_id: docPermissionData.dps_document_id }, { $set: { dd_download_status: 'yes' } }, { upsert: true }, function (err) {
+      if (err) {
+        console.log(err)
+        res.send({ status: false, message: 'Something going wrong please check again !!' })
+      } else {
+        res.send({ status: true, message: 'downloaded update successfully !!' })
+        console.log("downloaded update successfully");
+      }
     });
 
-    if(docPermissionData){
-                 console.log('docPermissionData:',docPermissionData)
-                 DocumentDownloadSchema.updateOne({ dd_permission_id:docPermissionData._id, dd_uploaded_by_id:docPermissionData.dps_customer_id,dd_downloaded_by_id:docPermissionData.dps_service_provider_id,dd_document_id:docPermissionData.dps_document_id}, { $set: { dd_download_status: 'yes'} }, { upsert: true }, function (err) {
-                    if (err) {
-                      console.log(err)
-                      res.send({ status: false, message: 'Something going wrong please check again !!' })
-                    } else {
-                      res.send({ status: true, message: 'downloaded update successfully !!' })
-                      console.log("downloaded update successfully");
-                    }
-                  });
-
-    }else{
-              console.log('else data my doc')
-    }
+  } else {
+    console.log('else data my doc')
+  }
 
 });
 
+//Approve Mail and Sending Mail
+
+
+async function approve_task_mail(req, sp_id, propertyId, taskName) {
+  console.log("Request getting from server :", req.body);
+
+  const sp_data = await ServiceProviderSchema.findOne({ _id: sp_id });
+  const propertyData = await PropertiesSchema.findOne({ _id: propertyId });
+  if (sp_data) {
+
+    console.log("service_provider_email is :", sp_data.sps_email_id);
+
+    var smtpTransport = nodemailer.createTransport({
+
+      service: 'Gmail',
+      auth: {
+        user: keys.user4,
+        pass: keys.pass4,
+      }
+    });
+    const mailOptions = {
+      to: req.body.ps_other_party_emailid,
+      from: keys.user4,
+      subject: 'Property Task Update',
+
+      text: 'Dear \n' + sp_data.sps_fullname + '\n\n' + 'your task \n' + taskName + ' is approved by client for following property.' + propertyData.ps_property_name + '\n\n' +
+
+        'Thanks and Regards,' + '\n' + 'RelAi Team' + '\n\n',
+    };
+    smtpTransport.sendMail(mailOptions, function (err) {
+      if (err) {
+        console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+        //res.redirect('/add-property')
+      } else {
+        //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
+        // res.redirect('/add-property')
+      }
+    });
+  }
+  else {
+    console.log("service provider not found");
+  }
+}
+
+//reject Mail
+async function reject_task_mail(req, sp_id, propertyId, taskName) {
+  console.log("Request getting from server :", req.body);
+
+  const sp_data = await ServiceProviderSchema.findOne({ _id: sp_id });
+  const propertyData = await PropertiesSchema.findOne({ _id: propertyId });
+  if (sp_data) {
+
+    console.log("service_provider_email is :", sp_data.sps_email_id);
+
+    var smtpTransport = nodemailer.createTransport({
+
+      service: 'Gmail',
+      auth: {
+        user: keys.user4,
+        pass: keys.pass4,
+      }
+    });
+    const mailOptions = {
+      to: req.body.ps_other_party_emailid,
+      from: keys.user4,
+      subject: 'Property Task Update',
+
+      text: 'Dear \n' + sp_data.sps_fullname + '\n\n' + 'your task \n' + taskName + ' is rejected by client for following property.' + propertyData.ps_property_name + '\n\n' +
+
+        'Thanks and Regards,' + '\n' + 'RelAi Team' + '\n\n',
+    };
+    smtpTransport.sendMail(mailOptions, function (err) {
+      if (err) {
+        console.log('err_msg is :', err); req.flash('err_msg', 'Something went wrong, please contact to support team');
+        //res.redirect('/add-property')
+      } else {
+        //req.flash('success_msg', 'Invitation link has been sent successfully on intered email id, please check your mail...');
+        // res.redirect('/add-property')
+      }
+    });
+  }
+  else {
+    console.log("service provider not found");
+  }
+}
 
 module.exports = router;
 

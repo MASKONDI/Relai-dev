@@ -124,7 +124,8 @@
               <a href="#" class="upload-profile-pic" style="cursor: pointer;">
                 <img src="images/img_avatar.png" alt="" id="blah" class="profile-photo" style="margin-left:10%"> <span>
                   <div class="custom-file-input">
-                    <input type="file" id="image" name="profile-pic" style="cursor: pointer;" value="" onchange="previewFile_profile(this)" required>
+                    <input type="file" id="image" name="profile-pic" style="cursor: pointer;" value=""
+                      onchange="previewFile_profile(this)" required>
                     <input type="button">
                   </div>
                 </span>
@@ -132,8 +133,9 @@
               <% } else {%>
                 <a href="#" class="upload-profile-pic" style="cursor: pointer;">
                   <img src="/upload/<%= session.imagename%>" alt="" id="blah" class="profile-photo"> <span>
-                    <div class="custom-file-input" >
-                      <input type="file" id="image" name="profile-pic" style="cursor: pointer;" value="" required onchange="previewFile_profile(this)">
+                    <div class="custom-file-input">
+                      <input type="file" id="image" name="profile-pic" style="cursor: pointer;" value="" required
+                        onchange="previewFile_profile(this)">
                       <input type="button">
                     </div>
                   </span>
@@ -278,7 +280,7 @@
       <form method="POST" id='add_task_submit_form' name="add_task_submit_form">
         <!-- Modal Header -->
         <div class="modal-header">
-          <h2 class="modal-title text-center">Add Task</h2>
+          <h2 class="modal-title text-center">Create Task</h2>
         </div>
 
         <!-- Modal body -->
@@ -336,8 +338,9 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select  onchange="get_selected_phase_existingTask('A','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
-              id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
+            <select onchange="get_selected_phase_existingTask('A','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px" id=""
+              name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
                 hired Professional 1
@@ -444,8 +447,9 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('A','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
-              id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
+            <select onchange="get_selected_phase_existingTask('A','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px" id=""
+              name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
                 hired Professional 1
@@ -465,7 +469,7 @@
               <tbody>
                 <tr>
                   <td><label class="check-permission">Instruct Solicitor
-                      <input type="checkbox"  class="task_element" name="task_element" value="Instruct Solicitor">
+                      <input type="checkbox" class="task_element" name="task_element" value="Instruct Solicitor">
                       <span class="checkmark"></span>
                     </label>
                   </td>
@@ -473,42 +477,46 @@
                 <tr>
                   <td>
                     <label class="check-permission">Instruct other professionals
-                      <input type="checkbox" class="task_element"  name="task_element" value="Instruct other professionals">
+                      <input type="checkbox" class="task_element" name="task_element"
+                        value="Instruct other professionals">
                       <span class="checkmark"></span>
                     </label>
                   </td>
                 </tr>
                 <tr>
                   <td><label class="check-permission">Bank details for reservation
-                      <input type="checkbox"  class="task_element" name="task_element" value="Bank details for reservation">
+                      <input type="checkbox" class="task_element" name="task_element"
+                        value="Bank details for reservation">
                       <span class="checkmark"></span>
                     </label>
                   </td>
                 </tr>
                 <tr>
                   <td><label class="check-permission">Reservation form
-                      <input type="checkbox"  class="task_element" name="task_element" value="Reservation form">
+                      <input type="checkbox" class="task_element" name="task_element" value="Reservation form">
                       <span class="checkmark"></span>
                     </label>
                   </td>
                 </tr>
                 <tr>
                   <td><label class="check-permission">Reservation fees Payment
-                      <input type="checkbox"  class="task_element" name="task_element" value="Reservation fees Payment">
+                      <input type="checkbox" class="task_element" name="task_element" value="Reservation fees Payment">
                       <span class="checkmark"></span>
                     </label>
                   </td>
                 </tr>
                 <tr>
                   <td> <label class="check-permission">Checks. Title/property/chains et al
-                      <input type="checkbox"  class="task_element" name="task_element" value="Checks. Title/property/chains et al">
+                      <input type="checkbox" class="task_element" name="task_element"
+                        value="Checks. Title/property/chains et al">
                       <span class="checkmark"></span>
                     </label>
                   </td>
                 </tr>
                 <tr>
                   <td> <label class="check-permission">Memorandum of sales(sent0)
-                      <input type="checkbox"  class="task_element" name="task_element" value="Memorandum of sales(sent0)">
+                      <input type="checkbox" class="task_element" name="task_element"
+                        value="Memorandum of sales(sent0)">
                       <span class="checkmark"></span>
                     </label>
                   </td>
@@ -519,7 +527,7 @@
             <input type="hidden" name="ppts_phase_name" class="ppts_phase_name" value="">
             <input type="hidden" name="ppts_phase_flag" class="ppts_phase_flag" value="A">
 
-            <input type="text" onfocus="(this.type='date')"id="duedate" class="form-control  form-control-fix2 duedate" 
+            <input type="text" onfocus="(this.type='date')" id="duedate" class="form-control  form-control-fix2 duedate"
               placeholder="Due on Date" name="duedate" required>
             <textarea class="form-control  form-control-fix2 notes" rows="2" name="notes" id=""
               placeholder="Add Notes(If any)"></textarea>
@@ -550,8 +558,9 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('B','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
-              id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
+            <select onchange="get_selected_phase_existingTask('B','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px" id=""
+              name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
                 hired Professional 1
@@ -571,8 +580,7 @@
               <tbody>
                 <tr>
                   <td><label class="check-permission">Draft Contract(received)
-                      <input type="checkbox"  name="task_element" value="Draft Contract(received)"
-                        class="task_element">
+                      <input type="checkbox" name="task_element" value="Draft Contract(received)" class="task_element">
 
                       <span class="checkmark"></span>
                     </label>
@@ -660,8 +668,9 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('B','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
-              id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
+            <select onchange="get_selected_phase_existingTask('B','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px" id=""
+              name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
                 hired Professional 1
@@ -739,8 +748,9 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('C','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
-              id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
+            <select onchange="get_selected_phase_existingTask('C','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px" id=""
+              name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
                 hired Professional 1
@@ -827,8 +837,9 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('C','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
-              id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
+            <select onchange="get_selected_phase_existingTask('C','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px" id=""
+              name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
                 hired Professional 1
@@ -908,8 +919,9 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('D','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
-              id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
+            <select onchange="get_selected_phase_existingTask('D','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px" id=""
+              name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
                 hired Professional 1
@@ -991,8 +1003,9 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('D','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
-              id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
+            <select onchange="get_selected_phase_existingTask('D','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px" id=""
+              name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
                 hired Professional 1
@@ -1072,7 +1085,8 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('E','<%=session.active_user_login%>',this)" class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
+            <select onchange="get_selected_phase_existingTask('E','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
               style="height:48px" id="" name="ppts_assign_to" data-rule-required="true"
               data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
@@ -1158,8 +1172,9 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('E','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
-              id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
+            <select onchange="get_selected_phase_existingTask('E','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px" id=""
+              name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
                 hired Professional 1
@@ -1260,8 +1275,9 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('F','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
-              id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
+            <select onchange="get_selected_phase_existingTask('F','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px" id=""
+              name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
                 hired Professional 1
@@ -1341,8 +1357,9 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('F','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
-              id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
+            <select onchange="get_selected_phase_existingTask('F','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px" id=""
+              name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
                 hired Professional 1
@@ -1415,8 +1432,9 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('A','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
-              id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
+            <select onchange="get_selected_phase_existingTask('A','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px" id=""
+              name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
                 hired Professional 1
@@ -1519,8 +1537,9 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('B','<%=session.active_user_login%>',this)" class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px"
-              id="" name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
+            <select onchange="get_selected_phase_existingTask('B','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase" style="height:48px" id=""
+              name="ppts_assign_to" data-rule-required="true" data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
               <option value="">
                 hired Professional 1
@@ -1610,7 +1629,8 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('C','<%=session.active_user_login%>',this)" class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
+            <select onchange="get_selected_phase_existingTask('C','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
               style="height:48px" id="" name="ppts_assign_to" data-rule-required="true"
               data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
@@ -1693,7 +1713,8 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('D','<%=session.active_user_login%>',this)" class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
+            <select onchange="get_selected_phase_existingTask('D','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
               style="height:48px" id="" name="ppts_assign_to" data-rule-required="true"
               data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
@@ -1771,7 +1792,8 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('E','<%=session.active_user_login%>',this)" class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
+            <select onchange="get_selected_phase_existingTask('E','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
               style="height:48px" id="" name="ppts_assign_to" data-rule-required="true"
               data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
@@ -1846,7 +1868,8 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('F','<%=session.active_user_login%>',this)" class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
+            <select onchange="get_selected_phase_existingTask('F','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
               style="height:48px" id="" name="ppts_assign_to" data-rule-required="true"
               data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
@@ -1920,7 +1943,8 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('G','<%=session.active_user_login%>',this)" class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
+            <select onchange="get_selected_phase_existingTask('G','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
               style="height:48px" id="" name="ppts_assign_to" data-rule-required="true"
               data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
@@ -1997,7 +2021,8 @@
         <div class="modal-body">
 
           <div class="todo-list-table">
-            <select onchange="get_selected_phase_existingTask('G','<%=session.active_user_login%>',this)" class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
+            <select onchange="get_selected_phase_existingTask('G','<%=session.active_user_login%>',this)"
+              class="form-control selectBox2 selectBox2 ppts_assign_to add_task_mydreamhome_detial_phase"
               style="height:48px" id="" name="ppts_assign_to" data-rule-required="true"
               data-msg-required="professional is required!">
               <option value="">Select Hired professional</option>
@@ -2072,7 +2097,8 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select onchange="get_selected_phase_existingTask('A','<%=session.active_user_login%>',this)" class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select onchange="get_selected_phase_existingTask('A','<%=session.active_user_login%>',this)"
+            class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
@@ -2178,7 +2204,8 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select onchange="get_selected_phase_existingTask('B','<%=session.active_user_login%>',this)" class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select onchange="get_selected_phase_existingTask('B','<%=session.active_user_login%>',this)"
+            class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
@@ -2308,7 +2335,8 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select onchange="get_selected_phase_existingTask('C','<%=session.active_user_login%>',this)" class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select onchange="get_selected_phase_existingTask('C','<%=session.active_user_login%>',this)"
+            class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
@@ -2421,7 +2449,8 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select onchange="get_selected_phase_existingTask('D','<%=session.active_user_login%>',this)" class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select onchange="get_selected_phase_existingTask('D','<%=session.active_user_login%>',this)"
+            class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
@@ -2545,7 +2574,8 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select onchange="get_selected_phase_existingTask('E','<%=session.active_user_login%>',this)" class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select onchange="get_selected_phase_existingTask('E','<%=session.active_user_login%>',this)"
+            class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
@@ -2655,7 +2685,8 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select onchange="get_selected_phase_existingTask('F','<%=session.active_user_login%>',this)" class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select onchange="get_selected_phase_existingTask('F','<%=session.active_user_login%>',this)"
+            class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
@@ -2767,7 +2798,8 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select onchange="get_selected_phase_existingTask('G','<%=session.active_user_login%>',this)" class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select onchange="get_selected_phase_existingTask('G','<%=session.active_user_login%>',this)"
+            class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
@@ -2872,7 +2904,8 @@
       <div class="modal-body">
 
         <div class="todo-list-table">
-          <select onchange="get_selected_phase_existingTask('H','<%=session.active_user_login%>',this)" class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
+          <select onchange="get_selected_phase_existingTask('H','<%=session.active_user_login%>',this)"
+            class="form-control selectBox2 " style="height:48px" id="task_for" name="service_provider_id"
             data-rule-required="true" data-msg-required="professional is required!">
             <option value="">Select Hired professional</option>
             <option value="">
