@@ -1465,6 +1465,26 @@ a.btn.btn-complete {
     text-transform: uppercase;
     background-color: rgb(57 181 74 / 15%);
 }
+a.btn.btn-approve {
+    width: 121px;
+    height: 32px;
+    font-size: 13px;
+    color: #0da85a;
+    border-radius: 15px;
+    text-transform: uppercase;
+    background-color: rgb(57 181 74 / 15%);
+}
+
+a.btn.btn-reject {
+    width: 121px;
+    height: 32px;
+    font-size: 13px;
+    color: #d31010;
+    border-radius: 15px;
+    text-transform: uppercase;
+    background-color: rgb(57 181 74 / 15%);
+}
+
 table.table-phase-fix td:last-child img {
     width: 32px;
 }
@@ -5641,6 +5661,31 @@ a .clip-icon{
 
   .profile-dropdown:hover .status-dropdown {display: block;}
 
+  .status-dropdown2{
+    display: none; 
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 120px;
+    box-shadow: 0px 1px 16px 0px rgb(0 0 0 / 20%);
+    /* z-index: 1; */
+    /* margin-left: 26px; */
+    margin-top: 4px;
+    width: 120px;
+    left: 0;
+    top: 0;
+    z-index: 100;
+}
+
+.status-dropdown2 a {
+    color: black;
+     padding: 0px 12px 0px 0px; 
+    text-decoration: none;
+    font-family: 'Gill Sans MT';
+    display: block;
+  }.status-dropdown2 a:hover {background-color: #ddd;}
+
+  .profile-dropdown:hover .status-dropdown2 {display: block;}
+
 .professional-dropdown a {
     color: black;
      padding: 0px 12px 0px 0px; 
@@ -6135,7 +6180,30 @@ width: 45%;
   .complete-circle {
     width:10px;
     height:10px;
-   
     border-radius:50%;
     background-color:green;
   }
+  .approval-pending-circle {
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background-color:red;
+  }
+   .dropdown2 {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown2-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+  }
+  
+  .dropdown2:hover .dropdown2-content {
+    display: block;
+  } 
