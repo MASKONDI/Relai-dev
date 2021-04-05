@@ -66,7 +66,7 @@
             </div>
             <ul class="dashboard-nav">
               <li class="completed">
-                <a href="javascript:void(0)" class ="personal_detail_nev">
+                <a href="javascript:void(0)" class="personal_detail_nev">
                   <img class="complete-img" src="images/checked.png">
                   <img class="act-img" src="images/1-active.png">
                   <img src="images/1.png">
@@ -74,30 +74,35 @@
                 </a>
               </li>
               <li class="completed">
-                <a href="javascript:void(0)" data-href="/signup-professionals-profile-2"class ="other_detail_nev"> <img class="complete-img" src="images/checked.png"><img class="act-img" src="images/2-active.png"><img
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-2" class="other_detail_nev"> <img
+                    class="complete-img" src="images/checked.png"><img class="act-img" src="images/2-active.png"><img
                     src="images/2.png"> OTHER DETAILS</a>
               </li>
-              <li class="completed"> 
-                <a href="javascript:void(0)" data-href="/signup-professionals-profile-3" class ="education_detail_nev"> <img class="complete-img" src="images/checked.png"><img class="act-img" src="images/3-active.png"><img
+              <li class="completed">
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-3" class="education_detail_nev">
+                  <img class="complete-img" src="images/checked.png"><img class="act-img" src="images/3-active.png"><img
                     src="images/3.png"> EDUCATION</a>
               </li>
               <li class="completed">
-                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-4" class ="employment_detail_nev"> <img class="complete-img" src="images/checked.png"><img
-                    src="images/4.png"> EMPLOYMENT HISTORY</a>
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-4" class="employment_detail_nev">
+                  <img class="complete-img" src="images/checked.png"><img src="images/4.png"> EMPLOYMENT HISTORY</a>
               </li>
 
               <li class="completed">
-                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-5" class ="refrence_detail_nev"> <img class="complete-img" src="images/checked.png"><img class="act-img" src="images/5-active.png"><img
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-5" class="refrence_detail_nev">
+                  <img class="complete-img" src="images/checked.png"><img class="act-img" src="images/5-active.png"><img
                     src="images/5.png"> REFERENCES</a>
               </li>
               <li class="completed">
-                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-6" class ="indemnity_detail_nev"> <img class="complete-img" src="images/checked.png"><img class="act-img" src="images/6-active.png"><img
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-6" class="indemnity_detail_nev">
+                  <img class="complete-img" src="images/checked.png"><img class="act-img" src="images/6-active.png"><img
                     src="images/6.png"> PROFESSIONAL INDEMNITY
                   INSURANCE</a>
               </li>
               <li class="active">
-                <a href="/signup-professionals-profile-7"  data-href="/signup-professionals-profile-7" class ="language_detail_nev"><img class="act-img" src="images/7-active.png"><img
-                    src="images/7.png"> LANGUAGE</a>
+                <a href="/signup-professionals-profile-7" data-href="/signup-professionals-profile-7"
+                  class="language_detail_nev"><img class="act-img" src="images/7-active.png"><img src="images/7.png">
+                  LANGUAGE</a>
               </li>
             </ul>
           </div>
@@ -124,7 +129,7 @@
                   </div>
                 </div>
               </div>
-              <form  class="form form-section" id="form7">
+              <form class="form form-section" id="form7">
 
                 <% if(typeof err_msg!='undefined' ){ %>
                   <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
@@ -138,21 +143,21 @@
                       <% }%>
                         <div class="row lang_div">
                           <div class="col-sm-12 col-lg-5">
-                            <div class="input-box-size-fix3">
-                              <select class="form-control " class="text-field-size" id="selectBox" name="spls_language" required>
+                            <div class="form-group input-box-size-fix3">
+                              <select class="form-control " class="text-field-size mt-0" id="selectBox"
+                                name="spls_language" required>
                                 <option value="">Select Language</option>
                                 <option value="english">English</option>
                                 <option value="german">German</option>
-                                <option value="italian">Italian</option> 
+                                <option value="italian">Italian</option>
                                 <option value="french">French</option>
                                 <option value="spanish">Spanish</option>
                               </select>
                             </div>
                           </div>
                           <div class="col-sm-12 col-lg-5">
-                            <div class="input-box-size-fix3">
-
-                              <select class="form-control " class="text-field-size" id="selectBox"
+                            <div class="form-group input-box-size-fix3">
+                              <select class="form-control " class="text-field-size mt-0" id="selectBox"
                                 name="spls_language_proficiency_level" required>
                                 <option value="">Select Language Proficiency Level</option>
                                 <option value="level1">Level 1 - Elementary Proficiency</option>
@@ -223,7 +228,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
     integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
     crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script type="text/javascript">
     $('#form7').validate({
       onfocusout: function (element) {
@@ -235,7 +240,7 @@
         $(element).removeClass(errorClass);
       },
       submitHandler: function (form) {
-       
+
 
       }
     });
@@ -256,12 +261,22 @@
     });
   </script>
   <script>
+    var c = 2;
+    function test() {
+      var domElement = $('<div class="row"> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3"><select class="form-control " class="text-field-size" id="selectBox" name="spls_language" required><option value="">Select Language</option>           <option value="english">English</option> <option value="german">German</option><option value="italian">Italian</option>           <option value="french">French</option> <option value="spanish">Spanish</option> </select>  </div> </div> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3">     <select class="form-control " class="text-field-size" id="selectBox"              name="spls_language_proficiency_level" required> <option value="">Select Language Proficiency Level</option><option value="level1">Level 1 - Elementary Proficiency</option>           <option value="level2">Level 2 - Limited Working Proficiency</option><option value="level3">Level 3 - Professional Working Proficiency</option> <option value="level4">Level 4 - Full Professional Proficiency </option> <option value="level5">Level 5 - Native / Bilingual Proficiency </option>  </select> </div> </div><div class="col-sm-12 col-lg-1"><div class="add-btn"' + c + '><a class="btn signup-professional7-add-btn remove_field" name="remove_field"><i class="fa fa-minus"></i></a></div></div></div> ' + c++);
+
+      // if (c == 6) {
+
+      //   $(this).attr('disabled', true);
+      // }
+      $(".divv").append(domElement);
+    }
     $(document).ready(function () {
       var c = 2;
       $("button[name='addPlusbtn']").click(function (e) {
         e.preventDefault();
 
-        var domElement = $('<div class="row"> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3"><select class="form-control " class="text-field-size" id="selectBox" name="spls_language" required><option value="">Select Language</option>           <option value="english">English</option> <option value="german">German</option><option value="italian">Italian</option>           <option value="french">French</option> <option value="spanish">Spanish</option> </select>  </div> </div> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3">     <select class="form-control " class="text-field-size" id="selectBox"              name="spls_language_proficiency_level" required> <option value="">Select Language Proficiency Level</option><option value="level1">Level 1 - Elementary Proficiency</option>           <option value="level2">Level 2 - Limited Working Proficiency</option><option value="level3">Level 3 - Professional Working Proficiency</option> <option value="level4">Level 4 - Full Professional Proficiency </option> <option value="level5">Level 5 - Native / Bilingual Proficiency </option>  </select> </div> </div><div class="col-sm-12 col-lg-1"><div class="add-btn"'+c+'><a class="btn signup-professional7-add-btn remove_field" name="remove_field"><i class="fa fa-minus"></i></a></div></div></div> ' + c++);
+        var domElement = $('<div class="row"> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3"><select class="form-control " class="text-field-size" id="selectBox" name="spls_language" required><option value="">Select Language</option>           <option value="english">English</option> <option value="german">German</option><option value="italian">Italian</option>           <option value="french">French</option> <option value="spanish">Spanish</option> </select>  </div> </div> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3">     <select class="form-control " class="text-field-size" id="selectBox"              name="spls_language_proficiency_level" required> <option value="">Select Language Proficiency Level</option><option value="level1">Level 1 - Elementary Proficiency</option>           <option value="level2">Level 2 - Limited Working Proficiency</option><option value="level3">Level 3 - Professional Working Proficiency</option> <option value="level4">Level 4 - Full Professional Proficiency </option> <option value="level5">Level 5 - Native / Bilingual Proficiency </option>  </select> </div> </div><div class="col-sm-12 col-lg-1"><div class="add-btn"' + c + '><a class="btn signup-professional7-add-btn remove_field" name="remove_field"><i class="fa fa-minus"></i></a></div></div></div> ' + c++);
 
         if (c == 6) {
 
@@ -270,20 +285,20 @@
         $(".divv").append(domElement);
 
       });
-      $('.divv').on("click",".remove_field", function(e){ //user click on remove text
+      $('.divv').on("click", ".remove_field", function (e) { //user click on remove text
         e.preventDefault(); $(this).parent('div').parent('div').parent('div').remove(); c--;
-        
-          $("button[name='addPlusbtn']").attr('disabled', false);
-        
-        
-    })
+
+        $("button[name='addPlusbtn']").attr('disabled', false);
+
+
+      })
 
     });
   </script>
   <script>
-    $(document).ready(function(){
-   
-});
+    $(document).ready(function () {
+
+    });
   </script>
   <script>
     $(document).ready(function () {
@@ -293,7 +308,7 @@
       //   $('.education_detail_nev').attr('href',newHref2);
       //   var newHref3 = $('.employment_detail_nev').attr('data-href');
       //   $('.employment_detail_nev').attr('href',newHref3);
-        
+
       //   var newHref4 = $('.refrence_detail_nev').attr('data-href');
       //   $('.refrence_detail_nev').attr('href',newHref4);
       //   var newHref5 = $('.refrence_detail_nev').attr('data-href');
@@ -303,66 +318,69 @@
       //   var newHref7 = $('.indemnity_detail_nev').attr('data-href');
       //   $('.indemnity_detail_nev').attr('href',newHref7);
       var data = {
-        user_id:'<%= session.user_id%>'
+        user_id: '<%= session.user_id%>'
       }
-     // alert("<%= session.user_id%>")
+      // alert("<%= session.user_id%>")
       $.ajax({
-          type: "GET",
-          data: data,
-          url: "/api/service_provider_language",
-          cache: false,
-          success: function (resp) {
-            console.log(resp);
-            if (resp.status == true) {
-             
-        // var newHref8 = $('.indemnity_detail_nev').attr('data-href');
-        // $('.indemnity_detail_nev').attr('href',newHref8);
-              var htmlData = '';
+        type: "GET",
+        data: data,
+        url: "/api/service_provider_language",
+        cache: false,
+        success: function (resp) {
+          console.log(resp);
+          if (resp.status == true) {
+
+            // var newHref8 = $('.indemnity_detail_nev').attr('data-href');
+            // $('.indemnity_detail_nev').attr('href',newHref8);
+            var htmlData = '';
             //htmlData += '<option value="">Select Professional</option>';
             if (resp.data.length > 0) {
-              var element='';
+              var element = '';
               $.each(resp.data, function (i, data) {
                 console.log('val:', resp.data[0])
-                if(data.spls_language_proficiency_level=='level1'){
-                  element='Level 1 - Elementary Proficiency'
-                  
-                }else if(data.spls_language_proficiency_level=='level2'){
-                  element='Level 2 - Limited Working Proficiency'
-                }else if(data.spls_language_proficiency_level=='level3'){
-                  element='Level 3 - Professional Working Proficiency'
-                }else if(data.spls_language_proficiency_level=='level4'){
-                  element='Level 4 - Full Professional Proficiency'
-                }else if(data.spls_language_proficiency_level=='level5'){
-                  element='Level 5 - Native / Bilingual Proficiency'
+                if (data.spls_language_proficiency_level == 'level1') {
+                  element = 'Level 1 - Elementary Proficiency'
+
+                } else if (data.spls_language_proficiency_level == 'level2') {
+                  element = 'Level 2 - Limited Working Proficiency'
+                } else if (data.spls_language_proficiency_level == 'level3') {
+                  element = 'Level 3 - Professional Working Proficiency'
+                } else if (data.spls_language_proficiency_level == 'level4') {
+                  element = 'Level 4 - Full Professional Proficiency'
+                } else if (data.spls_language_proficiency_level == 'level5') {
+                  element = 'Level 5 - Native / Bilingual Proficiency'
                 }
-                if(data.spls_language=='english'){
-                  
+                if (data.spls_language == 'english') {
+
                 }
-                
-                htmlData += ' <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3"><select class="form-control selectlangBox" class="text-field-size" id="selectBox" name="spls_language"><option value="'+data.spls_language.replace(/\w/, c => c.toUpperCase())+'">'+data.spls_language.replace(/\w/, c => c.toUpperCase())+'</option>           <option value="english">English</option> <option value="german">German</option> <option value="italian">Italian</option>          <option value="french">French</option> <option value="spanish">Spanish</option> </select>  </div> </div> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3">     <select class="form-control " class="text-field-size" id="selectBox"              name="spls_language_proficiency_level"> <option value="'+data.spls_language_proficiency_level+'">'+element+'</option><option value="level1">Level 1 - Elementary Proficiency</option>           <option value="level2">Level 2 - Limited Working Proficiency</option><option value="level3">Level 3 - Professional Working Proficiency</option> <option value="level4">Level 4 - Full Professional Proficiency </option> <option value="level5">Level 5 - Native / Bilingual Proficiency </option>  </select> </div> </div><input type="hidden" name="lang_id" value="'+data._id+'"> ';
-              
+
+                htmlData += ' <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3"><select class="form-control selectlangBox" class="text-field-size" id="selectBox" name="spls_language"><option value="' + data.spls_language.replace(/\w/, c => c.toUpperCase()) + '">' + data.spls_language.replace(/\w/, c => c.toUpperCase()) + '</option>           <option value="english">English</option> <option value="german">German</option> <option value="italian">Italian</option>          <option value="french">French</option> <option value="spanish">Spanish</option> </select>  </div> </div> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3">     <select class="form-control " class="text-field-size" id="selectBox"              name="spls_language_proficiency_level"> <option value="' + data.spls_language_proficiency_level + '">' + element + '</option><option value="level1">Level 1 - Elementary Proficiency</option>           <option value="level2">Level 2 - Limited Working Proficiency</option><option value="level3">Level 3 - Professional Working Proficiency</option> <option value="level4">Level 4 - Full Professional Proficiency </option> <option value="level5">Level 5 - Native / Bilingual Proficiency </option>  </select> </div> </div><input type="hidden" name="lang_id" value="' + data._id + '"> ';
+
               });
-              // htmlData +='<div class="add-btn"><a href="javascript:void(0)" onclick="test(this,'+resp.data.length+')"class="btn signup-professional7-add-btn_addmore" name="addPlusbtn1"><i class="fa fa-plus"></i></a></div>'
-              if(resp.data.length<4){
+
+
+              //  htmlData +='<div class="add-btn"><a href="javascript:void(0)" onclick="test(this)"class="btn signup-professional7-add-btn_addmore" name="addPlusbtn1"><i class="fa fa-plus"></i></a></div>'
+              if (resp.data.length < 4) {
+
                 //$("button[name='addPlusbtn1']").attr('disabled', true);
                 // htmlData += '<div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3"><select class="form-control " class="text-field-size" id="selectBox" name="spls_language"><option value="">Select Language</option>           <option value="english">English</option> <option value="german">German</option>           <option value="french">French</option> <option value="spanish">Spanish</option> </select>  </div> </div> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3">     <select class="form-control " class="text-field-size" id="selectBox"              name="spls_language_proficiency_level"> <option value="">Select Language Proficiency Level</option><option value="level1">Level 1 - Elementary Proficiency</option>           <option value="level2">Level 2 - Limited Working Proficiency</option><option value="level3">Level 3 - Professional Working Proficiency</option> <option value="level4">Level 4 - Full Professional Proficiency </option> <option value="level5">Level 5 - Native / Bilingual Proficiency </option>  </select> </div>';
 
               }
               $('.lang_div').html(htmlData);
-              
+
             }
-           
+
 
           }
         }
       })
-      
+
       //Add language ajax============
-      $('#form7').submit(function(e){
-      // alert(1);
-      // return fasle;
-       e.preventDefault()
-      $('.loader-box').attr('style', 'display:flex !important');
+      $('#form7').submit(function (e) {
+        // alert(1);
+        // return fasle;
+        e.preventDefault()
+        $('.loader-box').attr('style', 'display:flex !important');
         var formData = $('#form7').serialize();
 
         console.log('formData:', formData)
@@ -374,7 +392,7 @@
           success: function (data) {
             console.log(data);
             if (data.status == false) {
-              
+
               $('.loader-box').attr('style', 'display:none !important');
 
               Swal.fire({
@@ -392,7 +410,7 @@
               }
 
             } else {
-              
+
               $('.loader-box').attr('style', 'display:none !important');
 
               Swal.fire({
@@ -415,7 +433,7 @@
     });
 //     var ca=1
 //     function test(input,c){
-      
+
 //       var domElement = $('<div class="row"> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3"><select class="form-control " class="text-field-size" id="selectBox" name="spls_language"><option value="">Select Language</option>           <option value="english">English</option> <option value="german">German</option>           <option value="french">French</option> <option value="spanish">Spanish</option> </select>  </div> </div> <div class="col-sm-12 col-lg-5"> <div class="input-box-size-fix3">     <select class="form-control " class="text-field-size" id="selectBox"              name="spls_language_proficiency_level"> <option value="">Select Language Proficiency Level</option><option value="level1">Level 1 - Elementary Proficiency</option>           <option value="level2">Level 2 - Limited Working Proficiency</option><option value="level3">Level 3 - Professional Working Proficiency</option> <option value="level4">Level 4 - Full Professional Proficiency </option> <option value="level5">Level 5 - Native / Bilingual Proficiency </option>  </select> </div> </div></div>' + c++);
 //    alert(c)
 // if (c == 5) {
@@ -426,58 +444,58 @@
 //     }
   </script>
   <script>
-  function deleteLanguage(id) {
-    // var langId = id;
-    // Swal.fire({
-    //   title: 'Are you sure want to remove?',
-    //   showCancelButton: true,
-    //   confirmButtonText: `Yes`,
-    //   confirmButtonColor: '#005377',
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-    //     $('.loader-box').attr('style', 'display:flex !important');
-    //     $.ajax({
-    //       type: "POST",
-    //       data: {
-    //         langId: langId,
-    //         action: 'language-delete'
-    //       },
-    //       url: "/api/delete_service_provider_language",
-    //       cache: false,
-    //       success: function (data) {
-    //         $('.loader-box').attr('style', 'display:none !important');
-    //         console.log(data);
-    //         if (data.status == true) {
-    //           //location.reload(true);
-    //           Swal.fire({
-    //             icon: 'success',
-    //             title: 'Language '+data.message,
-    //             showConfirmButton: false,
-    //             confirmButtonColor: '#005377',
-    //             timer: 3000
-    //           })
-    //           setTimeout(function () {
-    //             location.reload(true);
-    //           }, 3000);
-    //         } else {
-    //           Swal.fire({
-    //             icon: 'error',
-    //             title: data.message,
-    //             showConfirmButton: false,
-    //             confirmButtonColor: '#005377',
-    //             timer: 3000
-    //           })
-    //           setTimeout(function () {
-    //             location.reload(true);
-    //           }, 3000);
-    //         }
-    //       }
-    //     });
-    //   }
-    // })
-  }
+    function deleteLanguage(id) {
+      // var langId = id;
+      // Swal.fire({
+      //   title: 'Are you sure want to remove?',
+      //   showCancelButton: true,
+      //   confirmButtonText: `Yes`,
+      //   confirmButtonColor: '#005377',
+      // }).then((result) => {
+      //   if (result.isConfirmed) {
+      //     $('.loader-box').attr('style', 'display:flex !important');
+      //     $.ajax({
+      //       type: "POST",
+      //       data: {
+      //         langId: langId,
+      //         action: 'language-delete'
+      //       },
+      //       url: "/api/delete_service_provider_language",
+      //       cache: false,
+      //       success: function (data) {
+      //         $('.loader-box').attr('style', 'display:none !important');
+      //         console.log(data);
+      //         if (data.status == true) {
+      //           //location.reload(true);
+      //           Swal.fire({
+      //             icon: 'success',
+      //             title: 'Language '+data.message,
+      //             showConfirmButton: false,
+      //             confirmButtonColor: '#005377',
+      //             timer: 3000
+      //           })
+      //           setTimeout(function () {
+      //             location.reload(true);
+      //           }, 3000);
+      //         } else {
+      //           Swal.fire({
+      //             icon: 'error',
+      //             title: data.message,
+      //             showConfirmButton: false,
+      //             confirmButtonColor: '#005377',
+      //             timer: 3000
+      //           })
+      //           setTimeout(function () {
+      //             location.reload(true);
+      //           }, 3000);
+      //         }
+      //       }
+      //     });
+      //   }
+      // })
+    }
 
-</script>
+  </script>
   </body>
 
   </html>

@@ -25,8 +25,7 @@
                   <div class="breadcumb">
                     <ul>
                       <li><a href="/mydreamhome"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>
-                          Back
-                          to My Dream Home</a></li>
+                        Back to My Properties</a></li>
                     </ul>
                     <div class="heading_section">
                       <%if(propertyObj=='null'){%>
@@ -59,7 +58,7 @@
                         </span>
                         <% }%>
 
-                        <!-- <input type="text" name="country" id="autocomplete" /> -->
+                          <!-- <input type="text" name="country" id="autocomplete" /> -->
 
                           <div class="property-form">
                             <div class="row">
@@ -67,10 +66,10 @@
                                 <div class="property-step">
                                   <!-- <p>STEP 1</p> -->
                                   <%if(propertyObj=='null'){%>
-                                      <h6>Add property name & address</h6>
+                                    <h6>Add property name & address</h6>
                                     <%}else{%>
                                       <h6>Update property name & address</h6>
-                                    <%}%>
+                                      <%}%>
                                 </div>
                               </div>
                             </div>
@@ -78,56 +77,73 @@
                               <div class="row">
                                 <div class="col-sm-12 col-lg-4">
                                   <%if(propertyObj=='null'){%>
-                                    <input type="text"
-                                      class="form-control property_name property-form-control-size-fix autocomplete"
-                                      id="propertyname" placeholder="Add Property Name*" name="ps_property_name"
-                                      data-rule-required="true" data-msg-required="Property Name is required!" value=""
-                                      required>
-                                    <%}else{%>
+                                    <div class="form-group">
+                                      <label>Add Property Name</label>
                                       <input type="text"
-                                        class="form-control property_name property-form-control-size-fix "
-                                        id="propertyname" placeholder="Edit Property Name*" name="ps_property_name"
+                                        class="form-control property_name property-form-control-size-fix autocomplete mt-0"
+                                        id="propertyname" placeholder="Add Property Name*" name="ps_property_name"
                                         data-rule-required="true" data-msg-required="Property Name is required!"
-                                        value="<%=propertyObj.ps_property_name%>" required>
+                                        value="" required>
+                                    </div>
+                                    <%}else{%>
+                                      <div class="form-group">
+                                        <label>Add Property Name</label>
+                                        <input type="text"
+                                          class="form-control property_name property-form-control-size-fix mt-0"
+                                          id="propertyname" placeholder="Edit Property Name*" name="ps_property_name"
+                                          data-rule-required="true" data-msg-required="Property Name is required!"
+                                          value="<%=propertyObj.ps_property_name%>" required>
+                                      </div>
                                       <%}%>
                                 </div>
                                 <div class="col-sm-12 col-lg-4">
                                   <%if(propertyObj=='null'){%>
-                                    <input type="text" class="form-control property-form-control-size-fix p_address"
-                                      id="address_myaddress" placeholder="Enter address*" name="ps_property_address"
-                                      data-rule-required="true" data-msg-required="Property address is required!"
-                                      value="" required>
-                                    <%}else{%>
-                                      <input type="text" class="form-control property-form-control-size-fix p_address"
+                                    <div class="form-group">
+                                      <label>Enter address</label>
+                                      <input type="text"
+                                        class="form-control property-form-control-size-fix mt-0 p_address "
                                         id="address_myaddress" placeholder="Enter address*" name="ps_property_address"
                                         data-rule-required="true" data-msg-required="Property address is required!"
-                                        value="<%=propertyObj.ps_property_address%>" required>
-                                    <%}%>
+                                        value="" required>
+                                    </div>
+                                    <%}else{%>
+                                      <div class="form-group">
+                                        <label>Enter address</label>
+                                        <input type="text"
+                                          class="form-control property-form-control-size-fix mt-0 p_address"
+                                          id="address_myaddress" placeholder="Enter address*" name="ps_property_address"
+                                          data-rule-required="true" data-msg-required="Property address is required!"
+                                          value="<%=propertyObj.ps_property_address%>" required>
+                                      </div>
+                                      <%}%>
                                 </div>
                                 <div class="col-sm-12 col-lg-4">
                                   <div class="form-group  ">
                                     <%if(propertyObj=='null'){%>
-                                      <select name="country" class="countries form-control selectBox5" id="countryId"
-                                        required style="height: 48px;" data-rule-required="true"
+
+                                      <label>Select Country</label>
+                                      <select name="country" class="countries form-control selectBox5 mt-0"
+                                        id="countryId" required style="height: 48px;" data-rule-required="true"
                                         data-msg-required="Country name is required!">
                                         <option value="">Select Country*</option>
                                       </select>
 
-                                      <!-- <input type="text" class="form-control property-form-control-size-fix"
+                                      <!-- <input type="text" class="form-control property-form-control-size-fix mt-0"
                                       id="countryId" placeholder="Enter Country*" name="country"
                                       data-rule-required="true" data-msg-required="Country is required!"
                                       value="" required> -->
 
                                       <%}else{%>
-                                        <select name="country" class=" form-control selectBox5" id="countryId" required
-                                          style="height: 48px;" data-rule-required="true"
+                                        <label>Select Country</label>
+                                        <select name="country" class=" form-control selectBox5 mt-0" id="countryId"
+                                          required style="height: 48px;" data-rule-required="true"
                                           data-msg-required="Country name is required!">
                                           <option value="<%=propertyObj.ps_property_country_id%>">
                                             <%=propertyObj.ps_property_country_id%>
                                           </option>
                                         </select>
 
-                                        <!-- <input type="text" class="form-control property-form-control-size-fix"
+                                        <!-- <input type="text" class="form-control property-form-control-size-fix mt-0"
                                         id="countryId" placeholder="Enter Country*" name="country"
                                         data-rule-required="true" data-msg-required="Country is required!"
                                         value="<%=propertyObj.ps_property_country_id%>" required> -->
@@ -147,11 +163,10 @@
                                       data-msg-required="County name is required!">
                                       <option value="">Select County*</option>
                                     </select> -->
-
-                                    <input type="text" class="form-control property-form-control-size-fix"
-                                        id="stateId" placeholder="Enter County*" name="state"
-                                        data-rule-required="true" data-msg-required="County is required!"
-                                        value="" required>
+                                    <label>Select County</label>
+                                    <input type="text" class="form-control property-form-control-size-fix mt-0"
+                                      id="stateId" placeholder="Enter County*" name="state" data-rule-required="true"
+                                      data-msg-required="County is required!" value="" required>
 
                                     <%}else{%>
 
@@ -162,10 +177,10 @@
                                           <%=propertyObj.ps_property_state_id%>
                                         </option>
                                       </select> -->
-
-                                      <input type="text" class="form-control property-form-control-size-fix"
-                                        id="stateId" placeholder="Enter County*" name="state"
-                                        data-rule-required="true" data-msg-required="County is required!"
+                                      <label>Enter County</label>
+                                      <input type="text" class="form-control property-form-control-size-fix mt-0"
+                                        id="stateId" placeholder="Enter County*" name="state" data-rule-required="true"
+                                        data-msg-required="County is required!"
                                         value="<%=propertyObj.ps_property_state_id%>" required>
 
                                       <%}%>
@@ -179,11 +194,10 @@
                                       data-msg-required="City name is required!">
                                       <option value="">Select City*</option>
                                     </select> -->
-
-                                    <input type="text" class="form-control property-form-control-size-fix"
-                                    id="cityId" placeholder="Enter City*" name="city"
-                                    data-rule-required="true" data-msg-required="City is required!"
-                                    value="" required>
+                                    <label>Enter City</label>
+                                    <input type="text" class="form-control property-form-control-size-fix mt-0"
+                                      id="cityId" placeholder="Enter City*" name="city" data-rule-required="true"
+                                      data-msg-required="City is required!" value="" required>
 
                                     <%}else{%>
                                       <!-- <select name="city" class="cities form-control selectBox5" id="cityId" required
@@ -193,26 +207,30 @@
                                           <%=propertyObj.ps_property_city_id%>
                                         </option>
                                       </select> -->
-
-                                      <input type="text" class="form-control property-form-control-size-fix"
-                                        id="cityId" placeholder="Enter City*" name="city"
-                                        data-rule-required="true" data-msg-required="City is required!"
+                                      <label>Enter City</label>
+                                      <input type="text" class="form-control property-form-control-size-fix mt-0"
+                                        id="cityId" placeholder="Enter City*" name="city" data-rule-required="true"
+                                        data-msg-required="City is required!"
                                         value="<%=propertyObj.ps_property_city_id%>" required>
 
                                       <%}%>
                                 </div>
                               </div>
                               <div class="col-sm-12 col-lg-4">
-                                <%if(propertyObj=='null'){%>
-                                  <input type="text" class="form-control property-form-control-size-fix " id="zipcode"
-                                    placeholder="Zip code*" name="ps_property_zipcode" data-rule-required="true"
-                                    data-msg-required="Zipcode is required!" value="">
-                                  <%}else{%>
-                                    <input type="text" class="form-control property-form-control-size-fix " id="zipcode"
-                                      placeholder="Zip code*" name="ps_property_zipcode" data-rule-required="true"
-                                      data-msg-required="Zipcode is required!"
-                                      value="<%=propertyObj.ps_property_zipcode%>">
-                                    <%}%>
+                                <div class="form-group ">
+                                  <%if(propertyObj=='null'){%>
+                                    <label>Enter Zip code</label>
+                                    <input type="text" class="form-control property-form-control-size-fix mt-0 "
+                                      id="zipcode" placeholder="Zip code*" name="ps_property_zipcode"
+                                      data-rule-required="true" data-msg-required="Zipcode is required!" value="">
+                                    <%}else{%>
+                                      <label>Enter Zip code</label>
+                                      <input type="text" class="form-control property-form-control-size-fix mt-0 "
+                                        id="zipcode" placeholder="Zip code*" name="ps_property_zipcode"
+                                        data-rule-required="true" data-msg-required="Zipcode is required!"
+                                        value="<%=propertyObj.ps_property_zipcode%>">
+                                      <%}%>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -231,56 +249,71 @@
                           <div class="input-field">
                             <div class="row">
                               <div class="col-sm-12 col-lg-4">
-                                <%if(propertyObj=='null'){%>
-                                  <input type="text" class="form-control property-form-control-size-fix " id="buyer"
-                                    placeholder="Full Name*" name="ps_other_party_fullname" value=""
-                                    data-rule-required="true" data-msg-required="Full Name is required!">
-                                  <%}else{%>
-                                    <input type="text" class="form-control property-form-control-size-fix " id="buyer"
-                                      placeholder="Full Name*" name="ps_other_party_fullname"
-                                      value="<%=propertyObj.ps_other_party_fullname%>" data-rule-required="true"
-                                      data-msg-required="Full Name is required!">
-                                    <%}%>
+                                <div class="form-group">
+                                  <%if(propertyObj=='null'){%>
+                                    <label>Full Name</label>
+                                    <input type="text" class="form-control property-form-control-size-fix mt-0 "
+                                      id="buyer" placeholder="Full Name*" name="ps_other_party_fullname" value=""
+                                      data-rule-required="true" data-msg-required="Full Name is required!">
+                                    <%}else{%>
+                                      <label>Full Name</label>
+                                      <input type="text" class="form-control property-form-control-size-fix mt-0 "
+                                        id="buyer" placeholder="Full Name*" name="ps_other_party_fullname"
+                                        value="<%=propertyObj.ps_other_party_fullname%>" data-rule-required="true"
+                                        data-msg-required="Full Name is required!">
+                                      <%}%>
+                                </div>
                               </div>
 
 
                               <div class="col-sm-12 col-lg-4">
-                                <%if(propertyObj=='null'){%>
-                                  <input type="email" class="form-control property-form-control-size-fix "
-                                    id="emailaddress" placeholder="Enter email address*" name="ps_other_party_emailid"
-                                    value="" data-rule-required="true" data-msg-required="Email is required!" required>
-                                  <%}else{%>
-                                    <input type="email" readonly class="form-control property-form-control-size-fix "
+                                <div class="form-group">
+                                  <%if(propertyObj=='null'){%>
+                                    <label>Enter email address</label>
+                                    <input type="email" class="form-control property-form-control-size-fix mt-0 "
                                       id="emailaddress" placeholder="Enter email address*" name="ps_other_party_emailid"
-                                      value="<%=propertyObj.ps_other_party_emailid%>" data-rule-required="true"
-                                      data-msg-required="Email is required!" required>
-                                    <%}%>
+                                      value="" data-rule-required="true" data-msg-required="Email is required!"
+                                      required>
+                                    <%}else{%>
+                                      <label>Enter email address</label>
+                                      <input type="email" readonly
+                                        class="form-control property-form-control-size-fix mt-0 " id="emailaddress"
+                                        placeholder="Enter email address*" name="ps_other_party_emailid"
+                                        value="<%=propertyObj.ps_other_party_emailid%>" data-rule-required="true"
+                                        data-msg-required="Email is required!" required>
+                                      <%}%>
+                                </div>
                               </div>
                               <div class="col-sm-12 col-lg-4">
-                                <%if(propertyObj=='null'){%>
-                                  <select name="property_type" class=" form-control selectBox5 property_type_inEdit"
-                                    id="property_type" required style="height: 48px;" data-rule-required="true"
-                                    data-msg-required="Property Type is required!">
-                                    <option value="">Select Property Type</option>
-                                    <option value="New">No Chain</option>
-                                    <option value="Chain">Chain</option>
-                                  </select>
-                                  <%}else{%>
-                                    <select name="property_type" class=" form-control selectBox5 property_type_inEdit"
-                                      id="property_type_inEdit" required style="height: 48px;" data-rule-required="true"
+                                <div class="form-group">
+                                  <%if(propertyObj=='null'){%>
+                                    <label>Select Property Type</label>
+                                    <select name="property_type"
+                                      class=" form-control selectBox5 property_type_inEdit mt-0" id="property_type"
+                                      required style="height: 48px;" data-rule-required="true"
                                       data-msg-required="Property Type is required!">
-                                      <option value="<%=propertyObj.ps_property_type%>">
-                                        <%=propertyObj.ps_property_type%>
-                                      </option>
-                                      <%if(propertyObj.ps_property_type=='New'){%>
-                                        <option value="Chain">Chain</option>
-                                        <%}else{%>
-                                          <option value="New">No Chain</option>
-                                          <%}%>
+                                      <option value="">Select Property Type</option>
+                                      <option value="New">No Chain</option>
+                                      <option value="Chain">Chain</option>
                                     </select>
-                                    <%}%>
+                                    <%}else{%>
+                                      <label>Select Property Type</label>
+                                      <select name="property_type"
+                                        class=" form-control selectBox5 property_type_inEdit mt-0"
+                                        id="property_type_inEdit" required style="height: 48px;"
+                                        data-rule-required="true" data-msg-required="Property Type is required!">
+                                        <option value="<%=propertyObj.ps_property_type%>">
+                                          <%=propertyObj.ps_property_type%>
+                                        </option>
+                                        <%if(propertyObj.ps_property_type=='New'){%>
+                                          <option value="Chain">Chain</option>
+                                          <%}else{%>
+                                            <option value="New">No Chain</option>
+                                            <%}%>
+                                      </select>
+                                      <%}%>
+                                </div>
                               </div>
-
                               <!-- </div>
                           <div class="row">
                             <div class="col-sm-12 col-lg-4">
@@ -308,74 +341,83 @@
                             </div>
                             <div class="row">
                               <div class="col-sm-12 col-lg-4">
-                                <%if(propertyObj=='null'){%>
-                                  <select name="ps_existing_property" class=" form-control selectBox5 ExistingPropClass"
-                                    id="ps_existing_property" required style="height: 48px;" data-rule-required="true"
-                                    data-msg-required="Existing property Type is required!">
-                                    <option value="">Select Existing Property</option>
-                                    <option value="Commercial">Commercial</option>
-                                    <option value="Residential">Residential</option>
-                                  </select>
-                                  <%}else{%>
+                                <div class="form-group">
+                                  <%if(propertyObj=='null'){%>
+                                    <label>Select Existing Property</label>
                                     <select name="ps_existing_property"
-                                      class=" form-control selectBox5 ExistingPropClass" id="ps_existing_property"
+                                      class=" form-control selectBox5 ExistingPropClass mt-0" id="ps_existing_property"
                                       required style="height: 48px;" data-rule-required="true"
                                       data-msg-required="Existing property Type is required!">
-                                      <option value="<%=propertyObj.ps_existing_property%>">
-                                        <%=propertyObj.ps_existing_property%>
-                                      </option>
-                                      <%if(propertyObj.ps_existing_property=='Commercial'){%>
-                                        <option value="Residential">Residential</option>
-                                        <%}else{%>
-                                          <option value="Commercial">Commercial</option>
-
-                                          <%}%>
+                                      <option value="">Select Existing Property</option>
+                                      <option value="Commercial">Commercial</option>
+                                      <option value="Residential">Residential</option>
                                     </select>
-                                    <%}%>
+                                    <%}else{%>
+                                      <label>Select Existing Property</label>
+                                      <select name="ps_existing_property"
+                                        class=" form-control selectBox5 ExistingPropClass mt-0"
+                                        id="ps_existing_property" required style="height: 48px;"
+                                        data-rule-required="true"
+                                        data-msg-required="Existing property Type is required!">
+                                        <option value="<%=propertyObj.ps_existing_property%>">
+                                          <%=propertyObj.ps_existing_property%>
+                                        </option>
+                                        <%if(propertyObj.ps_existing_property=='Commercial'){%>
+                                          <option value="Residential">Residential</option>
+                                          <%}else{%>
+                                            <option value="Commercial">Commercial</option>
+
+                                            <%}%>
+                                      </select>
+                                      <%}%>
+                                </div>
                               </div>
                               <div class="col-sm-12 col-lg-4">
-                                <%if(propertyObj=='null'){%>
-                                  <select name="ps_other_property_type" class=" form-control selectBox5"
-                                    id="ps_other_property_type" style="height: 48px;" data-rule-required="false"
-                                    data-msg-required="Other property Type is required!" required>
-                                    <option value="">Select User Type</option>
-                                    <%if(session.active_user_login=='buyer'){%>
-                                      <option value="seller">Seller</option>
-                                      <!-- <option value="renovator">Renovator</option>
-                                      <option value="stateagents">State Agents</option> -->
-                                      <%}else if(session.active_user_login=='seller' ){%>
-                                        <option value="buyer">Buyer</option>
-                                        <!-- <option value="renovator">Renovator</option>
-                                        <option value="stateagents">State Agents</option> -->
-                                        <%}else if(session.active_user_login=='renovator' ){%>
-                                          <!-- <option value="buyer">Buyer</option>
-                                        <option value="seller">Seller</option> -->
-                                          <option value="renovator">Renovator</option>
-                                          <!-- <option value="stateagents">State Agents</option> -->
-                                          <%}%>
-
-                                  </select>
-                                  <%}else{%>
-                                    <select name="ps_other_property_type" class=" form-control selectBox5"
+                                <div class="form-group">
+                                  <%if(propertyObj=='null'){%>
+                                    <label>Select User Type</label>
+                                    <select name="ps_other_property_type" class=" form-control selectBox5 mt-0"
                                       id="ps_other_property_type" style="height: 48px;" data-rule-required="false"
                                       data-msg-required="Other property Type is required!" required>
-                                      <option value="<%=propertyObj.ps_other_property_type%>">
-                                        <%=propertyObj.ps_other_property_type.replace( /\w/, c=> c.toUpperCase())%>
-                                      </option>
+                                      <option value="">Select User Type</option>
                                       <%if(session.active_user_login=='buyer'){%>
-                                        <!-- <option value="seller">Seller</option> -->
+                                        <option value="seller">Seller</option>
                                         <!-- <option value="renovator">Renovator</option>
-                                        <option value="stateagents">State Agents</option> -->
+                                      <option value="stateagents">State Agents</option> -->
                                         <%}else if(session.active_user_login=='seller' ){%>
-                                          <!-- <option value="buyer">Buyer</option> -->
+                                          <option value="buyer">Buyer</option>
                                           <!-- <option value="renovator">Renovator</option>
-                                          <option value="stateagents">State Agents</option> -->
-                                          <%} else if(session.active_user_login=='renovator' ){%>
+                                        <option value="stateagents">State Agents</option> -->
+                                          <%}else if(session.active_user_login=='renovator' ){%>
                                             <!-- <option value="buyer">Buyer</option>
+                                        <option value="seller">Seller</option> -->
+                                            <option value="renovator">Renovator</option>
+                                            <!-- <option value="stateagents">State Agents</option> -->
+                                            <%}%>
+
+                                    </select>
+                                    <%}else{%>
+                                      <label>Select Other property Type</label>
+                                      <select name="ps_other_property_type" class=" form-control selectBox5"
+                                        id="ps_other_property_type" style="height: 48px;" data-rule-required="false"
+                                        data-msg-required="Other property Type is required!" required>
+                                        <option value="<%=propertyObj.ps_other_property_type%>">
+                                          <%=propertyObj.ps_other_property_type.replace( /\w/, c=> c.toUpperCase())%>
+                                        </option>
+                                        <%if(session.active_user_login=='buyer'){%>
+                                          <!-- <option value="seller">Seller</option> -->
+                                          <!-- <option value="renovator">Renovator</option>
+                                        <option value="stateagents">State Agents</option> -->
+                                          <%}else if(session.active_user_login=='seller' ){%>
+                                            <!-- <option value="buyer">Buyer</option> -->
+                                            <!-- <option value="renovator">Renovator</option>
+                                          <option value="stateagents">State Agents</option> -->
+                                            <%} else if(session.active_user_login=='renovator' ){%>
+                                              <!-- <option value="buyer">Buyer</option>
                                             <option value="seller">Seller</option>
                                             <option value="stateagents">State Agents</option> -->
-                                            <%}%>
-                                              <!-- <%if(propertyObj.ps_other_property_type=='buyer'){%>
+                                              <%}%>
+                                                <!-- <%if(propertyObj.ps_other_property_type=='buyer'){%>
                                         <option value="seller">Seller</option>
                                         <option value="renovator">Renovator</option>
                                         <option value="stateagents">State Agents</option>
@@ -394,29 +436,37 @@
 
                                               <%}%> -->
 
-                                    </select>
-                                    <%}%>
-                              </div>
-                              <%if(propertyObj=='null'){%>
-                                <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
-                                  <select  name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
-                                    id="ps_chain_property" style="height: 48px;">
-                                    <!-- <option value="">Select Property For Chain</option> -->
-
-                                  </select>
+                                      </select>
+                                      <%}%>
                                 </div>
-                                <%}else{%>
-                                  <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
-                                    <select  name="ps_chain_property" class=" ps_chain_property form-control selectBox5"
-                                      id="ps_chain_property" style="height: 48px;">
-                                      <option value="<%=propertyObj.ps_chain_property_name[0]%>">
-                                        <%=propertyObj.ps_chain_property_name%>
-                                      </option>
+                              </div>
+                              <div class="col-sm-12 col-lg-4">
+                                <div class="form-group">
+                                  <%if(propertyObj=='null'){%>
+                                    <div style="display:none;" class="AllPropertyListingDiv ">
+                                      <label>Select Property For Chain</label>
+                                      <select name="ps_chain_property"
+                                        class=" ps_chain_property form-control selectBox5 mt-0" id="ps_chain_property"
+                                        style="height: 48px;">
+                                        <!-- <option value="">Select Property For Chain</option> -->
 
-                                    </select>
-                                  </div>
-                                  <%}%>
+                                      </select>
+                                    </div>
+                                    <%}else{%>
+                                      <div style="display:none;" class="AllPropertyListingDiv col-sm-12 col-lg-4">
+                                        <label>Select Property For Chain</label>
+                                        <select name="ps_chain_property"
+                                          class=" ps_chain_property form-control selectBox5" id="ps_chain_property"
+                                          style="height: 48px;">
+                                          <option value="<%=propertyObj.ps_chain_property_name[0]%>">
+                                            <%=propertyObj.ps_chain_property_name%>
+                                          </option>
 
+                                        </select>
+                                      </div>
+                                      <%}%>
+                                </div>
+                              </div>
                             </div>
                           </div>
 
@@ -435,77 +485,104 @@
                           <div class="input-field">
                             <div class="row">
                               <div class="col-sm-12 col-lg-4">
-                                <%if(propertyObj=='null'){%>
-                                  <input type="text" class="form-control property-form-control-size-fix solicitor_name" id="solicitor_name" placeholder="Solicitor Name" name="ps_solicitor_name" value="" >
-                                  <%}else{%>
-                                    <%if(propertyObj.ps_solicitor_name.length>0){%>
-                                      <% var i=0; propertyObj.ps_solicitor_name.forEach(function(row){ %>
-                                        <input type="text" class="form-control property-form-control-size-fix edit_solicitor_name" id="solicitor_name"
-                                          placeholder="Solicitor Name*" name="ps_solicitor_name"
-                                          value="<%=row%>">
-                                        <% i++;});%>
-                                      <%}else{%>
-                                          <input type="text" class="form-control property-form-control-size-fix solicitor_name" id="solicitor_name" placeholder="Solicitor Name*" name="ps_solicitor_name" value="" >
-                                        
-                                        <%}%>
-                                    <%}%>
+                                <div class="form-group">
+                                  <%if(propertyObj=='null'){%>
+                                    <label>Solicitor Name</label>
+                                    <input type="text"
+                                      class="form-control property-form-control-size-fix mt-0 solicitor_name"
+                                      id="solicitor_name" placeholder="Solicitor Name" name="ps_solicitor_name"
+                                      value="">
+                                    <%}else{%>
+                                      <%if(propertyObj.ps_solicitor_name.length>0){%>
+                                        <% var i=0; propertyObj.ps_solicitor_name.forEach(function(row){ %>
+                                          <label>Solicitor Name</label>
+                                          <input type="text"
+                                            class="form-control property-form-control-size-fix mt-0 edit_solicitor_name"
+                                            id="solicitor_name" placeholder="Solicitor Name*" name="ps_solicitor_name"
+                                            value="<%=row%>">
+                                          <% i++;});%>
+                                            <%}else{%>
+                                              <label>Solicitor Name</label>
+                                              <input type="text"
+                                                class="form-control property-form-control-size-fix mt-0 solicitor_name"
+                                                id="solicitor_name" placeholder="Solicitor Name*"
+                                                name="ps_solicitor_name" value="">
+
+                                              <%}%>
+                                                <%}%>
+                                </div>
                               </div>
                               <div class="col-sm-12 col-lg-4">
-                                <%if(propertyObj=='null'){%>
-                                  <input type="email" class="form-control property-form-control-size-fix solicitor_email"
-                                    id="solicitor_email" placeholder="Solicitor email address" name="ps_solicitor_email"
-                                    value="">
-                                  <%}else{%>
-                                    <%if(propertyObj.ps_solicitor_email.length>0){%>
-                                      <% var i=0; propertyObj.ps_solicitor_email.forEach(function(row){ %>
-                                          <input type="email" readonly class="form-control property-form-control-size-fix edit_solicitor_email"
-                                          id="solicitor_email" placeholder="Solicitor email address" name="ps_solicitor_email"
-                                          value="<%=row%>">
-                                      <% i++;});%>
-                                      <%}else{%>
-                                        <input type="email" class="form-control property-form-control-size-fix solicitor_email"
-                                    id="solicitor_email" placeholder="Solicitor email address" name="ps_solicitor_email"
-                                    value="">
-                                        <%}%>
-                                    <%}%>
+                                <div class="form-group">
+                                  <%if(propertyObj=='null'){%>
+                                    <label>Solicitor email address</label>
+                                    <input type="email"
+                                      class="form-control property-form-control-size-fix mt-0 solicitor_email"
+                                      id="solicitor_email" placeholder="Solicitor email address"
+                                      name="ps_solicitor_email" value="">
+                                    <%}else{%>
+                                      <%if(propertyObj.ps_solicitor_email.length>0){%>
+                                        <% var i=0; propertyObj.ps_solicitor_email.forEach(function(row){ %>
+                                          <label>Solicitor email address</label>
+                                          <input type="email" readonly
+                                            class="form-control property-form-control-size-fix mt-0 edit_solicitor_email"
+                                            id="solicitor_email" placeholder="Solicitor email address"
+                                            name="ps_solicitor_email" value="<%=row%>">
+                                          <% i++;});%>
+                                            <%}else{%>
+
+                                              <input type="email"
+                                                class="form-control property-form-control-size-fix mt-0 solicitor_email"
+                                                id="solicitor_email" placeholder="Solicitor email address"
+                                                name="ps_solicitor_email" value="">
+                                              <%}%>
+                                                <%}%>
+                                </div>
                               </div>
 
                               <div class="col-sm-12 col-lg-3">
-                                <%if(propertyObj=='null'){%>
-                                  <select name="ps_solicitor_for" class=" form-control selectBox5"
-                                  id="ps_solicitor_for" style="height: 48px;">
+                                <div class="form-group">
+                                  <%if(propertyObj=='null'){%>
+                                    <label>Solicitor For</label>
+                                    <select name="ps_solicitor_for" class=" form-control selectBox5 mt-0"
+                                      id="ps_solicitor_for" style="height: 48px;">
                                       <option value="">Solicitor For</option>
                                       <option value="seller">Seller</option>
                                       <option value="buyer">Buyer</option>
                                       <option value="renovator">Renovator</option>
-                                </select>
-                                  <%}else{%>
-                                    <%if(propertyObj.ps_solicitor_for.length>0){%>
-                                      <% var i=0; propertyObj.ps_solicitor_for.forEach(function(row){%>
-                                      
-                                      <select name="ps_solicitor_for" class=" form-control selectBox5"
-                                        id="ps_solicitor_for" style="height: 48px;">
+                                    </select>
+                                    <%}else{%>
+                                      <%if(propertyObj.ps_solicitor_for.length>0){%>
+                                        <% var i=0; propertyObj.ps_solicitor_for.forEach(function(row){%>
+                                          <label>Solicitor For</label>
+                                          <select name="ps_solicitor_for" class=" form-control selectBox5 mt-0"
+                                            id="ps_solicitor_for" style="height: 48px;">
                                             <option value="">Solicitor For</option>
-                                            
-                                            <option <%if(row=='seller'){ %> selected <%}%> value="seller">Seller</option>
- 
-                                            <option <%if(row=='buyer'){ %> selected <%}%> value="buyer">Buyer</option>
-                                            <option <%if(row=='renovator'){ %> selected <%}%> value="renovator">Renovator</option>
-                                      </select>
 
-                                      <% i++;});%>
-                                      <%}else{%>
-                                        <select name="ps_solicitor_for" class=" form-control selectBox5"
-                                        id="ps_solicitor_for" style="height: 48px;">
-                                            <option value="">Solicitor For</option>
-                                            <option value="seller">Seller</option>
-                                            <option value="buyer">Buyer</option>
-                                            <option value="renovator">Renovator</option>
-                                      </select>
-                                        <%}%>
-                                    <%}%>
+                                            <option <%if(row=='seller' ){ %> selected <%}%> value="seller">Seller
+                                            </option>
+
+                                            <option <%if(row=='buyer' ){ %> selected <%}%> value="buyer">Buyer
+                                            </option>
+                                            <option <%if(row=='renovator' ){ %> selected <%}%>
+                                                value="renovator">Renovator
+                                            </option>
+                                          </select>
+
+                                          <% i++;});%>
+                                            <%}else{%>
+                                              <label>Solicitor For</label>
+                                              <select name="ps_solicitor_for" class=" form-control selectBox5 mt-0"
+                                                id="ps_solicitor_for" style="height: 48px;">
+                                                <option value="">Solicitor For</option>
+                                                <option value="seller">Seller</option>
+                                                <option value="buyer">Buyer</option>
+                                                <option value="renovator">Renovator</option>
+                                              </select>
+                                              <%}%>
+                                                <%}%>
+                                </div>
                               </div>
-
                               <div class="">
                                 <a class="btn addMoreSolicitor" name="addPlusbtn"><i class="fa fa-plus"></i></a>
                               </div>
@@ -530,13 +607,13 @@
                               <div class="col-sm-12 col-lg-4 ">
                                 <%if(propertyObj=='null'){%>
                                   <label>Area</label>
-                                  <input type="text" class="form-control property-form-control-size-fix p_area"
+                                  <input type="text" class="form-control property-form-control-size-fix mt-0 p_area"
                                     id="area" placeholder="Area(sq. ft.)*" name="ps_property_area"
                                     style="margin-top:1px" data-rule-required="true"
                                     data-msg-required="Area is required!" value="">
                                   <%}else{%>
                                     <label>Area</label>
-                                    <input type="text" class="form-control property-form-control-size-fix p_area"
+                                    <input type="text" class="form-control property-form-control-size-fix mt-0 p_area"
                                       id="area" placeholder="Area(sq. ft.)*" name="ps_property_area"
                                       data-rule-required="true" data-msg-required="Area is required!"
                                       style="margin-top:1px" value="<%=propertyObj.ps_property_area%>">
@@ -544,7 +621,7 @@
                               </div>
                               <div style="display:none;" class="col-sm-12 col-lg-4 property_detial">
                                 <%if(propertyObj=='null'){%>
-                                  <!-- <input type="number" class="form-control property-form-control-size-fix " id="bedroom"
+                                  <!-- <input type="number" class="form-control property-form-control-size-fix mt-0 " id="bedroom"
                                     placeholder="Bedroom*" name="ps_property_bedroom" data-rule-required="true"
                                     data-msg-required="Bedroom field is required!" value=""> -->
                                   <label>No. of Bedroom</label>
@@ -565,7 +642,7 @@
                                   </select>
                                   <%}else{%>
                                     <label>No. of Bedroom</label>
-                                    <!-- <input type="number" class="form-control property-form-control-size-fix " id="bedroom"
+                                    <!-- <input type="number" class="form-control property-form-control-size-fix mt-0 " id="bedroom"
                                       placeholder="Bedroom*" name="ps_property_bedroom" data-rule-required="true"
                                       data-msg-required="Bedroom field is required!"
                                       value="<%=propertyObj.ps_property_bedroom%>"> -->
@@ -718,7 +795,7 @@
                               </div>
                               <div style="display:none;" class="col-sm-12 col-lg-4 property_detial">
                                 <%if(propertyObj=='null'){%>
-                                  <!-- <input type="number" class="form-control property-form-control-size-fix " id="bedroom2"
+                                  <!-- <input type="number" class="form-control property-form-control-size-fix mt-0 " id="bedroom2"
                                     placeholder="Bathroom*" name="ps_property_bathroom" data-rule-required="true"
                                     data-msg-required="Bathroom  field is required!" value=""> -->
                                   <label>No. of Bathroom</label>
@@ -738,7 +815,7 @@
                                     <option value="10">10</option>
                                   </select>
                                   <%}else{%>
-                                    <!-- <input type="number" class="form-control property-form-control-size-fix "
+                                    <!-- <input type="number" class="form-control property-form-control-size-fix mt-0 "
                                       id="bedroom2" placeholder="Bathroom*" name="ps_property_bathroom"
                                       data-rule-required="true" data-msg-required="Bathroom  field is required!"
                                       value="<%=propertyObj.ps_property_bathroom%>"> -->
@@ -889,62 +966,86 @@
                             </div>
                             <div class="row">
                               <div class="col-sm-12 col-lg-12">
-                                <%if(propertyObj=='null'){%>
-                                  <textarea type="text" style=" width:95%"
-                                    class="form-control property-form-control-size-fix p_notes" id="address1"
-                                    name="ps_additional_note" value=""
-                                    placeholder="Additional notes(if any)"></textarea>
-                                  <%}else{%>
+                                <div class="form-group">
+                                  <%if(propertyObj=='null'){%>
+                                    <label>Additional notes(if any)</label>
                                     <textarea type="text" style=" width:95%"
-                                      class="form-control property-form-control-size-fix p_notes" id="address1"
+                                      class="form-control property-form-control-size-fix mt-0 p_notes" id="address1"
                                       name="ps_additional_note" value=""
-                                      placeholder="Additional notes(if any)"><%=propertyObj.ps_additional_note%></textarea>
-                                    <%}%>
+                                      placeholder="Additional notes(if any)"></textarea>
+                                    <%}else{%>
+                                      <label>Additional notes(if any)</label>
+                                      <textarea type="text" style=" width:95%"
+                                        class="form-control property-form-control-size-fix mt-0 p_notes" id="address1"
+                                        name="ps_additional_note" value=""
+                                        placeholder="Additional notes(if any)"><%=propertyObj.ps_additional_note%></textarea>
+                                      <%}%>
+                                </div>
                               </div>
                             </div>
 
                             <div class="row">
                               <div class="col-sm-12 col-lg-4">
-                                <%if(propertyObj=='null'){%>
-                                  <div style="margin: 15px 0px 5px 0px;" class="input-group mb-3 propertyPricediv">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text">£</span>
-                                    </div>
-                                    <input type="number" placeholder="Property Offer Price" value="" name="offer_price" class="form-control property-form-control-size-fix-price offerPrice" />                    
-                                     <div class="input-group-append">
-                                      <span class="input-group-text">.00</span>
-                                    </div>
-                                  </div>
-
-                                     <!-- <input type="text" placeholder="Property Offer Price" value="" name="offer_price" class="form-control property-form-control-size-fix offerPrice" /> -->
-                                  <%}else{%>
-
-                                    <div style="margin: 15px 0px 5px 0px;" class="input-group mb-3 propertyPricediv">
+                                <div class="form-group">
+                                  <%if(propertyObj=='null'){%>
+                                    <label>Property Offer Price</label>
+                                    <div style="margin: 0px 0px 5px 0px;" class="input-group mb-3 propertyPricediv">
                                       <div class="input-group-prepend">
                                         <span class="input-group-text">£</span>
                                       </div>
-                                   
-                                    <input type="number"   <% if(propertyObj.ps_offer_price){ %> readonly <%}%> placeholder="Property Offer Price" name="offer_price" value="<%=propertyObj.ps_offer_price%>" class="form-control property-form-control-size-fix-price offerPrice" />
-                                   
-                                    <div class="input-group-append">
-                                    <span class="input-group-text">.00</span>
+                                      <input type="number" placeholder="Property Offer Price" value=""
+                                        name="offer_price"
+                                        class="form-control property-form-control-size-fix mt-0-price offerPrice mt-0" />
+                                      <div class="input-group-append">
+                                        <span class="input-group-text">.00</span>
                                       </div>
                                     </div>
 
-                                <%}%>
+                                    <!-- <input type="text" placeholder="Property Offer Price" value="" name="offer_price" class="form-control property-form-control-size-fix mt-0 offerPrice" /> -->
+                                    <%}else{%>
+                                      <label>Property Offer Price</label>
+                                      <div style="margin: 0px 0px 5px 0px;" class="input-group mb-3 propertyPricediv">
+                                        <div class="input-group-prepend">
+                                          <span class="input-group-text">£</span>
+                                        </div>
+
+                                        <input type="number" class="mt-0" <% if(propertyObj.ps_offer_price){ %> readonly
+                                        <%}%>
+                                          placeholder="Property Offer Price" name="offer_price" value="
+                                          <%=propertyObj.ps_offer_price%>" class="form-control
+                                            property-form-control-size-fix-price offerPrice" />
+
+                                            <div class="input-group-append">
+                                              <span class="input-group-text">.00</span>
+                                            </div>
+                                      </div>
+
+                                      <%}%>
+                                </div>
                               </div>
                               <div class="col-sm-12 col-lg-4">
-                                <%if(propertyObj=='null'){%>
-                                     <input type="text" readonly placeholder="Offer status" value="accepted" name="offer_status" class="form-control property-form-control-size-fix offerStatus" />
-                                  <%}else{%>
-                                    <input type="text" readonly placeholder="Offer status" name="offer_status" value="<%=propertyObj.ps_offer_status%>" class="form-control property-form-control-size-fix offerStatus" />
-                                <%}%>
+                                <div class="form-group">
+
+                                  <%if(propertyObj=='null'){%>
+                                    <label>Offer status</label>
+                                    <input type="text" readonly placeholder="Offer status" value="accepted"
+                                      name="offer_status"
+                                      class="form-control property-form-control-size-fix mt-0 offerStatus" />
+                                    <%}else{%>
+                                      <label>Offer status</label>
+                                      <input type="text" readonly placeholder="Offer status" name="offer_status"
+                                        value="<%=propertyObj.ps_offer_status%>"
+                                        class="form-control property-form-control-size-fix mt-0 offerStatus" />
+                                      <%}%>
+                                </div>
                               </div>
 
-                              
-                                    <input name="property_lattitude" type="hidden" class="form-control property-form-control-size-fix property_lattitude" />
-                                    <input name="property_longitude" type="hidden" class="form-control property-form-control-size-fix property_longitude" />
-                            
+
+                              <input name="property_lattitude" type="hidden"
+                                class="form-control property-form-control-size-fix mt-0 property_lattitude" />
+                              <input name="property_longitude" type="hidden"
+                                class="form-control property-form-control-size-fix mt-0 property_longitude" />
+
 
                             </div>
 
@@ -2262,7 +2363,7 @@
                     </form>
                     <%}%>
 
-                  
+
               </div>
               <!--third form div close-->
             </div>
@@ -2278,18 +2379,56 @@
       <script>
 
 
-$(document).ready(function () {
-    var c = 2;
-    $(".addMoreSolicitor").click(function (e) {
-      e.preventDefault();
-      var domElement = $(' <div class="row"><div class="col-sm-12 col-lg-4"> <input type="text" class="form-control property-form-control-size-fix solicitor_name" id="solicitor_name" placeholder="Solicitor Name*" name="ps_solicitor_name" value="" data-rule-required="true" data-msg-required="Solicitor name is required!"></div><div class="col-sm-12 col-lg-4"> <input type="email" class="form-control property-form-control-size-fix solicitor_email_'+c+'" id="solicitor_email" placeholder="Solicitor email address*" name="ps_solicitor_email" value="" data-rule-required="true" data-msg-required="Solicitor email is required!" required></div><div class="col-sm-12 col-lg-3"><select name="ps_solicitor_for" class=" form-control selectBox5" id="ps_solicitor_for" style="height: 48px;" data-rule-required="false" data-msg-required="Solicitor for is required!"><option value="">Solicitor For</option><option value="seller">Seller</option><option value="buyer">Buyer</option><option value="renovator">Renovator</option> </select></div><a class="btn property-add-btn remove_field"><i class="fa fa-minus"></i></a></div>' + c++);
-      if (c == 10) {
-        $(".addMoreSolicitor").attr('disabled', true);
-      }
-      $(".moreSolicitoreSec").before(domElement);
-      console.log('datagg:',c)
-      let count = parseInt(c)-parseInt(1);
-      $.ajax({
+        $(document).ready(function () {
+          var c = 2;
+          $(".addMoreSolicitor").click(function (e) {
+            e.preventDefault();
+            var domElement = $(' <div class="row"><div class="col-sm-12 col-lg-4"> <input type="text" class="form-control property-form-control-size-fix mt-0 solicitor_name" id="solicitor_name" placeholder="Solicitor Name*" name="ps_solicitor_name" value="" data-rule-required="true" data-msg-required="Solicitor name is required!"></div><div class="col-sm-12 col-lg-4"> <input type="email" class="form-control property-form-control-size-fix mt-0 solicitor_email_' + c + '" id="solicitor_email" placeholder="Solicitor email address*" name="ps_solicitor_email" value="" data-rule-required="true" data-msg-required="Solicitor email is required!" required></div><div class="col-sm-12 col-lg-3"><select name="ps_solicitor_for" class=" form-control selectBox5" id="ps_solicitor_for" style="height: 48px;" data-rule-required="false" data-msg-required="Solicitor for is required!"><option value="">Solicitor For</option><option value="seller">Seller</option><option value="buyer">Buyer</option><option value="renovator">Renovator</option> </select></div><a class="btn property-add-btn remove_field"><i class="fa fa-minus"></i></a></div>' + c++);
+            if (c == 10) {
+              $(".addMoreSolicitor").attr('disabled', true);
+            }
+            $(".moreSolicitoreSec").before(domElement);
+            console.log('datagg:', c)
+            let count = parseInt(c) - parseInt(1);
+            $.ajax({
+              type: "GET",
+              data: '',
+              url: "/get-solicitor-lists",
+              cache: false,
+              success: function (data) {
+                console.log('Solicitor Res:', data);
+                $('.solicitor_name').autocomplete({
+                  lookup: data.serviceproviderData,
+                  onSelect: function (suggestion) {
+                    $(".solicitor_email_" + count + "").val(suggestion.data)
+                  }
+                })
+              }
+            })
+
+          });
+          $('.row').on("click", ".remove_field", function (e) { //user click on remove text
+            e.preventDefault(); $(this).parent('div').remove(); c--;
+
+            $(".addMoreSolicitor").attr('disabled', false);
+
+          })
+
+
+        });
+
+        $('#property_type').on('change', function () {
+          //alert( this.value );
+          if (this.value == 'Chain') {
+            $('#ps_chain_property').attr('required', 'required');
+          } else {
+            $('#ps_chain_property').removeAttr('required');
+          }
+        });
+
+        ps_chain_property
+        $(function () {
+          $.ajax({
             type: "GET",
             data: '',
             url: "/get-solicitor-lists",
@@ -2297,52 +2436,14 @@ $(document).ready(function () {
             success: function (data) {
               console.log('Solicitor Res:', data);
               $('.solicitor_name').autocomplete({
-                  lookup: data.serviceproviderData,
-                  onSelect:function (suggestion) { 
-                       $(".solicitor_email_"+count+"").val(suggestion.data)
-                  }
+                lookup: data.serviceproviderData,
+                onSelect: function (suggestion) {
+                  $('.solicitor_email').val(suggestion.data)
+                }
               })
             }
           })
-
-    });
-    $('.row').on("click", ".remove_field", function (e) { //user click on remove text
-      e.preventDefault(); $(this).parent('div').remove(); c--;
-
-      $(".addMoreSolicitor").attr('disabled', false);
-
-    })
-
-
-  });
-
-$('#property_type').on('change', function() {
-  //alert( this.value );
-  if(this.value == 'Chain'){
-    $('#ps_chain_property').attr('required','required');
-  }else{
-    $('#ps_chain_property').removeAttr('required');
-  }
-});
-
-  ps_chain_property
-  $(function () { 
-    $.ajax({
-            type: "GET",
-            data: '',
-            url: "/get-solicitor-lists",
-            cache: false,
-            success: function (data) {
-              console.log('Solicitor Res:', data);
-              $('.solicitor_name').autocomplete({
-                  lookup: data.serviceproviderData,
-                  onSelect:function (suggestion) { 
-                       $('.solicitor_email').val(suggestion.data)
-                  }
-              })
-            }
-          })
-  })
+        })
 
         $(function () {
           $.ajax({
@@ -2354,9 +2455,9 @@ $('#property_type').on('change', function() {
               console.log('Reapit Res:', data);
 
               $('.autocomplete').autocomplete({
-                  lookup: data.mydatadata,
-                  onSelect:function (suggestion) {
-                   // alert('You selected: ' + suggestion.value +', ' + suggestion.data);
+                lookup: data.mydatadata,
+                onSelect: function (suggestion) {
+                  // alert('You selected: ' + suggestion.value +', ' + suggestion.data);
                   $('.loader-box').attr('style', 'display:flex !important');
                   $.ajax({
                     type: "POST",
@@ -2372,22 +2473,22 @@ $('#property_type').on('change', function() {
                       $('.loader-box').attr('style', 'display:none !important');
                       $('.property_detial').css('display', 'block');
                       console.log(data.propertyData[0].address.countryId);
-                      if(data.propertyData[0].address.countryId){
-                          $('#countryId').find('option[countryid='+data.propertyData[0].address.countryId+']').attr('selected','selected');
+                      if (data.propertyData[0].address.countryId) {
+                        $('#countryId').find('option[countryid=' + data.propertyData[0].address.countryId + ']').attr('selected', 'selected');
                       }
-                      if(data.propertyData[0].address.buildingName){
+                      if (data.propertyData[0].address.buildingName) {
                         $('#cityId').val(data.propertyData[0].address.line2)
-                        $('.property_name').val(data.propertyData[0].address.buildingNumber+' '+data.propertyData[0].address.buildingName);
-                      }else if(data.propertyData[0].address.buildingName ==''){
+                        $('.property_name').val(data.propertyData[0].address.buildingNumber + ' ' + data.propertyData[0].address.buildingName);
+                      } else if (data.propertyData[0].address.buildingName == '') {
                         $('#cityId').val(data.propertyData[0].address.line2)
-                        $('.property_name').val(data.propertyData[0].address.buildingNumber+' '+data.propertyData[0].address.line1 + ' ' + data.propertyData[0].address.line2);
+                        $('.property_name').val(data.propertyData[0].address.buildingNumber + ' ' + data.propertyData[0].address.line1 + ' ' + data.propertyData[0].address.line2);
                       }
                       $('#zipcode').val(data.propertyData[0].address.postcode);
                       $('.p_notes').val(data.propertyData[0].description);
-                      if(data.propertyData[0].internalArea != null){
+                      if (data.propertyData[0].internalArea != null) {
                         $('.p_area').val(data.propertyData[0].internalArea.min + 'x' + data.propertyData[0].internalArea.max + ' ' + data.propertyData[0].internalArea.type);
                       }
-                      if(data.propertyData[0].address.geolocation){
+                      if (data.propertyData[0].address.geolocation) {
                         $('.property_lattitude').val(data.propertyData[0].address.geolocation.latitude)
                         $('.property_longitude').val(data.propertyData[0].address.geolocation.longitude);
                       }
@@ -2396,18 +2497,18 @@ $('#property_type').on('change', function() {
                       $('#bedroom option[value="' + data.propertyData[0].bedrooms + '"]').attr("selected", "selected");
                       $('#bedroom2 option[value="' + data.propertyData[0].bathrooms + '"]').attr("selected", "selected");
                       $.each(data.offerData, function (i, offerdata) {
-                        if(offerdata.status == 'accepted'){
-                          let currencyFormat='';
-                          if( offerdata.currency == 'GBP'){
-                              currencyFormat = '£';
+                        if (offerdata.status == 'accepted') {
+                          let currencyFormat = '';
+                          if (offerdata.currency == 'GBP') {
+                            currencyFormat = '£';
                           }
-                          if(offerdata.currency == 'USD'){
-                              currencyFormat = '$';
+                          if (offerdata.currency == 'USD') {
+                            currencyFormat = '$';
                           }
-                          
-                            $('.propertyPricediv').text(currencyFormat);
-                            $('.offerPrice').val(offerdata.amount);
-                            $('.offerStatus').val(offerdata.status);
+
+                          $('.propertyPricediv').text(currencyFormat);
+                          $('.offerPrice').val(offerdata.amount);
+                          $('.offerStatus').val(offerdata.status);
                         }
                       })
                     }

@@ -205,20 +205,20 @@
                         <%if(spsData.length>0){%>
                           <%spsData.forEach(function(row,i){%>
 
-                            <li><a href="#">
-                                <%if(row.sps_profile_image_name !=null) {%>
-                                  <img src="upload/<%=row.sps_profile_image_name%>"
-                                    style="width:60px;height:60px;border-radius: 20%;" alt="" title="">
+                            <li>
+                              <%if(row.sps_profile_image_name !=null) {%>
+                                <img src="upload/<%=row.sps_profile_image_name%>"
+                                  style="width:60px;height:60px;border-radius: 20%;" alt="" title="">
 
-                                  <%} else {%>
+                                <%} else {%>
 
-                                    <img src="images/img_avatar.png" style="width:60px;height:60px;border-radius: 20%;"
-                                      alt="" title="">
-                                    <%}%>
-                                      <p>
-                                        <%=row.sps_fullname%>
-                                      </p>
-                              </a></li>
+                                  <img src="images/img_avatar.png" style="width:60px;height:60px;border-radius: 20%;"
+                                    alt="" title="">
+                                  <%}%>
+                                    <p style="color:#005377">
+                                      <%=row.sps_fullname%>
+                                    </p>
+                            </li>
 
                             <!-- <li><a href="#"><img src="../images/prof-img.png" alt="" title=""></a></li>
                             <li><a href="#"><img src="../images/prof-img.png" alt="" title=""></a></li>

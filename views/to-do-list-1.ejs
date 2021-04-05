@@ -28,102 +28,29 @@
                   
                 </div>
               </div>
-              
+              <div class="col-sm-12 col-lg-4">
+                                
+                <select name="propertyDropDown" class=" form-control selectBox5" id="propertyDropDown" style="height: 48px;">
+                    <option value="">Select Property</option>
+                  <%if(propertyObj.length!=0){%>
+                    <%propertyObj.forEach(function(row,i){%>
+                    <option value="<%=row._id%>"><%=row.ps_property_name%></option>
+                    <%});%>
+                  <%}else{%>
+                    <p>please add property</p>
+                    <%}%>
+                </select>
+                
+            </div>
 
 
             </div>
             <div class="todos-inner">
-              <div class="col-lg-12">
-                <form method="GET" class="form-group" id="todoFormtask" action="/to-do-list">               
-                  <div class="row">
-                  <div class="col-lg-4">
-                  <select name="propertyDropDown" class=" form-control selectBox5" id="propertyDropDown" style="height: 48px;">
-                    <option value="">Select Property</option>
-                    <%if(propertyObj.length!=0){%>
-                      <%propertyObj.forEach(function(row,i){%>
-                        <option <%if(row._id==property_id){%>selected <%} %> value="<%=row._id%>"><%=row.ps_property_name%></option>
-                        <%});%>
-                        <%}else{%>
-                          <p>please add property</p>
-                          <%}%>
-                        </select>
-                        </div>
-                <!-- <input type="hidden" id="phase_propert_id" name="property_id" value=""> -->
-                <!-- <input type="hidden" id="phase_name" name="phase_name" value=""> -->
-                <div class="row col-lg-4">
-                <select name="phaseDropDown" class="form-control selectBox5" id="phaseDropDown" style="height: 48px;" onchange="return myphaseTaskListToDo()">
-                  <option value="">Select Phase</option>
-                   <%if(propertyObj.length!=0){%>
-                    <%propertyObj[0].ps_phase_array.forEach(function(r,i){%>
-                    <option <%if(r.phase_name==phaseName){%>selected <%} %> value="<%=r.phase_name%>"><%=r.phase_name%></option>
-                    <%});%>
-                    <%}%>
-                </select>
-              </div>
-              </div>
-             
-              </form>
-            </div>
-                
-             
-           
-                
-              <p style="font-family: 'Abhaya Libre', serif;color: #005377;font-size: 24px;margin-left: 10px; margin-top: 20px;" id="propertyName">
-                <%if(phaseName){%>
-                <%=phaseName%>
-                <%}else{%>
-                  Please Select Property
-                  <%}%>
-                </p>
+              <p style="    font-family: 'Abhaya Libre', serif;color: #005377;font-size: 24px;margin-left: 10px; margin-top: 20px;" id="propertyName">Please Select Property</p>
               <div class="todo-list-table ">
-                <div class="phaselistDiv"><p></p>
-                  <%if(taskObject.length>0){%>
-                  <table class="table table-phase-fix-2">
-                  <thead>
-                    <tr>
-                      <th>Task</th>
-                      <th>Date</th>
-                      <th>Status</th>
-                      <th>Take Action</th>
-                    </tr>
-                  </thead>
-                  <%if(taskObject){%>
-                  <%taskObject.forEach(function(row,i){%>
-                  <tr>
-                    <td> 
-                      <label class="check-todos">
-                        <p><%=row.ppts_task_name%></p>
-                        
-                        <%if(row.iscompleteStatus==true){%>
-                          <input type="checkbox" checked disabled>
+                <div class="phaselistDiv"><p></p></div>
 
-                          <%}else{%>
-                            <input type="checkbox">
-                            <%}%>
-                        <span class="checkmark"></span></label>
-                      </td>
-                        <td><%=moment(row.ppts_created_at).format('DD-MM-YY')%></td>
-                        <td>
-                          <%if(row.iscompleteStatus==true){%>
-                            <a class="btn btn-complete">Complete</a>
-                            <%}else if(row.ispendingStatus==true ){%>
-                              <a class="btn btn-pending">Pending</a>
-                              
-                              <%}else if(row.iscompleteStatus==false && row.ispendingStatus==false){%>
-                                <a class="btn btn-progress">In Progress</a>
-                                <%}%>
-                        </td>
-                        <td>
-                          <a class="take-action" href="/mydreamhome-details-phase-<%=row.ppts_phase_flag.toLowerCase()%>?id=<%=row.ppts_property_id%>&phase=<%=row.ppts_phase_name%>&step=<%=row.ppts_phase_flag.toLowerCase()%>" id="">Take Action</a>
-                        </td>
-                  </tr>
-                  <%})%>
-                  <%}%>
-                  <tbody>
-
-                </tbody>
-                </table></div>
-                <%}%>
+                
               </div>
             </div>
           </div>
@@ -229,22 +156,11 @@
                   cache: false,
                   success: function (data) {
                       console.log(data);
-                     
-                       if(data.status==true){
-                        var phasehtmlData ='<option>Select Phase </option>';
-                          $.each(data.data.ps_phase_array, function (i, data) {
-                            console.log('val:',data)
-                            phasehtmlData +='<option value="'+data.phase_name+'">'+data.phase_name+'</option>'
-                          })
-                          $('#phaseDropDown').html(phasehtmlData)
-                           $('#propertyName').html(data.data.ps_property_name);
+                      if(data.status==true){
+                          $('#propertyName').html(data.data.ps_property_name);
                           var property_id=data.data._id;
-                         var phase_name = data.phase_name
-                          $('#phase_propert_id').val(property_id)
-                         
-                        
                           // <table class="table table-responsive"><thead><tr><th>To-dos</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody><tr><td></td></tr></tbody></table>
-                          var htmlData = '<table class="table table-responsive"><thead><tr><th>To-dos</th><th>Status</th><th></th></tr></thead><tbody>';
+                          var htmlData = '<table class="table table-responsive"><thead><tr><th>To-dos</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody>';
                           if (data.data.ps_phase_array.length > 0) {
                             var element=''
                             var active_user_login='<%=session.active_user_login%>'
@@ -292,7 +208,7 @@
                                   console.log('val:', data)
                                   if(data.phase_status=='pending'){
                             
-                            
+                            //$( "a" ).removeClass( "btn-pending" ).addClass( "btn-complete" );
 
                             htmlData +='<tr><td> <label class="check-todos"><p>'+data.phase_name+'</p><input type="checkbox"><span class="checkmark"></span></label></td><td><a class="btn btn-pending status">'+data.phase_status+'</a></td><td><span>'+data.end_date+'</span></td><td><a class="take-action" href="/mydreamhome-details-phase-'+element+'?id='+property_id+'&phase='+data.phase_name+'&step='+element.toUpperCase()+'" id="">Take Action</a></td></tr>';
                           }else{
@@ -307,8 +223,7 @@
                           }  
                           $('.phaselistDiv').html(htmlData);
                         
-                        
-                      
+                      // ============
                       }
                   
                   
@@ -318,50 +233,8 @@
          //alert("property not found")
      }
   })
-    $('#phaseDropDown').change(function(e){
-      var phase_name = $('#phaseDropDown').val();
-      var property_id = $('#phase_propert_id').val();
-      var user_id = '<%=session.user_id%>';
-      $.ajax({
-        type: "POST",
-        data:{'phase_name':phase_name,'property_id':property_id,'user_id':user_id},
-        url: "/get_to_do_phase_task",
-        cache: false,
-        success: function (data) {
-            console.log(data);
-            if(data.status==true){
-              var htmlData = '<table class="table table-responsive"><thead><tr><th>To-dos</th><th>Status</th></tr></thead><tbody>';
-                  if (data.data.length > 0) {
-                    $.each(data.data, function (i, data) {
-                      htmlData +='<tr><td> <label class="check-todos"><p>'+data.ppts_task_name+'</p><input type="checkbox"><span class="checkmark"></span></label></td><td><a class="btn btn-pending status">Pending</a></td></tr>';
-
-                    })
-                    htmlData+='</tbody></table>';
-                    
-                  }else{
-                      htmlData = '<div class="not-found"><p>Task Not Found !!</p></div>';
-                  }  
-                }else{
-                  htmlData = '<div class="not-found"><p>Task Not Found !!</p></div>';
-                }
-                $('.phaselistDiv').html(htmlData);
-        }
-      })
-    })
   }) ;    
-//   function myphaseTaskListToDo(){
-//       //$('.loader-box').attr('style','display:flex !important');
-//      // var formData = $("#todoFormtask").serialize();
-     
-//      $('#todoFormtask').submit();
-
-// }
-$('#phaseDropDown').change(function(e){
-  e.preventDefault()
-  $('#todoFormtask').submit();
-})
   </script>
-  
     </body>
 
     </html>

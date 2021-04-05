@@ -480,7 +480,12 @@ app.get('/service-provider/property', isServiceProvider, async function (req, re
   })
 
 })
-
+function isStatusComplete(element, index, array) {
+  return element == 'completed_by_service_provider';
+}
+function isStatusPanding(element, index, array) {
+  return element == 'pending';
+}
 app.get('/service-provider/professionals-to-do-list', isServiceProvider, async function (req, res) {
   console.log("todo")
   req.session.pagename = 'service-provider/professionals-to-do-list';
@@ -511,13 +516,45 @@ app.get('/service-provider/professionals-to-do-list', isServiceProvider, async f
   console.log("propertyIdArray", propertyArray);
   err_msg = req.flash('err_msg');
   success_msg = req.flash('success_msg');
+  var taskObject=''
+  var taskObjectArray=[]
+  if(req.query.propertyDropDown && req.query.phaseDropDown){
+    var phase_name  =  req.query.phaseDropDown;
+    var property_id =  req.query.propertyDropDown;
+    var user_id     =  req.session.user_id;
+
+     taskObject = await TaskHelper.GetTaskByPhaseName(property_id, phase_name, user_id, req.session.active_user_login);
+     console.log('==================================================',taskObject)
+     if (taskObject.length != 0) {
+      for (k of taskObject) {
+      var d = JSON.stringify(k)
+      var dd = JSON.parse(d)
+      var temp = dd
+      var arr = temp.ppts_task_status;
+      var iscomplete = await arr.every(isStatusComplete);
+      var isPanding = await arr.every(isStatusPanding);
+      temp.iscompleteStatus = iscomplete
+      temp.ispendingStatus = isPanding
+      // if (iscomplete == true) {
+
+      //   completedTask = completedTask + 1
+      // }
+
+
+      taskObjectArray.push(temp)
+      
+      }
+    }
+  }
   res.render('service-provider/professionals-to-do-list', {
     err_msg, success_msg, layout: false,
     session: req.session,
     propertyObj: propertyArray,
     moment: moment,
-    TaskDetailObj: []
-
+    TaskDetailObj: [],
+    property_id:req.query.propertyDropDown,
+    phaseName:req.query.phaseDropDown,
+    taskObject:taskObjectArray
   });
 
 

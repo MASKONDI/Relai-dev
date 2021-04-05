@@ -70,219 +70,57 @@
             </div>
             <ul class="dashboard-nav">
               <li class="active">
-                <a href="/signup-professionals-profile" class ="personal_detail_nev"><img class="act-img" src="images/1-active.png"><img
-                    src="images/1.png">PERSONAL DETAILS </a>
+                <a href="/signup-professionals-profile" class="personal_detail_nev"><img class="act-img"
+                    src="images/1-active.png"><img src="images/1.png">PERSONAL DETAILS </a>
               </li>
               <li>
-                <a href="javascript:void(0)" data-href="/signup-professionals-profile-2"class ="other_detail_nev"><img class="act-img" src="images/2-active.png"><img
-                    src="images/2.png"> OTHER DETAILS</a>
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-2" class="other_detail_nev"><img
+                    class="act-img" src="images/2-active.png"><img src="images/2.png"> OTHER DETAILS</a>
               </li>
               <li>
-                <a href="javascript:void(0)" data-href="/signup-professionals-profile-3" class ="education_detail_nev"><img class="act-img" src="images/3-active.png"><img
-                    src="images/3.png"> EDUCATION</a>
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-3"
+                  class="education_detail_nev"><img class="act-img" src="images/3-active.png"><img src="images/3.png">
+                  EDUCATION</a>
               </li>
               <li>
-                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-4" class ="employment_detail_nev"><img class="act-img" src="images/4-active.png"><img
-                    src="images/4.png"> EMPLOYMENT HISTORY</a>
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-4"
+                  class="employment_detail_nev"><img class="act-img" src="images/4-active.png"><img src="images/4.png">
+                  EMPLOYMENT HISTORY</a>
               </li>
 
               <li>
-                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-5" class ="refrence_detail_nev"><img class="act-img" src="images/5-active.png"><img
-                    src="images/5.png"> REFERENCES</a>
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-5"
+                  class="refrence_detail_nev"><img class="act-img" src="images/5-active.png"><img src="images/5.png">
+                  REFERENCES</a>
               </li>
               <li>
-                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-6" class ="indemnity_detail_nev"><img class="act-img" src="images/6-active.png"><img
-                    src="images/6.png"> PROFESSIONAL INDEMNITY
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-6"
+                  class="indemnity_detail_nev"><img class="act-img" src="images/6-active.png"><img src="images/6.png">
+                  PROFESSIONAL INDEMNITY
                   INSURANCE</a>
               </li>
               <li>
-                <a href="javascript:void(0)"  data-href="/signup-professionals-profile-7" class ="language_detail_nev"><img class="act-img" src="images/7-active.png"><img
-                    src="images/7.png"> LANGUAGE</a>
+                <a href="javascript:void(0)" data-href="/signup-professionals-profile-7"
+                  class="language_detail_nev"><img class="act-img" src="images/7-active.png"><img src="images/7.png">
+                  LANGUAGE</a>
               </li>
             </ul>
           </div>
           <%if(data==null){%>
-          <div class="col-sm-12 col-lg-9">
-            <div class=" dashboard-inner">
-              <div class="row">
-                <div class="col-sm-12 col-lg-9">
-                  <div class="signup-header">
-                    <!-- <p>START FOR FREE</p> -->
-
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-12 col-lg-9">
-                  <div class="signup-head">
-                    <h3>Personal Details</h3>
-                  </div>
-                </div>
-                <div class="col-sm-12 col-lg-3">
-                  <div class="page-count">
-                    <p> 1 of 6</p>
-                  </div>
-                </div>
-              </div>
-              <form action="/api/service_provider_personal_details" class="form form-section" method="post" id="form1">
-                <% if(typeof err_msg!='undefined' ){ %>
-                  <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
-                    <%= err_msg %>
-                  </span>
-                  <% }%>
-                    <% if(typeof success_msg!='undefined' ){ %>
-                      <span class="succ_flash_msg" style="color: green;">
-                        <%= success_msg %>
-                      </span>
-                      <% }%>
-
-                        <div class="row">
-                          <div class="col-sm-12 col-lg-6">
-                            <div class="input-box-size-fix">
-                              <input type="text" class="form-control text-field-size spods_surname " id="" placeholder="Surname"
-                                name="spods_surname" required data-rule-required="true"
-                                data-msg-required="Surname is required" value="<%= session.sps_lastname%>" readonly>
-                              </input>
-                              
-                            </div>
-                          </div>
-                          <div class="col-sm-12 col-lg-6">
-                            <div class="input-box-size-fix">
-                              <input type="text" class="form-control text-field-size spods_fornames " id="" placeholder="Forename"
-                                name="spods_fornames" required data-rule-required="true"
-                                data-msg-required="Forename is required" value="<%= session.sps_firstname%>" readonly>
-                            </div>
-                          </div>
-                        </div>
-
-
-                        <div class="row">
-                          <div class="col-sm-12 col-lg-6">
-                            <div class="input-box-size-fix">
-                              <select class="form-control required spods_preferred_title" id="selectBox2" name="spods_preferred_title"
-                                data-rule-required="true" data-msg-required="Preferred Title is required" required>
-                                <option value="">Preferred Title</option>
-                                <option value="mr">Mr</option>
-                                <option value="miss">Miss</option>
-                                <option value="mrs">Mrs</option>
-                              </select>
-                            </div>
-
-                          </div>
-                          <div class="col-sm-12 col-lg-6">
-                            <div class="input-box-size-fix">
-                              <input type="text" class="form-control text-field-size spods_former_surnames" id=""
-                                placeholder="Former Surnames(if different from above)" name="spods_former_surnames"
-                                value="<%= session.sps_lastname%>" required>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="row">
-                          <div class="col-sm-12 col-lg-6">
-                            <div class="input-box-size-fix" id=''>
-                              <input type="text" class="datepicker form-control text-field-size spods_dob " id="datePickerId" placeholder="Date of Birth"
-                                onfocus="(this.type='date')" min="1980-01-01" name="spods_dob" data-rule-required="true"
-                                data-msg-required="Date of birth is required" required>
-                            </div>
-                          </div>
-                          <div class="col-sm-12 col-lg-6">
-                            <div class="input-box-size-fix">
-                              <input type="text" class="form-control text-field-size spods_nationality" id="" placeholder="Nationality"
-                                name="spods_nationality" required>
-                            </div>
-                          </div>
-                        </div>
-
-
-                        <div class="row">
-                          <div class="col-sm-12 col-lg-6">
-                            <div class="input-box-size-fix">
-                              <input type="text" class="form-control text-field-size spods_address" id="" placeholder="Address"
-                                name="spods_address" value="<%= session.sps_address%>" readonly>
-                            </div>
-                          </div>
-                          <div class="col-sm-12 col-lg-6">
-                            <div class="input-box-size-fix">
-                              <input type="text" class="form-control text-field-size spods_postcode" id="" placeholder="Post code"
-                                name="spods_postcode" required>
-                            </div>
-                          </div>
-                        </div>
-
-
-                        <div class="row">
-                          <div class="col-sm-12 col-lg-6">
-                            <div class="input-box-size-fix">
-                              <input type="text" class="form-control text-field-size spods_home_telephone_number" id=""
-                                placeholder="Home Telephone Number" name="spods_home_telephone_number" required>
-                            </div>
-                          </div>
-                          <div class="col-sm-12 col-lg-6">
-                            <div class="input-box-size-fix">
-                              <select class="form-control spods_postcode_covered" id="selectBox2" name="spods_postcode_covered" required>
-                                <option value="0">Post codes covered</option>
-                                <option value=""></option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-
-
-                        <div class="row">
-                          <div class="col-sm-12 col-lg-8">
-                            <div class="profile-notes">
-                              <p>If the application is successfully submitted, when are you able to start working for Relai?</p>
-                            </div>
-                          </div>
-                          <div class="col-sm-12 col-lg-4">
-                            <div class="input-box-size-fix">
-                              <input type="text" onfocus="(this.type='date')" min="1980-01-01" class="form-control text-field-size start_working_time"
-                                id="start_working_time" placeholder="Start Date" name="start_working_time" required>
-                            </div>
-                          </div>
-                        </div>
-
-
-
-
-
-                        <div class="row">
-                          <div class="col-6 col-sm-6 col-lg-6">
-                            <div class="prev-btn float-left">
-                              <!-- <a href="#" class="btn previous-btn" style="width: 164px; ">
-                                PREVIOUS</a> -->
-                            </div>
-                          </div>
-
-
-                          <div class="col-6 col-sm-6 col-lg-6">
-                            <div class="prev-btn float-right">
-                              <!-- <a href="/signup-professionals-profile-2" class="btn btn-next" style="width: 164px;">
-                        NEXT</a> -->
-                               <input type="hidden" name="personal_detail_id"class="personal_detail_id" value="">
-                              <button id="clickme" type="submit" name="submit" class="btn btn-next"
-                                style="width: 164px;">
-                                NEXT</button>
-                            </div>
-              </form>
-            </div>
-          </div>
-          <%}else{%>
             <div class="col-sm-12 col-lg-9">
               <div class=" dashboard-inner">
                 <div class="row">
                   <div class="col-sm-12 col-lg-9">
                     <div class="signup-header">
                       <!-- <p>START FOR FREE</p> -->
-  
+
                     </div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-sm-12 col-lg-9">
                     <div class="signup-head">
-                      <h3>Update Personal Details</h3>
+                      <h3>Personal Details</h3>
                     </div>
                   </div>
                   <div class="col-sm-12 col-lg-3">
@@ -291,7 +129,8 @@
                     </div>
                   </div>
                 </div>
-                <form action="/api/service_provider_personal_details" class="form form-section" method="post" id="form1">
+                <form action="/api/service_provider_personal_details" class="form form-section" method="post"
+                  id="form1">
                   <% if(typeof err_msg!='undefined' ){ %>
                     <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
                       <%= err_msg %>
@@ -302,121 +141,326 @@
                           <%= success_msg %>
                         </span>
                         <% }%>
-  
+
                           <div class="row">
                             <div class="col-sm-12 col-lg-6">
-                              <div class="input-box-size-fix">
-                                <input type="text" class="form-control text-field-size spods_surname " id="" placeholder="Surname"
-                                  name="spods_surname" required data-rule-required="true"
+                              <div class=" form-group input-box-size-fix">
+                                <label>Surname</label>
+                                <input type="text" class="form-control text-field-size mt-0  spods_surname " id=""
+                                  placeholder="Surname" name="spods_surname" required data-rule-required="true"
                                   data-msg-required="Surname is required" value="<%= session.sps_lastname%>" readonly>
                                 </input>
-                                
+
                               </div>
                             </div>
                             <div class="col-sm-12 col-lg-6">
-                              <div class="input-box-size-fix">
-                                <input type="text" class="form-control text-field-size spods_fornames " id="" placeholder="Forename"
-                                  name="spods_fornames" required data-rule-required="true"
+                              <div class="form-group input-box-size-fix">
+                                <label>Forename</label>
+                                <input type="text" class="form-control text-field-size mt-0  spods_fornames " id=""
+                                  placeholder="Forename" name="spods_fornames" required data-rule-required="true"
                                   data-msg-required="Forename is required" value="<%= session.sps_firstname%>" readonly>
                               </div>
                             </div>
                           </div>
-  
-  
+
+
                           <div class="row">
                             <div class="col-sm-12 col-lg-6">
-                              <div class="input-box-size-fix">
-                                <select class="form-control required spods_preferred_title" id="selectBox2" name="spods_preferred_title"
-                                  data-rule-required="true" data-msg-required="Preferred Title is required" required>
+                              <div class="form-group input-box-size-fix">
+                                <label>Preferred Title</label>
+                                <select class="form-control required spods_preferred_title mt-0" id="selectBox2"
+                                  name="spods_preferred_title" data-rule-required="true"
+                                  data-msg-required="Preferred Title is required" required>
                                   <option value="">Preferred Title</option>
                                   <option value="mr">Mr</option>
                                   <option value="miss">Miss</option>
                                   <option value="mrs">Mrs</option>
                                 </select>
                               </div>
-  
+
                             </div>
                             <div class="col-sm-12 col-lg-6">
-                              <div class="input-box-size-fix">
-                                <input type="text" class="form-control text-field-size spods_former_surnames" id=""
-                                  placeholder="Former Surnames(if different from above)" name="spods_former_surnames"
-                                  value="<%= session.sps_lastname%>" required>
+                              <div class="form-group input-box-size-fix">
+                                <label>Former Surnames(if different from above)</label>
+                                <input type="text" class="form-control text-field-size mt-0  spods_former_surnames mt-0"
+                                  id="" placeholder="Former Surnames(if different from above)"
+                                  name="spods_former_surnames" value="<%= session.sps_lastname%>" required>
                               </div>
                             </div>
                           </div>
-  
+
                           <div class="row">
                             <div class="col-sm-12 col-lg-6">
-                              <div class="input-box-size-fix" id=''>
-                                <input type="text" class="datepicker form-control text-field-size spods_dob " id="datePickerId" placeholder="Date of Birth"
-                                  onfocus="(this.type='date')" min="1980-01-01" name="spods_dob" data-rule-required="true"
+                              <div class="form-group input-box-size-fix" id=''>
+                                <label>Date of Birth</label>
+                                <input type="text" class="datepicker form-control mt-0 text-field-size spods_dob "
+                                  id="datePickerId" placeholder="Date of Birth" onfocus="(this.type='date')"
+                                  min="1980-01-01" name="spods_dob" data-rule-required="true"
                                   data-msg-required="Date of birth is required" required>
                               </div>
                             </div>
                             <div class="col-sm-12 col-lg-6">
-                              <div class="input-box-size-fix">
-                                <input type="text" class="form-control text-field-size spods_nationality" id="" placeholder="Nationality"
-                                  name="spods_nationality" required>
+                              <div class="form-group input-box-size-fix">
+                                <label>Nationality</label>
+                                <input type="text" class="form-control text-field-size mt-0  spods_nationality" id=""
+                                  placeholder="Nationality" name="spods_nationality" required>
                               </div>
                             </div>
                           </div>
-  
-  
+
+
                           <div class="row">
                             <div class="col-sm-12 col-lg-6">
-                              <div class="input-box-size-fix">
-                                <input type="text" class="form-control text-field-size spods_address" id="" placeholder="Address"
-                                  name="spods_address" value="<%= session.sps_address%>" readonly>
+                              <div class="form-group input-box-size-fix">
+                                <label>Address</label>
+                                <input type="text" class="form-control text-field-size mt-0  spods_address mt-0" id=""
+                                  placeholder="Address" name="spods_address" value="<%= session.sps_address%>" readonly>
                               </div>
                             </div>
                             <div class="col-sm-12 col-lg-6">
-                              <div class="input-box-size-fix">
-                                <input type="text" class="form-control text-field-size spods_postcode" id="" placeholder="Post code"
-                                  name="spods_postcode" required>
+                              <div class="form-group input-box-size-fix">
+                                <label>Post code</label>
+                                <input type="text" class="form-control text-field-size mt-0  spods_postcode mt-0" id=""
+                                  placeholder="Post code" name="spods_postcode" required>
                               </div>
                             </div>
                           </div>
-  
-  
+
+
                           <div class="row">
                             <div class="col-sm-12 col-lg-6">
-                              <div class="input-box-size-fix">
-                                <input type="text" class="form-control text-field-size spods_home_telephone_number" id=""
+                              <div class="form-group input-box-size-fix">
+                                <label>Home Telephone Number</label>
+                                <input type="text"
+                                  class="form-control text-field-size mt-0  spods_home_telephone_number mt-0" id=""
                                   placeholder="Home Telephone Number" name="spods_home_telephone_number" required>
                               </div>
                             </div>
                             <div class="col-sm-12 col-lg-6">
-                              <div class="input-box-size-fix">
-                                <select class="form-control spods_postcode_covered" id="selectBox2" name="spods_postcode_covered" required>
+                              <div class="form-group input-box-size-fix">
+                                <label>Post codes covered</label>
+                                <select class="form-control spods_postcode_covered mt-0" id="selectBox2"
+                                  name="spods_postcode_covered" required>
                                   <option value="0">Post codes covered</option>
                                   <option value=""></option>
                                 </select>
                               </div>
                             </div>
                           </div>
-  
-  
+
+
                           <div class="row">
                             <div class="col-sm-12 col-lg-8">
                               <div class="profile-notes">
-                                <p>If the application is successfully submitted, when are you able to start working for Relai?</p>
+                                <p>If the application is successfully submitted, when are you able to start working for
+                                  Relai?</p>
                               </div>
                             </div>
                             <div class="col-sm-12 col-lg-4">
-                              <div class="input-box-size-fix">
-                                <input type="text" onfocus="(this.type='date')" min="1980-01-01" class="form-control text-field-size start_working_time"
-                                  id="start_working_time" placeholder="Start Date" name="start_working_time" required>
+                              <div class=" form-group input-box-size-fix">
+                                <label>Start Date</label>
+                                <input type="text" onfocus="(this.type='date')" min="1980-01-01"
+                                  class="form-control text-field-size mt-0  start_working_time" id="start_working_time"
+                                  placeholder="Start Date" name="start_working_time" required>
                               </div>
                             </div>
                           </div>
-                                <input type="hidden" name="isedit" value="1">
-                                <input type="hidden" name="personal_detail_id" value="<%=data._id%>">
-                          <button type="submit" class="btn btn-next" style="width: 164px;">
-                            Update</button>
+
+
+
+
+
+                          <div class="row">
+                            <div class="col-6 col-sm-6 col-lg-6">
+                              <div class="prev-btn float-left">
+                                <!-- <a href="#" class="btn previous-btn" style="width: 164px; ">
+                                PREVIOUS</a> -->
+                              </div>
+                            </div>
+
+
+                            <div class="col-6 col-sm-6 col-lg-6">
+                              <div class="prev-btn float-right">
+                                <!-- <a href="/signup-professionals-profile-2" class="btn btn-next" style="width: 164px;">
+                        NEXT</a> -->
+                                <input type="hidden" name="personal_detail_id" class="personal_detail_id" value="">
+                                <button id="clickme" type="submit" name="submit" class="btn btn-next"
+                                  style="width: 164px;">
+                                  NEXT</button>
+                              </div>
                 </form>
               </div>
             </div>
-           <%}%>
+            <%}else{%>
+              <div class="col-sm-12 col-lg-9">
+                <div class=" dashboard-inner">
+                  <div class="row">
+                    <div class="col-sm-12 col-lg-9">
+                      <div class="signup-header">
+                        <!-- <p>START FOR FREE</p> -->
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12 col-lg-9">
+                      <div class="signup-head">
+                        <h3>Update Personal Details</h3>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-3">
+                      <div class="page-count">
+                        <p> 1 of 6</p>
+                      </div>
+                    </div>
+                  </div>
+                  <form action="/api/service_provider_personal_details" class="form form-section" method="post"
+                    id="form1">
+                    <% if(typeof err_msg!='undefined' ){ %>
+                      <span class="error_validate flash_msg" style="color: red; padding-bottom: 20px;">
+                        <%= err_msg %>
+                      </span>
+                      <% }%>
+                        <% if(typeof success_msg!='undefined' ){ %>
+                          <span class="succ_flash_msg" style="color: green;">
+                            <%= success_msg %>
+                          </span>
+                          <% }%>
+
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-6">
+                                <div class="form-group input-box-size-fix">
+                                  <label>Surname</label>
+                                  <input type="text" class="form-control text-field-size mt-0  spods_surname " id=""
+                                    placeholder="Surname" name="spods_surname" required data-rule-required="true"
+                                    data-msg-required="Surname is required" value="<%= session.sps_lastname%>" readonly>
+                                  </input>
+
+                                </div>
+                              </div>
+                              <div class="col-sm-12 col-lg-6">
+                                <div class="form-group input-box-size-fix">
+                                  <label>Forename</label>
+                                  <input type="text" class="form-control text-field-size mt-0  spods_fornames " id=""
+                                    placeholder="Forename" name="spods_fornames" required data-rule-required="true"
+                                    data-msg-required="Forename is required" value="<%= session.sps_firstname%>"
+                                    readonly>
+                                </div>
+                              </div>
+                            </div>
+
+
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-6">
+                                <div class="form-group input-box-size-fix">
+                                  <label>Preferred Title</label>
+                                  <select class="form-control required spods_preferred_title mt-0" id="selectBox2"
+                                    name="spods_preferred_title" data-rule-required="true"
+                                    data-msg-required="Preferred Title is required" required>
+                                    <option value="">Preferred Title</option>
+                                    <option value="mr">Mr</option>
+                                    <option value="miss">Miss</option>
+                                    <option value="mrs">Mrs</option>
+                                  </select>
+                                </div>
+
+                              </div>
+                              <div class="col-sm-12 col-lg-6">
+                                <div class="form-group input-box-size-fix">
+                                  <label>Former Surnames</label>
+                                  <input type="text" class="form-control text-field-size mt-0  spods_former_surnames"
+                                    id="" placeholder="Former Surnames(if different from above)"
+                                    name="spods_former_surnames" value="<%= session.sps_lastname%>" required>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-6">
+                                <div class="form-group input-box-size-fix" id=''>
+                                  <label>Date of Birth</label>
+                                  <input type="text" class="datepicker form-control mt-0 text-field-size spods_dob "
+                                    id="datePickerId" placeholder="Date of Birth" onfocus="(this.type='date')"
+                                    min="1980-01-01" name="spods_dob" data-rule-required="true"
+                                    data-msg-required="Date of birth is required" required>
+                                </div>
+                              </div>
+                              <div class="col-sm-12 col-lg-6">
+
+                                <div class="from-group input-box-size-fix">
+                                  <label>Nationality</label>
+                                  <input type="text" class="form-control text-field-size mt-0  spods_nationality" id=""
+                                    placeholder="Nationality" name="spods_nationality" required>
+                                </div>
+                              </div>
+                            </div>
+
+
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-6">
+                                <div class="form-group input-box-size-fix">
+                                  <label>Address</label>
+                                  <input type="text" class="form-control text-field-size mt-0  spods_address" id=""
+                                    placeholder="Address" name="spods_address" value="<%= session.sps_address%>"
+                                    readonly>
+                                </div>
+                              </div>
+                              <div class="col-sm-12 col-lg-6">
+                                <div class="form-group input-box-size-fix">
+                                  <label>Post code</label>
+                                  <input type="text" class="form-control text-field-size mt-0  spods_postcode" id=""
+                                    placeholder="Post code" name="spods_postcode" required>
+                                </div>
+                              </div>
+                            </div>
+
+
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-6">
+                                <div class="form-group input-box-size-fix">
+                                  <label>Home Telephone Number</label>
+                                  <input type="text"
+                                    class="form-control text-field-size mt-0  spods_home_telephone_number" id=""
+                                    placeholder="Home Telephone Number" name="spods_home_telephone_number" required>
+                                </div>
+                              </div>
+                              <div class="col-sm-12 col-lg-6">
+                                <div class="from-group input-box-size-fix">
+                                  <label>Post codes covered</label>
+                                  <select class="form-control spods_postcode_covered mt-0" id="selectBox2"
+                                    name="spods_postcode_covered" required>
+                                    <option value="0">Post codes covered</option>
+                                    <option value=""></option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+
+
+                            <div class="row">
+                              <div class="col-sm-12 col-lg-8">
+                                <div class="profile-notes">
+                                  <p>If the application is successfully submitted, when are you able to start working
+                                    for Relai?</p>
+                                </div>
+                              </div>
+                              <div class="col-sm-12 col-lg-4">
+                                <div class="form-group input-box-size-fix">
+                                  <label>Start Date</label>
+                                  <input type="text" onfocus="(this.type='date')" min="1980-01-01"
+                                    class="form-control text-field-size mt-0  start_working_time"
+                                    id="start_working_time" placeholder="Start Date" name="start_working_time" required>
+                                </div>
+                              </div>
+                            </div>
+                            <input type="hidden" name="isedit" value="1">
+                            <input type="hidden" name="personal_detail_id" value="<%=data._id%>">
+                            <button type="submit" class="btn btn-next" style="width: 164px;">
+                              Update</button>
+                  </form>
+                </div>
+              </div>
+              <%}%>
         </div>
       </div>
     </div>
@@ -435,8 +479,8 @@
   <script type="text/javascript" src="../js/countrystatecity.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
-  integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
-  crossorigin="anonymous"></script>
+    integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+    crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
   <!-- <script type="text/javascript">
@@ -455,7 +499,7 @@
         $(element).removeClass(errorClass);
       },
       submitHandler: function (form) {
-       
+
 
 
       }
@@ -489,7 +533,7 @@
       if (succ_flash_msg != "" && succ_flash_msg != undefined) {
         setTimeout(function () { $('.succ_flash_msg').html(''); }, 4000);
       }
-    });  
+    });
   </script>
   <script>
     $("#clickme").click(function () {
@@ -501,45 +545,45 @@
       }
     });
   </script>
-   <script>
+  <script>
     $(document).ready(function () {
       datePickerId.max = new Date().toISOString().split("T")[0];
-      start_working_time.min=new Date().toISOString().split('T')[0]
+      start_working_time.min = new Date().toISOString().split('T')[0]
       var data = {
-        user_id:'<%= session.user_id%>'
+        user_id: '<%= session.user_id%>'
       }
       $.ajax({
-          type: "GET",
-          data: data,
-          url: "/api/service_provider_personal_details",
-          cache: false,
-          success: function (data) {
-            console.log(data);
-            if (data.status == true) {
-              // var newHref = $('.other_detail_nev').attr('data-href');
-            	// $('.other_detail_nev').attr('href',newHref);
-              $('.spods_surname').val(data.data.spods_surname);
-              $('.spods_fornames').val(data.data.spods_fornames);
-              $('.spods_preferred_title').val(data.data.spods_preferred_title);
-              $('.spods_former_surnames').val(data.data.spods_former_surnames);
-              $('.spods_dob').val(data.spods_dob);
-              $('.spods_nationality').val(data.data.spods_nationality);
-              $('.spods_address').val(data.data.spods_address);
-              $('.spods_postcode').val(data.data.spods_postcode);
-              $('.spods_home_telephone_number').val(data.data.spods_home_telephone_number);
-              $('.spods_postcode_covered').val(data.data.spods_postcode_covered);
-              $('.start_working_time').val(data.spods_start_working_time);
-              $('.personal_detail_id').val(data.data._id);
+        type: "GET",
+        data: data,
+        url: "/api/service_provider_personal_details",
+        cache: false,
+        success: function (data) {
+          console.log(data);
+          if (data.status == true) {
+            // var newHref = $('.other_detail_nev').attr('data-href');
+            // $('.other_detail_nev').attr('href',newHref);
+            $('.spods_surname').val(data.data.spods_surname);
+            $('.spods_fornames').val(data.data.spods_fornames);
+            $('.spods_preferred_title').val(data.data.spods_preferred_title);
+            $('.spods_former_surnames').val(data.data.spods_former_surnames);
+            $('.spods_dob').val(data.spods_dob);
+            $('.spods_nationality').val(data.data.spods_nationality);
+            $('.spods_address').val(data.data.spods_address);
+            $('.spods_postcode').val(data.data.spods_postcode);
+            $('.spods_home_telephone_number').val(data.data.spods_home_telephone_number);
+            $('.spods_postcode_covered').val(data.data.spods_postcode_covered);
+            $('.start_working_time').val(data.spods_start_working_time);
+            $('.personal_detail_id').val(data.data._id);
 
-            }else{
-
-            }
+          } else {
 
           }
-        });
-        $('#form1').submit(function(e){
-          e.preventDefault()
-          $('.loader-box').attr('style', 'display:flex !important');
+
+        }
+      });
+      $('#form1').submit(function (e) {
+        e.preventDefault()
+        $('.loader-box').attr('style', 'display:flex !important');
         var formData = $('#form1').serialize();
         console.log('formData:', formData)
 
@@ -572,29 +616,29 @@
                 confirmButtonColor: '#005377',
                 timer: 4000
               })
-              if(data.action=='isedit'){
+              if (data.action == 'isedit') {
                 setTimeout(function () {
-                //location.reload(true);
-                window.location.href = "/service-provider/dashboard-professional";
-              }, 4000)
-              }else{
+                  //location.reload(true);
+                  window.location.href = "/service-provider/dashboard-professional";
+                }, 4000)
+              } else {
                 setTimeout(function () {
-                //location.reload(true);
-                window.location.href = "/signup-professionals-profile-2";
-              }, 4000)
+                  //location.reload(true);
+                  window.location.href = "/signup-professionals-profile-2";
+                }, 4000)
               }
               ;
 
             }
           }
         });
-        })
+      })
     });
   </script>
-   <script type="text/javascript">
-   
+  <script type="text/javascript">
 
-</script>
+
+  </script>
   </body>
 
   </html>
