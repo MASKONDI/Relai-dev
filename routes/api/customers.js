@@ -2972,13 +2972,12 @@ router.post('/customer-message-unread', (req, res) => {
 router.post('/document_download_count', async (req, res) => {
   console.log("document_download_count :", req.body);
   var docPermissionData = await DocumentPermissionSchema.findOne({
-     _id:req.body.doc_permission_id,
-     dps_is_active_user_flag:req.body.active_flag,
-     dps_customer_id:req.body.uploaded_by_id,
-     dps_service_provider_id:req.body.downloaded_by_id,
-     dps_document_id:req.body.document_id
+        _id:req.body.doc_permission_id,
+        dps_is_active_user_flag:req.body.active_flag,
+        dps_customer_id:req.body.uploaded_by_id,
+        dps_service_provider_id:req.body.downloaded_by_id,
+        dps_document_id:req.body.document_id
     });
-
     if(docPermissionData){
                  console.log('docPermissionData:',docPermissionData)
                  DocumentDownloadSchema.updateOne({ dd_permission_id:docPermissionData._id, dd_uploaded_by_id:docPermissionData.dps_customer_id,dd_downloaded_by_id:docPermissionData.dps_service_provider_id,dd_document_id:docPermissionData.dps_document_id}, { $set: { dd_download_status: 'yes'} }, { upsert: true }, function (err) {
@@ -2994,7 +2993,6 @@ router.post('/document_download_count', async (req, res) => {
     }else{
               console.log('else data my doc')
     }
-
 });
 
 

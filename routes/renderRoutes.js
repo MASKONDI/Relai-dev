@@ -1324,6 +1324,8 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
   await ServiceProviderUploadDocsSchema.find({
     spuds_property_id: req.session.property_id
   }).sort({ _id: -1 }).then(async (spresp) => {
+    console.log('sprespsprespspresp:',spresp)
+
     for (var keyy of spresp) {
       let sptemps = await keyy
       const spd = JSON.stringify(sptemps);
@@ -1334,9 +1336,9 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
           await DocumentDownloadSchema.find({ dd_permission_id: spDocData._id }).then(async (docDownloadData) => {
             console.log('docDownloadData:',docDownloadData)
               if (docDownloadData) { 
-                spDocData.docDownloadData = docDownloadData;
+                spDocData.docDownloadData = docDownloadData.length;
               }else{
-                spDocData.docDownloadData ='';
+                spDocData.docDownloadData =0; 
               }
            });
         } else {
@@ -1355,11 +1357,27 @@ app.get('/mydreamhome-details-docs', isCustomer, async (req, res) => {
       let temps = await key
       const d = JSON.stringify(temps);
       const datas = JSON.parse(d)
-
       if (key.cuds_task_id) {
+
+        await DocumentDownloadSchema.find({ dd_document_id: datas._id }).then(async (docDownloadData) => {
+          console.log('Taskkk docDownloadData:',docDownloadData)
+            if (docDownloadData) { 
+              datas.docDownloadData = docDownloadData.length;
+            }else{
+              datas.docDownloadData =0; 
+            }
+         });
 
         taskDocArray.push(datas);
       } else {
+        await DocumentDownloadSchema.find({ dd_document_id: datas._id }).then(async (docDownloadData) => {
+          console.log('datas docDownloadData:',docDownloadData)
+            if (docDownloadData) { 
+              datas.docDownloadData = docDownloadData.length;
+            }else{
+              datas.docDownloadData =0; 
+            }
+         });
         normalDocArray.push(datas);
       }
     }

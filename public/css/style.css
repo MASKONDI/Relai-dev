@@ -5649,8 +5649,16 @@ a .clip-icon{
     z-index: 1;
     margin-left: 26px;
     margin-top: 4px;
+    z-index: 1;
+    margin-left: 26px;
+    /* margin-top: 4px; */
+    top: 25px;
+    left: 0;
 }
 
+table.table.table-responsive.table-phase-fix1 {
+    overflow: unset;
+}
 .status-dropdown a {
     color: black;
      padding: 0px 12px 0px 0px; 
