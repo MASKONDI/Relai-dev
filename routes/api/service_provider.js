@@ -2036,7 +2036,34 @@ router.post('/sp_task_status_update', (req, res) => {
 
 });
 
+router.post('/cus_task_status_approved', (req, res) => {
+  console.log("cus_task_status_approved :", req.body);
 
+  PropertyProfessinoalTaskSchema.findOne({ _id: req.body.task_id }).then((resp) => {
+    if (resp) {
+      var index = resp.ppts_assign_to.indexOf(req.session.user_id)
+      const items = resp.ppts_task_status
+
+      items[index] = req.body.ppts_task_status
+      console.log('find resp when update', index, items)
+      PropertyProfessinoalTaskSchema.updateOne({ _id: req.body.task_id }, { $set: { ppts_task_status: items } }, function (err, data) {
+
+        if (err) {
+          console.log(err)
+          res.send({ status: false, message: 'Something going wrong please check again !!' })
+        } else {
+          res.send({ status: true, message: 'Task Status Approved successfully !!' })
+          console.log("Task Status Approved successfully", data);
+        }
+      });
+    } else {
+      console.log('error in find')
+    }
+  }).catch((err) => {
+    console.log(err)
+  })
+
+});
 router.post('/professional-new-raise-a-complaint', (req, res) => {
   upload(req, res, async () => {
     let newComplaint = '';
